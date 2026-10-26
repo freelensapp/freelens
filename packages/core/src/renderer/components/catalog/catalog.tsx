@@ -12,7 +12,7 @@
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { action, makeObservable, observable, reaction, runInAction, when } from "mobx";
+import { action, observable, observableRef, reaction, runInAction, when } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import emitAppEventInjectable from "../../../common/app-event-bus/emit-event.injectable";
@@ -86,18 +86,17 @@ interface Dependencies {
 class NonInjectedCatalog extends React.Component<Dependencies> {
   private readonly disposers: (() => void)[] = [];
   private readonly menuItems = observable.array<CatalogEntityContextMenu>();
-  @observable activeTab: string | undefined = undefined;
+  @observable accessor activeTab: string | undefined = undefined;
 
   // mobx-react 9 forbids reading this.props inside a derivation. renderItemMenu is
   // invoked from the ItemListLayout row renderer — a derivation other than this
   // component's own render — so it reads props from this observable snapshot,
   // refreshed on every update, instead of this.props.
-  @observable.ref private observableProps: Readonly<Dependencies>;
+  @observableRef private accessor observableProps: Readonly<Dependencies>;
 
   constructor(props: Dependencies) {
     super(props);
     this.observableProps = props;
-    makeObservable(this);
   }
 
   componentDidUpdate() {
@@ -320,8 +319,12 @@ class NonInjectedCatalog extends React.Component<Dependencies> {
   render() {
     const activeCategory = this.props.catalogEntityStore.activeCategory.get();
 
+    // The views follow the active tab, so the tab keys their crash: another tab renders again.
     return (
-      <MainLayout sidebar={<CatalogMenu activeTab={this.activeTab} onItemClick={this.onTabChange} />}>
+      <MainLayout
+        sidebar={<CatalogMenu activeTab={this.activeTab} onItemClick={this.onTabChange} />}
+        resetKey={this.activeTab}
+      >
         <div className={styles.views}>{this.renderViews(activeCategory)}</div>
         {activeCategory ? (
           <RenderDelay>

@@ -8,7 +8,7 @@ import { Icon } from "@freelensapp/icon";
 import { storesAndApisCanBeCreatedInjectionToken } from "@freelensapp/kube-api-specifics";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { debounce } from "es-toolkit/compat";
-import { comparer, makeObservable, observable, reaction } from "mobx";
+import { compareStructural, observable, reaction } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import namespaceStoreInjectable from "../namespaces/store.injectable";
@@ -33,9 +33,9 @@ interface Dependencies {
 class NonInjectedSearchInputUrl extends React.Component<SearchInputUrlProps & Dependencies> {
   private readonly disposers: (() => void)[] = [];
 
-  @observable inputVal = ""; // fix: use empty string on init to avoid react warnings
-  @observable private lastNamespaceKey = "";
-  @observable private lastPlaceholder = "";
+  @observable accessor inputVal = ""; // fix: use empty string on init to avoid react warnings
+  @observable private accessor lastNamespaceKey = "";
+  @observable private accessor lastPlaceholder = "";
   private userTyping = false;
 
   readonly updateUrl = debounce((val: string) => this.props.searchUrlParam.set(val), 250);
@@ -159,7 +159,7 @@ class NonInjectedSearchInputUrl extends React.Component<SearchInputUrlProps & De
           this.lastNamespaceKey = namespaceKey;
           this.lastPlaceholder = placeholderKey;
         },
-        { equals: comparer.structural },
+        { equals: compareStructural },
       ),
     );
 
@@ -178,7 +178,7 @@ class NonInjectedSearchInputUrl extends React.Component<SearchInputUrlProps & De
             searchUrlParam.set(persistedValue);
           }
         },
-        { fireImmediately: true, equals: comparer.structural },
+        { fireImmediately: true, equals: compareStructural },
       ),
     );
   }
@@ -235,7 +235,6 @@ class NonInjectedSearchInputUrl extends React.Component<SearchInputUrlProps & De
 
   constructor(props: SearchInputUrlProps & Dependencies) {
     super(props);
-    makeObservable(this);
   }
 
   render() {

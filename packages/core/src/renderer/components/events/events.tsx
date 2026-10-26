@@ -11,7 +11,7 @@ import { Link } from "@freelensapp/routing";
 import { cssNames, stopPropagation } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { orderBy } from "es-toolkit/compat";
-import { makeObservable, observable } from "mobx";
+import { observable, observableRef } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import navigateToEventsInjectable from "../../../common/front-end-routing/routes/cluster/events/navigate-to-events.injectable";
@@ -74,7 +74,7 @@ class NonInjectedEvents extends React.Component<Dependencies & EventsProps> {
   // KubeObjectListLayout/Table render (a foreign derivation), so they (and the
   // items/visibleItems getters they call) read props from this observable
   // snapshot, refreshed on every update, instead of this.props.
-  @observable.ref private observableProps: Readonly<Dependencies & EventsProps>;
+  @observableRef private accessor observableProps: Readonly<Dependencies & EventsProps>;
 
   readonly sorting = observable.object<TableSortParams>({
     sortBy: columnId.age,
@@ -93,7 +93,6 @@ class NonInjectedEvents extends React.Component<Dependencies & EventsProps> {
   constructor(props: Dependencies & EventsProps) {
     super(props);
     this.observableProps = props;
-    makeObservable(this);
   }
 
   componentDidUpdate() {

@@ -13,7 +13,7 @@ import { showCheckedErrorNotificationInjectable } from "@freelensapp/notificatio
 import { base64, iter, object } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { upperFirst } from "es-toolkit";
-import { makeObservable, observable } from "mobx";
+import { observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import { Dialog } from "../../dialog";
@@ -64,7 +64,6 @@ interface Dependencies {
 class NonInjectedAddSecretDialog extends React.Component<AddSecretDialogProps & Dependencies> {
   constructor(props: AddSecretDialogProps & Dependencies) {
     super(props);
-    makeObservable(this);
   }
 
   private secretTemplate: Partial<Record<SecretType, SecretTemplate>> = {
@@ -77,10 +76,10 @@ class NonInjectedAddSecretDialog extends React.Component<AddSecretDialogProps & 
     },
   };
 
-  @observable secret = this.secretTemplate;
-  @observable name = "";
-  @observable namespace = "default";
-  @observable type = SecretType.Opaque;
+  @observable accessor secret = this.secretTemplate;
+  @observable accessor name = "";
+  @observable accessor namespace = "default";
+  @observable accessor type = SecretType.Opaque;
 
   reset = () => {
     this.name = "";

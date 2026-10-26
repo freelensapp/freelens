@@ -6,8 +6,8 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import fetchInjectable from "../../common/fetch/fetch.injectable";
-import { lensProxyDispatcherInjectionToken } from "../../common/fetch/lens-proxy-dispatcher-injection-token";
-import lensProxyPortInjectable from "../../main/lens-proxy/lens-proxy-port.injectable";
+import { freelensProxyDispatcherInjectionToken } from "../../common/fetch/freelens-proxy-dispatcher-injection-token";
+import freelensProxyPortInjectable from "../../main/freelens-proxy/freelens-proxy-port.injectable";
 
 import type { FetchRequestInit, FetchResponse } from "@freelensapp/json-api";
 
@@ -25,13 +25,13 @@ const lensFetchInjectable = getInjectable({
   id: "lens-fetch",
   instantiate: (di): LensFetch => {
     const fetch: MainFetch = di.inject(fetchInjectable);
-    const lensProxyPort = di.inject(lensProxyPortInjectable);
-    const lensProxyDispatcher = di.inject(lensProxyDispatcherInjectionToken);
+    const freelensProxyPort = di.inject(freelensProxyPortInjectable);
+    const freelensProxyDispatcher = di.inject(freelensProxyDispatcherInjectionToken);
 
     return async (pathnameAndQuery, init = {}) =>
-      fetch(`https://127.0.0.1:${lensProxyPort.get()}${pathnameAndQuery}`, {
+      fetch(`https://127.0.0.1:${freelensProxyPort.get()}${pathnameAndQuery}`, {
         ...init,
-        dispatcher: lensProxyDispatcher(),
+        dispatcher: freelensProxyDispatcher(),
       });
   },
   causesSideEffects: true,

@@ -5,6 +5,7 @@
  */
 
 import { inspect } from "node:util";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { getCompositePaths } from "../../common/utils/composite/get-composite-paths/get-composite-paths";
 import platformInjectable, { allPlatforms } from "../../common/vars/platform.injectable";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";

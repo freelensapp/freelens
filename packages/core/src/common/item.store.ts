@@ -5,22 +5,38 @@
  */
 
 import autoBind from "auto-bind";
+import { isEqual } from "es-toolkit";
 import { orderBy } from "es-toolkit/compat";
-import { action, computed, makeObservable, observable, when } from "mobx";
+import { action, computed, observable, when } from "mobx";
 
 import type { ItemObject } from "@freelensapp/list-layout";
+
+/**
+ * How a store orders its items: by the values of `by` in turn, `order` being
+ * `"asc"` (default) or `"desc"`.
+ */
+export interface ItemSorting<Item> {
+  readonly by: ((item: Item) => any)[];
+  readonly order?: "asc" | "desc";
+}
 
 export abstract class ItemStore<Item extends ItemObject> {
   protected defaultSorting = (item: Item) => item.getName();
 
-  @observable failedLoading = false;
-  @observable isLoading = false;
-  @observable isLoaded = false;
-  @observable items = observable.array<Item>([], { deep: false });
-  @observable selectedItemsIds = observable.set<string>();
+  /**
+   * The order of `items`, declared once: `sortItems` sorts by it, and
+   * `sortKeyChanged` compares the same values to decide whether a replaced
+   * item can have moved. Not part of the extension API.
+   */
+  protected readonly sorting: ItemSorting<Item> = { by: [(item) => this.defaultSorting(item)] };
+
+  @observable accessor failedLoading = false;
+  @observable accessor isLoading = false;
+  @observable accessor isLoaded = false;
+  @observable accessor items = observable.array<Item>([], { deep: false });
+  @observable accessor selectedItemsIds = observable.set<string>();
 
   constructor() {
-    makeObservable(this);
     autoBind(this);
   }
 
@@ -54,16 +70,51 @@ export abstract class ItemStore<Item extends ItemObject> {
    * to determine where to place them relative to each other. Once the `sorting`
    * functions have been all exhausted then the order is unchanged (ie a stable sort).
    * @param items the items to be sorted (default: the current items in this store)
-   * @param sorting list of functions to determine sort order (default: sorting by name)
+   * @param sorting list of functions to determine sort order (default: `this.sorting`, with its order)
    * @param order whether to sort from least to greatest (`"asc"` (default)) or vice-versa (`"desc"`)
    */
   @action
-  protected sortItems(
-    items: Item[] = this.items,
-    sorting: ((item: Item) => any)[] = [this.defaultSorting],
-    order?: "asc" | "desc",
-  ): Item[] {
-    return orderBy(items, sorting, order);
+  protected sortItems(items: Item[] = this.items, sorting?: ((item: Item) => any)[], order?: "asc" | "desc"): Item[] {
+    if (sorting) {
+      return orderBy(items, sorting, order);
+    }
+
+    return orderBy(items, this.sorting.by, order ?? this.sorting.order);
+  }
+
+  /**
+   * Whether replacing `previous` with `next` can move it in a sorted `items`.
+   * A subclass that overrides `sortItems` sorts by a comparator this class
+   * cannot see, so for it every replacement can.
+   */
+  protected sortKeyChanged(previous: Item, next: Item): boolean {
+    if (Object.getPrototypeOf(this).sortItems !== ItemStore.prototype.sortItems) {
+      return true;
+    }
+
+    return this.sorting.by.some((sort) => !isEqual(sort(previous), sort(next)));
+  }
+
+  /**
+   * Puts `item` in place of the stored item with the same id, or appends it
+   * when there is none, and sorts when it can have moved. `items` has to stay
+   * sorted outside a full sort: the watch flush of `KubeObjectStore` sorts
+   * only when its own events change a sort key.
+   */
+  @action
+  protected putItem(item: Item, sort = true): void {
+    const index = this.getIndexById(item.getId());
+
+    if (sort && (index < 0 || this.sortKeyChanged(this.items[index], item))) {
+      const items = this.getItems();
+
+      items.splice(index < 0 ? items.length : index, 1, item);
+      this.items.replace(this.sortItems(items));
+    } else if (index < 0) {
+      this.items.push(item);
+    } else {
+      this.items[index] = item;
+    }
   }
 
   protected async createItem(...args: any[]): Promise<any>;
@@ -119,18 +170,7 @@ export abstract class ItemStore<Item extends ItemObject> {
     const item = await Promise.resolve(request()).catch(() => null);
 
     if (item) {
-      const existingItem = this.items.find((el) => el.getId() === item.getId());
-
-      if (existingItem) {
-        const index = this.items.findIndex((item) => item === existingItem);
-
-        this.items.splice(index, 1, item);
-      } else {
-        let items = [...this.items, item];
-
-        if (sortItems) items = this.sortItems(items);
-        this.items.replace(items);
-      }
+      this.putItem(item, sortItems);
     }
 
     return item;
@@ -139,9 +179,8 @@ export abstract class ItemStore<Item extends ItemObject> {
   @action
   protected async updateItem(item: Item, request: () => Promise<Item>) {
     const updatedItem = await request();
-    const index = this.items.findIndex((i) => i.getId() === item.getId());
 
-    this.items.splice(index, 1, updatedItem);
+    this.putItem(updatedItem);
 
     return updatedItem;
   }

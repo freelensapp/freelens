@@ -20,7 +20,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - runs-on: ubuntu-24.04-arm
+          - runs-on: ubuntu-26.04-arm
             arch: arm64
 
     runs-on: ${{ matrix.runs-on }}
@@ -65,6 +65,17 @@ jobs:
           restore-keys: |
             ${{ matrix.runs-on }}-${{ matrix.arch }}-turborepo-
 
+      # Turborepo does not cache the binaries, see "Bundled Binary Versions"
+      # in AGENTS.md. Saved right after the build.
+      - name: Restore bundled binaries cache
+        id: binaries-cache-restore
+        uses: actions/cache/restore@v6
+        with:
+          path: freelens/binaries
+          key: ${{ runner.os }}-${{ runner.arch }}-binaries-${{ hashFiles('freelens/binaries.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ runner.arch }}-binaries-
+
       - name: Install pnpm dependencies
         id: install-pnpm
         run: timeout 300 pnpm install --color=always --prefer-offline --frozen-lockfile
@@ -76,6 +87,13 @@ jobs:
 
       - name: Build packages
         run: pnpm --color=always --stream build
+
+      - name: Save bundled binaries cache
+        if: steps.binaries-cache-restore.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v6
+        with:
+          path: freelens/binaries
+          key: ${{ steps.binaries-cache-restore.outputs.cache-primary-key }}
 
       - name: Run Knip
         run: pnpm --color=always --stream knip:check

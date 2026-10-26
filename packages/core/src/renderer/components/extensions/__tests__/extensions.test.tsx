@@ -4,6 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { beforeEach, describe, expect, it, vi } from "vitest";
+
 import type { MockedFunction } from "vitest";
 
 import "@testing-library/jest-dom/vitest";
@@ -72,9 +74,11 @@ describe("Extensions", () => {
           engines: { freelens: "^0.1.0" },
         },
         absolutePath: "/absolute/path",
-        manifestPath: "/symlinked/path/package.json",
+        manifestPath: "/absolute/path/package.json",
         isEnabled: true,
         isCompatible: true,
+        isManaged: true,
+        isVerified: true,
       });
 
       extensionDiscovery.uninstallExtension = vi.fn(() => Promise.resolve());
@@ -138,7 +142,7 @@ describe("Extensions", () => {
     });
 
     fireEvent.change(
-      await screen.findByPlaceholderText("File path or URL", {
+      await screen.findByPlaceholderText("URL, or path to a package or directory", {
         exact: false,
       }),
       {
@@ -178,5 +182,97 @@ describe("Extensions", () => {
     const { container } = render(<Extensions />);
 
     expect(container.querySelector(".Spinner")).not.toBeInTheDocument();
+  });
+
+  describe("the status column", () => {
+    const testExtension = {
+      id: "extensionId",
+      manifest: { name: "test", version: "1.2.3", engines: { freelens: "^0.1.0" } },
+      absolutePath: "/absolute/path",
+      manifestPath: "/absolute/path/package.json",
+      isEnabled: true,
+      isCompatible: true,
+      isManaged: true,
+      isVerified: true,
+    };
+
+    const statusCell = async () => {
+      const table = await screen.findByTestId("extensions-table");
+      const cell = table.querySelector("tbody tr td:nth-child(3) > div");
+
+      assert(cell);
+
+      return cell;
+    };
+
+    beforeEach(() => {
+      extensionDiscovery.isLoaded = true;
+    });
+
+    it("shows Enabled for an enabled extension which loaded", async () => {
+      render(<Extensions />);
+
+      const cell = await statusCell();
+
+      expect(cell).toHaveTextContent("Enabled");
+      expect(cell).not.toHaveAttribute("title");
+    });
+
+    it("shows Disabled for a disabled extension", async () => {
+      extensionLoader.addExtension({ ...testExtension, isEnabled: false });
+      render(<Extensions />);
+
+      expect(await statusCell()).toHaveTextContent("Disabled");
+    });
+
+    it("shows Incompatible for an extension built for another version", async () => {
+      extensionLoader.addExtension({ ...testExtension, isCompatible: false });
+      render(<Extensions />);
+
+      expect(await statusCell()).toHaveTextContent("Incompatible");
+    });
+
+    it("shows Failed to load for an enabled extension which failed, with where and why in the tooltip", async () => {
+      vi.spyOn(extensionLoader, "getLoadFailures").mockReturnValue([
+        { process: "main", stage: "activate", message: "no activating today" },
+        { process: "renderer", stage: "import", message: "Failed to fetch dynamically imported module" },
+      ]);
+      render(<Extensions />);
+
+      const cell = await statusCell();
+
+      expect(cell).toHaveTextContent("Failed to load");
+      expect(cell).toHaveAttribute(
+        "title",
+        "Failed in the main process while running onActivate: no activating today\n" +
+          "Failed in the renderer process while importing its entry point: Failed to fetch dynamically imported module",
+      );
+    });
+
+    it("keeps Disable and Uninstall available for an extension which failed to load", async () => {
+      vi.spyOn(extensionLoader, "getLoadFailures").mockReturnValue([
+        { process: "renderer", stage: "import", message: "missing" },
+      ]);
+      render(<Extensions />);
+
+      const table = await screen.findByTestId("extensions-table");
+      const menuTrigger = table.querySelector("tbody tr td:last-child .Icon");
+
+      assert(menuTrigger);
+      fireEvent.click(menuTrigger);
+
+      expect(await screen.findByText("Disable")).toHaveAttribute("aria-disabled", "false");
+      expect(await screen.findByText("Uninstall")).toHaveAttribute("aria-disabled", "false");
+    });
+
+    it("shows Disabled, not Failed to load, once a failed extension is disabled", async () => {
+      vi.spyOn(extensionLoader, "getLoadFailures").mockReturnValue([
+        { process: "main", stage: "import", message: "missing" },
+      ]);
+      extensionLoader.addExtension({ ...testExtension, isEnabled: false });
+      render(<Extensions />);
+
+      expect(await statusCell()).toHaveTextContent("Disabled");
+    });
   });
 });

@@ -30,12 +30,30 @@ export interface PersistentStorage {
   /**
    * This method does the initial synchronous load from disk and then starts writing the state
    * back to disk whenever it changes.
+   *
+   * Calling it again stops the syncing started by the previous call first, so
+   * a storage never syncs more than once.
    */
   loadAndStartSyncing: () => void;
+
+  /**
+   * Stops the syncing started by {@link PersistentStorage.loadAndStartSyncing}:
+   * the state is no longer written to disk, sent to the other process, or
+   * updated from it. Does nothing when the storage is not syncing.
+   */
+  stopSyncing: () => void;
 }
 
 export interface PersistentStorageParams<T extends object = any>
-  extends Omit<Options<T & Record<string, unknown>>, "migrations"> {
+  extends Omit<Options<T & Record<string, unknown>>, "defaults" | "migrations"> {
+  /**
+   * The model used when there is no stored one yet.
+   *
+   * Typed as the model itself rather than as conf's `T & Record<string,
+   * unknown>`, so that a model declared as an `interface`, which has no
+   * implicit index signature, is accepted. It is widened where it reaches conf.
+   */
+  readonly defaults?: Readonly<T>;
   readonly syncOptions?: {
     readonly fireImmediately?: boolean;
     equals?: IEqualsComparer<T>;
@@ -79,16 +97,27 @@ const createPersistentStorageInjectable = getInjectable({
     const sendMessageToChannel = di.inject(sendMessageToChannelInjectionToken);
 
     return <T extends object>(rawParams: PersistentStorageParams<T>) => {
-      const { fromStore, toJSON, syncOptions, migrations, cwd = directoryForUserData, ...params } = rawParams;
+      const { fromStore, toJSON, syncOptions, migrations, defaults, cwd = directoryForUserData, ...params } = rawParams;
       const displayName = kebabCase(params.configName).toUpperCase();
+      let stopCurrentSync: (() => void) | undefined;
+
+      const stopSyncing = () => {
+        stopCurrentSync?.();
+        stopCurrentSync = undefined;
+      };
 
       const loadAndStartSyncing = () => {
+        // A second sync on the same state would send back every change the
+        // first one receives, which the other process sends back again.
+        stopSyncing();
+
         logger.info(`[${displayName}]: LOADING ...`);
 
         const config = getConfigurationFileModel<T & Record<string, unknown>>({
           projectName: "lens",
           cwd,
           migrations: migrations as Options<T & Record<string, unknown>>["migrations"],
+          defaults: defaults as Options<T & Record<string, unknown>>["defaults"],
           ...params,
         }) as Config<T>;
 
@@ -103,6 +132,7 @@ const createPersistentStorageInjectable = getInjectable({
         logger.info(`[${displayName}]: LOADED from ${config.path}`);
 
         const syncDisposers = disposer();
+        let isStopped = false;
         const sendChannel: MessageChannel<T> = {
           id: `${ipcChannelPrefixes.remote}:${config.path}`,
         };
@@ -139,7 +169,9 @@ const createPersistentStorageInjectable = getInjectable({
 
                 if (shouldDisableSyncInListener) {
                   nextTick(() => {
-                    enableSync();
+                    if (!isStopped) {
+                      enableSync();
+                    }
                   });
                 }
               },
@@ -148,10 +180,16 @@ const createPersistentStorageInjectable = getInjectable({
         };
 
         enableSync();
+
+        stopCurrentSync = () => {
+          isStopped = true;
+          disableSync();
+        };
       };
 
       return {
         loadAndStartSyncing,
+        stopSyncing,
       };
     };
   },

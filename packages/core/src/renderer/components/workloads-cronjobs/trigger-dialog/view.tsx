@@ -10,7 +10,7 @@ import { jobApiInjectable } from "@freelensapp/kube-api-specifics";
 import { showCheckedErrorNotificationInjectable, showErrorNotificationInjectable } from "@freelensapp/notifications";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { makeObservable, observable } from "mobx";
+import { observable } from "mobx";
 import { observer } from "mobx-react";
 import { Component } from "react";
 import { Dialog } from "../../dialog";
@@ -40,11 +40,10 @@ interface Dependencies {
 
 @observer
 class NonInjectedCronJobTriggerDialog extends Component<CronJobTriggerDialogProps & Dependencies> {
-  @observable jobName = "";
+  @observable accessor jobName = "";
 
   constructor(props: CronJobTriggerDialogProps & Dependencies) {
     super(props);
-    makeObservable(this);
   }
 
   onOpen = () => {

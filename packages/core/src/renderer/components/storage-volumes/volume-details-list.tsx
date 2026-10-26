@@ -10,7 +10,7 @@ import { Spinner } from "@freelensapp/spinner";
 import { cssNames, prevDefault } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { kebabCase } from "es-toolkit";
-import { makeObservable, observable } from "mobx";
+import { observableRef } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import { DrawerTitle } from "../drawer/drawer-title";
@@ -47,7 +47,7 @@ class NonInjectedVolumeDetailsList extends React.Component<VolumeDetailsListProp
   // invoked from the Table row renderer (a derivation other than this component's
   // own render), so it reads props from this observable snapshot, refreshed on
   // every update, instead of this.props.
-  @observable.ref private observableProps: Readonly<VolumeDetailsListProps & Dependencies>;
+  @observableRef private accessor observableProps: Readonly<VolumeDetailsListProps & Dependencies>;
 
   private sortingCallbacks = {
     [sortBy.name]: (volume: PersistentVolume) => volume.getName(),
@@ -58,7 +58,6 @@ class NonInjectedVolumeDetailsList extends React.Component<VolumeDetailsListProp
   constructor(props: VolumeDetailsListProps & Dependencies) {
     super(props);
     this.observableProps = props;
-    makeObservable(this);
   }
 
   componentDidUpdate() {

@@ -3,6 +3,7 @@ import { registerFeature } from "@freelensapp/feature-core";
 import { createContainer, type DiContainer, type Injectable } from "@ogre-tools/injectable";
 import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
 import { runInAction } from "mobx";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { listeningOfChannelsInjectionToken } from "./features/actual/listening-of-channels/listening-of-channels.injectable";
 import {
   type EnlistMessageChannelListener,

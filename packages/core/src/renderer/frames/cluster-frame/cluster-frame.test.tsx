@@ -7,6 +7,7 @@
 import { DiContextProvider } from "@ogre-tools/injectable-react";
 import { render as testingLibraryRender } from "@testing-library/react";
 import { computed } from "mobx";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import { Cluster } from "../../../common/cluster/cluster";
 import { getClusterPageMenuOrderInjectable } from "../../../features/user-preferences/common/cluster-page-menu-order.injectable";

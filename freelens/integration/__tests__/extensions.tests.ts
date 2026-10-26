@@ -3,17 +3,49 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { execFile } from "node:child_process";
+import { existsSync } from "node:fs";
+import * as path from "node:path";
+import { fileURLToPath } from "node:url";
+import { promisify } from "node:util";
+import { afterEach, beforeAll, beforeEach, describe, expect, it } from "vitest";
 import * as utils from "../helpers/utils";
 
 import type { ElectronApplication, Page } from "playwright";
 
-// Temporarily disabled: the example extension used here has not been migrated
-// to v2 yet, so installing it does not work under the ESM-main packaged app.
-// Re-enable (drop `.skip`) once the extension is available for v2.
-describe.skip("extensions page tests", () => {
+/** The part of the main process's extension API global this test calls. */
+interface MainShellGlobal {
+  FreelensExtensionApi: {
+    Main: {
+      Shell: {
+        getKubectlPath(): Promise<string>;
+        getEnvironment(): Promise<Record<string, string>>;
+      };
+    };
+  };
+}
+
+// The in-repo contract fixture, installed as an unpacked directory: the
+// installer registers it in place, so what the application loads is exactly
+// what `pnpm build` wrote to its `dist/`. The test does not build it itself:
+// in CI, devDependencies such as turbo are gone by the time it runs.
+const fixtureExtensionDirectory = fileURLToPath(new URL("../../../packages/fixture-extension", import.meta.url));
+const fixtureExtensionName = "@freelensapp/fixture-extension";
+
+describe("extensions page tests", () => {
   let window: Page;
   let cleanup: undefined | (() => Promise<void>);
   let app: ElectronApplication;
+
+  beforeAll(() => {
+    for (const entryPoint of ["main.js", "renderer.js"]) {
+      if (!existsSync(path.join(fixtureExtensionDirectory, "dist", entryPoint))) {
+        throw new Error(
+          `${fixtureExtensionName} is not built (no dist/${entryPoint}): run \`pnpm build\` or \`pnpm build:fixture-extension\` from the repository root`,
+        );
+      }
+    }
+  });
 
   beforeEach(
     async () => {
@@ -30,20 +62,9 @@ describe.skip("extensions page tests", () => {
     10 * 60 * 1000,
   );
 
-  const extensionPath = process.env.EXTENSION_PATH;
-  const skipInstallExtensionTests = extensionPath === "skip";
-
-  const extensions =
-    extensionPath && !skipInstallExtensionTests
-      ? extensionPath.split(",").map((ext) => ext.trim())
-      : ["@freelensapp/example-extension@1.3.0"];
-
-  (skipInstallExtensionTests ? it.skip : it).each(extensions)(
-    "installs an extension %s",
-    async (extension) => {
-      // Navigate to extensions page
-      console.log("await app.evaluate");
-
+  it(
+    "installs the fixture extension and runs its renderer entry",
+    async () => {
       await app.evaluate(async ({ app }) => {
         await app.applicationMenu
           ?.getMenuItemById(process.platform === "darwin" ? "mac" : "file")
@@ -51,32 +72,47 @@ describe.skip("extensions page tests", () => {
           ?.click();
       });
 
-      // Trigger extension install
-      const textbox = window.getByPlaceholder("Name or file path or URL");
+      await window.getByPlaceholder("Name, URL, or path to a package or directory").fill(fixtureExtensionDirectory);
+      await window.getByRole("button", { name: "Install", exact: true }).click();
 
-      await textbox.fill(extension);
+      // A directory is registered in place, which the installer confirms first.
+      await window.click('[data-testid="confirmation-dialog"] [data-testid="confirm"]');
 
-      const install_button_selector = 'button[class*="Button install-module__button--"]';
+      const row = window.getByTestId("extensions-table").locator("tbody tr", { hasText: fixtureExtensionName });
 
-      await window.click(install_button_selector.concat("[data-waiting=false]"));
+      // The status column, which reads "Incompatible" if the gate refuses the
+      // fixture's `engines.freelens`.
+      await row.locator("td").nth(2).getByText("Enabled", { exact: true }).waitFor();
 
-      // Expect extension to be listed in installed list and enabled
-      const installedExtensionName = await (
-        await window.waitForSelector('div[class*="installed-extensions-module__extensionName--"]')
-      ).textContent();
-
-      expect(installedExtensionName).toBeTruthy();
-
-      const installedExtensionState = await (
-        await window.waitForSelector('div[class*="installed-extensions-module__enabled--"]')
-      ).textContent();
-
-      expect(installedExtensionState).toBe("Enabled");
-
-      await window.click('i[data-testid*="close-notification-for-notification_"]');
-
-      await window.click('div[class*="close-button-module__closeButton--"][aria-label="Close"]');
+      // Registered only through the fixture's `statusBarItems`, and rendered
+      // with its hooks, so it appears only if the renderer entry ran against the
+      // host's React.
+      await window.waitForSelector('[data-testid="fixture-status-bar-item"]', { timeout: 60_000 });
     },
-    100 * 60 * 1000,
+    10 * 60 * 1000,
+  );
+
+  // What `Main.Shell` hands a main-process extension in the packaged
+  // application, on each platform the integration tests run on. On Windows the
+  // environment Freelens starts from spells the variable `Path`, and the record
+  // must still carry it under the one key `PATH`.
+  it(
+    "hands main-process extensions an environment with one PATH key, which runs the host's kubectl",
+    async () => {
+      const { kubectlPath, env } = await app.evaluate(async () => {
+        const { Shell } = (globalThis as unknown as MainShellGlobal).FreelensExtensionApi.Main;
+
+        return { kubectlPath: await Shell.getKubectlPath(), env: await Shell.getEnvironment() };
+      });
+
+      expect(Object.keys(env).filter((key) => key.toUpperCase() === "PATH")).toEqual(["PATH"]);
+      // The bundled binaries directory, last, as the fallback.
+      expect(env.PATH.split(path.delimiter).at(-1)).toBe(path.dirname(kubectlPath));
+
+      const { stdout } = await promisify(execFile)(kubectlPath, ["version", "--client", "--output", "json"], { env });
+
+      expect(JSON.parse(stdout)).toHaveProperty("clientVersion.gitVersion");
+    },
+    10 * 60 * 1000,
   );
 });

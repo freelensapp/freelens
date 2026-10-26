@@ -47,7 +47,7 @@ const executeOnClusterHandlerInjectable = getInjectable({
       }
 
       if (!cluster.accessible.get()) {
-        logWarn(`[execute-api] Cluster not accessible (auth proxy not running): ${clusterId}`);
+        logWarn(`[execute-api] Cluster not accessible (freelens-k8s-proxy not running): ${clusterId}`);
         return {
           success: false,
           error: {

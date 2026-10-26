@@ -4,6 +4,7 @@
  */
 
 import { computed } from "mobx";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import directoryForTempInjectable from "../../common/app-paths/directory-for-temp/directory-for-temp.injectable";
 import directoryForUserDataInjectable from "../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import { Cluster } from "../../common/cluster/cluster";
@@ -16,10 +17,10 @@ import platformInjectable from "../../common/vars/platform.injectable";
 import computeShellEnvironmentInjectable from "../../features/shell-sync/main/compute-shell-environment.injectable";
 import userShellSettingInjectable from "../../features/user-preferences/common/shell-setting.injectable";
 import { buildVersionStateInjectable } from "../../features/vars/build-version/main/init.injectable";
+import freelensProxyPortInjectable from "../freelens-proxy/freelens-proxy-port.injectable";
 import { getDiForUnitTesting } from "../getDiForUnitTesting";
 import kubeconfigManagerInjectable from "../kubeconfig-manager/kubeconfig-manager.injectable";
 import createKubectlInjectable from "../kubectl/create-kubectl.injectable";
-import lensProxyPortInjectable from "../lens-proxy/lens-proxy-port.injectable";
 import openLocalShellSessionInjectable from "./local-shell-session/open.injectable";
 import shellSessionProcessesInjectable from "./processes.injectable";
 import spawnPtyInjectable from "./spawn-pty.injectable";
@@ -95,7 +96,7 @@ describe("the identity of a shell session's PTY", () => {
     di.override(statInjectable, () => () => {
       throw new Error("tried call stat without override");
     });
-    di.inject(lensProxyPortInjectable).set(1111);
+    di.inject(freelensProxyPortInjectable).set(1111);
 
     di.override(userShellSettingInjectable, () => computed(() => "/bin/bash"));
     di.override(computeShellEnvironmentInjectable, () => async () => ({
@@ -108,15 +109,19 @@ describe("the identity of a shell session's PTY", () => {
       () => () =>
         ({
           kubectlVersion: "1.33.4",
-          binDir: async () => "/some-kubectl-binary-dir",
-          getBundledPath: () => "/some-bundled-kubectl-path",
+          getPath: async () => "/some-kubectl-binary-dir/kubectl",
+          getVersionMatchedPath: () => "/some-kubectl-binary-dir/kubectl",
+          writeInitScripts: async () => "/some-kubectl-binary-dir",
         }) as Partial<Kubectl> as Kubectl,
     );
     di.override(
       kubeconfigManagerInjectable,
       () =>
         ({
-          ensurePath: async () => "/some-proxy-kubeconfig-file",
+          ensurePaths: async () => ({
+            kubeconfigPath: "/some-proxy-kubeconfig-file",
+            cacheDirectoryPath: "/some-proxy-kubeconfig-cache-directory",
+          }),
         }) as Partial<KubeconfigManager> as KubeconfigManager,
     );
 

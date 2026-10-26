@@ -8,6 +8,7 @@ import { noop } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed, runInAction } from "mobx";
 import React from "react";
+import { beforeEach, describe, expect, it } from "vitest";
 import { getApplicationBuilder } from "../../test-utils/get-application-builder";
 import sidebarNavigationCommandsInjectable from "./sidebar-navigation-commands.injectable";
 

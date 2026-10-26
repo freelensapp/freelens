@@ -1,5 +1,6 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react";
 import React from "react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import openConfirmDialogInjectable from "../../confirm-dialog/open.injectable";
 import createTerminalTabInjectable from "../../dock/terminal/create-terminal-tab.injectable";

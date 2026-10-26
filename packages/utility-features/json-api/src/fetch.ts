@@ -7,7 +7,7 @@
  * The request/response contract shared by both fetch implementations Freelens
  * runs.
  *
- * The two processes reach lens-proxy differently and cannot share one client:
+ * The two processes reach freelens-proxy differently and cannot share one client:
  *
  * - the **renderer** uses Chromium's `fetch`. Its frame is served from
  *   `https://<clusterId>.renderer.freelens.app:<port>`, which Chromium's
@@ -16,7 +16,7 @@
  *   right cluster by the `Host` header the browser sends on its own.
  * - the **main** process uses undici, because Node resolves no such hostname:
  *   it connects to 127.0.0.1 and has to carry the routing `Host` header
- *   itself, over a socket that trusts the lens-proxy certificate.
+ *   itself, over a socket that trusts the freelens-proxy certificate.
  *
  * Both are WHATWG `fetch`, but they are *not* the same class: Chromium's
  * `Response` and undici's are structurally compatible and nominally distinct.
@@ -66,8 +66,18 @@ export type FetchHeadersInit = [string, string][] | FetchRequestHeaders | Record
  */
 export type FetchBodyInit = string | Uint8Array | ArrayBuffer | ReadableStream<Uint8Array>;
 
+/**
+ * Request methods, upper case only.
+ *
+ * HTTP methods are case-sensitive, and `fetch` upper-cases only DELETE, GET,
+ * HEAD, OPTIONS, POST and PUT. Anything else goes out as written, so a
+ * lower-case `patch` reaches the Kubernetes API server verbatim and is refused
+ * with 405 Method Not Allowed.
+ */
+export type FetchMethod = "GET" | "HEAD" | "POST" | "PUT" | "PATCH" | "DELETE" | "OPTIONS";
+
 export interface FetchRequestInit {
-  method?: string;
+  method?: FetchMethod;
   headers?: FetchHeadersInit;
   body?: FetchBodyInit | null;
   signal?: AbortSignal | null;

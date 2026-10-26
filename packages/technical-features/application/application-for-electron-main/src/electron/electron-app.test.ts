@@ -1,6 +1,7 @@
 import { registerFeature } from "@freelensapp/feature-core";
 import { createContainer } from "@ogre-tools/injectable";
 import { app } from "electron";
+import { describe, expect, it } from "vitest";
 import { applicationFeatureForElectronMain } from "../feature";
 import electronAppInjectable from "./electron-app.injectable";
 

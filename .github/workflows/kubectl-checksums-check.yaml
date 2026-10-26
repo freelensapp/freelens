@@ -22,7 +22,7 @@ jobs:
   check:
     name: Check checksums.json
 
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
     # A pull request verifies only what it added, which is six artifacts per
     # minor that moved. A manual run re-verifies all of them, which is a few
     # gigabytes, hence the headroom.
@@ -80,9 +80,9 @@ jobs:
       # kubectl; yq flattens the pin table for the comparison below.
       - name: Set up mise
         if: steps.decide.outputs.needed == 'true'
-        uses: jdx/mise-action@v4
+        uses: jdx/mise-action@v5
         with:
-          version: 2026.8.0 # datasource=github-releases depName=jdx/mise
+          version: 2026.10.19 # datasource=github-releases depName=jdx/mise
           install_args: yq cosign
 
       - name: Setup pnpm

@@ -8,7 +8,7 @@ import { JsonApi } from "@freelensapp/json-api";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
 import fetchInjectable from "../fetch/fetch.injectable";
-import { lensProxyDispatcherInjectionToken } from "../fetch/lens-proxy-dispatcher-injection-token";
+import { freelensProxyDispatcherInjectionToken } from "../fetch/freelens-proxy-dispatcher-injection-token";
 
 import type {
   FetchRequestInit,
@@ -32,12 +32,12 @@ const createJsonApiInjectable = getInjectable({
       fetch: di.inject(fetchInjectable),
       logger: di.inject(loggerInjectionToken),
     };
-    const lensProxyDispatcher = di.inject(lensProxyDispatcherInjectionToken);
+    const freelensProxyDispatcher = di.inject(freelensProxyDispatcherInjectionToken);
 
     return (config, reqInit) => {
       if (!config.getRequestOptions) {
         config.getRequestOptions = async (): Promise<MainFetchRequestInit> => {
-          const dispatcher = lensProxyDispatcher();
+          const dispatcher = freelensProxyDispatcher();
 
           return dispatcher ? { dispatcher } : {};
         };

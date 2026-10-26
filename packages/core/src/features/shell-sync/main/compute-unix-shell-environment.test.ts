@@ -7,6 +7,8 @@
 import EventEmitter from "node:events";
 import { flushPromises } from "@freelensapp/test-utils";
 import MemoryStream from "memorystream";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import killProcessGroupInjectable from "../../../main/child-process/kill-process-group.injectable";
 import spawnInjectable from "../../../main/child-process/spawn.injectable";
 import randomUUIDInjectable from "../../../main/crypto/random-uuid.injectable";
 import { getDiForUnitTesting } from "../../../main/getDiForUnitTesting";
@@ -18,23 +20,36 @@ import type { ChildProcessWithoutNullStreams } from "node:child_process";
 import type { DiContainer } from "@ogre-tools/injectable";
 import type { MockedFunction } from "vitest";
 
+import type { KillProcessGroup } from "../../../main/child-process/kill-process-group.injectable";
 import type { Spawn } from "../../../main/child-process/spawn.injectable";
 import type { ComputeUnixShellEnvironment } from "./compute-unix-shell-environment.injectable";
 
 const expectedEnv = {
   SOME_ENV_VAR: "some-env-value",
-  ELECTRON_RUN_AS_NODE: "1",
-  ELECTRON_NO_ATTACH_CONSOLE: "1",
   TERM: "screen-256color-bce",
   SOME_THIRD_NON_UNDEFINED_VALUE: "",
   ITERM_SHELL_INTEGRATION_INSTALLED: "1",
   VSCODE_SHELL_INTEGRATION: "1",
 };
 
+const expectedPowerShellEnv = {
+  ...expectedEnv,
+  ELECTRON_RUN_AS_NODE: "1",
+  ELECTRON_NO_ATTACH_CONSOLE: "1",
+};
+
+const command = "printf '%s' deadfoobarfoobeef; /usr/bin/env -0; printf '%s' deadfoobarfoobeef";
+
+const toEnvOutput = (env: Record<string, string>) =>
+  Object.entries(env)
+    .map(([name, value]) => `${name}=${value}\0`)
+    .join("");
+
 describe("computeUnixShellEnvironment technical tests", () => {
   let di: DiContainer;
   let computeUnixShellEnvironment: ComputeUnixShellEnvironment;
   let spawnMock: MockedFunction<Spawn>;
+  let killProcessGroupMock: MockedFunction<KillProcessGroup>;
   let shellProcessFake: ChildProcessWithoutNullStreams;
   let stdinValue: string;
   let shellStdin: MemoryStream;
@@ -71,10 +86,13 @@ describe("computeUnixShellEnvironment technical tests", () => {
         signalCode: null,
         spawnargs,
         spawnfile,
+        pid: 12345,
         [Symbol.dispose]: vi.fn(),
       }));
     });
     di.override(spawnInjectable, () => spawnMock);
+    killProcessGroupMock = vi.fn();
+    di.override(killProcessGroupInjectable, () => killProcessGroupMock);
     di.override(randomUUIDInjectable, () => () => "dead-foo-bar-foo-beef");
 
     di.override(processEnvInjectable, () => ({
@@ -108,9 +126,7 @@ describe("computeUnixShellEnvironment technical tests", () => {
     });
 
     it("should send the command via stdin", () => {
-      expect(stdinValue).toBe(
-        `'/some/process/exec/path' -e 'process.stdout.write("deadfoobarfoobeef" + JSON.stringify(process.env) + "deadfoobarfoobeef")'`,
-      );
+      expect(stdinValue).toBe(command);
     });
 
     it("should close stdin", () => {
@@ -176,7 +192,7 @@ describe("computeUnixShellEnvironment technical tests", () => {
         shellStdout.emit(
           "data",
           Buffer.from(
-            `some-other-datadeadfoobarfoobeef${JSON.stringify(fakeInnerEnv)}deadfoobarfoobeefsome-third-other-data`,
+            `some-other-datadeadfoobarfoobeef${toEnvOutput(fakeInnerEnv)}deadfoobarfoobeefsome-third-other-data`,
           ),
         );
       });
@@ -212,123 +228,7 @@ describe("computeUnixShellEnvironment technical tests", () => {
     it("should spawn a process with the correct arguments", () => {
       expect(spawnMock).toBeCalledWith(
         shellPath,
-        ["-l", "-i"],
-        expect.objectContaining({
-          env: expectedEnv,
-        }),
-      );
-    });
-
-    it("should send the command via stdin", () => {
-      expect(stdinValue).toBe(
-        ` '/some/process/exec/path' -e 'process.stdout.write("deadfoobarfoobeef" + JSON.stringify(process.env) + "deadfoobarfoobeef")'`,
-      );
-    });
-
-    it("should close stdin", () => {
-      expect(shellStdin.readableEnded).toBe(true);
-    });
-
-    describe("when process errors", () => {
-      beforeEach(() => {
-        shellProcessFake.emit("error", new Error("some-error"));
-      });
-
-      it("should resolve with a failed call", async () => {
-        await expect(unixShellEnv).resolves.toEqual({
-          callWasSuccessful: false,
-          error: `Failed to spawn ${shellPath}: ${JSON.stringify(
-            {
-              error: "Error: some-error",
-              stdout: "",
-              stderr: "",
-            },
-            null,
-            4,
-          )}`,
-        });
-      });
-    });
-
-    describe("when process exits with non-zero exit code", () => {
-      beforeEach(() => {
-        shellProcessFake.emit("close", 1, null);
-      });
-
-      it("should resolve with a failed call", async () => {
-        await expect(unixShellEnv).resolves.toEqual({
-          callWasSuccessful: false,
-          error:
-            'Shell did not exit successfully: {\n    "code": 1,\n    "signal": null,\n    "stdout": "",\n    "stderr": ""\n}',
-        });
-      });
-    });
-
-    describe("when process exits with a signal", () => {
-      beforeEach(() => {
-        shellProcessFake.emit("close", 0, "SIGKILL");
-      });
-
-      it("should resolve with a failed call", async () => {
-        await expect(unixShellEnv).resolves.toEqual({
-          callWasSuccessful: false,
-          error:
-            'Shell did not exit successfully: {\n    "code": 0,\n    "signal": "SIGKILL",\n    "stdout": "",\n    "stderr": ""\n}',
-        });
-      });
-    });
-
-    describe("when process stdout emits some data", () => {
-      beforeEach(() => {
-        const fakeInnerEnv = {
-          PATH: "/bin",
-          ...expectedEnv,
-        };
-
-        shellStdout.emit(
-          "data",
-          Buffer.from(
-            `some-other-datadeadfoobarfoobeef${JSON.stringify(fakeInnerEnv)}deadfoobarfoobeefsome-third-other-data`,
-          ),
-        );
-      });
-
-      describe("when process successfully exits", () => {
-        beforeEach(() => {
-          shellProcessFake.emit("close", 0);
-        });
-
-        it("should resolve the env", async () => {
-          await expect(unixShellEnv).resolves.toEqual({
-            callWasSuccessful: true,
-            response: {
-              PATH: "/bin",
-              SOME_ENV_VAR: "some-env-value",
-              TERM: "some-other-value",
-              SOME_THIRD_NON_UNDEFINED_VALUE: "",
-            },
-          });
-        });
-      });
-    });
-  });
-
-  describe.each(["/usr/local/bin/fish"])("when shell is %s", (shellPath) => {
-    beforeEach(async () => {
-      const controller = new AbortController();
-
-      unixShellEnv = computeUnixShellEnvironment(shellPath, { signal: controller.signal });
-      await flushPromises();
-    });
-
-    it("should spawn a process with the correct arguments", () => {
-      expect(spawnMock).toBeCalledWith(
-        shellPath,
-        [
-          "-l",
-          "-c",
-          `'/some/process/exec/path' -e 'process.stdout.write("deadfoobarfoobeef" + JSON.stringify(process.env) + "deadfoobarfoobeef")'`,
-        ],
+        ["-l", "-i", "-c", command],
         expect.objectContaining({
           env: expectedEnv,
         }),
@@ -402,7 +302,7 @@ describe("computeUnixShellEnvironment technical tests", () => {
         shellStdout.emit(
           "data",
           Buffer.from(
-            `some-other-datadeadfoobarfoobeef${JSON.stringify(fakeInnerEnv)}deadfoobarfoobeefsome-third-other-data`,
+            `some-other-datadeadfoobarfoobeef${toEnvOutput(fakeInnerEnv)}deadfoobarfoobeefsome-third-other-data`,
           ),
         );
       });
@@ -427,6 +327,240 @@ describe("computeUnixShellEnvironment technical tests", () => {
     });
   });
 
+  describe.each(["/usr/local/bin/fish"])("when shell is %s", (shellPath) => {
+    beforeEach(async () => {
+      const controller = new AbortController();
+
+      unixShellEnv = computeUnixShellEnvironment(shellPath, { signal: controller.signal });
+      await flushPromises();
+    });
+
+    it("should spawn a process with the correct arguments", () => {
+      expect(spawnMock).toBeCalledWith(
+        shellPath,
+        ["-l", "-c", command],
+        expect.objectContaining({
+          env: expectedEnv,
+        }),
+      );
+    });
+
+    it("should not send anything via stdin", () => {
+      expect(stdinValue).toBe("");
+    });
+
+    it("should close stdin", () => {
+      expect(shellStdin.readableEnded).toBe(true);
+    });
+
+    describe("when process errors", () => {
+      beforeEach(() => {
+        shellProcessFake.emit("error", new Error("some-error"));
+      });
+
+      it("should resolve with a failed call", async () => {
+        await expect(unixShellEnv).resolves.toEqual({
+          callWasSuccessful: false,
+          error: `Failed to spawn ${shellPath}: ${JSON.stringify(
+            {
+              error: "Error: some-error",
+              stdout: "",
+              stderr: "",
+            },
+            null,
+            4,
+          )}`,
+        });
+      });
+    });
+
+    describe("when process exits with non-zero exit code", () => {
+      beforeEach(() => {
+        shellProcessFake.emit("close", 1, null);
+      });
+
+      it("should resolve with a failed call", async () => {
+        await expect(unixShellEnv).resolves.toEqual({
+          callWasSuccessful: false,
+          error:
+            'Shell did not exit successfully: {\n    "code": 1,\n    "signal": null,\n    "stdout": "",\n    "stderr": ""\n}',
+        });
+      });
+    });
+
+    describe("when process exits with a signal", () => {
+      beforeEach(() => {
+        shellProcessFake.emit("close", 0, "SIGKILL");
+      });
+
+      it("should resolve with a failed call", async () => {
+        await expect(unixShellEnv).resolves.toEqual({
+          callWasSuccessful: false,
+          error:
+            'Shell did not exit successfully: {\n    "code": 0,\n    "signal": "SIGKILL",\n    "stdout": "",\n    "stderr": ""\n}',
+        });
+      });
+    });
+
+    describe("when process stdout emits some data", () => {
+      beforeEach(() => {
+        const fakeInnerEnv = {
+          PATH: "/bin",
+          ...expectedEnv,
+        };
+
+        shellStdout.emit(
+          "data",
+          Buffer.from(
+            `some-other-datadeadfoobarfoobeef${toEnvOutput(fakeInnerEnv)}deadfoobarfoobeefsome-third-other-data`,
+          ),
+        );
+      });
+
+      describe("when process successfully exits", () => {
+        beforeEach(() => {
+          shellProcessFake.emit("close", 0);
+        });
+
+        it("should resolve the env", async () => {
+          await expect(unixShellEnv).resolves.toEqual({
+            callWasSuccessful: true,
+            response: {
+              PATH: "/bin",
+              SOME_ENV_VAR: "some-env-value",
+              TERM: "some-other-value",
+              SOME_THIRD_NON_UNDEFINED_VALUE: "",
+            },
+          });
+        });
+      });
+    });
+  });
+
+  describe.each(["/bin/csh", "/bin/zsh", "/usr/local/bin/fish", "/usr/local/bin/pwsh"])(
+    "when shell %s is aborted",
+    (shellPath) => {
+      const timeoutError = `timeout: ${JSON.stringify({ stdout: "", stderr: "" }, null, 4)}`;
+      let controller: AbortController;
+
+      beforeEach(async () => {
+        controller = new AbortController();
+
+        unixShellEnv = computeUnixShellEnvironment(shellPath, { signal: controller.signal });
+        await flushPromises();
+      });
+
+      it("should spawn the shell detached and without a signal", () => {
+        expect(spawnMock).toBeCalledWith(shellPath, expect.any(Array), expect.objectContaining({ detached: true }));
+        expect(spawnMock.mock.calls[0][2]).not.toHaveProperty("signal");
+      });
+
+      describe("when the signal is aborted", () => {
+        beforeEach(() => {
+          controller.abort();
+        });
+
+        it("should resolve with a timeout", async () => {
+          await expect(unixShellEnv).resolves.toEqual({
+            callWasSuccessful: false,
+            error: timeoutError,
+          });
+        });
+
+        it("should kill the process group of the shell", () => {
+          expect(killProcessGroupMock).toHaveBeenCalledExactlyOnceWith(12345);
+        });
+
+        describe("when the killed process closes", () => {
+          beforeEach(() => {
+            shellProcessFake.emit("close", null, "SIGKILL");
+          });
+
+          it("should still resolve with a timeout", async () => {
+            await expect(unixShellEnv).resolves.toEqual({
+              callWasSuccessful: false,
+              error: timeoutError,
+            });
+          });
+        });
+      });
+
+      describe("when the process closes and then the signal is aborted", () => {
+        beforeEach(() => {
+          shellProcessFake.emit("close", 1, null);
+          controller.abort();
+        });
+
+        it("should not kill anything", () => {
+          expect(killProcessGroupMock).not.toHaveBeenCalled();
+        });
+
+        it("should resolve with the result of the close", async () => {
+          await expect(unixShellEnv).resolves.toEqual({
+            callWasSuccessful: false,
+            error:
+              'Shell did not exit successfully: {\n    "code": 1,\n    "signal": null,\n    "stdout": "",\n    "stderr": ""\n}',
+          });
+        });
+      });
+
+      describe("when the process fails to spawn and then the signal is aborted", () => {
+        beforeEach(() => {
+          shellProcessFake.emit("error", new Error("some-error"));
+          controller.abort();
+        });
+
+        it("should not kill anything", () => {
+          expect(killProcessGroupMock).not.toHaveBeenCalled();
+        });
+      });
+    },
+  );
+
+  describe("when the signal is already aborted", () => {
+    beforeEach(async () => {
+      unixShellEnv = computeUnixShellEnvironment("/bin/zsh", { signal: AbortSignal.abort() });
+      await flushPromises();
+    });
+
+    it("should resolve with a timeout", async () => {
+      await expect(unixShellEnv).resolves.toEqual({
+        callWasSuccessful: false,
+        error: `timeout: ${JSON.stringify({ stdout: "", stderr: "" }, null, 4)}`,
+      });
+    });
+
+    it("should kill the process group of the shell", () => {
+      expect(killProcessGroupMock).toHaveBeenCalledExactlyOnceWith(12345);
+    });
+
+    it("should not send the command", () => {
+      expect(stdinValue).toBe("");
+    });
+  });
+
+  describe("when the shell has no pid and the signal is aborted", () => {
+    beforeEach(async () => {
+      const controller = new AbortController();
+
+      unixShellEnv = computeUnixShellEnvironment("/bin/zsh", { signal: controller.signal });
+      await flushPromises();
+      Object.assign(shellProcessFake, { pid: undefined });
+      controller.abort();
+    });
+
+    it("should resolve with a timeout", async () => {
+      await expect(unixShellEnv).resolves.toEqual({
+        callWasSuccessful: false,
+        error: `timeout: ${JSON.stringify({ stdout: "", stderr: "" }, null, 4)}`,
+      });
+    });
+
+    it("should not kill anything", () => {
+      expect(killProcessGroupMock).not.toHaveBeenCalled();
+    });
+  });
+
   describe.each(["/usr/local/bin/pwsh", "/usr/local/bin/pwsh-preview"])("when shell is %s", (shellPath) => {
     beforeEach(async () => {
       const controller = new AbortController();
@@ -440,7 +574,7 @@ describe("computeUnixShellEnvironment technical tests", () => {
         shellPath,
         ["-Login"],
         expect.objectContaining({
-          env: expectedEnv,
+          env: expectedPowerShellEnv,
         }),
       );
     });
@@ -508,7 +642,7 @@ describe("computeUnixShellEnvironment technical tests", () => {
       beforeEach(() => {
         const fakeInnerEnv = {
           PATH: "/bin",
-          ...expectedEnv,
+          ...expectedPowerShellEnv,
         };
 
         shellStdout.emit(
@@ -535,6 +669,111 @@ describe("computeUnixShellEnvironment technical tests", () => {
             },
           });
         });
+      });
+    });
+  });
+
+  describe.each(["/bin/bash", "/bin/sh", "/bin/zsh", "/usr/local/bin/fish", "/bin/csh", "/bin/tcsh"])(
+    "when shell %s is spawned",
+    (shellPath) => {
+      beforeEach(async () => {
+        unixShellEnv = computeUnixShellEnvironment(shellPath, { signal: new AbortController().signal });
+        await flushPromises();
+      });
+
+      it("should not run the Electron binary as Node", () => {
+        const { env } = spawnMock.mock.calls[0][2] as { env: Record<string, string> };
+
+        expect(env).not.toHaveProperty("ELECTRON_RUN_AS_NODE");
+        expect(env).not.toHaveProperty("ELECTRON_NO_ATTACH_CONSOLE");
+      });
+    },
+  );
+
+  describe.each(["/usr/local/bin/pwsh", "/usr/local/bin/pwsh-preview"])("when shell %s is spawned", (shellPath) => {
+    beforeEach(async () => {
+      unixShellEnv = computeUnixShellEnvironment(shellPath, { signal: new AbortController().signal });
+      await flushPromises();
+    });
+
+    it("should run the Electron binary as Node", () => {
+      const { env } = spawnMock.mock.calls[0][2] as { env: Record<string, string> };
+
+      expect(env).toHaveProperty("ELECTRON_RUN_AS_NODE", "1");
+      expect(env).toHaveProperty("ELECTRON_NO_ATTACH_CONSOLE", "1");
+    });
+  });
+
+  describe.each(["/bin/zsh", "/usr/local/bin/fish", "/bin/tcsh"])("when parsing the output of %s", (shellPath) => {
+    beforeEach(async () => {
+      unixShellEnv = computeUnixShellEnvironment(shellPath, { signal: new AbortController().signal });
+      await flushPromises();
+    });
+
+    const emitAndClose = (output: string) => {
+      shellStdout.emit("data", Buffer.from(output));
+      shellProcessFake.emit("close", 0);
+    };
+
+    it("should keep multi-line values and values containing =", async () => {
+      emitAndClose(`deadfoobarfoobeefPATH=/bin\0MULTI=a\nb=c\0WITH_EQUALS=key=value==\0EMPTY=\0deadfoobarfoobeef`);
+
+      await expect(unixShellEnv).resolves.toEqual({
+        callWasSuccessful: true,
+        response: {
+          PATH: "/bin",
+          MULTI: "a\nb=c",
+          WITH_EQUALS: "key=value==",
+          EMPTY: "",
+          TERM: "some-other-value",
+        },
+      });
+    });
+
+    it("should keep an exported bash function", async () => {
+      emitAndClose(`deadfoobarfoobeefPATH=/bin\0BASH_FUNC_greet%%=() {  echo "a=b"\n}\0deadfoobarfoobeef`);
+
+      await expect(unixShellEnv).resolves.toMatchObject({
+        callWasSuccessful: true,
+        response: {
+          PATH: "/bin",
+          "BASH_FUNC_greet%%": '() {  echo "a=b"\n}',
+        },
+      });
+    });
+
+    it("should ignore rc-file noise before and after the markers", async () => {
+      emitAndClose(
+        `Last login: today\nwelcome=back\0\ndeadfoobarfoobeefPATH=/bin\0deadfoobarfoobeef\nlogout\nbye=now\0`,
+      );
+
+      await expect(unixShellEnv).resolves.toEqual({
+        callWasSuccessful: true,
+        response: {
+          PATH: "/bin",
+          TERM: "some-other-value",
+        },
+      });
+    });
+
+    it("should skip records without =", async () => {
+      emitAndClose(`deadfoobarfoobeefPATH=/bin\0NO_SEPARATOR\0\0deadfoobarfoobeef`);
+
+      await expect(unixShellEnv).resolves.toEqual({
+        callWasSuccessful: true,
+        response: {
+          PATH: "/bin",
+          TERM: "some-other-value",
+        },
+      });
+    });
+
+    it("should fail when the markers are missing", async () => {
+      emitAndClose("PATH=/bin\0");
+
+      await expect(unixShellEnv).resolves.toEqual({
+        callWasSuccessful: false,
+        error: "Something has blocked the shell from producing the environment variables",
       });
     });
   });

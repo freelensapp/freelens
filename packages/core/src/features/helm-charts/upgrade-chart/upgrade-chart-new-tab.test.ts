@@ -6,6 +6,7 @@
 
 import { asyncFn } from "@freelensapp/test-utils";
 import { act, fireEvent } from "@testing-library/react";
+import { beforeEach, describe, expect, it } from "vitest";
 import { anyObject } from "vitest-mock-extended";
 import navigateToHelmReleasesInjectable from "../../../common/front-end-routing/routes/cluster/helm/releases/navigate-to-helm-releases.injectable";
 import { HelmChart } from "../../../common/k8s-api/endpoints/helm-charts.api";

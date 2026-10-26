@@ -9,6 +9,22 @@
   @apply mt-1;
 }
 
+/* How the installed build got here. A managed copy is coloured by whether
+   its checksum was verified; a development install has no checksum to verify,
+   which is the point of it, so it keeps the dimmed default. */
+.extensionProvenance {
+  @apply mt-1 text-xs;
+  color: var(--textColorDimmed);
+}
+
+.verified {
+  color: var(--colorOk);
+}
+
+.unverified {
+  color: var(--golden);
+}
+
 .enabled {
   color: var(--colorOk);
 }

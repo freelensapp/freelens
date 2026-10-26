@@ -4,6 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { loggerInjectionToken } from "@freelensapp/logger";
 import { disposer } from "@freelensapp/utilities";
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import { reaction, runInAction } from "mobx";
@@ -17,6 +18,20 @@ export interface Extension {
   deregister: () => void;
 }
 
+// An extension's own view of the host's DI container: injecting this creates
+// the view, and `deregister()` releases it.
+//
+// Injecting it is separate from `register()` on purpose, and the loader does it
+// before it runs the author's `onActivate` (#2450). That is the lifecycle
+// invariant the extension API promises: *the container exists before the
+// author's first hook and is released after their last.* Only the population of
+// the view -- calling the host's registrators, below -- has to follow
+// activation, because activation can register catalog categories those
+// registrators need to see.
+//
+// The registrators are therefore injected inside `register()` rather than in
+// `instantiate`: creating the view earlier must not make anything else happen
+// earlier with it.
 const extensionInjectable = getInjectable({
   id: "extension",
 
@@ -25,25 +40,37 @@ const extensionInjectable = getInjectable({
       id: `extension-${instance.sanitizedExtensionId}`,
 
       instantiate: (childDi) => {
-        const extensionRegistrators = childDi.injectMany(extensionRegistratorInjectionToken);
         const reactionDisposer = disposer();
-        const injectableDifferencingRegistrator = injectableDifferencingRegistratorWith(childDi);
 
         return {
           register: () => {
-            for (const extensionRegistrator of extensionRegistrators) {
-              const injectables = extensionRegistrator(instance);
+            const logger = childDi.inject(loggerInjectionToken);
+            const extensionRegistrators = childDi.injectManyWithMeta(extensionRegistratorInjectionToken);
 
-              if (Array.isArray(injectables)) {
-                runInAction(() => {
-                  injectableDifferencingRegistrator(injectables);
-                });
-              } else {
-                reactionDisposer.push(
-                  reaction(() => injectables.get(), injectableDifferencingRegistrator, {
-                    fireImmediately: true,
-                  }),
-                );
+            for (const { instance: extensionRegistrator, meta } of extensionRegistrators) {
+              // A registrator that throws on a malformed field costs that field
+              // alone: the loader registers every extension in one loop, so an
+              // uncaught error would also cost the registrators after it and
+              // every extension after this one.
+              try {
+                const injectables = extensionRegistrator(instance);
+                // One per registrator: it deregisters what it registered and the
+                // registrator no longer lists.
+                const injectableDifferencingRegistrator = injectableDifferencingRegistratorWith(childDi);
+
+                if (Array.isArray(injectables)) {
+                  runInAction(() => {
+                    injectableDifferencingRegistrator(injectables);
+                  });
+                } else {
+                  reactionDisposer.push(
+                    reaction(() => injectables.get(), injectableDifferencingRegistrator, {
+                      fireImmediately: true,
+                    }),
+                  );
+                }
+              } catch (error) {
+                logger.error(`[EXTENSIONS]: ${instance.name}: registrator "${meta.id}" failed and is skipped`, error);
               }
             }
           },

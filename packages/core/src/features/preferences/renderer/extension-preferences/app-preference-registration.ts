@@ -6,9 +6,14 @@
 
 import type React from "react";
 
+/**
+ * Both are rendered without props. One that needs something, such as the
+ * extension instance, gets it from the registration:
+ * `Input: () => <MyInput extension={this} />`.
+ */
 export interface AppPreferenceComponents {
-  Hint: React.ComponentType<any>;
-  Input: React.ComponentType<any>;
+  Hint: React.ComponentType;
+  Input: React.ComponentType;
 }
 
 export interface AppPreferenceRegistration {

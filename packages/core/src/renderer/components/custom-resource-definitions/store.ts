@@ -5,12 +5,13 @@
  */
 
 import autoBind from "auto-bind";
-import { computed, makeObservable } from "mobx";
+import { computed } from "mobx";
 import { KubeObjectStore } from "../../../common/k8s-api/kube-object.store";
 
 import type { CustomResourceDefinitionApi } from "@freelensapp/kube-api";
 import type { CustomResourceDefinition, KubeObject } from "@freelensapp/kube-object";
 
+import type { ItemSorting } from "../../../common/item.store";
 import type { KubeObjectStoreDependencies, KubeObjectStoreOptions } from "../../../common/k8s-api/kube-object.store";
 
 export class CustomResourceDefinitionStore extends KubeObjectStore<
@@ -23,13 +24,12 @@ export class CustomResourceDefinitionStore extends KubeObjectStore<
     opts?: KubeObjectStoreOptions,
   ) {
     super(dependencies, api, opts);
-    makeObservable(this);
     autoBind(this);
   }
 
-  protected sortItems(items: CustomResourceDefinition[]) {
-    return super.sortItems(items, [(crd) => crd.getGroup(), (crd) => crd.getName()]);
-  }
+  protected readonly sorting: ItemSorting<CustomResourceDefinition> = {
+    by: [(crd) => crd.getGroup(), (crd) => crd.getName()],
+  };
 
   @computed get groups() {
     const groups: Record<string, CustomResourceDefinition[]> = {};
@@ -48,8 +48,12 @@ export class CustomResourceDefinitionStore extends KubeObjectStore<
   getByObject(obj: KubeObject) {
     const { kind, apiVersion } = obj;
 
-    return this.items.find(
-      (crd) => kind === crd.getResourceKind() && apiVersion === `${crd.getGroup()}/${crd.getVersion()}`,
-    );
+    const isVersionOf = (crd: CustomResourceDefinition) => {
+      const versions = [crd.getVersion(), ...crd.getServedVersions().map((version) => version.name)];
+
+      return versions.some((version) => apiVersion === `${crd.getGroup()}/${version}`);
+    };
+
+    return this.items.find((crd) => kind === crd.getResourceKind() && isVersionOf(crd));
   }
 }

@@ -13,7 +13,7 @@ import { loggerInjectionToken } from "@freelensapp/logger";
 import { showCheckedErrorNotificationInjectable, showSuccessNotificationInjectable } from "@freelensapp/notifications";
 import { base64, toggle } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { autorun, makeObservable, observable } from "mobx";
+import { autorun, observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import { DrawerItem, DrawerTitle } from "../drawer";
@@ -38,13 +38,12 @@ interface Dependencies {
 @observer
 class NonInjectedSecretDetails extends React.Component<SecretDetailsProps & Dependencies> {
   private readonly disposers: (() => void)[] = [];
-  @observable isSaving = false;
-  @observable data: Partial<Record<string, string>> = {};
-  @observable revealSecret = observable.set<string>();
+  @observable accessor isSaving = false;
+  @observable accessor data: Partial<Record<string, string>> = {};
+  @observable accessor revealSecret = observable.set<string>();
 
   constructor(props: SecretDetailsProps & Dependencies) {
     super(props);
-    makeObservable(this);
   }
 
   componentDidMount() {

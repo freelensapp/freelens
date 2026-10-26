@@ -24,7 +24,7 @@ jobs:
         # denominator is derived from strategy.job-total to stay in sync.
         shard: [1, 2, 3, 4]
 
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
     timeout-minutes: 60
 
     env:
@@ -39,9 +39,9 @@ jobs:
       # yq comes from mise so that its version has a single source (mise.toml)
       # and the download is verified against mise.lock.
       - name: Set up mise
-        uses: jdx/mise-action@v4
+        uses: jdx/mise-action@v5
         with:
-          version: 2026.8.0 # datasource=github-releases depName=jdx/mise
+          version: 2026.10.19 # datasource=github-releases depName=jdx/mise
           install_args: yq
 
       - name: Setup node
@@ -63,27 +63,43 @@ jobs:
         uses: actions/cache@v6
         with:
           path: ${{ env.pnpm_cache_dir }}
-          key: ubuntu-24.04-arm-arm64-node-${{ hashFiles('pnpm-lock.yaml') }}
+          key: ubuntu-26.04-arm-arm64-node-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: |
-            ubuntu-24.04-arm-arm64-node-
+            ubuntu-26.04-arm-arm64-node-
 
       - name: Use Turborepo cache
         uses: actions/cache@v6
         with:
           path: ${{ env.TURBOREPO_CACHE }}
-          key: ubuntu-24.04-arm-arm64-turborepo-${{ hashFiles('package.json', 'freelens/package.json', 'packages/**/package.json', 'pnpm-lock.yaml','turbo.json','tsconfig*.json','packages/infrastructure/typescript/config/*.json') }}
+          key: ubuntu-26.04-arm-arm64-turborepo-${{ hashFiles('package.json', 'freelens/package.json', 'packages/**/package.json', 'pnpm-lock.yaml','turbo.json','tsconfig*.json','packages/infrastructure/typescript/config/*.json') }}
           restore-keys: |
-            ubuntu-24.04-arm-arm64-turborepo-
+            ubuntu-26.04-arm-arm64-turborepo-
+
+      # Turborepo does not cache the binaries, see "Bundled Binary Versions"
+      # in AGENTS.md. Saved right after the build.
+      - name: Restore bundled binaries cache
+        id: binaries-cache-restore
+        uses: actions/cache/restore@v6
+        with:
+          path: freelens/binaries
+          key: ${{ runner.os }}-${{ runner.arch }}-binaries-${{ hashFiles('freelens/binaries.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ runner.arch }}-binaries-
 
       - name: Get Electron version
         shell: bash
-        run: echo "electron_version=$(yq -py -oy -r .importers.freelens.devDependencies.electron.version pnpm-lock.yaml | sed 's/(.*)//')" | tee -a ${GITHUB_ENV}
+        # pnpm-lock.yaml holds several YAML documents (pnpm 12 puts packageManagerDependencies
+        # in a document of its own), so evaluate them all and take the one that has the importer.
+        # The version carries a peer suffix, e.g. 1.2.3(supports-color@8.1.1), which split drops.
+        run: |
+          electron_version=$(yq ea -r '[.importers.freelens.devDependencies.electron.version | select(. != null)] | .[0] // error("electron not found in pnpm-lock.yaml") | split("(") | .[0]' pnpm-lock.yaml)
+          echo "electron_version=${electron_version}" | tee -a "${GITHUB_ENV}"
 
       - name: Use Electron cache
         uses: actions/cache@v6
         with:
           path: ${{ env.ELECTRON_CACHE }}
-          key: ubuntu-24.04-arm-arm64-electron-${{ env.electron_version }}
+          key: ubuntu-26.04-arm-arm64-electron-${{ env.electron_version }}
 
       - name: Install pnpm dependencies
         id: install-pnpm
@@ -110,6 +126,13 @@ jobs:
 
       - name: Build packages
         run: pnpm --color=always --stream build
+
+      - name: Save bundled binaries cache
+        if: steps.binaries-cache-restore.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v6
+        with:
+          path: freelens/binaries
+          key: ${{ steps.binaries-cache-restore.outputs.cache-primary-key }}
 
       # All package projects are sharded together through the root Vitest
       # config, which declares every package as a project. Vitest splits the

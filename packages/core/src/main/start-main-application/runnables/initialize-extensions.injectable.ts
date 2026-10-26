@@ -41,6 +41,12 @@ const initializeExtensionsInjectable = getInjectable({
           })
           .on("remove", (lensExtensionId) => {
             extensionLoader.removeExtension(lensExtensionId);
+          })
+          // A development extension was rebuilt under us. Its path did not
+          // change, so this is neither a remove nor an add: the same extension
+          // has to be torn down and imported again, in both processes.
+          .on("rebuild", (extension) => {
+            void extensionLoader.reloadDevelopmentExtension(extension.id);
           });
 
         extensionLoader.initExtensions(extensions);

@@ -144,7 +144,7 @@ export interface AwaitWriteFinishOptions {
 }
 
 export type Watch = <AlwaysStat extends boolean = false>(
-  path: string,
+  path: SingleOrMany<string>,
   options?: WatcherOptions<AlwaysStat>,
 ) => Watcher<AlwaysStat>;
 

@@ -7,7 +7,7 @@
 import { replicationControllerApiInjectable } from "@freelensapp/kube-api-specifics";
 import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { action, makeObservable, observable } from "mobx";
+import { action, observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import { Badge } from "../badge";
@@ -32,12 +32,11 @@ interface Dependencies {
 class NonInjectedReplicationControllerDetails<
   Props extends ReplicationControllerDetailsProps & Dependencies,
 > extends React.Component<Props> {
-  @observable sliderReplicasValue = this.props.object.getDesiredReplicas();
-  @observable sliderReplicasDisabled = false;
+  @observable accessor sliderReplicasValue = this.props.object.getDesiredReplicas();
+  @observable accessor sliderReplicasDisabled = false;
 
   constructor(props: Props) {
     super(props);
-    makeObservable(this);
   }
 
   @action

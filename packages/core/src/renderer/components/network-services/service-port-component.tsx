@@ -12,7 +12,7 @@ import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import { Spinner } from "@freelensapp/spinner";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { action, makeObservable, observable } from "mobx";
+import { action, observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import { predictProtocol } from "../../port-forward";
@@ -46,14 +46,13 @@ interface Dependencies {
 
 @observer
 class NonInjectedServicePortComponent extends React.Component<ServicePortComponentProps & Dependencies> {
-  @observable waiting = false;
-  @observable forwardPort = 0;
-  @observable isPortForwarded = false;
-  @observable isActive = false;
+  @observable accessor waiting = false;
+  @observable accessor forwardPort = 0;
+  @observable accessor isPortForwarded = false;
+  @observable accessor isActive = false;
 
   constructor(props: ServicePortComponentProps & Dependencies) {
     super(props);
-    makeObservable(this);
     this.checkExistingPortForwarding();
   }
 

@@ -17,7 +17,6 @@ import directoryForLogsInjectable from "./directory-for-logs.injectable";
 import { registerInjectables as registerDirectoryForTempInjectables } from "./directory-for-temp/register-injectables";
 import { registerInjectables as registerDirectoryForUserDataInjectables } from "./directory-for-user-data/register-injectables";
 import { registerInjectables as registerGetCustomKubeConfigDirectoryInjectables } from "./get-custom-kube-config-directory/register-injectables";
-import pathToPnpmCliInjectable from "./path-to-pnpm-cli.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
@@ -34,11 +33,6 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(directoryForLogsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(pathToPnpmCliInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

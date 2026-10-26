@@ -1,0 +1,4 @@
+{
+  "extends": "../src/renderer/tsconfig.json",
+  "files": ["node-apis.ts", "shared-apis.ts"]
+}

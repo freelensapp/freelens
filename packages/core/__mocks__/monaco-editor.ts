@@ -3,6 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { vi } from "vitest";
+
 // monaco-editor has no resolvable package entry under Node (only an ESM
 // "module" field pointing into esm/), so it can be neither externalized nor
 // automocked by Vitest; this manual mock provides the members the application

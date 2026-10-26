@@ -22,13 +22,15 @@ permissions:
   contents: read
 
 env:
-  kind_version: 0.32.0 # datasource=github-releases depName=kubernetes-sigs/kind
-  kubernetes_version: 1.36.1 # datasource=docker depName=kindest/node
+  kind_version: 0.33.0 # datasource=github-releases depName=kubernetes-sigs/kind
+  kubernetes_version: 1.37.0 # datasource=docker depName=kindest/node
 
 jobs:
   test-integration:
     name: integration tests on ${{ matrix.runs-on }}
 
+    # Ubuntu stays on the image the release builds on, so the tests run the
+    # app where it is built, with the system packages it is built against.
     strategy:
       fail-fast: false
       matrix:
@@ -41,11 +43,11 @@ jobs:
             os: linux
             arch: arm64
 
-          - runs-on: macos-15
+          - runs-on: macos-26 # datasource=github-runners
             os: macos
             arch: arm64
 
-          # - runs-on: macos-15-intel
+          # - runs-on: macos-26-intel
           #   os: macos
           #   arch: x64
 
@@ -53,7 +55,7 @@ jobs:
           #   os: windows
           #   arch: arm64
 
-          - runs-on: windows-2025
+          - runs-on: windows-2025 # datasource=github-runners
             os: windows
             arch: x64
 
@@ -63,6 +65,11 @@ jobs:
     env:
       DO_NOT_TRACK: "1"
       TURBOREPO_CACHE: ${{ github.workspace }}/.turbo
+      # The Syft that creates the SBOM. anchore/sbom-action@v0 defaults to an
+      # older one, without the Go symbol capture the scan needs (see Create
+      # SBOM). Stored without the leading "v" for the same reason as
+      # GRYPE_VERSION in security-scan.
+      SYFT_VERSION: 1.55.0 # datasource=github-releases depName=anchore/syft
 
     steps:
       - name: Checkout
@@ -81,9 +88,9 @@ jobs:
       # Windows runners, where winget/choco is not on every image (in particular
       # the windows-11-arm one) and yq used to be downloaded by hand.
       - name: Set up mise
-        uses: jdx/mise-action@v4
+        uses: jdx/mise-action@v5
         with:
-          version: 2026.8.0 # datasource=github-releases depName=jdx/mise
+          version: 2026.10.19 # datasource=github-releases depName=jdx/mise
           install_args: yq
 
       - name: Setup node
@@ -111,7 +118,12 @@ jobs:
 
       - name: Get Electron version
         shell: bash
-        run: echo "electron_version=$(yq -py -oy -r .importers.freelens.devDependencies.electron.version pnpm-lock.yaml | sed 's/(.*)//')" | tee -a $GITHUB_ENV
+        # pnpm-lock.yaml holds several YAML documents (pnpm 12 puts packageManagerDependencies
+        # in a document of its own), so evaluate them all and take the one that has the importer.
+        # The version carries a peer suffix, e.g. 1.2.3(supports-color@8.1.1), which split drops.
+        run: |
+          electron_version=$(yq ea -r '[.importers.freelens.devDependencies.electron.version | select(. != null)] | .[0] // error("electron not found in pnpm-lock.yaml") | split("(") | .[0]' pnpm-lock.yaml)
+          echo "electron_version=${electron_version}" | tee -a "${GITHUB_ENV}"
 
       # electron-builder's Electron zip downloader doesn't accept a cache
       # directory override (no ELECTRON_CACHE / electron_config_cache is read
@@ -155,6 +167,17 @@ jobs:
           restore-keys: |
             ${{ matrix.runs-on }}-${{ matrix.arch }}-turborepo-
 
+      # Turborepo does not cache the binaries, see "Bundled Binary Versions"
+      # in AGENTS.md. Saved right after the build.
+      - name: Restore bundled binaries cache
+        id: binaries-cache-restore
+        uses: actions/cache/restore@v6
+        with:
+          path: freelens/binaries
+          key: ${{ runner.os }}-${{ runner.arch }}-binaries-${{ hashFiles('freelens/binaries.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ runner.arch }}-binaries-
+
       # Cache the .deb archives and package lists that `playwright install-deps`
       # downloads through apt, so re-runs reuse them instead of re-downloading.
       # apt is pointed at this project-local directory via a global config file
@@ -194,6 +217,23 @@ jobs:
         env:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
 
+      # Without known checksums, @electron/get downloads SHASUMS256.txt from
+      # GitHub on every build, bypassing its cache, even when the Electron zip
+      # is cached, so an outage of GitHub fails the packaging. electron-builder
+      # takes them from SHASUMS256.txt-<version> at the root of that cache
+      # instead, and the electron package ships the same checksums, which the
+      # lockfile has verified.
+      - name: Seed Electron checksums
+        shell: bash
+        working-directory: freelens
+        run: |-
+          mkdir -p "$electron_cache_dir"
+          node -e '
+            const checksums = require("electron/checksums.json");
+            const lines = Object.entries(checksums).map(([file, sha256]) => `${sha256} *${file}\n`);
+            require("node:fs").writeFileSync(process.argv[1], lines.join(""));
+          ' "$electron_cache_dir/SHASUMS256.txt-$electron_version"
+
       - name: Disable pre post scripts for pnpm
         shell: bash
         run: pnpm config set enablePrePostScripts false --location project
@@ -208,7 +248,8 @@ jobs:
       # needed on Linux: it apt-installs the shared libraries that Chromium (and
       # thus the Electron app) needs to launch under xvfb. Scope it to `chromium`
       # so only Chromium's libraries are installed, skipping the heavier
-      # Firefox/WebKit dependency set that the Electron app never uses.
+      # Firefox/WebKit dependency set that the Electron app never uses. It runs
+      # after "Install pnpm dependencies", which provides the playwright CLI.
       - name: Install Playwright's OS dependencies (Linux)
         if: runner.os == 'Linux' && github.event_name != 'schedule'
         shell: bash
@@ -224,7 +265,10 @@ jobs:
           Dir::Cache::archives "$PWD/.apt/cache/archives";
           Dir::State::lists "$PWD/.apt/state/lists";
           EOF
-          pnpx playwright install-deps chromium
+          # Run the playwright that pnpm-lock.yaml pins for freelens, not
+          # `pnpx`/`pnpm dlx`, which fetches the latest release from the
+          # registry, so the dependency set matches the version under test.
+          pnpm --filter freelens exec playwright install-deps chromium
           # apt ran as root, so hand the cache dir back to the runner user for the
           # cache-save post step to read.
           sudo chown -R "$(id -u):$(id -g)" .apt
@@ -260,19 +304,22 @@ jobs:
         if: steps.build-resources-2.outcome == 'failure'
         run: pnpm --color=always build:resources
 
+      - name: Save bundled binaries cache
+        if: steps.binaries-cache-restore.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v6
+        with:
+          path: freelens/binaries
+          key: ${{ steps.binaries-cache-restore.outputs.cache-primary-key }}
+
       - name: Get electron-builder path
         shell: bash
         run: |
           EB_PATH=$(cd freelens && node -e "console.log(require.resolve('electron-builder/cli'))")
           echo "ELECTRON_BUILDER_PATH=$EB_PATH" | tee -a $GITHUB_ENV
 
-      - name: Deploy production node_modules
-        shell: bash
-        run: |
-          pnpm deploy --legacy --prod --filter=freelens freelens/node_modules_prod
-          mv freelens/node_modules freelens/node_modules_dev
-          mv freelens/node_modules_prod freelens/node_modules
-
+      # electron-builder collects the modules to package with `pnpm list --prod`,
+      # so app.asar gets only the production dependencies of freelens from the
+      # regular workspace node_modules, as in the release build.
       - name: Build Electron app
         id: build-electron-app
         shell: bash
@@ -322,23 +369,29 @@ jobs:
             exit 1
           fi
 
-      - name: Restore dev node_modules
-        shell: bash
-        run: |
-          mv freelens/node_modules freelens/node_modules_prod
-          mv freelens/node_modules_dev freelens/node_modules
-
       # Produce the SBOM and runtime package list only for the real branch build
       # (push/dispatch/schedule on main), never for PRs. The combine-and-scan
       # job below consumes both as run artifacts.
+      #
+      # syft-json with Go symbol capture, because Grype matches a Go advisory
+      # against the vulnerable functions it names only when the package carries
+      # the symbols compiled into the binary. Without them it falls back to the
+      # whole module and reports advisories for code the binary never contains.
+      # Only syft-json can carry the symbols: SPDX and CycloneDX have no field
+      # for them.
       - name: Create SBOM
         if: github.ref_name == 'main' && github.event_name != 'pull_request'
         uses: anchore/sbom-action@v0
+        env:
+          SYFT_GOLANG_CAPTURE_SYMBOLS: all
         with:
-          format: spdx-json
-          output-file: "freelens/dist/${{ github.event.repository.name }}-${{ matrix.os }}-${{ matrix.arch == 'x64' && 'amd64' || matrix.arch }}-sbom.spdx.json"
+          # The "v" is added here for the same reason as grype-version in
+          # security-scan.
+          syft-version: v${{ env.SYFT_VERSION }}
+          format: syft-json
+          output-file: "freelens/dist/${{ github.event.repository.name }}-${{ matrix.os }}-${{ matrix.arch == 'x64' && 'amd64' || matrix.arch }}-sbom.syft.json"
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          artifact-name: "${{ github.event.repository.name }}-${{ matrix.os }}-${{ matrix.arch == 'x64' && 'amd64' || matrix.arch }}-sbom.spdx.json"
+          artifact-name: "${{ github.event.repository.name }}-${{ matrix.os }}-${{ matrix.arch == 'x64' && 'amd64' || matrix.arch }}-sbom.syft.json"
           upload-release-assets: false
 
       - name: Create runtime package list
@@ -352,10 +405,12 @@ jobs:
           # keys as the runtime closure (to drop build-time findings) and the
           # paths as the code-scanning location for npm findings (grype otherwise
           # reports them against pnpm-lock.yaml). --legacy is required because the
-          # workspace does not set inject-workspace-packages.
+          # workspace does not set inject-workspace-packages. allow-unused-patches
+          # because patchedDependencies also patches devDependencies, which a
+          # production deploy does not install.
           deploy_dir="$RUNNER_TEMP/freelens-prod"
           rm -rf "$deploy_dir"
-          pnpm --filter freelens deploy --prod --legacy --ignore-scripts "$deploy_dir"
+          pnpm --filter freelens deploy --prod --legacy --ignore-scripts --config.allow-unused-patches=true "$deploy_dir"
           os="${{ matrix.os }}"
           arch="${{ matrix.arch == 'x64' && 'amd64' || matrix.arch }}"
           out="freelens/dist/${{ github.event.repository.name }}-${os}-${arch}-prod-packages.json"
@@ -394,6 +449,9 @@ jobs:
           TEST_KIND_CLUSTER_NAME: freelens
         continue-on-error: true
 
+      # The same environment as the first run: without the cluster name the
+      # KinD tests look for a cluster named "kind", find none and skip, and the
+      # retry passes over a failure of the first run.
       - name: Run integration tests (Linux) (retry)
         if: runner.os == 'Linux' && steps.integration-tests-linux.outcome == 'failure'
         run: |
@@ -402,6 +460,7 @@ jobs:
           timeout 600 xvfb-run -a pnpm --color=always test:integration --reporter=verbose --reporter=github-actions --includeTaskLocation
         env:
           DEBUG: pw:browser
+          TEST_KIND_CLUSTER_NAME: freelens
 
       - name: Run integration tests (macOS)
         id: integration-tests-macos
@@ -426,7 +485,6 @@ jobs:
         run: timeout 600 pnpm --color=always test:integration --reporter=verbose --reporter=github-actions --includeTaskLocation
         env:
           DEBUG: pw:browser
-          EXTENSION_PATH: skip
         continue-on-error: true
 
       - name: Run integration tests (Windows) (retry)
@@ -435,7 +493,6 @@ jobs:
         run: timeout 600 pnpm --color=always test:integration --reporter=verbose --reporter=github-actions --includeTaskLocation
         env:
           DEBUG: pw:browser
-          EXTENSION_PATH: skip
 
   security-scan:
     name: security scan
@@ -449,7 +506,7 @@ jobs:
     needs:
       - test-integration
 
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
 
     permissions:
       actions: read
@@ -458,11 +515,11 @@ jobs:
 
     env:
       # Renovate keeps this version up to date via the inline datasource hint
-      # below (see .renovaterc.json5 customManagers). Stored without the leading
+      # below (see .renovaterc.json customManagers). Stored without the leading
       # "v" because that manager's extractVersionTemplate strips it on every
       # bump; grype's installer needs the exact tag, so the "v" is re-added
       # where this is consumed rather than kept here (it would not survive).
-      GRYPE_VERSION: 0.116.1 # datasource=github-releases depName=anchore/grype
+      GRYPE_VERSION: 0.121.0 # datasource=github-releases depName=anchore/grype
 
     steps:
       - name: Checkout
@@ -471,15 +528,15 @@ jobs:
       # yq comes from mise so that its version has a single source (mise.toml)
       # and the download is verified against mise.lock.
       - name: Set up mise
-        uses: jdx/mise-action@v4
+        uses: jdx/mise-action@v5
         with:
-          version: 2026.8.0 # datasource=github-releases depName=jdx/mise
+          version: 2026.10.19 # datasource=github-releases depName=jdx/mise
           install_args: yq
 
       - name: Download SBOMs
         uses: actions/download-artifact@v8
         with:
-          pattern: "*-sbom.spdx.json"
+          pattern: "*-sbom.syft.json"
           path: sboms
           merge-multiple: true
 
@@ -519,32 +576,61 @@ jobs:
             exit 1
           fi
           found=0
-          for sbom in sboms/*-sbom.spdx.json; do
-            name=$(basename "$sbom" .spdx.json)
+          for sbom in sboms/*-sbom.syft.json; do
+            name=$(basename "$sbom" .syft.json)
             # Reduce the SBOM to runtime packages before scanning.
-            # sub("\x5c"; "/"): the Windows SBOM records sourceInfo paths with
+            # sub("\x5c"; "/"): the Windows SBOM records location paths with
             # backslashes, which the /freelens/... test below would never match -
             # every shipped non-npm package (Electron DLLs, node-pty, the bundled
             # Go CLIs) would silently drop out of the scan. \x5c rather than a
             # literal backslash because yq unescapes the string first, leaving
             # the regex engine a trailing backslash.
+            #
+            # The Go modules of Windows binaries (*.exe) are dropped too. Syft
+            # reads symbols from ELF and Mach-O binaries only, so Grype matches
+            # these by whole module and reports advisories for functions the
+            # binary does not contain. The Linux and macOS builds of the same
+            # CLIs come from the same modules and carry the symbols, and Grype's
+            # symbol check does not look at GOOS, so an advisory against Windows
+            # code still shows up through them when the vulnerable function is
+            # compiled into those builds too.
+            #
+            # Relationships that point at a dropped package go with it, so the
+            # decoder does not warn about every one of them. The dropped set is
+            # selected and mapped in separate steps: yq builds an object from an
+            # empty stream as {"value": true}, which from_entries rejects.
             yq -pj -oj '
               (load("prod-set.json")) as $set |
-              .packages |= map(
-                ( ((.externalRefs // []) | map(select(.referenceType == "purl")))[0].referenceLocator // "" ) as $purl |
-                (.name + "@" + (.versionInfo // "")) as $key |
-                (((.sourceInfo // "") | sub("\\x5c"; "/")) | (capture("(?<p>/[^,]*)").p // "")) as $path |
-                select(
+              .artifacts |= map(
+                (.purl // "") as $purl |
+                (.name + "@" + (.version // "")) as $key |
+                (((.locations // [])[0].path // "") | sub("\\x5c"; "/")) as $path |
+                .runtime = (
                   (($purl | test("^pkg:npm/")) and ($set[$key] != null))
                   or
-                  (($purl | test("^pkg:npm/") | not) and ($path | test("^/freelens/(dist|binaries)/")))
+                  (($purl | test("^pkg:npm/") | not) and ($path | test("^/freelens/(dist|binaries)/"))
+                    and (($purl | test("^pkg:golang/") | not) or ($path | test("\\.exe$") | not)))
                 )
-              )
-            ' "$sbom" > "runtime-${name}.spdx.json"
-            all=$(yq -pj -oj '.packages | length' "$sbom")
-            run=$(yq -pj -oj '.packages | length' "runtime-${name}.spdx.json")
-            echo "::group::grype ${sbom} (${all} -> ${run} runtime packages)"
-            "$grype" "sbom:runtime-${name}.spdx.json" -o sarif="sarifs/${name}.sarif" -o json="jsons/${name}.json"
+              ) |
+              (.artifacts | map(select(.runtime | not)) | map({"key": .id, "value": true}) | from_entries) as $dropped |
+              .artifacts |= map(select(.runtime) | del(.runtime)) |
+              .artifactRelationships |= ((. // []) | map(
+                .parent as $parent | .child as $child |
+                select(($dropped[$parent] == null) and ($dropped[$child] == null))
+              ))
+            ' "$sbom" > "runtime-${name}.syft.json"
+            all=$(yq -pj -oj '.artifacts | length' "$sbom")
+            run=$(yq -pj -oj '.artifacts | length' "runtime-${name}.syft.json")
+            # Symbol capture failing would not fail the scan, only bring back the
+            # whole-module matches this SBOM format is here to avoid - so say it
+            # where it is seen rather than only in Grype's log.
+            go=$(yq -pj -oj '[.artifacts[] | select((.purl // "") | test("^pkg:golang/"))] | length' "runtime-${name}.syft.json")
+            symbols=$(yq -pj -oj '[.artifacts[] | select((.purl // "") | test("^pkg:golang/")) | select(((.metadata.symbols // {}) | length) > 0)] | length' "runtime-${name}.syft.json")
+            if [[ "$go" -gt 0 && "$symbols" -eq 0 ]]; then
+              echo "::warning::${sbom}: none of its ${go} runtime Go packages carries symbols - Go advisories are matched by whole module"
+            fi
+            echo "::group::grype ${sbom} (${all} -> ${run} runtime packages, ${symbols} of ${go} Go packages with symbols)"
+            "$grype" "sbom:runtime-${name}.syft.json" -o sarif="sarifs/${name}.sarif" -o json="jsons/${name}.json"
             echo "::endgroup::"
             found=$((found + 1))
           done
@@ -554,18 +640,17 @@ jobs:
           fi
           # grype leaves the SARIF artifact location empty for SBOM scans, which
           # code scanning rejects with "expected artifact location". For non-npm
-          # packages (Go modules, native binaries) the SPDX sourceInfo carries a
+          # packages (Go modules, native binaries) the SBOM location carries a
           # real path, so build a <name>@<version> -> path map. Build it from the
           # filtered SBOMs so a package present in several binaries (e.g. the Go
           # stdlib in kubectl and in the dev-only tsc binary) maps to a shipped
           # location, not a dropped build-time one.
-          yq ea -pj -oj -I0 '[.]' runtime-*.spdx.json |
+          yq ea -pj -oj -I0 '[.]' runtime-*.syft.json |
             yq -pj -oj '
-                [ .[].packages[]
-                  | select(has("sourceInfo"))
+                [ .[].artifacts[]
                   | {
-                      "key": (.name + "@" + (.versionInfo // "")),
-                      "value": (((.sourceInfo | sub("\\x5c"; "/")) | capture("(?<p>/[^,]*)").p) // "" | sub("^/"; ""))
+                      "key": (.name + "@" + (.version // "")),
+                      "value": ((.locations // [])[0].path // "" | sub("\\x5c"; "/") | sub("^/"; ""))
                     }
                   | select(.value != "")
                 ] | from_entries
@@ -574,13 +659,20 @@ jobs:
           # per-architecture SBOMs differ (bundled kubectl/helm/proxy CLIs and
           # their Go modules, native npm build variants), so scan them all and
           # merge the runs into one: slurp the SARIFs into an array, union the
-          # rules by id and concatenate + de-duplicate the results (grype gives
-          # SBOM findings an empty location, so identical cross-arch findings
-          # collapse cleanly). Then set each result's artifact location from the
-          # finding's <name>@<version>: the pnpm-store path for npm packages, the
-          # sourceInfo path for non-npm ones, and a synthetic
-          # "sbom/<package>@<version>" as a last resort. Done after the dedup so
-          # empty locations collapse first.
+          # rules by id and concatenate the results. Then set each result's
+          # artifact location from the finding's <name>@<version>: the
+          # pnpm-store path for npm packages, the SBOM location for non-npm
+          # ones, and a synthetic "sbom/<package>@<version>" as a last resort.
+          #
+          # Finally keep one result per rule and <name>@<version>, the same
+          # key the JSON report below dedupes by, so code scanning lists what
+          # the scan report discussion lists. Comparing whole results is not
+          # enough: grype writes the path it found the package at into the
+          # message, so one bundled CLI yields a result per architecture and
+          # per copy (freelens/binaries and the packaged freelens/dist), all
+          # with the location set above, and each one became an alert of its
+          # own. The result kept is the one whose message names that location,
+          # so its alert carries on; any other one when none does.
           yq ea -pj -oj -I0 '[.]' sarifs/*.sarif |
             yq -pj -oj '
                 (load("prod-set.json")) as $prod |
@@ -599,12 +691,18 @@ jobs:
                       },
                       "results": (
                         [$x[].runs[0].results[]] |
-                        unique |
                         map(
                           ((.message.text | capture("package: (?<n>.+?), version (?<v>.*?) was found at:")) // {"n": "unknown", "v": "unknown"}) as $p |
                           ($p.n + "@" + $p.v) as $key |
-                          .locations[0].physicalLocation.artifactLocation.uri = ($prod[$key] // $paths[$key] // ("sbom/" + $key))
-                        )
+                          ((.message.text | capture("was found at: (?<f>.*)$") | .f) // "") as $found |
+                          .locations[0].physicalLocation.artifactLocation.uri = ($prod[$key] // $paths[$key] // ("sbom/" + $key)) |
+                          .dedup = {"key": (.ruleId + "|" + $key), "found": $found}
+                        ) |
+                        group_by(.dedup.key) |
+                        map(
+                          (map(select(("/" + .locations[0].physicalLocation.artifactLocation.uri) == .dedup.found)) + .) | .[0]
+                        ) |
+                        map(del(.dedup))
                       )
                     }
                   ]
@@ -652,16 +750,18 @@ jobs:
     # table and replaces the tracking discussion's body with it, so the
     # discussion always reflects the latest main-branch scan. Runs for the
     # real branch build (push/dispatch/schedule on main) only, never for PRs.
-    if: github.ref_name == 'main' && github.event_name != 'pull_request'
+    # Never on a fork either: it has no GH_TOKEN secret and no discussion.
+    if: github.repository_owner == 'freelensapp' && github.ref_name == 'main' && github.event_name != 'pull_request'
 
     needs:
       - security-scan
 
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
+    # GH_TOKEN, which edits the discussion, is a secret of this environment.
+    environment: automated
 
     permissions:
       actions: read
-      discussions: write
 
     env:
       DISCUSSION_NUMBER: 2243
@@ -675,9 +775,9 @@ jobs:
       # yq comes from mise so that its version has a single source (mise.toml)
       # and the download is verified against mise.lock.
       - name: Set up mise
-        uses: jdx/mise-action@v4
+        uses: jdx/mise-action@v5
         with:
-          version: 2026.8.0 # datasource=github-releases depName=jdx/mise
+          version: 2026.10.19 # datasource=github-releases depName=jdx/mise
           install_args: yq
 
       - name: Download merged vulnerability report
@@ -734,24 +834,6 @@ jobs:
           echo "runtime vulnerabilities: $count"
 
       - name: Update discussion
-        run: |
-          set -eo pipefail
-          discussion_id=$(gh api graphql -f query='
-            query($owner:String!,$repo:String!,$num:Int!){
-              repository(owner:$owner,name:$repo){
-                discussion(number:$num){ id }
-              }
-            }' -f owner="${{ github.repository_owner }}" -f repo="${{ github.event.repository.name }}" -F num="$DISCUSSION_NUMBER" \
-            --jq '.data.repository.discussion.id')
-          if [[ -z "$discussion_id" || "$discussion_id" == "null" ]]; then
-            echo "Discussion #$DISCUSSION_NUMBER not found" >&2
-            exit 1
-          fi
-          gh api graphql -f query='
-            mutation($id:ID!,$body:String!){
-              updateDiscussion(input:{discussionId:$id, body:$body}){
-                discussion{ id }
-              }
-            }' -f id="$discussion_id" -F body=@body.md
+        run: gh discussion edit "$DISCUSSION_NUMBER" --repo "$GITHUB_REPOSITORY" --body-file body.md
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}

@@ -8,6 +8,7 @@ import assert from "node:assert";
 import { isDefined } from "@freelensapp/utilities";
 import { computed } from "mobx";
 import { defaultLogViewerPreferences } from "../../../../features/user-preferences/common/preferences-helpers";
+import { getTimestampedLogFilename } from "./get-timestamped-log-filename";
 
 import type { ResourceDescriptor } from "@freelensapp/kube-api";
 import type { Pod, PodLogsQuery } from "@freelensapp/kube-object";
@@ -118,7 +119,7 @@ export class LogTabViewModel {
       const fileName = pod.getName();
       const logsToDownload: string[] = tabData.showTimestamps ? this.logs.get() : this.logsWithoutTimestamps.get();
 
-      this.dependencies.downloadLogs(`${fileName}.log`, logsToDownload);
+      this.dependencies.downloadLogs(getTimestampedLogFilename(fileName), logsToDownload);
     }
   };
 

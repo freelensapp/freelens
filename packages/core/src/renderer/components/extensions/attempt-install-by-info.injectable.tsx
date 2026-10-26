@@ -9,7 +9,7 @@ import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import { isObject } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import { reduce } from "es-toolkit/compat";
-import { SemVer } from "semver";
+import * as verkit from "verkit";
 import getBasenameOfPathInjectable from "../../../common/path/get-basename.injectable";
 import extensionInstallationStateStoreInjectable from "../../../extensions/extension-installation-state-store/extension-installation-state-store.injectable";
 import downloadBinaryViaChannelInjectable from "../../../renderer/fetch/download-binary-via-channel.injectable";
@@ -139,13 +139,13 @@ const attemptInstallByInfoInjectable = getInjectable({
         }
       } else {
         const versions = Object.keys(json.versions)
-          .map((version) => new SemVer(version, { loose: true }))
+          .map((version) => verkit.parse(version, { loose: true }))
           // ignore pre-releases for auto picking the version
-          .filter((version) => version.prerelease.length === 0);
+          .filter((version) => !version.prerelease?.length);
 
-        const latestVersion = reduce(versions, (prev, curr) => (prev.compareMain(curr) === -1 ? curr : prev));
+        const latestVersion = reduce(versions, (prev, curr) => (verkit.compareMain(prev, curr) === -1 ? curr : prev));
 
-        version = latestVersion?.format();
+        version = (latestVersion && verkit.normalize(latestVersion)) ?? undefined;
       }
 
       if (!version) {
@@ -194,7 +194,23 @@ const attemptInstallByInfoInjectable = getInjectable({
         return disposer();
       }
 
-      return attemptInstall({ fileName, data: Buffer.from(request.response) }, disposer);
+      const integrity = versionInfo?.dist.integrity;
+
+      if (!integrity) {
+        logger.warn(`[ATTEMPT-INSTALL-BY-INFO]: registry has no integrity for ${name}@${version}`);
+      }
+
+      return attemptInstall(
+        {
+          fileName,
+          data: Buffer.from(request.response),
+          // The concrete version, not the tag that was asked for: a later tag
+          // move must not change what counts as installed.
+          source: { kind: "registry", name, version },
+          checksum: integrity ? { kind: "integrity", value: integrity } : undefined,
+        },
+        disposer,
+      );
     };
   },
 });

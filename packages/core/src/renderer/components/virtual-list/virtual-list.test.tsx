@@ -5,6 +5,7 @@
  */
 
 import { render } from "@testing-library/react";
+import { beforeEach, describe, expect, it } from "vitest";
 import { VirtualList } from "./virtual-list";
 
 import type { RenderResult } from "@testing-library/react";

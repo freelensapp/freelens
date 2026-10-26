@@ -4,6 +4,7 @@
  */
 
 import { fireEvent } from "@testing-library/react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import createStandaloneTerminalApiInjectable from "../../../renderer/api/create-standalone-terminal-api.injectable";
 import createTerminalInjectable from "../../../renderer/components/dock/terminal/create-terminal.injectable";
 import { renderFor } from "../../../renderer/components/test-utils/renderFor";

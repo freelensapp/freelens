@@ -4,6 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { describe, expect, it } from "vitest";
 import { parseKubeApi } from "./kube-api-parse";
 
 import type { IKubeApiParsed } from "./kube-api-parse";

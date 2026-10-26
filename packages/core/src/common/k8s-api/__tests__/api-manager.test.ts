@@ -17,6 +17,7 @@ import {
 } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
 import { runInAction } from "mobx";
+import { beforeEach, describe, expect, it } from "vitest";
 import { KubeApi as ExternalKubeApi } from "../../../extensions/common-api/k8s-api";
 import clusterFrameContextForNamespacedResourcesInjectable from "../../../renderer/cluster-frame-context/for-namespaced-resources.injectable";
 import hostedClusterInjectable from "../../../renderer/cluster-frame-context/hosted-cluster.injectable";

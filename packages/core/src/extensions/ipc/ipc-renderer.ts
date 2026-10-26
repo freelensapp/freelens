@@ -26,11 +26,18 @@ export abstract class IpcRenderer extends IpcRegistrar {
    * If the lifetime of the listener should be tied to the mounted lifetime of
    * a component then storing the returned disposer and calling it from the
    * component's `componentWillUnmount` will suffice.
+   *
+   * The listener is called with an event object first and the arguments of the
+   * broadcast after it. Only the arguments are guaranteed: the event is not an
+   * `Electron.IpcRendererEvent` you may rely on, because renderer code gets no
+   * guarantee of Electron, so write the listener as `(_event, ...args) => …`
+   * and leave the first parameter alone.
    * @param channel The channel to listen for broadcasts on
-   * @param listener The function that will be called with the arguments of the broadcast
+   * @param listener The function that will be called with an unspecified event
+   * object followed by the arguments of the broadcast
    * @returns An optional disposer, Lens will cleanup even if this is not called
    */
-  listen(channel: string, listener: (event: Electron.IpcRendererEvent, ...args: any[]) => any): Disposer {
+  listen(channel: string, listener: (event: unknown, ...args: any[]) => any): Disposer {
     const prefixedChannel = `extensions@${this[IpcPrefix]}:${channel}`;
     const cleanup = once(() => {
       console.debug(`[IPC-RENDERER]: removing extension listener`, {

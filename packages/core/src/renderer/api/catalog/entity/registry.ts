@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { action, computed, makeObservable, observable } from "mobx";
+import { action, computed, observable } from "mobx";
 import { ipcRendererOn } from "../../../../common/ipc";
 
 import type {
@@ -53,9 +53,7 @@ export class CatalogEntityRegistry {
    */
   protected readonly rawEntities: (CatalogEntityData & CatalogEntityKindData)[] = [];
 
-  constructor(protected readonly dependencies: Dependencies) {
-    makeObservable(this);
-  }
+  constructor(protected readonly dependencies: Dependencies) {}
 
   protected getActiveEntityById() {
     const activeEntityId = this.activeEntityId.get();

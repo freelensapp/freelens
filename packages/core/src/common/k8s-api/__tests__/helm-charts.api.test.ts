@@ -4,6 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { describe, expect, it, vi } from "vitest";
 import { anyObject } from "vitest-mock-extended";
 import { HelmChart } from "../endpoints/helm-charts.api";
 

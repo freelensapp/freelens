@@ -5,6 +5,7 @@
  */
 
 import { ConfigMap, Pod, Secret, SecretType } from "@freelensapp/kube-object";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import configMapStoreInjectable from "../../config-maps/store.injectable";
 import secretStoreInjectable from "../../config-secrets/store.injectable";

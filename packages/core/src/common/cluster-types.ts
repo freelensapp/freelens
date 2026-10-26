@@ -6,6 +6,8 @@
 
 import Joi from "joi";
 
+import type { KubeApiResource } from "./rbac";
+
 /**
  * JSON serializable metadata type
  */
@@ -105,6 +107,7 @@ export interface ClusterPreferences extends ClusterPrometheusPreferences {
   nodeShellWindowsImage?: string;
   imagePullSecret?: string;
   defaultNamespace?: string;
+  skipNamespaceAuthorizationCheck?: boolean;
 }
 
 /**
@@ -204,5 +207,6 @@ export interface ClusterState {
   isAdmin: boolean;
   allowedNamespaces: string[];
   resourcesToShow: string[];
+  knownResources: KubeApiResource[];
   isGlobalWatchEnabled: boolean;
 }

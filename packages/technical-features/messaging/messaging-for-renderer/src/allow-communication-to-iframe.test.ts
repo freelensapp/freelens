@@ -4,6 +4,7 @@ import { sendMessageToChannelInjectionToken } from "@freelensapp/messaging";
 import { createContainer, DiContainer } from "@ogre-tools/injectable";
 import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
 import { runInAction } from "mobx";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { frameCommunicationAdminChannel } from "./allow-communication-to-iframe.injectable";
 import { messagingFeatureForRenderer } from "./feature";
 import ipcRendererInjectable from "./ipc/ipc-renderer.injectable";

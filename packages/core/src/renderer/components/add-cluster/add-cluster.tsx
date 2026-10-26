@@ -10,7 +10,7 @@ import { isDefined, iter } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { debounce } from "es-toolkit/compat";
 import fse from "fs-extra";
-import { action, computed, makeObservable, observable } from "mobx";
+import { action, computed, observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import * as uuid from "uuid";
@@ -59,14 +59,13 @@ function getContexts(config: KubeConfig): Map<string, Option> {
 
 @observer
 class NonInjectedAddCluster extends React.Component<Dependencies> {
-  @observable kubeContexts = observable.map<string, Option>();
-  @observable customConfig = "";
-  @observable isWaiting = false;
-  @observable errors: string[] = [];
+  @observable accessor kubeContexts = observable.map<string, Option>();
+  @observable accessor customConfig = "";
+  @observable accessor isWaiting = false;
+  @observable accessor errors: string[] = [];
 
   constructor(props: Dependencies) {
     super(props);
-    makeObservable(this);
   }
 
   componentDidMount() {

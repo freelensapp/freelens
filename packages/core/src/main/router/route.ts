@@ -4,13 +4,13 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type http from "node:http";
 import type { URLSearchParams } from "node:url";
 
-import type httpProxy from "http-proxy-node16";
+import type { ProxyServer } from "http-proxy-3";
 import type Joi from "joi";
 
 import type { Cluster } from "../../common/cluster/cluster";
+import type { ServerRequest, ServerResponse } from "../freelens-proxy/freelens-proxy";
 import type { LensApiResultContentType } from "./router-content-types";
 
 export type InferParam<T extends string, PathParams extends Record<string, string>> = T extends `{${infer P}?}`
@@ -34,8 +34,8 @@ export interface LensApiRequest<Path extends string> {
   cluster: Cluster | undefined;
   query: URLSearchParams;
   raw: {
-    req: http.IncomingMessage;
-    res: http.ServerResponse;
+    req: ServerRequest;
+    res: ServerResponse;
   };
 }
 
@@ -49,7 +49,7 @@ export interface LensApiResult<Response> {
   error?: any;
   contentType?: LensApiResultContentType;
   headers?: Partial<Record<string, string>>;
-  proxy?: httpProxy;
+  proxy?: ProxyServer;
 }
 
 export type RouteResponse<Response> = LensApiResult<Response> | void;

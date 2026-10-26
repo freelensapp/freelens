@@ -12,8 +12,9 @@ import createPersistentStorageInjectable, {
   type PersistentStorage,
 } from "../features/persistent-storage/common/create.injectable";
 import { getDiForExtensionApi } from "./extension-api-di";
+import { Disposers } from "./lens-extension";
 
-import type { Options } from "conf";
+import type Conf from "conf";
 
 import type { Migrations } from "../features/persistent-storage/common/migrations.injectable";
 import type { PersistentStorageParams } from "./common-api/stores";
@@ -21,7 +22,11 @@ import type { LensExtension } from "./lens-extension";
 
 export interface ExtensionStoreParams<T extends object>
   extends Omit<PersistentStorageParams<T>, "migrations" | "cwd" | "fromStore" | "toJSON"> {
-  migrations?: Options<T & Record<string, unknown>>["migrations"];
+  /**
+   * conf's migrations, keyed by version. The store is typed by the model
+   * itself, as `defaults` is, so that the model may be an `interface`.
+   */
+  migrations?: Record<string, (store: Conf<T>) => void>;
   cwd?: string;
 }
 
@@ -75,6 +80,10 @@ export abstract class BaseExtensionStore<M extends object = any> {
   protected extension?: LensExtension;
 
   loadExtension(extension: LensExtension) {
+    // The instance outlives a disable: enabling the extension again reuses its
+    // module, and with it this instance, which must not sync twice.
+    this.persistentStorage?.stopSyncing();
+
     this.extension = extension;
     const {
       projectVersion = this.extension.version,
@@ -83,7 +92,7 @@ export abstract class BaseExtensionStore<M extends object = any> {
       ...params
     } = this.rawParams;
 
-    this.persistentStorage = this.dependencies.createPersistentStorage({
+    const persistentStorage = this.dependencies.createPersistentStorage({
       ...params,
       cwd: this.cwd(),
       projectVersion,
@@ -92,7 +101,11 @@ export abstract class BaseExtensionStore<M extends object = any> {
       toJSON: () => this.toJSON(),
     });
 
-    this.persistentStorage.loadAndStartSyncing();
+    this.persistentStorage = persistentStorage;
+    persistentStorage.loadAndStartSyncing();
+
+    // Stops this storage only, not one a later loadExtension has made.
+    extension[Disposers].push(() => persistentStorage.stopSyncing());
   }
 
   /**

@@ -92,16 +92,29 @@ export const packageMirrors = new Map<string, DownloadMirror>([
   [customPackageMirror, customPackageMirrorData],
 ]);
 
-export type ExtensionRegistryLocation = "default" | "npmrc" | "custom";
+export type ExtensionRegistryLocation = "default" | "custom";
 
 export type ExtensionRegistry =
   | {
-      location: "default" | "npmrc";
+      location: "default";
       customUrl?: undefined;
     }
   | {
       location: "custom";
       customUrl: string;
+    };
+
+/**
+ * The shapes `extensionRegistryUrl` may have on disk. The `npmrc` location was
+ * implemented by forking the bundled `pnpm`, which the application no longer
+ * ships, so a value stored before its removal names a location that no longer
+ * exists. `fromStore` coerces it to `default`.
+ */
+export type StoredExtensionRegistry =
+  | ExtensionRegistry
+  | {
+      location: "npmrc";
+      customUrl?: undefined;
     };
 
 export type ClusterPageMenuOrder = {

@@ -5,6 +5,7 @@
  */
 
 import { createContainer, getInjectable, getInjectionToken } from "@ogre-tools/injectable";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { runManySyncFor } from "./run-many-sync-for";
 
 import type { Mock } from "vitest";

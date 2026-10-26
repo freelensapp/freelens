@@ -15,7 +15,7 @@ const specificVersionsInjectable = getInjectable({
     const buildSemanticVersion = di.inject(semanticBuildVersionInjectable);
     const applicationInformation = di.inject(applicationInformationToken);
 
-    if (buildSemanticVersion.prerelease[0] === "latest") {
+    if (buildSemanticVersion.prerelease?.[0] === "latest") {
       return [];
     }
 

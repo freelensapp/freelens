@@ -10,6 +10,7 @@ import { KubeObjectStore } from "../../../common/k8s-api/kube-object.store";
 import type { DeploymentApi } from "@freelensapp/kube-api";
 import type { Deployment } from "@freelensapp/kube-object";
 
+import type { ItemSorting } from "../../../common/item.store";
 import type { KubeObjectStoreDependencies, KubeObjectStoreOptions } from "../../../common/k8s-api/kube-object.store";
 import type { PodStore } from "../workloads-pods/store";
 
@@ -33,9 +34,10 @@ export class DeploymentStore extends KubeObjectStore<Deployment, DeploymentApi> 
     super(dependencies, api, opts);
   }
 
-  protected sortItems(items: Deployment[]) {
-    return super.sortItems(items, [(item) => item.getReplicas()], "desc");
-  }
+  protected readonly sorting: ItemSorting<Deployment> = {
+    by: [(item) => item.getReplicas()],
+    order: "desc",
+  };
 
   getStatuses(deployments: Deployment[]): DeploymentStatuses;
   /**

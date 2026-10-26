@@ -8,6 +8,7 @@ import { createContainer, type DiContainer, getInjectable } from "@ogre-tools/in
 import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
 import { noop } from "es-toolkit";
 import { computed, type IComputedValue } from "mobx";
+import { beforeEach, describe, expect, it } from "vitest";
 import { clusterSidebarFeature } from "./feature";
 import sidebarItemsInjectable from "./sidebar-items.injectable";
 import { type SidebarItemDeclaration, sidebarItemInjectionToken } from "./tokens";

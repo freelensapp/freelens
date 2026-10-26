@@ -95,44 +95,58 @@ function KubeApiCstr<
   return api;
 }
 
-export type KubeApi<
+type ExternalKubeApi<
   Object extends KubeObject = KubeObject,
   Data extends KubeJsonApiDataFor<Object> = KubeJsonApiDataFor<Object>,
 > = InternalKubeApi<Object, Data>;
 
-export const KubeApi = KubeApiCstr as unknown as new <
+const ExternalKubeApi = KubeApiCstr as unknown as new <
   Object extends KubeObject = KubeObject,
   Data extends KubeJsonApiDataFor<Object> = KubeJsonApiDataFor<Object>,
 >(
   opts: KubeApiOptions<Object, Data> & ExternalKubeApiOptions,
 ) => InternalKubeApi<Object, Data>;
 
+export { createKubeApiURL, parseKubeApi } from "@freelensapp/kube-api";
+// The whole of `@freelensapp/kube-object` is part of the API surface. The
+// package is private in v2 and is inlined into the bundled declaration, so a
+// type it declares is unreachable by any means unless this namespace re-exports
+// it — see C1 and C5 of `docs/extensions/api.md`.
+export * from "@freelensapp/kube-object";
+// Deliberate v1-compatibility aliases, on top of the star export above.
 export {
-  createKubeObject,
-  isJsonApiData,
-  isJsonApiDataList,
-  isKubeJsonApiListMetadata,
-  isKubeJsonApiMetadata,
-  isKubeObjectNonSystem,
-  isKubeStatusData,
-  isPartialJsonApiData,
-  isPartialJsonApiMetadata,
-  KubeObject,
-  KubeStatus,
-  stringifyLabels,
+  type Container as IPodContainer,
+  Endpoints as Endpoint,
+  type PodContainerStatus as IPodContainerStatus,
+  type SecretReference as ISecretRef,
 } from "@freelensapp/kube-object";
+// `KubeObjectStatus` is the one name that collides, and the two are genuinely
+// different types. The extension-facing status-registration type below keeps the
+// bare name, because v1 extensions already register status providers against it;
+// being an explicit re-export it shadows the `export *` above, so `Main` and
+// `Renderer` agree on what `KubeObjectStatus` is. The `@freelensapp/kube-object`
+// one — the base Kubernetes status shape `{ conditions?: BaseKubeObjectCondition[] }`
+// that `DeploymentStatus`, `JobStatus` and the other resource statuses extend —
+// is renamed rather than left out: an exclusion would be a hole that nothing
+// announces, while a rename shows up in the declaration and in the API report.
+export { type KubeObjectStatus, KubeObjectStatusLevel } from "../../common/k8s-api/kube-object-status";
 
+// The option and descriptor types that already appear in the signatures above
+// and below: `KubeApi` takes `KubeApiOptions`, every derived `*Api` takes
+// `DerivedKubeApiOptions`, and the request methods take the rest. They were
+// callable but not nameable, so an author could pass an inline object literal
+// and rely on contextual typing, but could not type a variable holding one.
 export type {
-  BaseKubeJsonApiObjectMetadata,
-  ClusterScopedMetadata,
-  KubeJsonApiData,
-  KubeJsonApiDataFor,
-  KubeJsonApiObjectMetadata,
-  KubeObjectMetadata,
-  KubeStatusData,
-  NamespaceScopedMetadata,
-  OwnerReference,
-} from "@freelensapp/kube-object";
+  DeleteOptions,
+  DerivedKubeApiOptions,
+  IKubeWatchEvent,
+  KubeApiListOptions,
+  KubeApiOptions,
+  KubeApiQueryParams,
+  PropagationPolicy,
+  ResourceDescriptor,
+} from "@freelensapp/kube-api";
+export type { KubeObjectStatus as BaseKubeObjectStatus } from "@freelensapp/kube-object";
 
 export type { CreateKubeApiForLocalClusterConfig as ILocalKubeApiConfig } from "../../common/k8s-api/create-kube-api-for-cluster.injectable";
 
@@ -143,15 +157,15 @@ function KubeJsonApiCstr(config: JsonApiConfig, reqInit?: FetchRequestInit) {
   return createKubeJsonApi(config, reqInit);
 }
 
-export type KubeJsonApi = InternalKubeJsonApi;
+type ExternalKubeJsonApi = InternalKubeJsonApi;
 
-export const KubeJsonApi = Object.assign(
+const ExternalKubeJsonApi = Object.assign(
   KubeJsonApiCstr as unknown as new (
     config: JsonApiConfig,
     reqInit?: FetchRequestInit,
   ) => InternalKubeJsonApi,
   {
-    forCluster: asLazyInjectedForExtensionApi(createKubeJsonApiForClusterInjectable),
+    forCluster: asLazyInjectedFunctionForExtensionApi(createKubeJsonApiForClusterInjectable),
   },
 );
 
@@ -183,6 +197,7 @@ export type {
   JsonPatch,
   KubeObjectStoreLoadAllParams,
   KubeObjectStoreLoadingParams,
+  KubeObjectStoreOptions,
   KubeObjectStoreSubscribeParams,
 } from "../../common/k8s-api/kube-object.store";
 
@@ -191,22 +206,22 @@ function PodsApiConstructor(opts?: DerivedKubeApiOptions) {
   return new PodApi(getKubeApiDeps(), opts);
 }
 
-export type PodsApi = PodApi;
-export const PodsApi = PodsApiConstructor as unknown as new (opts?: DerivedKubeApiOptions) => PodApi;
+type ExternalPodsApi = PodApi;
+const ExternalPodsApi = PodsApiConstructor as unknown as new (opts?: DerivedKubeApiOptions) => PodApi;
 
 function NodesApiConstructor(opts?: DerivedKubeApiOptions) {
   return new NodeApi(getKubeApiDeps(), opts);
 }
 
-export type NodesApi = NodeApi;
-export const NodesApi = NodesApiConstructor as unknown as new (opts?: DerivedKubeApiOptions) => NodeApi;
+type ExternalNodesApi = NodeApi;
+const ExternalNodesApi = NodesApiConstructor as unknown as new (opts?: DerivedKubeApiOptions) => NodeApi;
 
 function DeploymentApiConstructor(opts?: DerivedKubeApiOptions) {
   return new InternalDeploymentApi(getKubeApiDeps(), opts);
 }
 
-export type DeploymentApi = InternalDeploymentApi;
-export const DeploymentApi = DeploymentApiConstructor as unknown as new (
+type ExternalDeploymentApi = InternalDeploymentApi;
+const ExternalDeploymentApi = DeploymentApiConstructor as unknown as new (
   opts?: DerivedKubeApiOptions,
 ) => InternalDeploymentApi;
 
@@ -214,58 +229,47 @@ function IngressApiConstructor(opts?: DerivedKubeApiOptions) {
   return new InternalIngressApi(getKubeApiDeps(), opts);
 }
 
-export type IngressApi = InternalIngressApi;
-export const IngressApi = IngressApiConstructor as unknown as new (opts?: DerivedKubeApiOptions) => InternalIngressApi;
+type ExternalIngressApi = InternalIngressApi;
+const ExternalIngressApi = IngressApiConstructor as unknown as new (opts?: DerivedKubeApiOptions) => InternalIngressApi;
 
 function PersistentVolumeClaimsApiConstructor(opts?: DerivedKubeApiOptions) {
   return new PersistentVolumeClaimApi(getKubeApiDeps(), opts);
 }
 
-export type PersistentVolumeClaimsApi = PersistentVolumeClaimApi;
-export const PersistentVolumeClaimsApi = PersistentVolumeClaimsApiConstructor as unknown as new (
+type ExternalPersistentVolumeClaimsApi = PersistentVolumeClaimApi;
+const ExternalPersistentVolumeClaimsApi = PersistentVolumeClaimsApiConstructor as unknown as new (
   opts?: DerivedKubeApiOptions,
 ) => PersistentVolumeClaimApi;
-
-export {
-  ClusterRole,
-  ClusterRoleBinding,
-  ConfigMap,
-  type Container as IPodContainer,
-  CronJob,
-  CustomResourceDefinition,
-  DaemonSet,
-  Deployment,
-  EndpointSlice,
-  Endpoints as Endpoint,
-  HorizontalPodAutoscaler,
-  Ingress,
-  Job,
-  KubeEvent,
-  LimitRange,
-  Namespace,
-  NetworkPolicy,
-  Node,
-  PersistentVolume,
-  PersistentVolumeClaim,
-  Pod,
-  type PodContainerStatus as IPodContainerStatus,
-  PodDisruptionBudget,
-  PriorityClass,
-  ReplicaSet,
-  ResourceQuota,
-  Role,
-  RoleBinding,
-  Secret,
-  type SecretReference as ISecretRef,
-  Service,
-  ServiceAccount,
-  StatefulSet,
-  StorageClass,
-} from "@freelensapp/kube-object";
 
 /**
  * The `KubeObject` that can be used in extensions with additional property to
  * get CRD metainfo and the API and Store objects.
+ *
+ * The `declare` lines narrow the instance `kind` and `apiVersion` to the
+ * literals of the static `kind` and `crd.apiVersions` (a union of literals for
+ * a class that serves several versions), so that `Renderer.K8sApi.detailsFor`
+ * and `menuItemFor` tell this class apart from another version of the same
+ * kind. `declare` emits nothing, so they change no runtime behaviour.
+ *
+ * @example
+ *
+ * ```ts
+ * import { Renderer } from "@freelensapp/extensions";
+ *
+ * class Example extends Renderer.K8sApi.LensExtensionKubeObject {
+ *   declare kind: "Example";
+ *   declare apiVersion: "example.com/v1";
+ *
+ *   static readonly kind = "Example";
+ *   static readonly namespaced = true;
+ *   static readonly apiBase = "/apis/example.com/v1/examples";
+ *   static readonly crd = {
+ *     apiVersions: ["example.com/v1"],
+ *     plural: "examples",
+ *     singular: "example",
+ *   };
+ * }
+ * ```
  */
 export class LensExtensionKubeObject<
   Metadata extends KubeObjectMetadata = KubeObjectMetadata,
@@ -281,11 +285,12 @@ export class LensExtensionKubeObject<
    * @example
    *
    * ```ts
+   * // `Example` as declared in the example of `LensExtensionKubeObject`
    * const api = Example.getApi<Example>();
    * const url = api.formatUrlForNotListing({ name: "foo" });
    * ```
    */
-  static getApi<K extends KubeObject<any, any, any>, Api extends KubeApi<K> = KubeApi<K>>(): Api {
+  static getApi<K extends KubeObject<any, any, any>, Api extends ExternalKubeApi<K> = ExternalKubeApi<K>>(): Api {
     if (!this.crd) {
       throw new Error(`API for ${this.name} is not for CRD and misses metainfo. Extension won't work correctly.`);
     }
@@ -305,8 +310,9 @@ export class LensExtensionKubeObject<
    * @example
    *
    * ```ts
-   * const api = Example.getStore<Example>();
-   * await store.loadAll({ namespaces });
+   * // `Example` as declared in the example of `LensExtensionKubeObject`
+   * const store = Example.getStore<Example>();
+   * await store.loadAll({ namespaces: ["default"] });
    * ```
    */
   static getStore<
@@ -328,3 +334,20 @@ export interface LensExtensionKubeObjectCRD {
   singular: string;
   shortNames?: string[];
 }
+
+// The type-and-value pairs above are declared under an `External` local name and
+// exported under the public one. A member whose exported name differs from its
+// local one reaches the bundled declaration as it is, with both meanings,
+// whereas a bundler that builds a helper per namespace member can keep only the
+// last declaration of a name: the `const`, which stays callable but is not
+// nameable. The fixture extension's `contract-types.ts` names each of them as a
+// type.
+export {
+  ExternalDeploymentApi as DeploymentApi,
+  ExternalIngressApi as IngressApi,
+  ExternalKubeApi as KubeApi,
+  ExternalKubeJsonApi as KubeJsonApi,
+  ExternalNodesApi as NodesApi,
+  ExternalPersistentVolumeClaimsApi as PersistentVolumeClaimsApi,
+  ExternalPodsApi as PodsApi,
+};

@@ -4,6 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { beforeEach, describe, expect, it } from "vitest";
 import resetThemeInjectable from "../../features/user-preferences/common/reset-theme.injectable";
 import userPreferencesStateInjectable from "../../features/user-preferences/common/state.injectable";
 import userPreferencesPersistentStorageInjectable from "../../features/user-preferences/common/storage.injectable";

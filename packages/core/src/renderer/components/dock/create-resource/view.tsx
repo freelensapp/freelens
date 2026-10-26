@@ -10,7 +10,7 @@ import { Spinner } from "@freelensapp/spinner";
 import { isObject, prevDefault } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import * as yaml from "js-yaml";
-import { makeObservable, observable } from "mobx";
+import { observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import apiManagerInjectable from "../../../../common/k8s-api/api-manager/manager.injectable";
@@ -55,11 +55,10 @@ interface Dependencies {
 
 @observer
 class NonInjectedCreateResource extends React.Component<CreateResourceProps & Dependencies> {
-  @observable error = "";
+  @observable accessor error = "";
 
   constructor(props: CreateResourceProps & Dependencies) {
     super(props);
-    makeObservable(this);
   }
 
   get tabId() {

@@ -5,6 +5,7 @@
  */
 
 import { sortBySemverVersion } from "@freelensapp/utilities";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import helmChartManagerInjectable from "../helm-chart-manager.injectable";
 import listHelmChartsInjectable from "../helm-service/list-helm-charts.injectable";

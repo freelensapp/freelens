@@ -6,7 +6,7 @@
 
 import { createKubeApiURL, parseKubeApi } from "@freelensapp/kube-api";
 import { getOrInsertWith, iter, lowerAndPluralize } from "@freelensapp/utilities";
-import { action, autorun, observable } from "mobx";
+import { action, autorun, observable, untracked } from "mobx";
 
 import type { KubeApi } from "@freelensapp/kube-api";
 import type { KubeObject, ObjectReference } from "@freelensapp/kube-object";
@@ -63,6 +63,16 @@ export class ApiManager {
       }
 
       this.apis.replace(newState);
+
+      // The store of a removed CRD API, whose CRD is gone, would watch a
+      // resource the cluster no longer serves, and a re-created CRD gets a new
+      // API that needs a new store.
+      for (const [apiBase, store] of untracked(() => [...this.defaultCrdStores])) {
+        if (newState.get(apiBase) !== store.api) {
+          store.stopWatching();
+          this.defaultCrdStores.delete(apiBase);
+        }
+      }
     });
   }
 

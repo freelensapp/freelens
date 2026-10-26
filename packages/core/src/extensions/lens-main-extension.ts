@@ -15,11 +15,9 @@ import { LensExtension } from "./lens-extension";
 import type { IComputedValue, IObservableArray } from "mobx";
 
 import type { CatalogEntity } from "../common/catalog";
-import type { MenuRegistration } from "../features/application-menu/main/menu-registration";
 import type { CatalogEntityRegistry } from "../main/catalog";
 import type { ShellEnvModifier } from "../main/shell-session/shell-env-modifier/shell-env-modifier-registration";
 import type { NavigateForExtension } from "../main/start-main-application/lens-window/navigate-for-extension.injectable";
-import type { TrayMenuRegistration } from "../main/tray/tray-menu-registration";
 import type { InstalledExtension } from "./common-api";
 import type { LensExtensionDependencies } from "./lens-extension";
 
@@ -29,9 +27,6 @@ interface LensMainExtensionDependencies extends LensExtensionDependencies {
 }
 
 export class LensMainExtension extends LensExtension {
-  appMenus: MenuRegistration[] | IComputedValue<MenuRegistration[]> = [];
-  trayMenus: TrayMenuRegistration[] | IComputedValue<TrayMenuRegistration[]> = [];
-
   /**
    * @ignore
    */

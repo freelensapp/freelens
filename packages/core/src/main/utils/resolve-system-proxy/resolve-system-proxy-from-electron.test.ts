@@ -6,6 +6,7 @@
 
 import asyncFn from "@async-fn/vitest";
 import { getPromiseStatus } from "@freelensapp/test-utils";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import logErrorInjectable from "../../../common/log-error.injectable";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import resolveSystemProxyFromElectronInjectable from "./resolve-system-proxy-from-electron.injectable";

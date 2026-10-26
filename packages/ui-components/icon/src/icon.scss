@@ -119,11 +119,7 @@
 
   &.interactive {
     cursor: pointer;
-    transition:
-      250ms color,
-      250ms opacity,
-      150ms background-color,
-      150ms box-shadow;
+    transition: 250ms color, 250ms opacity, 150ms background-color, 150ms box-shadow;
     border-radius: var(--border-radius);
 
     &.focusable:focus-visible {

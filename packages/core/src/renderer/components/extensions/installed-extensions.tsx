@@ -5,6 +5,7 @@
  */
 
 import { Icon } from "@freelensapp/icon";
+import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import { Spinner } from "@freelensapp/spinner";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
@@ -12,20 +13,26 @@ import { observer } from "mobx-react";
 import { useState } from "react";
 import extensionDiscoveryInjectable from "../../../extensions/extension-discovery/extension-discovery.injectable";
 import extensionInstallationStateStoreInjectable from "../../../extensions/extension-installation-state-store/extension-installation-state-store.injectable";
+import extensionLoaderInjectable from "../../../extensions/extension-loader/extension-loader.injectable";
+import { describeExtensionLoadStage } from "../../../extensions/extension-loader/load-failure";
 import { SearchInput } from "../input";
 import { MenuActions, MenuItem } from "../menu";
 import { SortableTable } from "../table/sortable-table";
 import confirmUninstallExtensionInjectable from "./confirm-uninstall-extension.injectable";
 import disableExtensionInjectable from "./disable-extension.injectable";
 import enableExtensionInjectable from "./enable-extension.injectable";
+import { getMessageFromError } from "./get-message-from-error/get-message-from-error";
 import styles from "./installed-extensions.module.scss";
 import userExtensionsInjectable from "./user-extensions/user-extensions.injectable";
+
+import type { ShowNotification } from "@freelensapp/notifications";
 
 import type { IComputedValue } from "mobx";
 
 import type { ExtensionDiscovery } from "../../../extensions/extension-discovery/extension-discovery";
 import type { ExtensionInstallationStateStore } from "../../../extensions/extension-installation-state-store/extension-installation-state-store";
-import type { InstalledExtension } from "../../../extensions/installed-extension";
+import type { ExtensionLoadFailureInProcess } from "../../../extensions/extension-loader/load-failure";
+import type { InstalledExtension, LensExtensionId } from "../../../extensions/installed-extension";
 import type { SortableTableColumn } from "../table/sortable-table";
 import type { ConfirmUninstallExtension } from "./confirm-uninstall-extension.injectable";
 import type { DisableExtension } from "./disable-extension.injectable";
@@ -40,15 +47,29 @@ interface Dependencies {
   enableExtension: EnableExtension;
   disableExtension: DisableExtension;
   confirmUninstallExtension: ConfirmUninstallExtension;
+  showErrorNotification: ShowNotification;
+  getLoadFailures: (extensionId: LensExtensionId) => ExtensionLoadFailureInProcess[];
 }
 
-function getStatus(extension: InstalledExtension) {
+function getStatus(extension: InstalledExtension, loadFailures: ExtensionLoadFailureInProcess[]) {
   if (!extension.isCompatible) {
     return "Incompatible";
   }
 
-  return extension.isEnabled ? "Enabled" : "Disabled";
+  if (!extension.isEnabled) {
+    return "Disabled";
+  }
+
+  return loadFailures.length > 0 ? "Failed to load" : "Enabled";
 }
+
+const describeLoadFailures = (loadFailures: ExtensionLoadFailureInProcess[]) =>
+  loadFailures
+    .map(
+      ({ process, stage, message }) =>
+        `Failed in the ${process} process while ${describeExtensionLoadStage(stage)}: ${message}`,
+    )
+    .join("\n");
 
 const NonInjectedInstalledExtensions = observer(
   ({
@@ -58,6 +79,8 @@ const NonInjectedInstalledExtensions = observer(
     confirmUninstallExtension,
     enableExtension,
     disableExtension,
+    showErrorNotification,
+    getLoadFailures,
   }: Dependencies & InstalledExtensionsProps) => {
     const [search, setSearch] = useState("");
 
@@ -81,9 +104,10 @@ const NonInjectedInstalledExtensions = observer(
       );
     }
 
+    const statusOf = (extension: InstalledExtension) => getStatus(extension, getLoadFailures(extension.id));
     const query = search.toLowerCase();
     const matchedExtensions = extensions.filter((extension) =>
-      [extension.manifest.name, extension.manifest.version, getStatus(extension)].some((field) =>
+      [extension.manifest.name, extension.manifest.version, statusOf(extension)].some((field) =>
         String(field).toLowerCase().includes(query),
       ),
     );
@@ -110,23 +134,54 @@ const NonInjectedInstalledExtensions = observer(
         title: "Version",
         width: "22%",
         sortBy: (extension) => extension.manifest.version,
-        renderCell: (extension) => extension.manifest.version,
+        renderCell: (extension) => (
+          <div>
+            <div>{extension.manifest.version}</div>
+            {!extension.isManaged ? (
+              <div className={styles.extensionProvenance} title={`Loaded from ${extension.absolutePath}`}>
+                development
+              </div>
+            ) : extension.isVerified ? (
+              <div
+                className={cssNames(styles.extensionProvenance, styles.verified)}
+                title="Its checksum was verified when this was installed"
+              >
+                verified
+              </div>
+            ) : (
+              <div
+                className={cssNames(styles.extensionProvenance, styles.unverified)}
+                title="No checksum was available when this was installed"
+              >
+                unverified
+              </div>
+            )}
+          </div>
+        ),
       },
       {
         id: "status",
         title: "Status",
         width: "22%",
-        sortBy: getStatus,
-        renderCell: (extension) => (
-          <div
-            className={cssNames({
-              [styles.enabled]: extension.isEnabled,
-              [styles.invalid]: !extension.isCompatible,
-            })}
-          >
-            {getStatus(extension)}
-          </div>
-        ),
+        sortBy: statusOf,
+        renderCell: (extension) => {
+          // A failure is only reported for an extension the user wants to run:
+          // disabling it is what takes the failure away.
+          const loadFailures = extension.isEnabled ? getLoadFailures(extension.id) : [];
+          const hasFailed = extension.isCompatible && loadFailures.length > 0;
+
+          return (
+            <div
+              className={cssNames({
+                [styles.enabled]: extension.isEnabled && !hasFailed,
+                [styles.invalid]: !extension.isCompatible || hasFailed,
+              })}
+              title={hasFailed ? describeLoadFailures(loadFailures) : undefined}
+            >
+              {getStatus(extension, loadFailures)}
+            </div>
+          );
+        },
       },
       {
         id: "actions",
@@ -141,7 +196,16 @@ const NonInjectedInstalledExtensions = observer(
             <div className="flex justify-end">
               <MenuActions id={`menu-actions-for-installed-extensions-for-${id}`} usePortal toolbar={false}>
                 {isCompatible && (
-                  <MenuItem disabled={isUninstalling} onClick={() => toggleExtension(id)}>
+                  <MenuItem
+                    disabled={isUninstalling}
+                    onClick={() =>
+                      toggleExtension(id).catch((error) =>
+                        showErrorNotification(
+                          `Failed to ${isEnabled ? "disable" : "enable"} ${extension.manifest.name}: ${getMessageFromError(error)}`,
+                        ),
+                      )
+                    }
+                  >
                     <Icon material={isEnabled ? "unpublished" : "check_circle"} />
                     <span className="title" aria-disabled={isUninstalling}>
                       {isEnabled ? "Disable" : "Enabled"}
@@ -182,14 +246,20 @@ const NonInjectedInstalledExtensions = observer(
 export const InstalledExtensions = withInjectables<Dependencies, InstalledExtensionsProps>(
   NonInjectedInstalledExtensions,
   {
-    getProps: (di, props) => ({
-      ...props,
-      extensionDiscovery: di.inject(extensionDiscoveryInjectable),
-      extensionInstallationStateStore: di.inject(extensionInstallationStateStoreInjectable),
-      userExtensions: di.inject(userExtensionsInjectable),
-      enableExtension: di.inject(enableExtensionInjectable),
-      disableExtension: di.inject(disableExtensionInjectable),
-      confirmUninstallExtension: di.inject(confirmUninstallExtensionInjectable),
-    }),
+    getProps: (di, props) => {
+      const extensionLoader = di.inject(extensionLoaderInjectable);
+
+      return {
+        ...props,
+        extensionDiscovery: di.inject(extensionDiscoveryInjectable),
+        extensionInstallationStateStore: di.inject(extensionInstallationStateStoreInjectable),
+        userExtensions: di.inject(userExtensionsInjectable),
+        enableExtension: di.inject(enableExtensionInjectable),
+        disableExtension: di.inject(disableExtensionInjectable),
+        confirmUninstallExtension: di.inject(confirmUninstallExtensionInjectable),
+        showErrorNotification: di.inject(showErrorNotificationInjectable),
+        getLoadFailures: (extensionId) => extensionLoader.getLoadFailures(extensionId),
+      };
+    },
   },
 );

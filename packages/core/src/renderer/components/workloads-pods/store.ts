@@ -6,7 +6,7 @@
 
 import { cpuUnitsToNumber, unitsToBytes } from "@freelensapp/utilities";
 import { countBy } from "es-toolkit/compat";
-import { computed, makeObservable, observable } from "mobx";
+import { computed, observable } from "mobx";
 import { KubeObjectStore } from "../../../common/k8s-api/kube-object.store";
 
 import type { PodApi, PodMetricsApi } from "@freelensapp/kube-api";
@@ -25,7 +25,6 @@ export class PodStore extends KubeObjectStore<Pod, PodApi> {
     opts?: KubeObjectStoreOptions,
   ) {
     super(dependencies, api, opts);
-    makeObservable(this);
   }
 
   readonly kubeMetrics = observable.array<PodMetrics>([]);

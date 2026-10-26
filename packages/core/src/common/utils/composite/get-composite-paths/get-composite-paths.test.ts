@@ -5,6 +5,7 @@
  */
 
 import { sortBy } from "es-toolkit";
+import { describe, expect, it } from "vitest";
 import { getCompositeFor } from "../get-composite/get-composite";
 import { getCompositePaths } from "./get-composite-paths";
 

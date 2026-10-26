@@ -86,7 +86,11 @@ export class SettingLayout extends React.Component<SettingLayoutProps> {
       closeButtonProps,
       ...elemProps
     } = this.props;
-    const className = cssNames("SettingLayout", { showNavigation: navigation }, this.props.className);
+    const className = cssNames(
+      "SettingLayout",
+      { showNavigation: navigation, withCloseButton: provideBackButtonNavigation },
+      this.props.className,
+    );
 
     return (
       <div {...elemProps} className={className}>

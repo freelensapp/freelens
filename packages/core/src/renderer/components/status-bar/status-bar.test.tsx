@@ -5,6 +5,7 @@
  */
 
 import { getRandomIdInjectionToken } from "@freelensapp/random";
+import { beforeEach, describe, expect, it } from "vitest";
 import { getApplicationBuilder } from "../test-utils/get-application-builder";
 import setStatusBarStatusInjectable from "./set-status-bar-status.injectable";
 

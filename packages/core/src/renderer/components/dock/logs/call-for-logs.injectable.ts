@@ -10,14 +10,14 @@ import { getInjectable } from "@ogre-tools/injectable";
 import type { ResourceDescriptor } from "@freelensapp/kube-api";
 import type { PodLogsQuery } from "@freelensapp/kube-object";
 
-export type CallForLogs = (params: ResourceDescriptor, query?: PodLogsQuery) => Promise<string>;
+export type CallForLogs = (params: ResourceDescriptor, query?: PodLogsQuery, signal?: AbortSignal) => Promise<string>;
 
 const callForLogsInjectable = getInjectable({
   id: "call-for-logs",
   instantiate: (di): CallForLogs => {
     const api = di.inject(podApiInjectable);
 
-    return (params, query) => api.getLogs(params, query);
+    return (params, query, signal) => api.getLogs(params, query, signal);
   },
 });
 

@@ -14,7 +14,7 @@ import { cssNames, disposer } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import autoBindReact from "auto-bind/react";
 import { debounce, merge } from "es-toolkit/compat";
-import { action, makeObservable, observable, reaction } from "mobx";
+import { action, compareShallow, observable, observableRef, reaction } from "mobx";
 import { observer } from "mobx-react";
 import { editor, Uri } from "monaco-editor";
 import React from "react";
@@ -79,10 +79,10 @@ class NonInjectedMonacoEditor extends React.Component<MonacoEditorProps & Depend
   private staticId = `editor-id#${Math.round(1e7 * Math.random())}`;
   private dispose = disposer();
 
-  @observable.ref containerElem: HTMLDivElement | null = null;
-  @observable.ref editor!: editor.IStandaloneCodeEditor;
-  @observable readonly dimensions: { width?: number; height?: number } = {};
-  @observable unmounting = false;
+  @observableRef accessor containerElem: HTMLDivElement | null = null;
+  @observableRef accessor editor: editor.IStandaloneCodeEditor | undefined = undefined;
+  @observable accessor dimensions: { width?: number; height?: number } = {};
+  @observable accessor unmounting = false;
 
   // TODO: investigate how to replace with "common/logger"
   //  currently leads for stucking UI forever & infinite loop.
@@ -93,17 +93,22 @@ class NonInjectedMonacoEditor extends React.Component<MonacoEditorProps & Depend
   // below are read from the componentDidMount reactions (their own derivations).
   // Keep an observable snapshot of props (refreshed on update) so those getters
   // stay reactive across that boundary.
-  @observable.ref private observableProps: Readonly<MonacoEditorProps & Dependencies>;
+  @observableRef private accessor observableProps: Readonly<MonacoEditorProps & Dependencies>;
 
   constructor(props: MonacoEditorProps & Dependencies) {
     super(props);
     this.observableProps = props;
-    makeObservable(this);
     autoBindReact(this);
   }
 
-  componentDidUpdate() {
-    this.observableProps = this.props;
+  componentDidUpdate(prevProps: Readonly<MonacoEditorProps & Dependencies>) {
+    // React 19 resolves `defaultProps` into a new props object on every render,
+    // including the re-render that the observer runs when observableProps
+    // changes. Replacing the snapshot unconditionally would make every update
+    // schedule another one, forever, since render reads observableProps.
+    if (!compareShallow(prevProps, this.props)) {
+      this.observableProps = this.props;
+    }
   }
 
   // These getters read props from the observable snapshot (observableProps), not
@@ -150,7 +155,7 @@ class NonInjectedMonacoEditor extends React.Component<MonacoEditorProps & Depend
    * Monitor editor's dom container element box-size and sync with monaco's dimensions
    * @private
    */
-  private bindResizeObserver() {
+  private bindResizeObserver(monacoEditor: editor.IStandaloneCodeEditor) {
     const resizeObserver = new ResizeObserver((entries) => {
       for (const entry of entries) {
         const { width, height } = entry.contentRect;
@@ -159,7 +164,7 @@ class NonInjectedMonacoEditor extends React.Component<MonacoEditorProps & Depend
       }
     });
 
-    const containerElem = this.editor.getContainerDomNode();
+    const containerElem = monacoEditor.getContainerDomNode();
 
     resizeObserver.observe(containerElem);
 
@@ -167,6 +172,10 @@ class NonInjectedMonacoEditor extends React.Component<MonacoEditorProps & Depend
   }
 
   protected onModelChange(model: editor.ITextModel, oldModel?: editor.ITextModel) {
+    if (!this.editor) {
+      return;
+    }
+
     this.logger.info("[MONACO]: model change", { model, oldModel }, this.logMetadata);
 
     if (oldModel) {
@@ -202,6 +211,10 @@ class NonInjectedMonacoEditor extends React.Component<MonacoEditorProps & Depend
   }
 
   componentDidMount() {
+    // React.StrictMode unmounts and mounts the same instance again in
+    // development, so a mount has to undo what the previous unmount did.
+    this.unmounting = false;
+
     try {
       this.createEditor();
       this.logger.debug(`[MONACO]: editor did mount`, this.logMetadata);
@@ -212,11 +225,13 @@ class NonInjectedMonacoEditor extends React.Component<MonacoEditorProps & Depend
 
   componentWillUnmount() {
     this.unmounting = true;
-    this.saveViewState(this.model);
+    this.validateLazy.cancel();
 
     if (this.editor) {
+      this.saveViewState(this.model);
       this.dispose();
       this.editor.dispose();
+      this.editor = undefined;
     }
   }
 
@@ -227,7 +242,7 @@ class NonInjectedMonacoEditor extends React.Component<MonacoEditorProps & Depend
     const { language, readOnly, value: defaultValue } = this.props;
     const { theme } = this;
 
-    this.editor = editor.create(this.containerElem, {
+    const monacoEditor = editor.create(this.containerElem, {
       model: this.model,
       detectIndentation: false, // allow `option.tabSize` to use custom number of spaces for [Tab]
       value: defaultValue,
@@ -237,26 +252,27 @@ class NonInjectedMonacoEditor extends React.Component<MonacoEditorProps & Depend
       ...this.options,
     });
 
+    this.editor = monacoEditor;
     this.logger.debug(`[MONACO]: editor created for language=${language}, theme=${theme}`, this.logMetadata);
     this.validateLazy(); // validate initial value
     this.restoreViewState(this.model); // restore previous state if any
 
     if (this.props.autoFocus) {
-      this.editor.focus();
+      monacoEditor.focus();
     }
 
-    const onDidLayoutChangeDisposer = this.editor.onDidLayoutChange((layoutInfo) => {
+    const onDidLayoutChangeDisposer = monacoEditor.onDidLayoutChange((layoutInfo) => {
       this.props.onDidLayoutChange?.(layoutInfo);
     });
 
-    const onValueChangeDisposer = this.editor.onDidChangeModelContent((event) => {
-      const value = this.editor.getValue();
+    const onValueChangeDisposer = monacoEditor.onDidChangeModelContent((event) => {
+      const value = monacoEditor.getValue();
 
       this.props.onChange?.(value, event);
       this.validateLazy(value);
     });
 
-    const onContentSizeChangeDisposer = this.editor.onDidContentSizeChange((params) => {
+    const onContentSizeChangeDisposer = monacoEditor.onDidContentSizeChange((params) => {
       this.props.onDidContentSizeChange?.(params);
     });
 
@@ -272,13 +288,13 @@ class NonInjectedMonacoEditor extends React.Component<MonacoEditorProps & Depend
       ),
       reaction(
         () => this.options,
-        (opts) => this.editor.updateOptions(opts),
+        (opts) => monacoEditor.updateOptions(opts),
       ),
 
       () => onDidLayoutChangeDisposer.dispose(),
       () => onValueChangeDisposer.dispose(),
       () => onContentSizeChangeDisposer.dispose(),
-      this.bindResizeObserver(),
+      this.bindResizeObserver(monacoEditor),
     );
   }
 
@@ -290,7 +306,7 @@ class NonInjectedMonacoEditor extends React.Component<MonacoEditorProps & Depend
   }
 
   setValue(value = ""): void {
-    if (value == this.getValue()) return;
+    if (!this.editor || value == this.getValue()) return;
 
     this.editor.setValue(value);
     this.validate(value);

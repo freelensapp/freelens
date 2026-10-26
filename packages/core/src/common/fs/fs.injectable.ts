@@ -16,7 +16,7 @@ const fsInjectable = getInjectable({
   id: "fs",
   instantiate: () => {
     const {
-      promises: { readFile, writeFile, readdir, lstat, rm, access, stat, unlink, rename },
+      promises: { readFile, writeFile, readdir, lstat, rm, access, stat, unlink, rename, realpath },
       ensureDir,
       ensureDirSync,
       readFileSync,
@@ -53,6 +53,7 @@ const fsInjectable = getInjectable({
       stat,
       unlink,
       rename,
+      realpath: realpath as (path: string) => Promise<string>,
     };
   },
   causesSideEffects: true,

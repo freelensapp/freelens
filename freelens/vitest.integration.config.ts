@@ -1,10 +1,8 @@
 import { defineConfig } from "vitest/config";
 
-// Phase 7 of the v2 plan (docs/v2-plan.md): the integration tests, previously
-// run by Jest (ts-jest + @side/jest-runtime), run under Vitest. They drive a
-// packaged Electron app through Playwright, so they are not part of the root
-// vitest.config.ts unit-test projects: they need `pnpm build:app:dir` output
-// in dist/ and run only via `pnpm test:integration`.
+// The integration tests drive a packaged Electron app through Playwright, so
+// they are not part of the root vitest.config.ts unit-test projects: they need
+// `pnpm build:app:dir` output in dist/ and run only via `pnpm test:integration`.
 export default defineConfig({
   test: {
     name: "freelens-integration",

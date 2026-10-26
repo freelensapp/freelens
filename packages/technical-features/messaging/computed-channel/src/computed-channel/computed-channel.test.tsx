@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, it } from "vitest";
 import "@testing-library/jest-dom/vitest";
 import { startApplicationInjectionToken } from "@freelensapp/application";
 import { registerFeature } from "@freelensapp/feature-core";

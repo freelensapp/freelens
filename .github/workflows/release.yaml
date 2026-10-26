@@ -14,9 +14,13 @@ jobs:
   make-draft-release:
     name: make draft release
 
+    # Never on a fork: it has none of the signing and publishing secrets. Every
+    # other job needs this one, so they are all skipped with it.
+    if: github.repository_owner == 'freelensapp'
+
     permissions: write-all
 
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
     timeout-minutes: 360
 
     steps:
@@ -26,9 +30,9 @@ jobs:
       # yq comes from mise so that its version has a single source (mise.toml)
       # and the download is verified against mise.lock.
       - name: Set up mise
-        uses: jdx/mise-action@v4
+        uses: jdx/mise-action@v5
         with:
-          version: 2026.8.0 # datasource=github-releases depName=jdx/mise
+          version: 2026.10.19 # datasource=github-releases depName=jdx/mise
           install_args: yq
 
       - name: Check if package version matches
@@ -49,6 +53,10 @@ jobs:
     needs:
       - make-draft-release
 
+    # Renovate bumps the macOS and Windows runners with a
+    # "datasource=github-runners" hint (see .renovaterc.json). Ubuntu has none:
+    # it stays on the oldest image for binary compatibility with older
+    # distributions.
     strategy:
       fail-fast: false
       matrix:
@@ -63,22 +71,22 @@ jobs:
             arch: arm64
             concurrency: linux-arm64
 
-          - runs-on: macos-15
+          - runs-on: macos-26 # datasource=github-runners
             os: macos
             arch: arm64
             concurrency: macos-arm64
 
-          - runs-on: macos-15-intel
+          - runs-on: macos-26-intel # datasource=github-runners
             os: macos
             arch: x64
             concurrency: macos-x64
 
-          - runs-on: windows-11-arm
+          - runs-on: windows-11-arm # datasource=github-runners
             os: windows
             arch: arm64
             concurrency: windows-arm64
 
-          - runs-on: windows-2025
+          - runs-on: windows-2025 # datasource=github-runners
             os: windows
             arch: x64
             concurrency: windows-x64
@@ -92,6 +100,12 @@ jobs:
     env:
       DO_NOT_TRACK: "1"
       ELECTRON_BUILDER_CACHE: ${{ github.workspace }}/.cache/electron-builder
+      # The Syft that creates the SBOMs. anchore/sbom-action@v0 defaults to an
+      # older one, without the Go symbol capture the scan needs (see Create
+      # SBOM for the vulnerability scan). Stored without the leading "v"
+      # because the Renovate manager that bumps it strips the "v" on every
+      # bump; it is re-added where this is consumed.
+      SYFT_VERSION: 1.55.0 # datasource=github-releases depName=anchore/syft
 
     steps:
       - name: Checkout
@@ -110,9 +124,9 @@ jobs:
       # Windows runners, where winget/choco is not on every image (in particular
       # the windows-11-arm one) and yq used to be downloaded by hand.
       - name: Set up mise
-        uses: jdx/mise-action@v4
+        uses: jdx/mise-action@v5
         with:
-          version: 2026.8.0 # datasource=github-releases depName=jdx/mise
+          version: 2026.10.19 # datasource=github-releases depName=jdx/mise
           install_args: yq
 
       - name: Setup node
@@ -144,11 +158,19 @@ jobs:
 
       - name: Get Electron version
         shell: bash
-        run: echo "electron_version=$(yq -py -oy -r .importers.freelens.devDependencies.electron.version pnpm-lock.yaml | sed 's/(.*)//')" | tee -a $GITHUB_ENV
+        # pnpm-lock.yaml holds several YAML documents (pnpm 12 puts packageManagerDependencies
+        # in a document of its own), so evaluate them all and take the one that has the importer.
+        # The version carries a peer suffix, e.g. 1.2.3(supports-color@8.1.1), which split drops.
+        run: |
+          electron_version=$(yq ea -r '[.importers.freelens.devDependencies.electron.version | select(. != null)] | .[0] // error("electron not found in pnpm-lock.yaml") | split("(") | .[0]' pnpm-lock.yaml)
+          echo "electron_version=${electron_version}" | tee -a "${GITHUB_ENV}"
 
       - name: Get Electron Builder version
         shell: bash
-        run: echo "electron_builder_version=$(yq -py -oy -r .importers.freelens.devDependencies.electron-builder.version pnpm-lock.yaml | sed 's/(.*)//')" | tee -a $GITHUB_ENV
+        # Same multi-document lookup as the Electron version above.
+        run: |
+          electron_builder_version=$(yq ea -r '[.importers.freelens.devDependencies.electron-builder.version | select(. != null)] | .[0] // error("electron-builder not found in pnpm-lock.yaml") | split("(") | .[0]' pnpm-lock.yaml)
+          echo "electron_builder_version=${electron_builder_version}" | tee -a "${GITHUB_ENV}"
 
       # electron-builder's Electron zip downloader doesn't accept a cache
       # directory override and always writes into the OS-default Electron cache
@@ -189,6 +211,17 @@ jobs:
           restore-keys: |
             ${{ matrix.runs-on }}-${{ matrix.arch }}-electron-builder-
 
+      # Turborepo does not cache the binaries, see "Bundled Binary Versions"
+      # in AGENTS.md. Saved right after the build.
+      - name: Restore bundled binaries cache
+        id: binaries-cache-restore
+        uses: actions/cache/restore@v6
+        with:
+          path: freelens/binaries
+          key: ${{ runner.os }}-${{ runner.arch }}-binaries-${{ hashFiles('freelens/binaries.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ runner.arch }}-binaries-
+
       - name: Install pnpm dependencies
         id: install-pnpm
         shell: bash
@@ -206,6 +239,23 @@ jobs:
         env:
           electron_config_cache: ${{ env.electron_cache_dir }}
         run: node "$(node -p "require.resolve('electron/install.js')")"
+
+      # Without known checksums, @electron/get downloads SHASUMS256.txt from
+      # GitHub on every build, bypassing its cache, even when the Electron zip
+      # is cached, so an outage of GitHub fails the packaging. electron-builder
+      # takes them from SHASUMS256.txt-<version> at the root of that cache
+      # instead, and the electron package ships the same checksums, which the
+      # lockfile has verified.
+      - name: Seed Electron checksums
+        shell: bash
+        working-directory: freelens
+        run: |-
+          mkdir -p "$electron_cache_dir"
+          node -e '
+            const checksums = require("electron/checksums.json");
+            const lines = Object.entries(checksums).map(([file, sha256]) => `${sha256} *${file}\n`);
+            require("node:fs").writeFileSync(process.argv[1], lines.join(""));
+          ' "$electron_cache_dir/SHASUMS256.txt-$electron_version"
 
       - name: Build packages
         if: runner.os != 'Windows'
@@ -237,6 +287,13 @@ jobs:
       - name: Build extra resources (retry 2)
         if: steps.build-resources-2.outcome == 'failure'
         run: pnpm --color=always build:resources
+
+      - name: Save bundled binaries cache
+        if: steps.binaries-cache-restore.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v6
+        with:
+          path: freelens/binaries
+          key: ${{ steps.binaries-cache-restore.outputs.cache-primary-key }}
 
       - name: Build Electron app (macOS)
         id: build-macos
@@ -281,6 +338,71 @@ jobs:
           CSC_INSTALLER_LINK: ${{ secrets.CSC_INSTALLER_LINK }}
           CSC_INSTALLER_KEY_PASSWORD: ${{ secrets.CSC_INSTALLER_KEY_PASSWORD }}
           DEBUG: electron-builder,electron-builder:*
+
+      # Guards the oldest macOS the build runs on, which the runner image does
+      # not decide: LSMinimumSystemVersion comes from Electron, and minos is
+      # set per binary by whoever built it (Electron, the node-pty prebuilds,
+      # the Go toolchain of kubectl, helm and freelens-k8s-proxy). Fails when
+      # either goes above MACOS_MIN_VERSION, and warns about a binary that
+      # needs a newer macOS than the app declares: such an app installs and
+      # starts there, then fails when it runs that binary.
+      - name: Verify minimum macOS version (macOS)
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          set -eo pipefail
+          shopt -s nullglob
+          # 1.2.0 -> 1.2, so that sort -V does not order 12 below 12.0
+          norm() {
+            local v=$1
+            while [[ $v == *.0 ]]; do v=${v%.0}; done
+            echo "$v"
+          }
+          newer() {
+            local a b
+            a=$(norm "$1")
+            b=$(norm "$2")
+            [[ $a != "$b" && $(printf '%s\n' "$a" "$b" | sort -V | tail -n1) == "$a" ]]
+          }
+          apps=(freelens/dist/mac*/*.app)
+          if [[ ${#apps[@]} -eq 0 ]]; then
+            echo "No .app under freelens/dist" >&2
+            exit 1
+          fi
+          status=0
+          for app in "${apps[@]}"; do
+            lsmin=$(plutil -extract LSMinimumSystemVersion raw "$app/Contents/Info.plist")
+            echo "$app: LSMinimumSystemVersion $lsmin"
+            if newer "$lsmin" "$MACOS_MIN_VERSION"; then
+              echo "::error::$app declares macOS $lsmin, newer than $MACOS_MIN_VERSION"
+              status=1
+            fi
+            echo "::group::minos of the binaries in $app"
+            while IFS= read -r -d '' f; do
+              file -b "$f" | grep -q '^Mach-O' || continue
+              # The highest minimum of all architectures, from LC_BUILD_VERSION
+              # or, in older binaries, LC_VERSION_MIN_MACOSX.
+              minos=$(vtool -show-build "$f" |
+                perl -ne '$c = $1 if /^\s*cmd (\S+)/; print "$1\n" if ($c eq "LC_BUILD_VERSION" && /^\s*minos (\S+)/) || ($c eq "LC_VERSION_MIN_MACOSX" && /^\s*version (\S+)/)' |
+                sort -V | tail -n1)
+              echo "${minos:-none} ${f#"$app"/}"
+              if [[ -z $minos ]]; then
+                echo "::error::${f#"$app"/} has no minimum macOS version"
+                status=1
+              elif newer "$minos" "$MACOS_MIN_VERSION"; then
+                echo "::error::${f#"$app"/} needs macOS $minos, newer than $MACOS_MIN_VERSION"
+                status=1
+              elif newer "$minos" "$lsmin"; then
+                echo "::warning::${f#"$app"/} needs macOS $minos, newer than the $lsmin the app declares"
+              fi
+            done < <(find "$app" -type f -print0)
+            echo "::endgroup::"
+          done
+          exit $status
+        env:
+          # Electron declares 13.0, and helm and freelens-k8s-proxy need the
+          # same.
+          MACOS_MIN_VERSION: "13.0"
 
       - name: Notarize PKG (macOS)
         id: notarize-pkg
@@ -421,14 +543,39 @@ jobs:
           esac
           ws='${{ github.workspace }}'
           dir="freelens/dist/$unpacked"
+          # node-pty's bundled ConPTY (conpty.dll and the OpenConsole.exe it
+          # starts for every terminal) comes signed by Microsoft. Keep that
+          # signature instead of replacing it with ours: a binary with a
+          # Microsoft name and another publisher's signature is itself
+          # something endpoint protection heuristics look for.
+          conpty="$dir/resources/app.asar.unpacked/node_modules/node-pty/prebuilds/win32-${{ matrix.arch }}/conpty"
+          keep=()
           list="$RUNNER_TEMP/sign-files.txt"
           : > "$list"
           while IFS= read -r -d '' f; do
+            if [[ "$f" == "$conpty/"* ]]; then
+              keep+=("$f")
+              continue
+            fi
             if file -b "$f" | grep -q 'PE32'; then
               rel="${f#./}"
               printf '%s\\%s\n' "$ws" "${rel//\//\\}" >> "$list"
             fi
           done < <(find "$dir" -type f \( -iname '*.dll' -o -iname '*.exe' -o -iname '*.node' \) -print0)
+          # Terminals do not start without them, and an unsigned one must not
+          # ship just because it was left out of the list above.
+          if [[ ${#keep[@]} -ne 2 ]]; then
+            echo "Expected conpty.dll and OpenConsole.exe under ${conpty}, found ${#keep[@]} file(s)" >&2
+            exit 1
+          fi
+          for f in "${keep[@]}"; do
+            signer=$(SIGNED_FILE="$f" pwsh -NoProfile -Command '$s = Get-AuthenticodeSignature -LiteralPath $env:SIGNED_FILE; if ($s.Status -eq "Valid") { $s.SignerCertificate.Subject }')
+            if [[ "$signer" != *"O=Microsoft Corporation"* ]]; then
+              echo "${f} is not validly signed by Microsoft (signer: ${signer:-none})" >&2
+              exit 1
+            fi
+            echo "Keeping the Microsoft signature of ${f}"
+          done
           if [[ ! -s "$list" ]]; then
             echo "No Windows PE binaries found under ${dir} to sign" >&2
             exit 1
@@ -584,10 +731,37 @@ jobs:
       - name: Create SBOM
         uses: anchore/sbom-action@v0
         with:
+          # The "v" is added here, not in SYFT_VERSION: the installer resolves
+          # the value as a literal git tag, and a bare version 404s.
+          syft-version: v${{ env.SYFT_VERSION }}
           format: spdx-json
           output-file: "freelens/dist/${{ github.event.repository.name }}-${{ matrix.os }}-${{ matrix.arch == 'x64' && 'amd64' || matrix.arch }}-sbom.spdx.json"
           github-token: ${{ secrets.GITHUB_TOKEN }}
           artifact-name: "${{ github.event.repository.name }}-${{ matrix.os }}-${{ matrix.arch == 'x64' && 'amd64' || matrix.arch }}-sbom.spdx.json"
+          upload-release-assets: false
+
+      # The SBOM release-scan.yaml scans, published next to the SPDX one above.
+      # It is syft-json with Go symbol capture, because Grype matches a Go
+      # advisory against the vulnerable functions it names only when the
+      # package carries the symbols compiled into the binary. Without them it
+      # falls back to the whole module and reports advisories for code the
+      # binary never contains. Only syft-json can carry the symbols: SPDX and
+      # CycloneDX have no field for them.
+      #
+      # Created by the same Syft from the same tree as the SPDX SBOM, so the
+      # two describe the same build. Syft does not read SBOM files in a
+      # directory scan unless asked to, so the SPDX SBOM does not show up in
+      # this one.
+      - name: Create SBOM for the vulnerability scan
+        uses: anchore/sbom-action@v0
+        env:
+          SYFT_GOLANG_CAPTURE_SYMBOLS: all
+        with:
+          syft-version: v${{ env.SYFT_VERSION }}
+          format: syft-json
+          output-file: "freelens/dist/${{ github.event.repository.name }}-${{ matrix.os }}-${{ matrix.arch == 'x64' && 'amd64' || matrix.arch }}-sbom.syft.json"
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          upload-artifact: false
           upload-release-assets: false
 
       - name: Create runtime package list
@@ -602,12 +776,14 @@ jobs:
           # needs the keys as the runtime closure (to drop build-time findings)
           # and the paths as the reported location for npm findings (grype
           # otherwise reports them against pnpm-lock.yaml). --legacy is required
-          # because the workspace does not set inject-workspace-packages. The
+          # because the workspace does not set inject-workspace-packages, and
+          # allow-unused-patches because patchedDependencies also patches
+          # devDependencies, which a production deploy does not install. The
           # lowercase repo-name prefix keeps this file out of the Freelens*.*
           # release-upload glob; it travels as a run artifact instead.
           deploy_dir="$RUNNER_TEMP/freelens-prod"
           rm -rf "$deploy_dir"
-          pnpm --filter freelens deploy --prod --legacy --ignore-scripts "$deploy_dir"
+          pnpm --filter freelens deploy --prod --legacy --ignore-scripts --config.allow-unused-patches=true "$deploy_dir"
           os="${{ matrix.os }}"
           arch="${{ matrix.arch == 'x64' && 'amd64' || matrix.arch }}"
           out="freelens/dist/${{ github.event.repository.name }}-${os}-${arch}-prod-packages.json"
@@ -639,8 +815,8 @@ jobs:
           version="${GITHUB_REF_NAME#v}"
           os="${{ matrix.os }}"
           arch="${{ matrix.arch == 'x64' && 'amd64' || matrix.arch }}"
-          for f in freelens/dist/*-sbom.spdx.json; do
-            newname="freelens/dist/Freelens-${version}-${os}-${arch}-sbom.spdx.json"
+          for f in freelens/dist/*-sbom.spdx.json freelens/dist/*-sbom.syft.json; do
+            newname="freelens/dist/Freelens-${version}-${os}-${arch}-sbom.${f##*-sbom.}"
             mv "$f" "$newname"
             if [ -f "${f}.sha256" ]; then
               mv "${f}.sha256" "${newname}.sha256"
@@ -651,7 +827,7 @@ jobs:
         if: runner.os == 'Linux' || runner.os == 'Windows'
         shell: bash
         run: |
-          for f in freelens/dist/*-sbom.spdx.json; do
+          for f in freelens/dist/*-sbom.spdx.json freelens/dist/*-sbom.syft.json; do
             pushd freelens/dist > /dev/null
             sha256sum $(basename $f) | tee $(basename $f).sha256
             popd > /dev/null
@@ -661,7 +837,7 @@ jobs:
         if: runner.os == 'macOS'
         shell: bash
         run: |
-          for f in freelens/dist/*-sbom.spdx.json; do
+          for f in freelens/dist/*-sbom.spdx.json freelens/dist/*-sbom.syft.json; do
             pushd freelens/dist > /dev/null
             shasum -a 256 $(basename $f) | tee $(basename $f).sha256
             popd > /dev/null
@@ -710,7 +886,7 @@ jobs:
       - make-draft-release
       - build-app
 
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
 
     permissions:
       actions: read
@@ -725,9 +901,9 @@ jobs:
       # yq comes from mise so that its version has a single source (mise.toml)
       # and the download is verified against mise.lock.
       - name: Set up mise
-        uses: jdx/mise-action@v4
+        uses: jdx/mise-action@v5
         with:
-          version: 2026.8.0 # datasource=github-releases depName=jdx/mise
+          version: 2026.10.19 # datasource=github-releases depName=jdx/mise
           install_args: yq
 
       - name: Download runtime package lists
@@ -788,7 +964,7 @@ jobs:
       - build-app
       - publish-runtime-package-list
 
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
 
     permissions:
       actions: read
@@ -847,7 +1023,7 @@ jobs:
       - publish-runtime-package-list
       - attest-artifacts
 
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
 
     steps:
       - name: Checkout
@@ -870,7 +1046,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - runs-on: ubuntu-24.04-arm
+          - runs-on: ubuntu-26.04-arm
             arch: arm64
 
     runs-on: ${{ matrix.runs-on }}
@@ -970,7 +1146,7 @@ jobs:
       - make-draft-release
       - publish-github-release
 
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
     environment: apt-signing
 
     steps:
