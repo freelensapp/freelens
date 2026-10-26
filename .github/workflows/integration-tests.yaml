@@ -482,9 +482,11 @@ jobs:
   # a change being at fault. A pull request runs them on Linux only; every
   # other event runs them here as well. A separate job, because a matrix
   # entry cannot be left out by event: `include` adds back what `exclude`
-  # removed. Its checks are not required for that reason.
+  # removed. Its checks are not required for that reason. The name names no
+  # matrix value: a skipped job shows its name unevaluated, and GitHub appends
+  # the values of the matrix to a name without them.
   test-integration-macos-windows:
-    name: integration tests on ${{ matrix.runs-on }}
+    name: integration tests on macOS and Windows
 
     if: github.event_name != 'pull_request'
 
