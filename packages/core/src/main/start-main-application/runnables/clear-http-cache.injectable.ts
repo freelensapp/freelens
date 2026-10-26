@@ -9,10 +9,10 @@ import { getInjectable } from "@ogre-tools/injectable";
 import { session } from "electron";
 
 /**
- * Empties the HTTP cache of the session every window uses. What earlier runs
- * left there is never used again: the proxy listens on another port on each
- * run, which Chromium takes for another site, so the cache only grows. Not
- * awaited, so a large cache does not hold up the start.
+ * Empties the HTTP cache and the code cache of the session every window uses.
+ * What earlier runs left there is never used again: the proxy listens on
+ * another port on each run, which Chromium takes for another site, so both
+ * caches only grow. Not awaited, so a large cache does not hold up the start.
  */
 const clearHttpCacheInjectable = getInjectable({
   id: "clear-http-cache",
@@ -24,6 +24,10 @@ const clearHttpCacheInjectable = getInjectable({
       session.defaultSession.clearCache().then(
         () => logger.info("[HTTP-CACHE] Cleared the HTTP cache"),
         (error) => logger.error("[HTTP-CACHE] Failed to clear the HTTP cache", { error }),
+      );
+      session.defaultSession.clearCodeCaches({}).then(
+        () => logger.info("[HTTP-CACHE] Cleared the code cache"),
+        (error) => logger.error("[HTTP-CACHE] Failed to clear the code cache", { error }),
       );
     },
   }),
