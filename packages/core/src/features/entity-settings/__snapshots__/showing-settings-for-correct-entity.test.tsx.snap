@@ -1056,7 +1056,7 @@ exports[`Showing correct entity settings > when navigating to non-local cluster 
                     <small
                       class="hint"
                     >
-                      HTTP Proxy server. Used for communicating with Kubernetes API.
+                      An http://, https:// or socks5:// URL. Used for communicating with Kubernetes API.
                     </small>
                   </section>
                 </section>

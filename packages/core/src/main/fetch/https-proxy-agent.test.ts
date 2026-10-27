@@ -65,10 +65,8 @@ const createSocks5Server = (firstBytes: number[]) =>
     client.on("error", () => {});
   });
 
-const createConnectProxy = () => {
-  const server = createHttpServer();
-
-  server.on("connect", (request, client: Socket) => {
+const asConnectProxy = <S extends Server>(server: S) => {
+  server.on("connect", (request: { url?: string }, client: Socket) => {
     const [host, port] = (request.url ?? "").split(":");
 
     pipeTo(client, host, Number(port), () => client.write("HTTP/1.1 200 Connection Established\r\n\r\n"));
@@ -83,6 +81,8 @@ describe("createHttpsProxyAgent", () => {
   let url: string;
   let connectProxy: Server;
   let connectProxyUrl: string;
+  let tlsConnectProxy: Server;
+  let tlsConnectProxyUrl: string;
   let socks5Proxy: Server;
   let socks5Port: number;
   let socks5FirstBytes: number[];
@@ -94,8 +94,10 @@ describe("createHttpsProxyAgent", () => {
     certificate = cert;
     target = createHttpsServer({ cert, key }, (req, res) => res.end("some-response"));
     url = `https://127.0.0.1:${await listen(target)}/`;
-    connectProxy = createConnectProxy();
+    connectProxy = asConnectProxy(createHttpServer());
     connectProxyUrl = `http://127.0.0.1:${await listen(connectProxy)}`;
+    tlsConnectProxy = asConnectProxy(createHttpsServer({ cert, key }));
+    tlsConnectProxyUrl = `https://127.0.0.1:${await listen(tlsConnectProxy)}`;
     socks5FirstBytes = [];
     socks5Proxy = createSocks5Server(socks5FirstBytes);
     socks5Port = await listen(socks5Proxy);
@@ -108,7 +110,7 @@ describe("createHttpsProxyAgent", () => {
   });
 
   afterAll(async () => {
-    await Promise.all([close(target), close(connectProxy), close(socks5Proxy)]);
+    await Promise.all([close(target), close(connectProxy), close(tlsConnectProxy), close(socks5Proxy)]);
   });
 
   const fetchThrough = async (proxy: string, tls: Parameters<typeof createHttpsProxyAgent>[1]) => {
@@ -130,6 +132,22 @@ describe("createHttpsProxyAgent", () => {
 
     it("refuses an untrusted server when rejectUnauthorized is true", async () => {
       await expect(fetchThrough(connectProxyUrl, { rejectUnauthorized: true })).rejects.toThrow();
+    });
+  });
+
+  describe("through an HTTPS proxy", () => {
+    it("trusts the proxy and the server by the given CA certificates", async () => {
+      expect(await fetchThrough(tlsConnectProxyUrl, { ca: certificate, rejectUnauthorized: true })).toBe(
+        "some-response",
+      );
+    });
+
+    it("accepts an untrusted proxy and server when rejectUnauthorized is false", async () => {
+      expect(await fetchThrough(tlsConnectProxyUrl, { rejectUnauthorized: false })).toBe("some-response");
+    });
+
+    it("refuses an untrusted proxy when rejectUnauthorized is true", async () => {
+      await expect(fetchThrough(tlsConnectProxyUrl, { rejectUnauthorized: true })).rejects.toThrow();
     });
   });
 

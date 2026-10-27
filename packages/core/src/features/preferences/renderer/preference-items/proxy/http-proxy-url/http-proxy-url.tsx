@@ -25,12 +25,14 @@ const NonInjectedHttpProxyUrl = observer(({ state }: Dependencies) => {
       <SubTitle title="HTTP Proxy" />
       <Input
         theme="round-black"
-        placeholder="Type HTTP proxy url (example: http://proxy.acme.org:8080)"
+        placeholder="Type proxy url (example: http://proxy.acme.org:8080)"
         value={proxy}
         onChange={(v) => setProxy(v)}
         onBlur={() => (state.httpsProxy = proxy)}
       />
-      <small className="hint">Proxy is used only for non-cluster communication.</small>
+      <small className="hint">
+        An http://, https:// or socks5:// URL. Proxy is used only for non-cluster communication.
+      </small>
     </section>
   );
 });

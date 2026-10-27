@@ -984,7 +984,7 @@ exports[`preferences - navigation to proxy preferences > given in preferences, w
                     >
                       <input
                         class="input grow"
-                        placeholder="Type HTTP proxy url (example: http://proxy.acme.org:8080)"
+                        placeholder="Type proxy url (example: http://proxy.acme.org:8080)"
                         spellcheck="false"
                         value=""
                       />
@@ -996,7 +996,7 @@ exports[`preferences - navigation to proxy preferences > given in preferences, w
                   <small
                     class="hint"
                   >
-                    Proxy is used only for non-cluster communication.
+                    An http://, https:// or socks5:// URL. Proxy is used only for non-cluster communication.
                   </small>
                 </section>
               </div>
