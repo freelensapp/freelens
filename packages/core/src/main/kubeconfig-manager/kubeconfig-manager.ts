@@ -20,14 +20,20 @@ import type { RemovePath } from "../../common/fs/remove.injectable";
 import type { WriteFile } from "../../common/fs/write-file.injectable";
 import type { GetDirnameOfPath } from "../../common/path/get-dirname.injectable";
 import type { JoinPaths } from "../../common/path/join-paths.injectable";
-import type { FreelensK8sProxyServer } from "../cluster/freelens-k8s-proxy-server.injectable";
+import type { FreelensK8sProxyManager } from "../cluster/freelens-k8s-proxy-manager.injectable";
 
 interface KubeconfigManagerDependencies {
-  readonly directoryForTemp: string;
+  /**
+   * The per-user data directory, where the proxy kubeconfig lives: a location
+   * other users cannot reach, rather than a shared temp directory.
+   */
+  readonly directoryForUserData: string;
   readonly logger: Logger;
   readonly certificate: SelfSignedCert;
-  readonly freelensK8sProxyServer: FreelensK8sProxyServer;
+  readonly freelensK8sProxyManager: FreelensK8sProxyManager;
   readonly freelensProxyClusterUrl: string;
+  /** The `command` of the credential plugin, a path or a name found on `PATH`. */
+  readonly freelensK8sProxyCredentialCommand: string;
   joinPaths: JoinPaths;
   getDirnameOfPath: GetDirnameOfPath;
   pathExists: PathExists;
@@ -111,8 +117,13 @@ export class KubeconfigManager {
     await Promise.all([this.removeBestEffort(kubeconfigPath), this.removeBestEffort(cacheDirectoryPath)]);
   }
 
+  /** The per-user directory the proxy kubeconfig and its cache live in. */
+  protected get directoryForProxyKubeconfig(): string {
+    return this.dependencies.joinPaths(this.dependencies.directoryForUserData, "proxy-kubeconfigs");
+  }
+
   protected get cacheDirectoryPath(): string {
-    return this.dependencies.joinPaths(this.dependencies.directoryForTemp, `kubecache-${this.cluster.id}`);
+    return this.dependencies.joinPaths(this.directoryForProxyKubeconfig, `kubecache-${this.cluster.id}`);
   }
 
   protected async removeBestEffort(path: string): Promise<void> {
@@ -125,7 +136,11 @@ export class KubeconfigManager {
 
   protected async ensureFile() {
     try {
-      await this.dependencies.freelensK8sProxyServer.ensureRunning();
+      await this.dependencies.freelensK8sProxyManager.ensureRunning();
+
+      // The directory exists before the kubeconfig is written into it, and is
+      // created private so other users cannot reach the files in it.
+      await this.dependencies.ensureDirectory(this.directoryForProxyKubeconfig, { mode: 0o700 });
 
       const kubeconfigPath = await this.createProxyKubeconfig();
 
@@ -147,7 +162,7 @@ export class KubeconfigManager {
       preferences: { defaultNamespace },
     } = this.cluster;
     const contextName = this.cluster.contextName.get();
-    const tempFile = this.dependencies.joinPaths(this.dependencies.directoryForTemp, `kubeconfig-${id}`);
+    const tempFile = this.dependencies.joinPaths(this.directoryForProxyKubeconfig, `kubeconfig-${id}`);
     const kubeConfig = await this.dependencies.loadKubeconfig();
     const proxyConfig: PartialDeep<KubeConfig> = {
       currentContext: contextName,
@@ -159,7 +174,21 @@ export class KubeconfigManager {
           caData: Buffer.from(this.dependencies.certificate.cert).toString("base64"),
         },
       ],
-      users: [{ name: "proxy", username: "lens", password: "fake" }],
+      // The token is not in the file: the credential plugin of
+      // freelens-k8s-proxy reads it from FREELENS_PROXY_TOKEN, which Freelens
+      // sets in the environment of every tool it runs against the proxy. A
+      // request without it gets 403.
+      users: [
+        {
+          name: "proxy",
+          exec: {
+            apiVersion: "client.authentication.k8s.io/v1",
+            command: this.dependencies.freelensK8sProxyCredentialCommand,
+            args: ["credential"],
+            interactiveMode: "Never",
+          },
+        },
+      ],
       contexts: [
         {
           user: "proxy",
@@ -173,9 +202,9 @@ export class KubeconfigManager {
     const configYaml = dumpConfigYaml(proxyConfig);
 
     await this.dependencies.writeFile(tempFile, configYaml, { mode: 0o600 });
-    this.dependencies.logger.debug(
-      `[KUBECONFIG-MANAGER]: Created temp kubeconfig "${contextName}" at "${tempFile}": \n${configYaml}`,
-    );
+    // Only the path is logged, not the kubeconfig itself, which goes into
+    // main.log that users attach to bug reports.
+    this.dependencies.logger.debug(`[KUBECONFIG-MANAGER]: Created temp kubeconfig "${contextName}" at "${tempFile}"`);
 
     return tempFile;
   }

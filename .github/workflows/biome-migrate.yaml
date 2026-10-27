@@ -28,7 +28,7 @@ jobs:
     # never runs on a fork: it has no GH_TOKEN secret, so it could only fail.
     if: github.repository_owner == 'freelensapp' && startsWith(github.head_ref, 'renovate/') && github.event.pull_request.head.repo.full_name == github.repository
 
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
     environment: automated
     timeout-minutes: 10
 
@@ -80,7 +80,8 @@ jobs:
       # The push uses GH_TOKEN rather than the workflow token, so that it starts
       # the checks again on the migrated config. If the branch moved meanwhile,
       # the push is rejected as non-fast-forward, and the run on the newer
-      # commit takes over.
+      # commit takes over. The checkout of the head SHA leaves HEAD detached,
+      # so the push names the branch itself.
       - name: Commit and push to the pull request branch
         if: env.changes == 'true'
         uses: EndBug/add-and-commit@v11
@@ -89,3 +90,4 @@ jobs:
           default_author: github_actions
           add: biome.jsonc
           message: ${{ env.MESSAGE }}
+          push: origin HEAD:refs/heads/${{ github.head_ref }}

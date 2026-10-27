@@ -5,7 +5,7 @@
  */
 
 import { EventEmitter } from "node:events";
-import { computed } from "mobx";
+import { computed, observable } from "mobx";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import directoryForTempInjectable from "../../../common/app-paths/directory-for-temp/directory-for-temp.injectable";
 import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
@@ -468,6 +468,29 @@ describe("technical unit tests for local shell sessions", () => {
       });
     });
 
+    it("starts the shell the setting names now, not the one of an earlier terminal of the cluster", async () => {
+      const shellSetting = observable.box("/bin/bash");
+      const cluster = new Cluster({
+        contextName: "some-context-name",
+        id: "some-cluster-id",
+        kubeConfigPath: "/some-kube-config-path",
+      });
+
+      di.override(platformInjectable, () => "linux");
+      di.override(userShellSettingInjectable, () => computed(() => shellSetting.get()));
+
+      const openLocalShellSession = di.inject(openLocalShellSessionInjectable);
+
+      await openLocalShellSession({ cluster, tabId: "some-tab-id", websocket: websocket() });
+      shellSetting.set("/bin/zsh");
+      await openLocalShellSession({ cluster, tabId: "other-tab-id", websocket: websocket() });
+
+      expect(spawnPtyMock.mock.calls.map(([file, , options]) => [file, options.env?.PTYSHELL])).toEqual([
+        ["/bin/bash", "/bin/bash"],
+        ["/bin/zsh", "/bin/zsh"],
+      ]);
+    });
+
     it("points KUBECONFIG at the cluster's proxy kubeconfig", async () => {
       const { env } = await openWithShell("/bin/bash");
 
@@ -485,6 +508,13 @@ describe("technical unit tests for local shell sessions", () => {
 
       expect(env.KUBECACHEDIR).toBe("/some-proxy-kubeconfig-cache-directory");
       expect((env.WSLENV ?? "").split(":")).toContain("KUBECACHEDIR/up");
+    });
+
+    it("passes FREELENS_PROXY_TOKEN on to WSL and back out of it, with no flag", async () => {
+      const { env } = await openWithShell("powershell.exe", "win32");
+
+      expect(env.FREELENS_PROXY_TOKEN).toBeTruthy();
+      expect((env.WSLENV ?? "").split(":")).toContain("FREELENS_PROXY_TOKEN");
     });
 
     it("starts bash with the init file that re-prepends the kubectl directory", async () => {

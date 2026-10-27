@@ -76,7 +76,7 @@ exports[`preferences - navigation to application preferences > given in preferen
         id="lens-views"
       />
       <div
-        class="SettingLayout showNavigation Preferences"
+        class="SettingLayout showNavigation withCloseButton Preferences"
       >
         <nav
           class="sidebarRegion"
@@ -866,7 +866,7 @@ exports[`preferences - navigation to application preferences > given in preferen
         id="lens-views"
       />
       <div
-        class="SettingLayout showNavigation Preferences"
+        class="SettingLayout showNavigation withCloseButton Preferences"
       >
         <nav
           class="sidebarRegion"
@@ -1687,7 +1687,7 @@ exports[`preferences - navigation to application preferences > given in some chi
         id="lens-views"
       />
       <div
-        class="SettingLayout showNavigation Preferences"
+        class="SettingLayout showNavigation withCloseButton Preferences"
       >
         <nav
           class="sidebarRegion"
@@ -2137,7 +2137,7 @@ exports[`preferences - navigation to application preferences > given in some chi
         id="lens-views"
       />
       <div
-        class="SettingLayout showNavigation Preferences"
+        class="SettingLayout showNavigation withCloseButton Preferences"
       >
         <nav
           class="sidebarRegion"
@@ -2928,7 +2928,7 @@ exports[`preferences - navigation to application preferences > given in some chi
           id="lens-views"
         />
         <div
-          class="SettingLayout showNavigation Preferences"
+          class="SettingLayout showNavigation withCloseButton Preferences"
         >
           <nav
             class="sidebarRegion"

@@ -21,7 +21,7 @@ import { Kubectl } from "../kubectl/kubectl";
 import kubectlDownloadingNormalizedArchInjectable from "../kubectl/normalized-arch.injectable";
 import broadcastConnectionUpdateInjectable from "./broadcast-connection-update.injectable";
 import clusterConnectionInjectable from "./cluster-connection.injectable";
-import freelensK8sProxyServerInjectable from "./freelens-k8s-proxy-server.injectable";
+import freelensK8sProxyManagerInjectable from "./freelens-k8s-proxy-manager.injectable";
 import prometheusHandlerInjectable from "./prometheus-handler/prometheus-handler.injectable";
 
 import type { Mock } from "vitest";
@@ -29,7 +29,7 @@ import type { Mock } from "vitest";
 import type { Cluster } from "../../common/cluster/cluster";
 import type { KubeconfigManager } from "../kubeconfig-manager/kubeconfig-manager";
 import type { ClusterConnection } from "./cluster-connection.injectable";
-import type { FreelensK8sProxyServer } from "./freelens-k8s-proxy-server.injectable";
+import type { FreelensK8sProxyManager } from "./freelens-k8s-proxy-manager.injectable";
 
 /**
  * Creates an error object that passes the isRequestError() type guard, like the
@@ -60,7 +60,7 @@ describe("ClusterConnection auth failure backoff", () => {
   let clusterConnection: ClusterConnection;
   let detectMock: Mock;
   let broadcastMock: Mock;
-  let proxyServerMock: FreelensK8sProxyServer;
+  let proxyManagerMock: FreelensK8sProxyManager;
 
   const setup = ({ execPlugin = false } = {}) => {
     vi.useFakeTimers();
@@ -85,14 +85,14 @@ describe("ClusterConnection auth failure backoff", () => {
       setupPrometheus: vi.fn(),
     }));
 
-    proxyServerMock = {
+    proxyManagerMock = {
       getApiTarget: vi.fn().mockResolvedValue({}),
       ensureFreelensK8sProxyUrl: vi.fn().mockResolvedValue("https://127.0.0.1:9999/test"),
       restart: vi.fn().mockResolvedValue(undefined),
       ensureRunning: vi.fn().mockResolvedValue(undefined),
       stop: vi.fn(),
     };
-    di.override(freelensK8sProxyServerInjectable, () => proxyServerMock);
+    di.override(freelensK8sProxyManagerInjectable, () => proxyManagerMock);
 
     detectMock = vi.fn();
     di.override(clusterVersionDetectorInjectable, () => ({

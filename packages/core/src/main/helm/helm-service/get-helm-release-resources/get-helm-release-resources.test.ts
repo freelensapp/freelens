@@ -45,7 +45,7 @@ describe("get helm release resources", () => {
     it("calls for release manifest with the cache directory of the kubeconfig", () => {
       expect(execHelmMock).toHaveBeenCalledWith(
         ["get", "manifest", "some-release", "--namespace", "some-namespace", "--kubeconfig", "/some-kubeconfig-path"],
-        { env: { KUBECACHEDIR: "/some-cache-directory-path" } },
+        { env: { KUBECACHEDIR: "/some-cache-directory-path" }, throughProxy: true },
       );
     });
 

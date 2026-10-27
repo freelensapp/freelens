@@ -120,7 +120,7 @@ runtime.
 - Do not add any other `@freelensapp/*` package as a dependency — they are
   private in v2 and are not published.
 - Add **`electron`** as a `devDependency` for its types, at the version the
-  host runs. It is an *optional* peer of `@freelensapp/extensions`: a required
+  host runs. It is an _optional_ peer of `@freelensapp/extensions`: a required
   `>=43.0.0` peer would be installed automatically at the newest Electron
   major, not the host's.
 
@@ -130,17 +130,17 @@ These module ids must resolve to the host's instance rather than to a copy in
 your bundle. You declare them in **`devDependencies`** — for compilation only —
 and your bundler rewrites the bare id to a property of the host's global:
 
-| Module id | Global |
-| --- | --- |
-| `react` | `FreelensExtensionApi.React` |
-| `react-dom` | `FreelensExtensionApi.ReactDom` |
+| Module id           | Global                                 |
+| ------------------- | -------------------------------------- |
+| `react`             | `FreelensExtensionApi.React`           |
+| `react-dom`         | `FreelensExtensionApi.ReactDom`        |
 | `react/jsx-runtime` | `FreelensExtensionApi.ReactJsxRuntime` |
-| `mobx` | `FreelensExtensionApi.Mobx` |
-| `mobx-react` | `FreelensExtensionApi.MobxReact` |
-| `monaco-editor` | `FreelensExtensionApi.MonacoEditor` |
+| `mobx`              | `FreelensExtensionApi.Mobx`            |
+| `mobx-react`        | `FreelensExtensionApi.MobxReact`       |
+| `monaco-editor`     | `FreelensExtensionApi.MonacoEditor`    |
 
 The global names follow a mechanical rule — strip the scope, split on `-`, `/`
-and `.`, upper-case each segment — so a bundler plugin can *derive* each name
+and `.`, upper-case each segment — so a bundler plugin can _derive_ each name
 instead of being handed a map. Note `ReactDom`, not `ReactDOM`.
 
 Declare a listed package also when you never import it yourself but use a host
@@ -279,11 +279,11 @@ annotations:
   hands the legacy call shape to mobx 7, and none of the resulting errors
   mentions decorators. Recognise them by the message:
 
-  | Message | Cause |
-  | --- | --- |
-  | `TypeError: Cannot use 'in' operator to search for 'constructor' in <field>` | a legacy `@observable` field |
-  | ``[MobX] Invalid arguments for `action` `` | a legacy `@action` method |
-  | `TypeError: Reflect.ownKeys called on non-object` | `makeObservable(this)` without annotations |
+  | Message                                                                      | Cause                                      |
+  | ---------------------------------------------------------------------------- | ------------------------------------------ |
+  | `TypeError: Cannot use 'in' operator to search for 'constructor' in <field>` | a legacy `@observable` field               |
+  | ``[MobX] Invalid arguments for `action` ``                                   | a legacy `@action` method                  |
+  | `TypeError: Reflect.ownKeys called on non-object`                            | `makeObservable(this)` without annotations |
 
   The first two throw while the module is evaluated, when the class is
   defined, so the extension never loads. The third throws when the class is
@@ -486,7 +486,9 @@ import { Common, Renderer } from "@freelensapp/extensions";
 
 const manifest: Common.PackageJson = { name: "my-extension", version: "1.0.0" };
 
-function renderIcon(props: Renderer.Component.IconProps) { /* ... */ }
+function renderIcon(props: Renderer.Component.IconProps) {
+  /* ... */
+}
 ```
 
 ## Source layout: one tsconfig per runtime environment
@@ -716,11 +718,11 @@ moved between `Common`, `Main`, and `Renderer`.
 
 This is what each namespace provides in v2:
 
-| Namespace | Members |
-| --- | --- |
-| `Common` | `App`, `Catalog`, `Clusters`, `EventBus`, `Proxy`, `Store`, `Types`, `Util`, `logger`; types `InstalledExtension`, `LensExtension`, `LensExtensionManifest`, `Logger`, `PackageJson` |
-| `Main` | `Catalog`, `Ipc`, `K8s`, `K8sApi`, `LensExtension`, `Navigation`, `Power`, `Shell`, `Util` |
-| `Renderer` | `Catalog`, `Component`, `Ipc`, `K8s`, `K8sApi`, `LensExtension`, `Navigation`, `Theme`, `Util` |
+| Namespace  | Members                                                                                                                                                                              |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `Common`   | `App`, `Catalog`, `Clusters`, `EventBus`, `Proxy`, `Store`, `Types`, `Util`, `logger`; types `InstalledExtension`, `LensExtension`, `LensExtensionManifest`, `Logger`, `PackageJson` |
+| `Main`     | `Catalog`, `Ipc`, `K8s`, `K8sApi`, `LensExtension`, `Navigation`, `Power`, `Shell`, `Util`                                                                                           |
+| `Renderer` | `Catalog`, `Component`, `Ipc`, `K8s`, `K8sApi`, `LensExtension`, `Navigation`, `Theme`, `Util`                                                                                       |
 
 **If a symbol is not reachable through one of those, it is not reachable at
 all.** Every other `@freelensapp/*` package is private and is inlined into the
@@ -790,72 +792,72 @@ conditions rather than merely present in a `.d.ts`.
 
 #### Renamed or moved
 
-| v1 | v2 | Notes |
-| --- | --- | --- |
-| `Renderer.Component.getDetailsUrl` | `Renderer.Navigation.getDetailsUrl` | same function |
-| `Renderer.Component.showDetails` | `Renderer.Navigation.showDetails` | same function |
-| `Renderer.Theme.getActiveTheme()` | `Renderer.Theme.activeTheme.get()` | `activeTheme` is a mobx computed, so reading it inside a reaction tracks theme changes |
-| `new Main.K8sApi.ResourceStack(cluster, name)` | `Main.K8sApi.createResourceStack(cluster, name)` | same `kubectlApplyFolder` / `kubectlDeleteFolder`; name the type as `ReturnType<typeof Main.K8sApi.createResourceStack>` |
-| `new Renderer.K8sApi.ResourceStack(cluster, name)` | `Renderer.K8sApi.createResourceStack(cluster, name)` | as for `Main` |
-| `Renderer.Component.InputValidators.isExtensionNameInstallRegex.isMatch(value)` | `Renderer.Component.InputValidators.isExtensionNameInstallRegex.test(value)` | the regex is a plain `RegExp` now |
-| `Renderer.Component.InputValidators.isExtensionNameInstallRegex.captures(value)` | `Renderer.Component.InputValidators.extensionNameInstallCaptures(value)` | same `{ name, version? } \| undefined` result |
+| v1                                                                               | v2                                                                           | Notes                                                                                                                    |
+| -------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `Renderer.Component.getDetailsUrl`                                               | `Renderer.Navigation.getDetailsUrl`                                          | same function                                                                                                            |
+| `Renderer.Component.showDetails`                                                 | `Renderer.Navigation.showDetails`                                            | same function                                                                                                            |
+| `Renderer.Theme.getActiveTheme()`                                                | `Renderer.Theme.activeTheme.get()`                                           | `activeTheme` is a mobx computed, so reading it inside a reaction tracks theme changes                                   |
+| `new Main.K8sApi.ResourceStack(cluster, name)`                                   | `Main.K8sApi.createResourceStack(cluster, name)`                             | same `kubectlApplyFolder` / `kubectlDeleteFolder`; name the type as `ReturnType<typeof Main.K8sApi.createResourceStack>` |
+| `new Renderer.K8sApi.ResourceStack(cluster, name)`                               | `Renderer.K8sApi.createResourceStack(cluster, name)`                         | as for `Main`                                                                                                            |
+| `Renderer.Component.InputValidators.isExtensionNameInstallRegex.isMatch(value)`  | `Renderer.Component.InputValidators.isExtensionNameInstallRegex.test(value)` | the regex is a plain `RegExp` now                                                                                        |
+| `Renderer.Component.InputValidators.isExtensionNameInstallRegex.captures(value)` | `Renderer.Component.InputValidators.extensionNameInstallCaptures(value)`     | same `{ name, version? } \| undefined` result                                                                            |
 
 #### Removed
 
-Each entry is marked *value*, *type*, *class* (a value and a type) or *member*.
+Each entry is marked _value_, _type_, _class_ (a value and a type) or _member_.
 
 `Common`:
 
 - `Common.Types.IpcMainEvent`, `IpcMainInvokeEvent`, `IpcRendererEvent`,
-  `MenuRegistration`, `TrayMenuRegistration` (*type*) — see
+  `MenuRegistration`, `TrayMenuRegistration` (_type_) — see
   [Unused members removed](#unused-members-removed).
 - `Common.Util.base64`, `isBuffer`, `isChildProcessError`, `isErrnoException`,
   `isExecException`, `isExecFileException`, `isRequestError`, `listTarEntries`,
-  `openBrowser`, `openExternal`, `readFileFromTar`, `unionPATHs` (*value*) —
+  `openBrowser`, `openExternal`, `readFileFromTar`, `unionPATHs` (_value_) —
   see [`Util` members that need Node removed](#util-members-that-need-node-removed).
 - `Common.PackageJson.Person`, `BugsLocation`, `Dependency`,
   `DirectoryLocations`, `ExportCondition`, `Exports`, `JSPMConfiguration`,
   `NonStandardEntryPoints`, `Scripts`, `TypeScriptConfiguration`,
-  `WorkspaceConfig`, `WorkspacePattern`, `YarnConfiguration` (*type*) —
+  `WorkspaceConfig`, `WorkspacePattern`, `YarnConfiguration` (_type_) —
   `Common.PackageJson` itself stays, but no longer carries type-fest's
   namespace of the same name. Import `PackageJson` from `type-fest` in your
   own `devDependencies` if you need its members.
-- `Common.App.slackUrl` (*value*) — it was always `""`.
+- `Common.App.slackUrl` (_value_) — it was always `""`.
 - `Common.InstalledExtension#isBundled`, `Common.LensExtension#isBundled`
-  (*member*) — no replacement.
+  (_member_) — no replacement.
 
 `Main`:
 
-- `Main.K8sApi.forRemoteCluster` (*value*), `Main.K8sApi.IRemoteKubeApiConfig`
-  (*type*) — see [`K8sApi.forRemoteCluster` removed](#k8sapiforremotecluster-removed).
-- `Main.K8sApi.isAllowedResource` (*value*) — in main it always returned
+- `Main.K8sApi.forRemoteCluster` (_value_), `Main.K8sApi.IRemoteKubeApiConfig`
+  (_type_) — see [`K8sApi.forRemoteCluster` removed](#k8sapiforremotecluster-removed).
+- `Main.K8sApi.isAllowedResource` (_value_) — in main it always returned
   `false`. `Renderer.K8sApi.isAllowedResource`, which does answer, is unchanged
   and renderer-only.
-- `Main.K8sApi.IKubeApiCluster`, `Main.K8sApi.IgnoredKubeApiOptions` (*type*) —
+- `Main.K8sApi.IKubeApiCluster`, `Main.K8sApi.IgnoredKubeApiOptions` (_type_) —
   both were deprecated and had no effect; drop them, and drop the ignored
   `objectConstructor`, `kind`, `isNamespaces` and `apiBase` options from what
   you pass to the `*Api` constructors.
-- `Main.LensExtension#appMenus`, `Main.LensExtension#trayMenus` (*member*) — see
+- `Main.LensExtension#appMenus`, `Main.LensExtension#trayMenus` (_member_) — see
   [Unused members removed](#unused-members-removed).
-- `Main.LensExtension#isBundled` (*member*) — no replacement.
+- `Main.LensExtension#isBundled` (_member_) — no replacement.
 
 `Renderer`:
 
-- `Renderer.Component.List` (*value*), `ListProps`, `SearchFilter` (*type*) —
+- `Renderer.Component.List` (_value_), `ListProps`, `SearchFilter` (_type_) —
   see [`Renderer.Component.List` removed](#renderercomponentlist-removed).
-- `Renderer.Component.VirtualList` (*value*), `VirtualListProps`,
-  `VirtualListRef`, `RowProps` (*type*) — see
+- `Renderer.Component.VirtualList` (_value_), `VirtualListProps`,
+  `VirtualListRef`, `RowProps` (_type_) — see
   [Unused members removed](#unused-members-removed).
-- `Renderer.Component.NamespaceSelectBadgeNonInjected` (*value*),
-  `Renderer.Component.Dependencies` (*type*) — see
+- `Renderer.Component.NamespaceSelectBadgeNonInjected` (_value_),
+  `Renderer.Component.Dependencies` (_type_) — see
   [`NamespaceSelectBadgeNonInjected` is gone with them](#namespaceselectbadgenoninjected-is-gone-with-them).
 - `Renderer.Component.SliderProps`: the members it inherited from MUI's
   `SliderProps` — `sx`, `slots`, `slotProps`, `marks`, `track`,
-  `valueLabelFormat` and the rest, and the HTML and ARIA attributes (*member*).
+  `valueLabelFormat` and the rest, and the HTML and ARIA attributes (_member_).
   `SliderProps` now declares only `className`, `min`, `max`, `step`, `value`,
   `disabled`, `orientation`, `valueLabelDisplay`, `onChange` and
   `onChangeCommitted`.
-- `Renderer.K8sApi` store classes (*class*): `ClusterRoleBindingStore`,
+- `Renderer.K8sApi` store classes (_class_): `ClusterRoleBindingStore`,
   `ClusterRoleStore`, `ConfigMapStore` / `ConfigMapsStore`, `CronJobStore`,
   `CustomResourceDefinitionStore` / `CRDStore`, `CustomResourceStore` /
   `CRDResourceStore`, `DaemonSetStore`, `DeploymentStore`, `EndpointSliceStore`,
@@ -872,12 +874,12 @@ Each entry is marked *value*, *type*, *class* (a value and a type) or *member*.
   `ServiceAccountsStore`, `ServiceStore`, `StatefulSetStore`,
   `StorageClassStore`, `VerticalPodAutoscalerStore` — see
   [`Renderer.K8sApi` concrete store classes removed](#rendererk8sapi-concrete-store-classes-removed).
-- `Renderer.K8sApi.forRemoteCluster` (*value*),
-  `Renderer.K8sApi.IRemoteKubeApiConfig` (*type*) — see
+- `Renderer.K8sApi.forRemoteCluster` (_value_),
+  `Renderer.K8sApi.IRemoteKubeApiConfig` (_type_) — see
   [`K8sApi.forRemoteCluster` removed](#k8sapiforremotecluster-removed).
 - `Renderer.K8sApi.IKubeApiCluster`, `Renderer.K8sApi.IgnoredKubeApiOptions`
-  (*type*) — as for `Main`.
-- `Renderer.LensExtension#isBundled` (*member*) — no replacement.
+  (_type_) — as for `Main`.
+- `Renderer.LensExtension#isBundled` (_member_) — no replacement.
 
 ## Registering things: declarative fields
 
@@ -921,13 +923,9 @@ model class instead of `kind` and `apiVersions`:
 import { Renderer } from "@freelensapp/extensions";
 
 export default class MyExtension extends Renderer.LensExtension {
-  kubeObjectDetailItems = [
-    Renderer.K8sApi.detailsFor(Gateway, { priority: 10, Details: GatewayDetails }),
-  ];
+  kubeObjectDetailItems = [Renderer.K8sApi.detailsFor(Gateway, { priority: 10, Details: GatewayDetails })];
 
-  kubeObjectMenuItems = [
-    Renderer.K8sApi.menuItemFor(Gateway, { MenuItem: GatewayMenuItem }),
-  ];
+  kubeObjectMenuItems = [Renderer.K8sApi.menuItemFor(Gateway, { MenuItem: GatewayMenuItem })];
 }
 ```
 
@@ -1031,10 +1029,10 @@ Two members are worth knowing before you need them:
 In v2 the host provides the HTTP client of the main process, and in the
 renderer the global `fetch` is the client:
 
-| Process | Client | What answers the call |
-| --- | --- | --- |
-| main | `Main.Util.fetch` | the same client the app uses for its own binary and JSON downloads and its metrics requests |
-| renderer | the global `fetch` | Chromium's `fetch`, with the window session's settings |
+| Process  | Client             | What answers the call                                                                       |
+| -------- | ------------------ | ------------------------------------------------------------------------------------------- |
+| main     | `Main.Util.fetch`  | the same client the app uses for its own binary and JSON downloads and its metrics requests |
+| renderer | the global `fetch` | Chromium's `fetch`, with the window session's settings                                      |
 
 `Main.Util.fetch` is an addition to `Common.Util` — `Main.Util` carries
 everything `Common.Util` does, plus `fetch`. It is typed as the standard
@@ -1053,7 +1051,7 @@ to a catalog cluster's API server; see
 
 **In the renderer, use the global `fetch`.** It is Chromium's, and needs none of
 that: requests to the cluster go to the frame's own origin, whose certificate
-the window's session already trusts. The renderer session takes the *system*
+the window's session already trusts. The renderer session takes the _system_
 proxy, while only main honours the `httpsProxy` preference, so a request that
 has to follow that preference belongs in main, reached over `Renderer.Ipc` /
 `Main.Ipc`.
@@ -1398,9 +1396,7 @@ exported, so reach their stores through `apiManager.getStore()` with the API
 base path:
 
 ```ts
-const ingressClasses = Renderer.K8sApi.apiManager.getStore(
-  "/apis/networking.k8s.io/v1/ingressclasses",
-);
+const ingressClasses = Renderer.K8sApi.apiManager.getStore("/apis/networking.k8s.io/v1/ingressclasses");
 ```
 
 For a custom resource, pass that resource's base path
@@ -1461,7 +1457,7 @@ are exported explicitly and unchanged. Render the injected component — it
 resolves the namespace filter from the host container itself:
 
 ```tsx
-<Renderer.Component.NamespaceSelectBadge namespace={object.getNs()} />
+<Renderer.Component.NamespaceSelectBadge namespace={object.getNs()} />;
 ```
 
 ## `Util` members that need Node removed
@@ -1575,18 +1571,19 @@ export function describeCertificate(pem: string): Promise<{ subject: string; val
 What to use instead of each Node or Electron module v1 extensions called from
 the renderer:
 
-| v1 | Replacement |
-| --- | --- |
-| `node:crypto` hashing | `Util.sha256Hex` (synchronous SHA-256), `Util.createReactKey` for a React `key`, or Web Crypto `crypto.subtle.digest` where asynchronous is fine |
-| `node:crypto` `randomUUID()` / `randomBytes(n)` | `globalThis.crypto.randomUUID()` / `globalThis.crypto.getRandomValues(new Uint8Array(n))`, with no import |
-| `crypto.X509Certificate` | main plus `Ipc`; there is no web equivalent |
-| `http` / `https` | `fetch` |
-| `electron` `ipcRenderer` | `Renderer.Ipc` |
-| `ipcRenderer` on a host channel, to open your preferences (`"ipc:broadcast-main"` with `"renderer:navigate"`, for one) | `navigateToPreferences()` on your `LensRendererExtension` instance |
-| `os` platform checks | `Common.App.isMac` / `isWindows` / `isLinux` |
-| `process.env` | read it in main and pass it over `Ipc` |
-| `Buffer` | `Uint8Array`, `TextEncoder` / `TextDecoder` |
-| `AsyncLocalStorage` | no browser equivalent; pass the context explicitly |
+| v1                                                                                                                     | Replacement                                                                                                                                      |
+| ---------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `node:crypto` hashing                                                                                                  | `Util.sha256Hex` (synchronous SHA-256), `Util.createReactKey` for a React `key`, or Web Crypto `crypto.subtle.digest` where asynchronous is fine |
+| `node:crypto` `randomUUID()` / `randomBytes(n)`                                                                        | `globalThis.crypto.randomUUID()` / `globalThis.crypto.getRandomValues(new Uint8Array(n))`, with no import                                        |
+| `crypto.X509Certificate`                                                                                               | main plus `Ipc`; there is no web equivalent                                                                                                      |
+| `http` / `https`                                                                                                       | `fetch`                                                                                                                                          |
+| `electron` `ipcRenderer`                                                                                               | `Renderer.Ipc`                                                                                                                                   |
+| `electron` `clipboard`                                                                                                 | `navigator.clipboard.writeText()` / `readText()`, which return Promises; Electron 44 removes `clipboard` from the renderer                       |
+| `ipcRenderer` on a host channel, to open your preferences (`"ipc:broadcast-main"` with `"renderer:navigate"`, for one) | `navigateToPreferences()` on your `LensRendererExtension` instance                                                                               |
+| `os` platform checks                                                                                                   | `Common.App.isMac` / `isWindows` / `isLinux`                                                                                                     |
+| `process.env`                                                                                                          | read it in main and pass it over `Ipc`                                                                                                           |
+| `Buffer`                                                                                                               | `Uint8Array`, `TextEncoder` / `TextDecoder`                                                                                                      |
+| `AsyncLocalStorage`                                                                                                    | no browser equivalent; pass the context explicitly                                                                                               |
 
 `Renderer.Ipc.listen` still calls your listener with an event object before the
 broadcast's arguments, but that first parameter is typed `unknown` now: only
@@ -1843,7 +1840,7 @@ migration guides for the full list.
 
 In v1 the extension bundler ran a `style-loader`, which injected each imported
 stylesheet into the document at runtime. In v2 extensions are built by their
-authors in Vite **library mode**, which does the opposite: it *extracts* CSS to
+authors in Vite **library mode**, which does the opposite: it _extracts_ CSS to
 a sibling asset next to the JS entry and injects nothing. The host loads only
 the renderer's JS entry, as an ES module by URL
 ([C4](./api.md#c4-module-format-and-loading)), so without help that extracted
@@ -1916,26 +1913,26 @@ flex rules plain CSS is the lighter option.)
 
 Legacy class → the CSS to add to your own rule:
 
-| Legacy class(es) | CSS to add |
-|---|---|
-| `flex` | `display: flex` |
-| `flex inline` | `display: inline-flex` |
-| `flex column` / `column reverse` | `display: flex; flex-direction: column` / `column-reverse` |
-| `flex reverse` | `display: flex; flex-direction: row-reverse` |
-| `flex wrap` / `wrap-reverse` | `display: flex; flex-wrap: wrap` / `wrap-reverse` |
-| `flex fullsize` | `width: 100vw; height: 100vh` |
-| `flex auto` | `> * { flex: 1 1 0%; }` |
-| `flex center` | `> * { margin: auto; }` |
-| `justify-flex-start` / `-end` / `justify-space-between` / `-around` / `justify-center` | `justify-content: flex-start` / `flex-end` / `space-between` / `space-around` / `center` |
-| `align-center` / `align-flex-start` / `-end` / `align-stretch` / `align-baseline` | `align-items: center` / `flex-start` / `flex-end` / `stretch` / `baseline` |
-| `content-*` | `align-content: *` (same value names as `align-*`) |
-| `gaps` | `gap: 8px` — the host default was `8px` (`--flex-gap`); set the value you actually need. Modern `gap` replaces the old per-child margins |
-| `box grow` | `flex: 1 0` |
-| `box grow-fixed` | `flex: 1 0 0` |
-| `box center` | `margin: auto` |
-| `box left` / `box right` | `margin-right: auto` / `margin-left: auto` |
-| `box self-flex-start` / `-end` / `self-stretch` / … | `align-self: flex-start` / `flex-end` / `stretch` / … |
-| bare `box` | delete it (it was only a marker for the `box *` child utilities) |
+| Legacy class(es)                                                                       | CSS to add                                                                                                                               |
+| -------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `flex`                                                                                 | `display: flex`                                                                                                                          |
+| `flex inline`                                                                          | `display: inline-flex`                                                                                                                   |
+| `flex column` / `column reverse`                                                       | `display: flex; flex-direction: column` / `column-reverse`                                                                               |
+| `flex reverse`                                                                         | `display: flex; flex-direction: row-reverse`                                                                                             |
+| `flex wrap` / `wrap-reverse`                                                           | `display: flex; flex-wrap: wrap` / `wrap-reverse`                                                                                        |
+| `flex fullsize`                                                                        | `width: 100vw; height: 100vh`                                                                                                            |
+| `flex auto`                                                                            | `> * { flex: 1 1 0%; }`                                                                                                                  |
+| `flex center`                                                                          | `> * { margin: auto; }`                                                                                                                  |
+| `justify-flex-start` / `-end` / `justify-space-between` / `-around` / `justify-center` | `justify-content: flex-start` / `flex-end` / `space-between` / `space-around` / `center`                                                 |
+| `align-center` / `align-flex-start` / `-end` / `align-stretch` / `align-baseline`      | `align-items: center` / `flex-start` / `flex-end` / `stretch` / `baseline`                                                               |
+| `content-*`                                                                            | `align-content: *` (same value names as `align-*`)                                                                                       |
+| `gaps`                                                                                 | `gap: 8px` — the host default was `8px` (`--flex-gap`); set the value you actually need. Modern `gap` replaces the old per-child margins |
+| `box grow`                                                                             | `flex: 1 0`                                                                                                                              |
+| `box grow-fixed`                                                                       | `flex: 1 0 0`                                                                                                                            |
+| `box center`                                                                           | `margin: auto`                                                                                                                           |
+| `box left` / `box right`                                                               | `margin-right: auto` / `margin-left: auto`                                                                                               |
+| `box self-flex-start` / `-end` / `self-stretch` / …                                    | `align-self: flex-start` / `flex-end` / `stretch` / …                                                                                    |
+| bare `box`                                                                             | delete it (it was only a marker for the `box *` child utilities)                                                                         |
 
 Example — a health-checks list that used to stack vertically:
 
@@ -2091,17 +2088,17 @@ Three consequences to know:
 
   This costs you the renderer's reload as well: main refuses before it tells
   the renderer anything, deliberately, so that the two processes stay on the
-  same build — which means a CommonJS `main` leaves a rebuild of *only* the
+  same build — which means a CommonJS `main` leaves a rebuild of _only_ the
   renderer entry point unreloaded too, and the development loop does not work
   at all until `main` is ESM.
 
-  The other case is having *started* as ESM and rebuilt as CommonJS, which
+  The other case is having _started_ as ESM and rebuilt as CommonJS, which
   would throw `ReferenceError: module is not defined in ES module scope` from
   inside your bundle — an error naming neither your extension nor the real
   cause. Either way the fix is the same: make `main` ESM (`.mjs`, or `.js` with
   `"type": "module"` in your `package.json`) and restart once. What the host
   goes by is the entry point's file extension, and otherwise your manifest's
-  `type` — and, for what is *running*, the format it was actually loaded as,
+  `type` — and, for what is _running_, the format it was actually loaded as,
   which is why changing `type` alone still needs the restart.
 
 Only the files your manifest names are watched, so a rebuild which changes the
@@ -2111,109 +2108,109 @@ restarted once.
 ## Checklist
 
 - [ ] Replace any direct `@freelensapp/*` internal dependency with
-      `@freelensapp/extensions` (types only).
+  `@freelensapp/extensions` (types only).
 - [ ] Import stylesheets normally (side-effect or CSS-module import); drop any
-      `?inline` + `<style>` CSS workaround, and make sure your build emits a
-      single CSS asset next to the renderer entry.
+  `?inline` + `<style>` CSS workaround, and make sure your build emits a
+  single CSS asset next to the renderer entry.
 - [ ] Replace any legacy `flexbox.scss` classes (`flex`, `column`, `gaps`,
-      `box`, `grow`, `align-center`, …) with plain CSS in your own stylesheet —
-      the host no longer provides them (see
-      [Migrating off flexbox.scss](#migrating-off-flexboxscss)). For substantial
-      UI you can instead run your own Tailwind build (see
-      [Bringing your own Tailwind](#bringing-your-own-tailwind)).
+  `box`, `grow`, `align-center`, …) with plain CSS in your own stylesheet —
+  the host no longer provides them (see
+  [Migrating off flexbox.scss](#migrating-off-flexboxscss)). For substantial
+  UI you can instead run your own Tailwind build (see
+  [Bringing your own Tailwind](#bringing-your-own-tailwind)).
 - [ ] Confirm your entrypoints are ESM or CommonJS and, if ESM, that
-      `package.json` declares it.
+  `package.json` declares it.
 - [ ] Access only the process-appropriate namespace (`Main` in main,
-      `Renderer` in the renderer, `Common` in both).
+  `Renderer` in the renderer, `Common` in both).
 - [ ] Look up every v1 namespace path you use in the
-      [v1→v2 rename table](#v1v2-rename-table).
+  [v1→v2 rename table](#v1v2-rename-table).
 - [ ] Replace any `K8sApi.forRemoteCluster` usage with a direct call to the API
-      server — it was removed (see
-      [`K8sApi.forRemoteCluster` removed](#k8sapiforremotecluster-removed)).
+  server — it was removed (see
+  [`K8sApi.forRemoteCluster` removed](#k8sapiforremotecluster-removed)).
 - [ ] For HTTP to anything other than the cluster, replace any bundled HTTP
-      client, and any `globalThis.fetch` in main, with `Main.Util.fetch`, and
-      give it to a bundled library in main that takes a `fetch` option — the
-      host's client is the one that honours the user's proxy and CA settings.
-      In the renderer, use the global `fetch` (see
-      [HTTP: `Main.Util.fetch` and the renderer's `fetch`](#http-mainutilfetch-and-the-renderers-fetch)).
+  client, and any `globalThis.fetch` in main, with `Main.Util.fetch`, and
+  give it to a bundled library in main that takes a `fetch` option — the
+  host's client is the one that honours the user's proxy and CA settings.
+  In the renderer, use the global `fetch` (see
+  [HTTP: `Main.Util.fetch` and the renderer's `fetch`](#http-mainutilfetch-and-the-renderers-fetch)).
 - [ ] Replace any client of a catalog cluster built from its `kubeConfigPath`
-      — a bundled Kubernetes client, a `fetch` to the API server — with
-      `K8sApi.forCluster` / `K8sApi.KubeJsonApi.forCluster`, and run a spawned
-      `kubectl` or `helm` with the environment of
-      `Main.Shell.getEnvironment(clusterId)`. Such a client works on a plain
-      network and ignores the cluster's proxy setting (see
-      [Reaching a catalog cluster](#reaching-a-catalog-cluster)).
+  — a bundled Kubernetes client, a `fetch` to the API server — with
+  `K8sApi.forCluster` / `K8sApi.KubeJsonApi.forCluster`, and run a spawned
+  `kubectl` or `helm` with the environment of
+  `Main.Shell.getEnvironment(clusterId)`. Such a client works on a plain
+  network and ignores the cluster's proxy setting (see
+  [Reaching a catalog cluster](#reaching-a-catalog-cluster)).
 - [ ] Drop any `undici` dependency added for the `dispatcher` field of
-      `reqInit` — the field is gone and `undici` is no longer a declared type
-      dependency of `@freelensapp/extensions`.
+  `reqInit` — the field is gone and `undici` is no longer a declared type
+  dependency of `@freelensapp/extensions`.
 - [ ] Re-check anything annotated `Response` or `RequestInit` from the DOM
-      around `K8sApi.KubeJsonApi` and `reqInit`: the host's fetch types are
-      structural now, so `const r: Response = await api.getResponse(...)` no
-      longer compiles.
+  around `K8sApi.KubeJsonApi` and `reqInit`: the host's fetch types are
+  structural now, so `const r: Response = await api.getResponse(...)` no
+  longer compiles.
 - [ ] Replace any `react-router` / `react-router-dom` usage imported via the
-      Freelens bundle, a `Link` with `Renderer.Component.MaybeLink` — the
-      `ReactRouter*` re-exports were removed (see
-      [Routing: `react-router` re-exports removed](#routing-react-router-re-exports-removed)).
+  Freelens bundle, a `Link` with `Renderer.Component.MaybeLink` — the
+  `ReactRouter*` re-exports were removed (see
+  [Routing: `react-router` re-exports removed](#routing-react-router-re-exports-removed)).
 - [ ] Replace any `Renderer.Component.List` usage with your own table — it was
-      removed along with the `react-table` dependency behind it (see
-      [`Renderer.Component.List` removed](#renderercomponentlist-removed)).
+  removed along with the `react-table` dependency behind it (see
+  [`Renderer.Component.List` removed](#renderercomponentlist-removed)).
 - [ ] Replace any built-in store **class** named from `Renderer.K8sApi`
-      (`PodStore`, `CRDStore`, `HPAStore`, …) with the store singleton, with
-      `typeof` that singleton in type positions, or with
-      `KubeObjectStore<T>` as the base class for your own store (see
-      [`Renderer.K8sApi` concrete store classes removed](#rendererk8sapi-concrete-store-classes-removed)).
+  (`PodStore`, `CRDStore`, `HPAStore`, …) with the store singleton, with
+  `typeof` that singleton in type positions, or with
+  `KubeObjectStore<T>` as the base class for your own store (see
+  [`Renderer.K8sApi` concrete store classes removed](#rendererk8sapi-concrete-store-classes-removed)).
 - [ ] If you declare one `LensExtensionKubeObject` class per version of a CRD,
-      list every version in one class or pick one class yourself. In v2 every
-      class whose version the cluster serves resolves, so code that walks them
-      shows the same objects twice, and no type check catches it (see
-      [`Renderer.K8sApi` concrete store classes removed](#rendererk8sapi-concrete-store-classes-removed)).
+  list every version in one class or pick one class yourself. In v2 every
+  class whose version the cluster serves resolves, so code that walks them
+  shows the same objects twice, and no type check catches it (see
+  [`Renderer.K8sApi` concrete store classes removed](#rendererk8sapi-concrete-store-classes-removed)).
 - [ ] Replace any use of `Renderer.Component.VirtualList`, `appMenus`,
-      `trayMenus`, `Common.Types.IpcRendererEvent`,
-      `Common.Types.IpcMainEvent` or `Common.Types.IpcMainInvokeEvent` — they
-      were removed (see
-      [Unused members removed](#unused-members-removed)).
+  `trayMenus`, `Common.Types.IpcRendererEvent`,
+  `Common.Types.IpcMainEvent` or `Common.Types.IpcMainInvokeEvent` — they
+  were removed (see
+  [Unused members removed](#unused-members-removed)).
 - [ ] Move any Node or Electron use out of the renderer — `require()`, a
-      builtin import, `Buffer`, `process` — to the replacements in
-      [Node and Electron in the renderer](#node-and-electron-in-the-renderer),
-      or into main behind `Ipc`, and stop marking the builtins external in the
-      renderer build.
+  builtin import, `Buffer`, `process` — to the replacements in
+  [Node and Electron in the renderer](#node-and-electron-in-the-renderer),
+  or into main behind `Ipc`, and stop marking the builtins external in the
+  renderer build.
 - [ ] Build the main entry for Node (`platform: "node"` with Vite 8 or
-      Rolldown), so that a bundled CommonJS package can `require()` the
-      builtins (see
-      [Node and Electron in the renderer](#node-and-electron-in-the-renderer)).
+  Rolldown), so that a bundled CommonJS package can `require()` the
+  builtins (see
+  [Node and Electron in the renderer](#node-and-electron-in-the-renderer)).
 - [ ] Move mobx decorators to standard decorators: drop
-      `experimentalDecorators`, write `@observable accessor`, replace the
-      namespaced annotations and `comparer.*` with their named exports,
-      remove `makeObservable(this)`, and read `this.props` of an `@observer`
-      class component only in its `render()` (see
-      [MobX 7 and mobx-react 10](#mobx-7-and-mobx-react-10-standard-decorators-only)).
+  `experimentalDecorators`, write `@observable accessor`, replace the
+  namespaced annotations and `comparer.*` with their named exports,
+  remove `makeObservable(this)`, and read `this.props` of an `@observer`
+  class component only in its `render()` (see
+  [MobX 7 and mobx-react 10](#mobx-7-and-mobx-react-10-standard-decorators-only)).
 - [ ] Give main, renderer and common code a directory and a `tsconfig.json`
-      each, so the type check catches the next Node API in renderer code (see
-      [Source layout](#source-layout-one-tsconfig-per-runtime-environment)).
+  each, so the type check catches the next Node API in renderer code (see
+  [Source layout](#source-layout-one-tsconfig-per-runtime-environment)).
 - [ ] Write your `kubeObjectDetailItems` and `kubeObjectMenuItems` with
-      `Renderer.K8sApi.detailsFor` and `menuItemFor`, and declare the instance
-      `kind` and `apiVersion` of your model classes as literal types, so a
-      component typed for another kind or version than its registration's
-      fails the type check (see
-      [Registering things](#registering-things-declarative-fields)).
+  `Renderer.K8sApi.detailsFor` and `menuItemFor`, and declare the instance
+  `kind` and `apiVersion` of your model classes as literal types, so a
+  component typed for another kind or version than its registration's
+  fails the type check (see
+  [Registering things](#registering-things-declarative-fields)).
 - [ ] List in `customResources` the model class of every custom resource your
-      extension presents with a sidebar entry and pages of its own, so the
-      Custom Resources tree stops listing it a second time; leave out the
-      models you only decorate (see
-      [Registering things](#registering-things-declarative-fields)).
+  extension presents with a sidebar entry and pages of its own, so the
+  Custom Resources tree stops listing it a second time; leave out the
+  models you only decorate (see
+  [Registering things](#registering-things-declarative-fields)).
 - [ ] Load your extension in a v2 build and verify its UI renders through the
-      runtime global.
+  runtime global.
 
 And the two that fail silently rather than loudly, so they need an explicit
 check rather than a smoke test:
 
 - [ ] **Bump `engines.freelens` to `^2.0.0` first** — without it the host
-      refuses the extension at discovery and nothing else you changed is
-      observable.
+  refuses the extension at discovery and nothing else you changed is
+  observable.
 - [ ] Verify you are on the **host's** React and mobx instances, not copies. A
-      second React throws `invalid hook call` when a hook runs; a second mobx
-      throws nothing at all — its reactions simply do not fire. Assert on an
-      observable the host reacts to rather than eyeballing the UI.
+  second React throws `invalid hook call` when a hook runs; a second mobx
+  throws nothing at all — its reactions simply do not fire. Assert on an
+  observable the host reacts to rather than eyeballing the UI.
 
 ## Shipping executables
 

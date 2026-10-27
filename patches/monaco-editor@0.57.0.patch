@@ -1,0 +1,13 @@
+diff --git a/esm/vs/base/browser/domSanitize.js b/esm/vs/base/browser/domSanitize.js
+index 20c502413be001528668111286986258b7ad84a8..3459b8044975c6eb98beb89025aec085cd0d3a5a 100644
+--- a/esm/vs/base/browser/domSanitize.js
++++ b/esm/vs/base/browser/domSanitize.js
+@@ -1,7 +1,7 @@
+ import { Schemas } from '../common/network.js';
+ import { reset } from './dom.js';
+ import { createTrustedTypesPolicy } from './trustedTypes.js';
+-import purify from './dompurify/dompurify.js';
++import purify from 'dompurify';
+ 
+ /*---------------------------------------------------------------------------------------------
+  *  Copyright (c) Microsoft Corporation. All rights reserved.

@@ -6,7 +6,7 @@
 
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
-import directoryForTempInjectable from "../../common/app-paths/directory-for-temp/directory-for-temp.injectable";
+import directoryForUserDataInjectable from "../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import freelensProxyCertificateInjectable from "../../common/certificate/freelens-proxy-certificate.injectable";
 import loadKubeconfigInjectable from "../../common/cluster/load-kubeconfig.injectable";
 import ensureDirInjectable from "../../common/fs/ensure-dir.injectable";
@@ -15,8 +15,9 @@ import removePathInjectable from "../../common/fs/remove.injectable";
 import writeFileInjectable from "../../common/fs/write-file.injectable";
 import getDirnameOfPathInjectable from "../../common/path/get-dirname.injectable";
 import joinPathsInjectable from "../../common/path/join-paths.injectable";
-import freelensK8sProxyServerInjectable from "../cluster/freelens-k8s-proxy-server.injectable";
+import freelensK8sProxyManagerInjectable from "../cluster/freelens-k8s-proxy-manager.injectable";
 import freelensProxyClusterUrlInjectable from "../cluster/freelens-proxy-cluster-url.injectable";
+import freelensK8sProxyCredentialCommandInjectable from "../freelens-k8s-proxy/freelens-k8s-proxy-credential-command.injectable";
 import { KubeconfigManager } from "./kubeconfig-manager";
 
 import type { Cluster } from "../../common/cluster/cluster";
@@ -27,7 +28,7 @@ const kubeconfigManagerInjectable = getInjectable({
   instantiate: (di, cluster) =>
     new KubeconfigManager(
       {
-        directoryForTemp: di.inject(directoryForTempInjectable),
+        directoryForUserData: di.inject(directoryForUserDataInjectable),
         logger: di.inject(loggerInjectionToken),
         joinPaths: di.inject(joinPathsInjectable),
         getDirnameOfPath: di.inject(getDirnameOfPathInjectable),
@@ -37,8 +38,9 @@ const kubeconfigManagerInjectable = getInjectable({
         ensureDirectory: di.inject(ensureDirInjectable),
         certificate: di.inject(freelensProxyCertificateInjectable).get(),
         loadKubeconfig: di.inject(loadKubeconfigInjectable, cluster),
-        freelensK8sProxyServer: di.inject(freelensK8sProxyServerInjectable, cluster),
+        freelensK8sProxyManager: di.inject(freelensK8sProxyManagerInjectable, cluster),
         freelensProxyClusterUrl: di.inject(freelensProxyClusterUrlInjectable, cluster),
+        freelensK8sProxyCredentialCommand: di.inject(freelensK8sProxyCredentialCommandInjectable),
       },
       cluster,
     ),

@@ -24,7 +24,7 @@ jobs:
         # denominator is derived from strategy.job-total to stay in sync.
         shard: [1, 2, 3, 4]
 
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
     timeout-minutes: 60
 
     env:
@@ -41,7 +41,7 @@ jobs:
       - name: Set up mise
         uses: jdx/mise-action@v5
         with:
-          version: 2026.10.13 # datasource=github-releases depName=jdx/mise
+          version: 2026.10.19 # datasource=github-releases depName=jdx/mise
           install_args: yq
 
       - name: Setup node
@@ -63,17 +63,17 @@ jobs:
         uses: actions/cache@v6
         with:
           path: ${{ env.pnpm_cache_dir }}
-          key: ubuntu-24.04-arm-arm64-node-${{ hashFiles('pnpm-lock.yaml') }}
+          key: ubuntu-26.04-arm-arm64-node-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: |
-            ubuntu-24.04-arm-arm64-node-
+            ubuntu-26.04-arm-arm64-node-
 
       - name: Use Turborepo cache
         uses: actions/cache@v6
         with:
           path: ${{ env.TURBOREPO_CACHE }}
-          key: ubuntu-24.04-arm-arm64-turborepo-${{ hashFiles('package.json', 'freelens/package.json', 'packages/**/package.json', 'pnpm-lock.yaml','turbo.json','tsconfig*.json','packages/infrastructure/typescript/config/*.json') }}
+          key: ubuntu-26.04-arm-arm64-turborepo-${{ hashFiles('package.json', 'freelens/package.json', 'packages/**/package.json', 'pnpm-lock.yaml','turbo.json','tsconfig*.json','packages/infrastructure/typescript/config/*.json') }}
           restore-keys: |
-            ubuntu-24.04-arm-arm64-turborepo-
+            ubuntu-26.04-arm-arm64-turborepo-
 
       # Turborepo does not cache the binaries, see "Bundled Binary Versions"
       # in AGENTS.md. Saved right after the build.
@@ -99,7 +99,7 @@ jobs:
         uses: actions/cache@v6
         with:
           path: ${{ env.ELECTRON_CACHE }}
-          key: ubuntu-24.04-arm-arm64-electron-${{ env.electron_version }}
+          key: ubuntu-26.04-arm-arm64-electron-${{ env.electron_version }}
 
       - name: Install pnpm dependencies
         id: install-pnpm

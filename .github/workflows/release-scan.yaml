@@ -38,7 +38,7 @@ jobs:
     # Never on a fork: it has no GH_TOKEN secret, so the job could only fail.
     if: github.repository_owner == 'freelensapp' && (github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success')
 
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
     # GH_TOKEN, which edits the discussion, is a secret of this environment.
     environment: automated
 
@@ -51,7 +51,7 @@ jobs:
       # "v" because that manager's extractVersionTemplate strips it on every
       # bump; grype's installer needs the exact tag, so the "v" is re-added
       # where this is consumed rather than kept here (it would not survive).
-      GRYPE_VERSION: 0.120.1 # datasource=github-releases depName=anchore/grype
+      GRYPE_VERSION: 0.121.0 # datasource=github-releases depName=anchore/grype
       DISCUSSION_NUMBER: 2339
       GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
@@ -66,7 +66,7 @@ jobs:
       - name: Set up mise
         uses: jdx/mise-action@v5
         with:
-          version: 2026.10.13 # datasource=github-releases depName=jdx/mise
+          version: 2026.10.19 # datasource=github-releases depName=jdx/mise
           install_args: yq
 
       - name: Install Grype

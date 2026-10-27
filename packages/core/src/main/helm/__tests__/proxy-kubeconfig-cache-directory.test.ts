@@ -9,6 +9,7 @@ import { Cluster } from "../../../common/cluster/cluster";
 import execFileInjectable from "../../../common/fs/exec-file.injectable";
 import removePathInjectable from "../../../common/fs/remove.injectable";
 import writeFileInjectable from "../../../common/fs/write-file.injectable";
+import freelensProxyTokenInjectable from "../../freelens-proxy/freelens-proxy-token.injectable";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import kubeconfigManagerInjectable from "../../kubeconfig-manager/kubeconfig-manager.injectable";
 import deleteHelmReleaseInjectable from "../delete-helm-release.injectable";
@@ -73,6 +74,24 @@ describe("helm with the proxy kubeconfig", () => {
         env: { HTTPS_PROXY: "http://some-https-proxy:3128", KUBECACHEDIR: kubeconfig.cacheDirectoryPath },
       });
     });
+
+    it("adds the proxy token for a call that goes through the proxy", async () => {
+      const token = di.inject(freelensProxyTokenInjectable).value;
+
+      await di.inject(execHelmInjectable)(["ls"], {
+        env: { KUBECACHEDIR: kubeconfig.cacheDirectoryPath },
+        throughProxy: true,
+      });
+
+      expect(execFileMock).toHaveBeenCalledWith("/some-helm", ["ls"], {
+        maxBuffer: expect.any(Number),
+        env: {
+          HTTPS_PROXY: "http://some-https-proxy:3128",
+          KUBECACHEDIR: kubeconfig.cacheDirectoryPath,
+          FREELENS_PROXY_TOKEN: token,
+        },
+      });
+    });
   });
 
   describe("helm calls", () => {
@@ -89,7 +108,7 @@ describe("helm with the proxy kubeconfig", () => {
     const expectKubeCacheDir = () => {
       expect(execHelmMock).toHaveBeenCalledExactlyOnceWith(
         expect.arrayContaining(["--kubeconfig", kubeconfig.kubeconfigPath]),
-        { env: { KUBECACHEDIR: kubeconfig.cacheDirectoryPath } },
+        { env: { KUBECACHEDIR: kubeconfig.cacheDirectoryPath }, throughProxy: true },
       );
     };
 

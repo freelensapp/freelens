@@ -511,7 +511,7 @@ exports[`show-about-using-tray > when navigating using tray > renders 1`] = `
           id="lens-views"
         />
         <div
-          class="SettingLayout showNavigation Preferences"
+          class="SettingLayout showNavigation withCloseButton Preferences"
         >
           <nav
             class="sidebarRegion"

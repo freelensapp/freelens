@@ -511,7 +511,7 @@ exports[`Showing correct entity settings > when navigating to local cluster enti
           id="lens-views"
         />
         <div
-          class="SettingLayout showNavigation"
+          class="SettingLayout showNavigation withCloseButton"
           data-testid="entity-settings"
         >
           <nav
@@ -917,7 +917,7 @@ exports[`Showing correct entity settings > when navigating to non-local cluster 
           id="lens-views"
         />
         <div
-          class="SettingLayout showNavigation"
+          class="SettingLayout showNavigation withCloseButton"
           data-testid="entity-settings"
         >
           <nav
@@ -1344,7 +1344,7 @@ exports[`Showing correct entity settings > when navigating to weblink entity set
           id="lens-views"
         />
         <div
-          class="SettingLayout showNavigation"
+          class="SettingLayout showNavigation withCloseButton"
           data-testid="entity-settings"
         >
           <nav

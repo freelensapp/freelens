@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/electron-userland/electron-builder/refs/heads/master/packages/app-builder-lib/scheme.json
 
-electronVersion: 43.8.1 # datasource=npm depName=electron
+electronVersion: 44.9.3 # datasource=npm depName=electron
 
 ## node-pty is our only native module and it is a N-API (node-addon-api)
 ## addon, so its bundled prebuilt binaries are ABI-stable and load as-is on
@@ -159,8 +159,15 @@ mac:
       to: ./${arch}/helm
   publish: null
 
+dmg:
+  icon: build/installerIcon.icns
+
 pkg:
   license: static/build/license.txt
+  background:
+    file: build/installerBackground.png
+    alignment: bottomleft
+    scaling: none
 
 ## For Windows targets
 win:
@@ -182,6 +189,7 @@ msi:
 
 nsis:
   include: build/installer.nsh
+  installerIcon: build/installerIcon.ico
   oneClick: false
   allowElevation: true
   createStartMenuShortcut: true

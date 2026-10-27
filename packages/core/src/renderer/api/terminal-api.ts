@@ -108,25 +108,14 @@ export class TerminalApi extends WebSocketApi<TerminalEvents> {
       slashes: true,
     });
 
-    const onReady = once((data?: string) => {
+    // A session that the main process resumes, as after a reload, sends its
+    // last output again right after "connected"
+    const onReady = once(() => {
       this.isReady = true;
       this.emit("ready");
       this.removeListener("data", onReady);
       this.removeListener("connected", onReady);
       this.flush();
-
-      // data is undefined if the event that was handled is "connected"
-      if (data === undefined) {
-        const lastData = window.localStorage.getItem(`${this.query.id}:last-data`);
-
-        if (lastData) {
-          /**
-           * Output the last line, the makes sure that the terminal isn't completely
-           * empty when the user refreshes.
-           */
-          this.emit("data", lastData);
-        }
-      }
     });
 
     this.prependListener("data", onReady);
@@ -169,11 +158,6 @@ export class TerminalApi extends WebSocketApi<TerminalEvents> {
 
       switch (message.type) {
         case TerminalChannels.STDOUT:
-          /**
-           * save the last data for reconnections. User localStorage because we
-           * don't want this data to survive if the app is closed
-           */
-          window.localStorage.setItem(`${this.query.id}:last-data`, message.data);
           super._onMessage({ data: message.data, ...evt });
           break;
         case TerminalChannels.STATUS:
