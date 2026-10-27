@@ -12,7 +12,7 @@ import type { Pod } from "@freelensapp/kube-object";
 
 const columnId = "ports";
 
-const podPortSortKey = (pod: Pod) => getPodContainerPorts(pod)[0]?.containerPort;
+const podPortSortKey = (pod: Pod) => getPodContainerPorts(pod)[0]?.containerPort ?? 0;
 
 export const podsPortsColumnInjectable = getInjectable({
   id: "pods-ports-column",
