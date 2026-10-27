@@ -712,7 +712,7 @@ globals such as `Buffer` and `process`; the tsconfig split covers those.
 ## API namespace reorganization
 
 Because compatibility is already broken, the API namespaces are reorganized
-once, at this point (D5). If your v1 extension reached into a specific
+once, at this point. If your v1 extension reached into a specific
 namespace path, re-check it against the current type surface; a symbol may have
 moved between `Common`, `Main`, and `Renderer`.
 
