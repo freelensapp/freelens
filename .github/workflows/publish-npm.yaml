@@ -83,6 +83,9 @@ jobs:
 
     env:
       DO_NOT_TRACK: "1"
+      # The same as in Release: turbo runs every task rather than restore its
+      # output from a cache.
+      TURBO_FORCE: "true"
       tag: ${{ needs.find-release.outputs.tag }}
 
     steps:
