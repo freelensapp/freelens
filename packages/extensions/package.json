@@ -42,6 +42,7 @@
   },
   "devDependencies": {
     "@freelensapp/core": "workspace:^",
+    "electron": "catalog:",
     "rolldown": "catalog:",
     "rolldown-plugin-dts": "catalog:",
     "typescript": "catalog:"

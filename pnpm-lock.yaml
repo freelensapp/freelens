@@ -1356,9 +1356,6 @@ importers:
       conf:
         specifier: catalog:extensions
         version: 16.0.0
-      electron:
-        specifier: '>=43.0.0'
-        version: 44.10.0(supports-color@8.1.1)
       es-toolkit:
         specifier: catalog:extensions
         version: 1.52.0
@@ -1393,6 +1390,9 @@ importers:
       '@freelensapp/core':
         specifier: workspace:^
         version: link:../core
+      electron:
+        specifier: 'catalog:'
+        version: 44.10.0(supports-color@8.1.1)
       rolldown:
         specifier: 'catalog:'
         version: 1.2.14
