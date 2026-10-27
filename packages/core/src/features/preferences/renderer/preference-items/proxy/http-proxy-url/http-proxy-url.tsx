@@ -31,7 +31,8 @@ const NonInjectedHttpProxyUrl = observer(({ state }: Dependencies) => {
         onBlur={() => (state.httpsProxy = proxy)}
       />
       <small className="hint">
-        An http://, https:// or socks5:// URL. Proxy is used only for non-cluster communication.
+        Proxy for the connections of the application: downloads, update checks, Helm and extensions. Takes an http://,
+        https:// or socks5:// URL.
       </small>
     </section>
   );

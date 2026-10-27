@@ -63,7 +63,8 @@ export class ClusterProxySetting extends React.Component<ClusterProxySettingProp
           validators={this.proxy ? InputValidators.isUrl : undefined}
         />
         <small className="hint">
-          An http://, https:// or socks5:// URL. Used for communicating with Kubernetes API.
+          Proxy for the connections of the views of this cluster to its Kubernetes API, and for its terminal. Takes an
+          http://, https:// or socks5:// URL. A proxy-url in the kubeconfig takes precedence.
         </small>
       </>
     );
