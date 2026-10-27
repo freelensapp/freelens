@@ -25,6 +25,15 @@ export const maxConcurrentLogRequests = 5;
 export const maxCombinedLogLines = 100_000;
 
 /**
+ * "All logs" of a combined logs tab reads at most this many bytes, shared out
+ * between its pods with `limitBytes`: the logs that fit in their share are
+ * read whole, and the longer ones share what is left for their most recent
+ * lines. The file is merged in the cluster frame, which takes about ten times
+ * as much memory: 32 MiB of logs from 20 pods peak at some 300 MB.
+ */
+export const maxCombinedLogsDownloadBytes = 32 * 1024 * 1024;
+
+/**
  * The colors of the pod names in a combined logs view, as ANSI codes of the
  * 256 color palette: teal, orange, purple, green, blue and pink. The logs are
  * white on black in the dark theme and black on white in the light one, and

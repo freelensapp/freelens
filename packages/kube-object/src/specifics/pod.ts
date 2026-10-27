@@ -38,6 +38,7 @@ export interface PodLogsQuery {
   sinceTime?: string; // Date.toISOString()-format
   follow?: boolean;
   previous?: boolean;
+  limitBytes?: number;
 }
 
 /**
