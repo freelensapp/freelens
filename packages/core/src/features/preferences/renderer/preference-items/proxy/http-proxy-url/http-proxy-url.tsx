@@ -31,8 +31,8 @@ const NonInjectedHttpProxyUrl = observer(({ state }: Dependencies) => {
         onBlur={() => (state.httpsProxy = proxy)}
       />
       <small className="hint">
-        Proxy for the connections of the application: downloads, update checks, Helm and extensions. Takes an http://,
-        https:// or socks5:// URL.
+        Proxy for the connections of the application: downloads, update checks, Helm, extensions, and the terminal
+        outside clusters. Takes an http://, https:// or socks5:// URL.
       </small>
     </section>
   );
