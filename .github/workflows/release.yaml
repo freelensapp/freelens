@@ -106,6 +106,11 @@ jobs:
       # because the Renovate manager that bumps it strips the "v" on every
       # bump; it is re-added where this is consumed.
       SYFT_VERSION: 1.55.0 # datasource=github-releases depName=anchore/syft
+      # A release builds everything from scratch: turbo runs every task rather
+      # than restore its output from a cache, so a stale or broken cache cannot
+      # reach a release, such as an unsigned Windows app directory before the
+      # installers are packed from it.
+      TURBO_FORCE: "true"
 
     steps:
       - name: Checkout
@@ -404,6 +409,10 @@ jobs:
           # same.
           MACOS_MIN_VERSION: "13.0"
 
+      # Only notarizes: the ticket is stapled by the staple-pkg job, so that a
+      # failed staple can be re-run on its own instead of the whole build. The
+      # step fails unless Apple accepted the PKG, because the exit status of
+      # notarytool is lost in the pipe to tee and an empty uuid skips the log.
       - name: Notarize PKG (macOS)
         id: notarize-pkg
         if: runner.os == 'macOS'
@@ -416,8 +425,8 @@ jobs:
             sleep 60
             if [[ -n $uuid ]]; then
               xcrun notarytool log $uuid $auth
-              xcrun stapler staple $pkgname
             fi
+            grep -qE '^ +status: Accepted$' freelens/dist/notarytool.log
           fi
         env:
           APPLEID: ${{ secrets.APPLEID }}
@@ -438,8 +447,8 @@ jobs:
             sleep 60
             if [[ -n $uuid ]]; then
               xcrun notarytool log $uuid $auth
-              xcrun stapler staple $pkgname
             fi
+            grep -qE '^ +status: Accepted$' freelens/dist/notarytool.log
           fi
         env:
           APPLEID: ${{ secrets.APPLEID }}
@@ -459,8 +468,8 @@ jobs:
             sleep 60
             if [[ -n $uuid ]]; then
               xcrun notarytool log $uuid $auth
-              xcrun stapler staple $pkgname
             fi
+            grep -qE '^ +status: Accepted$' freelens/dist/notarytool.log
           fi
         env:
           APPLEID: ${{ secrets.APPLEID }}
@@ -708,6 +717,24 @@ jobs:
         env:
           ARCH: ${{ matrix.arch }}
 
+      # Stapling rewrites the PKG, so this leg must not checksum or publish it:
+      # the staple-pkg job takes it from here as a run artifact and does both
+      # after stapling. Kept for a few days only, enough to re-run that job.
+      - name: Upload PKG for stapling (macOS)
+        if: runner.os == 'macOS'
+        uses: actions/upload-artifact@v7
+        with:
+          name: "${{ github.event.repository.name }}-macos-${{ matrix.arch == 'x64' && 'amd64' || matrix.arch }}-pkg"
+          path: freelens/dist/Freelens-*.pkg
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
+
+      - name: Remove PKG from upload (macOS)
+        if: runner.os == 'macOS'
+        shell: bash
+        run: rm -v freelens/dist/Freelens-*.pkg
+
       - name: Make checksums for binaries (Linux, Windows)
         if: runner.os == 'Linux' || runner.os == 'Windows'
         shell: bash
@@ -867,6 +894,84 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+  staple-pkg:
+    name: staple PKG
+
+    # Attaches the notarization ticket to the PKGs that build-app notarized.
+    # stapler fetches the ticket from Apple's CloudKit, and from the GitHub
+    # macOS runners, Intel and arm64 alike, that connection is sometimes
+    # dropped ("The network connection was lost", error 68), at times for
+    # every attempt within a job. As a job of its own it can be re-run without
+    # rebuilding anything.
+    #
+    # It needs no Apple credentials: the ticket is public, looked up by the
+    # code directory hash. An arm64 runner staples the x64 PKG just as well.
+    needs:
+      - make-draft-release
+      - build-app
+
+    runs-on: macos-26 # datasource=github-runners
+
+    steps:
+      - name: Download PKGs
+        uses: actions/download-artifact@v8
+        with:
+          pattern: "*-pkg"
+          path: pkg
+          merge-multiple: true
+
+      # stapler staple validates the ticket itself ("The staple and validate
+      # action worked!"), so a separate stapler validate would only be one
+      # more CloudKit request outside the retries.
+      - name: Staple PKGs
+        shell: bash
+        run: |
+          set -eo pipefail
+          shopt -s nullglob
+          pkgs=(pkg/Freelens-*.pkg)
+          if [[ ${#pkgs[@]} -eq 0 ]]; then
+            echo "No PKG to staple" >&2
+            exit 1
+          fi
+          for pkg in "${pkgs[@]}"; do
+            attempt=1
+            until xcrun stapler staple "$pkg"; do
+              if [[ $attempt -ge 5 ]]; then
+                echo "::error::Stapling $pkg failed $attempt times"
+                exit 1
+              fi
+              attempt=$((attempt + 1))
+              sleep 60
+            done
+          done
+
+      - name: Make checksums for PKGs
+        shell: bash
+        run: |
+          for f in pkg/Freelens-*.pkg; do
+            pushd pkg > /dev/null
+            shasum -a 256 $(basename $f) | tee $(basename $f).sha256
+            popd > /dev/null
+          done
+
+      # --clobber, because a re-run may find the assets of an attempt that
+      # failed halfway through the upload.
+      - name: Upload files
+        shell: bash
+        run: gh release upload ${GITHUB_REF_NAME} pkg/Freelens-*.pkg* --clobber --repo "$GITHUB_REPOSITORY"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Same as in build-app: attest-artifacts collects the checksums of
+      # everything published. overwrite, because a re-run of this job must
+      # replace the artifact of an earlier attempt.
+      - name: Upload checksums
+        uses: actions/upload-artifact@v7
+        with:
+          name: "${{ github.event.repository.name }}-macos-pkg-checksums"
+          path: pkg/Freelens-*.pkg.sha256
+          overwrite: true
+
   publish-runtime-package-list:
     name: publish runtime package list
 
@@ -962,6 +1067,7 @@ jobs:
     needs:
       - make-draft-release
       - build-app
+      - staple-pkg
       - publish-runtime-package-list
 
     runs-on: ubuntu-26.04-arm
@@ -1017,9 +1123,14 @@ jobs:
     # published release. Keeping it out of this run means an advisory feed that
     # is down or rate-limited cannot fail an otherwise correct release, and the
     # report can be refreshed nightly against the same release afterwards.
+    #
+    # The npm packages and the APT repository index files are published the
+    # same way, by the Publish npm and Release APT repository workflows once
+    # this one has completed, so each can be run again on its own.
     needs:
       - make-draft-release
       - build-app
+      - staple-pkg
       - publish-runtime-package-list
       - attest-artifacts
 
@@ -1033,152 +1144,3 @@ jobs:
         run: gh release edit ${GITHUB_REF_NAME} --draft=false
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  publish-npm-release:
-    name: publish NPM release
-
-    needs:
-      - make-draft-release
-      - build-app
-      - publish-github-release
-
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - runs-on: ubuntu-26.04-arm
-            arch: arm64
-
-    runs-on: ${{ matrix.runs-on }}
-    environment: publishing
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-
-      - name: Setup node
-        uses: actions/setup-node@v7
-        with:
-          node-version-file: .nvmrc
-          package-manager-cache: false
-          registry-url: https://registry.npmjs.org
-
-      - name: Upgrade npm
-        run: npm install -g npm@11
-
-      - name: Setup pnpm
-        run: corepack enable
-
-      - name: Get pnpm cache directory
-        shell: bash
-        run: |
-          pnpm_cache_dir="$(pnpm store path)"
-          echo "pnpm_cache_dir=${pnpm_cache_dir}" | tee -a "${GITHUB_ENV}"
-
-      - name: Use pnpm cache
-        uses: actions/cache@v6
-        with:
-          path: ${{ env.pnpm_cache_dir }}
-          key: ${{ matrix.runs-on }}-${{ matrix.arch }}-node-${{ hashFiles('pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ matrix.runs-on }}-${{ matrix.arch }}-node-
-
-      - name: Install pnpm dependencies
-        id: install-pnpm
-        shell: bash
-        run: pnpm install --color=always --prefer-offline --frozen-lockfile
-        continue-on-error: true
-
-      - name: Install pnpm dependencies (retry)
-        if: steps.install-pnpm.outcome == 'failure'
-        shell: bash
-        run: pnpm install --color=always --prefer-offline --frozen-lockfile
-
-      - name: Build packages
-        run: pnpm --color=always --stream build
-
-      - name: Publish npm packages
-        id: publish-npm
-        run: |
-          case "${GITHUB_REF_NAME}" in
-            *-*) dist_tag=next;;
-            *) dist_tag=latest;;
-          esac
-          pnpm --color=always publish -r \
-            --no-git-checks \
-            --tag ${dist_tag}
-        env:
-          NPM_CONFIG_PROVENANCE: "true"
-        continue-on-error: true
-
-      - name: Publish npm packages (retry)
-        id: publish-npm-2
-        if: steps.publish-npm.outcome == 'failure'
-        run: |
-          case "${GITHUB_REF_NAME}" in
-            *-*) dist_tag=next;;
-            *) dist_tag=latest;;
-          esac
-          pnpm --color=always publish -r \
-            --no-git-checks \
-            --tag ${dist_tag}
-        env:
-          NPM_CONFIG_PROVENANCE: "true"
-        continue-on-error: true
-
-      - name: Publish npm packages (retry 2)
-        if: steps.publish-npm-2.outcome == 'failure'
-        run: |
-          case "${GITHUB_REF_NAME}" in
-            *-*) dist_tag=next;;
-            *) dist_tag=latest;;
-          esac
-          pnpm --color=always publish -r \
-            --no-git-checks \
-            --tag ${dist_tag}
-        env:
-          NPM_CONFIG_PROVENANCE: "true"
-
-  release-apt-repository:
-    name: Release APT repository
-
-    needs:
-      - make-draft-release
-      - publish-github-release
-
-    runs-on: ubuntu-26.04-arm
-    environment: apt-signing
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-        with:
-          fetch-depth: 0
-
-      - name: GPG configuration
-        run: |
-          mkdir -p -m 0700 $HOME/.gnupg
-          echo "use-agent" > $HOME/.gnupg/gpg.conf
-          echo "pinentry-program $GITHUB_WORKSPACE/.github/scripts/pinentry.sh" > $HOME/.gnupg/gpg-agent.conf
-          echo "$GPG_PASSPHRASE" > $HOME/.gnupg/passphrase
-          gpgconf --launch gpg-agent
-          echo "$GPG_PRIVATE_KEY" | gpg --import
-          echo "$GPG_KEY_ID:6:" | gpg --import-ownertrust
-        env:
-          GPG_KEY_ID: ${{ vars.GPG_KEY_ID }}
-          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
-          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
-
-      - name: Release APT repository
-        run: |
-          set -x
-          gh release download ${GITHUB_REF_NAME} -p "*.deb" -D tmp
-          pushd tmp
-            apt-ftparchive packages . | tee Packages | xz > Packages.xz
-            apt-ftparchive release -c ../freelens/build/apt/release.conf . > Release
-            gpg --clearsign -o InRelease Release
-            gpg --armor --detach-sign --sign -o Release.gpg Release
-            gh release upload ${GITHUB_REF_NAME} InRelease Packages Packages.xz Release Release.gpg --clobber
-          popd
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
