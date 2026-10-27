@@ -4,26 +4,15 @@
  */
 
 import { getInjectable, type Injectable } from "@ogre-tools/injectable";
-import { Agent, ProxyAgent } from "undici";
+import { Agent } from "undici";
 import caCertificatesInjectable from "../../common/certificate/ca-certificates.injectable";
 import userPreferencesStateInjectable from "../../features/user-preferences/common/state.injectable";
+import { createHttpsProxyAgent } from "./https-proxy-agent";
 import { refuseBrotli } from "./refuse-brotli";
 
 import type { Dispatcher } from "undici";
 
 export type HttpsAgent = () => Dispatcher;
-
-interface TlsOptions {
-  ca: string[];
-  rejectUnauthorized: boolean;
-}
-
-// The certificate authorities, and whether untrusted ones are allowed, are for the server behind the proxy, which
-// undici reaches with `requestTls`, and for an https:// proxy itself, which it reaches with `proxyTls`. Undici speaks
-// TLS to a SOCKS proxy that is given `proxyTls`, so a SOCKS proxy and an http:// one are given none.
-function createProxyAgent(uri: string, tls: TlsOptions): ProxyAgent {
-  return new ProxyAgent({ uri, requestTls: tls, ...(/^https:\/\//i.test(uri) ? { proxyTls: tls } : {}) });
-}
 
 const httpsAgentInjectable: Injectable<HttpsAgent, unknown, void> = getInjectable({
   id: "https-agent",
@@ -48,7 +37,7 @@ const httpsAgentInjectable: Injectable<HttpsAgent, unknown, void> = getInjectabl
 
         current = {
           key,
-          dispatcher: (httpsProxy ? createProxyAgent(httpsProxy, connect) : new Agent({ connect })).compose(
+          dispatcher: (httpsProxy ? createHttpsProxyAgent(httpsProxy, connect) : new Agent({ connect })).compose(
             refuseBrotli,
           ),
         };
