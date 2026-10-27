@@ -9,6 +9,7 @@ import { observable, when } from "mobx";
 import {
   compareLogTimestamps,
   getLeadingTimestamp,
+  maxCombinedLogLines,
   maxConcurrentLogRequests,
   mergeIntoLogs,
   mergePodLogs,
@@ -52,6 +53,8 @@ export class LogStore {
   private readonly requests = new Map<TabId, AbortController>();
   private readonly cursors = new Map<TabId, Map<string, PodLogsCursor>>();
   private readonly podColors = new Map<TabId, Map<string, string>>();
+  // How many lines every pod has in the tab, by pod id.
+  private readonly lineCounts = new Map<TabId, Map<string, number>>();
 
   constructor(private dependencies: Dependencies) {}
 
@@ -68,7 +71,9 @@ export class LogStore {
 
   /**
    * Function prepares tailLines param for passing to API request
-   * Each time it increasing it's number, caused to fetch more logs.
+   * Each time it increasing it's number, caused to fetch more logs: every
+   * pod is asked for the lines it already has in the tab and
+   * `logLinesToLoad` more.
    * Also, it handles loading errors, rewriting whole logs with error
    * messages
    */
@@ -80,21 +85,41 @@ export class LogStore {
     // A manual load supersedes any poll or load from the previous tab selection.
     this.stopLoadingLogs(tabId);
 
-    const tailLines = this.getLogLines(tabId) + logLinesToLoad;
+    const lineCounts = this.lineCounts.get(tabId);
 
     await this.loadForTab(
       tabId,
       computedPods,
       logTabData,
-      () => ({ tailLines }),
+      (pod, podCount) => ({ tailLines: this.getTailLines(lineCounts?.get(pod.getId()) ?? 0, podCount) }),
       (logsOfPods, tagged) => {
         const cursors = new Map<string, PodLogsCursor>();
 
         this.cursors.set(tabId, cursors);
+        this.lineCounts.set(tabId, new Map());
         this.getRefresher(tabId, computedPods, logTabData).start();
         this.podLogs.set(tabId, this.mergeNewLines(tabId, cursors, logsOfPods, tagged));
       },
     );
+  }
+
+  /**
+   * The lines to ask a pod for: the ones it has in the tab and
+   * `logLinesToLoad` more. In a combined tab every pod asks for its own lines,
+   * not the lines of the whole tab, and older lines only up to its share of
+   * `maxCombinedLogLines`: a pod that has its share asks for the lines it has,
+   * so the ones the polling added stay in the tab.
+   */
+  private getTailLines(podLines: number, podCount: number): number {
+    const tailLines = podLines + logLinesToLoad;
+
+    if (podCount <= 1) {
+      return tailLines;
+    }
+
+    const share = Math.max(logLinesToLoad, Math.floor(maxCombinedLogLines / podCount));
+
+    return Math.max(podLines, Math.min(tailLines, share));
   }
 
   private getRefresher(
@@ -166,7 +191,7 @@ export class LogStore {
     tabId: TabId,
     computedPods: IComputedValue<Pod[]>,
     logTabData: IComputedValue<LogTabData | undefined>,
-    getParams: (pod: Pod) => Partial<PodLogsQuery>,
+    getParams: (pod: Pod, podCount: number) => Partial<PodLogsQuery>,
     onLoad: (logsOfPods: PodLogs[], tagged: boolean) => void,
   ): Promise<void> {
     // Include the wait for Pod data in the limit, not just the HTTP request.
@@ -202,14 +227,15 @@ export class LogStore {
    * @param computedPods the pod(s) to fetch logs for; more than one means this
    * is a combined logs tab
    * @param logTabData
-   * @param getParams request parameters described in IPodLogsQuery interface
+   * @param getParams request parameters described in IPodLogsQuery interface,
+   * for a pod and the number of pods of the tab
    * @param signal cancels the wait for the pods and the requests
    * @returns The lines of every pod that answered
    */
   private async loadLogs(
     computedPods: IComputedValue<Pod[]>,
     logTabData: IComputedValue<LogTabData | undefined>,
-    getParams: (pod: Pod) => Partial<PodLogsQuery>,
+    getParams: (pod: Pod, podCount: number) => Partial<PodLogsQuery>,
     signal: AbortSignal,
   ): Promise<{ logsOfPods: PodLogs[]; tagged: boolean }> {
     let target: { pods: Pod[]; tabData: LogTabData } | undefined;
@@ -249,7 +275,7 @@ export class LogStore {
           const result = await this.dependencies.callForLogs(
             { namespace: pod.getNs(), name: pod.getName() },
             {
-              ...getParams(pod),
+              ...getParams(pod, pods.length),
               timestamps: true, // Always setting timestamp to separate old logs from new ones
               container: selectedContainer,
               previous: showPrevious,
@@ -292,6 +318,7 @@ export class LogStore {
   ): string[] {
     const linesByPodName = new Map<string, string[]>();
     const colors = getOrInsertWith(this.podColors, tabId, () => new Map<string, string>());
+    const lineCounts = getOrInsertWith(this.lineCounts, tabId, () => new Map<string, number>());
 
     // Every pod keeps, as long as the tab is not reloaded, the color it got
     // when the tab first read it: the next one of the palette.
@@ -306,6 +333,9 @@ export class LogStore {
       let cursor = cursors.get(podId);
       let isNew = !cursor;
       const newLines: string[] = [];
+      // The lines as the API counts them for tailLines: the pieces of a line
+      // split on "\r" carry no timestamp.
+      let newApiLines = 0;
 
       for (const line of lines) {
         const timestamp = getLeadingTimestamp(line);
@@ -320,6 +350,10 @@ export class LogStore {
           } else if (isNew) {
             cursor = { timestamp, lines: new Set([line]) };
           }
+
+          if (isNew) {
+            newApiLines += 1;
+          }
         }
 
         // A line without a timestamp continues the line before it.
@@ -332,6 +366,7 @@ export class LogStore {
         cursors.set(podId, cursor);
       }
 
+      lineCounts.set(podId, (lineCounts.get(podId) ?? 0) + newApiLines);
       linesByPodName.set(pod.getName(), newLines);
     }
 
@@ -357,10 +392,6 @@ export class LogStore {
    */
   get lines(): number {
     return this.logs.length;
-  }
-
-  getLogLines(tabId: TabId): number {
-    return this.getLogs(tabId).length;
   }
 
   areLogsPresent(tabId: TabId): boolean {
@@ -434,6 +465,7 @@ export class LogStore {
     this.podLogs.delete(tabId);
     this.cursors.delete(tabId);
     this.podColors.delete(tabId);
+    this.lineCounts.delete(tabId);
   }
 
   reload(

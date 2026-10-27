@@ -17,6 +17,14 @@ export const maxCombinedLogsPods = 20;
 export const maxConcurrentLogRequests = 5;
 
 /**
+ * Scrolling to the top of a combined logs tab asks every pod for more lines,
+ * up to this many for all the pods together. Without a limit the logs of a
+ * large workload would grow with every scroll until they no longer fit in the
+ * cluster frame.
+ */
+export const maxCombinedLogLines = 100_000;
+
+/**
  * The colors of the pod names in a combined logs view, as ANSI codes of the
  * 256 color palette: teal, orange, purple, green, blue and pink. The logs are
  * white on black in the dark theme and black on white in the light one, and

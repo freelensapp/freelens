@@ -6,7 +6,13 @@
 import { Pod } from "@freelensapp/kube-object";
 import { computed, observable } from "mobx";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { maxConcurrentLogRequests, podLogColors, stripAnsiColors } from "../merge-pod-logs";
+import {
+  maxCombinedLogLines,
+  maxCombinedLogsPods,
+  maxConcurrentLogRequests,
+  podLogColors,
+  stripAnsiColors,
+} from "../merge-pod-logs";
 import { LogStore } from "../store";
 import { dockerPod } from "./pod.mock";
 
@@ -403,6 +409,84 @@ describe("LogStore combined logs", () => {
     await store.load(tabId, computedPods, computedTabData);
 
     expect(getLogs()).toEqual(["Failed to load logs: forbidden", "Reason: Forbidden (403)"]);
+  });
+
+  it("asks every pod for its own lines and 500 more when loading older lines", async () => {
+    await store.load(tabId, computedPods, computedTabData);
+    await store.load(tabId, computedPods, computedTabData);
+
+    expect(getCallsFor("pod-a").map(([, query]) => query?.tailLines)).toEqual([500, 502]);
+    expect(getCallsFor("pod-b").map(([, query]) => query?.tailLines)).toEqual([500, 501]);
+  });
+
+  it("asks for older lines in steps of 500 per pod, not of the lines of the whole tab", async () => {
+    callForLogs.mockImplementation(async ({ name }, query) =>
+      Array.from({ length: query?.tailLines ?? 0 }, (_, index) => `2026-01-01T00:00:00Z ${name} ${index}`).join("\n"),
+    );
+
+    for (let scroll = 0; scroll < 3; scroll += 1) {
+      await store.load(tabId, computedPods, computedTabData);
+    }
+
+    expect(getCallsFor("pod-a").map(([, query]) => query?.tailLines)).toEqual([500, 1000, 1500]);
+    expect(getLogs()).toHaveLength(3000);
+  });
+
+  it("asks every pod for at most its share of the lines of a combined tab", async () => {
+    const share = Math.floor(maxCombinedLogLines / maxCombinedLogsPods);
+    const manyPods = Array.from({ length: maxCombinedLogsPods }, (_, index) => createPod(`pod-${index}`));
+
+    callForLogs.mockImplementation(async ({ name }) =>
+      Array.from({ length: share - 100 }, (_, index) => `2026-01-01T00:00:00Z ${name} ${index}`).join("\n"),
+    );
+    pods.set(manyPods);
+    await store.load(tabId, computedPods, computedTabData);
+    await store.load(tabId, computedPods, computedTabData);
+
+    expect(getCallsFor("pod-0").map(([, query]) => query?.tailLines)).toEqual([500, share]);
+  });
+
+  it("does not take lines away from a pod that has more than its share", async () => {
+    const share = Math.floor(maxCombinedLogLines / maxCombinedLogsPods);
+    const manyPods = Array.from({ length: maxCombinedLogsPods }, (_, index) => createPod(`pod-${index}`));
+
+    callForLogs.mockImplementation(async ({ name }) =>
+      Array.from({ length: share + 100 }, (_, index) => `2026-01-01T00:00:00Z ${name} ${index}`).join("\n"),
+    );
+    pods.set(manyPods);
+    await store.load(tabId, computedPods, computedTabData);
+    await store.load(tabId, computedPods, computedTabData);
+
+    expect(getCallsFor("pod-0").map(([, query]) => query?.tailLines)).toEqual([500, share + 100]);
+  });
+
+  it("counts the lines that the polling added when loading older lines", async () => {
+    await store.load(tabId, computedPods, computedTabData);
+    logsOfPods.set("pod-b", "2026-01-01T00:00:03.200000000Z b1\n2026-01-01T00:00:07.000000000Z b2");
+    await vi.advanceTimersByTimeAsync(10_000);
+    await store.load(tabId, computedPods, computedTabData);
+
+    expect(getCallsFor("pod-a").at(-1)?.[1]?.tailLines).toBe(502);
+    expect(getCallsFor("pod-b").at(-1)?.[1]?.tailLines).toBe(502);
+  });
+
+  it("counts a line that ends with \\r\\n once", async () => {
+    logsOfPods.set("pod-a", "2026-01-01T00:00:01Z a1\r\n2026-01-01T00:00:02Z a2\r\n2026-01-01T00:00:03Z a3\r\n");
+    await store.load(tabId, computedPods, computedTabData);
+    await store.load(tabId, computedPods, computedTabData);
+
+    expect(getCallsFor("pod-a").map(([, query]) => query?.tailLines)).toEqual([500, 503]);
+  });
+
+  it("keeps a tab of a single pod without the limit of a combined tab", async () => {
+    callForLogs.mockImplementation(async ({ name }) =>
+      Array.from({ length: maxCombinedLogLines }, (_, index) => `2026-01-01T00:00:00Z ${name} ${index}`).join("\n"),
+    );
+    pods.set([podA]);
+    await store.load(tabId, computedPods, computedTabData);
+    await store.load(tabId, computedPods, computedTabData);
+
+    expect(getCallsFor("pod-a").map(([, query]) => query?.tailLines)).toEqual([500, maxCombinedLogLines + 500]);
   });
 
   it("never sends more requests at the same time than the limit", async () => {
