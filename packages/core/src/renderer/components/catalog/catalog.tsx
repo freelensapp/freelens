@@ -37,6 +37,7 @@ import getCategoryColumnsInjectable from "./columns/get.injectable";
 import customCategoryViewsInjectable from "./custom-views.injectable";
 import onCatalogEntityListClickInjectable from "./entity-details/on-catalog-click.injectable";
 import showEntityDetailsInjectable from "./entity-details/show.injectable";
+import { HotbarFolderMenuItems } from "./hotbar-folder-menu-items";
 import { HotbarToggleMenuItem } from "./hotbar-toggle-menu-item";
 
 import type { Logger } from "@freelensapp/logger";
@@ -258,6 +259,7 @@ class NonInjectedCatalog extends React.Component<Dependencies> {
           addContent="Add to Hotbar"
           removeContent="Remove from Hotbar"
         />
+        <HotbarFolderMenuItems key="hotbar-folders" entity={entity} />
       </MenuActions>
     );
   };

@@ -19,7 +19,7 @@ import addHotbarInjectable from "./common/add.injectable";
 import hotbarsInjectable from "./common/hotbars.injectable";
 import setAsActiveHotbarInjectable from "./common/set-as-active.injectable";
 import hotbarsPersistentStorageInjectable from "./common/storage.injectable";
-import { defaultHotbarCells } from "./common/types";
+import { defaultHotbarCells, isHotbarFolderItem } from "./common/types";
 
 import type { Logger } from "@freelensapp/logger";
 
@@ -31,6 +31,7 @@ import type { CatalogEntity, CatalogEntityData, CatalogEntityKindData } from "..
 import type { AddHotbar } from "./common/add.injectable";
 import type { Hotbar } from "./common/hotbar";
 import type { SetAsActiveHotbar } from "./common/set-as-active.injectable";
+import type { HotbarCellItem } from "./common/types";
 
 function getMockCatalogEntity(data: Partial<CatalogEntityData> & CatalogEntityKindData): CatalogEntity {
   return {
@@ -46,6 +47,8 @@ function getMockCatalogEntity(data: Partial<CatalogEntityData> & CatalogEntityKi
     ...data,
   } as CatalogEntity;
 }
+
+const entityOf = (item: HotbarCellItem | null | undefined) => (isHotbarFolderItem(item) ? undefined : item?.entity);
 
 describe("Hotbars technical tests", () => {
   let di: DiContainer;
@@ -155,11 +158,11 @@ describe("Hotbars technical tests", () => {
       });
 
       it("initially adds welcome page entity as first item", () => {
-        expect(activeHotbar.get()?.items[0]?.entity.name).toEqual("Welcome Page");
+        expect(entityOf(activeHotbar.get()?.items[0])?.name).toEqual("Welcome Page");
       });
 
       it("initially adds catalog entity as second item", () => {
-        expect(activeHotbar.get()?.items[1]?.entity.name).toEqual("Catalog");
+        expect(entityOf(activeHotbar.get()?.items[1])?.name).toEqual("Catalog");
       });
 
       it("adds items", () => {
@@ -197,7 +200,7 @@ describe("Hotbars technical tests", () => {
         activeHotbar.get()?.restack(2, 5);
 
         expect(activeHotbar.get()?.items[5]).toBeTruthy();
-        expect(activeHotbar.get()?.items[5]?.entity.uid).toEqual("some-test-id");
+        expect(entityOf(activeHotbar.get()?.items[5])?.uid).toEqual("some-test-id");
       });
 
       it("moves items down", () => {
@@ -208,7 +211,7 @@ describe("Hotbars technical tests", () => {
         // aws -> catalog
         activeHotbar.get()?.restack(4, 0);
 
-        const items = activeHotbar.get()?.items.map((item) => item?.entity.uid || null);
+        const items = activeHotbar.get()?.items.map((item) => entityOf(item)?.uid || null);
 
         expect(items?.slice(0, 5)).toEqual([
           "some-aws-id",
@@ -227,7 +230,7 @@ describe("Hotbars technical tests", () => {
         // test -> aws
         activeHotbar.get()?.restack(2, 4);
 
-        const items = activeHotbar.get()?.items.map((item) => item?.entity.uid || null);
+        const items = activeHotbar.get()?.items.map((item) => entityOf(item)?.uid || null);
 
         expect(items?.slice(0, 5)).toEqual([
           "welcome-page-entity",
@@ -277,7 +280,7 @@ describe("Hotbars technical tests", () => {
         activeHotbar.get()?.addEntity(testCluster);
         activeHotbar.get()?.restack(2, 2);
 
-        expect(activeHotbar.get()?.items[2]?.entity.uid).toEqual("some-test-id");
+        expect(entityOf(activeHotbar.get()?.items[2])?.uid).toEqual("some-test-id");
       });
 
       it("new items takes first empty cell", () => {
@@ -286,7 +289,7 @@ describe("Hotbars technical tests", () => {
         activeHotbar.get()?.restack(0, 4);
         activeHotbar.get()?.addEntity(kindCluster);
 
-        expect(activeHotbar.get()?.items[0]?.entity.uid).toEqual("some-kind-id");
+        expect(entityOf(activeHotbar.get()?.items[0])?.uid).toEqual("some-kind-id");
       });
 
       it("throws if invalid arguments provided", () => {
@@ -303,6 +306,184 @@ describe("Hotbars technical tests", () => {
 
         expect(activeHotbar.get()?.hasEntity(testCluster.getId())).toBeTruthy();
         expect(activeHotbar.get()?.hasEntity(awsCluster.getId())).toBeFalsy();
+      });
+    });
+
+    describe("hotbar folders", () => {
+      const folderOf = (index: number) => {
+        const item = activeHotbar.get()?.items[index];
+
+        return isHotbarFolderItem(item) ? item.folder : undefined;
+      };
+
+      it("adds a folder to the first empty cell", () => {
+        const folderId = activeHotbar.get()?.addFolder("Project A");
+
+        expect(folderOf(2)).toEqual({ id: folderId, name: "Project A", items: [] });
+      });
+
+      it("adds a folder to the given cell", () => {
+        activeHotbar.get()?.addFolder("Project A", 7);
+
+        expect(folderOf(7)?.name).toEqual("Project A");
+      });
+
+      it("logs an error if the folder cell index is out of bounds", () => {
+        expect(activeHotbar.get()?.addFolder("Project A", 12)).toBeUndefined();
+        expect(loggerMock.error).toBeCalledWith(
+          "[HOTBAR]: cannot pin entity to hotbar outside of index range",
+          anyObject(),
+        );
+      });
+
+      it("adds entities to a folder without using more cells", () => {
+        const folderId = activeHotbar.get()?.addFolder("Project A") as string;
+
+        activeHotbar.get()?.addEntityToFolder(folderId, testCluster);
+        activeHotbar.get()?.addEntityToFolder(folderId, kindCluster);
+
+        expect(folderOf(2)?.items.map((item) => item.entity.uid)).toEqual(["some-test-id", "some-kind-id"]);
+        expect(activeHotbar.get()?.items.filter(Boolean).length).toEqual(3);
+      });
+
+      it("treats an entity in a folder as pinned", () => {
+        const folderId = activeHotbar.get()?.addFolder("Project A") as string;
+
+        activeHotbar.get()?.addEntityToFolder(folderId, testCluster);
+
+        expect(activeHotbar.get()?.hasEntity(testCluster.getId())).toBeTruthy();
+      });
+
+      it("does not pin an entity to a cell when it is already in a folder", () => {
+        const folderId = activeHotbar.get()?.addFolder("Project A") as string;
+
+        activeHotbar.get()?.addEntityToFolder(folderId, testCluster);
+        activeHotbar.get()?.addEntity(testCluster);
+
+        expect(activeHotbar.get()?.items.filter(Boolean).length).toEqual(3);
+      });
+
+      it("moves an entity pinned to a cell into the folder", () => {
+        activeHotbar.get()?.addEntity(testCluster);
+
+        const folderId = activeHotbar.get()?.addFolder("Project A") as string;
+
+        activeHotbar.get()?.addEntityToFolder(folderId, testCluster);
+
+        expect(entityOf(activeHotbar.get()?.items[2])).toBeUndefined();
+        expect(folderOf(3)?.items.map((item) => item.entity.uid)).toEqual(["some-test-id"]);
+      });
+
+      it("moves an entity from one folder to another", () => {
+        const folderA = activeHotbar.get()?.addFolder("Project A") as string;
+        const folderB = activeHotbar.get()?.addFolder("Project B") as string;
+
+        activeHotbar.get()?.addEntityToFolder(folderA, testCluster);
+        activeHotbar.get()?.addEntityToFolder(folderB, testCluster);
+
+        expect(folderOf(2)?.items).toEqual([]);
+        expect(folderOf(3)?.items.map((item) => item.entity.uid)).toEqual(["some-test-id"]);
+      });
+
+      it("removes an entity from a folder", () => {
+        const folderId = activeHotbar.get()?.addFolder("Project A") as string;
+
+        activeHotbar.get()?.addEntityToFolder(folderId, testCluster);
+        activeHotbar.get()?.removeEntity(testCluster.getId());
+
+        expect(folderOf(2)?.items).toEqual([]);
+        expect(activeHotbar.get()?.hasEntity(testCluster.getId())).toBeFalsy();
+      });
+
+      it("renames a folder", () => {
+        const folderId = activeHotbar.get()?.addFolder("Project A") as string;
+
+        activeHotbar.get()?.renameFolder(folderId, "Project B");
+
+        expect(folderOf(2)?.name).toEqual("Project B");
+      });
+
+      it("sets a display name for an entity pinned to a cell", () => {
+        activeHotbar.get()?.addEntity(testCluster);
+        activeHotbar.get()?.setDisplayName(testCluster.getId(), "  dev  ");
+
+        expect(activeHotbar.get()?.getItem(testCluster.getId())?.displayName).toEqual("dev");
+        expect(activeHotbar.get()?.getItem(testCluster.getId())?.entity.name).toEqual("my-test-cluster");
+      });
+
+      it("sets a display name for an entity in a folder", () => {
+        const folderId = activeHotbar.get()?.addFolder("Project A") as string;
+
+        activeHotbar.get()?.addEntityToFolder(folderId, testCluster);
+        activeHotbar.get()?.setDisplayName(testCluster.getId(), "dev");
+
+        expect(folderOf(2)?.items[0].displayName).toEqual("dev");
+      });
+
+      it("removes the display name when it is set to an empty name", () => {
+        activeHotbar.get()?.addEntity(testCluster);
+        activeHotbar.get()?.setDisplayName(testCluster.getId(), "dev");
+        activeHotbar.get()?.setDisplayName(testCluster.getId(), " ");
+
+        expect(activeHotbar.get()?.getItem(testCluster.getId())).not.toHaveProperty("displayName");
+      });
+
+      it("keeps the display name when an entity is moved into a folder", () => {
+        activeHotbar.get()?.addEntity(testCluster);
+        activeHotbar.get()?.setDisplayName(testCluster.getId(), "dev");
+
+        const folderId = activeHotbar.get()?.addFolder("Project A") as string;
+
+        activeHotbar.get()?.addEntityToFolder(folderId, testCluster);
+
+        expect(folderOf(3)?.items[0].displayName).toEqual("dev");
+      });
+
+      it("ignores a display name for an entity that is not pinned", () => {
+        activeHotbar.get()?.setDisplayName(testCluster.getId(), "dev");
+
+        expect(activeHotbar.get()?.getItem(testCluster.getId())).toBeUndefined();
+      });
+
+      it("removes a folder and unpins its entities", () => {
+        const folderId = activeHotbar.get()?.addFolder("Project A") as string;
+
+        activeHotbar.get()?.addEntityToFolder(folderId, testCluster);
+        activeHotbar.get()?.removeFolder(folderId);
+
+        expect(activeHotbar.get()?.items[2]).toBeNull();
+        expect(activeHotbar.get()?.hasEntity(testCluster.getId())).toBeFalsy();
+      });
+
+      it("moves a folder like any other cell", () => {
+        activeHotbar.get()?.addFolder("Project A");
+        activeHotbar.get()?.restack(2, 6);
+
+        expect(folderOf(6)?.name).toEqual("Project A");
+        expect(activeHotbar.get()?.items[2]).toBeNull();
+      });
+
+      it("serializes folders with their entities", () => {
+        const folderId = activeHotbar.get()?.addFolder("Project A") as string;
+
+        activeHotbar.get()?.addEntityToFolder(folderId, testCluster);
+
+        expect(activeHotbar.get()?.toJSON().items[2]).toEqual({
+          folder: {
+            id: folderId,
+            name: "Project A",
+            items: [
+              {
+                entity: {
+                  uid: "some-test-id",
+                  name: "my-test-cluster",
+                  source: "local",
+                  shortName: expect.any(String),
+                },
+              },
+            ],
+          },
+        });
       });
     });
   });

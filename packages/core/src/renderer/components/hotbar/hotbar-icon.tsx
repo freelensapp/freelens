@@ -36,8 +36,21 @@ interface Dependencies {
 
 const NonInjectedHotbarIcon = observer(
   ({ menuItems = [], size = 40, tooltip, normalizeMenuItem, ...props }: HotbarIconProps & Dependencies) => {
-    const { uid, title, src, material, active, className, source, disabled, onMenuOpen, onClick, children, ...rest } =
-      props;
+    const {
+      uid,
+      title,
+      colorHash,
+      src,
+      material,
+      active,
+      className,
+      source,
+      disabled,
+      onMenuOpen,
+      onClick,
+      children,
+      ...rest
+    } = props;
     const id = `hotbarIcon-${uid}`;
     const [menuOpen, setMenuOpen] = useState(false);
 
@@ -52,7 +65,7 @@ const NonInjectedHotbarIcon = observer(
           {...rest}
           id={id}
           title={title}
-          colorHash={source ? `${title}-${source}` : title}
+          colorHash={colorHash ?? (source ? `${title}-${source}` : title)}
           className={cssNames(styles.avatar, { [styles.active]: active, [styles.hasImage]: !!src })}
           disabled={disabled}
           size={size}
