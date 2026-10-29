@@ -53,7 +53,7 @@ catalog:
   turbo: 2.11.8
   vite: 8.3.5
   # Electron
-  electron: 44.9.3
+  electron: 44.10.0
   '@electron/notarize': 3.1.2
   electron-devtools-installer: 4.0.0
   # Types and utilities
@@ -171,6 +171,13 @@ allowBuilds:
   sharp: true
 
 engineStrict: true
+
+# Releases let in before pnpm's minimumReleaseAge, one exact version each, for
+# security fixes that cannot wait. Remove an entry once that version is older
+# than the policy: the exclusion is then a no-op.
+minimumReleaseAgeExclude:
+  # Node 24.22.1, the fix of CVE-2026-111497.
+  - electron@44.10.0
 
 overrides:
   # @kubernetes/client-node declares @types/node of a newer major than the

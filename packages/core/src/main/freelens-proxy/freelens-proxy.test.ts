@@ -8,7 +8,6 @@ import http from "node:http";
 import http2 from "node:http2";
 import https from "node:https";
 import tls from "node:tls";
-import { brotliCompressSync } from "node:zlib";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { Agent, fetch as undiciFetch } from "undici";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
@@ -112,6 +111,27 @@ const getHttp2 = (session: http2.ClientHttp2Session, path: string, headers: http
     stream.on("response", (responseHeaders) => (statusCode = responseHeaders[":status"]));
     stream.on("data", (chunk: string) => (body += chunk));
     stream.on("end", () => resolve({ statusCode, body }));
+    stream.on("error", reject);
+  });
+
+const getHeadersHttp1 = (port: number, path: string) =>
+  new Promise<http.IncomingHttpHeaders>((resolve, reject) => {
+    https
+      .get({ host: "127.0.0.1", port, path, agent: false, rejectUnauthorized: false, headers: withAuth({}) }, (res) => {
+        res.resume();
+        res.on("end", () => resolve(res.headers));
+      })
+      .on("error", reject);
+  });
+
+const getHeadersHttp2 = (session: http2.ClientHttp2Session, path: string) =>
+  new Promise<http2.IncomingHttpHeaders>((resolve, reject) => {
+    const stream = session.request({ ":path": path, ...withAuth({}) });
+    let headers: http2.IncomingHttpHeaders = {};
+
+    stream.on("response", (responseHeaders) => (headers = responseHeaders));
+    stream.resume();
+    stream.on("end", () => resolve(headers));
     stream.on("error", reject);
   });
 
@@ -412,6 +432,14 @@ describe("Freelens proxy protocols", () => {
   it("answers a request over HTTP/1.1 from a client that does not offer HTTP/2", async () => {
     expect(await getHttp1(port, "/some-path")).toEqual({ statusCode: 200, body: "some-response-over-1.1" });
   });
+
+  it("tells the client not to store a response of the local router api", async () => {
+    expect((await getHeadersHttp1(port, "/api/v2/releases"))["cache-control"]).toBe("no-store");
+  });
+
+  it("leaves the caching of the renderer's files to the client", async () => {
+    expect((await getHeadersHttp1(port, "/some-path"))["cache-control"]).toBeUndefined();
+  });
 });
 
 /**
@@ -475,8 +503,10 @@ describe("Freelens proxy kube api requests", () => {
           return;
         }
 
-        if (req.url.endsWith("/brotli")) {
-          res.writeHead(200, { "content-encoding": "br" }).end(brotliCompressSync("some-brotli-body"));
+        // As the Kubernetes API server answers, which lets a client store the
+        // response as long as it checks it before using it again.
+        if (req.url.endsWith("/no-cache")) {
+          res.writeHead(200, { "cache-control": "no-cache, private" }).end("some-body");
 
           return;
         }
@@ -599,6 +629,26 @@ describe("Freelens proxy kube api requests", () => {
       body: "Forbidden",
     });
     expect(targetReceived).toEqual([]);
+  });
+
+  it("tells the client not to store a kube api response over HTTP/1.1, whatever the cluster says", async () => {
+    expect((await getHeadersHttp1(port, "/api-kube/api/v1/pods/no-cache"))["cache-control"]).toBe("no-store");
+  });
+
+  it("tells the client not to store a kube api response over HTTP/2, whatever the cluster says", async () => {
+    const session = await connectSession();
+
+    expect((await getHeadersHttp2(session, "/api-kube/api/v1/pods/no-cache"))["cache-control"]).toBe("no-store");
+  });
+
+  it("tells the client not to store a kube api response that says nothing of caching", async () => {
+    expect((await getHeadersHttp1(port, "/api-kube/api/v1/pods"))["cache-control"]).toBe("no-store");
+  });
+
+  it("tells the client not to store a refused kube api request", async () => {
+    clusterDisconnected = true;
+
+    expect((await getHeadersHttp1(port, "/api-kube/api/v1/pods"))["cache-control"]).toBe("no-store");
   });
 
   it("forwards the /<clusterId>/ path of kubectl and helm with a valid token", async () => {
@@ -769,15 +819,6 @@ describe("Freelens proxy kube api requests", () => {
 
     expect(session.closed || session.destroyed).toBe(false);
     expect(await getHttp2(session, "/api-kube/api/v1/pods")).toEqual({ statusCode: 200, body: "some-body" });
-  });
-
-  it("refuses a response of the target encoded with Brotli, without decoding it (CVE-2026-111497)", async () => {
-    const session = await connectSession();
-    const response = await getHttp2(session, "/api-kube/api/v1/brotli");
-
-    expect(response.statusCode).toBe(500);
-    expect(response.body).not.toContain("some-brotli-body");
-    expect(response.body).toContain("CVE-2026-111497");
   });
 
   it("ends the response when the target aborts its own", async () => {

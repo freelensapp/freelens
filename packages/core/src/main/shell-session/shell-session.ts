@@ -14,6 +14,7 @@ import { closedDuring } from "./websocket-closed";
 
 import type { Logger } from "@freelensapp/logger";
 
+import type { IComputedValue } from "mobx";
 import type * as pty from "node-pty";
 import type WebSocket from "ws";
 
@@ -141,6 +142,11 @@ export interface ShellSessionDependencies {
    * cluster through the proxy.
    */
   readonly freelensProxyToken: string;
+  /**
+   * The application's proxy preference, exported as `HTTPS_PROXY` by a session
+   * without a cluster. A session for a cluster exports the cluster's instead.
+   */
+  readonly applicationHttpsProxy?: IComputedValue<string | undefined>;
   readonly shellSessionEnvs: ShellSessionEnvs;
   readonly shellSessionProcesses: ShellSessionProcesses;
   computeUserShellEnvironment: ComputeUserShellEnvironment;
@@ -168,6 +174,13 @@ export interface ShellSessionArgs {
  * collide with one.
  */
 export const standaloneSessionId = "standalone";
+
+/**
+ * The last output of each PTY, sent again to a renderer that reconnects to it,
+ * as after a reload, so that its terminal does not start out empty. It lives
+ * as long as the PTY and is never written anywhere.
+ */
+const lastOutputs = new WeakMap<pty.IPty, string>();
 
 export interface ShellEnvOptions {
   readonly shell?: string;
@@ -301,10 +314,19 @@ export abstract class ShellSession {
 
     if (resume) {
       this.send({ type: TerminalChannels.CONNECTED });
+
+      const lastOutput = lastOutputs.get(shellProcess);
+
+      if (lastOutput) {
+        this.send({ type: TerminalChannels.STDOUT, data: lastOutput });
+      }
     }
 
     this.running = true;
-    shellProcess.onData((data) => this.send({ type: TerminalChannels.STDOUT, data }));
+    shellProcess.onData((data) => {
+      lastOutputs.set(shellProcess, data);
+      this.send({ type: TerminalChannels.STDOUT, data });
+    });
     shellProcess.onExit(({ exitCode }) => {
       this.dependencies.logger.info(
         `[SHELL-SESSION]: shell has exited for ${this.terminalId} closed with exitcode=${exitCode}`,
@@ -441,8 +463,14 @@ export abstract class ShellSession {
       this.status.error(error);
     }
 
-    const { kubeTools, proxyKubeconfigPath, proxyCacheDirectoryPath, freelensProxyToken, isWindows } =
-      this.dependencies;
+    const {
+      kubeTools,
+      proxyKubeconfigPath,
+      proxyCacheDirectoryPath,
+      freelensProxyToken,
+      applicationHttpsProxy,
+      isWindows,
+    } = this.dependencies;
     const env = composeKubeToolsEnvironment({
       baseEnvironment: environment,
       tools: kubeTools,
@@ -452,9 +480,9 @@ export abstract class ShellSession {
           : {
               kubeconfigPath: proxyKubeconfigPath,
               cacheDirectoryPath: proxyCacheDirectoryPath,
-              httpsProxy: this.cluster?.preferences.httpsProxy,
               token: freelensProxyToken,
             },
+      httpsProxy: this.cluster ? this.cluster.preferences.httpsProxy : applicationHttpsProxy?.get(),
       isWindows,
     });
 

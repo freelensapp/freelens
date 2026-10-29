@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/extensions",
-  "version": "2.0.0-0",
+  "version": "2.0.0",
   "description": "Freelens - Free IDE for Kubernetes: extensions",
   "homepage": "https://freelens.app",
   "bugs": {
@@ -42,6 +42,7 @@
   },
   "devDependencies": {
     "@freelensapp/core": "workspace:^",
+    "electron": "catalog:",
     "rolldown": "catalog:",
     "rolldown-plugin-dts": "catalog:",
     "typescript": "catalog:"

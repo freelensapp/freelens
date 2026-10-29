@@ -1,0 +1,161 @@
+name: Publish npm
+
+# Publishes the npm packages of a release to npmjs.com once Release has
+# published it as a GitHub release: under the latest dist-tag, or under next
+# for a prerelease version.
+#
+# It runs after every successful run of Release, for the release that run
+# made, and by hand for any published release, so a publish that failed can be
+# done again without rebuilding the release. Not a job inside Release: a
+# registry that is down would then mark an otherwise correct release as failed,
+# and the only way to publish again would be to run the whole release again.
+#
+# Authentication is npm trusted publishing (OIDC): the trusted publisher of the
+# package on npmjs.com names this workflow file and the publishing environment,
+# which only the main branch may use. A run triggered by workflow_run is on main
+# whatever ref the Release run was on.
+
+on:
+  workflow_run:
+    workflows:
+      - Release
+    types:
+      - completed
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Release to publish (default is the latest release)
+        type: string
+        required: false
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  find-release:
+    name: find release
+
+    # Never on a fork: it has none of the publishing secrets. A Release run that
+    # failed has not published the GitHub release.
+    if: >-
+      github.repository_owner == 'freelensapp' && github.ref_name == 'main' &&
+      (github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success')
+
+    runs-on: ubuntu-26.04-arm
+
+    # The npm packages follow the GitHub release and never go ahead of it: a
+    # release that is missing or still a draft stops the run. The Release run
+    # was on the tag of its release, so its head branch is the tag name.
+    steps:
+      - name: Set release tag
+        id: release
+        run: |
+          set -eo pipefail
+          tag=${tag:-$(gh release view --repo "$GITHUB_REPOSITORY" --json tagName --jq .tagName)}
+          echo "tag=$tag" | tee -a $GITHUB_OUTPUT
+          if [[ $(gh release view "$tag" --repo "$GITHUB_REPOSITORY" --json isDraft --jq .isDraft) != false ]]; then
+            echo "::error::GitHub release $tag is missing or still a draft"
+            exit 1
+          fi
+        env:
+          tag: ${{ github.event.workflow_run.head_branch || inputs.tag }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    outputs:
+      tag: ${{ steps.release.outputs.tag }}
+
+  publish-npm:
+    name: publish npm packages
+
+    needs:
+      - find-release
+
+    runs-on: ubuntu-26.04-arm
+    environment: publishing
+
+    permissions:
+      contents: read
+      id-token: write
+
+    env:
+      DO_NOT_TRACK: "1"
+      # The same as in Release: turbo runs every task rather than restore its
+      # output from a cache.
+      TURBO_FORCE: "true"
+      tag: ${{ needs.find-release.outputs.tag }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: refs/tags/${{ needs.find-release.outputs.tag }}
+
+      - name: Setup node
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+          registry-url: https://registry.npmjs.org
+
+      # Trusted publishing needs npm 11.5.1 or newer.
+      - name: Upgrade npm
+        run: npm install -g npm@11
+
+      - name: Setup pnpm
+        run: corepack enable
+
+      - name: Install pnpm dependencies
+        id: install-pnpm
+        run: pnpm install --color=always --prefer-offline --frozen-lockfile
+        continue-on-error: true
+
+      - name: Install pnpm dependencies (retry)
+        if: steps.install-pnpm.outcome == 'failure'
+        run: pnpm install --color=always --prefer-offline --frozen-lockfile
+
+      - name: Build packages
+        run: pnpm --color=always --stream build
+
+      - name: Set dist-tag
+        run: |
+          case "$tag" in
+            *-*) echo "dist_tag=next" | tee -a $GITHUB_ENV;;
+            *) echo "dist_tag=latest" | tee -a $GITHUB_ENV;;
+          esac
+
+      # pnpm publish -r skips a version that is already in the registry, so a
+      # retry after a publish that went through but reported a failure, or a
+      # second run for the same release, publishes only what is missing.
+      - name: Publish npm packages
+        id: publish-npm
+        run: |
+          pnpm --color=always publish -r \
+            --no-git-checks \
+            --tag "$dist_tag"
+        env:
+          NPM_CONFIG_PROVENANCE: "true"
+        continue-on-error: true
+
+      - name: Publish npm packages (retry)
+        id: publish-npm-2
+        if: steps.publish-npm.outcome == 'failure'
+        run: |
+          pnpm --color=always publish -r \
+            --no-git-checks \
+            --tag "$dist_tag"
+        env:
+          NPM_CONFIG_PROVENANCE: "true"
+        continue-on-error: true
+
+      - name: Publish npm packages (retry 2)
+        if: steps.publish-npm-2.outcome == 'failure'
+        run: |
+          pnpm --color=always publish -r \
+            --no-git-checks \
+            --tag "$dist_tag"
+        env:
+          NPM_CONFIG_PROVENANCE: "true"

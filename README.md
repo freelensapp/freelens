@@ -15,13 +15,15 @@
 [![Flathub Version](https://img.shields.io/flathub/v/app.freelens.Freelens)](https://flathub.org/apps/app.freelens.Freelens)
 [![Snap Store Version](https://img.shields.io/snapcraft/v/freelens/latest/stable)](https://snapcraft.io/freelens)
 [![AUR Version](https://img.shields.io/aur/version/freelens-bin)](https://aur.archlinux.org/packages/freelens-bin)
-[![NPM Version](https://img.shields.io/npm/v/%40freelensapp%2Fcore)](https://www.npmjs.com/package/@freelensapp/core)
+[![NPM Version](https://img.shields.io/npm/v/%40freelensapp%2Fextensions)](https://www.npmjs.com/package/@freelensapp/extensions)
 [![Unit tests](https://github.com/freelensapp/freelens/actions/workflows/unit-tests.yaml/badge.svg?branch=main)](https://github.com/freelensapp/freelens/actions/workflows/unit-tests.yaml)
 [![Integration tests](https://github.com/freelensapp/freelens/actions/workflows/integration-tests.yaml/badge.svg?branch=main)](https://github.com/freelensapp/freelens/actions/workflows/integration-tests.yaml)
 [![Trunk Check](https://github.com/freelensapp/freelens/actions/workflows/trunk-check.yaml/badge.svg?branch=main)](https://github.com/freelensapp/freelens/actions/workflows/trunk-check.yaml)
 
 
-<img alt="Freelens logo" src="docs/images/logo.svg" width="110" align="left">
+<picture>
+  <img alt="Freelens logo" src="docs/images/logo.svg" width="110" align="left">
+</picture>
 
 [Freelens](https://freelens.app) is a free and open-source user interface
 designed for managing Kubernetes clusters. It provides a standalone
@@ -261,7 +263,17 @@ Anyone is welcome to request to be added to the official list by opening a dedic
 Anyone is welcome to collaborate to advance the Freelens project. Read
 [CONTRIBUTING.md](CONTRIBUTING.md) to see how you can help.
 
-![Star History Chart](https://api.star-history.com/svg?repos=freelensapp/freelens&type=Date)
+<picture>
+  <source
+    media="(prefers-color-scheme: dark)"
+    srcset="https://api.star-history.com/svg?repos=freelensapp/freelens&type=Date&theme=dark"
+  >
+  <source
+    media="(prefers-color-scheme: light)"
+    srcset="https://api.star-history.com/svg?repos=freelensapp/freelens&type=Date"
+  >
+  <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=freelensapp/freelens&type=Date">
+</picture>
 
 ## Expenses and Donations
 
