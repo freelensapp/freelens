@@ -72,6 +72,26 @@ describe("MutatingAdmissionPolicyBindingDetails", () => {
     expect(result.baseElement).toMatchSnapshot();
   });
 
+  it("renders match resource selectors", () => {
+    const binding = new MutatingAdmissionPolicyBinding({
+      ...mutatingAdmissionPolicyBinding,
+      spec: {
+        ...mutatingAdmissionPolicyBinding.spec,
+        matchResources: {
+          namespaceSelector: { matchLabels: { environment: "production" } },
+          objectSelector: { matchExpressions: [{ key: "injected", operator: "DoesNotExist" }] },
+        },
+      },
+    });
+
+    result = render(<MutatingAdmissionPolicyBindingDetails object={binding} />);
+
+    expect(result.getByText("Namespace Selector")).toBeInTheDocument();
+    expect(result.getByText("environment=production")).toBeInTheDocument();
+    expect(result.getByText("Object Selector")).toBeInTheDocument();
+    expect(result.getByText("!injected")).toBeInTheDocument();
+  });
+
   it("renders with no param ref", () => {
     const binding = new MutatingAdmissionPolicyBinding({
       ...mutatingAdmissionPolicyBinding,

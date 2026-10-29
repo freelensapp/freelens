@@ -99,6 +99,26 @@ describe("MutatingAdmissionPolicyDetails", () => {
     expect(result.baseElement).toMatchSnapshot();
   });
 
+  it("renders match constraint selectors", () => {
+    const policy = new MutatingAdmissionPolicy({
+      ...mutatingAdmissionPolicy,
+      spec: {
+        ...mutatingAdmissionPolicy.spec,
+        matchConstraints: {
+          namespaceSelector: { matchLabels: { environment: "production" } },
+          objectSelector: { matchExpressions: [{ key: "injected", operator: "DoesNotExist" }] },
+        },
+      },
+    });
+
+    result = render(<MutatingAdmissionPolicyDetails object={policy} />);
+
+    expect(result.getByText("Namespace Selector")).toBeInTheDocument();
+    expect(result.getByText("environment=production")).toBeInTheDocument();
+    expect(result.getByText("Object Selector")).toBeInTheDocument();
+    expect(result.getByText("!injected")).toBeInTheDocument();
+  });
+
   it("renders with no mutations", () => {
     const policy = new MutatingAdmissionPolicy({
       ...mutatingAdmissionPolicy,

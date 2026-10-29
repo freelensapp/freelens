@@ -5,6 +5,7 @@
 
 import { observer } from "mobx-react";
 import React from "react";
+import { AdmissionPolicySelectors } from "../admission-policy-selectors/admission-policy-selectors";
 import { DrawerItem, DrawerTitle } from "../drawer";
 
 import type { MutatingAdmissionPolicyBinding } from "@freelensapp/kube-object";
@@ -42,6 +43,10 @@ export class MutatingAdmissionPolicyBindingDetails extends React.Component<Mutat
           <>
             <DrawerTitle>Match Resources</DrawerTitle>
             {matchResources.matchPolicy && <DrawerItem name="Match Policy">{matchResources.matchPolicy}</DrawerItem>}
+            <AdmissionPolicySelectors
+              namespaceSelector={matchResources.namespaceSelector}
+              objectSelector={matchResources.objectSelector}
+            />
             <DrawerItem name="Resource Rules">
               {matchResources.resourceRules?.map((rule, index) => (
                 <div key={index}>
