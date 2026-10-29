@@ -12,14 +12,18 @@ import joinPathsInjectable from "../../../common/path/join-paths.injectable";
 import appNameInjectable from "../../../common/vars/app-name.injectable";
 import isMacInjectable from "../../../common/vars/is-mac.injectable";
 import isWindowsInjectable from "../../../common/vars/is-windows.injectable";
+import httpsProxyConfigurationInjectable from "../../../features/user-preferences/common/https-proxy.injectable";
 import { buildVersionInitializable } from "../../../features/vars/build-version/common/token";
+import freelensProxyTokenInjectable from "../../freelens-proxy/freelens-proxy-token.injectable";
 import computeUserShellEnvironmentInjectable from "../../kube-tools/compute-user-shell-environment.injectable";
+import getUserShellInjectable from "../../kube-tools/get-user-shell.injectable";
 import resolveKubeToolsInjectable from "../../kube-tools/resolve-kube-tools.injectable";
 import { LocalShellSession } from "../local-shell-session/local-shell-session";
 import shellSessionProcessesInjectable from "../processes.injectable";
 import modifyTerminalShellEnvInjectable from "../shell-env-modifier/modify-terminal-shell-env.injectable";
 import shellSessionEnvsInjectable from "../shell-envs.injectable";
 import spawnPtyInjectable from "../spawn-pty.injectable";
+import { websocketClosedSignal } from "../websocket-closed";
 
 import type WebSocket from "ws";
 
@@ -60,14 +64,20 @@ const openStandaloneShellSessionInjectable = getInjectable({
       joinPaths: di.inject(joinPathsInjectable),
       getBasenameOfPath: di.inject(getBasenameOfPathInjectable),
       computeUserShellEnvironment: di.inject(computeUserShellEnvironmentInjectable),
+      getUserShell: di.inject(getUserShellInjectable),
       spawnPty: di.inject(spawnPtyInjectable),
       stat: di.inject(statInjectable),
+      freelensProxyToken: di.inject(freelensProxyTokenInjectable).value,
+      applicationHttpsProxy: di.inject(httpsProxyConfigurationInjectable),
     };
 
     return (args) => {
       // Resolved per session, so that a terminal opened after the user changed
       // a preference gets the binary it now names.
-      const session = new LocalShellSession({ ...dependencies, kubeTools: resolveKubeTools.withoutCluster() }, args);
+      const session = new LocalShellSession(
+        { ...dependencies, kubeTools: resolveKubeTools.withoutCluster() },
+        { ...args, signal: websocketClosedSignal(args.websocket) },
+      );
 
       return session.open();
     };

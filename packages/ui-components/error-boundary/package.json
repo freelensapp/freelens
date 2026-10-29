@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/error-boundary",
-  "version": "2.0.0-0",
+  "version": "2.0.0",
   "private": true,
   "description": "Highly extendable error-boundary in the Freelens.",
   "homepage": "https://freelens.app",
@@ -36,7 +36,13 @@
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/utilities": "workspace:^",
+    "@ogre-tools/injectable-extension-for-mobx": "catalog:",
+    "@testing-library/jest-dom": "catalog:",
+    "@testing-library/react": "catalog:",
+    "@testing-library/user-event": "catalog:",
     "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "react-dom": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"
   },

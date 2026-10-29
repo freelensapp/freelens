@@ -6,6 +6,7 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import execFileInjectable from "../../../common/fs/exec-file.injectable";
+import withFreelensProxyCredentialEnvInjectable from "../../freelens-proxy/with-freelens-proxy-credential-env.injectable";
 import helmBinaryPathInjectable from "../helm-binary-path.injectable";
 import execHelmEnvInjectable from "./exec-env.injectable";
 import type { ExecFileException } from "node:child_process";
@@ -20,6 +21,11 @@ export interface ExecHelmOptions {
    * environment every helm call gets.
    */
   env?: Partial<Record<string, string>>;
+  /**
+   * Whether this call reaches the cluster through freelens-proxy, and so needs
+   * the proxy token in its environment. Set by {@link proxyKubeconfigHelmOptions}.
+   */
+  throughProxy?: boolean;
 }
 
 export type ExecHelm = (
@@ -29,10 +35,12 @@ export type ExecHelm = (
 
 /**
  * The environment a helm call against the cluster's proxy needs. Helm has no
- * flag for the cache directory, so it only gets `KUBECACHEDIR`.
+ * flag for the cache directory, so it only gets `KUBECACHEDIR`. The call goes
+ * through the proxy, so it also carries the token.
  */
 export const proxyKubeconfigHelmOptions = ({ cacheDirectoryPath }: ProxyKubeconfigPaths): ExecHelmOptions => ({
   env: { KUBECACHEDIR: cacheDirectoryPath },
+  throughProxy: true,
 });
 
 const execHelmInjectable = getInjectable({
@@ -42,12 +50,16 @@ const execHelmInjectable = getInjectable({
     const execFile = di.inject(execFileInjectable);
     const execHelmEnv = di.inject(execHelmEnvInjectable);
     const helmBinaryPath = di.inject(helmBinaryPathInjectable);
+    const withFreelensProxyCredentialEnv = di.inject(withFreelensProxyCredentialEnvInjectable);
 
-    return async (args, { env } = {}) =>
-      execFile(helmBinaryPath, args, {
+    return async (args, { env, throughProxy = false } = {}) => {
+      const callEnv = { ...execHelmEnv.get(), ...env };
+
+      return execFile(helmBinaryPath, args, {
         maxBuffer: 32 * 1024 * 1024 * 1024, // 32 MiB
-        env: { ...execHelmEnv.get(), ...env },
+        env: throughProxy ? withFreelensProxyCredentialEnv(callEnv) : callEnv,
       });
+    };
   },
 });
 

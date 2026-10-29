@@ -70,11 +70,13 @@ class NonInjectedHelmCharts extends Component<Dependencies> {
   };
 
   render() {
-    const { charts } = this.props;
+    const { charts, routeParameters } = this.props;
     const selectedChart = this.props.selectedChart.get();
 
+    // One page serves every path of the route, so the path parameters key the crash of its content: another path
+    // renders it again.
     return (
-      <SiblingsInTabLayout>
+      <SiblingsInTabLayout resetKey={[routeParameters.repo.get(), routeParameters.chartName.get()].join("/")}>
         <div data-testid="page-for-helm-charts" style={{ display: "none" }} />
 
         <ItemListLayout<HelmChart, false>

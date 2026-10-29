@@ -10,10 +10,11 @@ import { createProxyServer } from "http-proxy-3";
 import emitAppEventInjectable from "../../common/app-event-bus/emit-event.injectable";
 import freelensProxyCertificateInjectable from "../../common/certificate/freelens-proxy-certificate.injectable";
 import contentSecurityPolicyInjectable from "../../common/vars/content-security-policy.injectable";
-import freelensK8sProxyServerInjectable from "../cluster/freelens-k8s-proxy-server.injectable";
+import freelensK8sProxyManagerInjectable from "../cluster/freelens-k8s-proxy-manager.injectable";
 import routerInjectable from "../router/router.injectable";
 import { FreelensProxy } from "./freelens-proxy";
 import freelensProxyPortInjectable from "./freelens-proxy-port.injectable";
+import freelensProxyTokenInjectable from "./freelens-proxy-token.injectable";
 import getClusterForRequestInjectable from "./get-cluster-for-request.injectable";
 import kubeApiUpgradeRequestInjectable from "./proxy-functions/kube-api-upgrade-request.injectable";
 import shellApiRequestInjectable from "./proxy-functions/shell-api-request.injectable";
@@ -33,7 +34,8 @@ const freelensProxyInjectable = getInjectable({
       emitAppEvent: di.inject(emitAppEventInjectable),
       logger: di.inject(loggerInjectionToken),
       certificate: di.inject(freelensProxyCertificateInjectable).get(),
-      getFreelensK8sProxyServer: (cluster) => di.inject(freelensK8sProxyServerInjectable, cluster),
+      token: di.inject(freelensProxyTokenInjectable),
+      getFreelensK8sProxyManager: (cluster) => di.inject(freelensK8sProxyManagerInjectable, cluster),
     }),
 });
 

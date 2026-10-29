@@ -25,12 +25,16 @@ const NonInjectedHttpProxyUrl = observer(({ state }: Dependencies) => {
       <SubTitle title="HTTP Proxy" />
       <Input
         theme="round-black"
-        placeholder="Type HTTP proxy url (example: http://proxy.acme.org:8080)"
+        placeholder="Type proxy url (example: http://proxy.acme.org:8080)"
         value={proxy}
         onChange={(v) => setProxy(v)}
         onBlur={() => (state.httpsProxy = proxy)}
       />
-      <small className="hint">Proxy is used only for non-cluster communication.</small>
+      <small className="hint">
+        Proxy for the connections of the application: downloads, update checks, Helm and extensions. Takes an http://,
+        https:// or socks5:// URL. It is also HTTPS_PROXY in the terminal outside clusters: reopen the terminal after
+        changing it.
+      </small>
     </section>
   );
 });

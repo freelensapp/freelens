@@ -1,7 +1,7 @@
 {
   // Ignore mismatch for Biome version to make Renovate updates without error
   // trunk-ignore(biome/deserialize)
-  "$schema": "https://biomejs.dev/schemas/2.5.15/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.6.3/schema.json",
   "assist": {
     "actions": {
       "source": {
@@ -25,8 +25,34 @@
       }
     }
   },
+  "css": {
+    "formatter": {
+      // Biome does not indent the continuation lines of a custom property
+      // value, so a long one reads better on a single line.
+      "lineWidth": 130
+    },
+    "parser": {
+      // The core stylesheets use Tailwind v4 at-rules: @apply, @config,
+      // @custom-variant and @reference.
+      "tailwindDirectives": true
+    }
+  },
   "files": {
-    "includes": ["**", "!**/.trunk/**", "!**/build/**", "!**/dist/**", "**/build/*.{js,cjs,mjs}"]
+    // The Kubernetes manifests of the resource templates keep their sequences
+    // unindented, which Biome cannot do, so yamlfmt formats them with the
+    // .yamlfmt.yaml of their directory. pnpm writes its own lockfile and
+    // workspace file, and Trunk rewrites its own .trunk/trunk.yaml on every
+    // trunk upgrade.
+    "includes": [
+      "**",
+      "!**/.trunk/**",
+      "!**/build/**",
+      "!**/dist/**",
+      "**/build/*.{js,cjs,mjs}",
+      "!**/packages/resource-templates/templates/**",
+      "!**/pnpm-lock.yaml",
+      "!**/pnpm-workspace.yaml"
+    ]
   },
   "formatter": {
     "attributePosition": "auto",
@@ -76,6 +102,12 @@
         // should be error later
         "noUnusedVariables": "off",
         "useExhaustiveDependencies": "off"
+      },
+      "nursery": {
+        // Markdown
+        "useConsistentHeadingLevel": "error",
+        "useFencedCodeLanguage": "error",
+        "useSingleTopLevelHeading": "error"
       },
       "preset": "none",
       "style": {
@@ -336,5 +368,12 @@
     "clientKind": "git",
     "enabled": true,
     "useIgnoreFile": true
+  },
+  "yaml": {
+    "formatter": {
+      // Flow sequences stay [a, b], as yamlfmt left them; the global
+      // bracketSpacing is meant for JavaScript objects.
+      "bracketSpacing": false
+    }
   }
 }

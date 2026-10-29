@@ -15,7 +15,6 @@ catalog:
   # MobX family (singletons)
   mobx: 7.0.6
   mobx-react: 10.0.2
-  mobx-react-lite: 5.1.0
   # TypeScript
   typescript: 7.0.2
   # Dependency injection (Ogre Tools)
@@ -42,19 +41,19 @@ catalog:
   # Build tooling
   esbuild: 0.28.2
   '@vitejs/plugin-react': 6.1.2
-  electron-builder: 26.17.0
-  electron-builder-squirrel-windows: 26.17.0
+  electron-builder: 26.18.0
+  electron-builder-squirrel-windows: 26.18.0
   electron-vite: 6.0.0
   playwright: 1.64.1
-  pnpm: 12.14.0
+  pnpm: 12.15.0
   rolldown: 1.2.14
   rolldown-plugin-dts: 0.28.8
   sass-embedded: 1.105.2
   tailwindcss: 4.3.3
   turbo: 2.11.8
-  vite: 8.3.4
+  vite: 8.3.5
   # Electron
-  electron: 43.8.0
+  electron: 44.10.0
   '@electron/notarize': 3.1.2
   electron-devtools-installer: 4.0.0
   # Types and utilities
@@ -80,7 +79,7 @@ catalog:
   '@dnd-kit/utilities': 3.2.2
   '@hapi/call': 9.0.1
   '@hapi/subtext': 8.1.3
-  '@kubernetes/client-node': 2.0.0
+  '@kubernetes/client-node': 2.0.1
   '@mui/material': 9.5.0
   '@noble/hashes': 2.4.0
   '@quantco/pnpm-licenses': 2.4.2
@@ -92,7 +91,7 @@ catalog:
   arg: 5.0.2
   auto-bind: 5.0.1
   chalk: 6.0.1
-  chart.js: 4.5.1
+  chart.js: 4.6.1
   chokidar: 5.0.0
   cli-progress: 3.12.0
   color: 5.0.3
@@ -106,7 +105,7 @@ catalog:
   fs-extra: 11.4.1
   gunzip-maybe: 1.4.2
   handlebars: 4.7.10
-  http-proxy-3: 2.0.1
+  http-proxy-3: 2.0.2
   immer: 11.1.21
   joi: 18.3.0
   js-yaml: 5.5.0
@@ -114,7 +113,7 @@ catalog:
   marked: 18.1.1
   mobx-utils: 6.1.1
   monaco-editor: 0.57.0
-  node-pty: 1.2.0-beta.15
+  node-pty: 1.2.0-beta.18
   openpgp: 6.3.2
   proper-lockfile: 4.1.2
   react-select: 5.10.2
@@ -129,7 +128,7 @@ catalog:
   tcp-port-used: 1.0.3
   tempy: 3.2.0
   triple-beam: 1.4.1
-  undici: 8.12.2
+  undici: 8.12.3
   uuid: 14.0.3
   verkit: 0.5.0
   winston: 3.19.0
@@ -149,7 +148,7 @@ catalogs:
   extensions:
     '@types/react': ^19.3.0
     '@types/react-dom': ^19.3.0
-    chart.js: ^4.5.1
+    chart.js: ^4.6.1
     conf: ^16.0.0
     es-toolkit: ^1.52.0
     immer: ^11.1.21
@@ -173,6 +172,13 @@ allowBuilds:
 
 engineStrict: true
 
+# Releases let in before pnpm's minimumReleaseAge, one exact version each, for
+# security fixes that cannot wait. Remove an entry once that version is older
+# than the policy: the exclusion is then a no-op.
+minimumReleaseAgeExclude:
+  # Node 24.22.1, the fix of CVE-2026-111497.
+  - electron@44.10.0
+
 overrides:
   # @kubernetes/client-node declares @types/node of a newer major than the
   # catalog's as a runtime dependency. Left alone it installs a second copy of
@@ -185,15 +191,28 @@ overrides:
   # Nothing depends on http-proxy today: this override is a guard, not dead
   # code. The original package is abandoned with a known CVE, so a dependency
   # that starts to pull it in gets the maintained rewrite the app uses instead.
-  http-proxy: npm:http-proxy-3@^2.0.1
-  mobx-react: ^10.0.2
+  http-proxy: npm:http-proxy-3@^2.0.2
+  # @ogre-tools/injectable-react peers mobx-react ^9. Left alone, pnpm
+  # auto-installs a second mobx-react 9 for every package that lacks a direct
+  # mobx-react, and the MobX family must stay a singleton. Pointing the
+  # override at the catalog rewrites that peer to the pinned version, without
+  # resolving to anything newer than the pin.
+  mobx-react: 'catalog:'
+  # monaco-editor pins dompurify 3.4.15, which GHSA-cg2g-xh64-v4q7 affects, and
+  # also vendors a copy of it that its sanitizer imports instead of the
+  # package. The patch of patchedDependencies points that import at the
+  # package, and this override puts the package on the catalog's version, so
+  # the renderer bundles one DOMPurify, the fixed one. Remove both when a
+  # monaco-editor release ships DOMPurify 3.4.17 or newer; the patch is keyed
+  # by the exact version, so a monaco-editor bump reports it as unused.
+  monaco-editor>dompurify: 'catalog:'
   tmp@^0.2.0: ^0.2.7
 
 peerDependencyRules:
-  # These rules silence peers that still ask for mobx 6 / mobx-react 9 and have
-  # no release for mobx 7. Each package they cover must stay safe on mobx 7:
-  # - @ogre-tools/injectable-react (mobx ^6, mobx-react ^9) imports neither
-  #   mobx nor mobx-react, in its build or in its typings;
+  # These rules silence peers that still ask for mobx 6 and have no release
+  # for mobx 7. Each package they cover must stay safe on mobx 7:
+  # - @ogre-tools/injectable-react (mobx ^6) imports neither mobx nor
+  #   mobx-react, in its build or in its typings;
   # - @ogre-tools/injectable-extension-for-mobx (mobx ^6) uses only `computed`,
   #   `createAtom` and `runInAction`, and types with `IComputedValue` only,
   #   all of which mobx 7 keeps unchanged;
@@ -206,10 +225,10 @@ peerDependencyRules:
   # Check any new package these rules start to cover the same way.
   allowedVersions:
     mobx: '7'
-    mobx-react: '10'
 
 patchedDependencies:
   '@async-fn/vitest': patches/@async-fn__vitest.patch
   '@xterm/xterm@6.0.0': patches/@xterm__xterm@6.0.0.patch
+  monaco-editor@0.57.0: patches/monaco-editor@0.57.0.patch
 
 shellEmulator: true

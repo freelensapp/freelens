@@ -17,7 +17,7 @@ Each contract states three things:
 - **Surface** — the stable names the guarantee is expressed in.
 - **Failure mode** — what an author sees when the contract is violated. This is
   recorded because most of these fail at runtime rather than at build time, and
-  several fail *silently*.
+  several fail _silently_.
 
 Anything not stated here is not part of the contract. Extensions run with full
 privileges and can reach much more than this document describes; reaching it is
@@ -44,7 +44,7 @@ every `@freelensapp/*` is inlined. Nothing else needs publishing.
 fails to install — the package does not exist on the registry.
 
 **Consequence worth stating separately.** Because workspace packages are private
-*and* inlined, **a symbol the API namespaces do not re-export is unreachable by
+_and_ inlined, **a symbol the API namespaces do not re-export is unreachable by
 any means.** There is no package left to install and a type-only import fails at
 module resolution with no `@types/` fallback. Re-export completeness is
 therefore a correctness property, not a convenience. See [C5](#c5-namespace-enumeration).
@@ -92,14 +92,14 @@ marks them external, and lets its bundler rewrite the bare id to the global.
 
 **Surface.** A closed list of module ids:
 
-| Module id | Global | Published in |
-| --- | --- | --- |
-| `react` | `React` | renderer |
-| `react-dom` | `ReactDom` | renderer |
-| `react/jsx-runtime` | `ReactJsxRuntime` | renderer |
-| `mobx` | `Mobx` | both |
-| `mobx-react` | `MobxReact` | renderer |
-| `monaco-editor` | `MonacoEditor` | renderer |
+| Module id           | Global            | Published in |
+| ------------------- | ----------------- | ------------ |
+| `react`             | `React`           | renderer     |
+| `react-dom`         | `ReactDom`        | renderer     |
+| `react/jsx-runtime` | `ReactJsxRuntime` | renderer     |
+| `mobx`              | `Mobx`            | both         |
+| `mobx-react`        | `MobxReact`       | renderer     |
+| `monaco-editor`     | `MonacoEditor`    | renderer     |
 
 An extension declares a listed package also when it does not import it but
 uses a host API whose types name it: `Renderer.Component.MonacoEditor` takes its
@@ -246,11 +246,11 @@ before the first extension loads.
 **Guarantee.** These are the members of each namespace. A symbol not listed here
 is not reachable (see [C1](#c1-packaging-and-publication)).
 
-| Namespace | Members |
-| --- | --- |
-| `Common` | `App`, `Catalog`, `Clusters`, `EventBus`, `Proxy`, `Store`, `Types`, `Util`, `logger`; types `InstalledExtension`, `LensExtension`, `LensExtensionManifest`, `Logger`, `PackageJson` |
-| `Main` | `Catalog`, `Ipc`, `K8s`, `K8sApi`, `LensExtension`, `Navigation`, `Power`, `Shell`, `Util` |
-| `Renderer` | `Catalog`, `Component`, `Ipc`, `K8s`, `K8sApi`, `LensExtension`, `Navigation`, `Theme`, `Util` |
+| Namespace  | Members                                                                                                                                                                              |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `Common`   | `App`, `Catalog`, `Clusters`, `EventBus`, `Proxy`, `Store`, `Types`, `Util`, `logger`; types `InstalledExtension`, `LensExtension`, `LensExtensionManifest`, `Logger`, `PackageJson` |
+| `Main`     | `Catalog`, `Ipc`, `K8s`, `K8sApi`, `LensExtension`, `Navigation`, `Power`, `Shell`, `Util`                                                                                           |
+| `Renderer` | `Catalog`, `Component`, `Ipc`, `K8s`, `K8sApi`, `LensExtension`, `Navigation`, `Theme`, `Util`                                                                                       |
 
 There is no `Renderer.React`, no `Renderer.ReactDOM` and no
 `Renderer.Registrations`. React reaches extensions through
@@ -525,7 +525,7 @@ methods that navigate: `navigate()` to the extension's own pages and
 Two of these matter more than they look:
 
 - **`manifestPath`** is how an extension locates its own shipped files. In the
-  renderer it is the *only* route, since there is no `__dirname` under URL
+  renderer it is the _only_ route, since there is no `__dirname` under URL
   loading.
 - **`getExtensionFileFolder()`** returns a writable directory for this extension
   alone, resolved from `storeName` through a hash — so it is **unaffected by
@@ -584,8 +584,8 @@ container out of the API is a contract boundary, not a security one. What is
 supported is what the namespaces expose; anything else may change without
 notice.
 
-**The lifecycle invariant:** *the view exists before the author's first hook and
-is released after their last.* The loader injects it right after it constructs
+**The lifecycle invariant:** _the view exists before the author's first hook and
+is released after their last._ The loader injects it right after it constructs
 the extension instance; the registrators populate it after activation, because
 activation can register catalog categories they must see; and `disable()` runs
 `onDeactivate` before `deregister()`.
@@ -738,8 +738,8 @@ It splits in two:
 `react-select`.
 
 This is the complement of the namespace enumeration in
-[C5](#c5-namespace-enumeration): that records what the API *exports*, this what
-it *imports* and therefore imposes on an author. It is read off the built
+[C5](#c5-namespace-enumeration): that records what the API _exports_, this what
+it _imports_ and therefore imposes on an author. It is read off the built
 bundle, not the source tree:
 
 ```sh
@@ -919,15 +919,15 @@ for the package**, because the two differ.
 
 **Surface.**
 
-| Requirement | Why |
-| --- | --- |
-| TypeScript 4.9 or newer | the declaration has `accessor` fields, which older compilers fail to parse whatever `skipLibCheck` says |
-| `"skipLibCheck": true` | the type dependency graph is not clean under `false`, and checking it is not an author's job |
+| Requirement                                                   | Why                                                                                                                                          |
+| ------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| TypeScript 4.9 or newer                                       | the declaration has `accessor` fields, which older compilers fail to parse whatever `skipLibCheck` says                                      |
+| `"skipLibCheck": true`                                        | the type dependency graph is not clean under `false`, and checking it is not an author's job                                                 |
 | `"lib"` including `DOM` and `DOM.Iterable`, `ES2024` or newer | the React component types name DOM types nothing else declares; the mobx types name `ReadonlySetLike`, which first appears in the ES2024 lib |
-| `"moduleResolution": "bundler"`, `node16` or `nodenext` | to resolve the package's `exports` |
-| `electron` as a devDependency, at the host's version | an **optional** peer — a required `>=43.0.0` peer would be installed automatically at the newest Electron major, not the one the host runs |
+| `"moduleResolution": "bundler"`, `node16` or `nodenext`       | to resolve the package's `exports`                                                                                                           |
+| `electron` as a devDependency, at the host's version          | an **optional** peer — a required `>=43.0.0` peer would be installed automatically at the newest Electron major, not the one the host runs   |
 
-The **HTTP surface alone** needs `lib.dom` *or* `@types/node`: `Main.Util.fetch`
+The **HTTP surface alone** needs `lib.dom` _or_ `@types/node`: `Main.Util.fetch`
 is typed as the global `fetch`, and the structural types name only `AbortSignal`,
 `ReadableStream`, `URL` and `Uint8Array`, all of which both declare. The package
 as a whole still requires `lib.dom`.
@@ -943,7 +943,7 @@ errors in the React component types.
 ## C14. Versioning and compatibility
 
 **Guarantee.** `engines.freelens` is the **enforced gate**, checked at discovery
-before any extension code runs — and it is the *only* enforced one. The version
+before any extension code runs — and it is the _only_ enforced one. The version
 range an extension declares for `@freelensapp/extensions` is a compile-time
 convenience that the host never reads.
 
@@ -1002,11 +1002,11 @@ tool by the path its function returns; the environment provides `KUBECONFIG`,
 outside any cluster when called without a cluster id, and for the terminal of
 the cluster when called with one:
 
-| Function | Without a cluster | For a cluster |
-| --- | --- | --- |
-| `getKubectlPath(clusterId?, options?)` | the "Path to kubectl binary" preference (`kubectlBinariesPath`) when downloading kubectl binaries is turned off (`downloadKubectlBinaries`), else the bundled kubectl | the same preference when downloading is turned off; otherwise the kubectl matched to the cluster's Kubernetes version in the download directory (`downloadBinariesPath`), downloaded when it is missing, else the bundled kubectl |
-| `getHelmPath(clusterId?)` | the "Path to helm binary" preference (`helmBinariesPath`), else the bundled helm | the same: helm does not depend on the cluster's version |
-| `getEnvironment(clusterId?, options?)` | the user's shell environment, with the bundled binaries directory appended to `PATH`, so that a kubectl or helm the user installed keeps winning; `KUBECONFIG` is the user's own | the user's shell environment, with the directory of the version-matched kubectl first on `PATH` when downloading is turned on and that kubectl is in place, the bundled binaries directory last, `KUBECONFIG` and `KUBECACHEDIR` that reach the cluster through Freelens in place of every kubeconfig variable of the user's, the cluster's proxy setting as `HTTPS_PROXY`, and `localhost` and `127.0.0.1` added to `NO_PROXY` |
+| Function                               | Without a cluster                                                                                                                                                                                                                               | For a cluster                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| -------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `getKubectlPath(clusterId?, options?)` | the "Path to kubectl binary" preference (`kubectlBinariesPath`) when downloading kubectl binaries is turned off (`downloadKubectlBinaries`), else the bundled kubectl                                                                           | the same preference when downloading is turned off; otherwise the kubectl matched to the cluster's Kubernetes version in the download directory (`downloadBinariesPath`), downloaded when it is missing, else the bundled kubectl                                                                                                                                                                                               |
+| `getHelmPath(clusterId?)`              | the "Path to helm binary" preference (`helmBinariesPath`), else the bundled helm                                                                                                                                                                | the same: helm does not depend on the cluster's version                                                                                                                                                                                                                                                                                                                                                                         |
+| `getEnvironment(clusterId?, options?)` | the user's shell environment, with the bundled binaries directory appended to `PATH`, so that a kubectl or helm the user installed keeps winning; `KUBECONFIG` is the user's own, and the application's proxy setting is `HTTPS_PROXY` when set | the user's shell environment, with the directory of the version-matched kubectl first on `PATH` when downloading is turned on and that kubectl is in place, the bundled binaries directory last, `KUBECONFIG` and `KUBECACHEDIR` that reach the cluster through Freelens in place of every kubeconfig variable of the user's, the cluster's proxy setting as `HTTPS_PROXY`, and `localhost` and `127.0.0.1` added to `NO_PROXY` |
 
 Every path is absolute, and a path a preference names is returned as it is.
 The environment is a `Record<string, string>` to pass as `env` to
@@ -1088,7 +1088,7 @@ directory moves with the `downloadBinariesPath` preference.
 An extension **vendors or bundles whatever it needs apart from what the host
 provides**, so installing one is downloading a tarball and extracting it — there
 is nothing to resolve and no package manager involved. Installs land under
-`<userData>/extensions/<sanitized-name>/<version>-<digest8>/`; a *directory*
+`<userData>/extensions/<sanitized-name>/<version>-<digest8>/`; a _directory_
 install registers an extension in place and is the development mode, which is
 why there is no packing step and no symlink. The renderer loads from
 `freelens-extension://extensions/<sanitized-name>/<version>-<digest8>/<file>`

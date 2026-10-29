@@ -61,9 +61,7 @@
       box-shadow: 0 0 0 var(--hover-highlight-size) var(--thumb-color-highlight);
       border-radius: 50%;
       transform: translateX(var(--thumb-position));
-      transition:
-        transform var(--thumb-transition-duration) ease,
-        box-shadow 0.25s ease;
+      transition: transform var(--thumb-transition-duration) ease, box-shadow 0.25s ease;
     }
 
     &:not(:disabled):hover::before {

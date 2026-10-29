@@ -114,8 +114,10 @@ class NonInjectedPortForwards extends React.Component<Dependencies> {
   }
 
   render() {
+    // One page serves every path of the route, so the path parameter keys the crash of its content: another path
+    // renders it again.
     return (
-      <SiblingsInTabLayout>
+      <SiblingsInTabLayout resetKey={this.props.forwardport.get()}>
         <ItemListLayout
           isConfigurable
           tableId="port_forwards"

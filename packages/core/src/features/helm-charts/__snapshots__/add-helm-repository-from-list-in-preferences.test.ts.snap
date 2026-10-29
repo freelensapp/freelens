@@ -77,7 +77,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
           id="lens-views"
         />
         <div
-          class="SettingLayout showNavigation Preferences"
+          class="SettingLayout showNavigation withCloseButton Preferences"
         >
           <nav
             class="sidebarRegion"
@@ -914,7 +914,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
           id="lens-views"
         />
         <div
-          class="SettingLayout showNavigation Preferences"
+          class="SettingLayout showNavigation withCloseButton Preferences"
         >
           <nav
             class="sidebarRegion"
@@ -1789,7 +1789,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
           id="lens-views"
         />
         <div
-          class="SettingLayout showNavigation Preferences"
+          class="SettingLayout showNavigation withCloseButton Preferences"
         >
           <nav
             class="sidebarRegion"
@@ -2722,7 +2722,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
           id="lens-views"
         />
         <div
-          class="SettingLayout showNavigation Preferences"
+          class="SettingLayout showNavigation withCloseButton Preferences"
         >
           <nav
             class="sidebarRegion"
@@ -3597,7 +3597,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
           id="lens-views"
         />
         <div
-          class="SettingLayout showNavigation Preferences"
+          class="SettingLayout showNavigation withCloseButton Preferences"
         >
           <nav
             class="sidebarRegion"
@@ -4472,7 +4472,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
           id="lens-views"
         />
         <div
-          class="SettingLayout showNavigation Preferences"
+          class="SettingLayout showNavigation withCloseButton Preferences"
         >
           <nav
             class="sidebarRegion"
@@ -5337,7 +5337,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
           id="lens-views"
         />
         <div
-          class="SettingLayout showNavigation Preferences"
+          class="SettingLayout showNavigation withCloseButton Preferences"
         >
           <nav
             class="sidebarRegion"
@@ -6246,7 +6246,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
           id="lens-views"
         />
         <div
-          class="SettingLayout showNavigation Preferences"
+          class="SettingLayout showNavigation withCloseButton Preferences"
         >
           <nav
             class="sidebarRegion"
@@ -7223,7 +7223,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
           id="lens-views"
         />
         <div
-          class="SettingLayout showNavigation Preferences"
+          class="SettingLayout showNavigation withCloseButton Preferences"
         >
           <nav
             class="sidebarRegion"
@@ -8132,7 +8132,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
           id="lens-views"
         />
         <div
-          class="SettingLayout showNavigation Preferences"
+          class="SettingLayout showNavigation withCloseButton Preferences"
         >
           <nav
             class="sidebarRegion"

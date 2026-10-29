@@ -25,15 +25,16 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - runs-on: ubuntu-24.04-arm
+          - runs-on: ubuntu-26.04-arm
             arch: arm64
 
     runs-on: ${{ matrix.runs-on }}
     environment: automated
     timeout-minutes: 10
 
+    # Never on a fork: it has no GH_TOKEN secret, so the job could only fail.
     if: >-
-      github.event_name != 'issue_comment' || (startsWith(github.event.issue.title, 'Automated trunk upgrade') && contains(github.event.comment.body, '/rerun') && contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association))
+      github.repository_owner == 'freelensapp' && (github.event_name != 'issue_comment' || (startsWith(github.event.issue.title, 'Automated trunk upgrade') && contains(github.event.comment.body, '/rerun') && contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association)))
 
     env:
       DO_NOT_TRACK: "1"

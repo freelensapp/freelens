@@ -77,7 +77,7 @@ exports[`preferences: URLs of legacy extensions > given extension with both cust
           id="lens-views"
         />
         <div
-          class="SettingLayout showNavigation Preferences"
+          class="SettingLayout showNavigation withCloseButton Preferences"
         >
           <nav
             class="sidebarRegion"
@@ -550,7 +550,7 @@ exports[`preferences: URLs of legacy extensions > given extension with both cust
           id="lens-views"
         />
         <div
-          class="SettingLayout showNavigation Preferences"
+          class="SettingLayout showNavigation withCloseButton Preferences"
         >
           <nav
             class="sidebarRegion"
@@ -1023,7 +1023,7 @@ exports[`preferences: URLs of legacy extensions > given extension with custom pr
           id="lens-views"
         />
         <div
-          class="SettingLayout showNavigation Preferences"
+          class="SettingLayout showNavigation withCloseButton Preferences"
         >
           <nav
             class="sidebarRegion"
@@ -1458,7 +1458,7 @@ exports[`preferences: URLs of legacy extensions > given extension with custom pr
           id="lens-views"
         />
         <div
-          class="SettingLayout showNavigation Preferences"
+          class="SettingLayout showNavigation withCloseButton Preferences"
         >
           <nav
             class="sidebarRegion"
@@ -1867,7 +1867,7 @@ exports[`preferences: URLs of legacy extensions > given extension with custom pr
           id="lens-views"
         />
         <div
-          class="SettingLayout showNavigation Preferences"
+          class="SettingLayout showNavigation withCloseButton Preferences"
         >
           <nav
             class="sidebarRegion"

@@ -58,18 +58,14 @@
           background-color: var(--overlay-bg);
 
           span {
-            background-color: var(
-              --overlay-bg
-            ) !important; // Rewriting inline styles from AnsiUp library
+            background-color: var(--overlay-bg) !important; // Rewriting inline styles from AnsiUp library
           }
 
           &.active {
             background-color: var(--overlay-active-bg);
 
             span {
-              background-color: var(
-                --overlay-active-bg
-              ) !important; // Rewriting inline styles from AnsiUp library
+              background-color: var(--overlay-active-bg) !important; // Rewriting inline styles from AnsiUp library
             }
           }
         }

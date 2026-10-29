@@ -61,7 +61,6 @@ const initializeStateInjectable = getInjectable({
           await writeJsonFile(filePath, state);
         } catch (error) {
           logger.error(`${storageHelperLogPrefix} saving failed: ${error}`, {
-            json: state,
             jsonFilePath: filePath,
           });
         } finally {
