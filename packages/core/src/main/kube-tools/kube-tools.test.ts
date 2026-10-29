@@ -25,11 +25,34 @@ describe("composeKubeToolsEnvironment", () => {
     const env = composeKubeToolsEnvironment({
       baseEnvironment: {},
       tools: tools({ pathPrefix: ["/some-kubectl-directory"] }),
-      clusterAccess: { kubeconfigPath: "/proxy-kubeconfig", cacheDirectoryPath: "/proxy-cache" },
+      clusterAccess: { kubeconfigPath: "/proxy-kubeconfig", cacheDirectoryPath: "/proxy-cache", token: "some-token" },
       isWindows: false,
     });
 
     expect(env.PATH).toBe("/some-kubectl-directory");
+  });
+
+  it("sets the proxy kubeconfig, its cache and the token for a cluster", () => {
+    const env = composeKubeToolsEnvironment({
+      baseEnvironment: {},
+      tools: tools(),
+      clusterAccess: { kubeconfigPath: "/proxy-kubeconfig", cacheDirectoryPath: "/proxy-cache", token: "some-token" },
+      isWindows: false,
+    });
+
+    expect(env.KUBECONFIG).toBe("/proxy-kubeconfig");
+    expect(env.KUBECACHEDIR).toBe("/proxy-cache");
+    expect(env.FREELENS_PROXY_TOKEN).toBe("some-token");
+  });
+
+  it("sets no token without a cluster", () => {
+    const env = composeKubeToolsEnvironment({
+      baseEnvironment: {},
+      tools: tools(),
+      isWindows: false,
+    });
+
+    expect(env.FREELENS_PROXY_TOKEN).toBeUndefined();
   });
 
   it("extends the variable Windows spells Path under the one key PATH", () => {
@@ -82,7 +105,7 @@ describe("composeKubeToolsEnvironment", () => {
     composeKubeToolsEnvironment({
       baseEnvironment,
       tools: tools({ pathPrefix: ["/some-kubectl-directory"] }),
-      clusterAccess: { kubeconfigPath: "/proxy-kubeconfig", cacheDirectoryPath: "/proxy-cache" },
+      clusterAccess: { kubeconfigPath: "/proxy-kubeconfig", cacheDirectoryPath: "/proxy-cache", token: "some-token" },
       isWindows: false,
     });
 

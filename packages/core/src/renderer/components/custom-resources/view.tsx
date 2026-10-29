@@ -117,8 +117,9 @@ class NonInjectedCustomResources extends React.Component<Dependencies> {
 
     const { isNamespaced, extraColumns } = resource;
 
+    // One view serves every custom resource, so the resource keys the crash of its list: another one renders again.
     return (
-      <TabLayout>
+      <TabLayout resetKey={resource.apiBase}>
         <KubeObjectListLayout
           isConfigurable
           key={`crd_resources_${resource.apiBase}`}

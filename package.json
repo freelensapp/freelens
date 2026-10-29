@@ -20,7 +20,7 @@
   ],
   "scripts": {
     "asar": "pnpm dlx @electron/asar@4.3.1",
-    "biome": "pnpm dlx @biomejs/biome@2.5.15",
+    "biome": "pnpm dlx @biomejs/biome@2.6.3",
     "biome:check": "pnpm biome check",
     "biome:fix": "pnpm biome check --fix",
     "biome:migrate": "pnpm biome migrate --write",
@@ -52,9 +52,6 @@
     "knip:production": "pnpm knip --production --strict",
     "lint": "pnpm trunk check",
     "lint:fix": "pnpm trunk check --fix",
-    "prettier": "pnpm dlx prettier@3.9.10",
-    "prettier:check": "pnpm prettier --check .",
-    "prettier:fix": "pnpm prettier --write .",
     "start": "cd freelens && pnpm start",
     "start:os": "pnpm dlx run-script-os@1.1.6 --",
     "start:os:darwin": "open --stdout $(tty) --stderr $(tty) freelens:",
@@ -84,7 +81,7 @@
     "vite": "catalog:",
     "vitest": "catalog:"
   },
-  "packageManager": "pnpm@12.14.0+sha512.c18ba6d87993d3d164cb5e8948f32b2c06ee854487e06cd8d86781342fb3e5bb4634367034711e86802baa9c37bea906ce1929ad08d70884c97d801df13389a6",
+  "packageManager": "pnpm@12.15.0+sha512.b3951d6d6ff4a9f13dc7cf56cd28d2b8eb37dbcc9c68e52e1e1191873ea9f82a017287ab50baadc5ccc494f036c67c0e47eb13608c2fa36f47711b61ea128e61",
   "engines": {
     "node": ">=24.0.0"
   }

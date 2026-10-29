@@ -11,7 +11,7 @@ on:
     branches:
       - renovate/**
     paths:
-      - '**/package.json'
+      - "**/package.json"
       - pnpm-lock.yaml
       - pnpm-workspace.yaml
 
@@ -26,7 +26,10 @@ jobs:
   npm-dedupe:
     name: npm dedupe
 
-    runs-on: ubuntu-24.04-arm
+    # Never on a fork: it has no GH_TOKEN secret, so the job could only fail.
+    if: github.repository_owner == 'freelensapp'
+
+    runs-on: ubuntu-26.04-arm
     environment: automated
     timeout-minutes: 10
 

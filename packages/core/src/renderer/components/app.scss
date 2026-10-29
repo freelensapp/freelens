@@ -42,11 +42,8 @@
   --margin: var(--unit);
   --border-radius: 3px;
   --font-main: "Roboto", "Helvetica", "Arial", sans-serif;
-  --font-monospace:
-    Lucida Console, Monaco, Consolas, monospace; // some defaults
-  --font-terminal: var(
-    --font-monospace
-  ); // overridden in terminal.ts, managed by common/user-store.ts
+  --font-monospace: Lucida Console, Monaco, Consolas, monospace; // some defaults
+  --font-terminal: var(--font-monospace); // overridden in terminal.ts, managed by common/user-store.ts
   --font-size-small: calc(1.5 * var(--unit));
   --font-size: calc(1.75 * var(--unit));
   --font-size-big: calc(2 * var(--unit));

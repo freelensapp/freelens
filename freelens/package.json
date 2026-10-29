@@ -1,6 +1,6 @@
 {
   "name": "freelens",
-  "version": "2.0.0-0",
+  "version": "2.0.0",
   "private": true,
   "description": "Freelens - Free IDE for Kubernetes",
   "keywords": [],
@@ -36,7 +36,7 @@
     "preupdate-binaries-lock": "pnpm --filter @freelensapp/ensure-binaries build",
     "update-binaries-lock": "update-binaries-lock --package package.json",
     "predev": "install-electron",
-    "dev": "ELECTRON_RUN_AS_NODE= NODE_ENV=development electron-vite dev --watch --inspect --remoteDebuggingPort 9223",
+    "dev": "NODE_ENV=development electron-vite dev --watch --inspect --remoteDebuggingPort 9223",
     "start": "pnpm dlx run-script-os@1.1.6 --",
     "start:darwin": "pnpm start:darwin:${npm_config_arch:-$(uname -m)}",
     "start:darwin:arm64": "./dist/mac-arm64/Freelens.app/Contents/MacOS/Freelens",
@@ -57,7 +57,7 @@
     "bundledHelmVersion": "4.3.1",
     "bundledKubectlVersion": "1.37.1",
     "contentSecurityPolicy": "script-src 'unsafe-eval' 'self' freelens-extension:; frame-src https://*.renderer.freelens.app:*/; img-src * data:",
-    "k8sProxyVersion": "1.9.1",
+    "k8sProxyVersion": "2.0.0",
     "welcomeRoute": "/welcome"
   },
   "dependencies": {
@@ -89,7 +89,6 @@
     "joi": "catalog:",
     "js-yaml": "catalog:",
     "mobx": "catalog:",
-    "undici": "catalog:",
     "node-pty": "catalog:",
     "proper-lockfile": "catalog:",
     "react": "catalog:",
@@ -98,6 +97,7 @@
     "tcp-port-used": "catalog:",
     "tempy": "catalog:",
     "triple-beam": "catalog:",
+    "undici": "catalog:",
     "uuid": "catalog:",
     "verkit": "catalog:",
     "winston": "catalog:",

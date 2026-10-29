@@ -176,8 +176,6 @@
         // runtime code in this package imports them
         "@types/react",
         "@types/react-dom",
-        "@types/react-window",
-        "@xterm/xterm",
         "chart.js",
         "conf",
         "es-toolkit",
@@ -188,7 +186,6 @@
         "react",
         "react-dom",
         "react-select",
-        "react-window",
         "rfc6902",
         "type-fest"
       ],

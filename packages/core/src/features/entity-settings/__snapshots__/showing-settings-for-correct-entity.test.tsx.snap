@@ -511,7 +511,7 @@ exports[`Showing correct entity settings > when navigating to local cluster enti
           id="lens-views"
         />
         <div
-          class="SettingLayout showNavigation"
+          class="SettingLayout showNavigation withCloseButton"
           data-testid="entity-settings"
         >
           <nav
@@ -917,7 +917,7 @@ exports[`Showing correct entity settings > when navigating to non-local cluster 
           id="lens-views"
         />
         <div
-          class="SettingLayout showNavigation"
+          class="SettingLayout showNavigation withCloseButton"
           data-testid="entity-settings"
         >
           <nav
@@ -1056,7 +1056,7 @@ exports[`Showing correct entity settings > when navigating to non-local cluster 
                     <small
                       class="hint"
                     >
-                      HTTP Proxy server. Used for communicating with Kubernetes API.
+                      Proxy for the connections of the views of this cluster to its Kubernetes API. Takes an http://, https:// or socks5:// URL. A proxy-url in the kubeconfig takes precedence. It is also HTTPS_PROXY in the terminal of this cluster. Reconnect the cluster and reopen its terminal after changing it.
                     </small>
                   </section>
                 </section>
@@ -1344,7 +1344,7 @@ exports[`Showing correct entity settings > when navigating to weblink entity set
           id="lens-views"
         />
         <div
-          class="SettingLayout showNavigation"
+          class="SettingLayout showNavigation withCloseButton"
           data-testid="entity-settings"
         >
           <nav

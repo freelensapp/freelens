@@ -105,6 +105,7 @@ describe("technical unit tests for standalone shell sessions", () => {
         PATH: "/home/some-user/bin:/usr/local/bin:/usr/bin",
         KUBECONFIG: "/home/some-user/.kube/config",
         KUBECACHEDIR: "/home/some-user/.kube/some-cache",
+        HTTPS_PROXY: "http://some-user-proxy:3128",
         HOME: "/home/some-user",
       },
     }));
@@ -185,6 +186,20 @@ describe("technical unit tests for standalone shell sessions", () => {
     await openStandaloneShellSession({ tabId: "my-tab-id", websocket: websocket() });
 
     expect(spawnedWith().env.KUBECONFIG).toBe("/home/some-user/.kube/config");
+  });
+
+  it("exports the application's proxy preference as HTTPS_PROXY in place of the user's own", async () => {
+    di.inject(userPreferencesStateInjectable).httpsProxy = "socks5://some-proxy:1080";
+
+    await openStandaloneShellSession({ tabId: "my-tab-id", websocket: websocket() });
+
+    expect(spawnedWith().env.HTTPS_PROXY).toBe("socks5://some-proxy:1080");
+  });
+
+  it("leaves the user's own HTTPS_PROXY alone when the application has no proxy preference", async () => {
+    await openStandaloneShellSession({ tabId: "my-tab-id", websocket: websocket() });
+
+    expect(spawnedWith().env.HTTPS_PROXY).toBe("http://some-user-proxy:3128");
   });
 
   it("leaves the user's own KUBECACHEDIR alone", async () => {

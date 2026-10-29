@@ -19,16 +19,17 @@ jobs:
   create-tag:
     name: tag
 
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
     environment: automated
     timeout-minutes: 10
 
     env:
       DO_NOT_TRACK: "1"
 
-    if: >
-      (startsWith(github.event.issue.title, 'Automated npm version') && github.event.issue.state == 'closed' && github.event.comment.body == '/tag' && contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association)) || (startsWith(github.event.pull_request.title, 'Automated
-      npm version') && github.event.pull_request.merged)
+    # Never on a fork: it has no GH_TOKEN secret, so the job could only fail.
+    if: >-
+      github.repository_owner == 'freelensapp' && ((startsWith(github.event.issue.title, 'Automated npm version') && github.event.issue.state == 'closed' && github.event.comment.body == '/tag' && contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association)) || (startsWith(github.event.pull_request.title,
+      'Automated npm version') && github.event.pull_request.merged))
     steps:
       # author_association in the job condition is only a cheap pre-filter:
       # MEMBER and COLLABORATOR do not imply write access. The permission API
@@ -62,7 +63,7 @@ jobs:
       - name: Set up mise
         uses: jdx/mise-action@v5
         with:
-          version: 2026.10.13 # datasource=github-releases depName=jdx/mise
+          version: 2026.10.19 # datasource=github-releases depName=jdx/mise
           install_args: yq
 
       - name: Get version from package.json

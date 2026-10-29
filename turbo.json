@@ -54,7 +54,8 @@
     "dev": {
       "dependsOn": ["^build:dev"],
       "cache": false,
-      "persistent": true
+      "persistent": true,
+      "passThroughEnv": ["FREELENS_INTEGRATION_TESTING_DIR"]
     },
     "test:unit": {
       "dependsOn": ["build"],

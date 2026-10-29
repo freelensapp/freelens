@@ -238,10 +238,6 @@ export class InstallChartModel {
     return !this.configuration.isLoading.get();
   }
 
-  get chartName() {
-    return `${this.repository}/${this.name}`;
-  }
-
   private get name() {
     assert(this.chart);
 

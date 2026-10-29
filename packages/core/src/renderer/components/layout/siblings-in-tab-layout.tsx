@@ -17,6 +17,8 @@ import type { IComputedValue } from "mobx";
 interface SiblingTabLayoutProps {
   children: StrictReactNode;
   scrollable?: boolean;
+  /** Clears a crash of the children when it changes, see `ErrorBoundaryProps.resetKey`. */
+  resetKey?: string;
 }
 
 interface Dependencies {

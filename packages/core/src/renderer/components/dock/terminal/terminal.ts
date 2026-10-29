@@ -9,8 +9,6 @@ import { disposer } from "@freelensapp/utilities";
 import { FitAddon } from "@xterm/addon-fit";
 import { WebLinksAddon } from "@xterm/addon-web-links";
 import { Terminal as XTerm } from "@xterm/xterm";
-import { clipboard } from "electron";
-import { once } from "es-toolkit";
 import { debounce } from "es-toolkit/compat";
 import { reaction } from "mobx";
 import { TerminalChannels } from "../../../../common/terminal/channels";
@@ -115,21 +113,28 @@ export class Terminal {
 
     // bind events
     const onDataHandler = this.xterm.onData(this.onData);
-    const clearOnce = once(() => {
+    let firstReady = true;
+    const onReady = () => {
       /**
        * The transient status line is unterminated, so it must be erased before
-       * the prompt is written over it. Passing `onClear` as xterm's write
-       * callback is what orders the erase before the clear despite the
-       * asynchronous write queue. Reported errors are sticky: they suppress
-       * the buffer clear so that they stay visible above the prompt.
+       * the prompt is written over it, and every connection writes one, a
+       * reconnect included. Passing `onClear` as xterm's write callback is
+       * what orders the erase before the clear despite the asynchronous write
+       * queue. The buffer is cleared only on the first connection, so that a
+       * reconnect keeps the history, and reported errors are sticky: they
+       * suppress the clear so that they stay visible above the prompt.
        */
-      this.xterm.write(eraseTerminalLine, this.hasStickyStatus ? undefined : this.onClear);
-    });
+      const clear = firstReady && !this.hasStickyStatus;
+
+      firstReady = false;
+      this.xterm.write(eraseTerminalLine, clear ? this.onClear : undefined);
+    };
 
     this.viewport.addEventListener("scroll", this.onScroll);
     this.elem.addEventListener("contextmenu", this.onContextMenu);
-    this.api.once("ready", clearOnce);
-    this.api.once("connected", clearOnce);
+    // `TerminalApi` emits "ready" once per connection, on its first output or
+    // on the "connected" of a resumed session.
+    this.api.on("ready", onReady);
     this.api.on("data", this.onApiData);
     this.api.on("status", this.onApiStatus);
     window.addEventListener("resize", this.onResize);
@@ -207,14 +212,21 @@ export class Terminal {
     this.viewport.scrollTop = this.scrollPos; // restore last scroll position
   };
 
-  onContextMenu = () => {
-    if (
-      // don't paste if user hasn't turned on the feature
-      this.dependencies.terminalCopyOnSelect.get() &&
+  onContextMenu = async () => {
+    // don't paste if user hasn't turned on the feature
+    if (!this.dependencies.terminalCopyOnSelect.get()) {
+      return;
+    }
+
+    try {
+      const text = await navigator.clipboard.readText();
+
       // don't paste if the clipboard doesn't have text
-      clipboard.availableFormats().includes("text/plain")
-    ) {
-      this.xterm.paste(clipboard.readText());
+      if (text) {
+        this.xterm.paste(text);
+      }
+    } catch (error) {
+      this.dependencies.logger.warn("[TERMINAL]: failed to read the clipboard", error);
     }
   };
 
@@ -222,7 +234,9 @@ export class Terminal {
     const selection = this.xterm.getSelection().trim();
 
     if (this.dependencies.terminalCopyOnSelect.get() && selection) {
-      clipboard.writeText(selection);
+      navigator.clipboard.writeText(selection).catch((error) => {
+        this.dependencies.logger.warn("[TERMINAL]: failed to write the clipboard", error);
+      });
     }
   };
 
