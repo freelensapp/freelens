@@ -157,22 +157,22 @@ export const apiResourceRecord: Record<KubeResource, KubeApiResourceData> = {
   },
   mutatingwebhookconfigurations: {
     kind: "MutatingWebhookConfiguration",
-    group: "admissionregistration.k8s.io/v1",
+    group: "admissionregistration.k8s.io",
     namespaced: false,
   },
   validatingadmissionpolicies: {
     kind: "ValidatingAdmissionPolicy",
-    group: "admissionregistration.k8s.io/v1",
+    group: "admissionregistration.k8s.io",
     namespaced: false,
   },
   validatingadmissionpolicybindings: {
     kind: "ValidatingAdmissionPolicyBinding",
-    group: "admissionregistration.k8s.io/v1",
+    group: "admissionregistration.k8s.io",
     namespaced: false,
   },
   validatingwebhookconfigurations: {
     kind: "ValidatingWebhookConfiguration",
-    group: "admissionregistration.k8s.io/v1",
+    group: "admissionregistration.k8s.io",
     namespaced: false,
   },
   networkpolicies: {
