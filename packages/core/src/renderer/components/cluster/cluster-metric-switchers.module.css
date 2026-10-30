@@ -14,6 +14,11 @@
   min-width: 0;
 }
 
+/* The node role options never get narrower than their labels, so they do not slide under the time range selector */
+.container > .nodeRoleBox {
+  min-width: max-content;
+}
+
 .timeRangeBox {
   flex: 1 1 0;
   min-width: 120px;
