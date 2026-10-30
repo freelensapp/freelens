@@ -14,12 +14,16 @@ import { cssNames, noop } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import React from "react";
 import { createPortal } from "react-dom";
+import activeThemeInjectable from "../../themes/active.injectable";
 import drawerStorageInjectable, { defaultDrawerWidth } from "./drawer-storage/drawer-storage.injectable";
 
 import type { AnimateName } from "@freelensapp/animate";
 import type { History } from "@freelensapp/routing";
 import type { StrictReactNode } from "@freelensapp/utilities";
 
+import type { IComputedValue } from "mobx";
+
+import type { LensTheme } from "../../themes/lens-theme";
 import type { StorageLayer } from "../../utils/storage-helper";
 
 export type DrawerPosition = "top" | "left" | "right" | "bottom";
@@ -68,7 +72,27 @@ export const resizingAnchorProps: Record<DrawerPosition, [ResizeDirection, Resiz
 interface Dependencies {
   history: History;
   drawerStorage: StorageLayer<{ width: number }>;
+  activeTheme: IComputedValue<LensTheme>;
 }
+
+// v2 interface (themes with `uiV2`): "Deployment: csi-attacher" renders as a kind chip and the name.
+// The title string itself is unchanged, so copying still yields the bare name.
+const kindTitlePattern = /^([A-Za-z][\w.]*): (.+)$/s;
+
+const renderV2Title = (title: StrictReactNode): StrictReactNode => {
+  const match = typeof title === "string" ? kindTitlePattern.exec(title) : null;
+
+  if (!match) {
+    return title;
+  }
+
+  return (
+    <>
+      <span className="drawer-title-kind">{match[1]}</span>
+      <span className="drawer-title-name">{match[2]}</span>
+    </>
+  );
+};
 
 class NonInjectedDrawer extends React.Component<DrawerProps & Dependencies & typeof defaultProps, State> {
   static defaultProps = defaultProps as object;
@@ -227,7 +251,7 @@ class NonInjectedDrawer extends React.Component<DrawerProps & Dependencies & typ
           <div className="drawer-wrapper flex flex-col">
             <div className="drawer-title flex items-center">
               <div className="drawer-title-text flex gap-2 items-center">
-                {title}
+                {this.props.activeTheme.get().uiV2 ? renderV2Title(title) : title}
                 {canCopyTitle && (
                   <Icon material={copyIcon} tooltip={copyTooltip} onClick={() => this.copyTitle(title)} />
                 )}
@@ -272,6 +296,7 @@ export const Drawer = withInjectables<Dependencies, DrawerProps>(
       ...props,
       history: di.inject(historyInjectionToken),
       drawerStorage: di.inject(drawerStorageInjectable),
+      activeTheme: di.inject(activeThemeInjectable),
     }),
   },
 );
