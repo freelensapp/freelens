@@ -1,0 +1,102 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
+.HotbarFolderIcon {
+  position: relative;
+}
+
+.badge {
+  position: absolute;
+  right: -2px;
+  bottom: -3px;
+  margin: -8px;
+  font-size: var(--font-size-small);
+  background: var(--clusterMenuBackground);
+  color: var(--textColorAccent);
+  padding: 0px;
+  border-radius: 50%;
+  border: 2px solid var(--clusterMenuBackground);
+  width: 15px;
+  height: 15px;
+}
+
+.count {
+  position: absolute;
+  left: -5px;
+  top: -5px;
+  min-width: 15px;
+  height: 15px;
+  padding: 0 3px;
+  border-radius: 8px;
+  border: 2px solid var(--clusterMenuBackground);
+  background: var(--textColorAccent);
+  color: var(--clusterMenuBackground);
+  font-size: 9px;
+  font-weight: bold;
+  line-height: 11px;
+  text-align: center;
+  pointer-events: none;
+}
+
+.panel {
+  min-width: 220px;
+  max-width: 360px;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.title {
+  padding: 6px 12px;
+  font-weight: bold;
+  color: var(--textColorAccent);
+  border-bottom: 1px solid var(--borderFaintColor);
+}
+
+.empty {
+  padding: 8px 12px;
+  max-width: 260px;
+  color: var(--textColorSecondary);
+  white-space: normal;
+}
+
+.item {
+  gap: 8px;
+  position: relative;
+
+  .rename,
+  .remove {
+    opacity: 0;
+  }
+
+  // The actions sit together at the end of the row.
+  .rename {
+    margin-left: auto;
+  }
+
+  &:hover .rename,
+  &:hover .remove {
+    opacity: 1;
+  }
+}
+
+.name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.avatar {
+  flex-shrink: 0;
+  font-size: 1.2ch !important;
+}
+
+.online {
+  flex-shrink: 0;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: var(--primary);
+  box-shadow: 0 0 5px var(--primary);
+}

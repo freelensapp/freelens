@@ -10,12 +10,12 @@ import * as uuid from "uuid";
 import { getShortName } from "../../../../common/catalog/helpers";
 import { broadcastMessage } from "../../../../common/ipc";
 import { hotbarTooManyItemsChannel } from "../../../../common/ipc/hotbar";
-import { defaultHotbarCells } from "./types";
+import { defaultHotbarCells, isHotbarFolderItem } from "./types";
 
 import type { Logger } from "@freelensapp/logger";
 
 import type { CatalogEntity } from "../../../../common/catalog";
-import type { CreateHotbarData, HotbarItem } from "./types";
+import type { CreateHotbarData, HotbarCellItem, HotbarFolder, HotbarItem } from "./types";
 
 export interface HotbarDependencies {
   readonly logger: Logger;
@@ -24,13 +24,13 @@ export interface HotbarDependencies {
 export interface HotbarData {
   readonly id: string;
   readonly name: string;
-  readonly items: (HotbarItem | null)[];
+  readonly items: (HotbarCellItem | null)[];
 }
 
 export class Hotbar {
   readonly id: string;
   readonly name: IObservableValue<string>;
-  readonly items: IObservableArray<HotbarItem | null>;
+  readonly items: IObservableArray<HotbarCellItem | null>;
 
   constructor(
     private readonly dependencies: HotbarDependencies,
@@ -52,7 +52,97 @@ export class Hotbar {
   }
 
   hasEntity(entityId: string) {
-    return this.items.findIndex((item) => item?.entity.uid === entityId) >= 0;
+    return this.items.some((item) =>
+      isHotbarFolderItem(item)
+        ? item.folder.items.some((folderItem) => folderItem.entity.uid === entityId)
+        : item?.entity.uid === entityId,
+    );
+  }
+
+  getFolders(): HotbarFolder[] {
+    const folders: HotbarFolder[] = [];
+
+    for (const item of this.items) {
+      if (isHotbarFolderItem(item)) {
+        folders.push(item.folder);
+      }
+    }
+
+    return folders;
+  }
+
+  getFolder(folderId: string): HotbarFolder | undefined {
+    for (const item of this.items) {
+      if (isHotbarFolderItem(item) && item.folder.id === folderId) {
+        return item.folder;
+      }
+    }
+
+    return undefined;
+  }
+
+  /**
+   * Returns the item of the entity, either pinned to a cell or in a folder.
+   */
+  getItem(entityId: string): HotbarItem | undefined {
+    for (const item of this.items) {
+      if (isHotbarFolderItem(item)) {
+        const folderItem = item.folder.items.find((folderItem) => folderItem.entity.uid === entityId);
+
+        if (folderItem) {
+          return folderItem;
+        }
+      } else if (item?.entity.uid === entityId) {
+        return item;
+      }
+    }
+
+    return undefined;
+  }
+
+  /**
+   * Sets the name shown for the entity in this hotbar. An empty name removes
+   * it, so the entity's own name is shown again.
+   */
+  setDisplayName(entityId: string, displayName: string) {
+    runInAction(() => {
+      const item = this.getItem(entityId);
+
+      if (!item) {
+        return;
+      }
+
+      const trimmed = displayName.trim();
+
+      if (trimmed) {
+        item.displayName = trimmed;
+      } else {
+        delete item.displayName;
+      }
+    });
+  }
+
+  private findEmptyCellIndex(cellIndex?: number) {
+    if (cellIndex === undefined) {
+      const emptyCellIndex = this.items.indexOf(null);
+
+      if (emptyCellIndex < 0) {
+        broadcastMessage(hotbarTooManyItemsChannel);
+      }
+
+      return emptyCellIndex;
+    }
+
+    if (0 <= cellIndex && cellIndex < this.items.length) {
+      return cellIndex;
+    }
+
+    this.dependencies.logger.error("cannot pin entity to hotbar outside of index range", {
+      hotbarId: this.id,
+      cellIndex,
+    });
+
+    return -1;
   }
 
   private findClosestEmptyIndex(from: number, direction = 1) {
@@ -102,65 +192,106 @@ export class Hotbar {
 
   removeEntity(uid: string) {
     runInAction(() => {
-      const index = this.items.findIndex((item) => item?.entity.uid === uid);
+      const index = this.items.findIndex((item) => !isHotbarFolderItem(item) && item?.entity.uid === uid);
 
-      if (index < 0) {
+      if (index >= 0) {
+        this.items[index] = null;
+
         return;
       }
 
-      this.items[index] = null;
+      for (const item of this.items) {
+        if (isHotbarFolderItem(item)) {
+          const folderIndex = item.folder.items.findIndex((folderItem) => folderItem.entity.uid === uid);
+
+          if (folderIndex >= 0) {
+            item.folder.items.splice(folderIndex, 1);
+
+            return;
+          }
+        }
+      }
+    });
+  }
+
+  addFolder(name: string, cellIndex?: number): string | undefined {
+    const index = this.findEmptyCellIndex(cellIndex);
+
+    if (index < 0) {
+      return undefined;
+    }
+
+    const folder: HotbarFolder = { id: uuid.v4(), name, items: [] };
+
+    runInAction(() => {
+      this.items[index] = { folder };
+    });
+
+    return folder.id;
+  }
+
+  renameFolder(folderId: string, name: string) {
+    runInAction(() => {
+      const folder = this.getFolder(folderId);
+
+      if (folder) {
+        folder.name = name;
+      }
+    });
+  }
+
+  /**
+   * Removes the folder and unpins the entities in it. The entities stay in the
+   * catalog.
+   */
+  removeFolder(folderId: string) {
+    runInAction(() => {
+      const index = this.items.findIndex((item) => isHotbarFolderItem(item) && item.folder.id === folderId);
+
+      if (index >= 0) {
+        this.items[index] = null;
+      }
+    });
+  }
+
+  /**
+   * Moves the entity into the folder. An entity that is already pinned to a
+   * cell or to another folder of this hotbar is moved, not duplicated.
+   */
+  addEntityToFolder(folderId: string, item: CatalogEntity) {
+    const newItem = toHotbarItem(item);
+
+    runInAction(() => {
+      const folder = this.getFolder(folderId);
+
+      if (!folder) {
+        return;
+      }
+
+      // Keep the display name when the entity is moved from another place.
+      const displayName = this.getItem(newItem.entity.uid)?.displayName;
+
+      if (displayName) {
+        newItem.displayName = displayName;
+      }
+
+      this.removeEntity(newItem.entity.uid);
+      folder.items.push(newItem);
     });
   }
 
   addEntity(item: CatalogEntity, cellIndex?: number) {
-    const uid = item.getId();
-    const name = item.getName();
-    const shortName = getShortName(item);
+    const newItem = toHotbarItem(item);
 
-    if (typeof uid !== "string") {
-      throw new TypeError("CatalogEntity's ID must be a string");
-    }
-
-    if (typeof name !== "string") {
-      throw new TypeError("CatalogEntity's NAME must be a string");
-    }
-
-    if (typeof shortName !== "string") {
-      throw new TypeError("CatalogEntity's SHORT_NAME must be a string");
-    }
-
-    if (this.hasEntity(item.getId())) {
+    if (this.hasEntity(newItem.entity.uid)) {
       return;
     }
 
-    const entity = {
-      uid,
-      name,
-      source: item.metadata.source,
-      shortName,
-    };
-    const newItem = { entity };
+    const index = this.findEmptyCellIndex(cellIndex);
 
-    if (cellIndex === undefined) {
-      // Add item to empty cell
-      const emptyCellIndex = this.items.indexOf(null);
-
-      if (emptyCellIndex >= 0) {
-        runInAction(() => {
-          this.items[emptyCellIndex] = newItem;
-        });
-      } else {
-        broadcastMessage(hotbarTooManyItemsChannel);
-      }
-    } else if (0 <= cellIndex && cellIndex < this.items.length) {
+    if (index >= 0) {
       runInAction(() => {
-        this.items[cellIndex] = newItem;
-      });
-    } else {
-      this.dependencies.logger.error("cannot pin entity to hotbar outside of index range", {
-        entityId: uid,
-        hotbarId: this.id,
-        cellIndex,
+        this.items[index] = newItem;
       });
     }
   }
@@ -172,4 +303,31 @@ export class Hotbar {
       name: this.name.get(),
     };
   }
+}
+
+function toHotbarItem(item: CatalogEntity): HotbarItem {
+  const uid = item.getId();
+  const name = item.getName();
+  const shortName = getShortName(item);
+
+  if (typeof uid !== "string") {
+    throw new TypeError("CatalogEntity's ID must be a string");
+  }
+
+  if (typeof name !== "string") {
+    throw new TypeError("CatalogEntity's NAME must be a string");
+  }
+
+  if (typeof shortName !== "string") {
+    throw new TypeError("CatalogEntity's SHORT_NAME must be a string");
+  }
+
+  const entity = {
+    uid,
+    name,
+    source: item.metadata.source,
+    shortName,
+  };
+
+  return { entity };
 }

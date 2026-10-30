@@ -271,6 +271,7 @@ exports[`navigate to extension page > renders 1`] = `
       >
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-0"
           index="0"
         >
           <div
@@ -296,6 +297,7 @@ exports[`navigate to extension page > renders 1`] = `
         </div>
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-1"
           index="1"
         >
           <div
@@ -321,42 +323,52 @@ exports[`navigate to extension page > renders 1`] = `
         </div>
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-2"
           index="2"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-3"
           index="3"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-4"
           index="4"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-5"
           index="5"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-6"
           index="6"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-7"
           index="7"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-8"
           index="8"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-9"
           index="9"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-10"
           index="10"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-11"
           index="11"
         />
         <div
@@ -519,6 +531,7 @@ exports[`navigate to extension page > when extension navigates to child route > 
       >
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-0"
           index="0"
         >
           <div
@@ -544,6 +557,7 @@ exports[`navigate to extension page > when extension navigates to child route > 
         </div>
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-1"
           index="1"
         >
           <div
@@ -569,42 +583,52 @@ exports[`navigate to extension page > when extension navigates to child route > 
         </div>
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-2"
           index="2"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-3"
           index="3"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-4"
           index="4"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-5"
           index="5"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-6"
           index="6"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-7"
           index="7"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-8"
           index="8"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-9"
           index="9"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-10"
           index="10"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-11"
           index="11"
         />
         <div
@@ -783,6 +807,7 @@ exports[`navigate to extension page > when extension navigates to route with par
       >
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-0"
           index="0"
         >
           <div
@@ -808,6 +833,7 @@ exports[`navigate to extension page > when extension navigates to route with par
         </div>
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-1"
           index="1"
         >
           <div
@@ -833,42 +859,52 @@ exports[`navigate to extension page > when extension navigates to route with par
         </div>
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-2"
           index="2"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-3"
           index="3"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-4"
           index="4"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-5"
           index="5"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-6"
           index="6"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-7"
           index="7"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-8"
           index="8"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-9"
           index="9"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-10"
           index="10"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-11"
           index="11"
         />
         <div
@@ -1047,6 +1083,7 @@ exports[`navigate to extension page > when extension navigates to route without 
       >
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-0"
           index="0"
         >
           <div
@@ -1072,6 +1109,7 @@ exports[`navigate to extension page > when extension navigates to route without 
         </div>
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-1"
           index="1"
         >
           <div
@@ -1097,42 +1135,52 @@ exports[`navigate to extension page > when extension navigates to route without 
         </div>
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-2"
           index="2"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-3"
           index="3"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-4"
           index="4"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-5"
           index="5"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-6"
           index="6"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-7"
           index="7"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-8"
           index="8"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-9"
           index="9"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-10"
           index="10"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-11"
           index="11"
         />
         <div
@@ -1311,6 +1359,7 @@ exports[`navigate to extension page > when extension navigates to route without 
       >
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-0"
           index="0"
         >
           <div
@@ -1336,6 +1385,7 @@ exports[`navigate to extension page > when extension navigates to route without 
         </div>
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-1"
           index="1"
         >
           <div
@@ -1361,42 +1411,52 @@ exports[`navigate to extension page > when extension navigates to route without 
         </div>
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-2"
           index="2"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-3"
           index="3"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-4"
           index="4"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-5"
           index="5"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-6"
           index="6"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-7"
           index="7"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-8"
           index="8"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-9"
           index="9"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-10"
           index="10"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-11"
           index="11"
         />
         <div

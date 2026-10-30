@@ -26,20 +26,25 @@ import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { UserPreferencesState } from "../../../extensions/common-api/app";
 import activeHotbarInjectable from "../../../features/hotbar/storage/common/active.injectable";
-import { defaultHotbarCells } from "../../../features/hotbar/storage/common/types";
+import { defaultHotbarCells, isHotbarFolderItem } from "../../../features/hotbar/storage/common/types";
 import userPreferencesStateInjectable from "../../../features/user-preferences/common/state.injectable";
 import catalogEntityRegistryInjectable from "../../api/catalog/entity/registry.injectable";
+import commandOverlayInjectable from "../command-palette/command-overlay.injectable";
+import { Menu, MenuItem } from "../menu";
 import { HotbarCell } from "./hotbar-cell";
 import { HotbarEntityIcon } from "./hotbar-entity-icon";
+import { getHotbarFolderUid, HotbarFolderIcon } from "./hotbar-folder-icon";
 import { HotbarIcon } from "./hotbar-icon";
+import { HotbarNameCommand } from "./hotbar-name-command";
 import { HotbarSelector } from "./hotbar-selector";
 
 import type { IClassName, StrictReactNode } from "@freelensapp/utilities";
 
 import type { IComputedValue } from "mobx";
+import type { ReactElement } from "react";
 
 import type { Hotbar } from "../../../features/hotbar/storage/common/hotbar";
-import type { HotbarItem } from "../../../features/hotbar/storage/common/types";
+import type { HotbarCellItem, HotbarFolder, HotbarItem } from "../../../features/hotbar/storage/common/types";
 import type { CatalogEntityRegistry } from "../../api/catalog/entity/registry";
 import type { CatalogEntity } from "../../api/catalog-entity";
 
@@ -51,7 +56,13 @@ interface Dependencies {
   activeHotbar: IComputedValue<Hotbar | undefined>;
   entityRegistry: CatalogEntityRegistry;
   userPreferencesState: UserPreferencesState;
+  openCommandOverlay: (component: ReactElement) => void;
 }
+
+// Draggable ids of entities are their uids, folders get a prefixed id so the
+// two can never collide.
+const getItemId = (item: HotbarCellItem) =>
+  isHotbarFolderItem(item) ? getHotbarFolderUid(item.folder.id) : item.entity.uid;
 
 // A single grid cell acting as a @dnd-kit drop target. Its `id` is the cell
 // index, so a drop resolves to `hotbar.restack(from, index)`.
@@ -67,7 +78,7 @@ function HotbarDroppableCell({
   const { setNodeRef } = useDroppable({ id: index });
 
   return (
-    <HotbarCell index={index} innerRef={setNodeRef} className={className}>
+    <HotbarCell id={`hotbar-cell-${index}`} index={index} innerRef={setNodeRef} className={className}>
       {children}
     </HotbarCell>
   );
@@ -77,17 +88,37 @@ function HotbarDroppableCell({
 // carries the source cell index in `data` so `onDragEnd` knows where the drag
 // started. The dragged visual is rendered by `<DragOverlay>`, so the in-place
 // element stays put (only its `isDragging` styling changes).
+const folderNameHint = 'Please provide a folder name (Press "Enter" to confirm or "Escape" to cancel)';
+
+// The context menu of an empty cell, used to create a folder in that cell.
+function HotbarEmptyCellMenu({ index, onNewFolder }: { index: number; onNewFolder: (index: number) => void }) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <Menu
+      usePortal
+      htmlFor={`hotbar-cell-${index}`}
+      isOpen={isOpen}
+      toggleEvent="contextmenu"
+      open={() => setIsOpen(true)}
+      close={() => setIsOpen(false)}
+    >
+      <MenuItem onClick={() => onNewFolder(index)}>New Folder</MenuItem>
+    </Menu>
+  );
+}
+
 function HotbarDraggableIcon({
   item,
   index,
   children,
 }: {
-  item: HotbarItem;
+  item: HotbarCellItem;
   index: number;
   children: (isDragging: boolean) => StrictReactNode;
 }) {
   const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
-    id: item.entity.uid,
+    id: getItemId(item),
     data: { index },
   });
 
@@ -109,7 +140,7 @@ function HotbarDraggableIcon({
 }
 
 const NonInjectedHotbarMenu = observer((props: Dependencies & HotbarMenuProps) => {
-  const { activeHotbar, entityRegistry, userPreferencesState, className } = props;
+  const { activeHotbar, entityRegistry, userPreferencesState, openCommandOverlay, className } = props;
 
   const [draggingOver, setDraggingOver] = useState(false);
   // The uid of the entity currently being dragged, and the index of the cell it
@@ -177,8 +208,8 @@ const NonInjectedHotbarMenu = observer((props: Dependencies & HotbarMenuProps) =
     };
   }, [userPreferencesState.hotbarAutoHide]);
 
-  const getEntity = (item: HotbarItem | null) => {
-    if (!item) {
+  const getEntity = (item: HotbarCellItem | null) => {
+    if (!item || isHotbarFolderItem(item)) {
       return undefined;
     }
 
@@ -228,17 +259,71 @@ const NonInjectedHotbarMenu = observer((props: Dependencies & HotbarMenuProps) =
   const addItem = (entity: CatalogEntity) => {
     hotbar?.addEntity(entity);
   };
+  const folders = hotbar?.getFolders() ?? [];
+  const moveToFolder = (folderId: string, entity: CatalogEntity) => {
+    hotbar?.addEntityToFolder(folderId, entity);
+  };
+  const newFolder = (index: number) => {
+    openCommandOverlay(
+      <HotbarNameCommand
+        placeholder="Folder name"
+        hint={folderNameHint}
+        onSubmit={(name) => hotbar?.addFolder(name, index)}
+      />,
+    );
+  };
+  const renameFolder = (folder: HotbarFolder) => {
+    openCommandOverlay(
+      <HotbarNameCommand
+        initialName={folder.name}
+        placeholder="Folder name"
+        hint={folderNameHint}
+        onSubmit={(name) => hotbar?.renameFolder(folder.id, name)}
+      />,
+    );
+  };
+  // The name only applies to this hotbar, the entity keeps its own name.
+  const renameEntity = (item: HotbarItem) => {
+    openCommandOverlay(
+      <HotbarNameCommand
+        initialName={item.displayName}
+        placeholder={item.entity.name}
+        hint={`Please provide a name to show in the hotbar, or leave it empty to show "${item.entity.name}" (Press "Enter" to confirm or "Escape" to cancel)`}
+        allowEmpty={true}
+        onSubmit={(name) => hotbar?.setDisplayName(item.entity.uid, name)}
+      />,
+    );
+  };
+  const removeFolder = (folderId: string) => {
+    hotbar?.removeFolder(folderId);
+  };
   const getMoveAwayDirection = (entityId: string | undefined | null, cellIndex: number) => {
     if (!entityId || !hotbar) {
       return "animateDown";
     }
 
-    const draggableItemIndex = hotbar.items.findIndex((item) => item?.entity.uid == entityId);
+    const draggableItemIndex = hotbar.items.findIndex((item) => item && getItemId(item) == entityId);
 
     return draggableItemIndex > cellIndex ? "animateDown" : "animateUp";
   };
 
-  const renderIcon = (item: HotbarItem, entity: CatalogEntity | undefined, index: number, isDragging: boolean) =>
+  const renderIcon = (item: HotbarCellItem, entity: CatalogEntity | undefined, index: number, isDragging: boolean) =>
+    isHotbarFolderItem(item) ? (
+      <HotbarFolderIcon
+        key={index}
+        folder={item.folder}
+        className={cssNames({ isDragging })}
+        onRename={renameFolder}
+        onRemove={removeFolder}
+        onRemoveEntity={removeItem}
+        onRenameEntity={renameEntity}
+        size={40}
+      />
+    ) : (
+      renderEntityIcon(item, entity, index, isDragging)
+    );
+
+  const renderEntityIcon = (item: HotbarItem, entity: CatalogEntity | undefined, index: number, isDragging: boolean) =>
     entity ? (
       <HotbarEntityIcon
         key={index}
@@ -248,6 +333,10 @@ const NonInjectedHotbarMenu = observer((props: Dependencies & HotbarMenuProps) =
         className={cssNames({ isDragging })}
         remove={removeItem}
         add={addItem}
+        displayName={item.displayName}
+        rename={() => renameEntity(item)}
+        folders={folders}
+        moveToFolder={moveToFolder}
         size={40}
       />
     ) : (
@@ -277,7 +366,7 @@ const NonInjectedHotbarMenu = observer((props: Dependencies & HotbarMenuProps) =
       return (
         <HotbarDroppableCell
           index={index}
-          key={entity ? entity.getId() : `cell${index}`}
+          key={item ? getItemId(item) : `cell${index}`}
           className={cssNames(
             {
               isDraggingOver: overId === index,
@@ -286,10 +375,12 @@ const NonInjectedHotbarMenu = observer((props: Dependencies & HotbarMenuProps) =
             getMoveAwayDirection(draggingOverWith, index),
           )}
         >
-          {item && (
+          {item ? (
             <HotbarDraggableIcon item={item} index={index}>
               {(isDragging) => renderIcon(item, entity, index, isDragging)}
             </HotbarDraggableIcon>
+          ) : (
+            <HotbarEmptyCellMenu index={index} onNewFolder={newFolder} />
           )}
         </HotbarDroppableCell>
       );
@@ -297,7 +388,7 @@ const NonInjectedHotbarMenu = observer((props: Dependencies & HotbarMenuProps) =
 
   // The entity being dragged, rendered inside `<DragOverlay>` so it follows the
   // cursor in a body-level portal and is never clipped by the hotbar's overflow.
-  const activeItem = activeId != null ? hotbar?.items.find((item) => item?.entity.uid === activeId) : undefined;
+  const activeItem = activeId != null ? hotbar?.items.find((item) => item && getItemId(item) === activeId) : undefined;
   const activeIndex = activeItem ? (hotbar?.items.indexOf(activeItem) ?? -1) : -1;
   const activeEntity = getEntity(activeItem ?? null);
 
@@ -352,5 +443,6 @@ export const HotbarMenu = withInjectables<Dependencies, HotbarMenuProps>(NonInje
     entityRegistry: di.inject(catalogEntityRegistryInjectable),
     activeHotbar: di.inject(activeHotbarInjectable),
     userPreferencesState: di.inject(userPreferencesStateInjectable),
+    openCommandOverlay: di.inject(commandOverlayInjectable).open,
   }),
 });

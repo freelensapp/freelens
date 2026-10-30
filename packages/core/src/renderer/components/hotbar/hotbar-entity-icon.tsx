@@ -29,6 +29,7 @@ import type { IComputedValue } from "mobx";
 
 import type { CatalogCategoryRegistry, CatalogEntity, CatalogEntityContextMenu } from "../../../common/catalog";
 import type { VisitEntityContextMenu } from "../../../common/catalog/visit-entity-context-menu.injectable";
+import type { HotbarFolder } from "../../../features/hotbar/storage/common/types";
 import type { Navigate } from "../../navigation/navigate.injectable";
 
 export interface HotbarEntityIconProps {
@@ -37,6 +38,13 @@ export interface HotbarEntityIconProps {
   errorClass?: IClassName;
   add: (item: CatalogEntity, index: number) => void;
   remove: (uid: string) => void;
+  /**
+   * The name shown in the hotbar instead of the entity's own name.
+   */
+  displayName?: string;
+  rename?: () => void;
+  folders?: HotbarFolder[];
+  moveToFolder?: (folderId: string, entity: CatalogEntity) => void;
   size?: number;
   onClick?: () => void;
   className?: string;
@@ -93,6 +101,18 @@ class NonInjectedHotbarEntityIcon extends React.Component<HotbarEntityIconProps 
         title: "Remove from Hotbar",
         onClick: () => this.props.remove(this.props.entity.getId()),
       },
+      ...(this.props.rename
+        ? [
+            {
+              title: "Rename in Hotbar",
+              onClick: this.props.rename,
+            },
+          ]
+        : []),
+      ...(this.props.folders ?? []).map((folder) => ({
+        title: `Move to Folder: ${folder.name}`,
+        onClick: () => this.props.moveToFolder?.(folder.id, this.props.entity),
+      })),
     ]);
 
     this.props.visitEntityContextMenu(this.props.entity, {
@@ -102,12 +122,16 @@ class NonInjectedHotbarEntityIcon extends React.Component<HotbarEntityIconProps 
   }
 
   render() {
-    const { entity, className, onClick } = this.props;
+    const { entity, displayName, className, onClick } = this.props;
+    const name = entity.getName();
+    const details = [displayName && name, entity.metadata.source].filter(Boolean).join(", ");
 
     return (
       <HotbarIcon
         uid={entity.getId()}
-        title={entity.getName()}
+        title={displayName || name}
+        // Keep the colour of the entity's own name, so renaming changes only the initials.
+        colorHash={entity.metadata.source ? `${name}-${entity.metadata.source}` : name}
         source={entity.metadata.source}
         src={entity.spec.icon?.src}
         material={entity.spec.icon?.material}
@@ -117,7 +141,7 @@ class NonInjectedHotbarEntityIcon extends React.Component<HotbarEntityIconProps 
         onMenuOpen={() => this.onMenuOpen()}
         disabled={!entity}
         menuItems={this.menuItems}
-        tooltip={entity.metadata.source ? `${entity.getName()} (${entity.metadata.source})` : entity.getName()}
+        tooltip={details ? `${displayName || name} (${details})` : name}
         onClick={onClick}
       >
         {this.renderLedIcon()}
