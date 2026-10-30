@@ -33,14 +33,14 @@ const NonInjectedClusterMetricSwitchers = observer(
     hasMemoryMetrics,
   }: Dependencies & ClusterMetricSwitchersProps) => (
     <div className={`flex gap-2 ${styles.container}`}>
-      <div className="grow shrink-0 basis-0">
+      <div className={`grow shrink-0 basis-0 ${styles.nodeRoleBox}`}>
         <RadioGroup
           asButtons
           className="RadioGroup flex gap-2"
           value={selectedNodeRoleForMetrics.value.get()}
           onChange={selectedNodeRoleForMetrics.set}
         >
-          <Radio label="Master" value="master" disabled={!selectedNodeRoleForMetrics.hasMasterNodes.get()} />
+          <Radio label="Control plane" value="master" disabled={!selectedNodeRoleForMetrics.hasMasterNodes.get()} />
           <Radio label="Worker" value="worker" disabled={!selectedNodeRoleForMetrics.hasWorkerNodes.get()} />
         </RadioGroup>
       </div>
