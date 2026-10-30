@@ -233,7 +233,20 @@ const NonInjectedInstalledExtensions = observer(
             <h2 className={styles.title}>Installed extensions</h2>
           </div>
           <div>
-            <SearchInput value={search} theme="round-black" onChange={setSearch} className={styles.searchInput} />
+            <SearchInput
+              value={search}
+              theme="round-black"
+              onChange={setSearch}
+              className={styles.searchInput}
+              searchHistory={{
+                enabled: true,
+                id: "extension-search-bar",
+                maxHistory: 10,
+                maxPinned: 10,
+                debounceMs: 700,
+                minQueryLength: 2,
+              }}
+            />
           </div>
         </div>
         <SortableTable columns={columns} items={matchedExtensions} getItemKey={(extension) => extension.id} />
