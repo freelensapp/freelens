@@ -14,6 +14,7 @@ export interface EditingResource {
   resource: string; // resource path, e.g. /api/v1/namespaces/default
   draft?: string; // edited draft in yaml
   firstDraft?: string;
+  baseline?: string; // last accepted cluster YAML, independent of the Save patch base
 }
 
 export class EditResourceTabStore extends DockTabStore<EditingResource> {
