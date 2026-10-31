@@ -714,6 +714,29 @@ exports[`workloads / pods > when navigating to workloads / pods view > given a n
                       />
                     </div>
                     <div
+                      class="TableCell ports nowrap sorting"
+                      id="ports"
+                    >
+                      <div
+                        class="content"
+                      >
+                        Ports
+                      </div>
+                      <i
+                        class="Icon sortIcon material focusable"
+                      >
+                        <span
+                          class="icon"
+                          data-icon-name="arrow_drop_down"
+                        >
+                          arrow_drop_down
+                        </span>
+                      </i>
+                      <div
+                        class="resize-handle"
+                      />
+                    </div>
+                    <div
                       class="TableCell cpu nowrap sorting"
                       id="cpuUsage"
                     >
@@ -962,6 +985,15 @@ exports[`workloads / pods > when navigating to workloads / pods view > given a n
                               class="StatusBrick"
                             />
                             <div />
+                          </div>
+                          <div
+                            class="TableCell ports"
+                          >
+                            <span
+                              class="PodPortsCell none"
+                            >
+                              -
+                            </span>
                           </div>
                           <div
                             class="TableCell cpu"
@@ -1889,6 +1921,29 @@ exports[`workloads / pods > when navigating to workloads / pods view > given no 
                         class="content"
                       >
                         Containers
+                      </div>
+                      <i
+                        class="Icon sortIcon material focusable"
+                      >
+                        <span
+                          class="icon"
+                          data-icon-name="arrow_drop_down"
+                        >
+                          arrow_drop_down
+                        </span>
+                      </i>
+                      <div
+                        class="resize-handle"
+                      />
+                    </div>
+                    <div
+                      class="TableCell ports nowrap sorting"
+                      id="ports"
+                    >
+                      <div
+                        class="content"
+                      >
+                        Ports
                       </div>
                       <i
                         class="Icon sortIcon material focusable"
@@ -2931,6 +2986,29 @@ exports[`workloads / pods > when navigating to workloads / pods view > given pod
                         class="content"
                       >
                         Containers
+                      </div>
+                      <i
+                        class="Icon sortIcon material focusable"
+                      >
+                        <span
+                          class="icon"
+                          data-icon-name="arrow_drop_down"
+                        >
+                          arrow_drop_down
+                        </span>
+                      </i>
+                      <div
+                        class="resize-handle"
+                      />
+                    </div>
+                    <div
+                      class="TableCell ports nowrap sorting"
+                      id="ports"
+                    >
+                      <div
+                        class="content"
+                      >
+                        Ports
                       </div>
                       <i
                         class="Icon sortIcon material focusable"

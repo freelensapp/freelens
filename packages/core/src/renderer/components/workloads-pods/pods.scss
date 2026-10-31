@@ -17,6 +17,12 @@
       flex-grow: 0.5;
     }
 
+    &.ports {
+      flex-grow: 1.2;
+      min-width: 0;
+      overflow: hidden;
+    }
+
     &.ip {
       flex-grow: 1;
     }
