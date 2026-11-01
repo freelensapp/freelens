@@ -152,6 +152,27 @@ const referencedSpecifiers = (code) => {
   return specifiers;
 };
 
+const declarationChunk = /\.d\.[cm]?ts$/;
+
+// Rolldown can put its JavaScript runtime (`__exportAll` and friends) in a
+// chunk of its own, next to the declaration rather than inside it. No
+// declaration imports it, and it does not parse as one, but it would still be
+// written to `dist/`. The dts plugin's `emitDtsOnly` cannot drop it: the
+// generator plugin that implements that option is left out with `dtsInput`.
+// So this plugin drops every chunk that is not a declaration, ahead of
+// `declared-externals`, which parses each chunk as a declaration.
+const declarationsOnly = {
+  name: "declarations-only",
+
+  generateBundle(_options, bundle) {
+    for (const [fileName, output] of Object.entries(bundle)) {
+      if (output.type === "chunk" && !declarationChunk.test(fileName)) {
+        delete bundle[fileName];
+      }
+    }
+  },
+};
+
 /** A `/// <reference types="node" />` directive, which pulls in `@types/node` wherever the file goes. */
 const nodeTypesReference = /^\/\/\/\s*<reference\s+types\s*=\s*["']node["']/m;
 
@@ -212,6 +233,7 @@ export default defineConfig({
     // up front, and with TypeScript 7 installed it picks `tsgo`, which refuses
     // to start without a tsconfig. Oxc needs none.
     dts({ dtsInput: true, emitDtsOnly: true, generator: "oxc", tsconfig: false }),
+    declarationsOnly,
     declaredExternals,
   ],
 });
