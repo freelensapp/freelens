@@ -87,7 +87,6 @@ deb:
     - libgtk-3-0
     - libnotify4
     - libnss3
-    - libxss1
     - libxtst6
     - xdg-utils
     - libatspi2.0-0
@@ -124,12 +123,11 @@ rpm:
     - gtk3
     - libnotify
     - nss
-    - libXScrnSaver
     - (libXtst or libXtst6)
     - xdg-utils
     - at-spi2-core
     - (libdrm2 or libdrm)
-    - (libgbm1 or libgmb or mesa-libgbm)
+    - (libgbm1 or mesa-libgbm)
     - (alsa-lib or libalsa2 or libasound2)
   executableArgs:
     - --ozone-platform-hint=auto
