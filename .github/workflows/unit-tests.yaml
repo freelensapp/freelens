@@ -154,3 +154,18 @@ jobs:
       - name: Check untracked files
         shell: bash
         run: for f in $(git ls-files --others --exclude-standard); do git diff --no-index --stat --exit-code /dev/null $f; done
+
+  unit-tests:
+    name: unit tests
+
+    needs: test-unit
+    if: always()
+
+    runs-on: ubuntu-26.04-arm
+    timeout-minutes: 5
+
+    steps:
+      - name: Check the result of the matrix
+        run: test "${RESULT}" = success
+        env:
+          RESULT: ${{ needs.test-unit.result }}
