@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/messaging",
-  "version": "2.0.0",
+  "version": "2.0.1-0",
   "private": true,
   "description": "An abstraction for messaging between Lens environments",
   "homepage": "https://freelens.app",
