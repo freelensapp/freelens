@@ -4,10 +4,9 @@
  */
 
 import { getInjectable, type Injectable } from "@ogre-tools/injectable";
-import { getGlobalDispatcher, fetch as undiciFetch } from "undici";
+import { fetch as undiciFetch } from "undici";
 import { fetchImplementationInjectionToken } from "../../common/fetch/fetch-injection-token";
 import { withHostHeaderPreserved } from "./host-header-dispatcher";
-import { withBrotliRefused } from "./refuse-brotli";
 
 import type { Fetch } from "@freelensapp/json-api";
 
@@ -21,9 +20,6 @@ import type { RequestInit as UndiciRequestInit, Response as UndiciResponse } fro
  * undici's own `fetch` rather than Node's global one: the dispatchers passed
  * with a request come from the `undici` package, and the copy of undici that
  * Node embeds does not accept them.
- *
- * Every request refuses a response encoded with Brotli, whatever dispatcher it
- * comes with — see `refuseBrotli`.
  */
 const undiciFetchInjectable: Injectable<Fetch, unknown, void> = getInjectable({
   id: "undici-fetch",
@@ -31,9 +27,7 @@ const undiciFetchInjectable: Injectable<Fetch, unknown, void> = getInjectable({
     // undici's `Response` is spec-compliant but nominally distinct from the
     // DOM one the shared type uses; only this boundary knows they are the
     // same shape.
-    const prepared = withHostHeaderPreserved(init) as UndiciRequestInit | undefined;
-    const dispatcher = withBrotliRefused(prepared?.dispatcher ?? getGlobalDispatcher());
-    const response = await undiciFetch(url, { ...prepared, dispatcher });
+    const response = await undiciFetch(url, withHostHeaderPreserved(init) as UndiciRequestInit);
 
     return response as UndiciResponse as unknown as Response;
   },

@@ -45,15 +45,15 @@ catalog:
   electron-builder-squirrel-windows: 26.18.0
   electron-vite: 6.0.0
   playwright: 1.64.1
-  pnpm: 12.15.0
-  rolldown: 1.2.14
+  pnpm: 12.16.1
+  rolldown: 1.2.16
   rolldown-plugin-dts: 0.28.8
   sass-embedded: 1.105.2
   tailwindcss: 4.3.3
   turbo: 2.11.8
   vite: 8.3.5
   # Electron
-  electron: 44.9.3
+  electron: 44.10.1
   '@electron/notarize': 3.1.2
   electron-devtools-installer: 4.0.0
   # Types and utilities
@@ -107,7 +107,7 @@ catalog:
   handlebars: 4.7.10
   http-proxy-3: 2.0.2
   immer: 11.1.21
-  joi: 18.3.0
+  joi: 18.3.1
   js-yaml: 5.5.0
   logform: 2.7.0
   marked: 18.1.1
@@ -171,6 +171,13 @@ allowBuilds:
   sharp: true
 
 engineStrict: true
+
+# Releases let in before pnpm's minimumReleaseAge, one exact version each, for
+# security fixes that cannot wait. Remove an entry once that version is older
+# than the policy: the exclusion is then a no-op.
+minimumReleaseAgeExclude:
+  # Node 24.22.1, the fix of CVE-2026-111497.
+  - electron@44.10.0
 
 overrides:
   # @kubernetes/client-node declares @types/node of a newer major than the

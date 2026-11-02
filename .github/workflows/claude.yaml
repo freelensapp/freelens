@@ -418,6 +418,10 @@ jobs:
         uses: anthropics/claude-code-action@v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          # The app token gets only contents, issues and pull requests unless
+          # more is requested, whatever the Claude app itself is granted.
+          additional_permissions: |
+            discussions: write
           claude_args: |-
             --model "${{ needs.parse.outputs.model }}"
             ${{ needs.parse.outputs.effort-arg }}

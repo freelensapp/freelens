@@ -5,7 +5,6 @@
 
 import { chunk } from "es-toolkit";
 import { Agent, fetch as undiciFetch } from "undici";
-import { refuseBrotli } from "../fetch/refuse-brotli";
 
 import type { ServerOptions } from "http-proxy-3";
 import type { Dispatcher } from "undici";
@@ -125,10 +124,9 @@ export const createFreelensK8sProxyAgent = (ca: string) => new Agent(freelensK8s
 
 /**
  * A dispatcher that sends the requests through `agent` without the headers
- * that are not forwarded, refusing a response encoded with Brotli
- * (see `refuseBrotli`).
+ * that are not forwarded.
  */
-export const dispatcherFor = (agent: Dispatcher) => agent.compose(forward, refuseBrotli);
+export const dispatcherFor = (agent: Dispatcher) => agent.compose(forward);
 
 interface ApiTargetOptions {
   /**

@@ -13,7 +13,7 @@ plugins:
 runtimes:
   enabled:
     - go@1.21.0
-    - node@24.22.0! # datasource=node-version depName=node
+    - node@24.22.1! # datasource=node-version depName=node
     - python@3.14.4
 # actionlint comes from the maintained fork of kjanat, which continues the
 # releases of rhysd/actionlint after 1.7.12 with the same names of the files,
@@ -64,7 +64,10 @@ lint:
     # first issue Biome prints and silently drops the rest.
     #
     # Trunk runs biome on a copy of the files in a sandbox outside the
-    # repository, pointing it back at biome.jsonc with --config-path. With
+    # repository, where biome finds the copy of biome.jsonc by itself. The
+    # commands do not pass --config-path: biome 2.6.4 ignores every parser
+    # option (css.parser.tailwindDirectives, json.parser.allowComments, also
+    # the matching CLI flags) when the config is given explicitly. With
     # vcs.useIgnoreFile on, biome 2.5.15 matches every target against the
     # repository's .gitignore and panics on a path outside the repository root
     # ("path is expected to be under the root"), so every file fails. Trunk
@@ -94,7 +97,7 @@ lint:
           name: lint
           parse_regex: (?m)^::(?P<severity>.*) title=(?P<code>[^,]+),file=(?P<path>[^,]+),line=(?P<line>[^,]+),endLine=[^,]+,col=(?P<col>[^,]+),endColumn=[^:]+::(?P<message>.*)
           read_output_from: stdout
-          run: biome check --config-path=${workspace}/biome.jsonc --vcs-use-ignore-file=false --reporter=github --no-errors-on-unmatched ${target}
+          run: biome check --vcs-use-ignore-file=false --reporter=github --no-errors-on-unmatched ${target}
           run_from: ${root_or_parent_with(biome.jsonc)}
         - output: regex
           success_codes:
@@ -105,12 +108,12 @@ lint:
           name: fmt
           parse_regex: (?m)^::(?P<severity>.*) title=(?P<code>[^,]+),file=(?P<path>[^,]+),line=(?P<line>[^,]+),endLine=[^,]+,col=(?P<col>[^,]+),endColumn=[^:]+::(?P<message>.*)
           read_output_from: stdout
-          run: biome format --config-path=${workspace}/biome.jsonc --vcs-use-ignore-file=false --reporter=github --write --no-errors-on-unmatched ${target}
+          run: biome format --vcs-use-ignore-file=false --reporter=github --write --no-errors-on-unmatched ${target}
           run_from: ${root_or_parent_with(biome.jsonc)}
       run_timeout: 1m
   enabled:
     - actionlint@1.17.0
-    - biome@2.6.3! # datasource=npm depName=@biomejs/biome
+    - biome@2.6.4! # datasource=npm depName=@biomejs/biome
     - git-diff-check
     - shellcheck@0.11.0
     - shfmt@3.14.1

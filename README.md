@@ -15,7 +15,7 @@
 [![Flathub Version](https://img.shields.io/flathub/v/app.freelens.Freelens)](https://flathub.org/apps/app.freelens.Freelens)
 [![Snap Store Version](https://img.shields.io/snapcraft/v/freelens/latest/stable)](https://snapcraft.io/freelens)
 [![AUR Version](https://img.shields.io/aur/version/freelens-bin)](https://aur.archlinux.org/packages/freelens-bin)
-[![NPM Version](https://img.shields.io/npm/v/%40freelensapp%2Fcore)](https://www.npmjs.com/package/@freelensapp/core)
+[![NPM Version](https://img.shields.io/npm/v/%40freelensapp%2Fextensions)](https://www.npmjs.com/package/@freelensapp/extensions)
 [![Unit tests](https://github.com/freelensapp/freelens/actions/workflows/unit-tests.yaml/badge.svg?branch=main)](https://github.com/freelensapp/freelens/actions/workflows/unit-tests.yaml)
 [![Integration tests](https://github.com/freelensapp/freelens/actions/workflows/integration-tests.yaml/badge.svg?branch=main)](https://github.com/freelensapp/freelens/actions/workflows/integration-tests.yaml)
 [![Trunk Check](https://github.com/freelensapp/freelens/actions/workflows/trunk-check.yaml/badge.svg?branch=main)](https://github.com/freelensapp/freelens/actions/workflows/trunk-check.yaml)

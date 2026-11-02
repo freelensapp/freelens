@@ -9,6 +9,7 @@
   ],
   "extends": ["config:recommended", ":semanticCommitsDisabled"],
   "prHourlyLimit": 20,
+  "prConcurrentLimit": 50,
   "addLabels": ["renovate"],
   "osvVulnerabilityAlerts": true,
   "rangeStrategy": "bump",
@@ -74,13 +75,6 @@
       "matchDepNames": ["electron", "npm"],
       "matchUpdateTypes": ["major"],
       "enabled": false
-    },
-    {
-      "description": "A reminder on every Electron update: the CVE-2026-111497 mitigation goes once the Node of Electron has the fix.",
-      "matchDepNames": ["electron"],
-      "prBodyNotes": [
-        "If the Node of this Electron is 24.22.1 or newer, remove the CVE-2026-111497 mitigation in this PR: see the TODO in `packages/core/src/main/fetch/refuse-brotli.ts`."
-      ]
     },
     {
       "description": "Patch updates only. The override of @kubernetes/client-node's @types/node follows the same rule, so that it stays on the catalog's version.",
