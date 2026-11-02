@@ -11,6 +11,9 @@ repository and choose **Report a vulnerability**, or go straight to
 [the reporting form](https://github.com/freelensapp/freelens/security/advisories/new).
 Only you and the maintainers can see the report.
 
+If you cannot or prefer not to use GitHub, email the report to
+[security@freelens.app](mailto:security@freelens.app) instead.
+
 Please include:
 
 - the Freelens version, your operating system and how you installed Freelens
@@ -24,8 +27,8 @@ Please include:
 
 Freelens is maintained by volunteers, so there is no guaranteed response
 time, but every report is read. We confirm that we have received it, keep you
-updated in the advisory while we work on a fix, and agree with you when to
-disclose it. The fix is released first; then the advisory is published, with
+updated in the advisory (or by email, if that is how you reported it) while we
+work on a fix, and agree with you when to disclose it. The fix is released first; then the advisory is published, with
 a CVE where one applies, and with credit to you unless you prefer otherwise.
 
 ## Supported versions

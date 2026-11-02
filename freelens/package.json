@@ -1,6 +1,6 @@
 {
   "name": "freelens",
-  "version": "2.0.0",
+  "version": "2.0.1-0",
   "private": true,
   "description": "Freelens - Free IDE for Kubernetes",
   "keywords": [],
@@ -55,7 +55,7 @@
   },
   "config": {
     "bundledHelmVersion": "4.3.1",
-    "bundledKubectlVersion": "1.37.1",
+    "bundledKubectlVersion": "1.37.2",
     "contentSecurityPolicy": "script-src 'unsafe-eval' 'self' freelens-extension:; frame-src https://*.renderer.freelens.app:*/; img-src * data:",
     "k8sProxyVersion": "2.0.0",
     "welcomeRoute": "/welcome"

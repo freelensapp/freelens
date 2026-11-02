@@ -517,6 +517,24 @@ jobs:
 
     steps: *test-integration-steps
 
+  # The one check the branch rules require of the integration tests, rather
+  # than the jobs of the matrix, whose names change with it. It leaves out the
+  # macOS and Windows job, which a pull request skips.
+  integration-tests:
+    name: integration tests
+
+    needs: test-integration
+    if: always()
+
+    runs-on: ubuntu-26.04-arm
+    timeout-minutes: 5
+
+    steps:
+      - name: Check the result of the matrix
+        run: test "${RESULT}" = success
+        env:
+          RESULT: ${{ needs.test-integration.result }}
+
   security-scan:
     name: security scan
 
