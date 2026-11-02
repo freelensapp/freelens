@@ -329,13 +329,18 @@ from both when you move its Node import out.
 
 Every path in the `includes` of a `biome.jsonc` override starts with `**/`,
 negated ones included (`!**/packages/core/src/...`). Trunk Check, which is what
-runs Biome in CI, runs it from a sandbox outside the repository with
-`--config-path` pointing back at `biome.jsonc`, and there a pattern anchored at
-the repository root matches no file, so the override silently does nothing.
-A plain `biome check` from the repository root matches both forms, so only
-`trunk check` shows the difference. `scripts/type-check-environments.mjs`
-checks every path of every override and fails on one that is neither `**` nor
-starts with `**/` or `!**/`.
+runs Biome in CI, runs it on a copy of the files in a sandbox outside the
+repository, and there a pattern anchored at the repository root can match no
+file, so the override silently does nothing. A plain `biome check` from the
+repository root matches both forms, so only `trunk check` shows the
+difference. `scripts/type-check-environments.mjs` checks every path of every
+override and fails on one that is neither `**` nor starts with `**/` or `!**/`.
+
+The Biome commands in `.trunk/trunk.yaml` let Biome find the copy of
+`biome.jsonc` in the sandbox rather than pass `--config-path`. Biome 2.6.4
+ignores every parser option when the config is given explicitly, with
+`--config-path` or `BIOME_CONFIG_PATH`: `css.parser.tailwindDirectives` turns
+off, and every stylesheet with a Tailwind at-rule fails to parse.
 
 ## Knip
 

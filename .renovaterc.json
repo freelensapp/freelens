@@ -9,6 +9,7 @@
   ],
   "extends": ["config:recommended", ":semanticCommitsDisabled"],
   "prHourlyLimit": 20,
+  "prConcurrentLimit": 50,
   "addLabels": ["renovate"],
   "osvVulnerabilityAlerts": true,
   "rangeStrategy": "bump",
