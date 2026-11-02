@@ -76,7 +76,7 @@ exports[`preferences - hiding-of-empty-branches, given in preferences page > giv
         id="lens-views"
       />
       <div
-        class="SettingLayout showNavigation Preferences"
+        class="SettingLayout showNavigation withCloseButton Preferences"
       >
         <nav
           class="sidebarRegion"
@@ -878,7 +878,7 @@ exports[`preferences - hiding-of-empty-branches, given in preferences page > giv
         id="lens-views"
       />
       <div
-        class="SettingLayout showNavigation Preferences"
+        class="SettingLayout showNavigation withCloseButton Preferences"
       >
         <nav
           class="sidebarRegion"
@@ -1708,7 +1708,7 @@ exports[`preferences - hiding-of-empty-branches, given in preferences page > giv
         id="lens-views"
       />
       <div
-        class="SettingLayout showNavigation Preferences"
+        class="SettingLayout showNavigation withCloseButton Preferences"
       >
         <nav
           class="sidebarRegion"

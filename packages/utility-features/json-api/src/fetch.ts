@@ -66,8 +66,18 @@ export type FetchHeadersInit = [string, string][] | FetchRequestHeaders | Record
  */
 export type FetchBodyInit = string | Uint8Array | ArrayBuffer | ReadableStream<Uint8Array>;
 
+/**
+ * Request methods, upper case only.
+ *
+ * HTTP methods are case-sensitive, and `fetch` upper-cases only DELETE, GET,
+ * HEAD, OPTIONS, POST and PUT. Anything else goes out as written, so a
+ * lower-case `patch` reaches the Kubernetes API server verbatim and is refused
+ * with 405 Method Not Allowed.
+ */
+export type FetchMethod = "GET" | "HEAD" | "POST" | "PUT" | "PATCH" | "DELETE" | "OPTIONS";
+
 export interface FetchRequestInit {
-  method?: string;
+  method?: FetchMethod;
   headers?: FetchHeadersInit;
   body?: FetchBodyInit | null;
   signal?: AbortSignal | null;

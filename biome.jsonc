@@ -1,7 +1,7 @@
 {
   // Ignore mismatch for Biome version to make Renovate updates without error
   // trunk-ignore(biome/deserialize)
-  "$schema": "https://biomejs.dev/schemas/2.5.15/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.6.4/schema.json",
   "assist": {
     "actions": {
       "source": {
@@ -25,8 +25,34 @@
       }
     }
   },
+  "css": {
+    "formatter": {
+      // Biome does not indent the continuation lines of a custom property
+      // value, so a long one reads better on a single line.
+      "lineWidth": 130
+    },
+    "parser": {
+      // The core stylesheets use Tailwind v4 at-rules: @apply, @config,
+      // @custom-variant and @reference.
+      "tailwindDirectives": true
+    }
+  },
   "files": {
-    "includes": ["**", "!**/.trunk/**", "!**/build/**", "!**/dist/**", "**/build/*.{js,cjs,mjs}"]
+    // The Kubernetes manifests of the resource templates keep their sequences
+    // unindented, which Biome cannot do, so yamlfmt formats them with the
+    // .yamlfmt.yaml of their directory. pnpm writes its own lockfile and
+    // workspace file, and Trunk rewrites its own .trunk/trunk.yaml on every
+    // trunk upgrade.
+    "includes": [
+      "**",
+      "!**/.trunk/**",
+      "!**/build/**",
+      "!**/dist/**",
+      "**/build/*.{js,cjs,mjs}",
+      "!**/packages/resource-templates/templates/**",
+      "!**/pnpm-lock.yaml",
+      "!**/pnpm-workspace.yaml"
+    ]
   },
   "formatter": {
     "attributePosition": "auto",
@@ -77,6 +103,12 @@
         "noUnusedVariables": "off",
         "useExhaustiveDependencies": "off"
       },
+      "nursery": {
+        // Markdown
+        "useConsistentHeadingLevel": "error",
+        "useFencedCodeLanguage": "error",
+        "useSingleTopLevelHeading": "error"
+      },
       "preset": "none",
       "style": {
         "noNamespace": "error",
@@ -109,10 +141,12 @@
   },
   "overrides": [
     {
-      // No tsconfig declares the Vitest globals, so test code imports them
-      // from "vitest". The module resolves from every program, so only this
-      // rule keeps it out of production code; the next override lifts it for
-      // tests and test support.
+      // Test-only modules, kept out of production code. No tsconfig declares
+      // the Vitest globals, so test code imports them from "vitest". The
+      // testing helpers of React resolve from every program too, and they
+      // build and pass the unit tests, but React leaves `act` out of its
+      // production build, so they throw only in a packaged application. The
+      // next override lifts the rule for tests and test support.
       "includes": ["**"],
       "linter": {
         "rules": {
@@ -121,8 +155,19 @@
               "level": "error",
               "options": {
                 "paths": {
-                  "vitest": "Vitest is for test code only"
-                }
+                  "vitest": "Vitest is for test code only",
+                  "react": {
+                    "importNames": ["act"],
+                    "message": "React.act is for test code only: the production build of React does not have it, so the call throws in a packaged application"
+                  },
+                  "react-dom/test-utils": "react-dom/test-utils is for test code only: its act delegates to React.act, which the production build of React does not have, so the call throws in a packaged application"
+                },
+                "patterns": [
+                  {
+                    "group": ["@testing-library/**"],
+                    "message": "Testing Library is for test code only: the act of @testing-library/react delegates to React.act, which the production build of React does not have, so the call throws in a packaged application"
+                  }
+                ]
               }
             }
           }
@@ -131,7 +176,8 @@
     },
     {
       // Tests and test support, which import their Vitest functions from
-      // "vitest" explicitly.
+      // "vitest" explicitly, and the test-support packages built on Testing
+      // Library.
       "includes": [
         "**/*.test.*",
         "**/*.tests.*",
@@ -143,7 +189,9 @@
         "**/vitest*.setup.*",
         "**/mock-responses.ts",
         "**/features/cluster/execute/common/testing.ts",
-        "**/vitest.electron-stub.ts"
+        "**/vitest.electron-stub.ts",
+        "**/packages/technical-features/messaging/messaging-fake-bridge/**",
+        "**/packages/utility-features/react-testing-library-discovery/**"
       ],
       "linter": {
         "rules": {
@@ -320,5 +368,12 @@
     "clientKind": "git",
     "enabled": true,
     "useIgnoreFile": true
+  },
+  "yaml": {
+    "formatter": {
+      // Flow sequences stay [a, b], as yamlfmt left them; the global
+      // bracketSpacing is meant for JavaScript objects.
+      "bracketSpacing": false
+    }
   }
 }

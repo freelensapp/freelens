@@ -77,7 +77,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
           id="lens-views"
         />
         <div
-          class="SettingLayout showNavigation Preferences"
+          class="SettingLayout showNavigation withCloseButton Preferences"
         >
           <nav
             class="sidebarRegion"
@@ -926,7 +926,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
           id="lens-views"
         />
         <div
-          class="SettingLayout showNavigation Preferences"
+          class="SettingLayout showNavigation withCloseButton Preferences"
         >
           <nav
             class="sidebarRegion"
@@ -1813,7 +1813,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
           id="lens-views"
         />
         <div
-          class="SettingLayout showNavigation Preferences"
+          class="SettingLayout showNavigation withCloseButton Preferences"
         >
           <nav
             class="sidebarRegion"
@@ -2811,7 +2811,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
           id="lens-views"
         />
         <div
-          class="SettingLayout showNavigation Preferences"
+          class="SettingLayout showNavigation withCloseButton Preferences"
         >
           <nav
             class="sidebarRegion"
@@ -3706,7 +3706,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
           id="lens-views"
         />
         <div
-          class="SettingLayout showNavigation Preferences"
+          class="SettingLayout showNavigation withCloseButton Preferences"
         >
           <nav
             class="sidebarRegion"
@@ -4704,7 +4704,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
           id="lens-views"
         />
         <div
-          class="SettingLayout showNavigation Preferences"
+          class="SettingLayout showNavigation withCloseButton Preferences"
         >
           <nav
             class="sidebarRegion"
@@ -5884,7 +5884,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
           id="lens-views"
         />
         <div
-          class="SettingLayout showNavigation Preferences"
+          class="SettingLayout showNavigation withCloseButton Preferences"
         >
           <nav
             class="sidebarRegion"
@@ -6882,7 +6882,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
           id="lens-views"
         />
         <div
-          class="SettingLayout showNavigation Preferences"
+          class="SettingLayout showNavigation withCloseButton Preferences"
         >
           <nav
             class="sidebarRegion"
@@ -8062,7 +8062,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
           id="lens-views"
         />
         <div
-          class="SettingLayout showNavigation Preferences"
+          class="SettingLayout showNavigation withCloseButton Preferences"
         >
           <nav
             class="sidebarRegion"
@@ -9060,7 +9060,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
           id="lens-views"
         />
         <div
-          class="SettingLayout showNavigation Preferences"
+          class="SettingLayout showNavigation withCloseButton Preferences"
         >
           <nav
             class="sidebarRegion"
@@ -9955,7 +9955,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
           id="lens-views"
         />
         <div
-          class="SettingLayout showNavigation Preferences"
+          class="SettingLayout showNavigation withCloseButton Preferences"
         >
           <nav
             class="sidebarRegion"
@@ -10840,7 +10840,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
           id="lens-views"
         />
         <div
-          class="SettingLayout showNavigation Preferences"
+          class="SettingLayout showNavigation withCloseButton Preferences"
         >
           <nav
             class="sidebarRegion"

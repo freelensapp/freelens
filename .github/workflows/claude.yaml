@@ -27,10 +27,10 @@
 #     write token and an OIDC token, and anything the fork runs here could
 #     take them. Nothing is edited, committed or pushed either: a fork pull
 #     request that needs changes is first copied to a branch here by a
-#     maintainer (see "Fork PRs: Review Only" in AGENTS.md).
+#     maintainer (see "Fork PRs: Review Only" in .github/claude/ci-agent.md).
 #
 # Jobs:
-#   1. parse – always ubuntu-24.04-arm, parses [model:xxx], [effort:xxx] and [runs-on:xxx]
+#   1. parse – always ubuntu-26.04-arm, parses [model:xxx], [effort:xxx] and [runs-on:xxx]
 #      from the trigger text and detects whether the pull request is from a fork
 #
 #   Linux / macOS path:
@@ -39,7 +39,8 @@
 #      to diagnose the failure and fix any stalled tracking comment (feedback only)
 #
 #   Windows path (Claude Code action does not support Windows natively):
-#   2. prepare-windows – Claude writes a PowerShell script, uploads as artifact
+#   2. prepare-windows – Claude reads the sources and writes a PowerShell script,
+#      uploads as artifact
 #   3. run-windows – executes the script on the selected Windows runner
 #   4. analyze-windows – Claude reads the output and posts a summary comment
 
@@ -69,7 +70,7 @@ jobs:
         github.event.review.author_association ||
         github.event.issue.author_association)
 
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
     timeout-minutes: 2
 
     outputs:
@@ -110,7 +111,7 @@ jobs:
         run: |
           DEFAULT_MODEL="claude-opus-5-5[1m]"
           DEFAULT_EFFORT="high"
-          DEFAULT_RUNS_ON="ubuntu-24.04-arm"
+          DEFAULT_RUNS_ON="ubuntu-26.04-arm"
           # ISSUE_BODY is set only for the issues event, where the issue
           # author is the collaborator who passed the trigger check.
           TEXT="${COMMENT_BODY}${REVIEW_BODY}${ISSUE_BODY}"
@@ -191,10 +192,12 @@ jobs:
           RUNS_ON_ALIAS="${RUNS_ON_ALIAS:-}"
 
           case "$RUNS_ON_ALIAS" in
-            ubuntu-24.04|ubuntu|linux|linux-x64)        RUNS_ON="ubuntu-24.04" ;;
-            ubuntu-24.04-arm|ubuntu-arm|linux-arm|linux-arm64) RUNS_ON="ubuntu-24.04-arm" ;;
-            macos-15|macos|macos-arm64)                  RUNS_ON="macos-15" ;;
-            macos-15-intel|macos-intel|macos-x64)        RUNS_ON="macos-15-intel" ;;
+            ubuntu-24.04)                               RUNS_ON="ubuntu-24.04" ;;
+            ubuntu-24.04-arm)                           RUNS_ON="ubuntu-24.04-arm" ;;
+            ubuntu-26.04|ubuntu|linux|linux-x64)        RUNS_ON="ubuntu-26.04" ;;
+            ubuntu-26.04-arm|ubuntu-arm|linux-arm|linux-arm64) RUNS_ON="ubuntu-26.04-arm" ;;
+            macos-26|macos|macos-arm64)                  RUNS_ON="macos-26" ;;
+            macos-26-intel|macos-intel|macos-x64)        RUNS_ON="macos-26-intel" ;;
             windows-11-arm|windows-arm|windows-arm64)    RUNS_ON="windows-11-arm" ;;
             windows-2025|windows|windows-x64)            RUNS_ON="windows-2025" ;;
             "")                                          RUNS_ON="$DEFAULT_RUNS_ON" ;;
@@ -289,7 +292,7 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
-      # Everything from here to the AGENTS.md step runs code from the checked
+      # Everything from here to the agent rules step runs code from the checked
       # out tree (.nvmrc, packageManager, .pnpmfile.cjs, lifecycle scripts,
       # .trunk/trunk.yaml), so it is skipped for a fork pull request.
 
@@ -329,6 +332,17 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-${{ runner.arch }}-turborepo-
 
+      # Turborepo does not cache the binaries, see "Bundled Binary Versions"
+      # in AGENTS.md.
+      - name: Use bundled binaries cache
+        if: needs.parse.outputs.is-fork != 'true'
+        uses: actions/cache@v6
+        with:
+          path: freelens/binaries
+          key: ${{ runner.os }}-${{ runner.arch }}-binaries-${{ hashFiles('freelens/binaries.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ runner.arch }}-binaries-
+
       - name: Install pnpm dependencies
         if: needs.parse.outputs.is-fork != 'true'
         id: install-pnpm
@@ -353,15 +367,34 @@ jobs:
         uses: trunk-io/trunk-action/install@v2.0.0
         continue-on-error: true
 
+      # mise with the cosign and yq that mise.lock pins, for `mise lock` and the
+      # lock generators. node stays with setup-node. No cache: installing takes
+      # seconds, and a hanging cache lookup once held the job for 25 minutes.
+      - name: Set up mise
+        if: needs.parse.outputs.is-fork != 'true'
+        uses: jdx/mise-action@v5
+        with:
+          version: 2026.10.19 # datasource=github-releases depName=jdx/mise
+          install_args: cosign yq
+          cache: false
+        timeout-minutes: 5
+        continue-on-error: true
+
       # Fetched by URL from the base repository, so the system prompt never
-      # comes from the tree under review.
-      - name: Use the latest AGENTS.md
+      # comes from the tree under review. AGENTS.md holds the rules for every
+      # agent, .github/claude/ci-agent.md the ones for this workflow only. A
+      # missing file fails the step rather than running without those rules.
+      - name: Use the latest agent rules
         shell: bash
         run: |
           git fetch --no-tags "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}.git" main
-          git show FETCH_HEAD:AGENTS.md > /tmp/AGENTS.md 2>/dev/null || touch /tmp/AGENTS.md
+          {
+            git show FETCH_HEAD:AGENTS.md
+            echo
+            git show FETCH_HEAD:.github/claude/ci-agent.md
+          } > /tmp/agent-rules.md
           if [ "$IS_FORK" = "true" ]; then
-            cat >> /tmp/AGENTS.md <<'EOF'
+            cat >> /tmp/agent-rules.md <<'EOF'
 
           ## Review Mode: Pull Request from a Fork
 
@@ -385,20 +418,32 @@ jobs:
         uses: anthropics/claude-code-action@v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          # The app token gets only contents, issues and pull requests unless
+          # more is requested, whatever the Claude app itself is granted.
+          additional_permissions: |
+            discussions: write
           claude_args: |-
             --model "${{ needs.parse.outputs.model }}"
             ${{ needs.parse.outputs.effort-arg }}
             --fallback-model claude-opus-5
-            --max-turns 200
-            --allowedTools "Read" "Write" "Edit" "Glob" "Grep" "Task" "WebSearch" "WebFetch" "BashOutput" "KillShell" "Bash(trunk:*)" "Bash(bash:*)" "Bash(pnpm:*)" "Bash(npx:*)" "Bash(node:*)" "Bash(git:*)" "Bash(gh:*)" "Bash(yq:*)" "Bash(jq:*)" "Bash(grep:*)" "Bash(rg:*)" "Bash(sed:*)" "Bash(awk:*)" "Bash(cut:*)" "Bash(tr:*)" "Bash(sort:*)" "Bash(uniq:*)" "Bash(cat:*)" "Bash(head:*)" "Bash(tail:*)" "Bash(wc:*)" "Bash(find:*)" "Bash(xargs:*)" "Bash(ls:*)" "Bash(tree:*)" "Bash(mkdir:*)" "Bash(touch:*)" "Bash(cp:*)" "Bash(mv:*)" "Bash(rm:*)" "Bash(tee:*)" "Bash(echo:*)"
-            --append-system-prompt-file /tmp/AGENTS.md
+            --max-turns 400
+            --allowedTools "Read" "Write" "Edit" "Glob" "Grep" "Task" "WebSearch" "WebFetch" "BashOutput" "KillShell" "Bash(trunk:*)" "Bash(mise:*)" "Bash(bash:*)" "Bash(pnpm:*)" "Bash(npx:*)" "Bash(node:*)" "Bash(git:*)" "Bash(gh:*)" "Bash(yq:*)" "Bash(jq:*)" "Bash(grep:*)" "Bash(rg:*)" "Bash(sed:*)" "Bash(awk:*)" "Bash(cut:*)" "Bash(tr:*)" "Bash(sort:*)" "Bash(uniq:*)" "Bash(cat:*)" "Bash(head:*)" "Bash(tail:*)" "Bash(wc:*)" "Bash(find:*)" "Bash(xargs:*)" "Bash(ls:*)" "Bash(tree:*)" "Bash(mkdir:*)" "Bash(touch:*)" "Bash(cp:*)" "Bash(mv:*)" "Bash(rm:*)" "Bash(tee:*)" "Bash(echo:*)"
+            --append-system-prompt-file /tmp/agent-rules.md
+        # The agent rules come from main through the system prompt, so the
+        # CLAUDE.md of the checkout, which imports AGENTS.md, would only load
+        # them a second time. The variable skips every CLAUDE.md, and AGENTS.md
+        # is not read in its place, while .claude/settings.json still applies.
+        env:
+          CLAUDE_CODE_DISABLE_CLAUDE_MDS: "1"
 
       # Review mode for a fork pull request. --setting-sources user keeps
       # Claude Code from loading .claude/settings.json (hooks, permissions)
-      # and CLAUDE.md from the tree under review. The tool list leaves out
-      # everything that executes code from the tree (pnpm, node, npx, bash,
-      # trunk) or can run arbitrary commands (sed, awk, find, xargs), and the
-      # web tools that would give a prompt injection a way out.
+      # from the tree under review, and CLAUDE_CODE_DISABLE_CLAUDE_MDS keeps
+      # it from loading CLAUDE.md and AGENTS.md from there. The tool list
+      # leaves out everything that executes code from the tree (pnpm, node,
+      # npx, bash, trunk) or can run arbitrary commands (sed, awk, find,
+      # xargs), and the web tools that would give a prompt injection a way
+      # out.
       #
       # Nothing from the checkout may reach origin, because the head of a
       # fork pull request can change after a maintainer looked at it. Tag
@@ -419,7 +464,9 @@ jobs:
             --setting-sources user
             --allowedTools "Read" "Glob" "Grep" "Task" "mcp__github_inline_comment__create_inline_comment" "Bash(git diff:*)" "Bash(git log:*)" "Bash(git show:*)" "Bash(git status:*)" "Bash(gh pr view:*)" "Bash(gh pr diff:*)" "Bash(jq:*)" "Bash(cut:*)" "Bash(tr:*)" "Bash(sort:*)" "Bash(uniq:*)" "Bash(cat:*)" "Bash(head:*)" "Bash(tail:*)" "Bash(wc:*)" "Bash(ls:*)" "Bash(tree:*)"
             --disallowedTools "Edit" "Write" "MultiEdit" "NotebookEdit" "Bash(git add:*)" "Bash(git commit:*)" "Bash(git rm:*)" "Bash(git push:*)" "Bash(*git-push.sh*)" "Bash(mkdir:*)" "Bash(touch:*)" "Bash(cp:*)" "Bash(mv:*)" "Bash(rm:*)" "Bash(rmdir:*)" "Bash(sed:*)"
-            --append-system-prompt-file /tmp/AGENTS.md
+            --append-system-prompt-file /tmp/agent-rules.md
+        env:
+          CLAUDE_CODE_DISABLE_CLAUDE_MDS: "1"
 
   # ── Last resort: if the main claude job failed or timed out, re-run Claude to
   #    analyze WHY it failed and update the PR/issue. Feedback only — it must not
@@ -430,7 +477,7 @@ jobs:
     if: >-
       always() && needs.parse.result == 'success' && needs.parse.outputs.is-windows != 'true' && (needs.claude.result == 'failure' || needs.claude.result == 'cancelled')
 
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
     timeout-minutes: 15
 
     permissions:
@@ -496,8 +543,8 @@ jobs:
   prepare-windows:
     needs: parse
     if: always() && needs.parse.result == 'success' && needs.parse.outputs.is-windows == 'true'
-    runs-on: ubuntu-24.04-arm
-    timeout-minutes: 10
+    runs-on: ubuntu-26.04-arm
+    timeout-minutes: 15
 
     permissions:
       contents: read
@@ -510,18 +557,37 @@ jobs:
         with:
           fetch-depth: 0
 
+      # The script is written here, on Linux, and only executed on Windows, so
+      # this job gets read access to the sources but no tool that runs them.
+      # Its full output is shown: with only these tools over a public checkout
+      # it holds nothing secret, and a run that ends without verify.ps1 can
+      # only be diagnosed from what Claude did.
       - uses: anthropics/claude-code-action@v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          show_full_output: true
           claude_args: |-
             --model "${{ needs.parse.outputs.model }}"
             ${{ needs.parse.outputs.effort-arg }}
             --fallback-model claude-opus-5
             --max-turns 50
-            --allowedTools "Write"
+            --allowedTools "Read" "Glob" "Grep" "Write"
           prompt: |-
             Based on the following request from a GitHub comment, write a PowerShell
-            script named verify.ps1 that accomplishes the task on a Windows runner.
+            script that accomplishes the task on a Windows runner, and save it at
+            exactly this path: ${{ github.workspace }}/verify.ps1
+
+            The repository's default branch is checked out in
+            ${{ github.workspace }}. Read the sources the request refers to, so
+            that the script uses the real file paths, package versions and options
+            instead of guessing them, but do not modify anything: write only
+            verify.ps1. On
+            the Windows runner, verify.ps1 runs from the root of the same checkout
+            with Node from .nvmrc, pnpm, the installed dependencies and the
+            Electron binary already in place, so it can use the workspace packages
+            directly and build the project with the repository's own commands
+            (pnpm build, pnpm build:app:dir) when the request needs that. Building
+            takes several minutes; the whole job has 60 minutes.
 
             The script must be self-contained and idempotent.
             After completing the work, save a JSON summary to result.json with the
@@ -532,17 +598,29 @@ jobs:
 
             ${{ needs.parse.outputs.text }}
 
+      # The action reports success whether or not the script was written, and
+      # upload-artifact only warns about a missing file, so check it here, where
+      # the cause is, and put the script in the log for whoever reads the run.
+      - name: Show PowerShell script
+        run: |
+          if [ ! -s verify.ps1 ]; then
+            echo "::error::Claude did not write verify.ps1 in the workspace"
+            exit 1
+          fi
+          cat verify.ps1
+
       - name: Upload PowerShell script
         uses: actions/upload-artifact@v7
         with:
           name: ps-script
           path: verify.ps1
+          if-no-files-found: error
 
   run-windows:
     needs: [parse, prepare-windows]
     if: always() && needs.prepare-windows.result == 'success'
     runs-on: ${{ needs.parse.outputs.runs-on }}
-    timeout-minutes: 30
+    timeout-minutes: 60
 
     permissions:
       contents: read
@@ -553,6 +631,40 @@ jobs:
         uses: actions/checkout@v7
         with:
           fetch-depth: 0
+
+      # The script may build or run the project, so the runner gets the same
+      # toolchain as the integration tests. Building is left to the script.
+      - name: Setup node
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+
+      - name: Setup pnpm
+        run: corepack enable
+
+      - name: Install pnpm dependencies
+        id: install-pnpm
+        shell: bash
+        run: timeout 300 pnpm install --color=always --prefer-offline --frozen-lockfile
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
+        continue-on-error: true
+
+      - name: Install pnpm dependencies (retry)
+        if: steps.install-pnpm.outcome == 'failure'
+        shell: bash
+        run: timeout 300 pnpm install --color=always --prefer-offline --frozen-lockfile
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
+
+      - name: Put $HOME in env
+        run: echo "HOME=$HOME" | Out-File -FilePath $env:GITHUB_ENV -Append
+
+      - name: Install Electron binary
+        shell: bash
+        working-directory: freelens
+        run: node "$(node -p "require.resolve('electron/install.js')")"
 
       - name: Download PowerShell script
         uses: actions/download-artifact@v8
@@ -574,7 +686,7 @@ jobs:
   analyze-windows:
     needs: [parse, run-windows]
     if: always() && needs.run-windows.result != 'skipped'
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
     timeout-minutes: 10
 
     permissions:
@@ -602,12 +714,24 @@ jobs:
             --model "${{ needs.parse.outputs.model }}"
             --fallback-model claude-opus-5
             --max-turns 30
-            --allowedTools "Read" "Grep" "Bash(gh:*)" "Bash(jq:*)" "Bash(cat:*)"
+            --allowedTools "Read" "Glob" "Grep" "Bash(gh:*)" "Bash(jq:*)" "Bash(cat:*)"
           prompt: |-
             Read the file result.json (output from a test executed on a Windows
-            runner). Write a short summary as a GitHub comment on the PR or issue
-            that triggered this workflow. Include: whether it succeeded, the exit
-            code, and any suspicious output in stdout/stderr.
+            runner) and post a GitHub comment on the PR or issue that triggered
+            this workflow.
+
+            The comment answers the request below. Report what it asks for, keep
+            any table from the summary as it is, and add only the observations
+            from stdout and stderr that matter to the request. State whether the
+            run succeeded and its exit code, and say plainly when something the
+            request asked for is missing from the output. The default branch is
+            checked out in the current directory; read the sources when the
+            output needs explaining. Never write the Claude handle literally in
+            the comment: write it as `@<!-- -->claude`.
+
+            Request:
+
+            ${{ needs.parse.outputs.text }}
 
             Use the GitHub CLI (gh) to post the comment. The trigger event is
             ${{ github.event_name }}.

@@ -1399,6 +1399,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       </div>
                       <div
                         aria-hidden="true"
+                        data-react-window-sizer=""
                         style="height: 66px; width: 100%; z-index: -1;"
                       />
                     </div>
@@ -2476,6 +2477,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       </div>
                       <div
                         aria-hidden="true"
+                        data-react-window-sizer=""
                         style="height: 66px; width: 100%; z-index: -1;"
                       />
                     </div>
@@ -3432,6 +3434,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       </div>
                       <div
                         aria-hidden="true"
+                        data-react-window-sizer=""
                         style="height: 66px; width: 100%; z-index: -1;"
                       />
                     </div>
@@ -3588,15 +3591,6 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   <div
                     class="install-controls flex gap-2 items-center"
                   >
-                    <span>
-                      Chart
-                    </span>
-                    <div
-                      class="badge"
-                      title="Repo/Name"
-                    >
-                      some-repository/some-name
-                    </div>
                     <span>
                       Version
                     </span>
@@ -4656,6 +4650,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       </div>
                       <div
                         aria-hidden="true"
+                        data-react-window-sizer=""
                         style="height: 66px; width: 100%; z-index: -1;"
                       />
                     </div>
@@ -4812,15 +4807,6 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   <div
                     class="install-controls flex gap-2 items-center"
                   >
-                    <span>
-                      Chart
-                    </span>
-                    <div
-                      class="badge"
-                      title="Repo/Name"
-                    >
-                      some-repository/some-name
-                    </div>
                     <span>
                       Version
                     </span>
@@ -5849,6 +5835,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       </div>
                       <div
                         aria-hidden="true"
+                        data-react-window-sizer=""
                         style="height: 66px; width: 100%; z-index: -1;"
                       />
                     </div>
@@ -6005,15 +5992,6 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   <div
                     class="install-controls flex gap-2 items-center"
                   >
-                    <span>
-                      Chart
-                    </span>
-                    <div
-                      class="badge"
-                      title="Repo/Name"
-                    >
-                      some-repository/some-name
-                    </div>
                     <span>
                       Version
                     </span>
@@ -7037,6 +7015,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       </div>
                       <div
                         aria-hidden="true"
+                        data-react-window-sizer=""
                         style="height: 66px; width: 100%; z-index: -1;"
                       />
                     </div>
@@ -7193,15 +7172,6 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   <div
                     class="install-controls flex gap-2 items-center"
                   >
-                    <span>
-                      Chart
-                    </span>
-                    <div
-                      class="badge"
-                      title="Repo/Name"
-                    >
-                      some-repository/some-name
-                    </div>
                     <span>
                       Version
                     </span>
@@ -8225,6 +8195,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       </div>
                       <div
                         aria-hidden="true"
+                        data-react-window-sizer=""
                         style="height: 66px; width: 100%; z-index: -1;"
                       />
                     </div>
@@ -8381,15 +8352,6 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   <div
                     class="install-controls flex gap-2 items-center"
                   >
-                    <span>
-                      Chart
-                    </span>
-                    <div
-                      class="badge"
-                      title="Repo/Name"
-                    >
-                      some-repository/some-name
-                    </div>
                     <span>
                       Version
                     </span>
@@ -9435,6 +9397,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       </div>
                       <div
                         aria-hidden="true"
+                        data-react-window-sizer=""
                         style="height: 66px; width: 100%; z-index: -1;"
                       />
                     </div>
@@ -9591,15 +9554,6 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   <div
                     class="install-controls flex gap-2 items-center"
                   >
-                    <span>
-                      Chart
-                    </span>
-                    <div
-                      class="badge"
-                      title="Repo/Name"
-                    >
-                      some-repository/some-name
-                    </div>
                     <span>
                       Version
                     </span>
@@ -10659,6 +10613,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       </div>
                       <div
                         aria-hidden="true"
+                        data-react-window-sizer=""
                         style="height: 66px; width: 100%; z-index: -1;"
                       />
                     </div>
@@ -10815,15 +10770,6 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   <div
                     class="install-controls flex gap-2 items-center"
                   >
-                    <span>
-                      Chart
-                    </span>
-                    <div
-                      class="badge"
-                      title="Repo/Name"
-                    >
-                      some-repository/some-name
-                    </div>
                     <span>
                       Version
                     </span>
@@ -11847,6 +11793,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       </div>
                       <div
                         aria-hidden="true"
+                        data-react-window-sizer=""
                         style="height: 66px; width: 100%; z-index: -1;"
                       />
                     </div>
@@ -12003,15 +11950,6 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   <div
                     class="install-controls flex gap-2 items-center"
                   >
-                    <span>
-                      Chart
-                    </span>
-                    <div
-                      class="badge"
-                      title="Repo/Name"
-                    >
-                      some-repository/some-name
-                    </div>
                     <span>
                       Version
                     </span>
@@ -13090,6 +13028,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       </div>
                       <div
                         aria-hidden="true"
+                        data-react-window-sizer=""
                         style="height: 66px; width: 100%; z-index: -1;"
                       />
                     </div>
@@ -15111,6 +15050,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       </div>
                       <div
                         aria-hidden="true"
+                        data-react-window-sizer=""
                         style="height: 66px; width: 100%; z-index: -1;"
                       />
                     </div>
@@ -16160,6 +16100,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       </div>
                       <div
                         aria-hidden="true"
+                        data-react-window-sizer=""
                         style="height: 66px; width: 100%; z-index: -1;"
                       />
                     </div>
@@ -16316,15 +16257,6 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   <div
                     class="install-controls flex gap-2 items-center"
                   >
-                    <span>
-                      Chart
-                    </span>
-                    <div
-                      class="badge"
-                      title="Repo/Name"
-                    >
-                      some-repository/some-name
-                    </div>
                     <span>
                       Version
                     </span>
@@ -17560,6 +17492,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       </div>
                       <div
                         aria-hidden="true"
+                        data-react-window-sizer=""
                         style="height: 66px; width: 100%; z-index: -1;"
                       />
                     </div>
@@ -18568,6 +18501,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       </div>
                       <div
                         aria-hidden="true"
+                        data-react-window-sizer=""
                         style="height: 66px; width: 100%; z-index: -1;"
                       />
                     </div>
@@ -18776,15 +18710,6 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   <div
                     class="install-controls flex gap-2 items-center"
                   >
-                    <span>
-                      Chart
-                    </span>
-                    <div
-                      class="badge"
-                      title="Repo/Name"
-                    >
-                      some-repository/some-other-name
-                    </div>
                     <span>
                       Version
                     </span>
@@ -19810,6 +19735,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       </div>
                       <div
                         aria-hidden="true"
+                        data-react-window-sizer=""
                         style="height: 66px; width: 100%; z-index: -1;"
                       />
                     </div>
@@ -20018,15 +19944,6 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   <div
                     class="install-controls flex gap-2 items-center"
                   >
-                    <span>
-                      Chart
-                    </span>
-                    <div
-                      class="badge"
-                      title="Repo/Name"
-                    >
-                      some-repository/some-name
-                    </div>
                     <span>
                       Version
                     </span>
@@ -21050,6 +20967,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       </div>
                       <div
                         aria-hidden="true"
+                        data-react-window-sizer=""
                         style="height: 66px; width: 100%; z-index: -1;"
                       />
                     </div>
@@ -21206,15 +21124,6 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   <div
                     class="install-controls flex gap-2 items-center"
                   >
-                    <span>
-                      Chart
-                    </span>
-                    <div
-                      class="badge"
-                      title="Repo/Name"
-                    >
-                      some-repository/some-name
-                    </div>
                     <span>
                       Version
                     </span>
@@ -22238,6 +22147,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       </div>
                       <div
                         aria-hidden="true"
+                        data-react-window-sizer=""
                         style="height: 66px; width: 100%; z-index: -1;"
                       />
                     </div>
@@ -22394,15 +22304,6 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   <div
                     class="install-controls flex gap-2 items-center"
                   >
-                    <span>
-                      Chart
-                    </span>
-                    <div
-                      class="badge"
-                      title="Repo/Name"
-                    >
-                      some-repository/some-name
-                    </div>
                     <span>
                       Version
                     </span>
@@ -23426,6 +23327,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       </div>
                       <div
                         aria-hidden="true"
+                        data-react-window-sizer=""
                         style="height: 66px; width: 100%; z-index: -1;"
                       />
                     </div>

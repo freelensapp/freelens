@@ -508,7 +508,7 @@ exports[`add-cluster - navigation using application menu > when navigating to ad
         id="lens-views"
       />
       <div
-        class="SettingLayout AddClusters"
+        class="SettingLayout withCloseButton AddClusters"
         data-testid="add-cluster-page"
       >
         <div

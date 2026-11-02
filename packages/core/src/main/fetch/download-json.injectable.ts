@@ -17,13 +17,19 @@ export interface DownloadJsonOptions {
 export type DownloadJson = (url: string, opts?: DownloadJsonOptions) => AsyncResult<unknown, string>;
 
 function errorString(error: unknown): string {
+  // `withTimeout` aborts with a string reason, which fetch rejects with as is.
+  if (typeof error === "string") {
+    return error;
+  }
   if (typeof error === "object" && error !== null) {
     const obj = error as any;
     if (obj?.status || obj?.statusText) {
       return [obj?.status, obj?.statusText].filter((a) => !!a).join(": ");
     }
     if (obj?.message) {
-      return obj?.message;
+      // undici's fetch rejects with a bare "fetch failed" and the reason, a
+      // refused connection, a proxy or TLS failure, in `cause`.
+      return obj?.cause?.message ? `${obj.message}: ${obj.cause.message}` : obj.message;
     }
     return String(obj);
   }

@@ -25,7 +25,11 @@ export interface KubectlDownloadProgress {
  * extension's choice.
  */
 export interface KubectlDownloadOptions {
-  /** A phase that is about to begin and may take a while, such as verifying the download. */
+  /**
+   * A phase that is about to begin and may take a while: waiting for another
+   * Freelens process, downloading, or verifying the download. The message
+   * names the kubectl version.
+   */
   onPhase?: (message: string) => void;
   /** The download progress, called as the bytes arrive. */
   onDownloadProgress?: (progress: KubectlDownloadProgress) => void;
@@ -130,7 +134,8 @@ export function getEnvironment(): Promise<Record<string, string>>;
  * Only reaching the cluster through Freelens is promised, not the server
  * address `KUBECONFIG` names or the content of the file. The files exist while
  * the cluster is connected: a disconnect removes them, and the environment
- * stops working; call again after reconnecting.
+ * stops working; call again after reconnecting. A mobx `reaction` on
+ * `Main.Catalog.getClusterById(clusterId)?.status` tells when either happens.
  *
  * Rejects when there is no cluster with the id and when the cluster is not
  * connected.

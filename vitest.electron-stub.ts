@@ -17,7 +17,6 @@
 
 export const app: any = "app";
 export const BrowserWindow: any = "BrowserWindow";
-export const clipboard: any = "clipboard";
 export const dialog: any = "dialog";
 export const ipcMain: any = "ipcMain";
 export const ipcRenderer: any = "ipcRenderer";

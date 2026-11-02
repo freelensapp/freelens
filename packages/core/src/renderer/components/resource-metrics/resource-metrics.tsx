@@ -9,7 +9,7 @@ import "./resource-metrics.scss";
 import { Spinner } from "@freelensapp/spinner";
 import { cssNames } from "@freelensapp/utilities";
 import { isComputed } from "mobx";
-import { observer } from "mobx-react-lite";
+import { observer } from "mobx-react";
 import React, { createContext, useRef, useState } from "react";
 import { Radio, RadioGroup } from "../radio";
 

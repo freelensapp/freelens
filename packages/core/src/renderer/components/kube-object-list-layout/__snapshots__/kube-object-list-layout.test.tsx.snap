@@ -217,6 +217,29 @@ exports[`kube-object-list-layout > given pod store > renders 1`] = `
                 />
               </div>
               <div
+                class="TableCell ports nowrap sorting"
+                id="ports"
+              >
+                <div
+                  class="content"
+                >
+                  Ports
+                </div>
+                <i
+                  class="Icon sortIcon material focusable"
+                >
+                  <span
+                    class="icon"
+                    data-icon-name="arrow_drop_down"
+                  >
+                    arrow_drop_down
+                  </span>
+                </i>
+                <div
+                  class="resize-handle"
+                />
+              </div>
+              <div
                 class="TableCell cpu nowrap sorting"
                 id="cpuUsage"
               >

@@ -9,7 +9,7 @@ repository's integration test installs it.
 If you are looking for something to copy, you want
 [freelens-example-extension](https://github.com/freelensapp/freelens-example-extension),
 which is a separate repository and keeps that role: it is the thing that proves
-the *published* `@freelensapp/extensions` package is usable from outside, under
+the _published_ `@freelensapp/extensions` package is usable from outside, under
 real authoring conditions.
 
 This package is a fixture. It is as small as the contract allows, it exports
@@ -34,11 +34,11 @@ proves nothing about how extensions are actually loaded.
 
 ## The three levels
 
-| Level | Where | What it can catch |
-| --- | --- | --- |
-| Types | `pnpm --filter @freelensapp/fixture-extension type:check`, run by its `build` | a re-export that disappeared from the published surface, including one that exists as a value but is not nameable as a type; a tsconfig that lets one runtime environment's APIs into another's code |
-| Unit | `packages/core/src/extensions/__tests__/fixture-extension.test.tsx` and `fixture-extension-main.test.ts` | instance identity of React and mobx, the registrators, the lifecycle, `Util.fetch` reaching the host's DI; in main, the host's kubectl and its environment reaching a spawned process through `Main.Shell` |
-| Integration | `freelens/integration/__tests__/extensions.tests.ts`, against the `dist/` of the `pnpm build` that the packaged application needs anyway | the packaged application installing this directory in place, accepting its `engines.freelens`, and rendering its hooked status bar item with the React it publishes |
+| Level       | Where                                                                                                                                    | What it can catch                                                                                                                                                                                                                                                                                                                                                                                          |
+| ----------- | ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Types       | `pnpm --filter @freelensapp/fixture-extension type:check`, run by its `build`                                                            | a re-export that disappeared from the published surface, including one that exists as a value but is not nameable as a type; a tsconfig that lets one runtime environment's APIs into another's code                                                                                                                                                                                                       |
+| Unit        | `packages/core/src/extensions/__tests__/fixture-extension.test.tsx` and `fixture-extension-main.test.ts`                                 | instance identity of React and mobx, the registrators, the lifecycle, `Common.Util` reaching the host's DI; in main, the host's kubectl and its environment reaching a spawned process through `Main.Shell`, a library's `Request` reaching the host's client through `Main.Util.fetch` given as its `fetch` option, and `dist/main.js` evaluating in plain Node with a bundled CommonJS `require()` in it |
+| Integration | `freelens/integration/__tests__/extensions.tests.ts`, against the `dist/` of the `pnpm build` that the packaged application needs anyway | the packaged application installing this directory in place, accepting its `engines.freelens`, and rendering its hooked status bar item with the React it publishes                                                                                                                                                                                                                                        |
 
 ### How the type level is wired
 
@@ -47,11 +47,11 @@ The sources follow the layout documented for extensions in
 ("Source layout: one tsconfig per runtime environment"), and this package is
 where that layout is proven:
 
-| Directory | Runs in | `tsconfig.json` |
-| --- | --- | --- |
-| `src/main/` | the main process: Node and Electron | `lib: ["ES2024"]`, `types: ["node"]`, plus `src/common/` |
-| `src/renderer/` | a browser page | `lib` with `DOM`, `types: []`, plus `src/common/` |
-| `src/common/` | both, bundled into each entry point | `lib: ["ES2024", "WebWorker"]`, `types: []` |
+| Directory       | Runs in                             | `tsconfig.json`                                          |
+| --------------- | ----------------------------------- | -------------------------------------------------------- |
+| `src/main/`     | the main process: Node and Electron | `lib: ["ES2024"]`, `types: ["node"]`, plus `src/common/` |
+| `src/renderer/` | a browser page                      | `lib` with `DOM`, `types: []`, plus `src/common/`        |
+| `src/common/`   | both, bundled into each entry point | `lib: ["ES2024", "WebWorker"]`, `types: []`              |
 
 `type:check` compiles all three. Common code is therefore checked three
 times: by the main program, which has no DOM, by the renderer program, which has
@@ -70,11 +70,11 @@ sources and with every declaration the sources reach. Compiled alone they would
 miss a third-party declaration with `/// <reference types="node" />` or
 `/// <reference lib="dom" />`, which enters a program only through an import.
 
-| Config | Compiles | Settings of |
-| --- | --- | --- |
-| `environment-tests/tsconfig.main.json` | `dom-apis.ts`, `worker-apis.ts` must fail; `shared-apis.ts` must pass | `src/main/` |
-| `environment-tests/tsconfig.renderer.json` | `node-apis.ts` must fail; `shared-apis.ts` must pass | `src/renderer/` |
-| `environment-tests/tsconfig.json` | `node-apis.ts`, `dom-apis.ts` must fail; `shared-apis.ts` must pass | `src/common/` |
+| Config                                     | Compiles                                                              | Settings of     |
+| ------------------------------------------ | --------------------------------------------------------------------- | --------------- |
+| `environment-tests/tsconfig.main.json`     | `dom-apis.ts`, `worker-apis.ts` must fail; `shared-apis.ts` must pass | `src/main/`     |
+| `environment-tests/tsconfig.renderer.json` | `node-apis.ts` must fail; `shared-apis.ts` must pass                  | `src/renderer/` |
+| `environment-tests/tsconfig.json`          | `node-apis.ts`, `dom-apis.ts` must fail; `shared-apis.ts` must pass   | `src/common/`   |
 
 `worker-apis.ts` is the reason common code is also compiled with the main
 config. `self` and `postMessage` exist in a worker and not in Node, so the
@@ -127,8 +127,8 @@ without a compile error:
    identity is therefore asserted as well as behaviour
 3. one declarative registration (`statusBarItems`), which reaches the host only
    if the registrators and the extension lifecycle both work
-4. one `Renderer.Util.fetch` call, which resolves only through the host's DI
-   container
+4. one `Common.Util.getAppVersion()` call, which answers only through the
+   host's DI container
 5. one `kubeObjectDetailItems` and one `kubeObjectMenuItems` registration made
    with `Renderer.K8sApi.detailsFor` and `menuItemFor`, which construct only if
    the helpers exist at runtime as the declaration says they do, for a model
@@ -143,7 +143,16 @@ The main entry point, [`src/main/index.ts`](./src/main/index.ts), built to
 with `Main.Ipc` handlers and a Node builtin, and
 [`src/main/host-kubectl.ts`](./src/main/host-kubectl.ts), which runs the host's
 kubectl with `node:child_process`, its path and its `env` both from
-`Main.Shell`, with a cluster and without one. Both entry points import
+`Main.Shell`, with a cluster and without one,
+[`src/main/host-fetch.ts`](./src/main/host-fetch.ts), which gives
+`Main.Util.fetch` to a stand-in library as its `fetch` option, typed with the
+standard `fetch`, and sends a `Request` through it, and
+[`src/main/bundled-commonjs.cjs`](./src/main/bundled-commonjs.cjs), a CommonJS
+module that `require()`s a builtin, as a bundled package does. Its `require()`
+works only in a main bundle built for Rolldown's `node` platform, and the unit
+test evaluates `dist/main.js` in a plain Node process to prove it: Vitest's
+module runner, which the rest of the unit level loads the bundle through, gives
+every module a `require` of its own. Both entry points import
 [`src/common/host-info.ts`](./src/common/host-info.ts), which uses only globals
 both runtimes have.
 

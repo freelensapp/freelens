@@ -3,11 +3,13 @@
   "description": [
     "rangeStrategy: always bump dependencies, even when the new version is already in the range.",
     "rebaseWhen: rebase only on conflicts, to save unnecessary workflow runs.",
+    "gitIgnoredAuthors: the workflows that commit to Renovate branches (Automated npm dedupe for Renovate, Binaries Lock Check) commit as github-actions. Without this, Renovate would see the branch as modified by someone else and stop rebasing and updating it.",
     "internalChecksFilter: hold updates that do not yet satisfy minimumReleaseAge instead of raising a pending PR, which would run CI and fail pnpm's minimumReleaseAge policy.",
     "ignoreDeps: node must be the version bundled in Electron; ubuntu must be the oldest possible version, for binary compatibility with older operating systems."
   ],
   "extends": ["config:recommended", ":semanticCommitsDisabled"],
   "prHourlyLimit": 20,
+  "prConcurrentLimit": 50,
   "addLabels": ["renovate"],
   "osvVulnerabilityAlerts": true,
   "rangeStrategy": "bump",
@@ -17,6 +19,11 @@
     "rangeStrategy": "bump",
     "minimumReleaseAge": "0 days"
   },
+  "group": {
+    "description": "A group is titled like a single update, \"Update dependency <group> to <version>\", rather than \"Update <group> to <version>\".",
+    "commitMessageTopic": "dependency {{{groupName}}}"
+  },
+  "gitIgnoredAuthors": ["41898282+github-actions[bot]@users.noreply.github.com"],
   "rebaseWhen": "conflicted",
   "internalChecksFilter": "strict",
   "ignoreDeps": ["node", "ubuntu"],
@@ -74,6 +81,18 @@
       "matchDepNames": ["@types/node", "@kubernetes/client-node>@types/node"],
       "matchUpdateTypes": ["major", "minor"],
       "enabled": false
+    },
+    {
+      "description": "One PR for @types/node and its override for @kubernetes/client-node, which must stay on the same version.",
+      "groupName": "@types/node",
+      "groupSlug": "types-node",
+      "matchDepNames": ["@types/node", "@kubernetes/client-node>@types/node"]
+    },
+    {
+      "description": "One PR for http-proxy-3 and the override that points http-proxy at it, which are the same package and must stay on the same version.",
+      "groupName": "http-proxy-3",
+      "groupSlug": "http-proxy-3",
+      "matchDepNames": ["http-proxy-3", "http-proxy"]
     },
     {
       "description": "Packages that misuse semver.",
@@ -136,6 +155,16 @@
         "(\\s+|.*?@)(?<currentValue>\\S+?)!?\\s*#\\s*datasource=(?<datasource>\\S+)\\s+depName=(?<depName>\\S+)(\\s+versioning=(?<versioning>\\S+))?(\\s+registryUrl=(?<registryUrl>\\S+))?\\s*\\n"
       ],
       "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}"
+    },
+    {
+      "description": "GitHub-hosted runners in a build matrix, marked with a datasource=github-runners hint. The github-actions manager reads only a literal runs-on of a job, not ${{ matrix.runs-on }}. The value is split like that manager splits it (macos-15 into depName macos and version 15), with docker versioning so that a suffix such as -intel or -arm is kept. The hint carries no depName, which keeps the generic hint regex from matching the same line.",
+      "customType": "regex",
+      "managerFilePatterns": ["/^\\.github/workflows/.*\\.ya?ml$/"],
+      "matchStrings": [
+        "runs-on:\\s+(?<depName>[a-z]+)-(?<currentValue>\\S+)\\s*#\\s*datasource=(?<datasource>github-runners)\\s*\\n"
+      ],
+      "versioningTemplate": "docker",
+      "depTypeTemplate": "github-runner"
     }
   ]
 }

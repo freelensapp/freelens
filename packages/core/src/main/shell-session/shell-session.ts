@@ -7,11 +7,14 @@
 import os from "node:os";
 import { getOrInsertWith } from "@freelensapp/utilities";
 import { TerminalChannels, type TerminalMessage } from "../../common/terminal/channels";
+import { freelensProxyTokenEnvVar } from "../freelens-proxy/freelens-proxy-token";
 import { composeKubeToolsEnvironment } from "../kube-tools/kube-tools";
 import { type TerminalStatusReporter, terminalStatusReporterFor } from "./send-terminal-status";
+import { closedDuring } from "./websocket-closed";
 
 import type { Logger } from "@freelensapp/logger";
 
+import type { IComputedValue } from "mobx";
 import type * as pty from "node-pty";
 import type WebSocket from "ws";
 
@@ -19,6 +22,7 @@ import type { EmitAppEvent } from "../../common/app-event-bus/emit-event.injecta
 import type { Cluster } from "../../common/cluster/cluster";
 import type { Stat } from "../../common/fs/stat.injectable";
 import type { ComputeUserShellEnvironment } from "../kube-tools/compute-user-shell-environment.injectable";
+import type { GetUserShell } from "../kube-tools/get-user-shell.injectable";
 import type { KubeTools } from "../kube-tools/kube-tools";
 import type { Kubectl } from "../kubectl/kubectl";
 import type { ShellSessionProcesses } from "./processes.injectable";
@@ -132,9 +136,21 @@ export interface ShellSessionDependencies {
    * of `~/.kube/cache`. Set exactly when the proxy kubeconfig is.
    */
   readonly proxyCacheDirectoryPath?: string;
+  /**
+   * The freelens-proxy token, exported as `FREELENS_PROXY_TOKEN` when the proxy
+   * kubeconfig is set, so that kubectl and helm in the terminal reach the
+   * cluster through the proxy.
+   */
+  readonly freelensProxyToken: string;
+  /**
+   * The application's proxy preference, exported as `HTTPS_PROXY` by a session
+   * without a cluster. A session for a cluster exports the cluster's instead.
+   */
+  readonly applicationHttpsProxy?: IComputedValue<string | undefined>;
   readonly shellSessionEnvs: ShellSessionEnvs;
   readonly shellSessionProcesses: ShellSessionProcesses;
   computeUserShellEnvironment: ComputeUserShellEnvironment;
+  getUserShell: GetUserShell;
   spawnPty: SpawnPty;
   emitAppEvent: EmitAppEvent;
   stat: Stat;
@@ -143,6 +159,11 @@ export interface ShellSessionDependencies {
 export interface ShellSessionArgs {
   kubectl?: Kubectl;
   websocket: WebSocket;
+  /**
+   * Aborted once {@link websocket} closes, taken when the socket was handed
+   * over: by the time the session exists, its `close` event may have fired.
+   */
+  signal: AbortSignal;
   cluster?: Cluster;
   tabId: string;
 }
@@ -154,6 +175,18 @@ export interface ShellSessionArgs {
  */
 export const standaloneSessionId = "standalone";
 
+/**
+ * The last output of each PTY, sent again to a renderer that reconnects to it,
+ * as after a reload, so that its terminal does not start out empty. It lives
+ * as long as the PTY and is never written anywhere.
+ */
+const lastOutputs = new WeakMap<pty.IPty, string>();
+
+export interface ShellEnvOptions {
+  readonly shell?: string;
+  readonly reportStatus?: boolean;
+}
+
 export abstract class ShellSession {
   abstract readonly ShellType: string;
 
@@ -161,6 +194,7 @@ export abstract class ShellSession {
   protected readonly terminalId: string;
   protected readonly kubectl?: Kubectl;
   protected readonly websocket: WebSocket;
+  protected readonly signal: AbortSignal;
   protected readonly cluster?: Cluster;
   protected readonly status: TerminalStatusReporter;
 
@@ -180,27 +214,51 @@ export abstract class ShellSession {
         cwd,
         env,
         name: "xterm-256color",
-        // TODO: Something else is broken here so we need to force the use of winPty on windows
-        useConpty: false,
+        // Windows only: run on node-pty's bundled, Microsoft-signed conpty.dll
+        // and OpenConsole.exe rather than the system ConPTY. With the system
+        // one, kill() forks the Electron binary as Node to attach to the
+        // shell's console and list its processes, which endpoint protection
+        // heuristics flag (#2729).
+        useConptyDll: true,
       }),
     );
 
-    this.dependencies.logger.info(
-      `[SHELL-SESSION]: PTY for ${this.terminalId} is ${resume ? "resumed" : "started"} with PID=${shellProcess.pid}`,
-    );
+    const logPid = () =>
+      this.dependencies.logger.info(
+        `[SHELL-SESSION]: PTY for ${this.terminalId} is ${resume ? "resumed" : "started"} with PID=${shellProcess.pid}`,
+      );
+
+    if (shellProcess.pid > 0) {
+      logPid();
+    } else {
+      // On Windows node-pty learns the shell's pid only once ConPTY has
+      // connected, which happens before the first output arrives.
+      const firstData = shellProcess.onData(() => {
+        firstData.dispose();
+        logPid();
+      });
+    }
 
     return { shellProcess, resume };
   }
 
   constructor(
     protected readonly dependencies: ShellSessionDependencies,
-    { kubectl, websocket, cluster, tabId: terminalId }: ShellSessionArgs,
+    { kubectl, websocket, signal, cluster, tabId: terminalId }: ShellSessionArgs,
   ) {
     this.kubectl = kubectl;
     this.websocket = websocket;
+    this.signal = signal;
     this.cluster = cluster;
     this.status = terminalStatusReporterFor(websocket);
     this.terminalId = `${cluster?.id ?? standaloneSessionId}:${terminalId}`;
+  }
+
+  /**
+   * Whether the start stops here because the terminal has closed.
+   */
+  protected closedDuring(stage: string): boolean {
+    return closedDuring(this.signal, this.dependencies.logger, this.terminalId, stage);
   }
 
   protected send(message: TerminalMessage): void {
@@ -244,16 +302,31 @@ export abstract class ShellSession {
   protected async openShellProcess(shell: string, args: string[], env: Record<string, string | undefined>) {
     const cwd = await this.getCwd(env);
 
+    // The `close` handler below would be attached to a socket that has already
+    // closed, and nothing else would ever kill the PTY.
+    if (this.closedDuring("preparing the shell")) {
+      return;
+    }
+
     this.status.info("Starting shell ...");
 
     const { shellProcess, resume } = this.ensureShellProcess(shell, args, env, cwd);
 
     if (resume) {
       this.send({ type: TerminalChannels.CONNECTED });
+
+      const lastOutput = lastOutputs.get(shellProcess);
+
+      if (lastOutput) {
+        this.send({ type: TerminalChannels.STDOUT, data: lastOutput });
+      }
     }
 
     this.running = true;
-    shellProcess.onData((data) => this.send({ type: TerminalChannels.STDOUT, data }));
+    shellProcess.onData((data) => {
+      lastOutputs.set(shellProcess, data);
+      this.send({ type: TerminalChannels.STDOUT, data });
+    });
     shellProcess.onExit(({ exitCode }) => {
       this.dependencies.logger.info(
         `[SHELL-SESSION]: shell has exited for ${this.terminalId} closed with exitcode=${exitCode}`,
@@ -349,17 +422,21 @@ export abstract class ShellSession {
   }
 
   protected async getCachedShellEnv() {
-    const cacheKey = this.cluster?.id ?? standaloneSessionId;
+    // Keyed by the shell too: the environment carries the shell to start as
+    // `PTYSHELL`, and is the one of that shell, so a changed shell setting
+    // must not start the next terminal with the environment of the old one.
+    const shell = this.dependencies.getUserShell();
+    const cacheKey = `${this.cluster?.id ?? standaloneSessionId}:${shell}`;
 
     let env = this.dependencies.shellSessionEnvs.get(cacheKey);
 
     if (!env) {
-      env = await this.getShellEnv({ reportStatus: true });
+      env = await this.getShellEnv({ shell, reportStatus: true });
       this.dependencies.shellSessionEnvs.set(cacheKey, env);
     } else {
       // refresh env in the background, silently: the shell is already running
       // and its prompt must not be written over
-      this.getShellEnv().then((shellEnv: any) => {
+      this.getShellEnv({ shell }).then((shellEnv: any) => {
         this.dependencies.shellSessionEnvs.set(cacheKey, shellEnv);
       });
     }
@@ -368,16 +445,17 @@ export abstract class ShellSession {
   }
 
   /**
+   * @param shell the shell to start, by default the one the user setting gives now.
    * @param reportStatus whether the terminal is still waiting for this, and so
    * should be told about it. Defaults to `false` because the background
    * refresh of a warm cache must stay silent.
    */
-  protected async getShellEnv({ reportStatus = false } = {}) {
+  protected async getShellEnv({ shell: requestedShell, reportStatus = false }: ShellEnvOptions = {}) {
     if (reportStatus) {
       this.status.info("Resolving shell environment ...");
     }
 
-    const { shell, environment, error } = await this.dependencies.computeUserShellEnvironment();
+    const { shell, environment, error } = await this.dependencies.computeUserShellEnvironment(requestedShell);
 
     if (error !== undefined && reportStatus) {
       // The fallback to `process.env` is silent otherwise, and the abort
@@ -385,7 +463,14 @@ export abstract class ShellSession {
       this.status.error(error);
     }
 
-    const { kubeTools, proxyKubeconfigPath, proxyCacheDirectoryPath, isWindows } = this.dependencies;
+    const {
+      kubeTools,
+      proxyKubeconfigPath,
+      proxyCacheDirectoryPath,
+      freelensProxyToken,
+      applicationHttpsProxy,
+      isWindows,
+    } = this.dependencies;
     const env = composeKubeToolsEnvironment({
       baseEnvironment: environment,
       tools: kubeTools,
@@ -395,15 +480,20 @@ export abstract class ShellSession {
           : {
               kubeconfigPath: proxyKubeconfigPath,
               cacheDirectoryPath: proxyCacheDirectoryPath,
-              httpsProxy: this.cluster?.preferences.httpsProxy,
+              token: freelensProxyToken,
             },
+      httpsProxy: this.cluster ? this.cluster.preferences.httpsProxy : applicationHttpsProxy?.get(),
       isWindows,
     });
 
     if (isWindows) {
       env.PTYSHELL = shell || "powershell.exe";
       env.LENS_SESSION = "true";
-      env.WSLENV = [env.WSLENV, "KUBECONFIG/up:KUBECACHEDIR/up:LENS_SESSION/u"].filter(Boolean).join(":");
+      // The token has no flag: it has to travel both ways, into WSL and back
+      // out to the Windows credential helper that a kubectl in WSL runs.
+      env.WSLENV = [env.WSLENV, `KUBECONFIG/up:KUBECACHEDIR/up:LENS_SESSION/u:${freelensProxyTokenEnvVar}`]
+        .filter(Boolean)
+        .join(":");
     } else {
       env.PTYSHELL = shell;
     }

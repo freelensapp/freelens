@@ -24,12 +24,7 @@ export type SupportedPlatform = (typeof supportedPlatforms)[number];
 export type SupportedArch = (typeof supportedArches)[number];
 export type ToolName = (typeof toolNames)[number];
 
-/**
- * Suffix of the published checksum file, and of the sidecar recording the
- * verified checksum of a downloaded binary. The sidecar lives next to the
- * binary but is never referenced by electron-builder (which lists each packaged
- * binary explicitly), so it does not end up in the application package.
- */
+/** Suffix of the checksum file published next to each artifact. */
 export const CHECKSUM_SUFFIX = ".sha256";
 
 export interface Artifact {
@@ -73,6 +68,15 @@ export function normalizePlatform(platform: NodeJS.Platform): SupportedPlatform 
 /** Key identifying an artifact within a tool's entry in the lock file. */
 export function artifactKey({ platform, arch }: Pick<Artifact, "platform" | "arch">): string {
   return `${platform}/${arch}`;
+}
+
+/**
+ * Whether the artifact is an archive the binary is extracted from, rather than
+ * the binary itself. Its digest then says nothing about the extracted file, so
+ * the lock pins that file separately.
+ */
+export function isArchived({ tool }: Pick<Artifact, "tool">): boolean {
+  return tool === "helm";
 }
 
 export function describeArtifact({

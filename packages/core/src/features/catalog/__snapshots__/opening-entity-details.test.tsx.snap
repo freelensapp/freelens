@@ -1244,6 +1244,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                         </div>
                         <div
                           aria-hidden="true"
+                          data-react-window-sizer=""
                           style="height: 108px; width: 100%; z-index: -1;"
                         />
                       </div>
@@ -2241,6 +2242,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                         </div>
                         <div
                           aria-hidden="true"
+                          data-react-window-sizer=""
                           style="height: 108px; width: 100%; z-index: -1;"
                         />
                       </div>
@@ -3270,6 +3272,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                         </div>
                         <div
                           aria-hidden="true"
+                          data-react-window-sizer=""
                           style="height: 108px; width: 100%; z-index: -1;"
                         />
                       </div>
@@ -4551,6 +4554,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                         </div>
                         <div
                           aria-hidden="true"
+                          data-react-window-sizer=""
                           style="height: 108px; width: 100%; z-index: -1;"
                         />
                       </div>
@@ -5800,6 +5804,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                         </div>
                         <div
                           aria-hidden="true"
+                          data-react-window-sizer=""
                           style="height: 108px; width: 100%; z-index: -1;"
                         />
                       </div>
@@ -6817,6 +6822,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                         </div>
                         <div
                           aria-hidden="true"
+                          data-react-window-sizer=""
                           style="height: 108px; width: 100%; z-index: -1;"
                         />
                       </div>
@@ -8005,6 +8011,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                         </div>
                         <div
                           aria-hidden="true"
+                          data-react-window-sizer=""
                           style="height: 108px; width: 100%; z-index: -1;"
                         />
                       </div>

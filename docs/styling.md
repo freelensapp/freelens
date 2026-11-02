@@ -39,24 +39,24 @@ classes: see
 
 ## Roles: which mechanism to use
 
-| Context | Mechanism | Why |
-|---|---|---|
-| Theme values (colors, fonts, spacing tokens) | CSS custom properties from the TS theme system (`var(--…)`) | The single cross-system contract; the only way a value re-themes at runtime |
+| Context                                                                                | Mechanism                                                                          | Why                                                                                                                                                                                    |
+| -------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Theme values (colors, fonts, spacing tokens)                                           | CSS custom properties from the TS theme system (`var(--…)`)                        | The single cross-system contract; the only way a value re-themes at runtime                                                                                                            |
 | **Shared components** (`packages/ui-components`) and anything an extension may restyle | Global PascalCase class + plain SCSS + `var(--…)`. **No Tailwind, no CSS Modules** | The class names (`.Tooltip`, `.Button`, `.Icon`) are **public API** — extensions target and override them; mangled ids would break that. Tailwind cannot reach here at all (see below) |
-| **Core single components / full views** | CSS Modules (`*.module.scss`, mangled ids) | Component-private styling that should not leak into the global namespace |
-| Local layout/spacing **inside core-only TSX** | Tailwind utilities | Throwaway layout that never needs to be themed beyond the bridged tokens or restyled from outside |
-| Extensions | CSS Modules + a working injection mechanism | See [`docs/extensions/migrating-from-v1.md`](./extensions/migrating-from-v1.md#styling-and-css) |
+| **Core single components / full views**                                                | CSS Modules (`*.module.scss`, mangled ids)                                         | Component-private styling that should not leak into the global namespace                                                                                                               |
+| Local layout/spacing **inside core-only TSX**                                          | Tailwind utilities                                                                 | Throwaway layout that never needs to be themed beyond the bridged tokens or restyled from outside                                                                                      |
+| Extensions                                                                             | CSS Modules + a working injection mechanism                                        | See [`docs/extensions/migrating-from-v1.md`](./extensions/migrating-from-v1.md#styling-and-css)                                                                                        |
 
 So the answer to "Tailwind or mangled CSS ids?" is **both, with a boundary**:
 Tailwind for disposable layout in core-only TSX; CSS Modules for anything that
-*is* a component's styling; global classes only where the class name is part of
+_is_ a component's styling; global classes only where the class name is part of
 the public surface.
 
 ### Why Tailwind is core-only
 
 `packages/core/tailwind.config.js` sets `content: ["src/**/*.tsx"]`, so the
 Tailwind JIT scans **only core's own TSX**. A Tailwind class written in
-`packages/ui-components` or in an extension that core does not *also* happen to
+`packages/ui-components` or in an extension that core does not _also_ happen to
 use produces **no CSS** — it silently does nothing. Never use Tailwind
 utilities outside core TSX expecting the host to emit them. (An extension can
 still run its **own** Tailwind build and ship the generated utilities in its
@@ -83,7 +83,7 @@ they are no longer loaded, so those class names now do nothing.
   vocabulary, and do not mix vocabularies in one `className`.
 - `packages/ui-components` cannot use Tailwind (the host JIT scans only core
   TSX — see above); style layout with plain rules in the component's own SCSS.
-  Extensions cannot use the *host's* Tailwind either, but may run their own
+  Extensions cannot use the _host's_ Tailwind either, but may run their own
   Tailwind build (see
   [Bringing your own Tailwind](./extensions/migrating-from-v1.md#bringing-your-own-tailwind)).
 - Extension authors migrating code that still uses the old classes: the
@@ -113,7 +113,7 @@ every `@layer`, regardless of specificity**. Two consequences to keep in mind:
 
 - The global reset in `app.scss` (`*, *:before, *:after { margin: 0; padding:
   0; border: 0 }`) is wrapped in `@layer base` **on purpose**. Left unlayered it
-  would override *every* margin/padding utility (`mb-5`, `ml-auto`, ...)
+  would override _every_ margin/padding utility (`mb-5`, `ml-auto`, ...)
   app-wide — only `gap`/flex utilities, which the reset does not touch, would
   survive, which is a trap: `flex`/`gap-*` work but `m-*`/`p-*` silently do
   nothing. Keep any app-wide reset in a layer so utilities can win. Note that
@@ -146,6 +146,6 @@ in a stylesheet.
   (`network-ingresses/`, `events/` have a `.module.scss` next to a plain
   `.scss` for structurally identical components).
 - Pick **one** loading mechanism for `packages/ui-components` styles — the
-  component-level side-effect import *or* the `/styles` entry re-import in
+  component-level side-effect import _or_ the `/styles` entry re-import in
   `freelens/src/renderer/index.ts`, not both.
 - Inline the seven `@apply` usages.

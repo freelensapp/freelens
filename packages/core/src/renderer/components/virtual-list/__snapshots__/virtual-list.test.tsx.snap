@@ -104,6 +104,7 @@ exports[`VirtualList > renders 1`] = `
         </div>
         <div
           aria-hidden="true"
+          data-react-window-sizer=""
           style="height: 1500px; width: 100%; z-index: -1;"
         />
       </div>
@@ -286,6 +287,7 @@ exports[`VirtualList > when non-visable item is selected > renders 1`] = `
         </div>
         <div
           aria-hidden="true"
+          data-react-window-sizer=""
           style="height: 1500px; width: 100%; z-index: -1;"
         />
       </div>
@@ -398,6 +400,7 @@ exports[`VirtualList > when visible item is selected > renders 1`] = `
         </div>
         <div
           aria-hidden="true"
+          data-react-window-sizer=""
           style="height: 1500px; width: 100%; z-index: -1;"
         />
       </div>

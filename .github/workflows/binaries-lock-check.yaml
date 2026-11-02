@@ -23,7 +23,7 @@ jobs:
   check:
     name: Check binaries.lock.json
 
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
     timeout-minutes: 30
 
     outputs:
@@ -101,7 +101,7 @@ jobs:
         if: steps.decide.outputs.needed == 'true'
         uses: jdx/mise-action@v5
         with:
-          version: 2026.10.4 # datasource=github-releases depName=jdx/mise
+          version: 2026.10.19 # datasource=github-releases depName=jdx/mise
           install_args: yq cosign
 
       - name: Setup pnpm
@@ -144,17 +144,29 @@ jobs:
             exit 0
           fi
 
+          # One row per pinned digest, binarySha256 included.
           flatten() {
             yq -pj -ot '
               [
                 to_entries[] as $tool
-                | $tool.value.artifacts | to_entries[]
-                | {
-                    "tool": $tool.key,
-                    "version": $tool.value.version,
-                    "platform": .key,
-                    "sha256": .value.sha256
-                  }
+                | $tool.value.artifacts | to_entries[] as $artifact
+                | (
+                    {
+                      "tool": $tool.key,
+                      "version": $tool.value.version,
+                      "platform": $artifact.key,
+                      "sha256": $artifact.value.sha256
+                    },
+                    (
+                      $artifact.value | select(has("binarySha256"))
+                      | {
+                          "tool": $tool.key,
+                          "version": $tool.value.version,
+                          "platform": $artifact.key + " binary",
+                          "sha256": .binarySha256
+                        }
+                    )
+                  )
               ]
             ' "$1" | tail -n +2 | sort
           }
@@ -218,9 +230,10 @@ jobs:
     name: Commit the regenerated binaries.lock.json
 
     needs: check
-    if: needs.check.outputs.stale == 'true'
+    # Never on a fork: it has no GH_TOKEN secret, so the job could only fail.
+    if: github.repository_owner == 'freelensapp' && needs.check.outputs.stale == 'true'
 
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
     environment: automated
     timeout-minutes: 10
 

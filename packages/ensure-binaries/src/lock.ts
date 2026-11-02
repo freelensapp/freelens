@@ -5,7 +5,7 @@
 
 import { readFile, writeFile } from "node:fs/promises";
 import z from "zod";
-import { type Artifact, artifactKey, supportedArches, supportedPlatforms, toolNames } from "./artifacts.js";
+import { type Artifact, artifactKey, isArchived, supportedArches, supportedPlatforms, toolNames } from "./artifacts.js";
 
 import type { ToolVersions } from "./artifacts.js";
 
@@ -19,9 +19,17 @@ import type { ToolVersions } from "./artifacts.js";
  * written rather than on every build on every platform.
  */
 
+const Sha256 = z.string().regex(/^[0-9a-f]{64}$/, "must be a lowercase hex SHA-256 digest");
+
 const LockedArtifact = z.object({
   url: z.url(),
-  sha256: z.string().regex(/^[0-9a-f]{64}$/, "must be a lowercase hex SHA-256 digest"),
+  /** Of the downloaded bytes. */
+  sha256: Sha256,
+  /**
+   * Of the binary extracted from an archived artifact, which is what ends up in
+   * the application package. Absent where the artifact is the binary itself.
+   */
+  binarySha256: Sha256.optional(),
 });
 
 const LockedTool = z.object({
@@ -76,7 +84,18 @@ export async function writeLock(pathToLock: string, lock: BinariesLock): Promise
                 throw new Error(`refusing to write a lock file without ${tool} for ${key}`);
               }
 
-              return [key, { url: locked.url, sha256: locked.sha256 }];
+              if (isArchived({ tool }) && !locked.binarySha256) {
+                throw new Error(`refusing to write a lock file without the digest of the ${tool} binary for ${key}`);
+              }
+
+              return [
+                key,
+                {
+                  url: locked.url,
+                  sha256: locked.sha256,
+                  ...(locked.binarySha256 && { binarySha256: locked.binarySha256 }),
+                },
+              ];
             }),
           ),
         },
@@ -87,12 +106,20 @@ export async function writeLock(pathToLock: string, lock: BinariesLock): Promise
   await writeFile(pathToLock, `${JSON.stringify(ordered, null, 2)}\n`);
 }
 
+/** The pinned digests of one artifact. */
+export interface PinnedDigests {
+  /** Of the downloaded bytes. */
+  readonly artifact: string;
+  /** Of the binary as it is stored, the same as {@link artifact} unless that is an archive. */
+  readonly binary: string;
+}
+
 /**
- * Returns the pinned digest for an artifact, failing loudly rather than falling
+ * Returns the pinned digests for an artifact, failing loudly rather than falling
  * back to anything when the lock does not describe it. A missing or stale entry
  * means the lock was not regenerated after a version bump.
  */
-export function resolvePinnedChecksum(lock: BinariesLock, artifact: Artifact): string {
+export function resolvePinnedDigests(lock: BinariesLock, artifact: Artifact): PinnedDigests {
   const regenerate = "Run `pnpm update-binaries-lock` to regenerate it.";
   const entry = lock[artifact.tool];
 
@@ -119,7 +146,15 @@ export function resolvePinnedChecksum(lock: BinariesLock, artifact: Artifact): s
     );
   }
 
-  return locked.sha256;
+  if (!isArchived(artifact)) {
+    return { artifact: locked.sha256, binary: locked.sha256 };
+  }
+
+  if (!locked.binarySha256) {
+    throw new Error(`the binaries lock file pins no digest of the ${artifact.tool} binary for ${key}. ${regenerate}`);
+  }
+
+  return { artifact: locked.sha256, binary: locked.binarySha256 };
 }
 
 /** Checks that the versions a lock pins are the ones the package.json asks for. */

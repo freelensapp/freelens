@@ -499,7 +499,7 @@ metadata:
 `);
               });
 
-              it("stores the changed configuration", async () => {
+              it("stores the changed configuration, without the configuration of the cluster", async () => {
                 const readJsonFile = windowDi.inject(readJsonFileInjectable);
 
                 const actual = (await readJsonFile(
@@ -508,16 +508,6 @@ metadata:
 
                 expect(actual.edit_resource_store["some-first-tab-id"]).toEqual({
                   resource: "/api/some-api-version/namespaces/some-uid",
-                  firstDraft: `apiVersion: some-api-version
-kind: Namespace
-metadata:
-  uid: some-uid
-  name: some-name
-  resourceVersion: some-resource-version
-  somePropertyToBeRemoved: some-value
-  somePropertyToBeChanged: some-old-value
-  selfLink: /api/some-api-version/namespaces/some-uid
-`,
                   draft: `apiVersion: some-api-version
 kind: Namespace
 metadata:

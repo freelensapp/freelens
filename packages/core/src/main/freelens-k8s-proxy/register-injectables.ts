@@ -8,6 +8,7 @@
 
 import createFreelensK8sProxyInjectable from "./create-freelens-k8s-proxy.injectable";
 import freelensK8sProxyCertificateInjectable from "./freelens-k8s-proxy-certificate.injectable";
+import freelensK8sProxyCredentialCommandInjectable from "./freelens-k8s-proxy-credential-command.injectable";
 import freeLensK8sProxyPathInjectable from "./freelens-k8s-proxy-path.injectable";
 import { registerInjectables as registerWaitUntilPortIsUsedInjectables } from "./wait-until-port-is-used/register-injectables";
 
@@ -26,6 +27,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(freelensK8sProxyCertificateInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(freelensK8sProxyCredentialCommandInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

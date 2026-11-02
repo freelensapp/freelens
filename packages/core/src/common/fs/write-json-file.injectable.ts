@@ -14,16 +14,21 @@ const writeJsonFileInjectable = getInjectable({
   id: "write-json-file",
 
   instantiate: (di): WriteJson => {
-    const { writeJson, ensureDir } = di.inject(fsInjectable);
+    const { writeJson, ensureDir, chmod } = di.inject(fsInjectable);
     const getDirnameOfPath = di.inject(getDirnameOfPathInjectable);
 
+    // The file holds the user's data, so only the user may read it
     return async (filePath, content) => {
-      await ensureDir(getDirnameOfPath(filePath), { mode: 0o755 });
+      await ensureDir(getDirnameOfPath(filePath), { mode: 0o700 });
 
       await writeJson(filePath, content, {
         encoding: "utf-8",
         spaces: 2,
+        mode: 0o600,
       });
+
+      // `mode` applies only to a file that is created, not to one written over
+      await chmod(filePath, 0o600);
     };
   },
 });

@@ -17,7 +17,7 @@ Each contract states three things:
 - **Surface** — the stable names the guarantee is expressed in.
 - **Failure mode** — what an author sees when the contract is violated. This is
   recorded because most of these fail at runtime rather than at build time, and
-  several fail *silently*.
+  several fail _silently_.
 
 Anything not stated here is not part of the contract. Extensions run with full
 privileges and can reach much more than this document describes; reaching it is
@@ -44,7 +44,7 @@ every `@freelensapp/*` is inlined. Nothing else needs publishing.
 fails to install — the package does not exist on the registry.
 
 **Consequence worth stating separately.** Because workspace packages are private
-*and* inlined, **a symbol the API namespaces do not re-export is unreachable by
+_and_ inlined, **a symbol the API namespaces do not re-export is unreachable by
 any means.** There is no package left to install and a type-only import fails at
 module resolution with no `@types/` fallback. Re-export completeness is
 therefore a correctness property, not a convenience. See [C5](#c5-namespace-enumeration).
@@ -92,14 +92,14 @@ marks them external, and lets its bundler rewrite the bare id to the global.
 
 **Surface.** A closed list of module ids:
 
-| Module id | Global | Published in |
-| --- | --- | --- |
-| `react` | `React` | renderer |
-| `react-dom` | `ReactDom` | renderer |
-| `react/jsx-runtime` | `ReactJsxRuntime` | renderer |
-| `mobx` | `Mobx` | both |
-| `mobx-react` | `MobxReact` | renderer |
-| `monaco-editor` | `MonacoEditor` | renderer |
+| Module id           | Global            | Published in |
+| ------------------- | ----------------- | ------------ |
+| `react`             | `React`           | renderer     |
+| `react-dom`         | `ReactDom`        | renderer     |
+| `react/jsx-runtime` | `ReactJsxRuntime` | renderer     |
+| `mobx`              | `Mobx`            | both         |
+| `mobx-react`        | `MobxReact`       | renderer     |
+| `monaco-editor`     | `MonacoEditor`    | renderer     |
 
 An extension declares a listed package also when it does not import it but
 uses a host API whose types name it: `Renderer.Component.MonacoEditor` takes its
@@ -246,11 +246,11 @@ before the first extension loads.
 **Guarantee.** These are the members of each namespace. A symbol not listed here
 is not reachable (see [C1](#c1-packaging-and-publication)).
 
-| Namespace | Members |
-| --- | --- |
-| `Common` | `App`, `Catalog`, `Clusters`, `EventBus`, `LensExtension`, `Proxy`, `Store`, `Types`, `Util`, `logger`; types `InstalledExtension`, `LensExtensionManifest`, `Logger`, `PackageJson` |
-| `Main` | `Catalog`, `Ipc`, `K8s`, `K8sApi`, `LensExtension`, `Navigation`, `Power`, `Shell`, `Util` |
-| `Renderer` | `Catalog`, `Component`, `Ipc`, `K8s`, `K8sApi`, `LensExtension`, `Navigation`, `Theme`, `Util` |
+| Namespace  | Members                                                                                                                                                                              |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `Common`   | `App`, `Catalog`, `Clusters`, `EventBus`, `Proxy`, `Store`, `Types`, `Util`, `logger`; types `InstalledExtension`, `LensExtension`, `LensExtensionManifest`, `Logger`, `PackageJson` |
+| `Main`     | `Catalog`, `Ipc`, `K8s`, `K8sApi`, `LensExtension`, `Navigation`, `Power`, `Shell`, `Util`                                                                                           |
+| `Renderer` | `Catalog`, `Component`, `Ipc`, `K8s`, `K8sApi`, `LensExtension`, `Navigation`, `Theme`, `Util`                                                                                       |
 
 There is no `Renderer.React`, no `Renderer.ReactDOM` and no
 `Renderer.Registrations`. React reaches extensions through
@@ -320,14 +320,14 @@ are the `format` vocabulary for the CRD schema and are frozen with it under
   ([C4](#c4-module-format-and-loading)). Such a member goes on the omit list in
   `packages/core/src/extensions/common-api/utils.ts`, which destructures it out
   of the spread so that its name and types do not reach the bundled
-  declarations either. Keeping them out also takes the pnpm patch of
-  `rolldown-plugin-dts`: unpatched, the plugin keeps every member of
+  declarations either. Keeping them out also takes `rolldown-plugin-dts`
+  0.28.8 or newer: an older one keeps every member of
   `@freelensapp/utilities` in the bundle, because `utils.ts` reaches them
   through `import * as utilities`, and `build:dist` fails on their Node
   imports ([C11](#c11-third-party-bundled-libraries)).
 
 `Main.Util` and `Renderer.Util` spread `Common.Util`, so an omitted member is
-gone from all three; each adds its own `fetch` ([C12](#c12-http)).
+gone from all three; `Main.Util` adds `fetch` ([C12](#c12-http)).
 `Common.Util.getAppVersion` is the one member the host defines itself.
 
 **Whoever adds an export to the package** is therefore adding API, and checks
@@ -340,6 +340,52 @@ add the member to the omit list and a line to the migration guide.
 **Failure mode.** A member that needs a Node global and is not on the list fails
 at runtime in a renderer without Node — a `ReferenceError` for a global such as
 `Buffer` — and not at compile time.
+
+### `Catalog.getAllClusters()` and `getClusterById()` are observable
+
+`Main.Catalog` and `Renderer.Catalog` both have `getAllClusters()` and
+`getClusterById(id)`, which answer with `Common.Clusters.ClusterInfo` objects.
+**Both are observable through the host's mobx**
+([C3](#c3-host-provided-singletons)), in both processes. Called inside a
+`reaction`, an `autorun`, a `computed` or an `observer` component, they make it
+run again when a cluster is added or removed and when a field of a cluster
+changes, its `status` among them. This is how an extension follows a cluster
+connecting or disconnecting: there is no event for it.
+
+```ts
+import { Common, Main } from "@freelensapp/extensions";
+import { reaction } from "mobx";
+
+const { ClusterConnectionStatus } = Common.Clusters;
+
+const dispose = reaction(
+  () => Main.Catalog.getClusterById(clusterId)?.status,
+  (status) => {
+    if (status === ClusterConnectionStatus.CONNECTED) {
+      // ask Main.Shell.getEnvironment(clusterId) again, start what needs it
+    } else {
+      // stop what runs with the cluster's environment
+    }
+  },
+);
+
+// in onDeactivate()
+dispose();
+```
+
+The functions are what is observable, not the objects they return: a
+`ClusterInfo` is a snapshot, and a later change gives new objects. Call the
+function inside the reaction, rather than keeping an object and reading its
+`status` later. A reaction is the extension's to dispose of, in `onDeactivate`
+at the latest.
+
+`packages/core/src/extensions/__tests__/catalog-clusters-observable-main.test.ts`
+and `catalog-clusters-observable-renderer.test.ts` run a `reaction` on each
+function through the API and change a cluster's status the way the host does.
+
+**Failure mode.** A reaction made with the extension's own copy of mobx rather
+than the host's fails silently, as [C3](#c3-host-provided-singletons)
+describes: it does not fire where it should, and nothing reports it.
 
 ---
 
@@ -471,12 +517,15 @@ is no field for the application menu or the tray: both are the host's own.
 `LensExtension` (both processes): `protocolHandlers`; the read-only `id`,
 `manifest`, `manifestPath`, `name`, `version`, `description`, `storeName`,
 `sanitizedExtensionId`, `isEnabled`; `getExtensionFileFolder()`; and the author
-hooks `onActivate()` / `onDeactivate()`.
+hooks `onActivate()` / `onDeactivate()`. `LensRendererExtension` adds the two
+methods that navigate: `navigate()` to the extension's own pages and
+`navigateToPreferences()` to its preferences tab, both described in
+[C9](#c9-routing).
 
 Two of these matter more than they look:
 
 - **`manifestPath`** is how an extension locates its own shipped files. In the
-  renderer it is the *only* route, since there is no `__dirname` under URL
+  renderer it is the _only_ route, since there is no `__dirname` under URL
   loading.
 - **`getExtensionFileFolder()`** returns a writable directory for this extension
   alone, resolved from `storeName` through a hash — so it is **unaffected by
@@ -535,8 +584,8 @@ container out of the API is a contract boundary, not a security one. What is
 supported is what the namespaces expose; anything else may change without
 notice.
 
-**The lifecycle invariant:** *the view exists before the author's first hook and
-is released after their last.* The loader injects it right after it constructs
+**The lifecycle invariant:** _the view exists before the author's first hook and
+is released after their last._ The loader injects it right after it constructs
 the extension instance; the registrators populate it after activation, because
 activation can register catalog categories they must see; and `disable()` runs
 `onDeactivate` before `deregister()`.
@@ -581,7 +630,7 @@ dialect is supported** — `/:param?` optionals and inline `/:param(regex)`
 patterns — by the in-house `matchPath`, so existing path strings need no
 rewriting.
 
-Two calls navigate:
+Three calls navigate:
 
 - **`LensRendererExtension#navigate(pageId?, params?)`** goes to one of the
   extension's own pages, found by the `id` of its registration; no `pageId`
@@ -589,10 +638,16 @@ Two calls navigate:
   parameters, keyed by the names the registration's `params` declares; another
   key rejects the returned promise. A `pageId` that matches no registration
   does nothing.
+- **`LensRendererExtension#navigateToPreferences()`** opens the application
+  preferences on this extension's own tab, the one that holds the items of its
+  `appPreferences`, from any frame, the cluster frame included. It takes no
+  argument, so it reaches neither the host's tabs nor another extension's.
 - **`Renderer.Navigation.navigate(location)`** goes to any location, a path
   string or a `{ pathname, search, hash }` object, whose **pathname is
-  absolute**. The location is pushed onto the browser history as given, and the
-  browser resolves a relative pathname against the current URL.
+  absolute**. The location is pushed onto the browser history of the frame the
+  call runs in, as given, and the browser resolves a relative pathname against
+  the current URL. The preferences live in the root frame, so from a cluster
+  frame this call does not reach them; `navigateToPreferences()` does.
 
 The `dependencies` of `LensRendererExtension`, which the declaration shows
 because they are `protected`, are the host's injection bag
@@ -683,8 +738,8 @@ It splits in two:
 `react-select`.
 
 This is the complement of the namespace enumeration in
-[C5](#c5-namespace-enumeration): that records what the API *exports*, this what
-it *imports* and therefore imposes on an author. It is read off the built
+[C5](#c5-namespace-enumeration): that records what the API _exports_, this what
+it _imports_ and therefore imposes on an author. It is read off the built
 bundle, not the source tree:
 
 ```sh
@@ -721,8 +776,8 @@ declaration names Node's global types. Renderer code gets no guarantee of Node
 ([C4](#c4-module-format-and-loading)), and an author's renderer config has no
 Node types to resolve them against. The same config enforces it: `build:dist`
 fails and lists every Node reference of the bundle. The likely cause of one is
-the pnpm patch of `rolldown-plugin-dts` (`patchedDependencies` in
-`pnpm-workspace.yaml`) no longer applying, which brings back the Node-bound
+`rolldown-plugin-dts` no longer tree-shaking a namespace import that a
+declaration names only by qualified name, which brings back the Node-bound
 members `Common.Util` leaves out
 ([C5](#util-is-freelensapputilities-minus-the-node-bound-members)) with their
 `node:` imports. `@types/node` is therefore not a dependency of the package: an
@@ -779,20 +834,80 @@ checked against different React types.
 ## C12. HTTP
 
 **Guarantee.** Extensions get HTTP **from the host**, not from a bundled client:
-`Main.Util.fetch` and `Renderer.Util.fetch`.
+`Main.Util.fetch` for HTTP outside the cluster from main, the global `fetch` for
+HTTP outside the cluster from the renderer, and `K8sApi.forCluster` and
+`K8sApi.KubeJsonApi.forCluster` for a catalog cluster, in main as in the
+renderer.
 
-**Surface.** Two symbols, deliberately, because the implementations genuinely
-differ per process — one name would suggest an equivalence that does not hold.
-`Main.Util.fetch` applies the user's `httpsProxy` preference, their
-`caCertificates` and `allowUntrustedCAs` settings and the Freelens proxy;
-`Renderer.Util.fetch` is Chromium's `fetch` reached through the host.
+**Surface.** One `fetch` symbol, `Main.Util.fetch`, typed as the standard
+`fetch`. It is the host's client of the main process, which applies the user's
+`httpsProxy` preference, their `caCertificates` and `allowUntrustedCAs` settings
+and the Freelens proxy; Node's global `fetch` applies none of them. In the
+renderer the global `fetch` is Chromium's, with the window session's settings,
+which is the client the host uses there too, so the API has no function for it
+and `Renderer.Util` has no `fetch`.
 
-Request and response types are **structural**, so neither `undici` nor a DOM
-type is imposed on an extension.
+`Main.Util.fetch` cannot talk to a cluster's API server on its own: it carries no
+client certificate or cluster CA from a kubeconfig, runs no `exec` credential
+plugin and refreshes no OIDC token, and the proxy it applies is the app-wide
+`httpsProxy` rather than the cluster's own proxy setting. A catalog cluster is
+reached through `forCluster` instead: `K8sApi.forCluster(cluster, Kind)` for a
+`KubeApi` of one kind, and `K8sApi.KubeJsonApi.forCluster(clusterId)` for
+requests by path. Both send the request through the Freelens proxy to the
+cluster's own proxy, which authenticates with the cluster's kubeconfig and
+applies the cluster's proxy setting. A spawned `kubectl` or `helm` reaches the
+cluster through the environment of
+[C15](#c15-the-hosts-kubectl-helm-and-terminal-environment).
+
+`Main.Util.fetch` is declared as `typeof fetch`: the standard `fetch` of the
+environment the extension compiles in, which for main code is the one
+`@types/node` declares. A bundled library that takes a `fetch` option, such as
+an SDK or the HTTP transport of an MCP client, takes it without an assertion,
+and its requests then go through the host's client:
+
+```ts
+const transport = new StreamableHTTPClientTransport(new URL(serverUrl), {
+  fetch: Main.Util.fetch,
+});
+```
+
+What it takes and what it answers with:
+
+- **The input is a URL or a `Request`.** A `Request`, such as one a library
+  builds with the global `Request` of Node, is passed on as its URL and an init
+  made of its `method`, `headers`, `body`, `signal` and `redirect`, with
+  `duplex: "half"` when it has a body. An init given alongside it applies on
+  top, member by member, as with the standard `fetch`.
+- **The init is passed on as it is**, a `URLSearchParams` or `Blob` body
+  included, with two exceptions. A `FormData` body is encoded as multipart
+  before it is passed on, with its boundary in the content type, because the
+  host's client does not recognise Node's global `FormData`. `dispatcher` is
+  dropped: the host's client sends every request through the dispatcher that
+  applies the user's proxy and CA settings, and an extension's init does not
+  replace it.
+- **The response is undici's `Response`**, with every member of the standard
+  one. It is not an instance of Node's global `Response`.
+
+The host's own HTTP, `K8sApi.KubeJsonApi` and `KubeApi`'s `reqInit` among it,
+keeps request and response types of its own, which are **structural**, so
+neither `undici` nor a DOM type is imposed on an extension through them.
 
 **Failure mode.** `globalThis.fetch` in main exists but knows nothing about the
 user's proxy or custom CAs, so an extension using it simply fails on corporate
-networks. `res instanceof Response` is not a reliable check in main.
+networks. A bundled library left to its own default `fetch` in main, or given a
+client of the extension's own, fails the same way. `res instanceof Response` is
+not a reliable check on a response of `Main.Util.fetch`.
+
+`Main.Util.fetch` in a renderer entry type-checks and throws, because `Main` is
+`undefined` there ([C2](#c2-the-runtime-global-api)); renderer code uses the
+global `fetch`.
+
+A client of a catalog cluster built from its `kubeConfigPath` (a bundled
+Kubernetes client, or `fetch` to the API server with the kubeconfig's TLS
+settings) works on a plain network, and ignores the cluster's proxy setting and
+everything else the Freelens proxy does for the cluster, so it fails only on
+the networks that need them. So does a `kubectl` or `helm` given the raw
+kubeconfig.
 
 ---
 
@@ -804,17 +919,18 @@ for the package**, because the two differ.
 
 **Surface.**
 
-| Requirement | Why |
-| --- | --- |
-| TypeScript 4.9 or newer | the declaration has `accessor` fields, which older compilers fail to parse whatever `skipLibCheck` says |
-| `"skipLibCheck": true` | the type dependency graph is not clean under `false`, and checking it is not an author's job |
+| Requirement                                                   | Why                                                                                                                                          |
+| ------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| TypeScript 4.9 or newer                                       | the declaration has `accessor` fields, which older compilers fail to parse whatever `skipLibCheck` says                                      |
+| `"skipLibCheck": true`                                        | the type dependency graph is not clean under `false`, and checking it is not an author's job                                                 |
 | `"lib"` including `DOM` and `DOM.Iterable`, `ES2024` or newer | the React component types name DOM types nothing else declares; the mobx types name `ReadonlySetLike`, which first appears in the ES2024 lib |
-| `"moduleResolution": "bundler"`, `node16` or `nodenext` | to resolve the package's `exports` |
-| `electron` as a devDependency, at the host's version | an **optional** peer — a required `>=43.0.0` peer would be installed automatically at the newest Electron major, not the one the host runs |
+| `"moduleResolution": "bundler"`, `node16` or `nodenext`       | to resolve the package's `exports`                                                                                                           |
+| `electron` as a devDependency, at the host's version          | an **optional** peer — a required `>=43.0.0` peer would be installed automatically at the newest Electron major, not the one the host runs   |
 
-The **fetch surface alone** needs `lib.dom` *or* `@types/node`: with structural
-types it names only `AbortSignal`, `ReadableStream`, `URL` and `Uint8Array`,
-which both declare. The package as a whole still requires `lib.dom`.
+The **HTTP surface alone** needs `lib.dom` _or_ `@types/node`: `Main.Util.fetch`
+is typed as the global `fetch`, and the structural types name only `AbortSignal`,
+`ReadableStream`, `URL` and `Uint8Array`, all of which both declare. The package
+as a whole still requires `lib.dom`.
 
 **Failure mode.** A compiler older than TypeScript 4.9 reports
 `TS1434: Unexpected keyword or identifier` at every `accessor` field of the
@@ -827,7 +943,7 @@ errors in the React component types.
 ## C14. Versioning and compatibility
 
 **Guarantee.** `engines.freelens` is the **enforced gate**, checked at discovery
-before any extension code runs — and it is the *only* enforced one. The version
+before any extension code runs — and it is the _only_ enforced one. The version
 range an extension declares for `@freelensapp/extensions` is a compile-time
 convenience that the host never reads.
 
@@ -886,11 +1002,11 @@ tool by the path its function returns; the environment provides `KUBECONFIG`,
 outside any cluster when called without a cluster id, and for the terminal of
 the cluster when called with one:
 
-| Function | Without a cluster | For a cluster |
-| --- | --- | --- |
-| `getKubectlPath(clusterId?, options?)` | the "Path to kubectl binary" preference (`kubectlBinariesPath`) when downloading kubectl binaries is turned off (`downloadKubectlBinaries`), else the bundled kubectl | the same preference when downloading is turned off; otherwise the kubectl matched to the cluster's Kubernetes version in the download directory (`downloadBinariesPath`), downloaded when it is missing, else the bundled kubectl |
-| `getHelmPath(clusterId?)` | the "Path to helm binary" preference (`helmBinariesPath`), else the bundled helm | the same: helm does not depend on the cluster's version |
-| `getEnvironment(clusterId?, options?)` | the user's shell environment, with the bundled binaries directory appended to `PATH`, so that a kubectl or helm the user installed keeps winning; `KUBECONFIG` is the user's own | the user's shell environment, with the directory of the version-matched kubectl first on `PATH` when downloading is turned on and that kubectl is in place, the bundled binaries directory last, `KUBECONFIG` and `KUBECACHEDIR` that reach the cluster through Freelens in place of every kubeconfig variable of the user's, the cluster's proxy setting as `HTTPS_PROXY`, and `localhost` and `127.0.0.1` added to `NO_PROXY` |
+| Function                               | Without a cluster                                                                                                                                                                                                                               | For a cluster                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| -------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `getKubectlPath(clusterId?, options?)` | the "Path to kubectl binary" preference (`kubectlBinariesPath`) when downloading kubectl binaries is turned off (`downloadKubectlBinaries`), else the bundled kubectl                                                                           | the same preference when downloading is turned off; otherwise the kubectl matched to the cluster's Kubernetes version in the download directory (`downloadBinariesPath`), downloaded when it is missing, else the bundled kubectl                                                                                                                                                                                               |
+| `getHelmPath(clusterId?)`              | the "Path to helm binary" preference (`helmBinariesPath`), else the bundled helm                                                                                                                                                                | the same: helm does not depend on the cluster's version                                                                                                                                                                                                                                                                                                                                                                         |
+| `getEnvironment(clusterId?, options?)` | the user's shell environment, with the bundled binaries directory appended to `PATH`, so that a kubectl or helm the user installed keeps winning; `KUBECONFIG` is the user's own, and the application's proxy setting is `HTTPS_PROXY` when set | the user's shell environment, with the directory of the version-matched kubectl first on `PATH` when downloading is turned on and that kubectl is in place, the bundled binaries directory last, `KUBECONFIG` and `KUBECACHEDIR` that reach the cluster through Freelens in place of every kubeconfig variable of the user's, the cluster's proxy setting as `HTTPS_PROXY`, and `localhost` and `127.0.0.1` added to `NO_PROXY` |
 
 Every path is absolute, and a path a preference names is returned as it is.
 The environment is a `Record<string, string>` to pass as `env` to
@@ -928,12 +1044,22 @@ terminal and an extension, from two extensions or from two Freelens processes,
 wait for one preparation: the kubectl is downloaded once, and every call
 resolves with its outcome, the version-matched kubectl or, when the
 preparation fails, the bundled one with the problem reported to each caller.
-A call that waits for another Freelens process says so through `onPhase`.
+
+`onPhase` reports these phases, each with a message that names the kubectl
+version, which the progress does not carry:
+
+- waiting for another Freelens process that prepares the same kubectl;
+- downloading it, before the first `onDownloadProgress`;
+- verifying the download, before the downloaded binary first runs.
 
 **For a cluster, the cluster is connected.** The files `KUBECONFIG` and
 `KUBECACHEDIR` name exist only while it is: a disconnect removes them, and the
 environment stops working until it is asked for again after the cluster
-reconnects. Only reaching the cluster through Freelens is promised, not the
+reconnects. An extension that keeps something running with the environment
+learns of the disconnect and of the reconnect from a mobx `reaction` on
+`Main.Catalog.getClusterById(clusterId)?.status`, which
+[C5](#cataloggetallclusters-and-getclusterbyid-are-observable) makes part of
+the contract. Only reaching the cluster through Freelens is promised, not the
 server address the kubeconfig names or the content of the file.
 
 **Two kubectl functions, two meanings.** `Common.App.Preferences.getKubectlPath()`
@@ -962,7 +1088,7 @@ directory moves with the `downloadBinariesPath` preference.
 An extension **vendors or bundles whatever it needs apart from what the host
 provides**, so installing one is downloading a tarball and extracting it — there
 is nothing to resolve and no package manager involved. Installs land under
-`<userData>/extensions/<sanitized-name>/<version>-<digest8>/`; a *directory*
+`<userData>/extensions/<sanitized-name>/<version>-<digest8>/`; a _directory_
 install registers an extension in place and is the development mode, which is
 why there is no packing step and no symlink. The renderer loads from
 `freelens-extension://extensions/<sanitized-name>/<version>-<digest8>/<file>`

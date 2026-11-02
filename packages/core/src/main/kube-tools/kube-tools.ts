@@ -3,6 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { freelensProxyTokenEnvVar } from "../freelens-proxy/freelens-proxy-token";
 import { clearKubeconfigEnvVars } from "../utils/clear-kube-env-vars";
 
 import type { EnvironmentVariables } from "../../features/shell-sync/main/compute-shell-environment.injectable";
@@ -47,8 +48,12 @@ export interface KubeToolsClusterAccess {
   readonly kubeconfigPath: string;
   /** The cache directory of {@link kubeconfigPath}, exported as `KUBECACHEDIR`. */
   readonly cacheDirectoryPath: string;
-  /** The cluster's proxy preference, exported as `HTTPS_PROXY` when set. */
-  readonly httpsProxy?: string;
+  /**
+   * The freelens-proxy token, exported as `FREELENS_PROXY_TOKEN`. The
+   * `credential` plugin of the proxy kubeconfig reads it, so a tool reaches the
+   * cluster through the proxy. Only here, where the kubeconfig is the proxy's.
+   */
+  readonly token: string;
 }
 
 export interface ComposeKubeToolsEnvironmentArgs {
@@ -57,8 +62,40 @@ export interface ComposeKubeToolsEnvironmentArgs {
   readonly tools: KubeTools;
   /** Set for a cluster, absent without one. */
   readonly clusterAccess?: KubeToolsClusterAccess;
+  /**
+   * The proxy preference of the context, exported as `HTTPS_PROXY` in place of
+   * the user's own when set: the cluster's for a cluster, the application's
+   * without one.
+   */
+  readonly httpsProxy?: string;
   readonly isWindows: boolean;
 }
+
+/**
+ * Puts `prefix` in front of the `PATH` of `env` and `suffix` after it, in place.
+ *
+ * Windows spells the variable `Path` and reads its name case-insensitively,
+ * but a copy of `process.env` is a plain object: `env.PATH` would read
+ * nothing, and a second key would only shadow the first. So the variable
+ * ends up under exactly one key, `PATH`, on every platform.
+ */
+export const surroundPath = (
+  env: Partial<Record<string, string>>,
+  prefix: readonly string[],
+  suffix: readonly string[],
+  isWindows: boolean,
+): void => {
+  const pathKeys = isWindows ? Object.keys(env).filter((key) => key.toUpperCase() === "PATH") : ["PATH"];
+  const userPath = env[pathKeys.find((key) => key === "PATH") ?? pathKeys[0] ?? "PATH"];
+
+  for (const key of pathKeys) {
+    delete env[key];
+  }
+
+  env.PATH = [...prefix, userPath, ...suffix]
+    .filter((entry) => entry !== undefined && entry !== "")
+    .join(isWindows ? ";" : ":");
+};
 
 /**
  * The environment Freelens runs kubectl and helm with, the terminal's included
@@ -74,34 +111,24 @@ export const composeKubeToolsEnvironment = ({
   baseEnvironment,
   tools,
   clusterAccess,
+  httpsProxy,
   isWindows,
 }: ComposeKubeToolsEnvironmentArgs): EnvironmentVariables => {
   const copiedEnvironment: EnvironmentVariables = { ...baseEnvironment };
   const env = clusterAccess === undefined ? copiedEnvironment : clearKubeconfigEnvVars(copiedEnvironment);
-  // Windows spells the variable `Path` and reads its name case-insensitively,
-  // but a copy of `process.env` is a plain object: `env.PATH` would read
-  // nothing, and a second key would only shadow the first. So the variable
-  // ends up under exactly one key, `PATH`, on every platform.
-  const pathKeys = isWindows ? Object.keys(env).filter((key) => key.toUpperCase() === "PATH") : ["PATH"];
-  const userPath = env[pathKeys.find((key) => key === "PATH") ?? pathKeys[0] ?? "PATH"];
 
-  for (const key of pathKeys) {
-    delete env[key];
-  }
-
-  env.PATH = [...tools.pathPrefix, userPath, ...tools.pathSuffix]
-    .filter((entry) => entry !== undefined && entry !== "")
-    .join(isWindows ? ";" : ":");
+  surroundPath(env, tools.pathPrefix, tools.pathSuffix, isWindows);
 
   delete env.DEBUG; // don't pass DEBUG into shells
 
   if (clusterAccess !== undefined) {
     env.KUBECONFIG = clusterAccess.kubeconfigPath;
     env.KUBECACHEDIR = clusterAccess.cacheDirectoryPath;
+    env[freelensProxyTokenEnvVar] = clusterAccess.token;
+  }
 
-    if (clusterAccess.httpsProxy) {
-      env.HTTPS_PROXY = clusterAccess.httpsProxy;
-    }
+  if (httpsProxy) {
+    env.HTTPS_PROXY = httpsProxy;
   }
 
   env.NO_PROXY = ["localhost", "127.0.0.1", env.NO_PROXY].filter(Boolean).join();

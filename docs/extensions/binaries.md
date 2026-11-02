@@ -82,14 +82,14 @@ bin/<process.platform>/<process.arch>/<command>
 These are Node's normalized values, not `os.platform()` / `os.machine()`.
 `process.arch` is normalized, so `arm64` means `arm64` everywhere, whereas
 `os.machine()` passes `uname` through and yields `aarch64` on Linux for the same
-architecture. `process.arch` also reports the architecture of the *running
-build*, which is the right question when choosing a binary to spawn beside it.
+architecture. `process.arch` also reports the architecture of the _running
+build_, which is the right question when choosing a binary to spawn beside it.
 
-| `process.platform` | `process.arch` |
-| --- | --- |
-| `darwin` | `arm64`, `x64` |
-| `linux` | `arm64`, `x64` |
-| `win32` | `arm64`, `x64`, `ia32` |
+| `process.platform` | `process.arch`         |
+| ------------------ | ---------------------- |
+| `darwin`           | `arm64`, `x64`         |
+| `linux`            | `arm64`, `x64`         |
+| `win32`            | `arm64`, `x64`, `ia32` |
 
 Note **`win32`, not `windows`**: the host's own `<resources>/<platform>/<arch>/`
 tree spells it `windows`, so the two schemes must not be conflated.

@@ -714,6 +714,29 @@ exports[`workloads / pods > when navigating to workloads / pods view > given a n
                       />
                     </div>
                     <div
+                      class="TableCell ports nowrap sorting"
+                      id="ports"
+                    >
+                      <div
+                        class="content"
+                      >
+                        Ports
+                      </div>
+                      <i
+                        class="Icon sortIcon material focusable"
+                      >
+                        <span
+                          class="icon"
+                          data-icon-name="arrow_drop_down"
+                        >
+                          arrow_drop_down
+                        </span>
+                      </i>
+                      <div
+                        class="resize-handle"
+                      />
+                    </div>
+                    <div
                       class="TableCell cpu nowrap sorting"
                       id="cpuUsage"
                     >
@@ -964,6 +987,15 @@ exports[`workloads / pods > when navigating to workloads / pods view > given a n
                             <div />
                           </div>
                           <div
+                            class="TableCell ports"
+                          >
+                            <span
+                              class="PodPortsCell none"
+                            >
+                              -
+                            </span>
+                          </div>
+                          <div
                             class="TableCell cpu"
                           >
                             <span>
@@ -1044,6 +1076,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given a n
                       </div>
                       <div
                         aria-hidden="true"
+                        data-react-window-sizer=""
                         style="height: 33px; width: 100%; z-index: -1;"
                       />
                     </div>
@@ -1888,6 +1921,29 @@ exports[`workloads / pods > when navigating to workloads / pods view > given no 
                         class="content"
                       >
                         Containers
+                      </div>
+                      <i
+                        class="Icon sortIcon material focusable"
+                      >
+                        <span
+                          class="icon"
+                          data-icon-name="arrow_drop_down"
+                        >
+                          arrow_drop_down
+                        </span>
+                      </i>
+                      <div
+                        class="resize-handle"
+                      />
+                    </div>
+                    <div
+                      class="TableCell ports nowrap sorting"
+                      id="ports"
+                    >
+                      <div
+                        class="content"
+                      >
+                        Ports
                       </div>
                       <i
                         class="Icon sortIcon material focusable"
@@ -2930,6 +2986,29 @@ exports[`workloads / pods > when navigating to workloads / pods view > given pod
                         class="content"
                       >
                         Containers
+                      </div>
+                      <i
+                        class="Icon sortIcon material focusable"
+                      >
+                        <span
+                          class="icon"
+                          data-icon-name="arrow_drop_down"
+                        >
+                          arrow_drop_down
+                        </span>
+                      </i>
+                      <div
+                        class="resize-handle"
+                      />
+                    </div>
+                    <div
+                      class="TableCell ports nowrap sorting"
+                      id="ports"
+                    >
+                      <div
+                        class="content"
+                      >
+                        Ports
                       </div>
                       <i
                         class="Icon sortIcon material focusable"

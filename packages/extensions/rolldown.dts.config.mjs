@@ -27,10 +27,11 @@
 // builtin (`node:fs`, or a bare `fs`) or a `/// <reference types="node" />`,
 // which is how a declaration names Node's global types. Renderer code gets no
 // guarantee of Node, so the API declaration must not reference it. When this
-// fails, the likely cause is the pnpm patch of `rolldown-plugin-dts` no longer
-// applying: unpatched, the plugin keeps every member of `@freelensapp/utilities`
-// in the bundle, the Node-bound ones `Common.Util` leaves out included,
-// together with their `node:` imports.
+// fails, the likely cause is `rolldown-plugin-dts` no longer tree-shaking a
+// namespace import that a declaration names only by qualified name, which it
+// does from 0.28.8: without that, it keeps every member of
+// `@freelensapp/utilities` in the bundle, the Node-bound ones `Common.Util`
+// leaves out included, together with their `node:` imports.
 
 import { readFileSync } from "node:fs";
 import { isBuiltin } from "node:module";
@@ -151,6 +152,27 @@ const referencedSpecifiers = (code) => {
   return specifiers;
 };
 
+const declarationChunk = /\.d\.[cm]?ts$/;
+
+// Rolldown can put its JavaScript runtime (`__exportAll` and friends) in a
+// chunk of its own, next to the declaration rather than inside it. No
+// declaration imports it, and it does not parse as one, but it would still be
+// written to `dist/`. The dts plugin's `emitDtsOnly` cannot drop it: the
+// generator plugin that implements that option is left out with `dtsInput`.
+// So this plugin drops every chunk that is not a declaration, ahead of
+// `declared-externals`, which parses each chunk as a declaration.
+const declarationsOnly = {
+  name: "declarations-only",
+
+  generateBundle(_options, bundle) {
+    for (const [fileName, output] of Object.entries(bundle)) {
+      if (output.type === "chunk" && !declarationChunk.test(fileName)) {
+        delete bundle[fileName];
+      }
+    }
+  },
+};
+
 /** A `/// <reference types="node" />` directive, which pulls in `@types/node` wherever the file goes. */
 const nodeTypesReference = /^\/\/\/\s*<reference\s+types\s*=\s*["']node["']/m;
 
@@ -178,9 +200,9 @@ const declaredExternals = {
       this.error(
         "the API declaration must not depend on Node, but it references:\n" +
           builtins.map((specifier) => `  ${specifier}`).join("\n") +
-          "\nA likely cause is the pnpm patch of rolldown-plugin-dts (patchedDependencies in" +
-          " pnpm-workspace.yaml) no longer applying, which lets the Node-bound members of" +
-          " @freelensapp/utilities that Common.Util leaves out into the bundle.",
+          "\nA likely cause is rolldown-plugin-dts no longer tree-shaking a namespace import" +
+          " referenced only by qualified name (fixed in 0.28.8), which lets the Node-bound" +
+          " members of @freelensapp/utilities that Common.Util leaves out into the bundle.",
       );
     }
 
@@ -211,6 +233,7 @@ export default defineConfig({
     // up front, and with TypeScript 7 installed it picks `tsgo`, which refuses
     // to start without a tsconfig. Oxc needs none.
     dts({ dtsInput: true, emitDtsOnly: true, generator: "oxc", tsconfig: false }),
+    declarationsOnly,
     declaredExternals,
   ],
 });

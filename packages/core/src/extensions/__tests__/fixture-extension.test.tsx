@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 
 // The unit level of the extension contract. It loads the built bundle
 // of `@freelensapp/fixture-extension` — an extension written the way a
@@ -24,7 +24,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 //     and would pass without tracking anything at all
 //  3. the lifecycle: the declarative registration reaches the host only through
 //     the registrators and `extension.register()`
-//  4. `Renderer.Util.fetch`: the API namespace reaches the host's DI container
+//  4. `Common.Util.getAppVersion()`: the API namespace reaches the host's DI
+//     container
 //  5. `Renderer.K8sApi.detailsFor` and `menuItemFor`: the helpers the
 //     declaration promises exist on the runtime namespace, and the model they
 //     take, which narrows its `kind` and `apiVersion` with `declare`, keeps the
@@ -54,7 +55,6 @@ import isFlatpakPackageInjectable from "../../common/vars/is-flatpak-package.inj
 import { buildVersionInitializable } from "../../features/vars/build-version/common/token";
 import { extensionCustomResourceInjectionToken } from "../../renderer/components/custom-resource-definitions/extension-custom-resource-injection-token";
 import statusBarItemsInjectable from "../../renderer/components/status-bar/status-bar-items.injectable";
-import browserFetchInjectable from "../../renderer/fetch/browser-fetch.injectable";
 import { getDiForUnitTesting } from "../../renderer/getDiForUnitTesting";
 import currentlyInClusterFrameInjectable from "../../renderer/routes/currently-in-cluster-frame.injectable";
 import { installExtensionApiGlobals } from "../../test-utils/install-extension-api-globals";
@@ -69,12 +69,11 @@ import type { LensRendererExtension } from "../lens-renderer-extension";
 
 interface FixtureBundle {
   default: new (extension: InstalledExtension) => LensRendererExtension;
-  FIXTURE_PROBE_URL: string;
   FixtureStatusBarItem: React.ComponentType;
   FixtureExampleDetails: React.ComponentType;
   FixtureExampleMenuItem: React.ComponentType;
   FixtureExample: new (data: object) => { kind: string; apiVersion: string };
-  activationRecord: IObservableValue<{ appVersion: string; probeStatus: number } | undefined>;
+  activationRecord: IObservableValue<{ appVersion: string; probeHost: string } | undefined>;
   setStatusBarItemVisible: (value: boolean) => void;
   resolvedMobxObservable: typeof observable;
   resolvedReactUseState: typeof React.useState;
@@ -116,7 +115,6 @@ const importFixtureBundle = async (): Promise<FixtureBundle> => {
 describe("extension contract, against the built fixture extension", () => {
   let di: DiContainer;
   let fixture: FixtureBundle;
-  let fetchMock: ReturnType<typeof vi.fn>;
 
   beforeEach(async () => {
     di = getDiForUnitTesting();
@@ -126,9 +124,6 @@ describe("extension contract, against the built fixture extension", () => {
     // extension instance injects it through `navigate-to-route`.
     di.override(currentlyInClusterFrameInjectable, () => false);
     di.override(directoryForUserDataInjectable, () => "/some-directory-for-user-data");
-
-    fetchMock = vi.fn(async () => ({ ok: true, status: 204 }));
-    di.override(browserFetchInjectable, () => fetchMock as never);
 
     installExtensionApiGlobals();
 
@@ -319,16 +314,12 @@ describe("extension contract, against the built fixture extension", () => {
         dispose();
       });
 
-      it("reaches the host's HTTP client through Renderer.Util.fetch", () => {
-        expect(fetchMock).toHaveBeenCalledWith(fixture.FIXTURE_PROBE_URL);
-      });
-
       it("reaches the host's DI container through Common.Util", () => {
-        expect(fixture.activationRecord.get()).toEqual({ appVersion: "1.2.3", probeStatus: 204 });
+        expect(fixture.activationRecord.get()).toEqual({ appVersion: "1.2.3", probeHost: "fixture.invalid" });
       });
 
       it("notifies the host of the change it made to its own observable", () => {
-        expect(recorded).toEqual([undefined, { appVersion: "1.2.3", probeStatus: 204 }]);
+        expect(recorded).toEqual([undefined, { appVersion: "1.2.3", probeHost: "fixture.invalid" }]);
       });
     });
   });

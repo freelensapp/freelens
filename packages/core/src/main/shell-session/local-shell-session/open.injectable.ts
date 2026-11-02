@@ -14,7 +14,9 @@ import appNameInjectable from "../../../common/vars/app-name.injectable";
 import isMacInjectable from "../../../common/vars/is-mac.injectable";
 import isWindowsInjectable from "../../../common/vars/is-windows.injectable";
 import { buildVersionInitializable } from "../../../features/vars/build-version/common/token";
+import freelensProxyTokenInjectable from "../../freelens-proxy/freelens-proxy-token.injectable";
 import computeUserShellEnvironmentInjectable from "../../kube-tools/compute-user-shell-environment.injectable";
+import getUserShellInjectable from "../../kube-tools/get-user-shell.injectable";
 import resolveKubeToolsInjectable from "../../kube-tools/resolve-kube-tools.injectable";
 import kubeconfigManagerInjectable from "../../kubeconfig-manager/kubeconfig-manager.injectable";
 import createKubectlInjectable from "../../kubectl/create-kubectl.injectable";
@@ -23,6 +25,7 @@ import { kubectlStatusOptionsFor, messageOfError, terminalStatusReporterFor } fr
 import modifyTerminalShellEnvInjectable from "../shell-env-modifier/modify-terminal-shell-env.injectable";
 import shellSessionEnvsInjectable from "../shell-envs.injectable";
 import spawnPtyInjectable from "../spawn-pty.injectable";
+import { closedDuring, websocketClosedSignal } from "../websocket-closed";
 import { LocalShellSession } from "./local-shell-session";
 
 import type WebSocket from "ws";
@@ -61,11 +64,16 @@ const openLocalShellSessionInjectable = getInjectable({
       joinPaths: di.inject(joinPathsInjectable),
       getBasenameOfPath: di.inject(getBasenameOfPathInjectable),
       computeUserShellEnvironment: di.inject(computeUserShellEnvironmentInjectable),
+      getUserShell: di.inject(getUserShellInjectable),
       spawnPty: di.inject(spawnPtyInjectable),
       stat: di.inject(statInjectable),
+      freelensProxyToken: di.inject(freelensProxyTokenInjectable).value,
     };
 
     return async (args) => {
+      // Before the first await, so that a tab closed during any of them is seen.
+      const signal = websocketClosedSignal(args.websocket);
+      const closed = (stage: string) => closedDuring(signal, logger, `${args.cluster.id}:${args.tabId}`, stage);
       const kubectl = createKubectl(args.cluster.version.get());
       const kubeconfigManager = di.inject(kubeconfigManagerInjectable, args.cluster);
       // The websocket is already upgraded and writable here, long before the
@@ -76,11 +84,20 @@ const openLocalShellSessionInjectable = getInjectable({
       const { kubeconfigPath: proxyKubeconfigPath, cacheDirectoryPath: proxyCacheDirectoryPath } =
         await kubeconfigManager.ensurePaths();
 
+      if (closed("starting the cluster proxy")) {
+        return;
+      }
+
       const kubectlStatus = kubectlStatusOptionsFor(kubectl.kubectlVersion, status);
 
       status.info(`Checking kubectl v${kubectl.kubectlVersion} ...`);
 
       const kubeTools = await resolveKubeTools.forCluster(kubectl, kubectlStatus).finally(() => kubectlStatus.done());
+
+      if (closed(`checking kubectl v${kubectl.kubectlVersion}`)) {
+        return;
+      }
+
       const shellInitDirectory = await kubectl.writeInitScripts(kubeTools).catch((error) => {
         logger.error("[LOCAL-SHELL]: failed to write the shell init scripts", error);
         status.error(
@@ -91,6 +108,10 @@ const openLocalShellSessionInjectable = getInjectable({
         return undefined;
       });
 
+      if (closed("writing the shell init scripts")) {
+        return;
+      }
+
       const session = new LocalShellSession(
         {
           ...dependencies,
@@ -99,7 +120,7 @@ const openLocalShellSessionInjectable = getInjectable({
           proxyCacheDirectoryPath,
           shellInitDirectory,
         },
-        { kubectl, ...args },
+        { kubectl, ...args, signal },
       );
 
       return session.open();

@@ -11,10 +11,9 @@
 
 import { Button } from "@freelensapp/button";
 import { Icon } from "@freelensapp/icon";
-import { showSuccessNotificationInjectable } from "@freelensapp/notifications";
+import { showCheckedErrorNotificationInjectable, showSuccessNotificationInjectable } from "@freelensapp/notifications";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { clipboard } from "electron";
 import { observer } from "mobx-react";
 import React from "react";
 import { saveFileDialog } from "../../utils/saveFile";
@@ -24,7 +23,7 @@ import { Wizard, WizardStep } from "../wizard";
 import styles from "./kubeconfig-dialog.module.scss";
 import kubeconfigDialogStateInjectable from "./state.injectable";
 
-import type { ShowNotification } from "@freelensapp/notifications";
+import type { ShowCheckedErrorNotification, ShowNotification } from "@freelensapp/notifications";
 import type { StrictReactNode } from "@freelensapp/utilities";
 
 import type { IObservableValue } from "mobx";
@@ -41,6 +40,7 @@ export interface KubeConfigDialogProps extends Partial<DialogProps> {}
 interface Dependencies {
   state: IObservableValue<KubeconfigDialogData | undefined>;
   showSuccessNotification: ShowNotification;
+  showCheckedErrorNotification: ShowCheckedErrorNotification;
 }
 
 @observer
@@ -54,8 +54,10 @@ class NonInjectedKubeConfigDialog extends React.Component<KubeConfigDialogProps 
   };
 
   copyToClipboard = (config: string) => {
-    clipboard.writeText(config);
-    this.props.showSuccessNotification("Config copied to clipboard");
+    navigator.clipboard.writeText(config).then(
+      () => this.props.showSuccessNotification("Config copied to clipboard"),
+      (error) => this.props.showCheckedErrorNotification(error, "Failed to copy config to clipboard"),
+    );
   };
 
   download = (config: string) => {
@@ -108,6 +110,7 @@ export const KubeConfigDialog = withInjectables<Dependencies, KubeConfigDialogPr
   getProps: (di, props) => ({
     ...props,
     showSuccessNotification: di.inject(showSuccessNotificationInjectable),
+    showCheckedErrorNotification: di.inject(showCheckedErrorNotificationInjectable),
     state: di.inject(kubeconfigDialogStateInjectable),
   }),
 });

@@ -22,7 +22,6 @@ const setupSyncOpenAtLoginWithOsInjectable = getInjectable({
         (openAtLogin) => {
           setLoginItemSettings({
             openAtLogin,
-            openAsHidden: true,
             args: ["--hidden"],
           });
         },

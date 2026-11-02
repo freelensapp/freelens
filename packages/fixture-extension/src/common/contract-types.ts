@@ -34,6 +34,13 @@ export type FixtureAppPreferenceRegistration = Common.Types.AppPreferenceRegistr
 export type FixtureProtocolHandlerRegistration = Common.Types.ProtocolHandlerRegistration;
 export type FixtureCustomResourceRegistration = Common.Types.CustomResourceRegistration;
 
+// The `fetch` option of a bundled library, typed with the environment's own
+// standard `fetch` types, the way the MCP SDK types its transports'.
+// `Main.Util.fetch` has to fit it without an assertion, in all three programs:
+// with `@types/node`'s types in main, the DOM's in the renderer and the
+// worker's in common. `src/main/host-fetch.ts` passes it to one.
+type LibraryFetchOption = (url: string | URL, init?: RequestInit) => Promise<Response>;
+
 // A store model declared as an `interface` has no implicit index signature, and
 // the store's params have to take it anyway: as `defaults`, exactly as declared,
 // and as the model of the store a migration is given.
@@ -58,6 +65,7 @@ export type StoreMigrationHasOnlyTheKeysOfTheModel = Holds<string extends keyof 
 
 export type FixtureMainExtension = Main.LensExtension;
 export type FixtureMainFetch = typeof Main.Util.fetch;
+export type MainFetchFitsALibrary = Holds<FixtureMainFetch extends LibraryFetchOption ? true : false>;
 export type FixtureMainNavigate = typeof Main.Navigation.navigate;
 export type FixturePowerEventListener = Main.Power.PowerEventListener;
 export type FixtureShellDownloadOptions = Main.Shell.KubectlDownloadOptions;
@@ -77,6 +85,8 @@ export type FixtureMainPersistentVolumeClaimsApi = Main.K8sApi.PersistentVolumeC
 // --- Renderer --------------------------------------------------------------
 
 export type FixtureRendererExtensionType = Renderer.LensExtension;
+// The renderer's HTTP client is its global `fetch`, so the namespace has none.
+// @ts-expect-error `Renderer.Util` has no `fetch`
 export type FixtureRendererFetch = typeof Renderer.Util.fetch;
 export type FixtureRendererNavigate = typeof Renderer.Navigation.navigate;
 export type FixtureIconProps = Renderer.Component.IconProps;

@@ -76,7 +76,7 @@ exports[`preferences - navigation to terminal preferences > given in preferences
         id="lens-views"
       />
       <div
-        class="SettingLayout showNavigation Preferences"
+        class="SettingLayout showNavigation withCloseButton Preferences"
       >
         <nav
           class="sidebarRegion"
@@ -878,7 +878,7 @@ exports[`preferences - navigation to terminal preferences > given in preferences
         id="lens-views"
       />
       <div
-        class="SettingLayout showNavigation Preferences"
+        class="SettingLayout showNavigation withCloseButton Preferences"
       >
         <nav
           class="sidebarRegion"

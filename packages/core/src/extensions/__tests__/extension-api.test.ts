@@ -107,7 +107,7 @@ const rendererAnchors: Record<string, readonly string[]> = {
   ],
   Navigation: ["getDetailsUrl", "getMaybeDetailsUrl", "navigate"],
   Theme: ["activeTheme"],
-  Util: ["bytesToUnits", "cssNames", "fetch", "stopPropagation"],
+  Util: ["bytesToUnits", "cssNames", "stopPropagation"],
 };
 
 interface SubNamespaceReport {

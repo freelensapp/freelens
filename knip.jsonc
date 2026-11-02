@@ -106,7 +106,11 @@
         // devDependency so electron-builder does not pack it into the app
         "electron",
         // explicit dependency to prevent to install different versions of app-build-lib
-        "electron-builder-squirrel-windows"
+        "electron-builder-squirrel-windows",
+        // nothing here imports it: @vitejs/plugin-react adds it to the
+        // renderer's optimizeDeps.include, which Vite resolves from this
+        // package, so without it the dev server cannot pre-bundle it
+        "react-dom"
       ],
       "typescript": {
         "config": ["tsconfig.json"]
@@ -172,8 +176,6 @@
         // runtime code in this package imports them
         "@types/react",
         "@types/react-dom",
-        "@types/react-window",
-        "@xterm/xterm",
         "chart.js",
         "conf",
         "es-toolkit",
@@ -184,7 +186,6 @@
         "react",
         "react-dom",
         "react-select",
-        "react-window",
         "rfc6902",
         "type-fest"
       ],

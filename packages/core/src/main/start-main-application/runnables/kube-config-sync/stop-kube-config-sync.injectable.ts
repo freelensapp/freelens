@@ -6,6 +6,7 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import kubeconfigSyncManagerInjectable from "../../../catalog-sources/kubeconfig-sync/manager.injectable";
+import stopDisconnectingClustersRemovedFromCatalogInjectable from "../../../cluster/stop-disconnecting-clusters-removed-from-catalog.injectable";
 import { onQuitOfBackEndInjectionToken } from "../../runnable-tokens/phases";
 
 const stopKubeConfigSyncInjectable = getInjectable({
@@ -19,6 +20,8 @@ const stopKubeConfigSyncInjectable = getInjectable({
 
       return undefined;
     },
+    // Stopping the sync removes its clusters from the catalog
+    runAfter: stopDisconnectingClustersRemovedFromCatalogInjectable,
   }),
 
   injectionToken: onQuitOfBackEndInjectionToken,
