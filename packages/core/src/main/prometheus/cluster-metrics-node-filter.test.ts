@@ -107,7 +107,7 @@ describe("cluster metrics node filter in the prometheus providers", () => {
         const query = queryOf(operator, opts, metricName);
 
         expect(query).toContain(
-          `* on (pod,namespace) group_left(node) max without(pod_ip,host_ip) (kube_pod_info{node=~"worker-1|worker-2"})`,
+          `* on (pod,namespace) group_left(node) topk by (namespace, pod) (1, max by (namespace, pod, node) (kube_pod_info{node=~"worker-1|worker-2"}))`,
         );
       },
     );
@@ -162,6 +162,25 @@ describe("cluster metrics node filter in the prometheus providers", () => {
             '* on (namespace, pod) group_left() max by (namespace, pod) (kube_pod_status_phase{phase=~"Pending|Running"} == 1)',
           );
         }
+      },
+    );
+  });
+
+  describe("given the nodes category", () => {
+    const opts = { category: "nodes", mountpoints: "/" };
+
+    it.each(nodeExporterMetricNames)(
+      "joins %s with a single kube_pod_info series per pod in the operator provider",
+      (metricName) => {
+        const operator = providers.find((provider) => provider.kind === "operator")!;
+        const query = operator.getQuery(opts, metricName);
+
+        // A pod that keeps its name but moves to another node is reported with two series
+        // that differ in node and uid; they must not reach the "one" side of group_left.
+        expect(query).toContain(
+          `group_left(node) topk by (namespace, pod) (1, max by (namespace, pod, node) (kube_pod_info))`,
+        );
+        expect(query).not.toContain("max without(pod_ip,host_ip)");
       },
     );
   });
