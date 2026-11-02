@@ -30,7 +30,7 @@ describe("requestMetricsInjectable", () => {
     expect(post).toHaveBeenCalledWith("/metrics", {
       data: "sum(rate(container_cpu_usage_seconds_total[5m]))",
       query: {
-        start: 0,
+        start: end - Math.ceil(end / expectedStep) * expectedStep,
         end,
         step: expectedStep,
         kubernetes_namespace: undefined,
@@ -71,9 +71,46 @@ describe("requestMetricsInjectable", () => {
     expect(post).toHaveBeenCalledWith("/metrics", {
       data: "sum(rate(container_cpu_usage_seconds_total[5m]))",
       query: {
-        start: 0,
+        start: 40 * 24 * 60 * 60 - Math.ceil((40 * 24 * 60 * 60) / 123) * 123,
         end: 40 * 24 * 60 * 60,
         step: 123,
+        kubernetes_namespace: undefined,
+      },
+    });
+  });
+
+  it("moves start back so that end is an evaluation point when the range is not a multiple of the step", async () => {
+    const { post, requestMetrics } = instantiateRequestMetrics();
+    // 10 days + 1 hour: adaptive step is 3h, and 241h is not a multiple of it (#2885)
+    const start = Date.parse("2026-10-18T12:43:00Z") / 1000;
+    const end = Date.parse("2026-10-28T13:43:00Z") / 1000;
+
+    await requestMetrics("sum(rate(container_cpu_usage_seconds_total[5m]))", { start, end });
+
+    expect(post).toHaveBeenCalledWith("/metrics", {
+      data: "sum(rate(container_cpu_usage_seconds_total[5m]))",
+      query: {
+        start: Date.parse("2026-10-18T10:43:00Z") / 1000,
+        end,
+        step: 10800,
+        kubernetes_namespace: undefined,
+      },
+    });
+  });
+
+  it("keeps start unchanged when the range is already a multiple of the step", async () => {
+    const { post, requestMetrics } = instantiateRequestMetrics();
+    const start = 1_700_000_000;
+    const end = start + 24 * 60 * 60;
+
+    await requestMetrics("sum(rate(container_cpu_usage_seconds_total[5m]))", { start, end });
+
+    expect(post).toHaveBeenCalledWith("/metrics", {
+      data: "sum(rate(container_cpu_usage_seconds_total[5m]))",
+      query: {
+        start,
+        end,
+        step: 600,
         kubernetes_namespace: undefined,
       },
     });

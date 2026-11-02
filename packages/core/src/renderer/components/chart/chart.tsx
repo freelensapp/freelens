@@ -34,7 +34,8 @@ Tooltip.positioners.cursor = (_elements, eventPosition) => eventPosition;
 // The wrapper accepts loosely typed data and casts it to the strict v4
 // ChartData at the ChartJS boundary (see renderChart). Chart.js v4 parses data
 // internally, so string/number-y point values are tolerated at runtime.
-export type ChartDataPoint = number | { x: number | string; y: number | string } | null | undefined;
+// A `null` y marks a gap: the line (and its fill) is broken at that point.
+export type ChartDataPoint = number | { x: number | string; y: number | string | null } | null | undefined;
 
 export interface ChartDataSets {
   id?: string;
