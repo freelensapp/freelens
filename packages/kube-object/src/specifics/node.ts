@@ -226,12 +226,18 @@ export class Node extends KubeObject<ClusterScopedMetadata, NodeStatus, NodeSpec
     return this.getConditions().filter((c) => c.status === "True");
   }
 
+  /**
+   * Only the condition types core/v1 defines (`NodeConditionType`) are judged: `Ready` is a
+   * problem unless it is `True`, the pressure types when they are `True`. Other conditions (k3s's
+   * `EtcdIsVoter`, cloud providers, node-problem-detector) share no common meaning for `True`, so
+   * they are listed in the node's details but never reported as warnings.
+   */
   getWarningConditions() {
-    const goodConditions = ["Ready", "HostUpgrades", "SchedulingDisabled"];
+    const problemWhenTrue = ["MemoryPressure", "DiskPressure", "PIDPressure", "NetworkUnavailable"];
 
-    return this.getActiveConditions().filter((condition) => {
-      return !goodConditions.includes(condition.type);
-    });
+    return this.getConditions().filter(({ type, status }) =>
+      type === "Ready" ? status !== "True" : problemWhenTrue.includes(type) && status === "True",
+    );
   }
 
   getKubeletVersion() {
