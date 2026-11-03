@@ -22,6 +22,7 @@ const lensLightThemeInjectable: Injectable<LensTheme, ReadonlyDeep<LensTheme>> =
       description: "Original Lens light theme",
       author: "Mirantis",
       monacoTheme: "vs" as const,
+      isSystemTheme: true,
       colors: {
         blue: "#00a7a0",
         magenta: "#c93dce",
