@@ -39,11 +39,6 @@ interface SidebarCustomResource {
 const titleCaseSplitRegex = /(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])/;
 
 const formatResourceKind = (resourceKind: string) => resourceKind.split(titleCaseSplitRegex).join(" ");
-const getGroupLabel = (group: string) => {
-  const path = group.split(".").reverse();
-
-  return path.length > 1 ? path.at(-1)! : group;
-};
 
 const customResourceDefinitionGroupsSidebarItemsComputedInjectable = getInjectable({
   id: "custom-resource-definition-groups-sidebar-items-computed",
@@ -168,19 +163,28 @@ const customResourceDefinitionGroupsSidebarItemsComputedInjectable = getInjectab
         });
       }
 
+      const rootDepth = userPreferencesState.customResourceGroupRootDepth;
+      const getGroupPath = (group: string) => {
+        const path = group.split(".").reverse();
+        const rootLabelCount = Math.min(rootDepth, path.length);
+
+        return [path.slice(0, rootLabelCount).reverse().join("."), ...path.slice(rootLabelCount)];
+      };
+      const getGroupLabel = (group: string) => getGroupPath(group).at(-1)!;
+      const getPathKey = (path: string[]) => JSON.stringify(path);
       const folders = new Map<string, { path: string[] }>();
-      const groupsByParent = new Map<string, [string, SidebarCustomResource[]][]>();
+      const groupsByParent = new Map<string, { path: string[]; groups: [string, SidebarCustomResource[]][] }>();
 
       for (const groupEntry of customResourceGroups.entries()) {
         const [group] = groupEntry;
         // Kubernetes API groups are DNS names. Reversing their labels groups
         // related APIs by their shared domain (for example, *.crossplane.io).
-        const path = group.split(".").reverse();
+        const path = getGroupPath(group);
         let parentPath: string[] = [];
 
         for (const segment of path.slice(0, -1)) {
           const folderPath = [...parentPath, segment];
-          const folderKey = folderPath.join(".");
+          const folderKey = getPathKey(folderPath);
 
           if (!folders.has(folderKey)) {
             folders.set(folderKey, { path: folderPath });
@@ -189,31 +193,35 @@ const customResourceDefinitionGroupsSidebarItemsComputedInjectable = getInjectab
           parentPath = folderPath;
         }
 
-        const parentKey = parentPath.join(".");
-        const siblingGroups = groupsByParent.get(parentKey) ?? [];
-        siblingGroups.push(groupEntry);
-        groupsByParent.set(parentKey, siblingGroups);
+        const parentKey = getPathKey(parentPath);
+        const parent = groupsByParent.get(parentKey) ?? { path: parentPath, groups: [] };
+        parent.groups.push(groupEntry);
+        groupsByParent.set(parentKey, parent);
       }
 
-      const getChildFolderEntries = (parentKey: string, pathLength: number) =>
+      const getChildFolderEntries = (parentPath: string[]) =>
         Array.from(folders.entries())
-          .filter(([, folder]) => folder.path.length === pathLength && folder.path.slice(0, -1).join(".") === parentKey)
+          .filter(
+            ([, folder]) =>
+              folder.path.length === parentPath.length + 1 &&
+              parentPath.every((segment, index) => folder.path[index] === segment),
+          )
           .sort(([, left], [, right]) => left.path.at(-1)!.localeCompare(right.path.at(-1)!));
 
       const getChildGroupEntries = (
-        parentKey: string,
+        parentPath: string[],
         childFolders: [string, { path: string[] }][],
       ): [string, SidebarCustomResource[]][] => {
         const childFolderNames = new Set(childFolders.map(([, folder]) => folder.path.at(-1)!));
 
-        return (groupsByParent.get(parentKey) ?? [])
+        return (groupsByParent.get(getPathKey(parentPath))?.groups ?? [])
           .filter(([group]) => !childFolderNames.has(getGroupLabel(group)))
           .sort(([left], [right]) => getGroupLabel(left).localeCompare(getGroupLabel(right)));
       };
 
-      const getChildEntries = (parentKey: string, childFolderPathLength: number) => {
-        const childFolders = getChildFolderEntries(parentKey, childFolderPathLength);
-        const childGroups = getChildGroupEntries(parentKey, childFolders);
+      const getChildEntries = (parentPath: string[]) => {
+        const childFolders = getChildFolderEntries(parentPath);
+        const childGroups = getChildGroupEntries(parentPath, childFolders);
 
         return [
           ...childFolders.map(([key, folder]) => ({ key, title: folder.path.at(-1)!, kind: "folder" as const })),
@@ -230,19 +238,20 @@ const customResourceDefinitionGroupsSidebarItemsComputedInjectable = getInjectab
 
       for (const [folderKey, { path }] of pathsByDepth) {
         const parentPath = path.slice(0, -1);
-        const parentKey = parentPath.join(".");
-        const parentId = parentPath.length ? folderItems.get(parentKey)!.id : customResourcesSidebarItemInjectable.id;
-        const siblingEntries = getChildEntries(parentKey, path.length);
+        const parentId = parentPath.length
+          ? folderItems.get(getPathKey(parentPath))!.id
+          : customResourcesSidebarItemInjectable.id;
+        const siblingEntries = getChildEntries(parentPath);
         const orderNumber = siblingEntries.findIndex((entry) => entry.kind === "folder" && entry.key === folderKey);
         const folderItem = toCustomResourceFolderSidebarItem(path, orderNumber, parentId);
         folderItems.set(folderKey, folderItem);
         registrations.push(folderItem);
       }
 
-      for (const [parentKey, groups] of groupsByParent) {
-        const parentPath = parentKey ? parentKey.split(".") : [];
+      for (const { path: parentPath, groups } of groupsByParent.values()) {
+        const parentKey = getPathKey(parentPath);
         const parentId = parentPath.length ? folderItems.get(parentKey)!.id : customResourcesSidebarItemInjectable.id;
-        const siblingEntries = getChildEntries(parentKey, parentPath.length + 1);
+        const siblingEntries = getChildEntries(parentPath);
 
         for (const [group, resources] of groups) {
           const groupLabel = getGroupLabel(group);
@@ -250,12 +259,12 @@ const customResourceDefinitionGroupsSidebarItemsComputedInjectable = getInjectab
           const collidesWithFolder = collidingEntry !== undefined;
           const title = collidesWithFolder ? group.replaceAll(".", "\u200b.") : groupLabel;
           const orderNumber = siblingEntries.findIndex((entry) => entry.kind === "group" && entry.key === group);
-          const collidingFolderKey = parentKey ? `${parentKey}.${groupLabel}` : groupLabel;
+          const collidingFolderPath = [...parentPath, groupLabel];
+          const collidingFolderKey = getPathKey(collidingFolderPath);
           const collidingFolderItem = collidesWithFolder ? folderItems.get(collidingFolderKey) : undefined;
 
           if (collidingFolderItem) {
-            const folderPathLength = collidingFolderKey.split(".").length;
-            const childEntries = getChildEntries(collidingFolderKey, folderPathLength + 1);
+            const childEntries = getChildEntries(collidingFolderPath);
 
             registrations.push(
               ...toCustomResourceGroupToSidebarItems(

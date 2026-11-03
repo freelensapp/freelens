@@ -59,6 +59,9 @@ const userPreferencesPersistentStorageInjectable = getInjectable({
         state.groupCustomResourcesByDomain = descriptors.groupCustomResourcesByDomain.fromStore(
           preferences.groupCustomResourcesByDomain,
         );
+        state.customResourceGroupRootDepth = descriptors.customResourceGroupRootDepth.fromStore(
+          preferences.customResourceGroupRootDepth,
+        );
         state.persistentSearch = descriptors.persistentSearch.fromStore(preferences.persistentSearch);
         state.logViewerPreferences = descriptors.logViewerPreferences.fromStore(preferences.logViewerPreferences);
         state.shell = descriptors.shell.fromStore(preferences.shell);
@@ -91,6 +94,9 @@ const userPreferencesPersistentStorageInjectable = getInjectable({
             hotbarAutoHide: descriptors.hotbarAutoHide.toStore(state.hotbarAutoHide),
             groupCustomResourcesByDomain: descriptors.groupCustomResourcesByDomain.toStore(
               state.groupCustomResourcesByDomain,
+            ),
+            customResourceGroupRootDepth: descriptors.customResourceGroupRootDepth.toStore(
+              state.customResourceGroupRootDepth,
             ),
             persistentSearch: descriptors.persistentSearch.toStore(state.persistentSearch),
             logViewerPreferences: descriptors.logViewerPreferences.toStore(state.logViewerPreferences),

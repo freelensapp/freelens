@@ -711,7 +711,7 @@ exports[`cluster - custom resources in sidebar > when custom resource definition
           class="container sidebarNav sidebar-active-status"
         >
           <div
-            aria-describedby="DndDescribedBy-38"
+            aria-describedby="DndDescribedBy-39"
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
@@ -756,7 +756,7 @@ exports[`cluster - custom resources in sidebar > when custom resource definition
             </div>
           </div>
           <div
-            aria-describedby="DndDescribedBy-38"
+            aria-describedby="DndDescribedBy-39"
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
@@ -764,7 +764,7 @@ exports[`cluster - custom resources in sidebar > when custom resource definition
             tabindex="0"
           />
           <div
-            aria-describedby="DndDescribedBy-38"
+            aria-describedby="DndDescribedBy-39"
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
@@ -772,7 +772,7 @@ exports[`cluster - custom resources in sidebar > when custom resource definition
             tabindex="0"
           />
           <div
-            aria-describedby="DndDescribedBy-38"
+            aria-describedby="DndDescribedBy-39"
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
@@ -872,7 +872,7 @@ exports[`cluster - custom resources in sidebar > when custom resource definition
             </div>
           </div>
           <div
-            aria-describedby="DndDescribedBy-38"
+            aria-describedby="DndDescribedBy-39"
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
@@ -880,7 +880,7 @@ exports[`cluster - custom resources in sidebar > when custom resource definition
             tabindex="0"
           />
           <div
-            aria-describedby="DndDescribedBy-38"
+            aria-describedby="DndDescribedBy-39"
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
@@ -925,7 +925,7 @@ exports[`cluster - custom resources in sidebar > when custom resource definition
             </div>
           </div>
           <div
-            aria-describedby="DndDescribedBy-38"
+            aria-describedby="DndDescribedBy-39"
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
@@ -933,7 +933,7 @@ exports[`cluster - custom resources in sidebar > when custom resource definition
             tabindex="0"
           />
           <div
-            aria-describedby="DndDescribedBy-38"
+            aria-describedby="DndDescribedBy-39"
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
@@ -941,7 +941,7 @@ exports[`cluster - custom resources in sidebar > when custom resource definition
             tabindex="0"
           />
           <div
-            aria-describedby="DndDescribedBy-38"
+            aria-describedby="DndDescribedBy-39"
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
@@ -949,7 +949,7 @@ exports[`cluster - custom resources in sidebar > when custom resource definition
             tabindex="0"
           />
           <div
-            aria-describedby="DndDescribedBy-38"
+            aria-describedby="DndDescribedBy-39"
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
@@ -1054,7 +1054,7 @@ exports[`cluster - custom resources in sidebar > when custom resource definition
             </div>
           </div>
           <div
-            aria-describedby="DndDescribedBy-38"
+            aria-describedby="DndDescribedBy-39"
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
@@ -1062,7 +1062,7 @@ exports[`cluster - custom resources in sidebar > when custom resource definition
             tabindex="0"
           />
           <div
-            aria-describedby="DndDescribedBy-38"
+            aria-describedby="DndDescribedBy-39"
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
@@ -1107,7 +1107,7 @@ exports[`cluster - custom resources in sidebar > when custom resource definition
             </div>
           </div>
           <div
-            id="DndDescribedBy-38"
+            id="DndDescribedBy-39"
             style="display: none;"
           >
             
@@ -1119,7 +1119,7 @@ exports[`cluster - custom resources in sidebar > when custom resource definition
           <div
             aria-atomic="true"
             aria-live="assertive"
-            id="DndLiveRegion-38"
+            id="DndLiveRegion-39"
             role="status"
             style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
           />
@@ -2104,7 +2104,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
           class="container sidebarNav sidebar-active-status"
         >
           <div
-            aria-describedby="DndDescribedBy-28"
+            aria-describedby="DndDescribedBy-29"
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
@@ -2149,7 +2149,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
             </div>
           </div>
           <div
-            aria-describedby="DndDescribedBy-28"
+            aria-describedby="DndDescribedBy-29"
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
@@ -2157,7 +2157,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
             tabindex="0"
           />
           <div
-            aria-describedby="DndDescribedBy-28"
+            aria-describedby="DndDescribedBy-29"
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
@@ -2165,7 +2165,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
             tabindex="0"
           />
           <div
-            aria-describedby="DndDescribedBy-28"
+            aria-describedby="DndDescribedBy-29"
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
@@ -2265,7 +2265,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
             </div>
           </div>
           <div
-            aria-describedby="DndDescribedBy-28"
+            aria-describedby="DndDescribedBy-29"
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
@@ -2273,7 +2273,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
             tabindex="0"
           />
           <div
-            aria-describedby="DndDescribedBy-28"
+            aria-describedby="DndDescribedBy-29"
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
@@ -2318,7 +2318,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
             </div>
           </div>
           <div
-            aria-describedby="DndDescribedBy-28"
+            aria-describedby="DndDescribedBy-29"
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
@@ -2326,7 +2326,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
             tabindex="0"
           />
           <div
-            aria-describedby="DndDescribedBy-28"
+            aria-describedby="DndDescribedBy-29"
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
@@ -2334,7 +2334,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
             tabindex="0"
           />
           <div
-            aria-describedby="DndDescribedBy-28"
+            aria-describedby="DndDescribedBy-29"
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
@@ -2342,7 +2342,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
             tabindex="0"
           />
           <div
-            aria-describedby="DndDescribedBy-28"
+            aria-describedby="DndDescribedBy-29"
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
@@ -2447,7 +2447,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
             </div>
           </div>
           <div
-            aria-describedby="DndDescribedBy-28"
+            aria-describedby="DndDescribedBy-29"
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
@@ -2455,7 +2455,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
             tabindex="0"
           />
           <div
-            aria-describedby="DndDescribedBy-28"
+            aria-describedby="DndDescribedBy-29"
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
@@ -2500,7 +2500,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
             </div>
           </div>
           <div
-            id="DndDescribedBy-28"
+            id="DndDescribedBy-29"
             style="display: none;"
           >
             
@@ -2512,7 +2512,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
           <div
             aria-atomic="true"
             aria-live="assertive"
-            id="DndLiveRegion-28"
+            id="DndLiveRegion-29"
             role="status"
             style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
           />
@@ -2819,7 +2819,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
           class="container sidebarNav sidebar-active-status"
         >
           <div
-            aria-describedby="DndDescribedBy-33"
+            aria-describedby="DndDescribedBy-34"
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
@@ -2864,7 +2864,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
             </div>
           </div>
           <div
-            aria-describedby="DndDescribedBy-33"
+            aria-describedby="DndDescribedBy-34"
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
@@ -2872,7 +2872,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
             tabindex="0"
           />
           <div
-            aria-describedby="DndDescribedBy-33"
+            aria-describedby="DndDescribedBy-34"
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
@@ -2880,7 +2880,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
             tabindex="0"
           />
           <div
-            aria-describedby="DndDescribedBy-33"
+            aria-describedby="DndDescribedBy-34"
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
@@ -2980,7 +2980,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
             </div>
           </div>
           <div
-            aria-describedby="DndDescribedBy-33"
+            aria-describedby="DndDescribedBy-34"
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
@@ -2988,7 +2988,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
             tabindex="0"
           />
           <div
-            aria-describedby="DndDescribedBy-33"
+            aria-describedby="DndDescribedBy-34"
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
@@ -3033,7 +3033,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
             </div>
           </div>
           <div
-            aria-describedby="DndDescribedBy-33"
+            aria-describedby="DndDescribedBy-34"
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
@@ -3041,7 +3041,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
             tabindex="0"
           />
           <div
-            aria-describedby="DndDescribedBy-33"
+            aria-describedby="DndDescribedBy-34"
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
@@ -3049,7 +3049,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
             tabindex="0"
           />
           <div
-            aria-describedby="DndDescribedBy-33"
+            aria-describedby="DndDescribedBy-34"
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
@@ -3057,7 +3057,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
             tabindex="0"
           />
           <div
-            aria-describedby="DndDescribedBy-33"
+            aria-describedby="DndDescribedBy-34"
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
@@ -3162,7 +3162,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
             </div>
           </div>
           <div
-            aria-describedby="DndDescribedBy-33"
+            aria-describedby="DndDescribedBy-34"
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
@@ -3170,7 +3170,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
             tabindex="0"
           />
           <div
-            aria-describedby="DndDescribedBy-33"
+            aria-describedby="DndDescribedBy-34"
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
@@ -3279,7 +3279,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
             </div>
           </div>
           <div
-            id="DndDescribedBy-33"
+            id="DndDescribedBy-34"
             style="display: none;"
           >
             
@@ -3291,7 +3291,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
           <div
             aria-atomic="true"
             aria-live="assertive"
-            id="DndLiveRegion-33"
+            id="DndLiveRegion-34"
             role="status"
             style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
           />
@@ -4313,7 +4313,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
           class="container sidebarNav sidebar-active-status"
         >
           <div
-            aria-describedby="DndDescribedBy-17"
+            aria-describedby="DndDescribedBy-18"
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
@@ -4358,7 +4358,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
             </div>
           </div>
           <div
-            aria-describedby="DndDescribedBy-17"
+            aria-describedby="DndDescribedBy-18"
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
@@ -4366,7 +4366,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
             tabindex="0"
           />
           <div
-            aria-describedby="DndDescribedBy-17"
+            aria-describedby="DndDescribedBy-18"
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
@@ -4374,7 +4374,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
             tabindex="0"
           />
           <div
-            aria-describedby="DndDescribedBy-17"
+            aria-describedby="DndDescribedBy-18"
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
@@ -4474,7 +4474,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
             </div>
           </div>
           <div
-            aria-describedby="DndDescribedBy-17"
+            aria-describedby="DndDescribedBy-18"
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
@@ -4482,7 +4482,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
             tabindex="0"
           />
           <div
-            aria-describedby="DndDescribedBy-17"
+            aria-describedby="DndDescribedBy-18"
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
@@ -4527,7 +4527,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
             </div>
           </div>
           <div
-            aria-describedby="DndDescribedBy-17"
+            aria-describedby="DndDescribedBy-18"
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
@@ -4535,7 +4535,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
             tabindex="0"
           />
           <div
-            aria-describedby="DndDescribedBy-17"
+            aria-describedby="DndDescribedBy-18"
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
@@ -4543,7 +4543,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
             tabindex="0"
           />
           <div
-            aria-describedby="DndDescribedBy-17"
+            aria-describedby="DndDescribedBy-18"
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
@@ -4551,7 +4551,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
             tabindex="0"
           />
           <div
-            aria-describedby="DndDescribedBy-17"
+            aria-describedby="DndDescribedBy-18"
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
@@ -4656,7 +4656,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
             </div>
           </div>
           <div
-            aria-describedby="DndDescribedBy-17"
+            aria-describedby="DndDescribedBy-18"
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
@@ -4664,7 +4664,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
             tabindex="0"
           />
           <div
-            aria-describedby="DndDescribedBy-17"
+            aria-describedby="DndDescribedBy-18"
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
@@ -4768,7 +4768,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
             </div>
           </div>
           <div
-            id="DndDescribedBy-17"
+            id="DndDescribedBy-18"
             style="display: none;"
           >
             
@@ -4780,7 +4780,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
           <div
             aria-atomic="true"
             aria-live="assertive"
-            id="DndLiveRegion-17"
+            id="DndLiveRegion-18"
             role="status"
             style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
           />
@@ -5087,7 +5087,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
           class="container sidebarNav sidebar-active-status"
         >
           <div
-            aria-describedby="DndDescribedBy-25"
+            aria-describedby="DndDescribedBy-26"
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
@@ -5132,7 +5132,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
             </div>
           </div>
           <div
-            aria-describedby="DndDescribedBy-25"
+            aria-describedby="DndDescribedBy-26"
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
@@ -5140,7 +5140,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
             tabindex="0"
           />
           <div
-            aria-describedby="DndDescribedBy-25"
+            aria-describedby="DndDescribedBy-26"
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
@@ -5148,7 +5148,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
             tabindex="0"
           />
           <div
-            aria-describedby="DndDescribedBy-25"
+            aria-describedby="DndDescribedBy-26"
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
@@ -5248,7 +5248,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
             </div>
           </div>
           <div
-            aria-describedby="DndDescribedBy-25"
+            aria-describedby="DndDescribedBy-26"
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
@@ -5256,7 +5256,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
             tabindex="0"
           />
           <div
-            aria-describedby="DndDescribedBy-25"
+            aria-describedby="DndDescribedBy-26"
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
@@ -5301,7 +5301,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
             </div>
           </div>
           <div
-            aria-describedby="DndDescribedBy-25"
+            aria-describedby="DndDescribedBy-26"
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
@@ -5309,7 +5309,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
             tabindex="0"
           />
           <div
-            aria-describedby="DndDescribedBy-25"
+            aria-describedby="DndDescribedBy-26"
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
@@ -5317,7 +5317,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
             tabindex="0"
           />
           <div
-            aria-describedby="DndDescribedBy-25"
+            aria-describedby="DndDescribedBy-26"
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
@@ -5325,7 +5325,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
             tabindex="0"
           />
           <div
-            aria-describedby="DndDescribedBy-25"
+            aria-describedby="DndDescribedBy-26"
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
@@ -5430,7 +5430,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
             </div>
           </div>
           <div
-            aria-describedby="DndDescribedBy-25"
+            aria-describedby="DndDescribedBy-26"
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
@@ -5438,7 +5438,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
             tabindex="0"
           />
           <div
-            aria-describedby="DndDescribedBy-25"
+            aria-describedby="DndDescribedBy-26"
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
@@ -5716,7 +5716,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
             </div>
           </div>
           <div
-            id="DndDescribedBy-25"
+            id="DndDescribedBy-26"
             style="display: none;"
           >
             
@@ -5728,7 +5728,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
           <div
             aria-atomic="true"
             aria-live="assertive"
-            id="DndLiveRegion-25"
+            id="DndLiveRegion-26"
             role="status"
             style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
           />

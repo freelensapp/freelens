@@ -36,6 +36,7 @@ describe("cluster - custom resources in sidebar", () => {
       navigateToCustomResources = windowDi.inject(navigateToCustomResourcesInjectable);
       userPreferencesState = windowDi.inject(userPreferencesStateInjectable);
       userPreferencesState.groupCustomResourcesByDomain = true;
+      userPreferencesState.customResourceGroupRootDepth = 1;
       customResourceDefinition = new CustomResourceDefinition({
         apiVersion: "apiextensions.k8s.io/v1",
         kind: "CustomResourceDefinition",
@@ -178,6 +179,93 @@ describe("cluster - custom resources in sidebar", () => {
           "sidebar-item-custom-resource-group-folder-io.sample",
         );
         expect(result.getByTestId("sidebar-item-custom-resource-group-gcp.sample.io")).toBeInTheDocument();
+      });
+
+      it("uses the selected depth for top-level domain groups", async () => {
+        const createDefinition = (group: string, plural: string, kind: string) =>
+          new CustomResourceDefinition({
+            apiVersion: "apiextensions.k8s.io/v1",
+            kind: "CustomResourceDefinition",
+            metadata: {
+              name: `${plural}.${group}`,
+              selfLink: `/apis/apiextensions.k8s.io/v1/customresourcedefinitions/${plural}.${group}`,
+              uid: `${plural}-uid`,
+              resourceVersion: "1",
+            },
+            spec: {
+              group,
+              scope: "Cluster",
+              names: { kind, plural, singular: plural },
+              versions: [{ storage: true, name: "v1", served: true }],
+            },
+          });
+
+        const definitions = [
+          ["grafana.crossplane.io", "grafanas", "Grafana"],
+          ["alerts.grafana.crossplane.io", "alerts", "Alert"],
+          ["v1alpha1.alerts.grafana.crossplane.io", "v1alpha1alerts", "V1alpha1Alert"],
+        ] as const;
+        customResourceDefinitionStore.items.replace(
+          definitions.map(([group, plural, kind]) => createDefinition(group, plural, kind)),
+        );
+
+        for (const [group, plural] of definitions) {
+          builder.allowKubeResource({ apiName: plural, group });
+        }
+
+        act(() => {
+          userPreferencesState.customResourceGroupRootDepth = 2;
+        });
+
+        await waitFor(() => result.getByTestId("expand-icon-for-sidebar-item-custom-resources").click(), {
+          timeout: 300,
+        });
+
+        const domainFolder = result.getByTestId("sidebar-item-custom-resource-group-folder-crossplane.io");
+
+        expect(domainFolder).toHaveAttribute("data-parent-id-test", "sidebar-item-custom-resources");
+        expect(result.queryByTestId("sidebar-item-custom-resource-group-folder-io")).not.toBeInTheDocument();
+
+        await waitFor(
+          () => result.getByTestId("expand-icon-for-sidebar-item-custom-resource-group-folder-crossplane.io").click(),
+          { timeout: 300 },
+        );
+
+        const groupFolderId = "sidebar-item-custom-resource-group-folder-crossplane.io.grafana";
+
+        expect(result.getByTestId(groupFolderId)).toHaveAttribute(
+          "data-parent-id-test",
+          "sidebar-item-custom-resource-group-folder-crossplane.io",
+        );
+        expect(
+          result.queryByTestId("sidebar-item-custom-resource-group-grafana.crossplane.io"),
+        ).not.toBeInTheDocument();
+
+        await waitFor(() => result.getByTestId(`expand-icon-for-${groupFolderId}`).click(), { timeout: 300 });
+
+        expect(result.getByTestId("sidebar-item-custom-resource-group-grafana.crossplane.io/grafanas")).toHaveAttribute(
+          "data-parent-id-test",
+          groupFolderId,
+        );
+        expect(
+          result.getByTestId("sidebar-item-custom-resource-group-folder-crossplane.io.grafana.alerts"),
+        ).toBeInTheDocument();
+        expect(
+          result.queryByTestId("sidebar-item-custom-resource-group-alerts.grafana.crossplane.io"),
+        ).not.toBeInTheDocument();
+
+        act(() => {
+          userPreferencesState.customResourceGroupRootDepth = 37;
+        });
+
+        await waitFor(() => {
+          for (const [group] of definitions) {
+            expect(result.getByTestId(`sidebar-item-custom-resource-group-${group}`)).toBeInTheDocument();
+          }
+          expect(
+            result.queryByTestId("sidebar-item-custom-resource-group-folder-crossplane.io"),
+          ).not.toBeInTheDocument();
+        });
       });
 
       it("orders expandable entries alphabetically before CRDs", async () => {
