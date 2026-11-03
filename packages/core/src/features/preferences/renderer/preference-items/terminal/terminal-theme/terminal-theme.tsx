@@ -9,6 +9,7 @@ import { observer } from "mobx-react";
 import { SubTitle } from "../../../../../../renderer/components/layout/sub-title";
 import { Select } from "../../../../../../renderer/components/select";
 import { lensThemeDeclarationInjectionToken } from "../../../../../../renderer/themes/declaration";
+import { sortThemesForDisplay } from "../../../../../../renderer/themes/sort-for-display";
 import userPreferencesStateInjectable from "../../../../../user-preferences/common/state.injectable";
 
 import type { LensTheme } from "../../../../../../renderer/themes/lens-theme";
@@ -25,7 +26,7 @@ const NonInjectedTerminalTheme = observer(({ state, themes }: Dependencies) => {
       value: "", // TODO: replace with a sentinel value that isn't string (and serialize it differently)
       label: "Match Freelens Theme",
     },
-    ...themes.map((theme) => ({
+    ...sortThemesForDisplay(themes).map((theme) => ({
       value: theme.name,
       label: theme.name,
     })),

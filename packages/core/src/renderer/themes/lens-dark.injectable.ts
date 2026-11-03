@@ -159,6 +159,7 @@ const lensDarkThemeInjectable: Injectable<LensTheme, ReadonlyDeep<LensTheme>> = 
         brightWhite: "#eeeeec",
       },
       isDefault: true,
+      isSystemTheme: true,
     };
 
     return theme;
