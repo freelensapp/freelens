@@ -208,7 +208,7 @@ const NonInjectedInstalledExtensions = observer(
                   >
                     <Icon material={isEnabled ? "unpublished" : "check_circle"} />
                     <span className="title" aria-disabled={isUninstalling}>
-                      {isEnabled ? "Disable" : "Enabled"}
+                      {isEnabled ? "Disable" : "Enable"}
                     </span>
                   </MenuItem>
                 )}
