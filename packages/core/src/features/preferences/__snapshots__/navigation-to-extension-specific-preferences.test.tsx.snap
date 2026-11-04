@@ -642,6 +642,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
         >
           <div
             class="HotbarCell animateDown"
+            id="hotbar-cell-0"
             index="0"
           >
             <div
@@ -667,6 +668,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
           </div>
           <div
             class="HotbarCell animateDown"
+            id="hotbar-cell-1"
             index="1"
           >
             <div
@@ -692,42 +694,52 @@ exports[`preferences - navigation to extension specific preferences > given in p
           </div>
           <div
             class="HotbarCell animateDown"
+            id="hotbar-cell-2"
             index="2"
           />
           <div
             class="HotbarCell animateDown"
+            id="hotbar-cell-3"
             index="3"
           />
           <div
             class="HotbarCell animateDown"
+            id="hotbar-cell-4"
             index="4"
           />
           <div
             class="HotbarCell animateDown"
+            id="hotbar-cell-5"
             index="5"
           />
           <div
             class="HotbarCell animateDown"
+            id="hotbar-cell-6"
             index="6"
           />
           <div
             class="HotbarCell animateDown"
+            id="hotbar-cell-7"
             index="7"
           />
           <div
             class="HotbarCell animateDown"
+            id="hotbar-cell-8"
             index="8"
           />
           <div
             class="HotbarCell animateDown"
+            id="hotbar-cell-9"
             index="9"
           />
           <div
             class="HotbarCell animateDown"
+            id="hotbar-cell-10"
             index="10"
           />
           <div
             class="HotbarCell animateDown"
+            id="hotbar-cell-11"
             index="11"
           />
           <div
@@ -1066,6 +1078,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
       >
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-0"
           index="0"
         >
           <div
@@ -1091,6 +1104,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
         </div>
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-1"
           index="1"
         >
           <div
@@ -1116,42 +1130,52 @@ exports[`preferences - navigation to extension specific preferences > given in p
         </div>
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-2"
           index="2"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-3"
           index="3"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-4"
           index="4"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-5"
           index="5"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-6"
           index="6"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-7"
           index="7"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-8"
           index="8"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-9"
           index="9"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-10"
           index="10"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-11"
           index="11"
         />
         <div
@@ -1501,6 +1525,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
       >
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-0"
           index="0"
         >
           <div
@@ -1526,6 +1551,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
         </div>
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-1"
           index="1"
         >
           <div
@@ -1551,42 +1577,52 @@ exports[`preferences - navigation to extension specific preferences > given in p
         </div>
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-2"
           index="2"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-3"
           index="3"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-4"
           index="4"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-5"
           index="5"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-6"
           index="6"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-7"
           index="7"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-8"
           index="8"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-9"
           index="9"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-10"
           index="10"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-11"
           index="11"
         />
         <div
@@ -1936,6 +1972,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
       >
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-0"
           index="0"
         >
           <div
@@ -1961,6 +1998,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
         </div>
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-1"
           index="1"
         >
           <div
@@ -1986,42 +2024,52 @@ exports[`preferences - navigation to extension specific preferences > given in p
         </div>
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-2"
           index="2"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-3"
           index="3"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-4"
           index="4"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-5"
           index="5"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-6"
           index="6"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-7"
           index="7"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-8"
           index="8"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-9"
           index="9"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-10"
           index="10"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-11"
           index="11"
         />
         <div
@@ -2397,6 +2445,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
       >
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-0"
           index="0"
         >
           <div
@@ -2422,6 +2471,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
         </div>
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-1"
           index="1"
         >
           <div
@@ -2447,42 +2497,52 @@ exports[`preferences - navigation to extension specific preferences > given in p
         </div>
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-2"
           index="2"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-3"
           index="3"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-4"
           index="4"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-5"
           index="5"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-6"
           index="6"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-7"
           index="7"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-8"
           index="8"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-9"
           index="9"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-10"
           index="10"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-11"
           index="11"
         />
         <div
@@ -3187,6 +3247,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
       >
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-0"
           index="0"
         >
           <div
@@ -3212,6 +3273,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
         </div>
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-1"
           index="1"
         >
           <div
@@ -3237,42 +3299,52 @@ exports[`preferences - navigation to extension specific preferences > given in p
         </div>
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-2"
           index="2"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-3"
           index="3"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-4"
           index="4"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-5"
           index="5"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-6"
           index="6"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-7"
           index="7"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-8"
           index="8"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-9"
           index="9"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-10"
           index="10"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-11"
           index="11"
         />
         <div
@@ -4015,6 +4087,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
       >
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-0"
           index="0"
         >
           <div
@@ -4040,6 +4113,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
         </div>
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-1"
           index="1"
         >
           <div
@@ -4065,42 +4139,52 @@ exports[`preferences - navigation to extension specific preferences > given in p
         </div>
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-2"
           index="2"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-3"
           index="3"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-4"
           index="4"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-5"
           index="5"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-6"
           index="6"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-7"
           index="7"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-8"
           index="8"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-9"
           index="9"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-10"
           index="10"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-11"
           index="11"
         />
         <div
@@ -4464,6 +4548,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
       >
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-0"
           index="0"
         >
           <div
@@ -4489,6 +4574,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
         </div>
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-1"
           index="1"
         >
           <div
@@ -4514,42 +4600,52 @@ exports[`preferences - navigation to extension specific preferences > given in p
         </div>
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-2"
           index="2"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-3"
           index="3"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-4"
           index="4"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-5"
           index="5"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-6"
           index="6"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-7"
           index="7"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-8"
           index="8"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-9"
           index="9"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-10"
           index="10"
         />
         <div
           class="HotbarCell animateDown"
+          id="hotbar-cell-11"
           index="11"
         />
         <div
@@ -4844,6 +4940,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
         >
           <div
             class="HotbarCell animateDown"
+            id="hotbar-cell-0"
             index="0"
           >
             <div
@@ -4869,6 +4966,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
           </div>
           <div
             class="HotbarCell animateDown"
+            id="hotbar-cell-1"
             index="1"
           >
             <div
@@ -4894,42 +4992,52 @@ exports[`preferences - navigation to extension specific preferences > given in p
           </div>
           <div
             class="HotbarCell animateDown"
+            id="hotbar-cell-2"
             index="2"
           />
           <div
             class="HotbarCell animateDown"
+            id="hotbar-cell-3"
             index="3"
           />
           <div
             class="HotbarCell animateDown"
+            id="hotbar-cell-4"
             index="4"
           />
           <div
             class="HotbarCell animateDown"
+            id="hotbar-cell-5"
             index="5"
           />
           <div
             class="HotbarCell animateDown"
+            id="hotbar-cell-6"
             index="6"
           />
           <div
             class="HotbarCell animateDown"
+            id="hotbar-cell-7"
             index="7"
           />
           <div
             class="HotbarCell animateDown"
+            id="hotbar-cell-8"
             index="8"
           />
           <div
             class="HotbarCell animateDown"
+            id="hotbar-cell-9"
             index="9"
           />
           <div
             class="HotbarCell animateDown"
+            id="hotbar-cell-10"
             index="10"
           />
           <div
             class="HotbarCell animateDown"
+            id="hotbar-cell-11"
             index="11"
           />
           <div
