@@ -13,6 +13,8 @@ import { registerInjectables as registerFeaturesFeaturesClusterExecuteRendererIn
 import { registerInjectables as registerFeaturesFeaturesClusterInjectables } from "./features/cluster/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesClusterStateSyncRendererInjectables } from "./features/cluster/state-sync/renderer/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesClusterStorageRendererInjectables } from "./features/cluster/storage/renderer/register-injectables";
+import { registerInjectables as registerFeaturesFeaturesCustomTableColumnsInjectables } from "./features/custom-table-columns/register-injectables";
+import { registerInjectables as registerFeaturesFeaturesCustomTableColumnsRendererInjectables } from "./features/custom-table-columns/renderer/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesExtensionsEnabledRendererInjectables } from "./features/extensions/enabled/renderer/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesExtensionsInstallerRendererInjectables } from "./features/extensions/installer/renderer/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesExtensionsLoaderRendererInjectables } from "./features/extensions/loader/renderer/register-injectables";
@@ -59,6 +61,8 @@ export function registerInjectables(di: DiContainerForInjection): void {
   registerFeaturesFeaturesClusterExecuteRendererInjectables(di);
   registerFeaturesFeaturesClusterStateSyncRendererInjectables(di);
   registerFeaturesFeaturesClusterStorageRendererInjectables(di);
+  registerFeaturesFeaturesCustomTableColumnsRendererInjectables(di);
+  registerFeaturesFeaturesCustomTableColumnsInjectables(di);
   registerFeaturesFeaturesExtensionsInjectables(di);
   registerFeaturesFeaturesExtensionsEnabledRendererInjectables(di);
   registerFeaturesFeaturesExtensionsInstallerRendererInjectables(di);

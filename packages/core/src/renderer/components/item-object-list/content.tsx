@@ -60,6 +60,7 @@ export interface ItemListLayoutContentProps<Item extends ItemObject, PreLoadStor
   getIsReady: () => boolean; // show loading indicator while not ready
   isSelectable?: boolean; // show checkbox in rows for selecting items
   isConfigurable?: boolean;
+  renderColumnMenuFooter?: () => StrictReactNode;
   copyClassNameFromHeadCells?: boolean;
   sortingCallbacks?: TableSortCallbacks<Item>;
   tableProps?: Partial<TableProps<Item>>; // low-level table configuration
@@ -604,7 +605,7 @@ export class NonInjectedItemListLayoutContent<
   }
 
   renderColumnVisibilityMenu(tableId: string) {
-    const { renderTableHeader = [] } = this.props;
+    const { renderTableHeader = [], renderColumnMenuFooter } = this.props;
 
     return (
       <MenuActions
@@ -626,6 +627,7 @@ export class NonInjectedItemListLayoutContent<
               />
             </MenuItem>
           ))}
+        {renderColumnMenuFooter?.()}
       </MenuActions>
     );
   }

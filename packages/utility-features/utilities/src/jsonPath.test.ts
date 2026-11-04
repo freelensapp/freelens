@@ -5,7 +5,7 @@
  */
 
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { convertKubectlJsonPathToNodeJsonPath, safeJSONPathValue } from "./jsonPath";
+import { convertKubectlJsonPathToNodeJsonPath, isValidJSONPath, safeJSONPathValue } from "./jsonPath";
 
 describe("convertKubectlJsonPathToNodeJsonPath", () => {
   it("should convert \\. to use indexed notation", () => {
@@ -60,6 +60,24 @@ describe("convertKubectlJsonPathToNodeJsonPath", () => {
     const res = convertKubectlJsonPathToNodeJsonPath(".metadata.labels[]..");
 
     expect(res).toBe("$.metadata.labels[0]");
+  });
+
+  it("keeps a bracketed key that holds both dots and a slash", () => {
+    const res = convertKubectlJsonPathToNodeJsonPath(".metadata.labels['kops.k8s.io/instancegroup']");
+
+    expect(res).toBe("$.metadata.labels['kops.k8s.io/instancegroup']");
+  });
+
+  it("keeps a bracketed key that holds a dash", () => {
+    const res = convertKubectlJsonPathToNodeJsonPath(".metadata.labels['node.kubernetes.io/instance-type']");
+
+    expect(res).toBe("$.metadata.labels['node.kubernetes.io/instance-type']");
+  });
+
+  it("converts a dot notation key that follows a bracketed one", () => {
+    const res = convertKubectlJsonPathToNodeJsonPath(".metadata.labels['some.key'].alias-name");
+
+    expect(res).toBe("$.metadata.labels['some.key']['alias-name']");
   });
 
   it("converts ending ...name to ..name", () => {
@@ -191,5 +209,21 @@ describe("safeJSONPathValue", () => {
     );
 
     expect(res).toBe("bat");
+  });
+});
+
+describe("isValidJSONPath", () => {
+  it.each([
+    ".metadata.name",
+    ".metadata.labels['kops.k8s.io/instancegroup']",
+    ".status.containerStatuses[0].lastState.terminated.reason",
+    ".spec.containers[*].image",
+    ".status.conditions[?(@.type=='Ready')].status",
+  ])("accepts %s", (path) => {
+    expect(isValidJSONPath(path)).toBe(true);
+  });
+
+  it.each([".metadata[", ".metadata.labels['unclosed", "[?(@.type=="])("rejects %s", (path) => {
+    expect(isValidJSONPath(path)).toBe(false);
   });
 });
