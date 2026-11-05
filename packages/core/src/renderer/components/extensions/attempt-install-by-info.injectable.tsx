@@ -69,7 +69,8 @@ const attemptInstallByInfoInjectable = getInjectable({
     const installByInfo = async (info: ExtensionInfo, baseUrl: string, disposer: ExtendableDisposer): Promise<void> => {
       const { name, version: versionOrTagName, requireConfirmation = false } = info;
       const registryUrl = new URL(baseUrl);
-      registryUrl.pathname = name;
+      // keep the path of a registry served under a prefix, such as Artifactory's /artifactory/api/npm/<repo>/
+      registryUrl.pathname = registryUrl.pathname.replace(/\/?$/, "/") + name;
       let json: NpmRegistryPackageDescriptor;
 
       try {
