@@ -278,6 +278,10 @@ const NonInjectedBarChart = observer(
       animation: {
         duration: 0,
       },
+      // The stepped line draws no points, so with the default `intersect` its
+      // values would show only with the cursor exactly on a sample (#2928):
+      // like the bars, it shows the values of the time under the cursor.
+      ...(useSteppedStyle ? { interaction: { mode: "index" as const, intersect: false } } : {}),
       elements: {
         bar: {
           backgroundColor: getBarColor,
