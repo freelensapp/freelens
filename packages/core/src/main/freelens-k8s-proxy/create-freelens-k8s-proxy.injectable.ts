@@ -216,7 +216,11 @@ const createFreelensK8sProxyInjectable = getInjectable({
         assert(proxyProcess.stdout);
 
         proxyProcess.stderr.on("data", (data: Buffer) => {
-          if (data.includes("http: TLS handshake error")) {
+          // A request its client aborted is not a failure of the proxy
+          if (
+            data.includes("http: TLS handshake error") ||
+            data.includes("Error while proxying request: context canceled")
+          ) {
             return;
           }
 
