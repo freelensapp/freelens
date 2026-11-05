@@ -83,6 +83,7 @@ export interface IngressRule {
 }
 
 export interface IngressSpec {
+  ingressClassName?: string;
   tls: {
     secretName: string;
   }[];
@@ -118,8 +119,18 @@ export class Ingress extends KubeObject<NamespaceScopedMetadata, IngressStatus, 
 
   static readonly apiBase = "/apis/networking.k8s.io/v1/ingresses";
 
+  static readonly ANNOTATION_INGRESS_CLASS = "kubernetes.io/ingress.class";
+
   getRules() {
     return this.spec.rules ?? [];
+  }
+
+  /**
+   * The name of the IngressClass from `spec.ingressClassName`, or from the deprecated
+   * `kubernetes.io/ingress.class` annotation when the field is not set
+   */
+  getIngressClassName(): string | undefined {
+    return this.spec?.ingressClassName ?? this.metadata.annotations?.[Ingress.ANNOTATION_INGRESS_CLASS];
   }
 
   getRoutes(): string[] {

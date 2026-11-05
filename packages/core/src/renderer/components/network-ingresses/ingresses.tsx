@@ -21,6 +21,7 @@ import type { IngressStore } from "./ingress-store";
 enum columnId {
   name = "name",
   namespace = "namespace",
+  ingressClass = "ingress-class",
   loadBalancers = "load-balancers",
   rules = "rules",
   age = "age",
@@ -88,13 +89,19 @@ const NonInjectedIngresses = observer((props: Dependencies) => {
         sortingCallbacks={{
           [columnId.name]: (ingress) => ingress.getName(),
           [columnId.namespace]: (ingress) => ingress.getNs(),
+          [columnId.ingressClass]: (ingress) => ingress.getIngressClassName(),
           [columnId.age]: (ingress) => -ingress.getCreationTimestamp(),
         }}
-        searchFilters={[(ingress) => ingress.getSearchFields(), (ingress) => ingress.getPorts()]}
+        searchFilters={[
+          (ingress) => ingress.getSearchFields(),
+          (ingress) => ingress.getPorts(),
+          (ingress) => ingress.getIngressClassName(),
+        ]}
         renderHeaderTitle="Ingresses"
         renderTableHeader={[
           { title: "Name", className: "name", sortBy: columnId.name, id: columnId.name },
           { title: "Namespace", className: "namespace", sortBy: columnId.namespace, id: columnId.namespace },
+          { title: "Class", className: "ingress-class", sortBy: columnId.ingressClass, id: columnId.ingressClass },
           { title: "LoadBalancers", className: "loadbalancers", id: columnId.loadBalancers },
           { title: "Rules", className: "rules", id: columnId.rules },
           { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
@@ -106,6 +113,7 @@ const NonInjectedIngresses = observer((props: Dependencies) => {
           return [
             <WithTooltip>{ingress.getName()}</WithTooltip>,
             <NamespaceSelectBadge key="namespace" namespace={ingress.getNs()} />,
+            <WithTooltip>{ingress.getIngressClassName()}</WithTooltip>,
             <WithTooltip tooltip={showLoadBalancers(loadBalancers, 20)}>
               {showLoadBalancers(loadBalancers, 1)}
             </WithTooltip>,
