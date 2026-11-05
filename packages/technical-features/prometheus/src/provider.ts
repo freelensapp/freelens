@@ -147,3 +147,12 @@ export function nodeFilterAdditive(opts: Record<string, string>, label: string):
 export const prometheusProviderInjectionToken = getInjectionToken<PrometheusProvider>({
   id: "prometheus-provider",
 });
+
+/**
+ * kube-state-metrics keeps the resource series of a completed pod, so a sum of
+ * them is joined with this to count only the pods that hold their requests on a
+ * node, as `kubectl describe node` does. The join matches on namespace and pod
+ * because pod names repeat across namespaces.
+ */
+export const activePodsJoin =
+  ' * on (namespace, pod) group_left() max by (namespace, pod) (kube_pod_status_phase{phase=~"Pending|Running"} == 1)';

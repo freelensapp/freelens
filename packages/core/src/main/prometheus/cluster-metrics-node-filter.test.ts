@@ -109,6 +109,18 @@ describe("cluster metrics node filter in the prometheus providers", () => {
     });
   });
 
+  it.each(["memoryRequests", "cpuRequests"])("counts only the pending and running pods in %s", (metricName) => {
+    for (const provider of providers) {
+      for (const opts of [{ category: "cluster" }, { category: "cluster", nodes: "worker-1" }]) {
+        const query = provider.getQuery(opts, metricName);
+
+        expect(query, `${provider.kind}: ${query}`).toContain(
+          `* on (namespace, pod) group_left() max by (namespace, pod) (kube_pod_status_phase{phase=~"Pending|Running"} == 1)`,
+        );
+      }
+    }
+  });
+
   describe("given no node names", () => {
     const opts = { category: "cluster", mountpoints: "/" };
 

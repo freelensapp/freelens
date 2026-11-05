@@ -6,6 +6,7 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import {
+  activePodsJoin,
   bytesSent,
   createPrometheusProvider,
   findFirstNamespacedService,
@@ -29,7 +30,7 @@ export const getStacklightLikeQueryFor =
           case "workloadMemoryUsage":
             return `sum(container_memory_working_set_bytes{container!="POD",container!="",image!=""${nodeFilterAdditive(opts, "instance")}}) by (component)`;
           case "memoryRequests":
-            return `sum(kube_pod_container_resource_requests{resource="memory"${nodeFilterAdditive(opts, "node")}}) by (component)`;
+            return `sum(kube_pod_container_resource_requests{resource="memory"${nodeFilterAdditive(opts, "node")}}${activePodsJoin}) by (component)`;
           case "memoryLimits":
             return `sum(kube_pod_container_resource_limits{resource="memory"${nodeFilterAdditive(opts, "node")}}) by (component)`;
           case "memoryCapacity":
@@ -39,7 +40,7 @@ export const getStacklightLikeQueryFor =
           case "cpuUsage":
             return `sum(rate(node_cpu_seconds_total{mode=~"user|system"${nodeFilterAdditive(opts, "node")}}[${rateAccuracy}]))`;
           case "cpuRequests":
-            return `sum(kube_pod_container_resource_requests{resource="cpu"${nodeFilterAdditive(opts, "node")}}) by (component)`;
+            return `sum(kube_pod_container_resource_requests{resource="cpu"${nodeFilterAdditive(opts, "node")}}${activePodsJoin}) by (component)`;
           case "cpuLimits":
             return `sum(kube_pod_container_resource_limits{resource="cpu"${nodeFilterAdditive(opts, "node")}}) by (component)`;
           case "cpuCapacity":
