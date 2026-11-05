@@ -133,7 +133,7 @@ catalog:
   verkit: 0.5.0
   winston: 3.19.0
   winston-transport: 4.9.0
-  ws: 8.22.0
+  ws: 8.22.1
   yauzl-promise: 4.0.0
   zod: 4.6.7
 
