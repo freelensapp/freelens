@@ -157,6 +157,18 @@ exports[`preferences - closing-preferences > given accessing preferences directl
                 </div>
                 <div
                   class="Tab flex gap-2 items-center"
+                  data-preference-tab-link-test="crd"
+                  role="tab"
+                  tabindex="0"
+                >
+                  <div
+                    class="label"
+                  >
+                    CRDs
+                  </div>
+                </div>
+                <div
+                  class="Tab flex gap-2 items-center"
                   data-preference-tab-link-test="some-path-id-for-some-test-tab-id"
                   role="tab"
                   tabindex="0"
@@ -955,6 +967,18 @@ exports[`preferences - closing-preferences > given accessing preferences directl
                     class="label"
                   >
                     Terminal
+                  </div>
+                </div>
+                <div
+                  class="Tab flex gap-2 items-center"
+                  data-preference-tab-link-test="crd"
+                  role="tab"
+                  tabindex="0"
+                >
+                  <div
+                    class="label"
+                  >
+                    CRDs
                   </div>
                 </div>
                 <div
@@ -1851,6 +1875,18 @@ exports[`preferences - closing-preferences > given already in a page and then na
                 </div>
                 <div
                   class="Tab flex gap-2 items-center"
+                  data-preference-tab-link-test="crd"
+                  role="tab"
+                  tabindex="0"
+                >
+                  <div
+                    class="label"
+                  >
+                    CRDs
+                  </div>
+                </div>
+                <div
+                  class="Tab flex gap-2 items-center"
                   data-preference-tab-link-test="some-path-id-for-some-test-tab-id"
                   role="tab"
                   tabindex="0"
@@ -2649,6 +2685,18 @@ exports[`preferences - closing-preferences > given already in a page and then na
                     class="label"
                   >
                     Terminal
+                  </div>
+                </div>
+                <div
+                  class="Tab flex gap-2 items-center"
+                  data-preference-tab-link-test="crd"
+                  role="tab"
+                  tabindex="0"
+                >
+                  <div
+                    class="label"
+                  >
+                    CRDs
                   </div>
                 </div>
                 <div
