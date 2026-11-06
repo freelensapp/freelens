@@ -301,6 +301,23 @@ describe("starting freelens-k8s-proxy", () => {
     expect(spawnMock).toHaveBeenCalledTimes(1);
   });
 
+  it("does not report a request that its client canceled", async () => {
+    await freelensK8sProxy.run();
+    broadcastMessageMock.mockClear();
+
+    processes[0].stderr.emit(
+      "data",
+      "E1028 20:09:58.336402   52916 proxy_server.go:147] Error while proxying request: context canceled\n",
+    );
+    processes[0].stderr.emit("data", "E1028 20:09:59.000000   52916 proxy_server.go:147] some other failure\n");
+
+    expect(broadcastMessageMock).toHaveBeenCalledTimes(1);
+    expect(broadcastMessageMock).toHaveBeenCalledWith("cluster:some-cluster-id:connection-update", {
+      level: "error",
+      message: "E1028 20:09:59.000000   52916 proxy_server.go:147] some other failure\n",
+    });
+  });
+
   it("does not restart a proxy that exits after it has served, and starts a new one on the next run", async () => {
     await freelensK8sProxy.run();
 
