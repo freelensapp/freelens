@@ -110,8 +110,13 @@ describe("cluster metrics node filter in the prometheus providers", () => {
   });
 
   it.each(["memoryRequests", "cpuRequests"])("counts only the pending and running pods in %s", (metricName) => {
+    const optsWithAndWithoutNodes: Record<string, string>[] = [
+      { category: "cluster" },
+      { category: "cluster", nodes: "worker-1" },
+    ];
+
     for (const provider of providers) {
-      for (const opts of [{ category: "cluster" }, { category: "cluster", nodes: "worker-1" }]) {
+      for (const opts of optsWithAndWithoutNodes) {
         const query = provider.getQuery(opts, metricName);
 
         expect(query, `${provider.kind}: ${query}`).toContain(
