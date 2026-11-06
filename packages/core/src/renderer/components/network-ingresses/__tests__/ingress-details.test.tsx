@@ -48,10 +48,11 @@ describe("IngressDetails", () => {
     expect(link.getAttribute("href")).toContain(encodeURIComponent("/apis/networking.k8s.io/v1/ingressclasses/nginx"));
   });
 
-  it("given only the kubernetes.io/ingress.class annotation, renders the class from it", () => {
+  it("given only the kubernetes.io/ingress.class annotation, renders the class from it as plain text", () => {
     const result = render(<IngressDetails object={createIngress({}, { "kubernetes.io/ingress.class": "traefik" })} />);
 
-    expect(result.getByText("traefik").tagName).toBe("A");
+    expect(result.getByText("traefik").tagName).not.toBe("A");
+    expect(result.container.querySelector("a")).toBeNull();
   });
 
   it("given no ingress class, does not render the class item", () => {

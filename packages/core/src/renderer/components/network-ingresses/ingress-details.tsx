@@ -108,12 +108,16 @@ class NonInjectedIngressDetails extends React.Component<IngressDetailsProps & De
       <div className="IngressDetails">
         {ingressClassName && (
           <DrawerItem name="Class">
-            <Link
-              to={getDetailsUrl(ingressClassApi.formatUrlForNotListing({ name: ingressClassName }))}
-              onClick={stopPropagation}
-            >
-              {ingressClassName}
-            </Link>
+            {ingress.spec.ingressClassName ? (
+              <Link
+                to={getDetailsUrl(ingressClassApi.formatUrlForNotListing({ name: ingressClassName }))}
+                onClick={stopPropagation}
+              >
+                {ingressClassName}
+              </Link>
+            ) : (
+              ingressClassName
+            )}
           </DrawerItem>
         )}
         <DrawerItem name="Ports">{ingress.getPorts()}</DrawerItem>
