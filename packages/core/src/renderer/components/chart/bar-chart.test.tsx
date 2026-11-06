@@ -8,7 +8,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import activeThemeInjectable from "../../themes/active.injectable";
 import { renderFor } from "../test-utils/renderFor";
-import { BarChart } from "./bar-chart";
+import { BarChart, insertGapsInTimeSeries } from "./bar-chart";
 
 const chartMock = vi.fn();
 
@@ -183,5 +183,104 @@ describe("BarChart", () => {
     expect(tooltipTitle([{ parsed: { x: 1_710_000_000_000 } }])).toBe(formatMonthDayTime(1_710_000_000_000));
     expect(tooltipTitle([{ parsed: { x: "9999999999999" } }])).toBe("");
     expect(tooltipTitle([])).toBe("");
+  });
+
+  describe("gaps in time series", () => {
+    const step = 600_000; // 10 minutes
+    const t0 = 1_704_067_200_000;
+
+    it("inserts a null point after a sample followed by a gap", () => {
+      const data = [
+        { x: t0, y: "1" },
+        { x: t0 + step, y: "2" },
+        { x: t0 + 10 * step, y: "3" },
+        { x: t0 + 11 * step, y: "4" },
+      ];
+
+      expect(insertGapsInTimeSeries(data, step)).toEqual([
+        { x: t0, y: "1" },
+        { x: t0 + step, y: "2" },
+        { x: t0 + 2 * step, y: null },
+        { x: t0 + 10 * step, y: "3" },
+        { x: t0 + 11 * step, y: "4" },
+      ]);
+    });
+
+    it("treats a single missing sample as a gap", () => {
+      const data = [
+        { x: t0, y: "1" },
+        { x: t0 + 2 * step, y: "2" },
+      ];
+
+      expect(insertGapsInTimeSeries(data, step)).toEqual([
+        { x: t0, y: "1" },
+        { x: t0 + step, y: null },
+        { x: t0 + 2 * step, y: "2" },
+      ]);
+    });
+
+    it("keeps contiguous data unchanged", () => {
+      const data = [
+        { x: t0, y: "1" },
+        { x: t0 + step, y: "2" },
+        { x: t0 + 2 * step, y: "3" },
+      ];
+
+      expect(insertGapsInTimeSeries(data, step)).toEqual(data);
+      expect(insertGapsInTimeSeries(data, undefined)).toEqual(data);
+    });
+
+    it("breaks the line in the rendered datasets and keeps the stepped style based on the sample step", () => {
+      const di = getDiForUnitTesting();
+      const render = renderFor(di);
+
+      di.override(activeThemeInjectable, () =>
+        computed(
+          () =>
+            ({
+              colors: {
+                textColorPrimary: "#fff",
+                borderFaintColor: "#000",
+                chartStripesColor: "#111",
+              },
+            }) as never,
+        ),
+      );
+
+      // 4 hours range with a 1 minute step, but only 3 samples because of an outage:
+      // the step must come from the samples, not from range / number of samples.
+      const minuteStep = 60_000;
+
+      render(
+        <BarChart
+          minTime={t0 / 1000}
+          maxTime={t0 / 1000 + 4 * 60 * 60}
+          data={{
+            datasets: [
+              {
+                id: "dataset-id",
+                label: "Dataset",
+                borderColor: "#00a7a0",
+                data: [
+                  { x: t0, y: "1" },
+                  { x: t0 + minuteStep, y: "2" },
+                  { x: t0 + 200 * minuteStep, y: "3" },
+                ],
+              },
+            ],
+          }}
+        />,
+      );
+
+      const { type, data } = chartMock.mock.calls[0][0];
+
+      expect(type).toBe("bar");
+      expect(data.datasets[0].data).toEqual([
+        { x: t0, y: "1" },
+        { x: t0 + minuteStep, y: "2" },
+        { x: t0 + 2 * minuteStep, y: null },
+        { x: t0 + 200 * minuteStep, y: "3" },
+      ]);
+    });
   });
 });

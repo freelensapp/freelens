@@ -145,6 +145,14 @@ const requestMetricsInjectable = getInjectable({
         step = calculateAdaptiveStep(actualRange);
       }
 
+      // Prometheus evaluates range queries at `start + n * step`. When the range
+      // is not a multiple of the step the last evaluation falls before `end`, and
+      // up to one step of the newest data is missing (or everything, for objects
+      // younger than that). Move `start` back so that `end` is an evaluation point.
+      if (typeof start === "number" && typeof end === "number" && step > 0 && end > start) {
+        start = end - Math.ceil((end - start) / step) * step;
+      }
+
       const requestKey = JSON.stringify({
         query,
         start,
