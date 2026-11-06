@@ -5,9 +5,11 @@
  */
 
 import { constants } from "node:fs";
+import { TextDecoder } from "node:util";
 import { bytesToUnits, noop } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import createReadFileStreamInjectable from "../../../common/fs/create-read-file-stream.injectable";
+import { getKubeconfigEncoding } from "../../../common/kube-helpers/read-kubeconfig-file.injectable";
 import computeKubeconfigDiffInjectable from "./compute-diff.injectable";
 import kubeconfigSyncLoggerInjectable from "./logger.injectable";
 import type { Stats } from "node:fs";
@@ -51,7 +53,7 @@ const diffChangedKubeconfigInjectable = getInjectable({
         mode: constants.O_RDONLY,
       });
       const readStream = fileReader as Readable;
-      const decoder = new TextDecoder("utf-8", { fatal: true });
+      let decoder: TextDecoder | undefined;
       let fileString = "";
       let closed = false;
 
@@ -71,6 +73,7 @@ const diffChangedKubeconfigInjectable = getInjectable({
       readStream
         .on("data", (chunk: Buffer) => {
           try {
+            decoder ??= new TextDecoder(getKubeconfigEncoding(chunk), { fatal: true });
             fileString += decoder.decode(chunk, { stream: true });
           } catch (error) {
             logger.warn(`skipping ${filePath}: ${error}`);
