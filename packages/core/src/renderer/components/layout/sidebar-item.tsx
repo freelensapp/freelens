@@ -11,6 +11,7 @@ import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
 import { sideBarItemCustomResourcePrefix } from "../custom-resource-definitions/groups-sidebar-items-computed.injectable";
+import customResourcesSidebarItemInjectable from "../custom-resources/sidebar-item.injectable";
 import favoritesOverviewSidebarItemInjectable from "../favorites/overview/sidebar-item.injectable";
 import favoritesStoreInjectable, { FavoritesStore } from "../favorites/store.injectable";
 import styles from "./sidebar-items.module.scss";
@@ -43,6 +44,35 @@ const NonInjectedSidebarItem = observer((props: SidebarItemProps & Dependencies)
       draft.expanded[id] = !draft.expanded[id];
     });
   };
+
+  const opensWhenActive =
+    id === customResourcesSidebarItemInjectable.id || id.includes(sideBarItemCustomResourcePrefix);
+
+  // Runs only when the active state changes, so a manual collapse sticks.
+  React.useEffect(() => {
+    if (opensWhenActive && isActive && isExpandable && !expanded) {
+      sidebarStorage.merge((draft) => {
+        draft.expanded[id] = true;
+      });
+    }
+  }, [isActive]);
+
+  const collapseAll = (event: React.MouseEvent) => {
+    event.preventDefault();
+    event.stopPropagation();
+    sidebarStorage.merge((draft) => {
+      const collapse = (children: SidebarItemDeclaration[]) => {
+        for (const child of children) {
+          draft.expanded[child.id] = false;
+          collapse(child.children);
+        }
+      };
+
+      collapse(item.children);
+    });
+  };
+
+  const canCollapseAll = opensWhenActive && expanded && item.children.some((child) => child.children.length > 0);
 
   const toggleFavorite = (event: React.MouseEvent) => {
     event.preventDefault();
@@ -95,6 +125,16 @@ const NonInjectedSidebarItem = observer((props: SidebarItemProps & Dependencies)
       >
         {item.getIcon?.()}
         <span>{item.title}</span>
+        {canCollapseAll && (
+          <Icon
+            className={styles.pinIcon}
+            material="unfold_less"
+            tooltip="Collapse all"
+            data-testid={`collapse-all-icon-for-${id}`}
+            onClick={collapseAll}
+            size={16}
+          />
+        )}
         {isExpandable && (
           <Icon
             className={styles.expandIcon}

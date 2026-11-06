@@ -56,6 +56,12 @@ const userPreferencesPersistentStorageInjectable = getInjectable({
         state.openAtLogin = descriptors.openAtLogin.fromStore(preferences.openAtLogin);
         state.showTrayIcon = descriptors.showTrayIcon.fromStore(preferences.showTrayIcon);
         state.hotbarAutoHide = descriptors.hotbarAutoHide.fromStore(preferences.hotbarAutoHide);
+        state.groupCustomResourcesByDomain = descriptors.groupCustomResourcesByDomain.fromStore(
+          preferences.groupCustomResourcesByDomain,
+        );
+        state.customResourceGroupRootDepth = descriptors.customResourceGroupRootDepth.fromStore(
+          preferences.customResourceGroupRootDepth,
+        );
         state.persistentSearch = descriptors.persistentSearch.fromStore(preferences.persistentSearch);
         state.logViewerPreferences = descriptors.logViewerPreferences.fromStore(preferences.logViewerPreferences);
         state.shell = descriptors.shell.fromStore(preferences.shell);
@@ -86,6 +92,12 @@ const userPreferencesPersistentStorageInjectable = getInjectable({
             openAtLogin: descriptors.openAtLogin.toStore(state.openAtLogin),
             showTrayIcon: descriptors.showTrayIcon.toStore(state.showTrayIcon),
             hotbarAutoHide: descriptors.hotbarAutoHide.toStore(state.hotbarAutoHide),
+            groupCustomResourcesByDomain: descriptors.groupCustomResourcesByDomain.toStore(
+              state.groupCustomResourcesByDomain,
+            ),
+            customResourceGroupRootDepth: descriptors.customResourceGroupRootDepth.toStore(
+              state.customResourceGroupRootDepth,
+            ),
             persistentSearch: descriptors.persistentSearch.toStore(state.persistentSearch),
             logViewerPreferences: descriptors.logViewerPreferences.toStore(state.logViewerPreferences),
             shell: descriptors.shell.toStore(state.shell),
