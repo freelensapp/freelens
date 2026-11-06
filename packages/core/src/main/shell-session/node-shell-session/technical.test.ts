@@ -85,7 +85,7 @@ describe("technical unit tests for node shell sessions", () => {
   let di: DiContainer;
   let spawnPtyMock: MockedFunction<SpawnPty>;
   let closeDuring: Stage | undefined;
-  let websocket: EventEmitter & { readyState: number };
+  let websocket: EventEmitter & { readyState: number; send: MockedFunction<(data: string) => void> };
   /**
    * The pods that exist in the fake cluster.
    */
@@ -312,4 +312,47 @@ describe("technical unit tests for node shell sessions", () => {
       expect(watchRequests.every((request) => request.signal.aborted)).toBe(true);
     },
   );
+
+  it("falls back to sh on a node without bash", async () => {
+    await open();
+
+    expect(createNamespacedPod.mock.calls[0][0].body.spec?.containers[0].args).toEqual([
+      "-t",
+      "1",
+      "-m",
+      "-u",
+      "-i",
+      "-n",
+      "-p",
+      "--",
+      "sh",
+      "-c",
+      "command -v bash >/dev/null && exec bash -l || exec sh -l",
+    ]);
+  });
+
+  it("reports how the container exited when the pod fails without a message", async () => {
+    watch.start = async (path, query, callback) => {
+      setTimeout(() => {
+        for (const name of pods) {
+          callback("MODIFIED", {
+            metadata: { name },
+            status: {
+              phase: "Failed",
+              containerStatuses: [{ name: "shell", state: { terminated: { exitCode: 127, reason: "Error" } } }],
+            },
+          });
+        }
+      }, 0);
+
+      return new AbortController();
+    };
+
+    await expect(open()).rejects.toThrow("failed to create node pod");
+
+    expect(websocket.send).toHaveBeenCalledWith(
+      expect.stringContaining("Failed to be created: the container exited with code 127 (Error)"),
+    );
+    await vi.waitFor(() => expect(pods.size).toBe(0));
+  });
 });

@@ -13,7 +13,7 @@ import { v4 as uuid } from "uuid";
 import { initialNodeShellImage, initialNodeShellWindowsImage } from "../../../common/cluster-types";
 import { ShellOpenError, ShellSession } from "../shell-session";
 
-import type { Pod } from "@freelensapp/kube-object";
+import type { Pod, PodStatus } from "@freelensapp/kube-object";
 
 import type { KubeConfig } from "@kubernetes/client-node";
 
@@ -39,6 +39,26 @@ export interface NodeShellSessionDependencies extends ShellSessionDependencies {
   createKubeApi: CreateKubeApi;
   loadProxyKubeconfig: LoadProxyKubeconfig;
 }
+
+/**
+ * A pod whose container exits at once fails without a message of its own, so
+ * the container's termination is the only clue to what went wrong.
+ */
+const describePodFailure = (status: PodStatus) => {
+  if (status.message) {
+    return status.message;
+  }
+
+  const terminated = status.containerStatuses?.find(({ state }) => state?.terminated)?.state?.terminated;
+
+  if (!terminated) {
+    return "unknown error";
+  }
+
+  const reason = [terminated.reason, terminated.message].filter(Boolean).join(": ");
+
+  return `the container exited with code ${terminated.exitCode}${reason ? ` (${reason})` : ""}`;
+};
 
 export class NodeShellSession extends ShellSession {
   ShellType = "node-shell";
@@ -174,7 +194,20 @@ export class NodeShellSession extends ShellSession {
         if (nodeOsImage && nodeOsImage.startsWith("Bottlerocket OS")) {
           args = ["-t", "1", "-m", "-u", "-i", "-n", "-p", "--", "apiclient", "exec", "admin", "bash", "-l"];
         } else {
-          args = ["-t", "1", "-m", "-u", "-i", "-n", "-p", "--", "bash", "-l"];
+          // Not every host has bash, and a missing one fails the pod at once.
+          args = [
+            "-t",
+            "1",
+            "-m",
+            "-u",
+            "-i",
+            "-n",
+            "-p",
+            "--",
+            "sh",
+            "-c",
+            "command -v bash >/dev/null && exec bash -l || exec sh -l",
+          ];
         }
 
         securityContext = {
@@ -303,9 +336,7 @@ export class NodeShellSession extends ShellSession {
                   break;
                 case "Failed":
                   if (settle()) {
-                    reject(
-                      `Failed to be created: ${(status as unknown as Record<string, string>).message || "unknown error"}`,
-                    );
+                    reject(`Failed to be created: ${describePodFailure(status)}`);
                   }
                   break;
               }
