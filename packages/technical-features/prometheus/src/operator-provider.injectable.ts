@@ -16,6 +16,19 @@ import {
 import type { PrometheusProvider } from "./provider";
 
 /**
+ * One `kube_pod_info` series per pod, carrying only the labels the join needs.
+ * kube-state-metrics can report a pod twice within the queried range: when its
+ * IP flaps (#2086), and when a pod that keeps its name (a StatefulSet pod) is
+ * recreated on another node, which also changes `uid` and `node`. A duplicate
+ * on the "one" side of `group_left` makes Prometheus reject the whole query,
+ * so `max by` drops every other label and `topk` keeps a single node while the
+ * old and the new pod overlap. The value stays 1, so the join factor does not
+ * change.
+ */
+const podNodeInfo = (selector = ""): string =>
+  `topk by (namespace, pod) (1, max by (namespace, pod, node) (kube_pod_info${selector}))`;
+
+/**
  * In the Prometheus Operator setup the node-exporter series carry `pod` and
  * `namespace` labels but no node name, so filtering them by node requires a
  * join with `kube_pod_info`. The join is only added when `opts.nodes` is
@@ -23,9 +36,7 @@ import type { PrometheusProvider } from "./provider";
  * including the nodes replaced in the meantime (see #2409).
  */
 const nodeExporterJoin = (opts: Record<string, string>): string =>
-  opts.nodes
-    ? ` * on (pod,namespace) group_left(node) max without(pod_ip,host_ip) (kube_pod_info{node=~"${opts.nodes}"})`
-    : "";
+  opts.nodes ? ` * on (pod,namespace) group_left(node) ${podNodeInfo(`{node=~"${opts.nodes}"}`)}` : "";
 
 export const getOperatorLikeQueryFor =
   ({ rateAccuracy }: { rateAccuracy: string }): PrometheusProvider["getQuery"] =>
@@ -76,7 +87,7 @@ export const getOperatorLikeQueryFor =
       case "nodes":
         switch (queryName) {
           case "memoryUsage":
-            return `sum((node_memory_MemTotal_bytes - (node_memory_MemFree_bytes + node_memory_Buffers_bytes + node_memory_Cached_bytes)) * on (pod, namespace) group_left(node) max without(pod_ip,host_ip) (kube_pod_info)) by (node)`;
+            return `sum((node_memory_MemTotal_bytes - (node_memory_MemFree_bytes + node_memory_Buffers_bytes + node_memory_Cached_bytes)) * on (pod, namespace) group_left(node) ${podNodeInfo()}) by (node)`;
           case "workloadMemoryUsage":
             return `sum(container_memory_working_set_bytes{container!="POD", container!=""}) by (node)`;
           case "memoryCapacity":
@@ -84,15 +95,15 @@ export const getOperatorLikeQueryFor =
           case "memoryAllocatableCapacity":
             return `sum(kube_node_status_allocatable{resource="memory"}) by (node)`;
           case "cpuUsage":
-            return `sum(rate(node_cpu_seconds_total{mode=~"user|system"}[${rateAccuracy}]) * on (pod, namespace) group_left(node) max without(pod_ip,host_ip) (kube_pod_info)) by (node)`;
+            return `sum(rate(node_cpu_seconds_total{mode=~"user|system"}[${rateAccuracy}]) * on (pod, namespace) group_left(node) ${podNodeInfo()}) by (node)`;
           case "cpuCapacity":
             return `sum(kube_node_status_allocatable{resource="cpu"}) by (node)`;
           case "cpuAllocatableCapacity":
             return `sum(kube_node_status_allocatable{resource="cpu"}) by (node)`;
           case "fsSize":
-            return `sum(node_filesystem_size_bytes{mountpoint=~"${opts.mountpoints}"} * on (pod,namespace) group_left(node) max without(pod_ip,host_ip) (kube_pod_info)) by (node)`;
+            return `sum(node_filesystem_size_bytes{mountpoint=~"${opts.mountpoints}"} * on (pod,namespace) group_left(node) ${podNodeInfo()}) by (node)`;
           case "fsUsage":
-            return `sum((node_filesystem_size_bytes{mountpoint=~"${opts.mountpoints}"} - node_filesystem_avail_bytes{mountpoint=~"${opts.mountpoints}"}) * on (pod, namespace) group_left(node) max without(pod_ip,host_ip) (kube_pod_info)) by (node)`;
+            return `sum((node_filesystem_size_bytes{mountpoint=~"${opts.mountpoints}"} - node_filesystem_avail_bytes{mountpoint=~"${opts.mountpoints}"}) * on (pod, namespace) group_left(node) ${podNodeInfo()}) by (node)`;
         }
         break;
       case "pods":
