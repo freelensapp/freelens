@@ -202,4 +202,48 @@ describe("LogStore request lifecycle", () => {
     expect(store.getLogs(tabId)).toEqual([olderLog, initialLog]);
     expect(callForLogs.mock.calls[2][1]?.tailLines).toBe(501);
   });
+
+  it("polls from the last line with a timestamp when a carriage return left the last line without one", async () => {
+    callForLogs.mockResolvedValue("2026-01-01T00:00:00.123456789Z step 1 pulling layer\r12.5MB/40MB");
+    await store.load(tabId, computedPod, computedTabData);
+
+    expect(store.getLogs(tabId)).toEqual(["2026-01-01T00:00:00.123456789Z step 1 pulling layer", "12.5MB/40MB"]);
+
+    callForLogs.mockResolvedValue(nextLog);
+    await vi.advanceTimersByTimeAsync(10_000);
+
+    expect(callForLogs).toHaveBeenCalledTimes(2);
+    expect(callForLogs.mock.calls[1][1]?.sinceTime).toBe("2026-01-01T00:00:01.123Z");
+    expect(store.getLogs(tabId)).toEqual([
+      "2026-01-01T00:00:00.123456789Z step 1 pulling layer",
+      "12.5MB/40MB",
+      nextLog,
+    ]);
+  });
+});
+
+describe("LogStore timestamps", () => {
+  const store = new LogStore({ callForLogs: vi.fn<CallForLogs>() });
+
+  it("splits off the timestamp that the API puts at the start of a line", () => {
+    expect(store.splitOutTimestamp("2026-01-01T00:00:00.123456789Z first line")).toEqual([
+      "2026-01-01T00:00:00.123456789Z",
+      " first line",
+    ]);
+    expect(store.splitOutTimestamp("2026-01-01T07:00:00+07:00 first line")).toEqual([
+      "2026-01-01T07:00:00+07:00",
+      " first line",
+    ]);
+    expect(store.removeTimestamps("2026-01-01T00:00:00Z first line")).toBe("first line");
+    expect(store.getTimestamps("2026-01-01T00:00:00Z first line")).toEqual(["2026-01-01T00:00:00Z"]);
+  });
+
+  it.each(["12.5MB/40MB", "100/100 done", "10.0.0.1 - GET /", "45% done", "1730877328 started"])(
+    "keeps %j, a line without a timestamp, whole",
+    (line) => {
+      expect(store.splitOutTimestamp(line)).toEqual(["", line]);
+      expect(store.removeTimestamps(line)).toBe(line);
+      expect(store.getTimestamps(line)).toBeNull();
+    },
+  );
 });

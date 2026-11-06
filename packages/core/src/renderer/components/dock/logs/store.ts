@@ -20,6 +20,17 @@ type PodLogLine = string;
 
 const logLinesToLoad = 500;
 
+/**
+ * The timestamp that the API puts at the start of each line when asked for `timestamps`: RFC 3339 with up to
+ * nanoseconds, e.g. `2026-01-01T00:00:00.123456789Z`. A line can also come without one: the store breaks a line at
+ * each carriage return, and what follows a carriage return, a progress bar for example, can start with digits that
+ * are not a date, such as `12.5MB/40MB`.
+ */
+const timestamp = String.raw`\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})`;
+const timestampAndLine = new RegExp(`^(${timestamp})(?=\\s|$)(.*)`, "m");
+const timestamps = new RegExp(`^${timestamp}(?=\\s|$)`, "gm");
+const timestampsAndSeparator = new RegExp(`^${timestamp}(?:\\s|$)`, "gm");
+
 interface Dependencies {
   callForLogs: CallForLogs;
 }
@@ -263,14 +274,19 @@ export class LogStore {
   }
 
   /**
-   * It gets timestamps from all logs then returns last one + 1 second
+   * Returns the timestamp of the last line that has one, plus 1 second
    * (this allows to avoid getting the last stamp in the selection)
    * @param tabId
    */
   getLastSinceTime(tabId: TabId): string {
     const logs = this.podLogs.get(tabId) ?? [];
-    const [timestamp] = this.getTimestamps(logs[logs.length - 1]) ?? [];
-    const stamp = timestamp ? new Date(timestamp) : new Date();
+    let lastTimestamp: string | undefined;
+
+    for (let index = logs.length - 1; index >= 0 && !lastTimestamp; index -= 1) {
+      [lastTimestamp] = this.getTimestamps(logs[index]) ?? [];
+    }
+
+    const stamp = lastTimestamp ? new Date(lastTimestamp) : new Date();
 
     stamp.setSeconds(stamp.getSeconds() + 1); // avoid duplicates from last second
 
@@ -278,7 +294,7 @@ export class LogStore {
   }
 
   splitOutTimestamp(logs: string): [string, string] {
-    const extraction = /^(\d+\S+)(.*)/m.exec(logs);
+    const extraction = timestampAndLine.exec(logs);
 
     if (!extraction || extraction.length < 3) {
       return ["", logs];
@@ -288,11 +304,11 @@ export class LogStore {
   }
 
   getTimestamps(logs: string) {
-    return logs.match(/^\d+\S+/gm);
+    return logs.match(timestamps);
   }
 
   removeTimestamps(logs: string): string {
-    return logs.replace(/^\d+.*?\s/gm, "");
+    return logs.replace(timestampsAndSeparator, "");
   }
 
   clearLogs(tabId: TabId): void {
