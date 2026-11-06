@@ -13,6 +13,7 @@ import * as yaml from "js-yaml";
 import { action, computed, observable, runInAction } from "mobx";
 import { createPatch, type Operation } from "rfc6902";
 import { defaultYamlDumpOptions } from "../../../../../common/kube-helpers";
+import { countChangedLines } from "../changed-lines";
 import editResourceTabStoreInjectable from "../store.injectable";
 import requestKubeResourceInjectable from "./request-kube-resource.injectable";
 import requestPatchKubeResourceInjectable from "./request-patch-kube-resource.injectable";
@@ -192,6 +193,69 @@ export const EditResourceAnnotationName = "freelens.app/resource-version";
 export class EditResourceModel {
   constructor(protected readonly dependencies: Dependencies) {}
 
+  readonly diffVisible = observable.box(false);
+  readonly sideBySide = observable.box(true);
+  readonly comparingServer = observable.box(false);
+  readonly serverYaml = observable.box<string | undefined>(undefined);
+  readonly reloading = observable.box(false);
+  readonly reloadError = observable.box("");
+
+  @computed get baseline() {
+    return this.editingResource.baseline ?? this.editingResource.firstDraft ?? "";
+  }
+
+  @computed get comparisonYaml() {
+    return this.comparingServer.get() ? (this.serverYaml.get() ?? this.baseline) : this.baseline;
+  }
+
+  @computed get changedLines() {
+    return countChangedLines(this.comparisonYaml, this.configuration.value.get());
+  }
+
+  @computed get hasChanges() {
+    return this.configuration.value.get() !== this.baseline;
+  }
+
+  @computed get hasServerChanges() {
+    return this.serverYaml.get() !== undefined && this.serverYaml.get() !== this.baseline;
+  }
+
+  toggleDiff = action(() => this.diffVisible.set(!this.diffVisible.get()));
+
+  compareServer = action(() => {
+    this.comparingServer.set(true);
+    this.diffVisible.set(true);
+  });
+
+  acceptServerBaseline = action(() => {
+    const serverYaml = this.serverYaml.get();
+
+    if (serverYaml === undefined) return;
+    this.editingResource.baseline = serverYaml;
+    this.comparingServer.set(false);
+    this.serverYaml.set(undefined);
+  });
+
+  revert = action(() => {
+    this.configuration.onChange(this.baseline);
+    this.comparingServer.set(false);
+  });
+
+  reloadBaseline = async () => {
+    if (this.reloading.get()) return;
+    runInAction(() => {
+      this.reloading.set(true);
+      this.reloadError.set("");
+    });
+    try {
+      await this.load(true);
+    } catch {
+      runInAction(() => this.reloadError.set("Could not reload the resource. Try again."));
+    } finally {
+      runInAction(() => this.reloading.set(false));
+    }
+  };
+
   // Store the managed fields when they're removed so we can restore them
   @observable private accessor savedManagedFields: any = null;
 
@@ -217,7 +281,7 @@ export class EditResourceModel {
   };
 
   readonly configuration = {
-    value: computed(() => this.editingResource.draft || this.editingResource.firstDraft || ""),
+    value: computed(() => this.editingResource.draft ?? this.editingResource.firstDraft ?? ""),
 
     onChange: action((value: string) => {
       this.editingResource.draft = value;
@@ -299,31 +363,33 @@ export class EditResourceModel {
     }
   };
 
-  toggleSortKeys = (enableSort: boolean) => {
+  toggleSortKeys = (sortKeys: boolean) => {
     const currentValue = this.configuration.value.get();
-    const isEdited = currentValue !== this.editingResource.firstDraft;
 
-    if (enableSort) {
-      // Save current YAML before sorting (only if not already edited)
-      if (!isEdited) {
+    try {
+      if (sortKeys) {
         this.savedUnsortedYaml = currentValue;
+      } else if (
+        this.savedUnsortedYaml !== null &&
+        currentValue ===
+          yaml.dump(yaml.load(this.savedUnsortedYaml), {
+            ...defaultYamlDumpOptions,
+            sortKeys: true,
+          })
+      ) {
+        this.configuration.onChange(this.savedUnsortedYaml);
+        this.savedUnsortedYaml = null;
+        return;
       }
 
-      // Regenerate with sorting enabled
-      this.regenerateYaml(true);
-    } else {
-      // Restore unsorted YAML only if nothing was edited
-      if (!isEdited && this.savedUnsortedYaml) {
-        const unsortedYaml = this.savedUnsortedYaml;
-
-        runInAction(() => {
-          this.editingResource.draft = unsortedYaml;
-          this.savedUnsortedYaml = null;
-        });
-      } else {
-        // If edited, just regenerate without sorting
-        this.regenerateYaml(false);
-      }
+      this.configuration.onChange(
+        yaml.dump(yaml.load(currentValue), {
+          ...defaultYamlDumpOptions,
+          sortKeys,
+        }),
+      );
+    } catch {
+      // Keep invalid or incomplete YAML intact while the user is editing.
     }
   };
 
@@ -343,14 +409,15 @@ export class EditResourceModel {
 
       // Store unsorted version when enabling sort for the first time
       if (shouldSortKeys && !this.savedUnsortedYaml && !sortKeys) {
-        this.savedUnsortedYaml = this.editingResource.draft || this.editingResource.firstDraft || "";
+        this.savedUnsortedYaml = this.editingResource.draft ?? this.editingResource.firstDraft ?? "";
       }
 
       this.editingResource.firstDraft = newYaml;
+      this.editingResource.baseline ??= newYaml;
 
       // Only set draft if there isn't already a saved draft from previous session
       // OR if we're explicitly regenerating (sortKeys parameter was provided)
-      if (!this.editingResource.draft || sortKeys !== undefined) {
+      if (this.editingResource.draft === undefined || sortKeys !== undefined) {
         this.editingResource.draft = newYaml;
       }
 
@@ -360,20 +427,26 @@ export class EditResourceModel {
       }
     });
   };
-  load = async (): Promise<void> => {
+  load = async (reloadBaseline = false): Promise<void> => {
     await this.dependencies.waitForEditingResource();
 
     let result = await this.dependencies.requestKubeResource(this.selfLink);
 
     if (!result.callWasSuccessful) {
-      return void this.dependencies.showErrorNotification(`Loading resource failed: ${result.error}`);
+      const message = `Loading resource failed: ${result.error}`;
+
+      if (reloadBaseline) runInAction(() => this.reloadError.set(message));
+      return void this.dependencies.showErrorNotification(message);
     }
 
-    if (result?.response?.metadata.annotations?.[EditResourceAnnotationName]) {
+    if (result.response?.metadata.annotations?.[EditResourceAnnotationName]) {
       const parsed = parseKubeApi(this.selfLink);
 
       if (!parsed) {
-        return void this.dependencies.showErrorNotification(`Object's selfLink is invalid: "${this.selfLink}"`);
+        const message = `Object's selfLink is invalid: "${this.selfLink}"`;
+
+        if (reloadBaseline) runInAction(() => this.reloadError.set(message));
+        return void this.dependencies.showErrorNotification(message);
       }
 
       parsed.apiVersion = result.response.metadata.annotations[EditResourceAnnotationName];
@@ -382,10 +455,27 @@ export class EditResourceModel {
     }
 
     if (!result.callWasSuccessful) {
-      return void this.dependencies.showErrorNotification(`Loading resource failed: ${result.error}`);
+      const message = `Loading resource failed: ${result.error}`;
+
+      if (reloadBaseline) runInAction(() => this.reloadError.set(message));
+      return void this.dependencies.showErrorNotification(message);
     }
 
     const resource = result.response;
+
+    if (reloadBaseline) {
+      runInAction(() => {
+        if (!resource) {
+          this.reloadError.set("Resource not found. Your draft has been kept.");
+          return;
+        }
+
+        // Do not rebase Save or discard local edits when inspecting a newer server version.
+        this.serverYaml.set(yaml.dump(resource.toPlainObject(["metadata.managedFields"]), defaultYamlDumpOptions));
+        if (!this.hasServerChanges) this.comparingServer.set(false);
+      });
+      return;
+    }
 
     runInAction(() => {
       this._resource = resource;
