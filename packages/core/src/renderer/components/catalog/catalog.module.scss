@@ -147,3 +147,19 @@
   flex-direction: column;
   height: 100%;
 }
+
+// v2 interface (themes with `uiV2`, see ../ui-v2.scss): tinted active category like the cluster sidebar.
+:global(body.ui-v2) {
+  .tab {
+    margin: 1px 8px 1px 0;
+    border-radius: 0 8px 8px 0;
+  }
+
+  .activeTab,
+  .activeTab:hover {
+    background-color: var(--v2-accent-tint);
+    box-shadow: inset 2px 0 0 var(--v2-accent);
+    --color-active: var(--v2-text-strong);
+    font-weight: 500;
+  }
+}

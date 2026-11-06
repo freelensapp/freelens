@@ -13,6 +13,7 @@ import { useRef } from "react";
 import { getMetricLastPoints } from "../../../common/k8s-api/endpoints/metrics.api";
 import activeThemeInjectable from "../../themes/active.injectable";
 import { PieChart } from "../chart";
+import { ClusterCapacityCards } from "./cluster-capacity-cards";
 import clusterOverviewMetricsInjectable from "./cluster-metrics.injectable";
 import { ClusterNoMetrics } from "./cluster-no-metrics";
 import styles from "./cluster-pie-charts.module.scss";
@@ -177,7 +178,12 @@ const renderCharts = (defaultColor: string, lastPoints: Partial<Record<keyof Clu
   );
 };
 
-const renderContent = (defaultColor: string, nodes: Node[], metrics: Partial<ClusterMetricData> | undefined) => {
+const renderContent = (
+  defaultColor: string,
+  useCapacityCards: boolean,
+  nodes: Node[],
+  metrics: Partial<ClusterMetricData> | undefined,
+) => {
   if (!nodes.length) {
     return (
       <div className={cssNames(styles.empty, "flex flex-col grow shrink-0 basis-0 items-center justify-center")}>
@@ -206,6 +212,11 @@ const renderContent = (defaultColor: string, nodes: Node[], metrics: Partial<Clu
     );
   }
 
+  // Themes with the v2 interface show capacity cards instead of the nested ring charts.
+  if (useCapacityCards) {
+    return <ClusterCapacityCards lastPoints={lastPoints} />;
+  }
+
   return renderCharts(defaultColor, lastPoints);
 };
 
@@ -221,11 +232,13 @@ const NonInjectedClusterPieCharts = observer(
 
     const visibleMetrics =
       isPending && currentRangeKey !== lastResolvedRangeKeyRef.current ? undefined : clusterOverviewMetrics.value.get();
+    const theme = activeTheme.get();
 
     return (
       <div className="flex">
         {renderContent(
-          activeTheme.get().colors.pieChartDefaultColor,
+          theme.colors.pieChartDefaultColor,
+          Boolean(theme.uiV2),
           selectedNodeRoleForMetrics.nodes.get(),
           visibleMetrics,
         )}

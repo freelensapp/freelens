@@ -1,0 +1,224 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
+// Rendered only under the v2 interface (themes with `uiV2`), so the --v2-* properties are set.
+// The overview gives these cards about a third of the page, so each card stays readable at ~200px.
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  align-content: start;
+  gap: 12px;
+  flex-grow: 1;
+  padding: 4px 0 8px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 16px;
+  border: 1px solid var(--borderColor);
+  border-radius: 12px;
+  background: var(--v2-raised);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.title {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--textColorPrimary);
+}
+
+.percent {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--textColorAccent);
+}
+
+.summary {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-top: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.value {
+  font-size: 26px;
+  line-height: 32px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--v2-text-strong);
+}
+
+.of {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 13px;
+  color: var(--textColorTertiary);
+}
+
+.bar {
+  position: relative;
+  height: 8px;
+  margin: 14px 0 24px;
+
+  > div {
+    position: absolute;
+    top: 0;
+    height: 8px;
+    border-radius: 999px;
+  }
+}
+
+.track {
+  left: 0;
+  background: var(--v2-selected);
+}
+
+.overflow {
+  border-radius: 0 999px 999px 0 !important;
+  background: repeating-linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--colorWarning) 55%, transparent) 0 3px,
+    color-mix(in srgb, var(--colorWarning) 12%, transparent) 3px 6px
+  );
+}
+
+.requests {
+  left: 0;
+  background: color-mix(in srgb, var(--v2-accent) 32%, transparent);
+}
+
+.usage {
+  left: 0;
+  background: var(--v2-accent);
+}
+
+.marker {
+  top: -4px !important;
+  width: 2px;
+  height: 16px !important;
+  margin-left: -1px;
+  border-radius: 1px !important;
+  background: var(--v2-text-strong);
+}
+
+.markerLabel {
+  position: absolute;
+  top: 14px;
+  font-size: 10.5px;
+  color: var(--textColorTertiary);
+  white-space: nowrap;
+}
+
+.overcommit {
+  align-self: flex-start;
+  margin-bottom: 8px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--v2-warn-tint);
+  color: var(--colorWarning);
+  font-size: 11.5px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.legend {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.legendRow {
+  display: grid;
+  grid-template-columns: 10px minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: 8px;
+  min-height: 22px;
+  font-size: 12px;
+
+  dt {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--textColorSecondary);
+  }
+
+  dd {
+    margin: 0;
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    white-space: nowrap;
+  }
+
+  &[data-warning] {
+    .legendValue,
+    .legendPercent {
+      color: var(--colorWarning);
+    }
+  }
+}
+
+.legendValue {
+  color: var(--textColorAccent);
+  font-weight: 500;
+}
+
+.legendPercent {
+  min-width: 30px;
+  text-align: right;
+  font-size: 11px;
+  color: var(--textColorTertiary);
+}
+
+%swatch {
+  justify-self: center;
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+}
+
+.swatchUsage {
+  @extend %swatch;
+  background: var(--v2-accent);
+}
+
+.swatchRequests {
+  @extend %swatch;
+  background: color-mix(in srgb, var(--v2-accent) 32%, transparent);
+}
+
+.swatchLimits {
+  @extend %swatch;
+  background: repeating-linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--colorWarning) 75%, transparent) 0 2px,
+    color-mix(in srgb, var(--colorWarning) 15%, transparent) 2px 4px
+  );
+}
+
+.swatchNone {
+  @extend %swatch;
+  background: var(--v2-selected);
+}
+
+.swatchAllocatable {
+  justify-self: center;
+  width: 2px;
+  height: 12px;
+  border-radius: 1px;
+  background: var(--v2-text-strong);
+}

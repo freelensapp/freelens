@@ -52,3 +52,15 @@
     background-color: #ffffff33;
   }
 }
+
+// v2 interface (themes with `uiV2`, see ../ui-v2.scss): a quiet bar; warning and error states keep their colors.
+:global(body.ui-v2) .StatusBar:not(.status-warning, .status-error) {
+  background-color: var(--layoutBackground);
+  border-top: 1px solid var(--borderFaintColor);
+  color: var(--textColorTertiary);
+
+  .item:hover {
+    background-color: var(--sidebarItemHoverBackground);
+    color: var(--v2-text-strong);
+  }
+}

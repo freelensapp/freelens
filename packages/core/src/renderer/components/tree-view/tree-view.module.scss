@@ -61,3 +61,16 @@
   display: flex;
   flex-direction: column;
 }
+
+// v2 interface (themes with `uiV2`, see ../ui-v2.scss): tinted selection with an accent edge.
+:global(body.ui-v2) {
+  .treeItem.selected,
+  .treeItem.selected:hover,
+  .selected {
+    background-color: var(--v2-accent-tint);
+    box-shadow: inset 2px 0 0 var(--v2-accent);
+    border-radius: 0 6px 6px 0;
+    color: var(--v2-text-strong);
+    font-weight: 500;
+  }
+}

@@ -81,3 +81,65 @@
     }
   }
 }
+
+// v2 interface (themes with `uiV2`, see ../ui-v2.scss): tinted active row, tree guide for sub-items.
+:global(body.ui-v2) .SidebarItem {
+  > .navItem {
+    margin: 1px 8px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    color: var(--textColorSecondary);
+
+    &:hover {
+      background: var(--sidebarItemHoverBackground);
+      color: var(--v2-text-strong);
+
+      + .subMenu {
+        border-color: var(--v2-selected);
+      }
+    }
+
+    &:global(.active) {
+      background: var(--v2-accent-tint);
+      color: var(--v2-text-strong);
+      font-weight: 500;
+
+      > :global(.Icon:first-child) {
+        color: var(--v2-accent);
+      }
+
+      + .subMenu {
+        border-color: var(--v2-selected);
+      }
+    }
+  }
+
+  .subMenu {
+    margin-left: 26px;
+    border-left: 2px solid var(--v2-selected);
+
+    .SidebarItem {
+      padding-left: 0;
+
+      .navItem {
+        margin: 1px 8px 1px -2px;
+        padding: 4px 12px 4px 16px;
+        border-radius: 0 6px 6px 0;
+        color: var(--textColorTertiary);
+        font-weight: 400;
+
+        &:hover {
+          background: var(--sidebarItemHoverBackground);
+          color: var(--v2-text-strong);
+        }
+
+        &:global(.active) {
+          background: var(--v2-accent-tint);
+          box-shadow: inset 2px 0 0 var(--v2-accent);
+          color: var(--v2-text-strong);
+          font-weight: 500;
+        }
+      }
+    }
+  }
+}
