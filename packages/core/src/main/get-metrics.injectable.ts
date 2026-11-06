@@ -100,11 +100,15 @@ const getMetricsInjectable = getInjectable({
       }
 
       const queryRangePath = `/api/v1/namespaces/${prometheusPath}/proxy${prometheusPrefix}/api/v1/query_range`;
+      // The service proxy of the Kubernetes API passes these on to the service, e.g. the X-Scope-OrgID tenant that a
+      // multi-tenant Mimir needs inside the cluster as well.
+      const customHeaders = cluster.preferences.prometheus?.customHeaders ?? {};
 
       if (requestMethod === "GET") {
         return k8sRequest(cluster, `${queryRangePath}?${params.toString()}`, {
           timeout: 0,
           method: "GET",
+          headers: { ...customHeaders },
         });
       }
 
@@ -112,6 +116,7 @@ const getMetricsInjectable = getInjectable({
         timeout: 0,
         method: "POST",
         headers: {
+          ...customHeaders,
           "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
         },
         body: params.toString(),
