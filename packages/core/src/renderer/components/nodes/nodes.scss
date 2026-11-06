@@ -121,6 +121,11 @@
       flex-grow: 1.5;
     }
 
+    &.kernelVersion {
+      flex-grow: 1.3;
+      text-overflow: ellipsis;
+    }
+
     &.internalIp {
       flex-grow: 1.3;
     }
