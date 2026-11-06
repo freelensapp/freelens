@@ -32,7 +32,7 @@ jobs:
       - name: Set up mise
         uses: jdx/mise-action@v5
         with:
-          version: 2026.10.19 # datasource=github-releases depName=jdx/mise
+          version: 2026.11.3 # datasource=github-releases depName=jdx/mise
           install_args: yq
 
       - name: Check if package version matches
@@ -131,7 +131,7 @@ jobs:
       - name: Set up mise
         uses: jdx/mise-action@v5
         with:
-          version: 2026.10.19 # datasource=github-releases depName=jdx/mise
+          version: 2026.11.3 # datasource=github-releases depName=jdx/mise
           install_args: yq
 
       - name: Setup node
@@ -1008,7 +1008,7 @@ jobs:
       - name: Set up mise
         uses: jdx/mise-action@v5
         with:
-          version: 2026.10.19 # datasource=github-releases depName=jdx/mise
+          version: 2026.11.3 # datasource=github-releases depName=jdx/mise
           install_args: yq
 
       - name: Download runtime package lists
