@@ -97,6 +97,26 @@ describe("ValidatingAdmissionPolicyDetails", () => {
     expect(result.baseElement).toMatchSnapshot();
   });
 
+  it("renders match constraint selectors", () => {
+    const policy = new ValidatingAdmissionPolicy({
+      ...validatingAdmissionPolicy,
+      spec: {
+        ...validatingAdmissionPolicy.spec,
+        matchConstraints: {
+          namespaceSelector: { matchLabels: { environment: "production" } },
+          objectSelector: { matchExpressions: [{ key: "injected", operator: "DoesNotExist" }] },
+        },
+      },
+    });
+
+    result = render(<ValidatingAdmissionPolicyDetails object={policy} />);
+
+    expect(result.getByText("Namespace Selector")).toBeInTheDocument();
+    expect(result.getByText("environment=production")).toBeInTheDocument();
+    expect(result.getByText("Object Selector")).toBeInTheDocument();
+    expect(result.getByText("!injected")).toBeInTheDocument();
+  });
+
   it("renders with no validations", () => {
     const policy = new ValidatingAdmissionPolicy({
       ...validatingAdmissionPolicy,

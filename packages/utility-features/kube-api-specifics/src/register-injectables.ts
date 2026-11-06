@@ -25,6 +25,8 @@ import { jobApiInjectable } from "./specifics/job.api.injectable";
 import { leaseApiInjectable } from "./specifics/lease.api.injectable";
 import { limitRangeApiInjectable } from "./specifics/limit-range.api.injectable";
 import { maybeKubeApiInjectable } from "./specifics/maybe-kube-api.injectable";
+import { mutatingAdmissionPolicyApiInjectable } from "./specifics/mutating-admission-policy-api.injectable";
+import { mutatingAdmissionPolicyBindingApiInjectable } from "./specifics/mutating-admission-policy-binding-api.injectable";
 import { mutatingWebhookConfigurationApiInjectable } from "./specifics/mutating-webhook-configuration-api.injectable";
 import { namespaceApiInjectable } from "./specifics/namespace.api.injectable";
 import { networkPolicyApiInjectable } from "./specifics/network-policy.api.injectable";
@@ -149,6 +151,16 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(maybeKubeApiInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(mutatingAdmissionPolicyApiInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(mutatingAdmissionPolicyBindingApiInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }
