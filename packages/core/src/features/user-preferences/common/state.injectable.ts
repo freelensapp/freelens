@@ -7,6 +7,7 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import { observable } from "mobx";
 
+import type { CustomTableColumn } from "../../custom-table-columns/common/custom-table-column";
 import type { PreferenceDescriptors } from "./preference-descriptors.injectable";
 import type { StoreType } from "./preferences-helpers";
 
@@ -24,6 +25,7 @@ const userPreferencesStateInjectable = getInjectable({
       // Default them to empty observable collections so a not-yet-loaded store
       // cannot crash those views; fromStore() reassigns the fields on load.
       hiddenTableColumns: observable.map<string, Set<string>>(),
+      customTableColumns: observable.array<CustomTableColumn>(),
     } as unknown as UserPreferencesState),
 });
 
