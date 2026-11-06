@@ -17,6 +17,9 @@ export interface LensTheme {
   author: string;
   monacoTheme: MonacoTheme;
   isDefault?: boolean;
+  // Picked by the "Sync with computer" preference for its type. Exactly one theme
+  // of each type sets it, and the preference lists show those themes first.
+  isSystemTheme?: boolean;
 }
 
 export type TerminalColorName =

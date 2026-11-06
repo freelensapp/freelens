@@ -9,6 +9,8 @@
 import activeThemeInjectable from "./active.injectable";
 import activeThemeTypeInjectable from "./active-type.injectable";
 import applyLensThemeInjectable from "./apply-lens-theme.injectable";
+import ayuDarkThemeInjectable from "./ayu-dark.injectable";
+import ayuMirageThemeInjectable from "./ayu-mirage.injectable";
 import defaultLensThemeInjectable from "./default-theme.injectable";
 import lensDarkThemeInjectable from "./lens-dark.injectable";
 import lensLightThemeInjectable from "./lens-light.injectable";
@@ -32,6 +34,16 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(applyLensThemeInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(ayuDarkThemeInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(ayuMirageThemeInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

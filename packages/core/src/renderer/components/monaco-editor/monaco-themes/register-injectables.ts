@@ -6,11 +6,23 @@
  * This replaces the webpack-based auto-registration system.
  */
 
+import ayuDarkMonacoThemeInjectable from "./ayu-dark.injectable";
+import ayuMirageMonacoThemeInjectable from "./ayu-mirage.injectable";
 import cloudsMidnightThemeInjectable from "./clouds-midnight.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
+  try {
+    di.register(ayuDarkMonacoThemeInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(ayuMirageMonacoThemeInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
   try {
     di.register(cloudsMidnightThemeInjectable);
   } catch (e) {
