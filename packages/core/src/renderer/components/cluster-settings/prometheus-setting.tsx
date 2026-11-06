@@ -311,13 +311,12 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
                     onChange={(option) => {
                       this.connectionMode = option?.value ?? "direct";
 
-                      if (this.connectionMode === "direct") {
-                        this.path = "";
-                      } else {
+                      // Saving the external mode now would store a configuration without its URL, which is not
+                      // typed yet, and reloading it would switch back to the service: the URL saves it on blur.
+                      if (this.connectionMode === "service") {
                         this.directUrl = "";
+                        this.onSaveAll();
                       }
-
-                      this.onSaveAll();
                     }}
                     options={[
                       { value: "service" as const, label: "In-cluster K8s service", isSelected: !this.isDirectMode },
