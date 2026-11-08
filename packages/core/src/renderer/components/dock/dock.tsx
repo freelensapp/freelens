@@ -120,7 +120,7 @@ class NonInjectedDock extends React.Component<DockProps & Dependencies> {
       case TabKind.UPGRADE_CHART:
         return <UpgradeChart key={tab.id} tab={tab} />;
       case TabKind.POD_LOGS:
-        return <LogsDockTab tab={tab} />;
+        return <LogsDockTab key={tab.id} tab={tab} />;
       case TabKind.TERMINAL:
         return <TerminalWindow tab={tab} />;
     }
