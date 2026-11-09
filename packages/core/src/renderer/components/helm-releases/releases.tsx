@@ -83,8 +83,9 @@ class NonInjectedHelmReleases extends Component<Dependencies> {
 
     // TODO: Implement ItemListLayout without stateful stores
     const legacyReleaseStore: ItemListStore<RemovableHelmRelease, false> = {
+      // A refresh keeps the previous list, so the spinner is only for when there is nothing to show yet.
       get isLoaded() {
-        return !releasesArePending.get();
+        return !releasesArePending.get() || releases.get().length > 0;
       },
 
       failedLoading: false,

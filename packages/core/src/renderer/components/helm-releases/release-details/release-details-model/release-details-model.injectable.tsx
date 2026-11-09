@@ -173,6 +173,9 @@ export class ReleaseDetailsModel {
   load = async () => {
     const { name, namespace } = this.dependencies.targetRelease;
 
+    // The values come from a separate helm process, so they load alongside the details instead of after them.
+    const configurationLoaded = this.loadConfiguration();
+
     const result = await this.dependencies.requestDetailedHelmRelease({
       releaseName: name,
       namespace,
@@ -180,6 +183,8 @@ export class ReleaseDetailsModel {
     });
 
     if (!result.callWasSuccessful) {
+      configurationLoaded.catch(() => {});
+
       runInAction(() => {
         this.loadingError.set(result.error);
       });
@@ -191,7 +196,7 @@ export class ReleaseDetailsModel {
       this.detailedRelease.set(result.response);
     });
 
-    await this.loadConfiguration();
+    await configurationLoaded;
   };
 
   private loadConfiguration = async () => {
@@ -199,7 +204,7 @@ export class ReleaseDetailsModel {
       this.configuration.isLoading.set(true);
     });
 
-    const { name, namespace } = this.release;
+    const { name, namespace } = this.dependencies.targetRelease;
 
     const configuration = await this.dependencies.requestHelmReleaseConfiguration(
       name,
