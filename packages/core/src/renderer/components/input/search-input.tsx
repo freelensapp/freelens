@@ -13,8 +13,10 @@ import autoBindReact from "auto-bind/react";
 import { observer } from "mobx-react";
 import React, { createRef } from "react";
 import isMacInjectable from "../../../common/vars/is-mac.injectable";
+import createStorageInjectable from "../../utils/create-storage/create-storage.injectable";
 import { Input } from "./input";
 
+import type { CreateStorage } from "../../utils/create-storage/create-storage.injectable";
 import type { InputProps } from "./input";
 
 export interface SearchInputProps extends InputProps {
@@ -33,6 +35,7 @@ const defaultProps: Partial<SearchInputProps> = {
 
 interface Dependencies {
   isMac: boolean;
+  createStorage: CreateStorage;
 }
 
 @observer
@@ -105,5 +108,6 @@ export const SearchInput = withInjectables<Dependencies, SearchInputProps>(NonIn
   getProps: (di, props) => ({
     ...props,
     isMac: di.inject(isMacInjectable),
+    createStorage: di.inject(createStorageInjectable),
   }),
 });
