@@ -51,6 +51,15 @@ describe("ItemStore", () => {
     expect(ids()).toEqual(["b", "a"]);
   });
 
+  it("sorts names with numbers in natural order by default", () => {
+    class NamedStore extends ItemStore<Item> {}
+
+    const names = ["manual10", "manual5", "manual12", "manual1"];
+    const sorted = new NamedStore()["sortItems"](names.map((name) => new Item(name, 0)));
+
+    expect(sorted.map((item) => item.getId())).toEqual(["manual1", "manual5", "manual10", "manual12"]);
+  });
+
   describe.each(["update", "load"] as const)("%s", (method) => {
     it("sorts when the sort key changes", async () => {
       await store[method](new Item("b", 0));

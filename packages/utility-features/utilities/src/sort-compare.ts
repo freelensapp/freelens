@@ -27,6 +27,8 @@ export function rectifyOrdering(ordering: Ordering, direction: "asc" | "desc"): 
   return ordering;
 }
 
+const naturalCollator = new Intl.Collator("en", { numeric: true });
+
 /**
  * An ascending sorting function
  * @param left An item from an array
@@ -35,8 +37,14 @@ export function rectifyOrdering(ordering: Ordering, direction: "asc" | "desc"): 
  * - Less if left < right
  * - Equal if left == right
  * - Greater if left > right
+ *
+ * Strings are compared naturally, so that "name5" sorts before "name10".
  */
 export function sortCompare<T>(left: T, right: T): Ordering {
+  if (typeof left === "string" && typeof right === "string") {
+    return Math.sign(naturalCollator.compare(left, right));
+  }
+
   if (left < right) {
     return Ordering.LESS;
   }
