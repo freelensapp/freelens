@@ -219,6 +219,22 @@ describe("BarChart", () => {
       ]);
     });
 
+    it("holds the value of a sample followed by a gap for one step when asked", () => {
+      const data = [
+        { x: t0, y: "1" },
+        { x: t0 + step, y: "2" },
+        { x: t0 + 10 * step, y: "3" },
+      ];
+
+      expect(insertGapsInTimeSeries(data, step, true)).toEqual([
+        { x: t0, y: "1" },
+        { x: t0 + step, y: "2" },
+        { x: t0 + 2 * step, y: "2" },
+        { x: t0 + 2 * step, y: null },
+        { x: t0 + 10 * step, y: "3" },
+      ]);
+    });
+
     it("keeps contiguous data unchanged", () => {
       const data = [
         { x: t0, y: "1" },
@@ -280,6 +296,59 @@ describe("BarChart", () => {
         { x: t0 + minuteStep, y: "2" },
         { x: t0 + 2 * minuteStep, y: null },
         { x: t0 + 200 * minuteStep, y: "3" },
+      ]);
+    });
+
+    it("breaks the line between isolated samples using the step of the queried range", () => {
+      const di = getDiForUnitTesting();
+      const render = renderFor(di);
+
+      di.override(activeThemeInjectable, () =>
+        computed(
+          () =>
+            ({
+              colors: {
+                textColorPrimary: "#fff",
+                borderFaintColor: "#000",
+                chartStripesColor: "#111",
+              },
+            }) as never,
+        ),
+      );
+
+      // 25 hours range is queried with a 1 hour step. The cluster was up only for
+      // short periods, so there are just two samples 23 hours apart: their distance
+      // is not the step and must not hide the gap between them.
+      const hourStep = 3_600_000;
+
+      render(
+        <BarChart
+          minTime={t0 / 1000}
+          maxTime={t0 / 1000 + 25 * 60 * 60}
+          data={{
+            datasets: [
+              {
+                id: "dataset-id",
+                label: "Dataset",
+                borderColor: "#00a7a0",
+                data: [
+                  { x: t0 + hourStep, y: "8" },
+                  { x: t0 + 24 * hourStep, y: "8" },
+                ],
+              },
+            ],
+          }}
+        />,
+      );
+
+      const { type, data } = chartMock.mock.calls[0][0];
+
+      expect(type).toBe("line");
+      expect(data.datasets[0].data).toEqual([
+        { x: t0 + hourStep, y: "8" },
+        { x: t0 + 2 * hourStep, y: "8" },
+        { x: t0 + 2 * hourStep, y: null },
+        { x: t0 + 24 * hourStep, y: "8" },
       ]);
     });
   });

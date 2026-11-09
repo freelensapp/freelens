@@ -10,6 +10,7 @@ import { withInjectables } from "@ogre-tools/injectable-react";
 import Color from "color";
 import { merge } from "es-toolkit/compat";
 import { observer } from "mobx-react";
+import { calculateAdaptiveStep } from "../../../common/k8s-api/endpoints/metrics.api/adaptive-step";
 import activeThemeInjectable from "../../themes/active.injectable";
 import { NoMetrics } from "../resource-metrics/no-metrics";
 import { Chart, ChartKind } from "./chart";
@@ -165,8 +166,16 @@ const GAP_THRESHOLD_IN_STEPS = 1.5;
  * Inserts a `null` point after each sample that is followed by a gap, so that
  * Chart.js breaks the line (and its filled area) instead of joining samples
  * across periods without data, the same way Grafana shows them.
+ *
+ * With `holdValue` (stepped lines) the sample is first held for one step, as
+ * stepped lines do between contiguous samples; otherwise a sample isolated by
+ * gaps on both sides would not be drawn at all.
  */
-export const insertGapsInTimeSeries = <T,>(data: T[], stepMs: number | undefined): Array<T | TimePoint> => {
+export const insertGapsInTimeSeries = <T,>(
+  data: T[],
+  stepMs: number | undefined,
+  holdValue = false,
+): Array<T | TimePoint> => {
   if (!stepMs || data.length < 2) {
     return data;
   }
@@ -179,6 +188,10 @@ export const insertGapsInTimeSeries = <T,>(data: T[], stepMs: number | undefined
     const next = data[index + 1];
 
     if (isTimePoint(point) && isTimePoint(next) && next.x - point.x > stepMs * GAP_THRESHOLD_IN_STEPS) {
+      if (holdValue) {
+        result.push({ x: point.x + stepMs, y: point.y });
+      }
+
       result.push({ x: point.x + stepMs, y: null });
     }
   });
@@ -212,7 +225,16 @@ const NonInjectedBarChart = observer(
     const { datasets: rawDatasets = [], ...rest } = data;
     const timeRangeSeconds = maxTime && minTime ? maxTime - minTime : 3600;
     const timeUnit = getBarChartTimeUnit(timeRangeSeconds);
-    const sampleStepMs = getSampleStepMs(rawDatasets);
+    // The smallest distance between samples is the query step, except when every
+    // sample is isolated by a gap (e.g. a few minutes of data in a long range):
+    // then it is much larger, so cap it with the step used to query this range.
+    const rangeStepMs =
+      maxTime && minTime && maxTime > minTime ? calculateAdaptiveStep(timeRangeSeconds) * 1000 : undefined;
+    const minSampleDistanceMs = getSampleStepMs(rawDatasets);
+    const sampleStepMs =
+      minSampleDistanceMs !== undefined && rangeStepMs !== undefined
+        ? Math.min(minSampleDistanceMs, rangeStepMs)
+        : minSampleDistanceMs;
     const inferredStepSeconds = sampleStepMs
       ? Math.max(Math.floor(sampleStepMs / 1000), 1)
       : rawDatasets[0]?.data?.length
@@ -234,7 +256,7 @@ const NonInjectedBarChart = observer(
         fill: useSteppedStyle,
         backgroundColor: useSteppedStyle ? getBarColor({ dataset: item } as never) : undefined,
         ...item,
-        data: insertGapsInTimeSeries(item.data ?? [], sampleStepMs),
+        data: insertGapsInTimeSeries(item.data ?? [], sampleStepMs, useSteppedStyle),
       }));
 
     plugins ??= [
