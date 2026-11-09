@@ -25,6 +25,13 @@ export interface MayHaveKeyboardShortcut {
   keyboardShortcut?: string;
 }
 
+export interface MayBeHiddenFromMenu {
+  // Note: a menu item which is hidden is still part of the menu, so its keyboard
+  // shortcut keeps working. This allows registering alternative shortcuts for an
+  // action without showing duplicate items in the menu.
+  visible?: boolean;
+}
+
 export interface ElectronClickable {
   // TODO: This leaky abstraction is exposed in Extension API, therefore cannot be updated
   onClick: (
@@ -61,6 +68,7 @@ export type ClickableMenuItem = ApplicationMenuItemType<"clickable-menu-item"> &
 export type OsActionMenuItem = ApplicationMenuItemType<"os-action-menu-item"> &
   MenuItem &
   MaybeLabeled &
+  MayBeHiddenFromMenu &
   TriggersElectronAction;
 
 type MenuItem = ChildOfParentComposite & MayHaveKeyboardShortcut;
