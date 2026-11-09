@@ -22,7 +22,6 @@ const startApplication = di.inject(startApplicationInjectionToken);
 startApplication();
 ```
 
-
 ## Features
 
 ### Start application

@@ -50,7 +50,9 @@
     will-change: opacity, transform;
     opacity: 0;
     transform: scale(1.25);
-    transition: transform $leaveDuration ease-in, opacity $leaveDuration ease-out;
+    transition:
+      transform $leaveDuration ease-in,
+      opacity $leaveDuration ease-out;
   }
 }
 

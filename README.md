@@ -20,7 +20,6 @@
 [![Integration tests](https://github.com/freelensapp/freelens/actions/workflows/integration-tests.yaml/badge.svg?branch=main)](https://github.com/freelensapp/freelens/actions/workflows/integration-tests.yaml)
 [![Trunk Check](https://github.com/freelensapp/freelens/actions/workflows/trunk-check.yaml/badge.svg?branch=main)](https://github.com/freelensapp/freelens/actions/workflows/trunk-check.yaml)
 
-
 <picture>
   <img alt="Freelens logo" src="docs/images/logo.svg" width="110" align="left">
 </picture>
@@ -134,7 +133,6 @@ snap install freelens --classic
 #### APT repository
 
 Run the following commands:
-
 
 ```sh
 curl -L https://raw.githubusercontent.com/freelensapp/freelens/refs/heads/main/freelens/build/apt/freelens.asc | sudo tee /etc/apt/keyrings/freelens.asc
