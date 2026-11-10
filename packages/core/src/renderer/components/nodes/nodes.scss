@@ -105,6 +105,11 @@
       text-overflow: ellipsis;
     }
 
+    &.amiId {
+      flex: 1.2;
+      text-overflow: ellipsis;
+    }
+
     &.capacityType {
       flex: 0.6;
     }

@@ -46,6 +46,7 @@ enum columnId {
   pods = "pods",
   instanceType = "instanceType",
   nodeGroup = "nodeGroup",
+  amiId = "amiId",
   capacityType = "capacityType",
   taints = "taints",
   roles = "roles",
@@ -103,6 +104,12 @@ function getNodeGroup(node: Node): string {
     labels["agentpool"] ?? // AKS (legacy)
     ""
   );
+}
+
+function getAmiId(node: Node): string {
+  const labels = node.metadata.labels ?? {};
+
+  return labels["eks.amazonaws.com/nodegroup-image"] ?? ""; // EKS managed node group AMI
 }
 
 function getCapacityType(node: Node): string {
@@ -443,6 +450,7 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
             columnId.pods,
             columnId.instanceType,
             columnId.nodeGroup,
+            columnId.amiId,
             columnId.capacityType,
             columnId.kernelVersion,
           ]}
@@ -460,6 +468,7 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
             [columnId.pods]: (node) => this.getNonTerminatedPods(node).length,
             [columnId.instanceType]: (node) => getInstanceType(node),
             [columnId.nodeGroup]: (node) => getNodeGroup(node),
+            [columnId.amiId]: (node) => getAmiId(node),
             [columnId.capacityType]: (node) => getCapacityType(node),
             [columnId.taints]: (node) => node.getTaints().length,
             [columnId.roles]: (node) => node.getRoleLabels(),
@@ -480,6 +489,7 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
             (node) => node.getExternalIP(),
             (node) => getInstanceType(node),
             (node) => getNodeGroup(node),
+            (node) => getAmiId(node),
             (node) => getCapacityType(node),
           ]}
           renderHeaderTitle="Nodes"
@@ -500,6 +510,12 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
               className: "nodeGroup",
               sortBy: columnId.nodeGroup,
               id: columnId.nodeGroup,
+            },
+            {
+              title: "AMI",
+              className: "amiId",
+              sortBy: columnId.amiId,
+              id: columnId.amiId,
             },
             {
               title: "Capacity",
@@ -538,6 +554,7 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
               this.renderPodsUsage(node),
               <WithTooltip>{getInstanceType(node)}</WithTooltip>,
               <WithTooltip>{getNodeGroup(node)}</WithTooltip>,
+              <WithTooltip>{getAmiId(node)}</WithTooltip>,
               <WithTooltip>{getCapacityType(node)}</WithTooltip>,
               <WithTooltip>{node.getRoleLabels()}</WithTooltip>,
               <>
