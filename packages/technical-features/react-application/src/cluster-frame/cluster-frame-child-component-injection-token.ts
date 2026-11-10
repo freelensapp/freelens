@@ -10,7 +10,8 @@ import type { IComputedValue } from "mobx";
 
 export interface ClusterFrameChildComponent {
   id: string;
-  Component: React.ElementType;
+  /** Rendered without props. */
+  Component: React.ComponentType;
   shouldRender: IComputedValue<boolean>;
 }
 

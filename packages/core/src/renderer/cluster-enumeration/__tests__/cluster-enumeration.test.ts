@@ -3,6 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { describe, expect, it } from "vitest";
 import { KubernetesCluster, LensKubernetesClusterStatus } from "../../../common/catalog-entities/kubernetes-cluster";
 import { ClusterConnectionStatus } from "../../../extensions/common-api/cluster-types";
 import { ClusterEnumeration } from "../../../features/cluster/enumeration/common";

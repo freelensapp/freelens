@@ -7,38 +7,39 @@
 import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import { waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import React from "react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { Cluster } from "../../../../common/cluster/cluster";
 import loadKubeconfigInjectable from "../../../../common/cluster/load-kubeconfig.injectable";
 import statInjectable from "../../../../common/fs/stat.injectable";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import { renderFor } from "../../test-utils/renderFor";
 import { ClusterLocalTerminalSetting } from "../local-terminal-settings";
-import type { Stats } from "fs";
+import type { Stats } from "node:fs";
 
 import type { UserEvent } from "@testing-library/user-event";
+import type { Mock } from "vitest";
 
 import type { DiRender } from "../../test-utils/renderFor";
 
 describe("ClusterLocalTerminalSettings", () => {
   let render: DiRender;
-  let showErrorNotificationMock: jest.Mock;
-  let statMock: jest.Mock;
-  let loadKubeconfigMock: jest.Mock;
+  let showErrorNotificationMock: Mock;
+  let statMock: Mock;
+  let loadKubeconfigMock: Mock;
   let user: UserEvent;
 
   beforeEach(() => {
     const di = getDiForUnitTesting();
 
-    showErrorNotificationMock = jest.fn();
+    showErrorNotificationMock = vi.fn();
 
-    statMock = jest.fn();
+    statMock = vi.fn();
 
     di.override(statInjectable, () => statMock);
 
     di.override(showErrorNotificationInjectable, () => showErrorNotificationMock);
 
-    loadKubeconfigMock = jest.fn();
+    loadKubeconfigMock = vi.fn();
     di.override(loadKubeconfigInjectable, () => loadKubeconfigMock);
 
     render = renderFor(di);

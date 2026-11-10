@@ -27,7 +27,7 @@ export class Stepper extends React.Component<StepperProps, {}> {
     step = Math.min(Math.max(1, step), stepsCount);
 
     return (
-      <div {...props} className={cssNames("Stepper flex auto", className)}>
+      <div {...props} className={cssNames("Stepper flex", className)}>
         {steps.map(({ title }, i) => {
           const stepNumber = i + 1;
           const isLast = i === stepsCount - 1;
@@ -37,7 +37,7 @@ export class Stepper extends React.Component<StepperProps, {}> {
           };
 
           return (
-            <div key={i} className={cssNames("box step", stepClass)}>
+            <div key={i} className={cssNames("step flex-1", stepClass)}>
               {!isLast ? <span className="line" /> : null}
               <div className="point">{stepNumber}</div>
               <span className="step-title">{title}</span>

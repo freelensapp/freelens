@@ -5,29 +5,56 @@
  */
 
 import "./chart.scss";
+import "./chartjs-adapter-native";
 
 import { cssNames } from "@freelensapp/utilities";
-import ChartJS from "chart.js";
-import { remove } from "lodash";
+import { Chart as ChartJS, registerables, Tooltip } from "chart.js";
+import { merge, remove } from "es-toolkit/compat";
 import React from "react";
 import { Badge } from "../badge";
 import { StatusBrick } from "../status-brick";
 
-import type { PluginServiceRegistrationOptions } from "chart.js";
+import type { ChartData as ChartJSData, ChartOptions, ChartType, Plugin, TooltipPositionerFunction } from "chart.js";
 import type { CSSProperties } from "react";
 
-export interface ChartData extends ChartJS.ChartData {
-  datasets?: ChartDataSets[];
+// Register all controllers, elements, scales and plugins once. Individual
+// tree-shaken registrations can be a later optimization.
+ChartJS.register(...registerables);
+
+// Custom tooltip positioner that places the tooltip at the cursor position.
+// Used by both the bar and pie charts via `position: "cursor"`.
+declare module "chart.js" {
+  interface TooltipPositionerMap {
+    cursor: TooltipPositionerFunction<ChartType>;
+  }
 }
 
-export interface ChartDataSets extends ChartJS.ChartDataSets {
+Tooltip.positioners.cursor = (_elements, eventPosition) => eventPosition;
+
+// The wrapper accepts loosely typed data and casts it to the strict v4
+// ChartData at the ChartJS boundary (see renderChart). Chart.js v4 parses data
+// internally, so string/number-y point values are tolerated at runtime.
+export type ChartDataPoint = number | { x: number | string; y: number | string } | null | undefined;
+
+export interface ChartDataSets {
   id?: string;
   tooltip?: string;
+  label?: string;
+  data?: ChartDataPoint[];
+  backgroundColor?: string | string[];
+  borderColor?: string | string[];
+  [key: string]: unknown;
+}
+
+export interface ChartData {
+  labels?: unknown[];
+  datasets?: ChartDataSets[];
+  [key: string]: unknown;
 }
 
 export interface ChartProps {
   data: ChartData;
-  options?: ChartJS.ChartOptions; // Passed to ChartJS instance
+  options?: ChartOptions; // Passed to ChartJS instance
   width?: number | string;
   height?: number | string;
   type?: ChartKind;
@@ -35,7 +62,7 @@ export interface ChartProps {
   showLegend?: boolean;
   legendPosition?: "bottom";
   legendColors?: string[]; // Hex colors for each of the labels in data object
-  plugins?: PluginServiceRegistrationOptions[];
+  plugins?: Plugin[];
   redraw?: boolean; // If true - recreate chart instance with no animation
   title?: string;
   className?: string;
@@ -91,6 +118,14 @@ export class Chart extends React.Component<ChartProps> {
     }
   }
 
+  componentWillUnmount() {
+    // Destroy the Chart.js instance so its canvas is released. Without this the
+    // instance leaks on unmount and a remount hits "Canvas is already in use"
+    // (surfaced by React.StrictMode's mount → unmount → mount double-invoke).
+    this.chart?.destroy();
+    this.chart = null;
+  }
+
   memoizeDataProps() {
     const { data } = this.props;
 
@@ -111,11 +146,18 @@ export class Chart extends React.Component<ChartProps> {
 
     if (!this.chart) return;
 
-    this.chart.options = ChartJS.helpers.configMerge(this.chart.options, options);
+    // Merge into the raw config options, not `this.chart.options` (the resolved
+    // options proxy). The proxy exposes Chart.js's internal descriptor keys
+    // `_scriptable`/`_indexable` (functions); es-toolkit `merge` would copy them
+    // into the options object, and on the next update Chart.js would resolve
+    // them as scriptable options and call them, throwing "name.startsWith is not
+    // a function". Chart.js v4 removed `helpers.configMerge`, which used to skip
+    // these keys.
+    this.chart.options = merge(this.chart.config.options ?? {}, options);
 
     this.memoizeDataProps();
 
-    const datasets: ChartDataSets[] = ((this.chart.config.data ??= {}).datasets ??= []);
+    const datasets = this.chart.config.data.datasets as unknown as ChartDataSets[];
     const nextDatasets: ChartDataSets[] = ((this.currentChartData ??= {}).datasets ??= []);
 
     // Remove stale datasets if they're not available in nextDatasets
@@ -168,7 +210,7 @@ export class Chart extends React.Component<ChartProps> {
     ) => (
       <Badge
         key={title}
-        className="LegendBadge flex gaps align-center"
+        className="LegendBadge flex gap-2 items-center"
         label={
           <div className="flex items-center">
             <StatusBrick style={{ backgroundColor: color }} className="shrink-0" />
@@ -181,7 +223,7 @@ export class Chart extends React.Component<ChartProps> {
     );
 
     return (
-      <div className="legend flex wrap">
+      <div className="legend flex flex-wrap">
         {labels
           ? labels.map((label, index) => {
               const { backgroundColor = [] } = datasets?.[0] ?? {};
@@ -205,15 +247,18 @@ export class Chart extends React.Component<ChartProps> {
     this.memoizeDataProps();
 
     this.chart = new ChartJS(canvas, {
-      type,
-      plugins,
+      type: type as ChartType,
+      plugins: plugins as Plugin<ChartType>[],
       options: {
         ...options,
-        legend: {
-          display: false,
+        plugins: {
+          ...options?.plugins,
+          legend: {
+            display: false,
+          },
         },
       },
-      data: this.currentChartData,
+      data: this.currentChartData as unknown as ChartJSData,
     });
   }
 
@@ -226,7 +271,7 @@ export class Chart extends React.Component<ChartProps> {
         {showChart && (
           <div className="chart-container">
             <canvas ref={this.canvas} width={width} height={height} />
-            <div className="chartjs-tooltip flex column"></div>
+            <div className="chartjs-tooltip flex flex-col"></div>
           </div>
         )}
         {this.renderLegend()}

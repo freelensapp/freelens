@@ -6,7 +6,6 @@
 
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import React from "react";
 import { shouldShowResourceInjectionToken } from "../../features/cluster/showing-kube-resources/common/allowed-resources-injection-token";
 import { Events } from "../components/events/events";
 
@@ -23,7 +22,7 @@ const NonInjectedWorkloadEvents = observer(({ workloadEventsAreAllowed }: Depend
     return null;
   }
 
-  return <Events className="box grow" compact hideFilters />;
+  return <Events className="grow shrink-0 basis-0" compact hideFilters />;
 });
 
 export const WorkloadEvents = withInjectables<Dependencies, WorkloadEventsProps>(NonInjectedWorkloadEvents, {

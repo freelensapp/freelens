@@ -69,7 +69,7 @@ class NonInjectedCatalogEntityDetails<Entity extends CatalogEntity> extends Comp
             </Avatar>
             {entity.isEnabled() && <div className={styles.hint}>Click to open</div>}
           </div>
-          <div className={cssNames("box grow", styles.metadata)}>
+          <div className={cssNames("grow shrink-0 basis-0", styles.metadata)}>
             <DrawerItem name="Name">{entity.getName()}</DrawerItem>
             <DrawerItem name="Kind">{entity.kind}</DrawerItem>
             <DrawerItem name="Source">{entity.getSource()}</DrawerItem>
@@ -78,7 +78,7 @@ class NonInjectedCatalogEntityDetails<Entity extends CatalogEntity> extends Comp
             {isDevelopment && <DrawerItem name="Id">{entity.getId()}</DrawerItem>}
           </div>
         </div>
-        <div className="box grow">{details}</div>
+        <div className="grow shrink-0 basis-0">{details}</div>
       </>
     );
   }

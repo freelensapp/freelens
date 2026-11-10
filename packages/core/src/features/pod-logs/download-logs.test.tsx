@@ -6,11 +6,13 @@
 
 import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import { act, waitFor } from "@testing-library/react";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import dockStoreInjectable from "../../renderer/components/dock/dock/store.injectable";
 import { dockerPod } from "../../renderer/components/dock/logs/__test__/pod.mock";
 import areLogsPresentInjectable from "../../renderer/components/dock/logs/are-logs-present.injectable";
 import callForLogsInjectable from "../../renderer/components/dock/logs/call-for-logs.injectable";
 import createPodLogsTabInjectable from "../../renderer/components/dock/logs/create-pod-logs-tab.injectable";
+import downloadAllLogsInjectable from "../../renderer/components/dock/logs/download-all-logs.injectable";
 import getLogTabDataInjectable from "../../renderer/components/dock/logs/get-log-tab-data.injectable";
 import getLogsInjectable from "../../renderer/components/dock/logs/get-logs.injectable";
 import getLogsWithoutTimestampsInjectable from "../../renderer/components/dock/logs/get-logs-without-timestamps.injectable";
@@ -29,6 +31,7 @@ import type { Container } from "@freelensapp/kube-object";
 
 import type { DiContainer } from "@ogre-tools/injectable";
 import type { RenderResult } from "@testing-library/react";
+import type { Mock, MockedFunction } from "vitest";
 
 import type { CallForLogs } from "../../renderer/components/dock/logs/call-for-logs.injectable";
 import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
@@ -37,11 +40,11 @@ describe("download logs options in logs dock tab", () => {
   let windowDi: DiContainer;
   let rendered: RenderResult;
   let builder: ApplicationBuilder;
-  let openSaveFileDialogMock: jest.MockedFunction<() => void>;
-  let callForLogsMock: jest.MockedFunction<CallForLogs>;
-  let getLogsMock: jest.Mock;
-  let getSplitLogsMock: jest.Mock;
-  let showErrorNotificationMock: jest.Mock;
+  let openSaveFileDialogMock: MockedFunction<() => void>;
+  let callForLogsMock: MockedFunction<CallForLogs>;
+  let getLogsMock: Mock;
+  let getSplitLogsMock: Mock;
+  let showErrorNotificationMock: Mock;
   const logs = new Map([["timestamp", "some-logs"]]);
   const pod = dockerPod;
 
@@ -57,9 +60,9 @@ describe("download logs options in logs dock tab", () => {
 
     builder.setEnvironmentToClusterFrame();
 
-    callForLogsMock = jest.fn();
-    getLogsMock = jest.fn();
-    getSplitLogsMock = jest.fn();
+    callForLogsMock = vi.fn();
+    getLogsMock = vi.fn();
+    getSplitLogsMock = vi.fn();
 
     builder.beforeWindowStart(({ windowDi }) => {
       windowDi.override(callForLogsInjectable, () => callForLogsMock);
@@ -68,7 +71,7 @@ describe("download logs options in logs dock tab", () => {
       windowDi.override(getLogsInjectable, () => getLogsMock);
       windowDi.override(getLogsWithoutTimestampsInjectable, () => getLogsMock);
       windowDi.override(getTimestampSplitLogsInjectable, () => getSplitLogsMock);
-      windowDi.override(reloadLogsInjectable, () => jest.fn());
+      windowDi.override(reloadLogsInjectable, () => vi.fn());
       windowDi.override(getLogTabDataInjectable, () => () => ({
         selectedPodId: selectedPod.getId(),
         selectedContainer: selectedPod.getContainers()[0].name,
@@ -77,10 +80,10 @@ describe("download logs options in logs dock tab", () => {
         showTimestamps: false,
         showWordWrap: false,
       }));
-      windowDi.override(setLogTabDataInjectable, () => jest.fn());
-      windowDi.override(loadLogsInjectable, () => jest.fn());
-      windowDi.override(stopLoadingLogsInjectable, () => jest.fn());
-      windowDi.override(areLogsPresentInjectable, () => jest.fn());
+      windowDi.override(setLogTabDataInjectable, () => vi.fn());
+      windowDi.override(loadLogsInjectable, () => vi.fn());
+      windowDi.override(stopLoadingLogsInjectable, () => vi.fn());
+      windowDi.override(areLogsPresentInjectable, () => vi.fn());
       windowDi.override(getPodByIdInjectable, () => (id) => {
         if (id === selectedPod.getId()) {
           return selectedPod;
@@ -88,14 +91,14 @@ describe("download logs options in logs dock tab", () => {
 
         return undefined;
       });
-      windowDi.override(getPodsByOwnerIdInjectable, () => jest.fn());
+      windowDi.override(getPodsByOwnerIdInjectable, () => vi.fn());
 
-      windowDi.override(getRandomIdForPodLogsTabInjectable, () => jest.fn(() => "some-irrelevant-random-id"));
+      windowDi.override(getRandomIdForPodLogsTabInjectable, () => vi.fn(() => "some-irrelevant-random-id"));
 
-      openSaveFileDialogMock = jest.fn();
+      openSaveFileDialogMock = vi.fn();
       windowDi.override(openSaveFileDialogInjectable, () => openSaveFileDialogMock);
 
-      showErrorNotificationMock = jest.fn();
+      showErrorNotificationMock = vi.fn();
       windowDi.override(showErrorNotificationInjectable, () => showErrorNotificationMock);
     });
   });
@@ -107,20 +110,23 @@ describe("download logs options in logs dock tab", () => {
 
       const dockStore = windowDi.inject(dockStoreInjectable);
 
-      dockStore.closeTab("terminal");
+      act(() => {
+        dockStore.closeTab("terminal");
+      });
     });
 
-    // TODO: TestingLibraryElementError: Unable to find an element by: [data-testid="download-all-logs"]
-    describe.skip("when logs not available", () => {
+    describe("when logs not available", () => {
       beforeEach(() => {
         const createLogsTab = windowDi.inject(createPodLogsTabInjectable);
 
         getLogsMock.mockReturnValue([]);
         getSplitLogsMock.mockReturnValue([]);
 
-        createLogsTab({
-          selectedPod: pod,
-          selectedContainer: container,
+        act(() => {
+          createLogsTab({
+            selectedPod: pod,
+            selectedContainer: container,
+          });
         });
       });
 
@@ -135,18 +141,26 @@ describe("download logs options in logs dock tab", () => {
       });
     });
 
-    // TODO: TestingLibraryElementError: Unable to find an element by: [data-testid="download-all-logs"]
-    describe.skip("when logs available", () => {
+    describe("when logs available", () => {
       beforeEach(() => {
+        vi.useFakeTimers({ toFake: ["Date"] });
+        vi.setSystemTime(new Date("2026-10-03T09:55:41.123Z"));
+
         const createLogsTab = windowDi.inject(createPodLogsTabInjectable);
 
         getLogsMock.mockReturnValue(["some-logs"]);
         getSplitLogsMock.mockReturnValue([...logs]);
 
-        createLogsTab({
-          selectedPod: pod,
-          selectedContainer: container,
+        act(() => {
+          createLogsTab({
+            selectedPod: pod,
+            selectedContainer: container,
+          });
         });
+      });
+
+      afterEach(() => {
+        vi.useRealTimers();
       });
 
       it("renders", () => {
@@ -172,11 +186,28 @@ describe("download logs options in logs dock tab", () => {
           beforeEach(() => {
             const button = rendered.getByTestId("download-visible-logs");
 
-            button.click();
+            act(() => button.click());
           });
 
           it("shows save dialog with proper attributes", () => {
-            expect(openSaveFileDialogMock).toHaveBeenCalledWith("dockerExporter.log", "some-logs", "text/plain");
+            expect(openSaveFileDialogMock).toHaveBeenCalledWith(
+              "dockerExporter-2026-10-03T09-55-41-123Z.log",
+              "some-logs",
+              "text/plain",
+            );
+          });
+
+          it("uses a fresh timestamp for each download", () => {
+            vi.setSystemTime(new Date("2026-10-03T09:55:41.124Z"));
+
+            act(() => rendered.getByTestId("download-visible-logs").click());
+
+            expect(openSaveFileDialogMock).toHaveBeenNthCalledWith(
+              2,
+              "dockerExporter-2026-10-03T09-55-41-124Z.log",
+              "some-logs",
+              "text/plain",
+            );
           });
         });
 
@@ -185,9 +216,21 @@ describe("download logs options in logs dock tab", () => {
             callForLogsMock.mockResolvedValue("all-logs");
           });
 
+          it("uses the pod name when no container is specified", async () => {
+            const downloadAllLogs = windowDi.inject(downloadAllLogsInjectable);
+
+            await downloadAllLogs({ name: "dockerExporter", namespace: "default" }, {});
+
+            expect(openSaveFileDialogMock).toHaveBeenCalledWith(
+              "dockerExporter-2026-10-03T09-55-41-123Z.log",
+              "all-logs",
+              "text/plain",
+            );
+          });
+
           describe("when selected 'download all logs'", () => {
-            beforeEach(() => {
-              act(() => {
+            beforeEach(async () => {
+              await act(async () => {
                 const button = rendered.getByTestId("download-all-logs");
 
                 button.click();
@@ -202,7 +245,24 @@ describe("download logs options in logs dock tab", () => {
             });
 
             it("shows save dialog with proper attributes", () => {
-              expect(openSaveFileDialogMock).toHaveBeenCalledWith("docker-exporter.log", "all-logs", "text/plain");
+              expect(openSaveFileDialogMock).toHaveBeenCalledWith(
+                "docker-exporter-2026-10-03T09-55-41-123Z.log",
+                "all-logs",
+                "text/plain",
+              );
+            });
+
+            it("uses a fresh timestamp for each download", async () => {
+              vi.setSystemTime(new Date("2026-10-03T09:55:41.124Z"));
+
+              await act(async () => rendered.getByTestId("download-all-logs").click());
+
+              expect(openSaveFileDialogMock).toHaveBeenNthCalledWith(
+                2,
+                "docker-exporter-2026-10-03T09-55-41-124Z.log",
+                "all-logs",
+                "text/plain",
+              );
             });
 
             it("doesn't block download dropdown for interaction after click", () => {
@@ -237,8 +297,8 @@ describe("download logs options in logs dock tab", () => {
           });
 
           describe("when selected 'download all logs'", () => {
-            beforeEach(() => {
-              act(() => {
+            beforeEach(async () => {
+              await act(async () => {
                 const button = rendered.getByTestId("download-all-logs");
 
                 button.click();
@@ -261,8 +321,8 @@ describe("download logs options in logs dock tab", () => {
           });
 
           describe("when selected 'download all logs'", () => {
-            beforeEach(() => {
-              act(() => {
+            beforeEach(async () => {
+              await act(async () => {
                 const button = rendered.getByTestId("download-all-logs");
 
                 button.click();

@@ -5,7 +5,7 @@
  */
 
 import autoBind from "auto-bind";
-import { action, computed, makeObservable, observable, reaction } from "mobx";
+import { action, computed, observable, reaction } from "mobx";
 
 import type { PageParam } from "../../../navigation/page-param";
 
@@ -31,7 +31,6 @@ export class PageFiltersStore {
   }
 
   constructor(protected readonly dependencies: Dependencies) {
-    makeObservable(this);
     autoBind(this);
 
     this.syncWithGlobalSearch();

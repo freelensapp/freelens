@@ -23,6 +23,23 @@
       width: 100%;
     }
 
+    .metrics {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 4px;
+
+      .LineProgress {
+        height: 5px;
+      }
+
+      .usageText {
+        font-size: $font-size-small;
+        line-height: 1;
+      }
+    }
+
     &.cpu {
       flex: 0.6;
       align-self: center;
@@ -63,6 +80,33 @@
       .LineProgress {
         color: var(--golden);
       }
+    }
+
+    &.pods {
+      flex: 0.6;
+      align-self: center;
+      justify-content: right;
+
+      &.sorting {
+        justify-content: left;
+      }
+
+      .LineProgress {
+        color: var(--primary);
+      }
+    }
+
+    &.instanceType {
+      flex: 0.8;
+    }
+
+    &.nodeGroup {
+      flex: 1.2;
+      text-overflow: ellipsis;
+    }
+
+    &.capacityType {
+      flex: 0.6;
     }
 
     &.schedulable {

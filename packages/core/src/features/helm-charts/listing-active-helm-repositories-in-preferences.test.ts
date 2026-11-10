@@ -4,11 +4,12 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import asyncFn from "@async-fn/jest";
+import asyncFn from "@async-fn/vitest";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import { noop } from "@freelensapp/utilities";
 import { type RenderResult, waitFor } from "@testing-library/react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import execFileInjectable, { type ExecFile } from "../../common/fs/exec-file.injectable";
 import readYamlFileInjectable from "../../common/fs/read-yaml-file.injectable";
 import helmBinaryPathInjectable from "../../main/helm/helm-binary-path.injectable";
@@ -17,7 +18,8 @@ import requestPublicHelmRepositoriesInjectable from "./child-features/preference
 
 import type { Logger } from "@freelensapp/logger";
 
-import type { AsyncFnMock } from "@async-fn/jest";
+import type { AsyncFnMock } from "@async-fn/vitest";
+import type { Mock } from "vitest";
 
 import type { ReadYamlFile } from "../../common/fs/read-yaml-file.injectable";
 import type { HelmRepositoriesFromYaml } from "../../main/helm/repositories/get-active-helm-repositories/get-active-helm-repositories.injectable";
@@ -29,17 +31,17 @@ describe("listing active helm repositories in preferences", () => {
   let readYamlFileMock: AsyncFnMock<ReadYamlFile>;
   let execFileMock: AsyncFnMock<ExecFile>;
   let loggerStub: Logger;
-  let showErrorNotificationMock: jest.Mock;
+  let showErrorNotificationMock: Mock;
 
   beforeEach(async () => {
     builder = getApplicationBuilder();
 
     readYamlFileMock = asyncFn();
     execFileMock = asyncFn();
-    showErrorNotificationMock = jest.fn();
+    showErrorNotificationMock = vi.fn();
 
     loggerStub = {
-      error: jest.fn(),
+      error: vi.fn(),
       debug: noop,
       info: noop,
       silly: noop,
@@ -48,7 +50,7 @@ describe("listing active helm repositories in preferences", () => {
 
     builder.beforeApplicationStart(({ mainDi }) => {
       mainDi.override(readYamlFileInjectable, () => readYamlFileMock);
-      mainDi.override(execFileInjectable, () => execFileMock);
+      mainDi.override(execFileInjectable, () => execFileMock as unknown as ExecFile);
       mainDi.override(helmBinaryPathInjectable, () => "some-helm-binary-path");
       mainDi.override(loggerInjectionToken, () => loggerStub);
     });

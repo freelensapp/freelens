@@ -7,12 +7,18 @@
  */
 
 import { registerInjectables as registerEnabledInjectables } from "./enabled/register-injectables";
+import { registerInjectables as registerInstallerInjectables } from "./installer/register-injectables";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
   try {
     registerEnabledInjectables(di);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    registerInstallerInjectables(di);
   } catch (e) {
     /* Ignore duplicate registration */
   }

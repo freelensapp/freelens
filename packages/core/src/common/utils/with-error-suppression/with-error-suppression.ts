@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { noop } from "lodash/fp";
+import { noop } from "es-toolkit";
 
 export function withErrorSuppression<TDecorated extends (...args: any[]) => Promise<any>>(
   toBeDecorated: TDecorated,

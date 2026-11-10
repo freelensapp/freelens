@@ -10,6 +10,7 @@ import type { AsyncResult } from "@freelensapp/utilities";
 
 export interface KubeResourceListGroup {
   group: string;
+  version: string;
   path: string;
 }
 

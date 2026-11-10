@@ -4,9 +4,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import "@testing-library/jest-dom";
+import { beforeEach, describe, expect, it } from "vitest";
+import "@testing-library/jest-dom/vitest";
 
-import { KubeConfig } from "@freelensapp/kubernetes-client-node";
+import { KubeConfig } from "@kubernetes/client-node";
 import directoryForKubeConfigsInjectable from "../../../common/app-paths/directory-for-kube-configs/directory-for-kube-configs.injectable";
 import { Cluster } from "../../../common/cluster/cluster";
 import navigateToCatalogInjectable from "../../../common/front-end-routing/routes/catalog/navigate-to-catalog.injectable";

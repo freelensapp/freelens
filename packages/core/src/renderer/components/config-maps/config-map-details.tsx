@@ -11,8 +11,8 @@ import { ConfigMap } from "@freelensapp/kube-object";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { showErrorNotificationInjectable, showSuccessNotificationInjectable } from "@freelensapp/notifications";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { autorun, makeObservable, observable } from "mobx";
-import { disposeOnUnmount, observer } from "mobx-react";
+import { autorun, observable } from "mobx";
+import { observer } from "mobx-react";
 import React from "react";
 import { DrawerTitle } from "../drawer";
 import { MonacoEditor } from "../monaco-editor";
@@ -35,24 +35,30 @@ interface Dependencies {
 
 @observer
 class NonInjectedConfigMapDetails extends React.Component<ConfigMapDetailsProps & Dependencies> {
-  @observable isSaving = false;
-  @observable data = observable.map<string, string | undefined>();
+  private readonly disposers: (() => void)[] = [];
+  @observable accessor isSaving = false;
+  @observable accessor data = observable.map<string, string | undefined>();
 
   constructor(props: ConfigMapDetailsProps & Dependencies) {
     super(props);
-    makeObservable(this);
   }
 
   componentDidMount() {
-    disposeOnUnmount(this, [
-      autorun(() => {
-        const { object: configMap } = this.props;
+    // Capture the object before the autorun: mobx-react 9 forbids reading
+    // this.props inside a derivation (the autorun below).
+    const { object: configMap } = this.props;
 
+    this.disposers.push(
+      autorun(() => {
         if (configMap) {
           this.data.replace(configMap.data); // refresh
         }
       }),
-    ]);
+    );
+  }
+
+  componentWillUnmount() {
+    this.disposers.forEach((dispose) => dispose());
   }
 
   save = () => {

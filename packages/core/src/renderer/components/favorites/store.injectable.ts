@@ -1,12 +1,11 @@
 /**
  * Copyright (c) Freelens Authors. All rights reserved.
- * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import { sidebarItemsInjectable } from "@freelensapp/cluster-sidebar";
 import { getInjectable } from "@ogre-tools/injectable";
-import { action, computed, IObservableValue, makeObservable } from "mobx";
+import { action, computed, IObservableValue } from "mobx";
 import favoritesStateInjectable from "../../../features/favorites/common/state.injectable";
 import favoritesSidebarItemInjectable from "./sidebar-item.injectable";
 import { flattenSidebarItems } from "./utils";
@@ -19,9 +18,7 @@ export class FavoritesStore {
   constructor(
     private state: IObservableValue<FavoritesStorageState>,
     private sidebarItems: IObservableValue<SidebarItemDeclaration[]>,
-  ) {
-    makeObservable(this);
-  }
+  ) {}
 
   @computed get items(): FavoriteItem[] {
     return this.state

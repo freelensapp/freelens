@@ -4,13 +4,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import EventEmitter from "events";
-import { makeObservable, observable } from "mobx";
+import { TypedEmitter } from "@freelensapp/utilities";
+import { observable } from "mobx";
 
 import type { Defaulted } from "@freelensapp/utilities";
-
-import type TypedEventEmitter from "typed-emitter";
-import type { Arguments } from "typed-emitter";
 
 import type { DefaultWebsocketApiParams } from "./default-websocket-api-params.injectable";
 
@@ -61,33 +58,30 @@ export enum WebSocketApiState {
   CLOSED = "closed",
 }
 
-export interface WebSocketEvents {
+export type WebSocketEvents = {
   open: () => void;
   data: (message: string) => void;
   close: () => void;
-}
+};
 
 export interface WebSocketApiDependencies {
   readonly defaultParams: DefaultWebsocketApiParams;
 }
 
-export class WebSocketApi<Events extends WebSocketEvents> extends (EventEmitter as {
-  new <T>(): TypedEventEmitter<T>;
-})<Events> {
+export class WebSocketApi<Events extends WebSocketEvents> extends TypedEmitter<Events> {
   protected socket: WebSocket | null = null;
   protected pendingCommands: string[] = [];
   protected reconnectTimer?: number;
   protected pingTimer?: number;
   protected params: Defaulted<WebsocketApiParams, keyof DefaultWebsocketApiParams>;
 
-  @observable readyState = WebSocketApiState.PENDING;
+  @observable accessor readyState = WebSocketApiState.PENDING;
 
   constructor(
     protected readonly dependencies: WebSocketApiDependencies,
     params: WebsocketApiParams,
   ) {
     super();
-    makeObservable(this);
     this.params = {
       ...this.dependencies.defaultParams,
       ...params,
@@ -166,14 +160,14 @@ export class WebSocketApi<Events extends WebSocketEvents> extends (EventEmitter 
   }
 
   protected _onOpen(evt: Event) {
-    this.emit("open", ...([] as Arguments<Events["open"]>));
+    this.emit("open", ...([] as Parameters<Events["open"]>));
     if (this.params.flushOnOpen) this.flush();
     this.readyState = WebSocketApiState.OPEN;
     this.writeLog("%cOPEN", "color:green;font-weight:bold;", evt);
   }
 
   protected _onMessage({ data }: MessageEvent): void {
-    this.emit("data", ...([data] as Arguments<Events["data"]>));
+    this.emit("data", ...([data] as Parameters<Events["data"]>));
     this.writeLog("%cMESSAGE", "color:black;font-weight:bold;", data);
   }
 
@@ -197,7 +191,7 @@ export class WebSocketApi<Events extends WebSocketEvents> extends (EventEmitter 
       }
     } else {
       this.readyState = WebSocketApiState.CLOSED;
-      this.emit("close", ...([] as Arguments<Events["close"]>));
+      this.emit("close", ...([] as Parameters<Events["close"]>));
     }
     this.writeLog("%cCLOSE", `color:${error ? "red" : "black"};font-weight:bold;`, evt);
   }

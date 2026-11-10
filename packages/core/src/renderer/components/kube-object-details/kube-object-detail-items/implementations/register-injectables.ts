@@ -44,6 +44,8 @@ import serviceAccountDetailItemInjectable from "./service-account-detail-item.in
 import serviceDetailItemInjectable from "./service-detail-item.injectable";
 import statefulSetDetailItemInjectable from "./stateful-set-detail-item.injectable";
 import storageClassDetailItemInjectable from "./storage-class-detail-item.injectable";
+import validatingAdmissionPolicyDetailItemInjectable from "./validating-admission-policies-details-item.injectable";
+import validatingAdmissionPolicyBindingDetailItemInjectable from "./validating-admission-policy-bindings-details-item.injectable";
 import validatingWebhookConfigurationDetailItemInjectable from "./validating-webhook-configurations-details-item.injectable";
 import verticalPodAutoscalerDetailItemInjectable from "./vertical-pod-autoscaler-detail-item.injectable";
 
@@ -237,6 +239,16 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(storageClassDetailItemInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(validatingAdmissionPolicyBindingDetailItemInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(validatingAdmissionPolicyDetailItemInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

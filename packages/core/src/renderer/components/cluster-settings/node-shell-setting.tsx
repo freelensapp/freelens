@@ -5,7 +5,7 @@
  */
 
 import { Icon } from "@freelensapp/icon";
-import { makeObservable, observable, runInAction } from "mobx";
+import { observable, runInAction } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import { initialNodeShellImage, initialNodeShellWindowsImage } from "../../../common/cluster-types";
@@ -21,13 +21,12 @@ export interface ClusterNodeShellSettingProps {
 
 @observer
 export class ClusterNodeShellSetting extends React.Component<ClusterNodeShellSettingProps> {
-  @observable nodeShellImage = this.props.cluster.preferences?.nodeShellImage || "";
-  @observable nodeShellWindowsImage = this.props.cluster.preferences?.nodeShellWindowsImage || "";
-  @observable imagePullSecret = this.props.cluster.preferences?.imagePullSecret || "";
+  @observable accessor nodeShellImage = this.props.cluster.preferences?.nodeShellImage || "";
+  @observable accessor nodeShellWindowsImage = this.props.cluster.preferences?.nodeShellWindowsImage || "";
+  @observable accessor imagePullSecret = this.props.cluster.preferences?.imagePullSecret || "";
 
   constructor(props: ClusterNodeShellSettingProps) {
     super(props);
-    makeObservable(this);
   }
 
   componentWillUnmount() {

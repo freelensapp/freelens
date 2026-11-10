@@ -4,8 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { pipeline } from "@ogre-tools/fp";
-import { identity, map } from "lodash/fp";
 import React from "react";
 import { addSeparator } from "../../../common/utils/add-separator/add-separator";
 
@@ -29,30 +27,27 @@ export const Map = <Item extends RequiredPropertiesForItem>(props: MapProps<Item
     return getPlaceholder?.() || null;
   }
 
+  const renderableItems = items.map((item) => ({ item, render: () => children(item) }));
+
+  const itemsWithSeparators = getSeparator
+    ? addSeparator(
+        (left, right) => ({
+          item: {
+            id: `separator-between-${left.item.id}-and-${right.item.id}`,
+          },
+
+          render: () => getSeparator(left.item, right.item),
+        }),
+
+        renderableItems,
+      )
+    : renderableItems;
+
   return (
     <>
-      {pipeline(
-        items,
-
-        map((item) => ({ item, render: () => children(item) })),
-
-        getSeparator
-          ? (items) =>
-              addSeparator(
-                (left, right) => ({
-                  item: {
-                    id: `separator-between-${left.item.id}-and-${right.item.id}`,
-                  },
-
-                  render: () => getSeparator(left.item, right.item),
-                }),
-
-                items,
-              )
-          : identity,
-
-        map(({ render, item }) => <React.Fragment key={item.id}>{render()}</React.Fragment>),
-      )}
+      {itemsWithSeparators.map(({ render, item }) => (
+        <React.Fragment key={item.id}>{render()}</React.Fragment>
+      ))}
     </>
   );
 };

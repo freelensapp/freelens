@@ -8,6 +8,7 @@ import { getInjectable } from "@ogre-tools/injectable";
 import requestMetricsInjectable from "./request-metrics.injectable";
 
 import type { MetricData } from "../metrics.api";
+import type { RequestMetricsParams } from "./request-metrics.injectable";
 
 export interface PodMetricInNamespaceData {
   cpuUsage: MetricData;
@@ -19,14 +20,18 @@ export interface PodMetricInNamespaceData {
   networkTransmit: MetricData;
 }
 
-export type RequestPodMetricsInNamespace = (namespace: string, selector?: string) => Promise<PodMetricInNamespaceData>;
+export type RequestPodMetricsInNamespace = (
+  namespace: string,
+  selector?: string,
+  params?: RequestMetricsParams,
+) => Promise<PodMetricInNamespaceData>;
 
 const requestPodMetricsInNamespaceInjectable = getInjectable({
   id: "request-pod-metrics-in-namespace",
   instantiate: (di): RequestPodMetricsInNamespace => {
     const requestMetrics = di.inject(requestMetricsInjectable);
 
-    return (namespace, selector) => {
+    return (namespace, selector, params) => {
       const opts = { category: "pods", pods: ".*", namespace, selector };
 
       return requestMetrics(
@@ -41,6 +46,7 @@ const requestPodMetricsInNamespaceInjectable = getInjectable({
         },
         {
           namespace,
+          ...params,
         },
       );
     };

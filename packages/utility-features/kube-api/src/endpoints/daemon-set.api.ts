@@ -5,7 +5,6 @@
  */
 
 import { DaemonSet } from "@freelensapp/kube-object";
-import moment from "moment";
 import { KubeApi } from "../kube-api";
 
 import type { DerivedKubeApiOptions, KubeApiDependencies, NamespacedResourceDescriptor } from "../kube-api";
@@ -25,7 +24,7 @@ export class DaemonSetApi extends KubeApi<DaemonSet> {
         spec: {
           template: {
             metadata: {
-              annotations: { "kubectl.kubernetes.io/restartedAt": moment.utc().format() },
+              annotations: { "kubectl.kubernetes.io/restartedAt": new Date().toISOString() },
             },
           },
         },

@@ -13,6 +13,7 @@ import bundledKubectlInjectable from "./bundled-kubectl.injectable";
 import createKubectlInjectable from "./create-kubectl.injectable";
 import kubectlDeleteAllChannelHandlerInjectable from "./delete-all-handler.injectable";
 import kubectlApplyAllInjectable from "./kubectl-apply-all.injectable";
+import kubectlChecksumsInjectable from "./kubectl-checksums.injectable";
 import kubectlDeleteAllInjectable from "./kubectl-delete-all.injectable";
 import kubectlDownloadingNormalizedArchInjectable from "./normalized-arch.injectable";
 import kubectlVersionMapInjectable from "./version-map.injectable";
@@ -47,6 +48,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(kubectlBinaryNameInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(kubectlChecksumsInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

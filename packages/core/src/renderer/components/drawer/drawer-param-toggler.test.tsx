@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import React from "react";
+import { beforeEach, describe, expect, it } from "vitest";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import { type DiRender, renderFor } from "../test-utils/renderFor";
 import { DrawerParamToggler } from "./drawer-param-toggler";

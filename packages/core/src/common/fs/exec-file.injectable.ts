@@ -4,9 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { execFile } from "node:child_process";
 import { getInjectable } from "@ogre-tools/injectable";
-import { execFile } from "child_process";
-import type { ExecFileException, ExecFileOptions } from "child_process";
+import type { ExecFileException, ExecFileOptions } from "node:child_process";
 
 import type { AsyncResult } from "@freelensapp/utilities";
 
@@ -38,19 +38,31 @@ const execFileInjectable = getInjectable({
       })();
 
       return new Promise((resolve) => {
-        execFile(filePath, args, options, (error, stdout, stderr) => {
-          if (error) {
-            resolve({
-              callWasSuccessful: false,
-              error: Object.assign(error, { stderr }),
-            });
-          } else {
-            resolve({
-              callWasSuccessful: true,
-              response: stdout.toString(),
-            });
-          }
-        });
+        try {
+          execFile(filePath, args, options, (error, stdout, stderr) => {
+            if (error) {
+              resolve({
+                callWasSuccessful: false,
+                error: Object.assign(error, { stderr }),
+              });
+            } else {
+              resolve({
+                callWasSuccessful: true,
+                response: stdout.toString(),
+              });
+            }
+          });
+        } catch (error) {
+          // On Windows, spawn failures such as `spawn UNKNOWN` (errno -4094)
+          // are thrown synchronously instead of being passed to the callback.
+          // Convert them into the AsyncResult error shape so callers don't hang.
+          resolve({
+            callWasSuccessful: false,
+            error: Object.assign(error as ExecFileError, {
+              stderr: (error as Partial<ExecFileError>).stderr ?? "",
+            }),
+          });
+        }
       });
     };
   },

@@ -4,7 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import path from "path";
+import path from "node:path";
+import { describe, expect, it } from "vitest";
 import { unionPATHs } from "./union-env-path";
 
 describe("unionPATHs", () => {

@@ -4,29 +4,25 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
-import { asyncComputed } from "@ogre-tools/injectable-react";
-import { now } from "mobx-utils";
 import requestPodMetricsForReplicaSetsInjectable from "../../../common/k8s-api/endpoints/metrics.api/request-pod-metrics-for-replica-sets.injectable";
+import { createTimeRangedMetricsInjectable } from "../resource-metrics/create-time-ranged-metrics";
 
 import type { ReplicaSet } from "@freelensapp/kube-object";
 
-const replicaSetMetricsInjectable = getInjectable({
+interface ReplicaSetMetricsInjectableParams {
+  replicaSet: ReplicaSet;
+}
+
+const replicaSetMetricsInjectable = createTimeRangedMetricsInjectable({
   id: "replica-set-metrics",
-  instantiate: (di, replicaSet) => {
-    const requestPodMetricsForReplicaSets = di.inject(requestPodMetricsForReplicaSetsInjectable);
-
-    return asyncComputed({
-      getValueFromObservedPromise: async () => {
-        now(60 * 1000); // update every minute
-
-        return requestPodMetricsForReplicaSets([replicaSet], replicaSet.getNs());
-      },
-    });
-  },
-  lifecycle: lifecycleEnum.keyedSingleton({
-    getInstanceKey: (di, replicaSet: ReplicaSet) => replicaSet.getId(),
-  }),
+  getObject: ({ replicaSet }: ReplicaSetMetricsInjectableParams) => replicaSet,
+  getObjectId: (replicaSet) => replicaSet.getId(),
+  request: ({ di, object: replicaSet, start, end, range }) =>
+    di.inject(requestPodMetricsForReplicaSetsInjectable)([replicaSet], replicaSet.getNs(), undefined, {
+      start,
+      end,
+      range,
+    }),
 });
 
 export default replicaSetMetricsInjectable;

@@ -10,6 +10,7 @@ import requestMetricsInjectable from "./request-metrics.injectable";
 import type { Job } from "@freelensapp/kube-object";
 
 import type { MetricData } from "../metrics.api";
+import type { RequestMetricsParams } from "./request-metrics.injectable";
 
 export interface JobPodMetricData {
   cpuUsage: MetricData;
@@ -21,14 +22,19 @@ export interface JobPodMetricData {
   networkTransmit: MetricData;
 }
 
-export type RequestPodMetricsForJobs = (jobs: Job[], namespace: string, selector?: string) => Promise<JobPodMetricData>;
+export type RequestPodMetricsForJobs = (
+  jobs: Job[],
+  namespace: string,
+  selector?: string,
+  params?: RequestMetricsParams,
+) => Promise<JobPodMetricData>;
 
 const requestPodMetricsForJobsInjectable = getInjectable({
   id: "request-pod-metrics-for-jobs",
   instantiate: (di): RequestPodMetricsForJobs => {
     const requestMetrics = di.inject(requestMetricsInjectable);
 
-    return (jobs, namespace, selector = "") => {
+    return (jobs, namespace, selector = "", params) => {
       const podSelector = jobs.map((job) => `${job.getName()}-[[:alnum:]]{5}`).join("|");
       const opts = { category: "pods", pods: podSelector, namespace, selector };
 
@@ -44,6 +50,7 @@ const requestPodMetricsForJobsInjectable = getInjectable({
         },
         {
           namespace,
+          ...params,
         },
       );
     };

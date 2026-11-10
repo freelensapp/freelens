@@ -1,14 +1,16 @@
 /**
  * Copyright (c) Freelens Authors. All rights reserved.
- * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { EditResourceModel } from "./edit-resource-model.injectable";
 
 import type { ShowNotification } from "@freelensapp/notifications";
+
+import type { MockedFunction } from "vitest";
 
 import type { EditingResource, EditResourceTabStore } from "../store";
 import type { RequestKubeResource } from "./request-kube-resource.injectable";
@@ -17,13 +19,13 @@ import type { RequestPatchKubeResource } from "./request-patch-kube-resource.inj
 const selfLink = "/api/v1/namespaces/default/pods/test-pod";
 
 describe("edit-resource-model", () => {
-  const requestKubeResource = jest.fn() as jest.MockedFunction<RequestKubeResource>;
-  const waitForEditingResource = jest.fn(async () => undefined as never);
-  const showSuccessNotification = jest.fn() as jest.MockedFunction<ShowNotification>;
-  const showErrorNotification = jest.fn() as jest.MockedFunction<ShowNotification>;
+  const requestKubeResource = vi.fn() as MockedFunction<RequestKubeResource>;
+  const waitForEditingResource = vi.fn(async () => undefined as never);
+  const showSuccessNotification = vi.fn() as MockedFunction<ShowNotification>;
+  const showErrorNotification = vi.fn() as MockedFunction<ShowNotification>;
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   const createModel = (firstDraft: string, draft: string, requestPatchKubeResource?: RequestPatchKubeResource) => {
@@ -33,13 +35,13 @@ describe("edit-resource-model", () => {
       draft,
     };
     const requestPatchKubeResourceMock = (requestPatchKubeResource ??
-      jest.fn(async () => ({
+      vi.fn(async () => ({
         callWasSuccessful: true,
         response: {
           kind: "Pod",
           name: "test-pod",
         },
-      }))) as jest.MockedFunction<RequestPatchKubeResource>;
+      }))) as MockedFunction<RequestPatchKubeResource>;
 
     const model = new EditResourceModel({
       requestKubeResource,
@@ -148,6 +150,79 @@ spec:
     );
   });
 
+  it("uses the resize subresource when only pod-level resources change", async () => {
+    const firstDraft = `apiVersion: v1
+kind: Pod
+metadata:
+  name: test-pod
+  namespace: default
+  resourceVersion: "1"
+  selfLink: ${selfLink}
+spec:
+  containers:
+    - name: main
+      image: nginx:1.0
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 200m
+      memory: 256Mi
+`;
+    const draft = `apiVersion: v1
+kind: Pod
+metadata:
+  name: test-pod
+  namespace: default
+  resourceVersion: "1"
+  selfLink: ${selfLink}
+spec:
+  containers:
+    - name: main
+      image: nginx:1.0
+  resources:
+    requests:
+      cpu: 150m
+      memory: 128Mi
+    limits:
+      cpu: 300m
+      memory: 256Mi
+`;
+    const { model, requestPatchKubeResource } = createModel(firstDraft, draft);
+
+    await model.save();
+
+    expect(requestPatchKubeResource).toHaveBeenCalledWith(
+      selfLink,
+      {
+        spec: {
+          resources: {
+            requests: {
+              cpu: "150m",
+              memory: "128Mi",
+            },
+            limits: {
+              cpu: "300m",
+              memory: "256Mi",
+            },
+          },
+          containers: [
+            {
+              name: "main",
+              resources: undefined,
+            },
+          ],
+          initContainers: undefined,
+        },
+      },
+      {
+        strategy: "strategic",
+        subResource: "resize",
+      },
+    );
+  });
+
   it("keeps normal json patching for non-resource pod edits", async () => {
     const firstDraft = `apiVersion: v1
 kind: Pod
@@ -221,6 +296,47 @@ spec:
       resources:
         requests:
           cpu: 200m
+`;
+    const { model, requestPatchKubeResource } = createModel(firstDraft, draft);
+
+    await model.save();
+
+    expect(requestPatchKubeResource).not.toHaveBeenCalled();
+    expect(renderToStaticMarkup(showErrorNotification.mock.calls[0][0] as React.ReactElement)).toContain(
+      "Pod resource updates must be saved separately from other pod changes",
+    );
+  });
+
+  it("rejects pod edits that mix pod-level resource resizing with other changes", async () => {
+    const firstDraft = `apiVersion: v1
+kind: Pod
+metadata:
+  name: test-pod
+  namespace: default
+  resourceVersion: "1"
+  selfLink: ${selfLink}
+spec:
+  containers:
+    - name: main
+      image: nginx:1.0
+  resources:
+    requests:
+      cpu: 100m
+`;
+    const draft = `apiVersion: v1
+kind: Pod
+metadata:
+  name: test-pod
+  namespace: default
+  resourceVersion: "1"
+  selfLink: ${selfLink}
+spec:
+  containers:
+    - name: main
+      image: nginx:1.1
+  resources:
+    requests:
+      cpu: 200m
 `;
     const { model, requestPatchKubeResource } = createModel(firstDraft, draft);
 

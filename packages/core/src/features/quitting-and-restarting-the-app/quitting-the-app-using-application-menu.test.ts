@@ -4,16 +4,19 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import requestQuitOfAppInjectable from "../../main/electron-app/features/require-quit.injectable";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { testUsingFakeTime } from "../../test-utils/use-fake-time";
+
+import type { Mock } from "vitest";
 
 import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 
 describe("quitting the app using application menu", () => {
   describe("given application has started", () => {
     let builder: ApplicationBuilder;
-    let requestQuitOfAppMock: jest.Mock;
+    let requestQuitOfAppMock: Mock;
 
     beforeEach(async () => {
       testUsingFakeTime("2015-10-21T07:28:00Z");
@@ -21,7 +24,7 @@ describe("quitting the app using application menu", () => {
       builder = getApplicationBuilder();
 
       builder.beforeApplicationStart(({ mainDi }) => {
-        requestQuitOfAppMock = jest.fn();
+        requestQuitOfAppMock = vi.fn();
         mainDi.override(requestQuitOfAppInjectable, () => requestQuitOfAppMock);
       });
 
@@ -35,8 +38,8 @@ describe("quitting the app using application menu", () => {
     });
 
     describe("when application is quit", () => {
-      beforeEach(() => {
-        builder.applicationMenu.click("root", "mac", "quit");
+      beforeEach(async () => {
+        await builder.applicationMenu.click("root", "mac", "quit");
       });
 
       it("requests quit of application", () => {

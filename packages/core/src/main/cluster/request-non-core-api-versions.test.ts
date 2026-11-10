@@ -4,14 +4,14 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import asyncFn from "@async-fn/jest";
+import asyncFn from "@async-fn/vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import { getDiForUnitTesting } from "../getDiForUnitTesting";
 import k8sRequestInjectable from "../k8s-request.injectable";
 import requestNonCoreApiVersionsInjectable from "./request-non-core-api-versions.injectable";
 
-import type { V1APIGroupList } from "@freelensapp/kubernetes-client-node";
-
-import type { AsyncFnMock } from "@async-fn/jest";
+import type { AsyncFnMock } from "@async-fn/vitest";
+import type { V1APIGroupList } from "@kubernetes/client-node";
 import type { DiContainer } from "@ogre-tools/injectable";
 
 import type { K8sRequest } from "../k8s-request.injectable";
@@ -78,6 +78,7 @@ describe("requestNonCoreApiVersions", () => {
           response: [
             {
               group: "some-name",
+              version: "v1",
               path: "/apis/some-name/v1",
             },
           ],
@@ -112,10 +113,12 @@ describe("requestNonCoreApiVersions", () => {
           response: [
             {
               group: "some-name",
+              version: "v1",
               path: "/apis/some-name/v1",
             },
             {
               group: "some-name",
+              version: "v1beta1",
               path: "/apis/some-name/v1beta1",
             },
           ],
@@ -163,18 +166,22 @@ describe("requestNonCoreApiVersions", () => {
           response: [
             {
               group: "some-name",
+              version: "v1",
               path: "/apis/some-name/v1",
             },
             {
               group: "some-name",
+              version: "v1beta1",
               path: "/apis/some-name/v1beta1",
             },
             {
               group: "some-other-name.foo.com",
+              version: "v1",
               path: "/apis/some-other-name.foo.com/v1",
             },
             {
               group: "some-other-name.foo.com",
+              version: "v1beta1",
               path: "/apis/some-other-name.foo.com/v1beta1",
             },
           ],

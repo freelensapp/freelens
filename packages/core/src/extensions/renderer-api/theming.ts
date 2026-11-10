@@ -4,18 +4,16 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { asLegacyGlobalForExtensionApi } from "@freelensapp/legacy-global-di";
 import activeThemeInjectable from "../../renderer/themes/active.injectable";
+import { asLazyInjectedForExtensionApi } from "../extension-api-di";
+
+import type { IComputedValue } from "mobx";
+import type { ReadonlyDeep } from "type-fest";
 
 import type { LensTheme } from "../../renderer/themes/lens-theme";
 
-export const activeTheme = asLegacyGlobalForExtensionApi(activeThemeInjectable);
-
-/**
- * @deprecated This hides the reactivity of active theme, use {@link activeTheme} instead
- */
-export function getActiveTheme() {
-  return activeTheme.get();
-}
+// Annotated for declaration emit; see ../../renderer/themes/declaration.ts.
+export const activeTheme: IComputedValue<ReadonlyDeep<LensTheme>> =
+  asLazyInjectedForExtensionApi(activeThemeInjectable);
 
 export type { LensTheme };

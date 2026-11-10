@@ -4,7 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { asLegacyGlobalForExtensionApi, asLegacyGlobalFunctionForExtensionApi } from "@freelensapp/legacy-global-di";
 import {
   notificationsStoreInjectable,
   showCheckedErrorNotificationInjectable,
@@ -24,9 +23,8 @@ import logTabStoreInjectable from "../../renderer/components/dock/logs/tab-store
 import createTerminalTabInjectable from "../../renderer/components/dock/terminal/create-terminal-tab.injectable";
 import sendCommandInjectable from "../../renderer/components/dock/terminal/send-command.injectable";
 import terminalStoreInjectable from "../../renderer/components/dock/terminal/store.injectable";
-import getDetailsUrlInjectable from "../../renderer/components/kube-detail-params/get-details-url.injectable";
-import showDetailsInjectable from "../../renderer/components/kube-detail-params/show-details.injectable";
 import podStoreInjectable from "../../renderer/components/workloads-pods/store.injectable";
+import { asLazyInjectedForExtensionApi, asLazyInjectedFunctionForExtensionApi } from "../extension-api-di";
 
 import type {
   ConfirmDialogBooleanParams,
@@ -42,9 +40,13 @@ export {
   type NotificationId,
   type NotificationMessage,
   NotificationStatus,
-  type NotificationsStore,
   type ShowNotification,
 } from "@freelensapp/notifications";
+
+// A type alias instead of a type-only re-export, which rolldown-plugin-dts would
+// declare as a value too, although only the instance, `notificationsStore`,
+// exists at runtime.
+export type NotificationsStore = import("@freelensapp/notifications").NotificationsStore;
 export * from "@freelensapp/spinner";
 export * from "@freelensapp/tooltip";
 export * from "../../renderer/components/add-remove-buttons";
@@ -78,7 +80,6 @@ export * from "../../renderer/components/layout/sub-title";
 export * from "../../renderer/components/layout/tab-layout";
 export * from "../../renderer/components/layout/wizard-layout";
 export * from "../../renderer/components/line-progress";
-export * from "../../renderer/components/list";
 export * from "../../renderer/components/locale-date";
 export * from "../../renderer/components/map";
 export * from "../../renderer/components/markdown-viewer";
@@ -92,7 +93,13 @@ export {
   type MonacoTheme,
 } from "../../renderer/components/monaco-editor";
 export * from "../../renderer/components/namespaces/namespace-select";
-export * from "../../renderer/components/namespaces/namespace-select-badge";
+// Explicit rather than a star export: the module also exports its uninjected
+// component and its dependency bag (`NamespaceSelectBadgeNonInjected`,
+// `Dependencies`), which are host internals and not API (#2478).
+export {
+  NamespaceSelectBadge,
+  type NamespaceSelectBadgeProps,
+} from "../../renderer/components/namespaces/namespace-select-badge";
 export * from "../../renderer/components/namespaces/namespace-select-filter";
 export * from "../../renderer/components/no-items";
 export * from "../../renderer/components/path-picker";
@@ -107,7 +114,6 @@ export * from "../../renderer/components/switch";
 export * from "../../renderer/components/table";
 export * from "../../renderer/components/tabs";
 export * from "../../renderer/components/tree-view";
-export * from "../../renderer/components/virtual-list";
 export * from "../../renderer/components/with-tooltip";
 export * from "../../renderer/components/wizard";
 export * from "../../renderer/components/workloads-pods/pod-charts";
@@ -118,44 +124,34 @@ export type {
   CategoryColumnRegistration,
 } from "../../renderer/components/catalog/custom-category-columns";
 
-export const CommandOverlay = asLegacyGlobalForExtensionApi(commandOverlayInjectable);
+export const CommandOverlay = asLazyInjectedForExtensionApi(commandOverlayInjectable);
 
 export type { ConfirmDialogBooleanParams, ConfirmDialogParams, ConfirmDialogProps };
 export const ConfirmDialog = Object.assign(_ConfirmDialog, {
-  open: asLegacyGlobalFunctionForExtensionApi(openConfirmDialogInjectable),
-  confirm: asLegacyGlobalFunctionForExtensionApi(confirmInjectable),
+  open: asLazyInjectedFunctionForExtensionApi(openConfirmDialogInjectable),
+  confirm: asLazyInjectedFunctionForExtensionApi(confirmInjectable),
 });
 
 export const Notifications = {
-  ok: asLegacyGlobalFunctionForExtensionApi(showSuccessNotificationInjectable),
-  error: asLegacyGlobalFunctionForExtensionApi(showErrorNotificationInjectable),
-  checkedError: asLegacyGlobalFunctionForExtensionApi(showCheckedErrorNotificationInjectable),
-  info: asLegacyGlobalFunctionForExtensionApi(showInfoNotificationInjectable),
-  shortInfo: asLegacyGlobalFunctionForExtensionApi(showShortInfoNotificationInjectable),
+  ok: asLazyInjectedFunctionForExtensionApi(showSuccessNotificationInjectable),
+  error: asLazyInjectedFunctionForExtensionApi(showErrorNotificationInjectable),
+  checkedError: asLazyInjectedFunctionForExtensionApi(showCheckedErrorNotificationInjectable),
+  info: asLazyInjectedFunctionForExtensionApi(showInfoNotificationInjectable),
+  shortInfo: asLazyInjectedFunctionForExtensionApi(showShortInfoNotificationInjectable),
 };
 
-/**
- * @deprecated Use `Renderer.Navigation.getDetailsUrl`
- */
-export const getDetailsUrl = asLegacyGlobalFunctionForExtensionApi(getDetailsUrlInjectable);
+export const createTerminalTab = asLazyInjectedFunctionForExtensionApi(createTerminalTabInjectable);
 
-/**
- * @deprecated Use `Renderer.Navigation.showDetails`
- */
-export const showDetails = asLegacyGlobalFunctionForExtensionApi(showDetailsInjectable);
-
-export const createTerminalTab = asLegacyGlobalFunctionForExtensionApi(createTerminalTabInjectable);
-
-export const terminalStore = Object.assign(asLegacyGlobalForExtensionApi(terminalStoreInjectable), {
-  sendCommand: asLegacyGlobalFunctionForExtensionApi(sendCommandInjectable),
+export const terminalStore = Object.assign(asLazyInjectedForExtensionApi(terminalStoreInjectable), {
+  sendCommand: asLazyInjectedFunctionForExtensionApi(sendCommandInjectable),
 });
 
-const renameTab = asLegacyGlobalFunctionForExtensionApi(renameTabInjectable);
-const podStore = asLegacyGlobalForExtensionApi(podStoreInjectable);
+const renameTab = asLazyInjectedFunctionForExtensionApi(renameTabInjectable);
+const podStore = asLazyInjectedForExtensionApi(podStoreInjectable);
 
-export const logTabStore = Object.assign(asLegacyGlobalForExtensionApi(logTabStoreInjectable), {
-  createPodTab: asLegacyGlobalFunctionForExtensionApi(createPodLogsTabInjectable),
-  createWorkloadTab: asLegacyGlobalFunctionForExtensionApi(createWorkloadLogsTabInjectable),
+export const logTabStore = Object.assign(asLazyInjectedForExtensionApi(logTabStoreInjectable), {
+  createPodTab: asLazyInjectedFunctionForExtensionApi(createPodLogsTabInjectable),
+  createWorkloadTab: asLazyInjectedFunctionForExtensionApi(createWorkloadLogsTabInjectable),
   renameTab: (tabId: string): void => {
     const { selectedPodId } = logTabStore.getData(tabId) ?? {};
     const pod = selectedPodId && podStore.getById(selectedPodId);
@@ -181,4 +177,4 @@ export class TerminalStore {
   }
 }
 
-export const notificationsStore = asLegacyGlobalForExtensionApi(notificationsStoreInjectable);
+export const notificationsStore = asLazyInjectedForExtensionApi(notificationsStoreInjectable);

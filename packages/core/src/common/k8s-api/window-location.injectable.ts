@@ -9,9 +9,10 @@ import { getInjectable } from "@ogre-tools/injectable";
 const windowLocationInjectable = getInjectable({
   id: "window-location",
   instantiate: () => {
-    const { host, port } = window.location;
+    // `host` carries the port, which is all any consumer needs.
+    const { host } = window.location;
 
-    return { host, port };
+    return { host };
   },
   causesSideEffects: true,
 });

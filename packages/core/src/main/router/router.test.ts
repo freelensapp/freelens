@@ -4,10 +4,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import asyncFn from "@async-fn/jest";
+import asyncFn from "@async-fn/vitest";
 import { getInjectable } from "@ogre-tools/injectable";
 import { runInAction } from "mobx";
 import { Request } from "mock-http";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import directoryForUserDataInjectable from "../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import normalizedPlatformInjectable from "../../common/vars/normalized-platform.injectable";
 import { getDiForUnitTesting } from "../getDiForUnitTesting";
@@ -17,7 +18,7 @@ import parseRequestInjectable from "./parse-request.injectable";
 import routerInjectable, { routeInjectionToken } from "./router.injectable";
 import { contentTypes } from "./router-content-types";
 
-import type { AsyncFnMock } from "@async-fn/jest";
+import type { AsyncFnMock } from "@async-fn/vitest";
 import type { SetRequired } from "type-fest";
 
 import type { Cluster } from "../../common/cluster/cluster";
@@ -81,7 +82,7 @@ describe("router", () => {
         },
       }) as SetRequired<Request, "url" | "method">;
 
-      responseStub = { end: jest.fn(), setHeader: jest.fn(), write: jest.fn(), statusCode: undefined };
+      responseStub = { end: vi.fn(), setHeader: vi.fn(), write: vi.fn(), statusCode: undefined };
 
       clusterStub = {} as Cluster;
 

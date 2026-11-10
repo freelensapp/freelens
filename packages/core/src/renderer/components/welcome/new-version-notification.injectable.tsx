@@ -1,14 +1,12 @@
 /**
  * Copyright (c) Freelens Authors. All rights reserved.
- * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { showInfoNotificationInjectable } from "@freelensapp/notifications";
 import { getInjectable } from "@ogre-tools/injectable";
-import React from "react";
-import * as semver from "semver";
+import * as verkit from "verkit";
 import productNameInjectable from "../../../common/vars/product-name.injectable";
 import { buildVersionInitializable } from "../../../features/vars/build-version/common/token";
 import getLatestVersionViaChannelInjectable from "../../common/utils/get-latest-version-via-channel.injectable";
@@ -33,9 +31,9 @@ const newVersionNotificationInjectable = getInjectable({
         logger.error(`[WELCOME]: Failed to check latest version: ${error}`);
       }
 
-      if (newVersion && semver.gt(newVersion, currentVersion)) {
+      if (newVersion && verkit.isGreaterThan(newVersion, currentVersion)) {
         showInfoNotification(
-          <div className="flex column gaps">
+          <div className="flex flex-col gap-2">
             <div>
               {productName} v{newVersion} is available! Open the{" "}
               <a

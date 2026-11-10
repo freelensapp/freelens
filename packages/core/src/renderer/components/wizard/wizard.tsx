@@ -9,7 +9,7 @@ import "./wizard.scss";
 import { Button } from "@freelensapp/button";
 import { Spinner } from "@freelensapp/spinner";
 import { cssNames, prevDefault } from "@freelensapp/utilities";
-import { debounce } from "lodash";
+import { debounce } from "es-toolkit/compat";
 import React from "react";
 import { SubTitle } from "../layout/sub-title";
 import { Stepper } from "../stepper";
@@ -196,7 +196,7 @@ export class WizardStep<D> extends React.Component<WizardStepProps<D>, WizardSte
 
   renderLoading() {
     return (
-      <div className="step-loading flex center">
+      <div className="step-loading flex items-center justify-center">
         <Spinner />
       </div>
     );
@@ -208,7 +208,9 @@ export class WizardStep<D> extends React.Component<WizardStepProps<D>, WizardSte
       return;
     }
 
-    if (evt.key === "Enter") {
+    // An Enter already consumed by a field of the step (e.g. adding an item to an
+    // EditableList, picking an option of a Select) must not submit the whole step.
+    if (evt.key === "Enter" && !evt.defaultPrevented) {
       this.submit();
     }
   }
@@ -249,14 +251,16 @@ export class WizardStep<D> extends React.Component<WizardStepProps<D>, WizardSte
         onSubmit={prevDefault(this.submit)}
         noValidate={noValidate}
         onKeyDown={(evt) => this.keyDown(evt)}
-        ref={(e) => (this.form = e)}
+        ref={(e) => {
+          this.form = e;
+        }}
       >
         {beforeContent}
         <div className={cssNames("step-content", { scrollable }, contentClass)}>
           {loading ? this.renderLoading() : children}
         </div>
         {customButtons ?? (
-          <div className="buttons flex gaps align-center">
+          <div className="buttons flex items-center gap-2">
             {moreButtons}
             <Button
               className="back-btn"

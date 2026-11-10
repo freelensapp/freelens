@@ -10,6 +10,7 @@ import requestMetricsInjectable from "./request-metrics.injectable";
 import type { StatefulSet } from "@freelensapp/kube-object";
 
 import type { MetricData } from "../metrics.api";
+import type { RequestMetricsParams } from "./request-metrics.injectable";
 
 export interface StatefulSetPodMetricData {
   cpuUsage: MetricData;
@@ -25,6 +26,7 @@ export type RequestPodMetricsForStatefulSets = (
   statefulSets: StatefulSet[],
   namespace: string,
   selector?: string,
+  params?: RequestMetricsParams,
 ) => Promise<StatefulSetPodMetricData>;
 
 const requestPodMetricsForStatefulSetsInjectable = getInjectable({
@@ -32,7 +34,7 @@ const requestPodMetricsForStatefulSetsInjectable = getInjectable({
   instantiate: (di): RequestPodMetricsForStatefulSets => {
     const requestMetrics = di.inject(requestMetricsInjectable);
 
-    return (statefulSets, namespace, selector = "") => {
+    return (statefulSets, namespace, selector = "", params) => {
       const podSelector = statefulSets.map((statefulset) => `${statefulset.getName()}-[[:digit:]]+`).join("|");
       const opts = { category: "pods", pods: podSelector, namespace, selector };
 
@@ -48,6 +50,7 @@ const requestPodMetricsForStatefulSetsInjectable = getInjectable({
         },
         {
           namespace,
+          ...params,
         },
       );
     };

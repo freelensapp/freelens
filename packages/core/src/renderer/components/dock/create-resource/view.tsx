@@ -9,8 +9,8 @@ import { showCheckedErrorNotificationInjectable, showSuccessNotificationInjectab
 import { Spinner } from "@freelensapp/spinner";
 import { isObject, prevDefault } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import yaml from "js-yaml";
-import { makeObservable, observable } from "mobx";
+import * as yaml from "js-yaml";
+import { observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import apiManagerInjectable from "../../../../common/k8s-api/api-manager/manager.injectable";
@@ -55,11 +55,10 @@ interface Dependencies {
 
 @observer
 class NonInjectedCreateResource extends React.Component<CreateResourceProps & Dependencies> {
-  @observable error = "";
+  @observable accessor error = "";
 
   constructor(props: CreateResourceProps & Dependencies) {
     super(props);
-    makeObservable(this);
   }
 
   get tabId() {
@@ -140,7 +139,7 @@ class NonInjectedCreateResource extends React.Component<CreateResourceProps & De
 
   renderControls() {
     return (
-      <div className="flex gaps align-center">
+      <div className="flex gap-2 items-center">
         <Select<string, SelectOption<string>, false>
           id="create-resource-resource-templates-input"
           controlShouldRenderValue={false} // always keep initial placeholder
@@ -163,7 +162,7 @@ class NonInjectedCreateResource extends React.Component<CreateResourceProps & De
     const { tabId, data, error } = this;
 
     return (
-      <div className="CreateResource flex column">
+      <div className="CreateResource flex flex-col">
         <InfoPanel
           tabId={tabId}
           error={error}

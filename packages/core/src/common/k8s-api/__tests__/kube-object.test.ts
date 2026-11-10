@@ -5,6 +5,7 @@
  */
 
 import { KubeObject } from "@freelensapp/kube-object";
+import { describe, expect, it } from "vitest";
 
 describe("KubeObject", () => {
   describe("isJsonApiData", () => {

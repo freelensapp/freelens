@@ -5,7 +5,7 @@
  */
 
 import autoBind from "auto-bind";
-import { action, computed, makeObservable, observable } from "mobx";
+import { action, computed, observable } from "mobx";
 
 export class SearchStore {
   /**
@@ -17,7 +17,6 @@ export class SearchStore {
   }
 
   constructor() {
-    makeObservable(this);
     autoBind(this);
   }
 
@@ -26,21 +25,21 @@ export class SearchStore {
    *
    * @observable
    */
-  @observable searchQuery = "";
+  @observable accessor searchQuery = "";
 
   /**
    * Array with line numbers, eg [0, 0, 10, 21, 21, 40...]
    *
    * @observable
    */
-  @observable occurrences: number[] = [];
+  @observable accessor occurrences: number[] = [];
 
   /**
    * Index within the occurrences array. Showing where is activeOverlay currently located
    *
    * @observable
    */
-  @observable activeOverlayIndex = -1;
+  @observable accessor activeOverlayIndex = -1;
 
   /**
    * Sets default activeOverlayIndex

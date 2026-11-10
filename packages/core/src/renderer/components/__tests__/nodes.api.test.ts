@@ -5,6 +5,7 @@
  */
 
 import { formatNodeTaint } from "@freelensapp/kube-object";
+import { describe, expect, it } from "vitest";
 
 describe("formatNodeTaint tests", () => {
   it("should use value if defined", () => {

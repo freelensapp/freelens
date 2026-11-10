@@ -1,29 +1,29 @@
 # Freelens
 
-<!-- markdownlint-disable MD013 -->
-
 [![Home](https://img.shields.io/badge/%F0%9F%8F%A0-freelens.app-02a7a0)](https://freelens.app)
 [![GitHub](https://img.shields.io/github/stars/freelensapp/freelens?style=flat&label=GitHub%20%E2%AD%90&logo=github)](https://github.com/freelensapp/freelens)
 [![Discord](https://img.shields.io/badge/dynamic/json?color=blue&label=Discord&style=flat&query=approximate_member_count&url=https%3A%2F%2Fdiscordapp.com%2Fapi%2Finvites%2F%2FNjKZERK95Y%3Fwith_counts%3Dtrue&logo=discord)](https://discord.gg/NjKZERK95Y)
 [![Subreddit](https://img.shields.io/reddit/subreddit-subscribers/freelens?style=flat&label=r%2Ffreelens&logo=reddit)](https://www.reddit.com/r/freelens/)
 [![Bounties on BountyHub](https://img.shields.io/badge/Bounties-on%20BountyHub-yellow)](https://bountyhub.dev/bounties?repo=freelens)
-[![DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/freelensapp/freelens)
+[![DeepWiki](https://img.shields.io/badge/Ask-DeepWiki-blue)](https://deepwiki.com/freelensapp/freelens)
 [![LFX Health Score](https://insights.linuxfoundation.org/api/badge/health-score?project=freelens)](https://insights.linuxfoundation.org/project/freelens)
 [![license](https://img.shields.io/github/license/freelensapp/freelens.svg)](https://github.com/freelensapp/freelens?tab=MIT-1-ov-file#readme)
 [![release](https://img.shields.io/github/v/release/freelensapp/freelens?display_name=tag&sort=semver)](https://github.com/freelensapp/freelens/releases/latest)
 [![Homebrew Cask Version](https://img.shields.io/homebrew/cask/v/freelens?label=homebrew)](https://formulae.brew.sh/cask/freelens#default)
 [![WinGet Package Version](https://img.shields.io/winget/v/Freelensapp.Freelens)](https://winstall.app/apps/Freelensapp.Freelens)
-[![Scoop Package Version](https://img.shields.io/scoop/v/freelens?bucket=extras
-)](https://scoop.sh/#/apps?q=freelens&s=1&d=0)
+[![Scoop Package Version](https://img.shields.io/scoop/v/freelens?bucket=extras)](https://scoop.sh/#/apps?q=freelens&s=1&d=0)
 [![Flathub Version](https://img.shields.io/flathub/v/app.freelens.Freelens)](https://flathub.org/apps/app.freelens.Freelens)
 [![Snap Store Version](https://img.shields.io/snapcraft/v/freelens/latest/stable)](https://snapcraft.io/freelens)
 [![AUR Version](https://img.shields.io/aur/version/freelens-bin)](https://aur.archlinux.org/packages/freelens-bin)
-[![NPM Version](https://img.shields.io/npm/v/%40freelensapp%2Fcore)](https://www.npmjs.com/package/@freelensapp/core)
+[![NPM Version](https://img.shields.io/npm/v/%40freelensapp%2Fextensions)](https://www.npmjs.com/package/@freelensapp/extensions)
 [![Unit tests](https://github.com/freelensapp/freelens/actions/workflows/unit-tests.yaml/badge.svg?branch=main)](https://github.com/freelensapp/freelens/actions/workflows/unit-tests.yaml)
 [![Integration tests](https://github.com/freelensapp/freelens/actions/workflows/integration-tests.yaml/badge.svg?branch=main)](https://github.com/freelensapp/freelens/actions/workflows/integration-tests.yaml)
 [![Trunk Check](https://github.com/freelensapp/freelens/actions/workflows/trunk-check.yaml/badge.svg?branch=main)](https://github.com/freelensapp/freelens/actions/workflows/trunk-check.yaml)
 
-<!-- markdownlint-enable MD013 -->
+
+<picture>
+  <img alt="Freelens logo" src="docs/images/logo.svg" width="110" align="left">
+</picture>
 
 [Freelens](https://freelens.app) is a free and open-source user interface
 designed for managing Kubernetes clusters. It provides a standalone
@@ -32,7 +32,18 @@ making it accessible to a wide range of users. The application aims to
 simplify the complexities of Kubernetes management by offering an intuitive
 and user-friendly interface.
 
-![Screenshot](freelens/build/screenshots/main.png)
+<br clear="left">
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/images/macos-pods-dark.jpg">
+  <source media="(prefers-color-scheme: light)" srcset="docs/images/macos-pods-light.jpg">
+  <img alt="Screenshot" src="docs/images/macos-pods-light.jpg">
+</picture>
+
+## Requirements
+
+Kubernetes 1.22 or later. Older clusters fall back to the bundled `kubectl`,
+which may not work correctly; a different one can be set in Preferences.
 
 ## Downloads
 
@@ -41,13 +52,13 @@ download the right package for your system.
 
 ### macOS
 
-macOS 12 or later is required.
+macOS 13 or later is required.
 
 Download either the PKG (installer) or DMG (image) package from the
 [releases](https://github.com/freelensapp/freelens/releases) page. Both arm64
 (M1 chip or newer) and amd64 (Intel) variants are available.
 
-All binary packages are built on macOS 14 and should be compatible with newer
+All binary packages are built on macOS 15 and should be compatible with newer
 systems.
 
 #### Homebrew
@@ -82,11 +93,9 @@ sudo apt install libfuse2 zlib1g-dev
 
 Run the application with additional arguments:
 
-<!-- markdownlint-disable MD013 -->
 ```sh
 ./Freelens*.AppImage --no-sandbox --ozone-platform-hint=auto --enable-features=WebRTCPipeWireCapturer --enable-features=WaylandWindowDecorations --disable-gpu-compositing
 ```
-<!-- markdownlint-enable MD013 -->
 
 #### Flatpak
 
@@ -126,7 +135,6 @@ snap install freelens --classic
 
 Run the following commands:
 
-<!-- markdownlint-disable MD013 -->
 
 ```sh
 curl -L https://raw.githubusercontent.com/freelensapp/freelens/refs/heads/main/freelens/build/apt/freelens.asc | sudo tee /etc/apt/keyrings/freelens.asc
@@ -198,18 +206,34 @@ scoop install freelens
 
 Scoop uses MSI package to install the application.
 
+#### WSL
+
+The terminal can run a WSL shell: set the shell to `wsl.exe` in the terminal
+preferences. The `kubectl` and `helm` commands of the WSL distribution then
+use the cluster opened in Freelens.
+
+WSL 2 requires the mirrored networking mode. Add it to the
+`%UserProfile%\.wslconfig` file:
+
+```ini
+[wsl2]
+networkingMode=mirrored
+```
+
+Then restart WSL with `wsl --shutdown`.
+
 ## Development
 
-Visit [Development](https://github.com/freelensapp/freelens/wiki/Development)
-wiki page to see how to build the application from source.
+Visit the [Development](DEVELOPMENT.md) document to see how to build the
+application from source.
 Check out the [Freelens Docs](https://freelensapp.github.io/docs/) to contribute to development or create your own extension.
 
 ## Extensions
 
 Anyone can develop extensions for Freelens and many extensions previously used
 with Open Lens have already been converted.
-Visit [Extensions](https://github.com/freelensapp/freelens/wiki/Extensions) wiki
-page to see them and write in the [appropriate
+Visit the [Extensions](https://github.com/freelensapp/freelens/discussions/2291)
+discussion to see them and write in the [appropriate
 discussion](https://github.com/freelensapp/freelens/discussions/117) if you
 also want to propose yours.
 
@@ -224,7 +248,6 @@ Get updates about Freelens & keep in touch with our community
 - Chat on [Discord](https://discord.gg/NjKZERK95Y)
 - Discuss on [Reddit](https://www.reddit.com/r/freelens/)
 - Watch us on [YouTube](https://www.youtube.com/@Freelensapp)
-- Read our [Wiki](https://github.com/freelensapp/freelens/wiki)
 - Open an [Issue](https://github.com/freelensapp/freelens/issues)
 
 ## Adopters
@@ -240,15 +263,25 @@ Anyone is welcome to request to be added to the official list by opening a dedic
 Anyone is welcome to collaborate to advance the Freelens project. Read
 [CONTRIBUTING.md](CONTRIBUTING.md) to see how you can help.
 
-![Star History Chart](https://api.star-history.com/svg?repos=freelensapp/freelens&type=Date)
+<picture>
+  <source
+    media="(prefers-color-scheme: dark)"
+    srcset="https://api.star-history.com/svg?repos=freelensapp/freelens&type=Date&theme=dark"
+  >
+  <source
+    media="(prefers-color-scheme: light)"
+    srcset="https://api.star-history.com/svg?repos=freelensapp/freelens&type=Date"
+  >
+  <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=freelensapp/freelens&type=Date">
+</picture>
 
 ## Expenses and Donations
 
 Anyone can support the Freelens project by making donations to cover
 maintenance costs and invest in its development.
 
-For more information, see our dedicated page in our Wiki: [Expenses and
-Donations](https://github.com/freelensapp/freelens/wiki/Expenses-and-Donations)
+For more information, see our dedicated discussion: [Expenses and
+Donations](https://github.com/freelensapp/freelens/discussions/2292)
 
 ## Fund an issue or earn money by developing
 
@@ -258,7 +291,7 @@ At the same time, anyone who wishes can apply by doing PR to earn the bounty.
 
 Features are, in any case, decided democratically according to the community's wishes and overseen by the Freelens core team.
 
-For more information, see our dedicated page in our Wiki: [Fund an issue or earn money by developing](https://github.com/freelensapp/freelens/wiki/Fund-an-issue-or-earn-money-by-developing)
+For more information, see our dedicated discussion: [Fund an issue or earn money by developing](https://github.com/freelensapp/freelens/discussions/2293)
 
 ## The Freelens Teams
 
@@ -268,29 +301,29 @@ Each member of the core team is focused on specific roles. You can contact us
 at any time according to them.
 
 - [Roberto Bandini](https://www.linkedin.com/in/bandiniroberto/) - [@robertobandini](https://github.com/robertobandini) - Founder<br/>
-General organization management, relationships, product management, community, marketing, freelens-ai extension
+  General organization management, relationships, product management, community, marketing, extensions ecosystem (review, catalog, strategy and development)
 - [Piotr Roszatycki](https://www.linkedin.com/in/piotr.roszatycki) - [@dex4er](https://github.com/dex4er) - Maintainer<br/>
-Development direction, architecture and release management, flux-cd extension, freelens-ai extension
+  Development direction, architecture and release management, extensions development
 - [Mario Offertucci](https://www.linkedin.com/in/mario-offertucci-703113b6/) - [@mariomamo](https://github.com/mariomamo) - Maintainer<br/>
-UI, Docs, freelens-ai extension development management
+  UI, docs, extensions development
 - [Leopoldo Capuano](https://www.linkedin.com/in/leo-capuano/) - [@leo-capvano](https://github.com/leo-capvano) - Maintainer<br/>
-GenAI solutions & freelens-ai extension development management
+  GenAI solutions, extensions development
 
 ### Release Engineering Team
 
 This team is responsible for driving Freelens releases forward, reviewing PRs, and making decisions about the architecture and technical roadmap under the supervision of the core team.
 
 - [Piotr Roszatycki](https://www.linkedin.com/in/piotr.roszatycki) - [@dex4er](https://github.com/dex4er) - Maintainer<br/>
-Release Engineering Team Lead
+  Release Engineering Team Lead
 - [Omar Alani](https://www.linkedin.com/in/omarluq/) - [@omarluq](https://github.com/omarluq) - Maintainer<br/>
-Release Engineering Team Member
+  Release Engineering Team Member
 - [Matías Roje](https://www.linkedin.com/in/matias-roje-carrasco/) - [@MatiasRoje](https://github.com/MatiasRoje) - Maintainer<br/>
-Release Engineering Team Member
+  Release Engineering Team Member
 
 The project is growing very quickly and everyone is welcome!
 
-If you also want to be part of it, visit the wiki page: [We want
-you!](https://github.com/freelensapp/freelens/wiki/We-want-you!).
+If you also want to be part of it, visit the [We want
+you!](https://github.com/freelensapp/freelens/discussions/2297) discussion.
 
 Or contact us at <freelens@freelens.app> for any questions or suggestions!
 

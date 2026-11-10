@@ -6,8 +6,8 @@
 
 import { Spinner } from "@freelensapp/spinner";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { autorun, computed, makeObservable, observable } from "mobx";
-import { disposeOnUnmount, observer } from "mobx-react";
+import { autorun, computed, observable } from "mobx";
+import { observer } from "mobx-react";
 import React from "react";
 import { initialFilesystemMountpoints } from "../../../common/cluster-types";
 import requestMetricsProvidersInjectable from "../../../common/k8s-api/endpoints/metrics.api/request-providers.injectable";
@@ -74,15 +74,17 @@ const requestMethodOptions: SelectOption<PrometheusRequestMethod>[] = [
 
 @observer
 class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometheusSettingProps & Dependencies> {
-  @observable mountpoints = "";
-  @observable path = ""; // <namespace>/<service>:<port>
-  @observable customPrefix = ""; // e.g. "/prometheus"
-  @observable useHttps = false; // whether to use https scheme for service proxy
-  @observable directUrl = ""; // direct URL to Prometheus (bypasses K8s service proxy)
-  @observable bearerToken = ""; // bearer token for Prometheus authentication
-  @observable requestMethod: PrometheusRequestMethod = "POST";
-  @observable selectedOption: ProviderValue = autoDetectPrometheus;
-  @observable loading = true;
+  private readonly disposers: (() => void)[] = [];
+
+  @observable accessor mountpoints = "";
+  @observable accessor path = ""; // <namespace>/<service>:<port>
+  @observable accessor customPrefix = ""; // e.g. "/prometheus"
+  @observable accessor useHttps = false; // whether to use https scheme for service proxy
+  @observable accessor directUrl = ""; // direct URL to Prometheus (bypasses K8s service proxy)
+  @observable accessor bearerToken = ""; // bearer token for Prometheus authentication
+  @observable accessor requestMethod: PrometheusRequestMethod = "POST";
+  @observable accessor selectedOption: ProviderValue = autoDetectPrometheus;
+  @observable accessor loading = true;
   readonly initialFilesystemMountpoints = initialFilesystemMountpoints;
   readonly loadedOptions = observable.map<string, MetricProviderInfo>();
 
@@ -103,7 +105,6 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
 
   constructor(props: ClusterPrometheusSettingProps & Dependencies) {
     super(props);
-    makeObservable(this);
   }
 
   @computed get canEditPrometheusPath(): boolean {
@@ -119,11 +120,13 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
   }
 
   componentDidMount() {
-    disposeOnUnmount(
-      this,
+    // Capture the cluster before the autorun: mobx-react 9 forbids reading
+    // this.props inside a derivation (the autorun below).
+    const { cluster } = this.props;
+
+    this.disposers.push(
       autorun(() => {
-        const { prometheus, prometheusProvider, filesystemMountpoints, prometheusRequestMethod } =
-          this.props.cluster.preferences;
+        const { prometheus, prometheusProvider, filesystemMountpoints, prometheusRequestMethod } = cluster.preferences;
 
         if (prometheus) {
           const prefix = prometheus.prefix || "";
@@ -163,6 +166,10 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
       this.loading = false;
       this.loadedOptions.replace(values.map((provider) => [provider.id, provider]));
     });
+  }
+
+  componentWillUnmount() {
+    this.disposers.forEach((dispose) => dispose());
   }
 
   private sanitizePrefix(prefix: string): string {

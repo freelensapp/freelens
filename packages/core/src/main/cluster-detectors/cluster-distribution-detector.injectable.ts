@@ -10,7 +10,7 @@ import clusterApiUrlInjectable from "../../features/cluster/connections/main/api
 import k8SRequestInjectable from "../k8s-request.injectable";
 import requestClusterVersionInjectable from "./request-cluster-version.injectable";
 import { clusterMetadataDetectorInjectionToken } from "./token";
-import type { URL } from "url";
+import type { URL } from "node:url";
 
 import type { Cluster } from "../../common/cluster/cluster";
 

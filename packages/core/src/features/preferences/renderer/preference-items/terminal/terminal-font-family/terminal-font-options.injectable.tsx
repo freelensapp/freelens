@@ -6,7 +6,6 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import { action, computed } from "mobx";
-import React from "react";
 import { defaultTerminalFontFamily } from "../../../../../../common/vars";
 import { terminalFontInjectionToken } from "../../../../../terminal/renderer/fonts/token";
 import userPreferencesStateInjectable from "../../../../../user-preferences/common/state.injectable";

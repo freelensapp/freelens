@@ -9,7 +9,7 @@ import "./pod-details-container.scss";
 import { podDetailsContainerMetricsInjectionToken } from "@freelensapp/metrics";
 import { cssNames, isDefined } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { disposeOnUnmount, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import React from "react";
 import { ClusterMetricsResourceType } from "../../../common/cluster-types";
 import enabledMetricsInjectable from "../../api/catalog/entity/metrics-enabled.injectable";
@@ -42,8 +42,14 @@ interface Dependencies {
 
 @observer
 class NonInjectedPodDetailsContainer extends React.Component<PodDetailsContainerProps & Dependencies> {
+  private readonly disposers: (() => void)[] = [];
+
   componentDidMount() {
-    disposeOnUnmount(this, [this.props.portForwardStore.watch()]);
+    this.disposers.push(this.props.portForwardStore.watch());
+  }
+
+  componentWillUnmount() {
+    this.disposers.forEach((dispose) => dispose());
   }
 
   renderStatus(container: ContainerWithType | EphemeralContainerWithType, status?: PodContainerStatus) {

@@ -5,6 +5,7 @@
  */
 
 import { observable } from "mobx";
+import { beforeEach, describe, expect, it } from "vitest";
 import { categoryVersion } from "../../../common/catalog";
 import catalogCategoryRegistryInjectable from "../../../common/catalog/category-registry.injectable";
 import { KubernetesCluster, WebLink } from "../../../common/catalog-entities";

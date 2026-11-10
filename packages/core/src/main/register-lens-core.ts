@@ -4,18 +4,23 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { setLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di";
 import { runInAction } from "mobx";
+import dependencyInjectionContainerInjectable from "../common/dependency-injection/dependency-injection-container.injectable";
+import { setDiForExtensionApi } from "../extensions/extension-api-di";
 import { registerInjectables } from "../register-injectables-main";
-
-import type { Environments } from "@freelensapp/legacy-global-di";
 
 import type { DiContainer } from "@ogre-tools/injectable";
 
+import type { Environments } from "../extensions/extension-api-di";
+
 export function registerLensCore(di: DiContainer, environment: Environments) {
-  setLegacyGlobalDiForExtensionApi(di, environment);
+  setDiForExtensionApi(di, environment);
 
   runInAction(() => {
     registerInjectables(di);
   });
+
+  // Expose the root container so runtime differencing registrators can register
+  // injectables container-level (bare ids), not namespaced under the caller.
+  di.override(dependencyInjectionContainerInjectable, () => di);
 }

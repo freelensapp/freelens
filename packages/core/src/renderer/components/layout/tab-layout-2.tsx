@@ -9,7 +9,6 @@ import "./tab-layout.scss";
 import { ErrorBoundary } from "@freelensapp/error-boundary";
 import { cssNames } from "@freelensapp/utilities";
 import { observer } from "mobx-react";
-import React from "react";
 import { Tab, Tabs } from "../tabs";
 
 import type { SidebarItemDeclaration } from "@freelensapp/cluster-sidebar";
@@ -19,9 +18,11 @@ export interface TabLayoutProps {
   tabs?: SidebarItemDeclaration[];
   children?: StrictReactNode;
   scrollable?: boolean;
+  /** Clears a crash of the children when it changes, see `ErrorBoundaryProps.resetKey`. */
+  resetKey?: string;
 }
 
-export const TabLayout = observer(({ tabs = [], scrollable, children }: TabLayoutProps) => {
+export const TabLayout = observer(({ tabs = [], scrollable, children, resetKey }: TabLayoutProps) => {
   const hasTabs = tabs.length > 0;
 
   return (
@@ -43,7 +44,7 @@ export const TabLayout = observer(({ tabs = [], scrollable, children }: TabLayou
       )}
 
       <main className={cssNames({ scrollable })}>
-        <ErrorBoundary>{children}</ErrorBoundary>
+        <ErrorBoundary resetKey={resetKey}>{children}</ErrorBoundary>
       </main>
     </div>
   );

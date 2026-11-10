@@ -4,18 +4,14 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { compileRoutePath, matchPath } from "@freelensapp/routing";
 import { isDefined, iter } from "@freelensapp/utilities";
 import { ipcRenderer } from "electron";
-import { countBy } from "lodash";
 import { when } from "mobx";
-import { pathToRegexp } from "path-to-regexp";
-import { matchPath } from "react-router";
 import { RoutingError, RoutingErrorType } from "./error";
 
 import type { Logger } from "@freelensapp/logger";
-
-import type { match } from "react-router";
-import type Url from "url-parse";
+import type { Match } from "@freelensapp/routing";
 
 import type { ExtensionLoader } from "../../extensions/extension-loader";
 import type { LensExtension } from "../../extensions/lens-extension";
@@ -88,7 +84,7 @@ export abstract class LensProtocolRouter {
    * @param url the parsed URL that initiated the `freelens://` protocol
    * @returns true if a route has been found
    */
-  protected _routeToInternal(url: Url<Record<string, string | undefined>>): RouteAttempt {
+  protected _routeToInternal(url: URL): RouteAttempt {
     return this._route(this.internalRoutes.entries(), url);
   }
 
@@ -100,9 +96,9 @@ export abstract class LensProtocolRouter {
    */
   protected _findMatchingRoute(
     routes: Iterable<[string, RouteHandler]>,
-    url: Url<Record<string, string | undefined>>,
-  ): null | [match<Record<string, string>>, RouteHandler] {
-    const matches: [match<Record<string, string>>, RouteHandler][] = [];
+    url: URL,
+  ): null | [Match<Record<string, string>>, RouteHandler] {
+    const matches: [Match<Record<string, string>>, RouteHandler][] = [];
 
     for (const [schema, handler] of routes) {
       const match = matchPath(url.pathname, { path: schema });
@@ -130,7 +126,8 @@ export abstract class LensProtocolRouter {
           return -1;
         }
 
-        return countBy(b.path)["/"] - countBy(a.path)["/"];
+        // sort by number of "/" segments so the most specific path wins
+        return b.path.split("/").length - a.path.split("/").length;
       })[0] ?? null
     );
   }
@@ -140,11 +137,7 @@ export abstract class LensProtocolRouter {
    * @param routes the array of (path schemas, handler) pairs to match against
    * @param url the url (in its current state)
    */
-  protected _route(
-    routes: Iterable<[string, RouteHandler]>,
-    url: Url<Record<string, string | undefined>>,
-    extensionName?: string,
-  ): RouteAttempt {
+  protected _route(routes: Iterable<[string, RouteHandler]>, url: URL, extensionName?: string): RouteAttempt {
     const route = this._findMatchingRoute(routes, url);
 
     if (!route) {
@@ -163,7 +156,7 @@ export abstract class LensProtocolRouter {
 
     const params: RouteParams = {
       pathname: match.params,
-      search: url.query,
+      search: Object.fromEntries(url.searchParams),
     };
 
     if (!match.isExact) {
@@ -182,9 +175,7 @@ export abstract class LensProtocolRouter {
    * @param url the protocol request URI that was "open"-ed
    * @returns either the found name or the instance of `LensExtension`
    */
-  protected async _findMatchingExtensionByName(
-    url: Url<Record<string, string | undefined>>,
-  ): Promise<LensExtension | string> {
+  protected async _findMatchingExtensionByName(url: URL): Promise<LensExtension | string> {
     interface ExtensionUrlMatch {
       [EXTENSION_PUBLISHER_MATCH]: string;
       [EXTENSION_NAME_MATCH]: string;
@@ -226,7 +217,7 @@ export abstract class LensProtocolRouter {
       return name;
     }
 
-    if (!extension.isBundled && !this.dependencies.isExtensionEnabled(extension.id)) {
+    if (!this.dependencies.isExtensionEnabled(extension.id)) {
       this.dependencies.logger.info(`${LensProtocolRouter.LoggingPrefix}: Extension ${name} matched, but not enabled`);
 
       return name;
@@ -247,7 +238,7 @@ export abstract class LensProtocolRouter {
    * Note: this function modifies its argument, do not reuse
    * @param url the protocol request URI that was "open"-ed
    */
-  protected async _routeToExtension(url: Url<Record<string, string | undefined>>): Promise<RouteAttempt> {
+  protected async _routeToExtension(url: URL): Promise<RouteAttempt> {
     const extension = await this._findMatchingExtensionByName(url);
 
     if (typeof extension === "string") {
@@ -256,7 +247,7 @@ export abstract class LensProtocolRouter {
     }
 
     // remove the extension name from the path name so we don't need to match on it anymore
-    url.set("pathname", url.pathname.slice(extension.name.length + 1));
+    url.pathname = url.pathname.slice(extension.name.length + 1);
 
     try {
       const handlers = iter.map(
@@ -280,7 +271,10 @@ export abstract class LensProtocolRouter {
    * @param handler a function that will be called if a protocol path matches
    */
   public addInternalHandler(urlSchema: string, handler: RouteHandler): this {
-    pathToRegexp(urlSchema); // verify now that the schema is valid
+    // Route schemas are authored in the `react-router` v5 dialect (`/:param?`
+    // optionals and inline `/:param(regex)` patterns) — the very dialect
+    // `path-to-regexp` v1 parses natively, so validate the schema as-is here.
+    compileRoutePath(urlSchema); // verify now that the schema is valid
     this.dependencies.logger.info(`${LensProtocolRouter.LoggingPrefix}: internal registering ${urlSchema}`);
     this.internalRoutes.set(urlSchema, handler);
 

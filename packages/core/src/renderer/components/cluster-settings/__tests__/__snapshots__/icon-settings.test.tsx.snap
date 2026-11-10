@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Icon settings given no external registrations for cluster settings menu injection token renders 1`] = `
+exports[`Icon settings > given no external registrations for cluster settings menu injection token > renders 1`] = `
 <body>
   <div>
     <div>
@@ -14,12 +14,12 @@ exports[`Icon settings given no external registrations for cluster settings menu
             class="FilePicker"
           >
             <label
-              class="flex gaps align-center"
+              class="flex gap-2 items-center"
               for="file-upload"
             >
               <div
                 class="Avatar rounded"
-                style="width: 53px; height: 53px; background: rgb(9, 124, 92);"
+                style="width: 53px; height: 53px; background: rgb(110, 28, 69);"
               >
                 skc
               </div>
@@ -52,7 +52,7 @@ exports[`Icon settings given no external registrations for cluster settings menu
 </body>
 `;
 
-exports[`Icon settings given no registrations for cluster settings component injection token renders 1`] = `
+exports[`Icon settings > given no registrations for cluster settings component injection token > renders 1`] = `
 <body>
   <div>
     <div>
@@ -66,12 +66,12 @@ exports[`Icon settings given no registrations for cluster settings component inj
             class="FilePicker"
           >
             <label
-              class="flex gaps align-center"
+              class="flex gap-2 items-center"
               for="file-upload"
             >
               <div
                 class="Avatar rounded"
-                style="width: 53px; height: 53px; background: rgb(9, 124, 92);"
+                style="width: 53px; height: 53px; background: rgb(110, 28, 69);"
               >
                 skc
               </div>

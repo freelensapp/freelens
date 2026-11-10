@@ -5,7 +5,6 @@
  */
 
 import { formatDuration } from "@freelensapp/utilities";
-import moment from "moment";
 import { KubeObject } from "../kube-object";
 
 import type { NamespaceScopedMetadata, ObjectReference } from "../api-types";
@@ -47,7 +46,7 @@ export class CronJob extends KubeObject<NamespaceScopedMetadata, CronJobStatus, 
     if (!this.status?.lastScheduleTime) {
       return "-";
     }
-    const diff = moment().diff(this.status.lastScheduleTime);
+    const diff = Date.now() - new Date(this.status.lastScheduleTime).getTime();
 
     return formatDuration(diff, true);
   }
@@ -56,7 +55,7 @@ export class CronJob extends KubeObject<NamespaceScopedMetadata, CronJobStatus, 
     if (!this.status?.lastSuccessfulTime) {
       return "-";
     }
-    const diff = moment().diff(this.status.lastSuccessfulTime);
+    const diff = Date.now() - new Date(this.status.lastSuccessfulTime).getTime();
 
     return formatDuration(diff, true);
   }

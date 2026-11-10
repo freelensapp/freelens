@@ -12,8 +12,8 @@ import { reverseSecretTypeMap, SecretType } from "@freelensapp/kube-object";
 import { showCheckedErrorNotificationInjectable } from "@freelensapp/notifications";
 import { base64, iter, object } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import upperFirst from "lodash/upperFirst";
-import { makeObservable, observable } from "mobx";
+import { upperFirst } from "es-toolkit";
+import { observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import { Dialog } from "../../dialog";
@@ -64,7 +64,6 @@ interface Dependencies {
 class NonInjectedAddSecretDialog extends React.Component<AddSecretDialogProps & Dependencies> {
   constructor(props: AddSecretDialogProps & Dependencies) {
     super(props);
-    makeObservable(this);
   }
 
   private secretTemplate: Partial<Record<SecretType, SecretTemplate>> = {
@@ -77,10 +76,10 @@ class NonInjectedAddSecretDialog extends React.Component<AddSecretDialogProps & 
     },
   };
 
-  @observable secret = this.secretTemplate;
-  @observable name = "";
-  @observable namespace = "default";
-  @observable type = SecretType.Opaque;
+  @observable accessor secret = this.secretTemplate;
+  @observable accessor name = "";
+  @observable accessor namespace = "default";
+  @observable accessor type = SecretType.Opaque;
 
   reset = () => {
     this.name = "";
@@ -147,9 +146,9 @@ class NonInjectedAddSecretDialog extends React.Component<AddSecretDialogProps & 
         </SubTitle>
         <div className="secret-fields">
           {this.getFields(field).map((item, index) => (
-            <div key={index} className="secret-field flex gaps auto align-center">
+            <div key={index} className="secret-field flex gap-3 items-center">
               <Input
-                className="key"
+                className="key flex-1"
                 placeholder="Name"
                 title={item.key}
                 tabIndex={item.required ? -1 : 0}
@@ -161,7 +160,7 @@ class NonInjectedAddSecretDialog extends React.Component<AddSecretDialogProps & 
                 multiLine
                 maxRows={5}
                 required={item.required}
-                className="value"
+                className="value flex-1"
                 placeholder="Value"
                 value={item.value}
                 onChange={(v) => (item.value = v)}
@@ -199,7 +198,7 @@ class NonInjectedAddSecretDialog extends React.Component<AddSecretDialogProps & 
         close={this.close}
       >
         <Wizard header={header} done={this.close}>
-          <WizardStep contentClass="flow column" nextLabel="Create" next={this.createSecret}>
+          <WizardStep contentClass="space-y-3" nextLabel="Create" next={this.createSecret}>
             <div className="secret-name">
               <SubTitle title="Secret name" />
               <Input
@@ -212,21 +211,21 @@ class NonInjectedAddSecretDialog extends React.Component<AddSecretDialogProps & 
                 onChange={(v) => (this.name = v)}
               />
             </div>
-            <div className="flex auto gaps">
-              <div className="secret-namespace">
+            <div className="flex gap-3">
+              <div className="secret-namespace flex-1">
                 <SubTitle title="Namespace" />
                 <NamespaceSelect
                   id="secret-namespace-input"
-                  themeName="light"
+                  themeName="lens"
                   value={namespace}
                   onChange={(option) => (this.namespace = option?.value ?? "default")}
                 />
               </div>
-              <div className="secret-type">
+              <div className="secret-type flex-1">
                 <SubTitle title="Secret type" />
                 <Select
                   id="secret-input"
-                  themeName="light"
+                  themeName="lens"
                   options={Object.keys(this.secretTemplate) as SecretType[]}
                   value={type}
                   onChange={(option) => (this.type = option?.value ?? SecretType.Opaque)}

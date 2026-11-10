@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`<NamespaceSelectFilter /> once the subscribe resolves renders 1`] = `
+exports[`<NamespaceSelectFilter /> > once the subscribe resolves > renders 1`] = `
 <body>
   <div>
     <div
@@ -50,7 +50,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves renders 1`] = `
                 id="namespace-select-filter"
                 role="combobox"
                 spellcheck="false"
-                style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                 tabindex="0"
                 type="text"
                 value=""
@@ -88,7 +88,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves renders 1`] = `
 </body>
 `;
 
-exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked renders 1`] = `
+exports[`<NamespaceSelectFilter /> > once the subscribe resolves > when clicked > renders 1`] = `
 <body>
   <div>
     <div
@@ -139,7 +139,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked rend
                 id="namespace-select-filter"
                 role="combobox"
                 spellcheck="false"
-                style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                 tabindex="0"
                 type="text"
                 value=""
@@ -205,7 +205,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked rend
           tabindex="-1"
         >
           <div
-            class="flex gaps align-center"
+            class="flex gap-2 items-center"
           >
             <i
               class="Icon material focusable small"
@@ -221,7 +221,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked rend
               test-1
             </span>
             <i
-              class="Icon box right material focusable small"
+              class="Icon ml-auto material focusable small"
               data-testid="namespace-select-filter-option-test-1-selected"
             >
               <span
@@ -242,7 +242,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked rend
           tabindex="-1"
         >
           <div
-            class="flex gaps align-center"
+            class="flex gap-2 items-center"
           >
             <i
               class="Icon material focusable small"
@@ -258,7 +258,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked rend
               test-10
             </span>
             <i
-              class="Icon box right material focusable small"
+              class="Icon ml-auto material focusable small"
               data-testid="namespace-select-filter-option-test-10-selected"
             >
               <span
@@ -279,7 +279,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked rend
           tabindex="-1"
         >
           <div
-            class="flex gaps align-center"
+            class="flex gap-2 items-center"
           >
             <i
               class="Icon material focusable small"
@@ -295,7 +295,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked rend
               test-11
             </span>
             <i
-              class="Icon box right material focusable small"
+              class="Icon ml-auto material focusable small"
               data-testid="namespace-select-filter-option-test-11-selected"
             >
               <span
@@ -316,7 +316,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked rend
           tabindex="-1"
         >
           <div
-            class="flex gaps align-center"
+            class="flex gap-2 items-center"
           >
             <i
               class="Icon material focusable small"
@@ -332,7 +332,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked rend
               test-12
             </span>
             <i
-              class="Icon box right material focusable small"
+              class="Icon ml-auto material focusable small"
               data-testid="namespace-select-filter-option-test-12-selected"
             >
               <span
@@ -353,7 +353,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked rend
           tabindex="-1"
         >
           <div
-            class="flex gaps align-center"
+            class="flex gap-2 items-center"
           >
             <i
               class="Icon material focusable small"
@@ -369,7 +369,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked rend
               test-13
             </span>
             <i
-              class="Icon box right material focusable small"
+              class="Icon ml-auto material focusable small"
               data-testid="namespace-select-filter-option-test-13-selected"
             >
               <span
@@ -390,7 +390,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked rend
           tabindex="-1"
         >
           <div
-            class="flex gaps align-center"
+            class="flex gap-2 items-center"
           >
             <i
               class="Icon material focusable small"
@@ -406,7 +406,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked rend
               test-2
             </span>
             <i
-              class="Icon box right material focusable small"
+              class="Icon ml-auto material focusable small"
               data-testid="namespace-select-filter-option-test-2-selected"
             >
               <span
@@ -427,7 +427,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked rend
           tabindex="-1"
         >
           <div
-            class="flex gaps align-center"
+            class="flex gap-2 items-center"
           >
             <i
               class="Icon material focusable small"
@@ -443,7 +443,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked rend
               test-3
             </span>
             <i
-              class="Icon box right material focusable small"
+              class="Icon ml-auto material focusable small"
               data-testid="namespace-select-filter-option-test-3-selected"
             >
               <span
@@ -464,7 +464,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked rend
           tabindex="-1"
         >
           <div
-            class="flex gaps align-center"
+            class="flex gap-2 items-center"
           >
             <i
               class="Icon material focusable small"
@@ -480,7 +480,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked rend
               test-4
             </span>
             <i
-              class="Icon box right material focusable small"
+              class="Icon ml-auto material focusable small"
               data-testid="namespace-select-filter-option-test-4-selected"
             >
               <span
@@ -501,7 +501,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked rend
           tabindex="-1"
         >
           <div
-            class="flex gaps align-center"
+            class="flex gap-2 items-center"
           >
             <i
               class="Icon material focusable small"
@@ -517,7 +517,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked rend
               test-5
             </span>
             <i
-              class="Icon box right material focusable small"
+              class="Icon ml-auto material focusable small"
               data-testid="namespace-select-filter-option-test-5-selected"
             >
               <span
@@ -538,7 +538,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked rend
           tabindex="-1"
         >
           <div
-            class="flex gaps align-center"
+            class="flex gap-2 items-center"
           >
             <i
               class="Icon material focusable small"
@@ -554,7 +554,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked rend
               test-6
             </span>
             <i
-              class="Icon box right material focusable small"
+              class="Icon ml-auto material focusable small"
               data-testid="namespace-select-filter-option-test-6-selected"
             >
               <span
@@ -575,7 +575,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked rend
           tabindex="-1"
         >
           <div
-            class="flex gaps align-center"
+            class="flex gap-2 items-center"
           >
             <i
               class="Icon material focusable small"
@@ -591,7 +591,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked rend
               test-7
             </span>
             <i
-              class="Icon box right material focusable small"
+              class="Icon ml-auto material focusable small"
               data-testid="namespace-select-filter-option-test-7-selected"
             >
               <span
@@ -612,7 +612,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked rend
           tabindex="-1"
         >
           <div
-            class="flex gaps align-center"
+            class="flex gap-2 items-center"
           >
             <i
               class="Icon material focusable small"
@@ -628,7 +628,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked rend
               test-8
             </span>
             <i
-              class="Icon box right material focusable small"
+              class="Icon ml-auto material focusable small"
               data-testid="namespace-select-filter-option-test-8-selected"
             >
               <span
@@ -649,7 +649,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked rend
           tabindex="-1"
         >
           <div
-            class="flex gaps align-center"
+            class="flex gap-2 items-center"
           >
             <i
               class="Icon material focusable small"
@@ -665,7 +665,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked rend
               test-9
             </span>
             <i
-              class="Icon box right material focusable small"
+              class="Icon ml-auto material focusable small"
               data-testid="namespace-select-filter-option-test-9-selected"
             >
               <span
@@ -683,7 +683,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked rend
 </body>
 `;
 
-exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when 'test-2' is clicked renders 1`] = `
+exports[`<NamespaceSelectFilter /> > once the subscribe resolves > when clicked > when 'test-2' is clicked > renders 1`] = `
 <body>
   <div>
     <div
@@ -733,7 +733,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when
                 id="namespace-select-filter"
                 role="combobox"
                 spellcheck="false"
-                style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                 tabindex="0"
                 type="text"
                 value=""
@@ -771,7 +771,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when
 </body>
 `;
 
-exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when 'test-2' is clicked when clicked again renders 1`] = `
+exports[`<NamespaceSelectFilter /> > once the subscribe resolves > when clicked > when 'test-2' is clicked > when clicked again > renders 1`] = `
 <body>
   <div>
     <div
@@ -822,7 +822,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when
                 id="namespace-select-filter"
                 role="combobox"
                 spellcheck="false"
-                style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                 tabindex="0"
                 type="text"
                 value=""
@@ -888,7 +888,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when
           tabindex="-1"
         >
           <div
-            class="flex gaps align-center"
+            class="flex gap-2 items-center"
           >
             <i
               class="Icon material focusable small"
@@ -904,7 +904,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when
               test-2
             </span>
             <i
-              class="Icon box right material focusable small"
+              class="Icon ml-auto material focusable small"
               data-testid="namespace-select-filter-option-test-2-selected"
             >
               <span
@@ -925,7 +925,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when
           tabindex="-1"
         >
           <div
-            class="flex gaps align-center"
+            class="flex gap-2 items-center"
           >
             <i
               class="Icon material focusable small"
@@ -951,7 +951,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when
           tabindex="-1"
         >
           <div
-            class="flex gaps align-center"
+            class="flex gap-2 items-center"
           >
             <i
               class="Icon material focusable small"
@@ -977,7 +977,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when
           tabindex="-1"
         >
           <div
-            class="flex gaps align-center"
+            class="flex gap-2 items-center"
           >
             <i
               class="Icon material focusable small"
@@ -1003,7 +1003,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when
           tabindex="-1"
         >
           <div
-            class="flex gaps align-center"
+            class="flex gap-2 items-center"
           >
             <i
               class="Icon material focusable small"
@@ -1029,7 +1029,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when
           tabindex="-1"
         >
           <div
-            class="flex gaps align-center"
+            class="flex gap-2 items-center"
           >
             <i
               class="Icon material focusable small"
@@ -1055,7 +1055,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when
           tabindex="-1"
         >
           <div
-            class="flex gaps align-center"
+            class="flex gap-2 items-center"
           >
             <i
               class="Icon material focusable small"
@@ -1081,7 +1081,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when
           tabindex="-1"
         >
           <div
-            class="flex gaps align-center"
+            class="flex gap-2 items-center"
           >
             <i
               class="Icon material focusable small"
@@ -1107,7 +1107,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when
           tabindex="-1"
         >
           <div
-            class="flex gaps align-center"
+            class="flex gap-2 items-center"
           >
             <i
               class="Icon material focusable small"
@@ -1133,7 +1133,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when
           tabindex="-1"
         >
           <div
-            class="flex gaps align-center"
+            class="flex gap-2 items-center"
           >
             <i
               class="Icon material focusable small"
@@ -1159,7 +1159,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when
           tabindex="-1"
         >
           <div
-            class="flex gaps align-center"
+            class="flex gap-2 items-center"
           >
             <i
               class="Icon material focusable small"
@@ -1185,7 +1185,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when
           tabindex="-1"
         >
           <div
-            class="flex gaps align-center"
+            class="flex gap-2 items-center"
           >
             <i
               class="Icon material focusable small"
@@ -1211,7 +1211,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when
           tabindex="-1"
         >
           <div
-            class="flex gaps align-center"
+            class="flex gap-2 items-center"
           >
             <i
               class="Icon material focusable small"
@@ -1234,7 +1234,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when
 </body>
 `;
 
-exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when 'test-2' is clicked when clicked again when 'test-1' is clicked renders 1`] = `
+exports[`<NamespaceSelectFilter /> > once the subscribe resolves > when clicked > when 'test-2' is clicked > when clicked again > when 'test-1' is clicked > renders 1`] = `
 <body>
   <div>
     <div
@@ -1284,7 +1284,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when
                 id="namespace-select-filter"
                 role="combobox"
                 spellcheck="false"
-                style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                 tabindex="0"
                 type="text"
                 value=""
@@ -1322,7 +1322,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when
 </body>
 `;
 
-exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when 'test-2' is clicked when clicked again when 'test-1' is clicked when clicked again, then holding down multi select key when 'test-3' is clicked renders 1`] = `
+exports[`<NamespaceSelectFilter /> > once the subscribe resolves > when clicked > when 'test-2' is clicked > when clicked again > when 'test-1' is clicked > when clicked again, then holding down multi select key > when 'test-3' is clicked > renders 1`] = `
 <body>
   <div>
     <div
@@ -1373,7 +1373,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when
                 id="namespace-select-filter"
                 role="combobox"
                 spellcheck="false"
-                style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                 tabindex="0"
                 type="text"
                 value=""
@@ -1439,7 +1439,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when
           tabindex="-1"
         >
           <div
-            class="flex gaps align-center"
+            class="flex gap-2 items-center"
           >
             <i
               class="Icon material focusable small"
@@ -1455,7 +1455,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when
               test-1
             </span>
             <i
-              class="Icon box right material focusable small"
+              class="Icon ml-auto material focusable small"
               data-testid="namespace-select-filter-option-test-1-selected"
             >
               <span
@@ -1476,7 +1476,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when
           tabindex="-1"
         >
           <div
-            class="flex gaps align-center"
+            class="flex gap-2 items-center"
           >
             <i
               class="Icon material focusable small"
@@ -1502,7 +1502,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when
           tabindex="-1"
         >
           <div
-            class="flex gaps align-center"
+            class="flex gap-2 items-center"
           >
             <i
               class="Icon material focusable small"
@@ -1528,7 +1528,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when
           tabindex="-1"
         >
           <div
-            class="flex gaps align-center"
+            class="flex gap-2 items-center"
           >
             <i
               class="Icon material focusable small"
@@ -1554,7 +1554,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when
           tabindex="-1"
         >
           <div
-            class="flex gaps align-center"
+            class="flex gap-2 items-center"
           >
             <i
               class="Icon material focusable small"
@@ -1580,7 +1580,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when
           tabindex="-1"
         >
           <div
-            class="flex gaps align-center"
+            class="flex gap-2 items-center"
           >
             <i
               class="Icon material focusable small"
@@ -1606,7 +1606,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when
           tabindex="-1"
         >
           <div
-            class="flex gaps align-center"
+            class="flex gap-2 items-center"
           >
             <i
               class="Icon material focusable small"
@@ -1622,7 +1622,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when
               test-3
             </span>
             <i
-              class="Icon box right material focusable small"
+              class="Icon ml-auto material focusable small"
               data-testid="namespace-select-filter-option-test-3-selected"
             >
               <span
@@ -1643,7 +1643,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when
           tabindex="-1"
         >
           <div
-            class="flex gaps align-center"
+            class="flex gap-2 items-center"
           >
             <i
               class="Icon material focusable small"
@@ -1669,7 +1669,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when
           tabindex="-1"
         >
           <div
-            class="flex gaps align-center"
+            class="flex gap-2 items-center"
           >
             <i
               class="Icon material focusable small"
@@ -1695,7 +1695,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when
           tabindex="-1"
         >
           <div
-            class="flex gaps align-center"
+            class="flex gap-2 items-center"
           >
             <i
               class="Icon material focusable small"
@@ -1721,7 +1721,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when
           tabindex="-1"
         >
           <div
-            class="flex gaps align-center"
+            class="flex gap-2 items-center"
           >
             <i
               class="Icon material focusable small"
@@ -1747,7 +1747,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when
           tabindex="-1"
         >
           <div
-            class="flex gaps align-center"
+            class="flex gap-2 items-center"
           >
             <i
               class="Icon material focusable small"
@@ -1773,7 +1773,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when
           tabindex="-1"
         >
           <div
-            class="flex gaps align-center"
+            class="flex gap-2 items-center"
           >
             <i
               class="Icon material focusable small"

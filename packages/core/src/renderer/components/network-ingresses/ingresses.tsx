@@ -9,7 +9,6 @@ import "./ingresses.scss";
 import { type ComputedIngressRoute, computeRouteDeclarations } from "@freelensapp/kube-object";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import React from "react";
 import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
@@ -29,6 +28,16 @@ enum columnId {
 
 interface Dependencies {
   ingressStore: IngressStore;
+}
+
+// Keep in sync: this is also the `max` passed to showRoutes() for the row content below,
+// so the reserved row height always matches what's actually painted (1 rule + "N more..." line).
+const MAX_VISIBLE_ROUTES = 1;
+
+// Mirrors how many lines showRoutes(routes, max) actually paints: up to `max` rule lines,
+// plus one more line for the "N more..." ellipsis when there's overflow.
+function countVisibleRouteLines(routeCount: number, max: number) {
+  return Math.min(routeCount, max) + (routeCount > max ? 1 : 0) || 1;
 }
 
 function showLoadBalancers(loadBalancers: (string | undefined)[], max: number) {
@@ -100,13 +109,13 @@ const NonInjectedIngresses = observer((props: Dependencies) => {
             <WithTooltip tooltip={showLoadBalancers(loadBalancers, 20)}>
               {showLoadBalancers(loadBalancers, 1)}
             </WithTooltip>,
-            <WithTooltip tooltip={showRoutes(routes, 20)}>{showRoutes(routes, 1)}</WithTooltip>,
+            <WithTooltip tooltip={showRoutes(routes, 20)}>{showRoutes(routes, MAX_VISIBLE_ROUTES)}</WithTooltip>,
             <KubeObjectAge key="age" object={ingress} />,
           ];
         }}
         tableProps={{
           customRowHeights: (item, lineHeight, paddings) => {
-            const lines = item.getRoutes().length || 1;
+            const lines = countVisibleRouteLines(computeRouteDeclarations(item).length, MAX_VISIBLE_ROUTES);
 
             return lines * lineHeight + paddings;
           },

@@ -5,13 +5,18 @@
  */
 
 /**
- * Creates a new promise that will be rejected when the signal rejects.
+ * Creates a new promise that will be rejected when the signal rejects, or at
+ * once when it has already been aborted.
  *
  * Useful for `Promise.race()` applications.
  * @param signal The AbortController's signal to reject with
  */
 export function rejectPromiseBy(signal: AbortSignal): Promise<never> {
   return new Promise((_, reject) => {
-    signal.addEventListener("abort", reject);
+    if (signal.aborted) {
+      reject(signal.reason);
+    } else {
+      signal.addEventListener("abort", reject);
+    }
   });
 }

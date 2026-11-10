@@ -6,13 +6,14 @@
 
 import { Pod } from "@freelensapp/kube-object";
 import autoBind from "auto-bind";
-import compact from "lodash/compact";
-import groupBy from "lodash/groupBy";
+import { compact, groupBy } from "es-toolkit";
+import { computed } from "mobx";
 import { KubeObjectStore } from "../../../common/k8s-api/kube-object.store";
 
 import type { KubeEventApi } from "@freelensapp/kube-api";
 import type { KubeEvent, KubeObject } from "@freelensapp/kube-object";
 
+import type { ItemSorting } from "../../../common/item.store";
 import type { KubeObjectStoreDependencies, KubeObjectStoreOptions } from "../../../common/k8s-api/kube-object.store";
 import type { GetPodById } from "../workloads-pods/get-pod-by-id.injectable";
 
@@ -21,7 +22,7 @@ export interface EventStoreDependencies extends KubeObjectStoreDependencies {
 }
 
 export class EventStore extends KubeObjectStore<KubeEvent, KubeEventApi> {
-  public declare readonly limit: number;
+  declare public readonly limit: number;
 
   constructor(
     protected readonly dependencies: EventStoreDependencies,
@@ -36,24 +37,38 @@ export class EventStore extends KubeObjectStore<KubeEvent, KubeEventApi> {
     return super.bindWatchEventsUpdater(5000);
   }
 
-  protected sortItems(items: KubeEvent[]) {
-    return super.sortItems(
-      items,
-      [
-        (event) => -event.getCreationTimestamp(), // keep events order as timeline ("fresh" on top)
-      ],
-      "asc",
-    );
+  protected readonly sorting: ItemSorting<KubeEvent> = {
+    by: [
+      (event) => -event.getCreationTimestamp(), // keep events order as timeline ("fresh" on top)
+    ],
+    order: "asc",
+  };
+
+  @computed get eventsByObjectId(): Map<string, KubeEvent[]> {
+    const map = new Map<string, KubeEvent[]>();
+
+    for (const evt of this.items) {
+      const uid = evt.involvedObject.uid;
+      let bucket = map.get(uid);
+
+      if (!bucket) {
+        bucket = [];
+        map.set(uid, bucket);
+      }
+
+      bucket.push(evt);
+    }
+
+    return map;
   }
 
   getEventsByObject(obj: KubeObject): KubeEvent[] {
-    return this.items.filter((evt) => {
-      if (obj.kind == "Node") {
-        return obj.getName() == evt.involvedObject.uid && evt.involvedObject.kind == "Node";
-      }
+    if (obj.kind == "Node") {
+      // Node events are stored with involvedObject.uid equal to the node name
+      return (this.eventsByObjectId.get(obj.getName()) ?? []).filter((evt) => evt.involvedObject.kind == "Node");
+    }
 
-      return obj.getId() == evt.involvedObject.uid;
-    });
+    return this.eventsByObjectId.get(obj.getId()) ?? [];
   }
 
   getWarnings() {

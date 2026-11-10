@@ -4,12 +4,14 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { beforeEach, describe, expect, it } from "vitest";
 import resetThemeInjectable from "../../features/user-preferences/common/reset-theme.injectable";
 import userPreferencesStateInjectable from "../../features/user-preferences/common/state.injectable";
 import userPreferencesPersistentStorageInjectable from "../../features/user-preferences/common/storage.injectable";
 import releaseChannelInjectable from "../../features/vars/common/release-channel.injectable";
 import { getDiForUnitTesting } from "../../main/getDiForUnitTesting";
 import directoryForUserDataInjectable from "../app-paths/directory-for-user-data/directory-for-user-data.injectable";
+import readJsonSyncInjectable from "../fs/read-json-sync.injectable";
 import writeFileInjectable from "../fs/write-file.injectable";
 import writeJsonSyncInjectable from "../fs/write-json-sync.injectable";
 import { defaultColorThemePreference } from "../vars";
@@ -60,6 +62,82 @@ describe("user store tests", () => {
       state.colorTheme = "some other theme";
       resetTheme();
       expect(state.colorTheme).toBe(defaultColorThemePreference);
+    });
+
+    it("loads and stores persistentSearch as a global preference", async () => {
+      const writeJsonSync = di.inject(writeJsonSyncInjectable);
+      const readJsonSync = di.inject(readJsonSyncInjectable);
+
+      writeJsonSync("/some-directory-for-user-data/lens-user-store.json", {
+        preferences: {
+          persistentSearch: true,
+        },
+      });
+      writeJsonSync("/some-directory-for-user-data/kube_config", {});
+
+      di.inject(userPreferencesPersistentStorageInjectable).loadAndStartSyncing();
+
+      expect(state.persistentSearch).toBe(true);
+
+      state.persistentSearch = false;
+      expect(readJsonSync("/some-directory-for-user-data/lens-user-store.json")).toMatchObject({
+        preferences: {},
+      });
+      expect(
+        readJsonSync("/some-directory-for-user-data/lens-user-store.json").preferences.persistentSearch,
+      ).toBeUndefined();
+
+      state.persistentSearch = true;
+      expect(readJsonSync("/some-directory-for-user-data/lens-user-store.json")).toMatchObject({
+        preferences: {
+          persistentSearch: true,
+        },
+      });
+    });
+
+    it("loads and stores logViewerPreferences as a global preference", async () => {
+      const writeJsonSync = di.inject(writeJsonSyncInjectable);
+      const readJsonSync = di.inject(readJsonSyncInjectable);
+
+      writeJsonSync("/some-directory-for-user-data/lens-user-store.json", {
+        preferences: {
+          logViewerPreferences: {
+            showTimestamps: true,
+            showWordWrap: false,
+          },
+        },
+      });
+      writeJsonSync("/some-directory-for-user-data/kube_config", {});
+
+      di.inject(userPreferencesPersistentStorageInjectable).loadAndStartSyncing();
+
+      expect(state.logViewerPreferences).toEqual({
+        showTimestamps: true,
+        showWordWrap: false,
+      });
+
+      state.logViewerPreferences = {
+        showTimestamps: true,
+        showWordWrap: false,
+      };
+
+      expect(readJsonSync("/some-directory-for-user-data/lens-user-store.json")).toMatchObject({
+        preferences: {
+          logViewerPreferences: {
+            showTimestamps: true,
+            showWordWrap: false,
+          },
+        },
+      });
+
+      state.logViewerPreferences = {
+        showTimestamps: false,
+        showWordWrap: true,
+      };
+
+      expect(
+        readJsonSync("/some-directory-for-user-data/lens-user-store.json").preferences.logViewerPreferences,
+      ).toBeUndefined();
     });
   });
 });

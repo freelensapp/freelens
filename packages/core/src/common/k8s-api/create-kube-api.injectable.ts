@@ -5,7 +5,12 @@
  */
 
 import { maybeKubeApiInjectable } from "@freelensapp/kube-api-specifics";
-import { logErrorInjectionToken, logInfoInjectionToken, logWarningInjectionToken } from "@freelensapp/logger";
+import {
+  logDebugInjectionToken,
+  logErrorInjectionToken,
+  logInfoInjectionToken,
+  logWarningInjectionToken,
+} from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
 
 import type { DerivedKubeApiOptions, KubeApiDependencies } from "@freelensapp/kube-api";
@@ -18,6 +23,7 @@ const createKubeApiInjectable = getInjectable({
   id: "create-kube-api",
   instantiate: (di): CreateKubeApi => {
     const deps: KubeApiDependencies = {
+      logDebug: di.inject(logDebugInjectionToken),
       logError: di.inject(logErrorInjectionToken),
       logInfo: di.inject(logInfoInjectionToken),
       logWarn: di.inject(logWarningInjectionToken),

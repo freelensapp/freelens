@@ -4,44 +4,41 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import "@testing-library/jest-dom/vitest";
 import { registerFeature } from "@freelensapp/feature-core";
-import { setLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di";
 import { loggerFeature, loggerInjectionToken } from "@freelensapp/logger";
 import { renderFor } from "@freelensapp/test-utils";
 import { createContainer } from "@ogre-tools/injectable";
 import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
-import { registerInjectableReact } from "@ogre-tools/injectable-react";
 import { runInAction } from "mobx";
-import React from "react";
 import { Icon } from "./icon";
 
 import type { Logger } from "@freelensapp/logger";
 import type { DiRender } from "@freelensapp/test-utils";
 
+import type { MockedObject } from "vitest";
+
 describe("<Icon> href technical tests", () => {
   let render: DiRender;
-  let logger: jest.MockedObject<Logger>;
+  let logger: MockedObject<Logger>;
 
   beforeEach(() => {
     const environment = "renderer";
-    const di = createContainer(environment, {
-      detectCycles: false,
-    });
+    const di = createContainer(environment);
 
     registerMobX(di);
-    registerInjectableReact(di);
-    setLegacyGlobalDiForExtensionApi(di, environment);
 
     runInAction(() => {
       registerFeature(di, loggerFeature);
     });
 
     logger = {
-      debug: jest.fn(),
-      error: jest.fn(),
-      info: jest.fn(),
-      silly: jest.fn(),
-      warn: jest.fn(),
+      debug: vi.fn(),
+      error: vi.fn(),
+      info: vi.fn(),
+      silly: vi.fn(),
+      warn: vi.fn(),
     };
 
     di.override(loggerInjectionToken, () => logger);

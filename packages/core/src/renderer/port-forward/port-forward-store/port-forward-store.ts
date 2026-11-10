@@ -6,7 +6,7 @@
 
 import { disposer } from "@freelensapp/utilities";
 import autoBind from "auto-bind";
-import { action, makeObservable, observable, reaction } from "mobx";
+import { action, observable, reaction } from "mobx";
 import { waitUntilFree } from "tcp-port-used";
 import { ItemStore } from "../../../common/item.store";
 import { PortForwardItem } from "../port-forward-item";
@@ -27,11 +27,10 @@ interface Dependencies {
 }
 
 export class PortForwardStore extends ItemStore<PortForwardItem> {
-  @observable portForwards: PortForwardItem[] = [];
+  @observable accessor portForwards: PortForwardItem[] = [];
 
   constructor(protected readonly dependencies: Dependencies) {
     super();
-    makeObservable(this);
     autoBind(this);
 
     this.init();

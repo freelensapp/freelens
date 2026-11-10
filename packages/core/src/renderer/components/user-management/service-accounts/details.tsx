@@ -7,12 +7,12 @@
 import "./details.scss";
 
 import { Icon } from "@freelensapp/icon";
+import { Link } from "@freelensapp/routing";
 import { Spinner } from "@freelensapp/spinner";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { autorun, observable, runInAction } from "mobx";
-import { disposeOnUnmount, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import React from "react";
-import { Link } from "react-router-dom";
 import secretStoreInjectable from "../../config-secrets/store.injectable";
 import { DrawerItem, DrawerTitle } from "../../drawer";
 import getDetailsUrlInjectable from "../../kube-detail-params/get-details-url.injectable";
@@ -33,30 +33,36 @@ interface Dependencies {
 
 @observer
 class NonInjectedServiceAccountsDetails extends React.Component<ServiceAccountsDetailsProps & Dependencies> {
+  private readonly disposers: (() => void)[] = [];
   readonly secrets = observable.array<Secret | string>();
   readonly imagePullSecrets = observable.array<Secret | string>();
 
   private defensiveLoadSecretIn =
-    (namespace: string) =>
+    (secretStore: SecretStore, namespace: string) =>
     ({ name }: { name: string }) =>
-      this.props.secretStore.load({ name, namespace }).catch(() => name);
+      secretStore.load({ name, namespace }).catch(() => name);
 
   componentDidMount(): void {
-    disposeOnUnmount(this, [
+    // Capture props before the autorun: this is a single-argument autorun, so its
+    // async callback IS the tracking function and mobx-react 9 forbids reading
+    // this.props inside it (directly or via the defensiveLoadSecretIn closure it
+    // invokes before the first await).
+    const { object: serviceAccount, secretStore } = this.props;
+
+    this.disposers.push(
       autorun(async () => {
         runInAction(() => {
           this.secrets.clear();
           this.imagePullSecrets.clear();
         });
 
-        const { object: serviceAccount } = this.props;
         const namespace = serviceAccount?.getNs();
 
         if (!namespace) {
           return;
         }
 
-        const defensiveLoadSecret = this.defensiveLoadSecretIn(namespace);
+        const defensiveLoadSecret = this.defensiveLoadSecretIn(secretStore, namespace);
 
         const secretLoaders = Promise.all(serviceAccount.getSecrets().map(defensiveLoadSecret));
         const imagePullSecretLoaders = Promise.all(serviceAccount.getImagePullSecrets().map(defensiveLoadSecret));
@@ -67,7 +73,11 @@ class NonInjectedServiceAccountsDetails extends React.Component<ServiceAccountsD
           this.imagePullSecrets.replace(imagePullSecrets);
         });
       }),
-    ]);
+    );
+  }
+
+  componentWillUnmount() {
+    this.disposers.forEach((dispose) => dispose());
   }
 
   renderSecrets() {

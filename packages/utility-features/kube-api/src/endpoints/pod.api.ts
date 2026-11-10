@@ -67,13 +67,18 @@ export class PodApi extends KubeApi<Pod> {
   }
 
   async deleteWithFinalizers(resource: DeleteResourceDescriptor) {
-    // First, try to patch the object to remove finalizers
+    // First, try to patch the object to remove finalizers. A JSON merge patch replaces the list,
+    // while a strategic merge patch merges `finalizers` and leaves it as it is.
     try {
-      await this.patch(resource, {
-        metadata: {
-          finalizers: [],
+      await this.patch(
+        resource,
+        {
+          metadata: {
+            finalizers: [],
+          },
         },
-      });
+        "merge",
+      );
     } catch (error) {
       // If patching fails, continue with force delete
       console.warn("Failed to remove finalizers, proceeding with force delete", error);
@@ -83,10 +88,10 @@ export class PodApi extends KubeApi<Pod> {
     return this.forceDelete(resource);
   }
 
-  async getLogs(params: ResourceDescriptor, query?: PodLogsQuery): Promise<string> {
+  async getLogs(params: ResourceDescriptor, query?: PodLogsQuery, signal?: AbortSignal): Promise<string> {
     const path = `${this.getUrl(params)}/log`;
 
-    const logs = await this.request.get(path, { query });
+    const logs = await this.request.get(path, { query }, { signal });
 
     if (typeof logs !== "string") {
       return "";

@@ -1,6 +1,5 @@
 /**
  * Copyright (c) Freelens Authors. All rights reserved.
- * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
@@ -39,8 +38,8 @@ class NonInjectedServiceDetailsEndpointSlices extends React.Component<
     }
 
     return (
-      <div className="EndpointSlicesList flex column">
-        <Table selectable virtual={false} scrollable={false} className="box grow">
+      <div className="EndpointSlicesList flex flex-col">
+        <Table selectable virtual={false} scrollable={false} className="grow shrink-0 basis-0">
           <TableHead flat>
             <TableCell className="name">Name</TableCell>
             <TableCell className="addressType">Type</TableCell>

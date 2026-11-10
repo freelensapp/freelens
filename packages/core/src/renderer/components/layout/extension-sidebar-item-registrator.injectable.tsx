@@ -6,9 +6,7 @@
 
 import { sidebarItemInjectionToken } from "@freelensapp/cluster-sidebar";
 import { getInjectable } from "@ogre-tools/injectable";
-import { matches } from "lodash/fp";
 import { computed } from "mobx";
-import React from "react";
 import { navigateToRouteInjectionToken } from "../../../common/front-end-routing/navigate-to-route-injection-token";
 import { extensionRegistratorInjectionToken } from "../../../extensions/extension-loader/extension-registrator-injection-token";
 import { getExtensionId, sanitizeExtensionName } from "../../../extensions/lens-extension";
@@ -32,7 +30,7 @@ const extensionSidebarItemRegistratorInjectable = getInjectable({
       extensionShouldBeEnabledForClusterFrameInjectable,
       extension,
     );
-    const extensionRoutes = computed(() => routes.get().filter(matches({ extension })));
+    const extensionRoutes = computed(() => routes.get().filter((route) => route.extension === extension));
 
     return computed(() =>
       extension.clusterPageMenus.map((registration) => {
@@ -45,7 +43,7 @@ const extensionSidebarItemRegistratorInjectable = getInjectable({
           ? getClusterPageMenuOrder(getExtensionId(sanitizeExtensionName(extension.name)), 9999)
           : 9999;
         const targetRoutePath = getExtensionRoutePath(extension, target?.pageId);
-        const targetRoute = computed(() => extensionRoutes.get().find(matches({ path: targetRoutePath })));
+        const targetRoute = computed(() => extensionRoutes.get().find((route) => route.path === targetRoutePath));
 
         return getInjectable({
           id,

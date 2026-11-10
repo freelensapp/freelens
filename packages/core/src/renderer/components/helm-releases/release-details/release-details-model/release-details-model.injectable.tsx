@@ -4,14 +4,12 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import assert from "node:assert";
 import { showCheckedErrorNotificationInjectable, showSuccessNotificationInjectable } from "@freelensapp/notifications";
 import { waitUntilDefined } from "@freelensapp/utilities";
-import { pipeline } from "@ogre-tools/fp";
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
-import assert from "assert";
-import { groupBy, map } from "lodash/fp";
+import { groupBy } from "es-toolkit";
 import { action, computed, observable, runInAction } from "mobx";
-import React from "react";
 import navigateToHelmReleasesInjectable from "../../../../../common/front-end-routing/routes/cluster/helm/releases/navigate-to-helm-releases.injectable";
 import requestHelmReleaseConfigurationInjectable from "../../../../../common/k8s-api/endpoints/helm-releases.api/request-configuration.injectable";
 import hostedClusterIdInjectable from "../../../../cluster-frame-context/hosted-cluster-id.injectable";
@@ -25,13 +23,13 @@ import requestDetailedHelmReleaseInjectable from "./request-detailed-helm-releas
 import type { KubeJsonApiData } from "@freelensapp/kube-object";
 import type { ShowCheckedErrorNotification, ShowNotification } from "@freelensapp/notifications";
 
-import type { IAsyncComputed } from "@ogre-tools/injectable-react";
 import type { IComputedValue, IObservableValue } from "mobx";
 
 import type { NavigateToHelmReleases } from "../../../../../common/front-end-routing/routes/cluster/helm/releases/navigate-to-helm-releases.injectable";
 import type { HelmRelease } from "../../../../../common/k8s-api/endpoints/helm-releases.api";
 import type { RequestHelmReleaseConfiguration } from "../../../../../common/k8s-api/endpoints/helm-releases.api/request-configuration.injectable";
 import type { RequestHelmReleaseUpdate } from "../../../../../common/k8s-api/endpoints/helm-releases.api/request-update.injectable";
+import type { IAsyncComputed } from "../../../../../common/utils/async-computed";
 import type { LensTheme } from "../../../../themes/lens-theme";
 import type { TargetHelmRelease } from "../target-helm-release.injectable";
 import type { GetResourceDetailsUrl } from "./get-resource-details-url.injectable";
@@ -236,18 +234,14 @@ export class ReleaseDetailsModel {
   }
 
   @computed get groupedResources(): MinimalResourceGroup[] {
-    return pipeline(
-      this.details.resources ?? [],
-      groupBy((resource) => resource.kind),
-      (grouped) => Object.entries(grouped),
-
-      map(([kind, resources]) => ({
+    return Object.entries(groupBy(this.details.resources ?? [], (resource) => resource.kind)).map(
+      ([kind, resources]) => ({
         kind,
 
         resources: resources.map(toMinimalResourceFor(this.dependencies.getResourceDetailsUrl, kind)),
 
         isNamespaced: resources.some((resource) => !!resource.metadata.namespace),
-      })),
+      }),
     );
   }
 

@@ -8,6 +8,7 @@ import { winstonLoggerInjectable } from "@freelensapp/logger";
 import { noop } from "@freelensapp/utilities";
 import { runInAction } from "mobx";
 import { MESSAGE } from "triple-beam";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import windowLocationInjectable from "../../common/k8s-api/window-location.injectable";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import browserLoggerTransportInjectable from "../../renderer/logger/browser-transport.injectable";
@@ -15,6 +16,7 @@ import createIpcFileLoggerTransportInjectable from "./main/create-ipc-file-trans
 import closeRendererLogFileInjectable from "./renderer/close-renderer-log-file.injectable";
 
 import type { DiContainer } from "@ogre-tools/injectable";
+import type { Mock } from "vitest";
 import type winston from "winston";
 
 import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
@@ -23,8 +25,8 @@ describe("Population of logs to a file", () => {
   let builder: ApplicationBuilder;
   let windowDi: DiContainer;
   let logWarningInRenderer: (message: string, ...args: any) => void;
-  let frameSpecificWinstonLogInMainMock: jest.Mock;
-  let frameSpecificCloseLogInMainMock: jest.Mock;
+  let frameSpecificWinstonLogInMainMock: Mock;
+  let frameSpecificCloseLogInMainMock: Mock;
 
   async function setUpTestApplication({ testFileId, isClusterFrame }: { testFileId: string; isClusterFrame: boolean }) {
     builder = getApplicationBuilder();
@@ -33,8 +35,8 @@ describe("Population of logs to a file", () => {
       builder.setEnvironmentToClusterFrame();
     }
 
-    frameSpecificWinstonLogInMainMock = jest.fn();
-    frameSpecificCloseLogInMainMock = jest.fn();
+    frameSpecificWinstonLogInMainMock = vi.fn();
+    frameSpecificCloseLogInMainMock = vi.fn();
 
     builder.beforeApplicationStart(({ mainDi }) => {
       mainDi.override(
@@ -58,7 +60,6 @@ describe("Population of logs to a file", () => {
       if (isClusterFrame) {
         windowDi.override(windowLocationInjectable, () => ({
           host: "some-cluster.localhost:irrelevant",
-          port: "irrelevant",
         }));
       }
     });

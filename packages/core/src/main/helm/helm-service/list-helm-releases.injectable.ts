@@ -28,11 +28,11 @@ const listClusterHelmReleasesInjectable = getInjectable({
 
     return async (cluster, namespace) => {
       const proxyKubeconfigManager = di.inject(kubeconfigManagerInjectable, cluster);
-      const proxyKubeconfigPath = await proxyKubeconfigManager.ensurePath();
+      const proxyKubeconfig = await proxyKubeconfigManager.ensurePaths();
 
       logger.debug(`[CLUSTER]: listing helm releases for clusterId=${cluster.id}`, { namespace });
 
-      return listHelmReleases(proxyKubeconfigPath, namespace);
+      return listHelmReleases(proxyKubeconfig, namespace);
     };
   },
 });

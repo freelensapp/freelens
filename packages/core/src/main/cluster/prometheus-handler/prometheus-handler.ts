@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { CoreV1Api } from "@freelensapp/kubernetes-client-node";
+import { CoreV1Api } from "@kubernetes/client-node";
 
 import type { Logger } from "@freelensapp/logger";
 import type { PrometheusProvider, PrometheusService } from "@freelensapp/prometheus";

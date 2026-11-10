@@ -18,7 +18,7 @@ export const routeInjectionToken = getInjectionToken<Route<unknown, string>>({
 });
 
 export function getRouteInjectable<T, Path extends string>(
-  opts: Omit<Injectable<Route<T, Path>, Route<T, Path>, void>, "lifecycle" | "injectionToken">,
+  opts: Omit<Injectable<Route<T, Path>, Route<T, Path>, void>, "aliasType" | "lifecycle" | "injectionToken">,
 ) {
   return getInjectable({
     ...opts,

@@ -10,10 +10,11 @@ import { podListLayoutColumnInjectionToken } from "@freelensapp/list-layout";
 import { interval } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import eventStoreInjectable from "../events/store.injectable";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
+import { getPodContainerPorts } from "./pod-ports-cell";
 import podStoreInjectable from "./store.injectable";
 
 import type { Pod } from "@freelensapp/kube-object";
@@ -55,6 +56,7 @@ const NonInjectedPods = observer((props: Dependencies) => {
           (pod) => pod.getStatusMessage(),
           (pod) => pod.status?.podIP,
           (pod) => pod.getNodeName(),
+          (pod) => getPodContainerPorts(pod).flatMap((port) => [port.name, port.containerPort, port.protocol]),
         ]}
         renderHeaderTitle="Pods"
         renderTableHeader={[]}

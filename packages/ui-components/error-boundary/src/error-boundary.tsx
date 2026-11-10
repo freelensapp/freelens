@@ -12,20 +12,28 @@ import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
 
+import type { ObservableHistory } from "@freelensapp/routing";
 import type { StrictReactNode } from "@freelensapp/utilities";
 
-import type { ObservableHistory } from "mobx-observable-history";
 import type { ErrorInfo } from "react";
 
 const issuesTrackerUrl = "https://github.com/freelensapp/freelens/issues";
 
 export interface ErrorBoundaryProps {
   children?: StrictReactNode;
+  /**
+   * Clears the crash of the children when it changes, e.g. the path of the page the children render. The parent
+   * passes it with the children, from the same render. A key read anywhere else, such as from the history, runs ahead
+   * of the children: `withInjectables` hands props on one render late, so on a navigation the boundary first renders
+   * the old children once more.
+   */
+  resetKey?: string;
 }
 
 interface State {
   error?: Error;
   errorInfo?: ErrorInfo;
+  resetKey?: string;
 }
 
 interface Dependencies {
@@ -35,6 +43,14 @@ interface Dependencies {
 @observer
 class NonInjectedErrorBoundary extends React.Component<ErrorBoundaryProps & Dependencies, State> {
   public state: State = {};
+
+  static getDerivedStateFromProps(props: ErrorBoundaryProps, state: State): Partial<State> | null {
+    if (props.resetKey !== state.resetKey) {
+      return { error: undefined, errorInfo: undefined, resetKey: props.resetKey };
+    }
+
+    return null;
+  }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     this.setState({ error, errorInfo });
@@ -50,7 +66,7 @@ class NonInjectedErrorBoundary extends React.Component<ErrorBoundaryProps & Depe
 
     if (error) {
       return (
-        <div className="ErrorBoundary flex column gaps">
+        <div className="ErrorBoundary">
           <h5>
             {"App crash at "}
             <span className="contrast">{window.location.pathname}</span>
@@ -72,7 +88,7 @@ class NonInjectedErrorBoundary extends React.Component<ErrorBoundaryProps & Depe
               {error.stack}
             </code>
           </div>
-          <Button className="box self-flex-start" primary label="Back" onClick={this.back} />
+          <Button className="back-button" primary label="Back" onClick={this.back} />
         </div>
       );
     }

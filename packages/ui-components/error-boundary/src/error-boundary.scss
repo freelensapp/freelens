@@ -5,10 +5,15 @@
  */
 
 .ErrorBoundary {
-  --flex-gap: #{8px * 2};
-
-  padding: var(--flex-gap);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
   word-break: break-all;
+
+  .back-button {
+    align-self: flex-start;
+  }
 
   .wrapper {
     display: grid;

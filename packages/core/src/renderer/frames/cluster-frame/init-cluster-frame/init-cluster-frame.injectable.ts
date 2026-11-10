@@ -4,15 +4,15 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import assert from "node:assert";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import { getInjectable } from "@ogre-tools/injectable";
-import assert from "assert";
 import emitAppEventInjectable from "../../../../common/app-event-bus/emit-event.injectable";
 import catalogEntityRegistryInjectable from "../../../api/catalog/entity/registry.injectable";
 import hostedClusterInjectable from "../../../cluster-frame-context/hosted-cluster.injectable";
 import loadExtensionsInjectable from "../../load-extensions.injectable";
-import frameRoutingIdInjectable from "./frame-routing-id/frame-routing-id.injectable";
+import frameTokenInjectable from "./frame-token/frame-token.injectable";
 import { initClusterFrame } from "./init-cluster-frame";
 
 const initClusterFrameInjectable = getInjectable({
@@ -27,7 +27,7 @@ const initClusterFrameInjectable = getInjectable({
       hostedCluster,
       loadExtensions: di.inject(loadExtensionsInjectable),
       catalogEntityRegistry: di.inject(catalogEntityRegistryInjectable),
-      frameRoutingId: di.inject(frameRoutingIdInjectable),
+      frameToken: di.inject(frameTokenInjectable),
       emitAppEvent: di.inject(emitAppEventInjectable),
       logger: di.inject(loggerInjectionToken),
       showErrorNotification: di.inject(showErrorNotificationInjectable),

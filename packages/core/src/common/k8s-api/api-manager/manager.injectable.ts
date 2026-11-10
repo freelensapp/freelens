@@ -6,7 +6,7 @@
 
 import { kubeApiInjectionToken, storesAndApisCanBeCreatedInjectionToken } from "@freelensapp/kube-api-specifics";
 import { getInjectable } from "@ogre-tools/injectable";
-import { computedInjectManyInjectable } from "@ogre-tools/injectable-extension-for-mobx";
+import { computedInjectManyInjectionToken } from "@ogre-tools/injectable-extension-for-mobx";
 import { computed } from "mobx";
 import { ApiManager } from "./api-manager";
 import { customResourceDefinitionApiInjectionToken } from "./crd-api-token";
@@ -16,7 +16,7 @@ import { kubeObjectStoreInjectionToken } from "./kube-object-store-token";
 const apiManagerInjectable = getInjectable({
   id: "api-manager",
   instantiate: (di) => {
-    const computedInjectMany = di.inject(computedInjectManyInjectable);
+    const computedInjectMany = di.inject(computedInjectManyInjectionToken);
     const storesAndApisCanBeCreated = di.inject(storesAndApisCanBeCreatedInjectionToken);
 
     return new ApiManager(

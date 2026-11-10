@@ -5,13 +5,13 @@
  */
 
 import { JSONPath } from "@astronautlabs/jsonpath";
-import { TypedRegEx } from "typed-regex";
+import { namedCaptures } from "./named-captures";
 
 const slashDashSearch = /[/\\-]/g;
 const pathByBareDots = /(?<=\w)\./;
 const textBeforeFirstSquare = /^.*(?=\[)/g;
 const backSlash = /\\/g;
-const kubectlOptionPrefix = TypedRegEx("^\\$?\\.?(?<pathExpression>.*)");
+const kubectlOptionPrefix = /^\$?\.?(?<pathExpression>.*)/;
 const sliceVersion = /\[]/g;
 const tripleDotName = /\.\.\.(?<trailing>.)/g;
 const trailingDotDot = /\.\.$/;
@@ -31,7 +31,9 @@ const trailingDotDot = /\.\.$/;
  * - Allow `...foo` as well as `..foo`
  */
 export function convertKubectlJsonPathToNodeJsonPath(jsonPath: string) {
-  const captures = kubectlOptionPrefix.captures(jsonPath);
+  // Every part of the pattern is optional, so it matches anything and
+  // `pathExpression` always participates
+  const captures = namedCaptures<{ pathExpression: string }>(kubectlOptionPrefix, jsonPath);
   let start = "$";
 
   if (!captures) {

@@ -8,7 +8,7 @@ import { Icon } from "@freelensapp/icon";
 import { Spinner } from "@freelensapp/spinner";
 import { cssNames, prevDefault } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { computed, makeObservable } from "mobx";
+import { observableRef } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
@@ -66,9 +66,15 @@ interface Dependencies {
 
 @observer
 class NonInjectedClusterIssues extends React.Component<ClusterIssuesProps & Dependencies> {
+  // mobx-react 9 forbids reading this.props inside a derivation. getTableRow is
+  // invoked from the Table/virtual-list row renderer — a derivation other than this
+  // component's own render — so it (and the warnings getter it calls) reads props
+  // from this observable snapshot, refreshed on every update, instead of this.props.
+  @observableRef private accessor observableProps: Readonly<ClusterIssuesProps & Dependencies>;
+
   constructor(props: ClusterIssuesProps & Dependencies) {
     super(props);
-    makeObservable(this);
+    this.observableProps = props;
   }
 
   async componentDidMount() {
@@ -79,9 +85,15 @@ class NonInjectedClusterIssues extends React.Component<ClusterIssuesProps & Depe
     this.props.eventStore.loadAll({ namespaces });
   }
 
-  @computed get warnings(): Warning[] {
+  componentDidUpdate() {
+    this.observableProps = this.props;
+  }
+
+  get warnings(): Warning[] {
+    const { nodeStore, eventStore, apiManager } = this.observableProps;
+
     return [
-      ...this.props.nodeStore.items.flatMap((node) =>
+      ...nodeStore.items.flatMap((node) =>
         node.getWarningConditions().map(({ message }) => ({
           selfLink: node.selfLink,
           getId: () => node.getId(),
@@ -92,21 +104,23 @@ class NonInjectedClusterIssues extends React.Component<ClusterIssuesProps & Depe
           ageMs: -node.getCreationTimestamp(),
         })),
       ),
-      ...this.props.eventStore.getWarnings().map((warning) => ({
+      ...eventStore.getWarnings().map((warning) => ({
         getId: () => warning.involvedObject.uid,
         getName: () => warning.involvedObject.name,
         renderAge: () => <KubeObjectAge key="age" object={warning} />,
         ageMs: -warning.getCreationTimestamp(),
         message: warning.message,
         kind: warning.kind,
-        selfLink: this.props.apiManager.lookupApiLink(warning.involvedObject, warning),
+        selfLink: apiManager.lookupApiLink(warning.involvedObject, warning),
       })),
     ];
   }
 
   getTableRow = (uid: string) => {
     const { warnings } = this;
-    const { kubeSelectedUrlParam, toggleKubeDetailsPane: toggleDetails } = this.props;
+    // Called from the Table/virtual-list row renderer (a foreign derivation), so read
+    // props from the observable snapshot instead of this.props (mobx-react 9).
+    const { kubeSelectedUrlParam, toggleKubeDetailsPane: toggleDetails } = this.observableProps;
     const warning = warnings.find((warn) => warn.getId() == uid);
 
     if (!warning) {
@@ -145,7 +159,9 @@ class NonInjectedClusterIssues extends React.Component<ClusterIssuesProps & Depe
 
     if (!warnings.length) {
       return (
-        <div className={cssNames(styles.noIssues, "flex column box grow gaps align-center justify-center")}>
+        <div
+          className={cssNames(styles.noIssues, "flex flex-col grow shrink-0 basis-0 gap-2 items-center justify-center")}
+        >
           <Icon className={styles.Icon} material="check" big sticker />
           <p className={styles.title}>No issues found</p>
           <p>Everything is fine in the Cluster</p>
@@ -172,7 +188,7 @@ class NonInjectedClusterIssues extends React.Component<ClusterIssuesProps & Depe
           sortByDefault={{ sortBy: sortBy.object, orderBy: "asc" }}
           sortSyncWithUrl={false}
           getTableRow={this.getTableRow}
-          className={cssNames("box grow", this.props.activeTheme.get().type)}
+          className={cssNames("grow shrink-0 basis-0", this.props.activeTheme.get().type)}
         >
           <TableHead nowrap>
             <TableCell className={cssNames(styles.TableCell, styles.message)}>Message</TableCell>
@@ -193,7 +209,9 @@ class NonInjectedClusterIssues extends React.Component<ClusterIssuesProps & Depe
 
   render() {
     return (
-      <div className={cssNames(styles.ClusterIssues, "flex column", this.props.className)}>{this.renderContent()}</div>
+      <div className={cssNames(styles.ClusterIssues, "flex flex-col", this.props.className)}>
+        {this.renderContent()}
+      </div>
     );
   }
 }

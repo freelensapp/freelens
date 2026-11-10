@@ -49,5 +49,7 @@ export * from "./service.api";
 export * from "./service-account.api";
 export * from "./stateful-set.api";
 export * from "./storage-class.api";
+export * from "./validating-admission-policy.api";
+export * from "./validating-admission-policy-binding.api";
 export * from "./validating-webhook-configuration.api";
 export * from "./vertical-pod-autoscaler.api";

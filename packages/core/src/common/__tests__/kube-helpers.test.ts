@@ -4,7 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { KubeConfig } from "@freelensapp/kubernetes-client-node";
+import { KubeConfig } from "@kubernetes/client-node";
+import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { loadConfigFromString, validateKubeConfig } from "../kube-helpers";
 
 const kubeconfig = `
@@ -116,7 +117,7 @@ describe("kube helpers", () => {
 
   describe("pre-validate context object in kubeconfig tests", () => {
     beforeEach(() => {
-      jest.clearAllMocks();
+      vi.clearAllMocks();
     });
 
     describe("Check logger.error() output", () => {

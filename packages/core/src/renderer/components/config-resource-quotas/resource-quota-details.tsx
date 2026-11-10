@@ -17,7 +17,7 @@ import {
   unitsToBytes,
 } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import kebabCase from "lodash/kebabCase";
+import { kebabCase } from "es-toolkit";
 import { observer } from "mobx-react";
 import React from "react";
 import { DrawerItem, DrawerTitle } from "../drawer";
@@ -42,7 +42,7 @@ function transformUnit(name: string, value: string): number | undefined {
   return metricUnitsToNumber(value);
 }
 
-function renderQuotas(quota: ResourceQuota): JSX.Element[] {
+function renderQuotas(quota: ResourceQuota): React.JSX.Element[] {
   const { hard = {}, used = {} } = quota.status ?? {};
 
   return object

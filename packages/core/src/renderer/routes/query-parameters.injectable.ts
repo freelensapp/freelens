@@ -7,7 +7,6 @@
 import { observableHistoryInjectionToken } from "@freelensapp/routing";
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
-import { parse as parseQueryString } from "query-string";
 
 const queryParametersInjectable = getInjectable({
   id: "query-parameters",
@@ -15,7 +14,7 @@ const queryParametersInjectable = getInjectable({
   instantiate: (di) => {
     const observableHistory = di.inject(observableHistoryInjectionToken);
 
-    return computed(() => parseQueryString(observableHistory.location.search));
+    return computed(() => Object.fromEntries(new URLSearchParams(observableHistory.location.search)));
   },
 });
 

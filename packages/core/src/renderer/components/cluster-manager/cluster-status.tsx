@@ -9,8 +9,8 @@ import { Icon } from "@freelensapp/icon";
 import { Spinner } from "@freelensapp/spinner";
 import { cssNames, hasTypedProperty, isObject, isString } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { computed, makeObservable, observable } from "mobx";
-import { disposeOnUnmount, observer } from "mobx-react";
+import { computed, observable } from "mobx";
+import { observer } from "mobx-react";
 import React from "react";
 import navigateToEntitySettingsInjectable from "../../../common/front-end-routing/routes/entity-settings/navigate-to-entity-settings.injectable";
 import { ipcRendererOn } from "../../../common/ipc";
@@ -39,19 +39,23 @@ interface Dependencies {
 
 @observer
 class NonInjectedClusterStatus extends React.Component<ClusterStatusProps & Dependencies> {
-  @observable authOutput: KubeAuthUpdate[] = [];
-  @observable isReconnecting = false;
+  private readonly disposers: (() => void)[] = [];
+
+  @observable accessor authOutput: KubeAuthUpdate[] = [];
+  @observable accessor isReconnecting = false;
 
   constructor(props: ClusterStatusProps & Dependencies) {
     super(props);
-    makeObservable(this);
   }
 
   get cluster(): Cluster {
     return this.props.cluster;
   }
 
-  @computed get entity() {
+  // Plain getter (not @computed): reads this.props, which mobx-react 9 forbids
+  // inside a derivation. Read from render, reactivity is preserved by the
+  // observer render reaction.
+  get entity() {
     return this.props.entityRegistry.getById(this.cluster.id);
   }
 
@@ -60,7 +64,7 @@ class NonInjectedClusterStatus extends React.Component<ClusterStatusProps & Depe
   }
 
   componentDidMount() {
-    disposeOnUnmount(this, [
+    this.disposers.push(
       ipcRendererOn(`cluster:${this.cluster.id}:connection-update`, (evt, res: unknown) => {
         if (
           isObject(res) &&
@@ -74,7 +78,11 @@ class NonInjectedClusterStatus extends React.Component<ClusterStatusProps & Depe
           console.warn(`Got invalid connection update for ${this.cluster.id}`, { update: res });
         }
       }),
-    ]);
+    );
+  }
+
+  componentWillUnmount() {
+    this.disposers.forEach((dispose) => dispose());
   }
 
   componentDidUpdate(prevProps: Readonly<ClusterStatusProps>): void {
@@ -141,14 +149,8 @@ class NonInjectedClusterStatus extends React.Component<ClusterStatusProps & Depe
     if (this.hasErrorsOrWarnings && !this.isReconnecting) {
       return (
         <>
-          <Button
-            primary
-            label="Reconnect"
-            className="box center"
-            onClick={this.reconnect}
-            waiting={this.isReconnecting}
-          />
-          <a className="box center interactive" onClick={this.manageProxySettings}>
+          <Button primary label="Reconnect" className="m-auto" onClick={this.reconnect} waiting={this.isReconnecting} />
+          <a className="m-auto interactive" onClick={this.manageProxySettings}>
             Manage Proxy Settings
           </a>
         </>
@@ -161,9 +163,9 @@ class NonInjectedClusterStatus extends React.Component<ClusterStatusProps & Depe
   render() {
     return (
       <div
-        className={cssNames(styles.status, "flex column box center align-center justify-center", this.props.className)}
+        className={cssNames(styles.status, "flex flex-col m-auto items-center justify-center", this.props.className)}
       >
-        <div className="flex items-center column gaps">
+        <div className="flex flex-col items-center gap-4">
           <h2>{this.entity?.getName() ?? this.cluster.name.get()}</h2>
           {this.renderStatusIcon()}
           {this.renderAuthenticationOutput()}

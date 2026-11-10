@@ -7,7 +7,6 @@
 import { Spinner } from "@freelensapp/spinner";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import React from "react";
 import { Badge } from "../../badge";
 import { Checkbox } from "../../checkbox";
 import { Notice } from "../../extensions/notice";
@@ -26,7 +25,7 @@ interface Dependencies {
 }
 
 const NonInjectedEditResource = observer(({ model, tabId }: EditResourceProps & Dependencies) => (
-  <div className="EditResource flex column">
+  <div className="EditResource flex flex-col">
     {model.shouldShowErrorAboutNoResource ? (
       <Notice>Resource not found</Notice>
     ) : (
@@ -43,7 +42,7 @@ const NonInjectedEditResource = observer(({ model, tabId }: EditResourceProps & 
           cancelTestId={`cancel-edit-resource-from-tab-for-${tabId}`}
           submittingTestId={`saving-edit-resource-from-tab-for-${tabId}`}
           controls={
-            <div className="resource-info flex gaps align-center">
+            <div className="resource-info flex gap-2 items-center">
               <span>Kind:</span>
               <Badge label={model.kind} />
               <span>Name:</span>

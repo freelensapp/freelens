@@ -1,10 +1,10 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`extendability-using-extension-api given an extension with a weakly typed and invalid top-bar item is enabled renders without blowing up 1`] = `
+exports[`extendability-using-extension-api > given an extension with a weakly typed and invalid top-bar item is enabled > renders without blowing up 1`] = `
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -76,7 +76,7 @@ exports[`extendability-using-extension-api given an extension with a weakly type
           id="lens-views"
         />
         <div
-          class="flex justify-center Welcome align-center"
+          class="flex justify-center Welcome items-center"
           data-testid="welcome-page"
         >
           <div
@@ -103,9 +103,9 @@ exports[`extendability-using-extension-api given an extension with a weakly type
     
                     <style>
                       
-      .cls-1 {
-        fill: none !important;
-      }
+    .cls-1 {
+      fill: none !important;
+    }
     
                     </style>
                     
@@ -204,7 +204,7 @@ exports[`extendability-using-extension-api given an extension with a weakly type
                     class="flex grid-12"
                   >
                     <i
-                      class="Icon box col-1 material focusable"
+                      class="Icon col-1 material focusable"
                     >
                       <span
                         class="icon"
@@ -214,12 +214,41 @@ exports[`extendability-using-extension-api given an extension with a weakly type
                       </span>
                     </i>
                     <a
-                      class="box col-10"
+                      class="col-10"
                     >
                       Browse Clusters in Catalog
                     </a>
                     <i
-                      class="Icon box col-1 material focusable"
+                      class="Icon col-1 material focusable"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="navigate_next"
+                      >
+                        navigate_next
+                      </span>
+                    </i>
+                  </li>
+                  <li
+                    class="flex grid-12"
+                  >
+                    <i
+                      class="Icon col-1 material focusable"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="terminal"
+                      >
+                        terminal
+                      </span>
+                    </i>
+                    <a
+                      class="col-10"
+                    >
+                      Open a Terminal
+                    </a>
+                    <i
+                      class="Icon col-1 material focusable"
                     >
                       <span
                         class="icon"
@@ -236,17 +265,47 @@ exports[`extendability-using-extension-api given an extension with a weakly type
         </div>
       </main>
       <div
-        class="HotbarMenu flex column"
+        class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex column gaps"
+          class="HotbarItems flex flex-col"
         >
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="0"
           >
             <div
-              style="z-index: 12; position: absolute;"
+              aria-describedby="DndDescribedBy-6"
+              aria-disabled="false"
+              aria-roledescription="draggable"
+              role="button"
+              style="z-index: 12; position: absolute; opacity: 1; pointer-events: auto;"
+              tabindex="0"
+            >
+              <div
+                class="HotbarIcon contextMenuAvailable"
+              >
+                <div
+                  class="Avatar rounded disabled avatar"
+                  id="hotbarIcon-hotbar-icon-welcome-page-entity"
+                  style="width: 40px; height: 40px; background: rgb(110, 77, 28);"
+                >
+                  WP
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="HotbarCell animateDown"
+            index="1"
+          >
+            <div
+              aria-describedby="DndDescribedBy-6"
+              aria-disabled="false"
+              aria-roledescription="draggable"
+              role="button"
+              style="z-index: 11; position: absolute; opacity: 1; pointer-events: auto;"
+              tabindex="0"
             >
               <div
                 class="HotbarIcon contextMenuAvailable"
@@ -254,7 +313,7 @@ exports[`extendability-using-extension-api given an extension with a weakly type
                 <div
                   class="Avatar rounded disabled avatar"
                   id="hotbarIcon-hotbar-icon-catalog-entity"
-                  style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
+                  style="width: 40px; height: 40px; background: rgb(36, 110, 28);"
                 >
                   Ca
                 </div>
@@ -262,48 +321,61 @@ exports[`extendability-using-extension-api given an extension with a weakly type
             </div>
           </div>
           <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="1"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="2"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="3"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="4"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="5"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="6"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="7"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="8"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="9"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="10"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="11"
+          />
+          <div
+            id="DndDescribedBy-6"
+            style="display: none;"
+          >
+            
+    To pick up a draggable item, press the space bar.
+    While dragging, use the arrow keys to move the item.
+    Press space again to drop the item in its new position, or press escape to cancel.
+  
+          </div>
+          <div
+            aria-atomic="true"
+            aria-live="assertive"
+            id="DndLiveRegion-6"
+            role="status"
+            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
           />
         </div>
         <div
@@ -362,11 +434,11 @@ exports[`extendability-using-extension-api given an extension with a weakly type
 </body>
 `;
 
-exports[`extendability-using-extension-api given an extension with top-bar items is enabled renders 1`] = `
+exports[`extendability-using-extension-api > given an extension with top-bar items is enabled > renders 1`] = `
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -447,7 +519,7 @@ exports[`extendability-using-extension-api given an extension with top-bar items
           id="lens-views"
         />
         <div
-          class="flex justify-center Welcome align-center"
+          class="flex justify-center Welcome items-center"
           data-testid="welcome-page"
         >
           <div
@@ -474,9 +546,9 @@ exports[`extendability-using-extension-api given an extension with top-bar items
     
                     <style>
                       
-      .cls-1 {
-        fill: none !important;
-      }
+    .cls-1 {
+      fill: none !important;
+    }
     
                     </style>
                     
@@ -575,7 +647,7 @@ exports[`extendability-using-extension-api given an extension with top-bar items
                     class="flex grid-12"
                   >
                     <i
-                      class="Icon box col-1 material focusable"
+                      class="Icon col-1 material focusable"
                     >
                       <span
                         class="icon"
@@ -585,12 +657,41 @@ exports[`extendability-using-extension-api given an extension with top-bar items
                       </span>
                     </i>
                     <a
-                      class="box col-10"
+                      class="col-10"
                     >
                       Browse Clusters in Catalog
                     </a>
                     <i
-                      class="Icon box col-1 material focusable"
+                      class="Icon col-1 material focusable"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="navigate_next"
+                      >
+                        navigate_next
+                      </span>
+                    </i>
+                  </li>
+                  <li
+                    class="flex grid-12"
+                  >
+                    <i
+                      class="Icon col-1 material focusable"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="terminal"
+                      >
+                        terminal
+                      </span>
+                    </i>
+                    <a
+                      class="col-10"
+                    >
+                      Open a Terminal
+                    </a>
+                    <i
+                      class="Icon col-1 material focusable"
                     >
                       <span
                         class="icon"
@@ -607,17 +708,47 @@ exports[`extendability-using-extension-api given an extension with top-bar items
         </div>
       </main>
       <div
-        class="HotbarMenu flex column"
+        class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex column gaps"
+          class="HotbarItems flex flex-col"
         >
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="0"
           >
             <div
-              style="z-index: 12; position: absolute;"
+              aria-describedby="DndDescribedBy-2"
+              aria-disabled="false"
+              aria-roledescription="draggable"
+              role="button"
+              style="z-index: 12; position: absolute; opacity: 1; pointer-events: auto;"
+              tabindex="0"
+            >
+              <div
+                class="HotbarIcon contextMenuAvailable"
+              >
+                <div
+                  class="Avatar rounded disabled avatar"
+                  id="hotbarIcon-hotbar-icon-welcome-page-entity"
+                  style="width: 40px; height: 40px; background: rgb(110, 77, 28);"
+                >
+                  WP
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="HotbarCell animateDown"
+            index="1"
+          >
+            <div
+              aria-describedby="DndDescribedBy-2"
+              aria-disabled="false"
+              aria-roledescription="draggable"
+              role="button"
+              style="z-index: 11; position: absolute; opacity: 1; pointer-events: auto;"
+              tabindex="0"
             >
               <div
                 class="HotbarIcon contextMenuAvailable"
@@ -625,7 +756,7 @@ exports[`extendability-using-extension-api given an extension with top-bar items
                 <div
                   class="Avatar rounded disabled avatar"
                   id="hotbarIcon-hotbar-icon-catalog-entity"
-                  style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
+                  style="width: 40px; height: 40px; background: rgb(36, 110, 28);"
                 >
                   Ca
                 </div>
@@ -633,48 +764,61 @@ exports[`extendability-using-extension-api given an extension with top-bar items
             </div>
           </div>
           <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="1"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="2"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="3"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="4"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="5"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="6"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="7"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="8"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="9"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="10"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="11"
+          />
+          <div
+            id="DndDescribedBy-2"
+            style="display: none;"
+          >
+            
+    To pick up a draggable item, press the space bar.
+    While dragging, use the arrow keys to move the item.
+    Press space again to drop the item in its new position, or press escape to cancel.
+  
+          </div>
+          <div
+            aria-atomic="true"
+            aria-live="assertive"
+            id="DndLiveRegion-2"
+            role="status"
+            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
           />
         </div>
         <div
@@ -733,11 +877,11 @@ exports[`extendability-using-extension-api given an extension with top-bar items
 </body>
 `;
 
-exports[`extendability-using-extension-api given an extension with top-bar items is enabled when the extension is disabled renders 1`] = `
+exports[`extendability-using-extension-api > given an extension with top-bar items is enabled > when the extension is disabled > renders 1`] = `
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -809,7 +953,7 @@ exports[`extendability-using-extension-api given an extension with top-bar items
           id="lens-views"
         />
         <div
-          class="flex justify-center Welcome align-center"
+          class="flex justify-center Welcome items-center"
           data-testid="welcome-page"
         >
           <div
@@ -836,9 +980,9 @@ exports[`extendability-using-extension-api given an extension with top-bar items
     
                     <style>
                       
-      .cls-1 {
-        fill: none !important;
-      }
+    .cls-1 {
+      fill: none !important;
+    }
     
                     </style>
                     
@@ -937,7 +1081,7 @@ exports[`extendability-using-extension-api given an extension with top-bar items
                     class="flex grid-12"
                   >
                     <i
-                      class="Icon box col-1 material focusable"
+                      class="Icon col-1 material focusable"
                     >
                       <span
                         class="icon"
@@ -947,12 +1091,41 @@ exports[`extendability-using-extension-api given an extension with top-bar items
                       </span>
                     </i>
                     <a
-                      class="box col-10"
+                      class="col-10"
                     >
                       Browse Clusters in Catalog
                     </a>
                     <i
-                      class="Icon box col-1 material focusable"
+                      class="Icon col-1 material focusable"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="navigate_next"
+                      >
+                        navigate_next
+                      </span>
+                    </i>
+                  </li>
+                  <li
+                    class="flex grid-12"
+                  >
+                    <i
+                      class="Icon col-1 material focusable"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="terminal"
+                      >
+                        terminal
+                      </span>
+                    </i>
+                    <a
+                      class="col-10"
+                    >
+                      Open a Terminal
+                    </a>
+                    <i
+                      class="Icon col-1 material focusable"
                     >
                       <span
                         class="icon"
@@ -969,17 +1142,47 @@ exports[`extendability-using-extension-api given an extension with top-bar items
         </div>
       </main>
       <div
-        class="HotbarMenu flex column"
+        class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex column gaps"
+          class="HotbarItems flex flex-col"
         >
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="0"
           >
             <div
-              style="z-index: 12; position: absolute;"
+              aria-describedby="DndDescribedBy-4"
+              aria-disabled="false"
+              aria-roledescription="draggable"
+              role="button"
+              style="z-index: 12; position: absolute; opacity: 1; pointer-events: auto;"
+              tabindex="0"
+            >
+              <div
+                class="HotbarIcon contextMenuAvailable"
+              >
+                <div
+                  class="Avatar rounded disabled avatar"
+                  id="hotbarIcon-hotbar-icon-welcome-page-entity"
+                  style="width: 40px; height: 40px; background: rgb(110, 77, 28);"
+                >
+                  WP
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="HotbarCell animateDown"
+            index="1"
+          >
+            <div
+              aria-describedby="DndDescribedBy-4"
+              aria-disabled="false"
+              aria-roledescription="draggable"
+              role="button"
+              style="z-index: 11; position: absolute; opacity: 1; pointer-events: auto;"
+              tabindex="0"
             >
               <div
                 class="HotbarIcon contextMenuAvailable"
@@ -987,7 +1190,7 @@ exports[`extendability-using-extension-api given an extension with top-bar items
                 <div
                   class="Avatar rounded disabled avatar"
                   id="hotbarIcon-hotbar-icon-catalog-entity"
-                  style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
+                  style="width: 40px; height: 40px; background: rgb(36, 110, 28);"
                 >
                   Ca
                 </div>
@@ -995,48 +1198,61 @@ exports[`extendability-using-extension-api given an extension with top-bar items
             </div>
           </div>
           <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="1"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="2"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="3"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="4"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="5"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="6"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="7"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="8"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="9"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="10"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="11"
+          />
+          <div
+            id="DndDescribedBy-4"
+            style="display: none;"
+          >
+            
+    To pick up a draggable item, press the space bar.
+    While dragging, use the arrow keys to move the item.
+    Press space again to drop the item in its new position, or press escape to cancel.
+  
+          </div>
+          <div
+            aria-atomic="true"
+            aria-live="assertive"
+            id="DndLiveRegion-4"
+            role="status"
+            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
           />
         </div>
         <div
@@ -1095,11 +1311,11 @@ exports[`extendability-using-extension-api given an extension with top-bar items
 </body>
 `;
 
-exports[`extendability-using-extension-api renders 1`] = `
+exports[`extendability-using-extension-api > renders 1`] = `
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -1171,7 +1387,7 @@ exports[`extendability-using-extension-api renders 1`] = `
           id="lens-views"
         />
         <div
-          class="flex justify-center Welcome align-center"
+          class="flex justify-center Welcome items-center"
           data-testid="welcome-page"
         >
           <div
@@ -1198,9 +1414,9 @@ exports[`extendability-using-extension-api renders 1`] = `
     
                     <style>
                       
-      .cls-1 {
-        fill: none !important;
-      }
+    .cls-1 {
+      fill: none !important;
+    }
     
                     </style>
                     
@@ -1299,7 +1515,7 @@ exports[`extendability-using-extension-api renders 1`] = `
                     class="flex grid-12"
                   >
                     <i
-                      class="Icon box col-1 material focusable"
+                      class="Icon col-1 material focusable"
                     >
                       <span
                         class="icon"
@@ -1309,12 +1525,41 @@ exports[`extendability-using-extension-api renders 1`] = `
                       </span>
                     </i>
                     <a
-                      class="box col-10"
+                      class="col-10"
                     >
                       Browse Clusters in Catalog
                     </a>
                     <i
-                      class="Icon box col-1 material focusable"
+                      class="Icon col-1 material focusable"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="navigate_next"
+                      >
+                        navigate_next
+                      </span>
+                    </i>
+                  </li>
+                  <li
+                    class="flex grid-12"
+                  >
+                    <i
+                      class="Icon col-1 material focusable"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="terminal"
+                      >
+                        terminal
+                      </span>
+                    </i>
+                    <a
+                      class="col-10"
+                    >
+                      Open a Terminal
+                    </a>
+                    <i
+                      class="Icon col-1 material focusable"
                     >
                       <span
                         class="icon"
@@ -1331,17 +1576,47 @@ exports[`extendability-using-extension-api renders 1`] = `
         </div>
       </main>
       <div
-        class="HotbarMenu flex column"
+        class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex column gaps"
+          class="HotbarItems flex flex-col"
         >
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="0"
           >
             <div
-              style="z-index: 12; position: absolute;"
+              aria-describedby="DndDescribedBy-0"
+              aria-disabled="false"
+              aria-roledescription="draggable"
+              role="button"
+              style="z-index: 12; position: absolute; opacity: 1; pointer-events: auto;"
+              tabindex="0"
+            >
+              <div
+                class="HotbarIcon contextMenuAvailable"
+              >
+                <div
+                  class="Avatar rounded disabled avatar"
+                  id="hotbarIcon-hotbar-icon-welcome-page-entity"
+                  style="width: 40px; height: 40px; background: rgb(110, 77, 28);"
+                >
+                  WP
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="HotbarCell animateDown"
+            index="1"
+          >
+            <div
+              aria-describedby="DndDescribedBy-0"
+              aria-disabled="false"
+              aria-roledescription="draggable"
+              role="button"
+              style="z-index: 11; position: absolute; opacity: 1; pointer-events: auto;"
+              tabindex="0"
             >
               <div
                 class="HotbarIcon contextMenuAvailable"
@@ -1349,7 +1624,7 @@ exports[`extendability-using-extension-api renders 1`] = `
                 <div
                   class="Avatar rounded disabled avatar"
                   id="hotbarIcon-hotbar-icon-catalog-entity"
-                  style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
+                  style="width: 40px; height: 40px; background: rgb(36, 110, 28);"
                 >
                   Ca
                 </div>
@@ -1357,48 +1632,61 @@ exports[`extendability-using-extension-api renders 1`] = `
             </div>
           </div>
           <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="1"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="2"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="3"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="4"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="5"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="6"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="7"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="8"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="9"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="10"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="11"
+          />
+          <div
+            id="DndDescribedBy-0"
+            style="display: none;"
+          >
+            
+    To pick up a draggable item, press the space bar.
+    While dragging, use the arrow keys to move the item.
+    Press space again to drop the item in its new position, or press escape to cancel.
+  
+          </div>
+          <div
+            aria-atomic="true"
+            aria-live="assertive"
+            id="DndLiveRegion-0"
+            role="status"
+            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
           />
         </div>
         <div

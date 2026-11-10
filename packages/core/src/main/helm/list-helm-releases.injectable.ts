@@ -6,14 +6,15 @@
 
 import { isObject } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
-import execHelmInjectable from "./exec-helm/exec-helm.injectable";
+import execHelmInjectable, { proxyKubeconfigHelmOptions } from "./exec-helm/exec-helm.injectable";
 
 import type { AsyncResult } from "@freelensapp/utilities";
 
 import type { ListedHelmRelease } from "../../features/helm-releases/common/channels";
+import type { ProxyKubeconfigPaths } from "../kubeconfig-manager/kubeconfig-manager";
 
 export type ListHelmReleases = (
-  pathToKubeconfig: string,
+  kubeconfig: ProxyKubeconfigPaths,
   namespace?: string,
 ) => AsyncResult<ListedHelmRelease[], string>;
 
@@ -22,7 +23,7 @@ const listHelmReleasesInjectable = getInjectable({
   instantiate: (di): ListHelmReleases => {
     const execHelm = di.inject(execHelmInjectable);
 
-    return async (pathToKubeconfig, namespace) => {
+    return async (kubeconfig, namespace) => {
       const args = [
         "ls",
         "--deployed",
@@ -44,9 +45,9 @@ const listHelmReleasesInjectable = getInjectable({
         args.push("--all-namespaces");
       }
 
-      args.push("--kubeconfig", pathToKubeconfig);
+      args.push("--kubeconfig", kubeconfig.kubeconfigPath);
 
-      const result = await execHelm(args);
+      const result = await execHelm(args, proxyKubeconfigHelmOptions(kubeconfig));
 
       if (!result.callWasSuccessful) {
         return {

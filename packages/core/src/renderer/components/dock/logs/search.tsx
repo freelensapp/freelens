@@ -7,7 +7,7 @@
 import "./search.scss";
 
 import { Icon } from "@freelensapp/icon";
-import debounce from "lodash/debounce";
+import { debounce } from "es-toolkit/compat";
 import { observer } from "mobx-react";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { SearchInput } from "../../input";
@@ -164,7 +164,7 @@ export const LogSearch = observer(
     }, [setSearch]);
 
     return (
-      <div className="LogSearch flex box grow justify-flex-end gaps align-center">
+      <div className="LogSearch flex grow shrink-0 basis-0 justify-end gap-2 items-center">
         <SearchInput
           value={inputValue}
           onChange={onInputChange}

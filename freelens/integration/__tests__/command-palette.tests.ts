@@ -4,6 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { afterEach, beforeEach, describe, it } from "vitest";
 import * as utils from "../helpers/utils";
 
 import type { ElectronApplication, Page } from "playwright";

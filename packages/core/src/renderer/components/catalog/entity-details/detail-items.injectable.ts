@@ -6,7 +6,7 @@
 
 import { byOrderNumber } from "@freelensapp/utilities";
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
-import { computedInjectManyInjectable } from "@ogre-tools/injectable-extension-for-mobx";
+import { computedInjectManyInjectionToken } from "@ogre-tools/injectable-extension-for-mobx";
 import { computed } from "mobx";
 import { catalogEntityDetailItemInjectionToken } from "./token";
 
@@ -15,7 +15,7 @@ import type { CatalogEntity } from "../../../api/catalog-entity";
 const catalogEntityDetailItemsInjectable = getInjectable({
   id: "catalog-entity-detail-items",
   instantiate: (di, entity) => {
-    const computedInjectMany = di.inject(computedInjectManyInjectable);
+    const computedInjectMany = di.inject(computedInjectManyInjectionToken);
     const detailItems = computedInjectMany(catalogEntityDetailItemInjectionToken);
 
     return computed(() =>

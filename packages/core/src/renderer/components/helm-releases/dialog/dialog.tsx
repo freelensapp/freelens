@@ -8,7 +8,7 @@ import "./dialog.scss";
 
 import { showCheckedErrorNotificationInjectable } from "@freelensapp/notifications";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import orderBy from "lodash/orderBy";
+import { orderBy } from "es-toolkit/compat";
 import { computed, observable, runInAction } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
@@ -91,11 +91,11 @@ class NonInjectedReleaseRollbackDialog extends React.Component<ReleaseRollbackDi
     }
 
     return (
-      <div className="flex gaps align-center">
+      <div className="flex gap-2 items-center">
         <b>Revision</b>
         <Select
           id="revision-input"
-          themeName="light"
+          themeName="lens"
           value={revision}
           options={this.revisionOptions.get()}
           onChange={(option) => this.revision.set(option?.value)}

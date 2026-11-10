@@ -34,7 +34,7 @@
     display: none;
 
     &:checked {
-      ~ .box {
+      ~ .check-icon {
         color: var(--checkbox-color-active);
         background: var(--checkbox-bgc-active);
         border-color: var(--checkbox-bgc-active);
@@ -46,7 +46,7 @@
     }
 
     &:disabled {
-      ~ .box {
+      ~ .check-icon {
         color: var(--checkbox-color);
       }
 
@@ -65,7 +65,7 @@
     margin-right: $margin;
   }
 
-  > .box {
+  > .check-icon {
     $boxSize: math.round(1.7 * $unit);
 
     position: relative;

@@ -1,12 +1,11 @@
 /**
  * Copyright (c) Freelens Authors. All rights reserved.
- * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import os from "node:os";
 import { Pod } from "@freelensapp/kube-object";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import os from "os";
 import React from "react";
 import { v4 as uuidv4 } from "uuid";
 import { App } from "../../../extensions/common-api";
@@ -46,6 +45,7 @@ const NonInjectablePodShellMenu: React.FC<PodShellMenuProps & Dependencies> = (p
 
   const containers = pod.getRunningContainersWithType();
   const statuses = pod.getContainerStatuses();
+  const annotations = pod.getAnnotations(true);
 
   const execShell = async (container: Container | EphemeralContainer) => {
     const containerName = container.name;
@@ -87,6 +87,7 @@ const NonInjectablePodShellMenu: React.FC<PodShellMenuProps & Dependencies> = (p
       title="Shell"
       tooltip="Pod Shell"
       toolbar={toolbar}
+      annotations={annotations}
       containers={containers}
       statuses={statuses}
       onMenuItemClick={execShell}

@@ -5,7 +5,6 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import React from "react";
 import { customCatalogCategoryColumnInjectionToken } from "./custom-token";
 
 import type { KubernetesCluster } from "../../../../common/catalog-entities";

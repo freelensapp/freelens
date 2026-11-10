@@ -7,7 +7,6 @@
 import { onLoadOfApplicationInjectionToken } from "@freelensapp/application";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
-import { startsWith, toLower } from "lodash/fp";
 import openDeepLinkInjectable from "../../protocol-handler/lens-protocol-router-main/open-deep-link-for-url/open-deep-link.injectable";
 import showApplicationWindowInjectable from "../../start-main-application/lens-window/show-application-window.injectable";
 import commandLineArgumentsInjectable from "../../utils/command-line-arguments.injectable";
@@ -62,4 +61,4 @@ const setupDeepLinkingInjectable = getInjectable({
 export default setupDeepLinkingInjectable;
 
 const getDeepLinkUrl = (commandLineArguments: string[]) =>
-  commandLineArguments.map(toLower).find(startsWith("freelens://"));
+  commandLineArguments.map((argument) => argument.toLowerCase()).find((argument) => argument.startsWith("freelens://"));

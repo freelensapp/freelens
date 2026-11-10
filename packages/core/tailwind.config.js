@@ -6,7 +6,14 @@
 
 module.exports = {
   content: ["src/**/*.tsx"],
-  darkMode: "class",
+  // No `darkMode` here on purpose. The theme system does not toggle a `.dark`
+  // class; it toggles `body.theme-light` (dark is the default, light adds the
+  // class — see themes/apply-lens-theme.injectable.ts). The `dark:` variant is
+  // wired to that real selector via `@custom-variant` in
+  // renderer/components/app.scss. A `darkMode: "class"` here would generate a
+  // `dark:` variant matching a `.dark` class that never exists, so it is
+  // omitted. Prefer `var(--…)` theme tokens over `dark:` — they re-theme
+  // automatically.
   theme: {
     fontFamily: {
       sans: ["Roboto", "Helvetica", "Arial", "sans-serif"],

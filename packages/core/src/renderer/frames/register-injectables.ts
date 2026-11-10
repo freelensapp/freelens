@@ -10,7 +10,6 @@ import { registerInjectables as registerClusterFrameInjectables } from "./cluste
 import frameApplicationRootInjectable from "./frame-application-root.injectable";
 import loadExtensionsInjectable from "./load-extensions.injectable";
 import { registerInjectables as registerRootFrameInjectables } from "./root-frame/register-injectables";
-import routingReactApplicationHocInjectable from "./routing-react-application-hoc.injectable";
 import themeProviderReactApplicationHocInjectable from "./theme-provider-react-application-hoc.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
@@ -23,11 +22,6 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(loadExtensionsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(routingReactApplicationHocInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

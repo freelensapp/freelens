@@ -5,7 +5,7 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import { action, comparer, toJS } from "mobx";
+import { action, compareStructural, toJS } from "mobx";
 import storeMigrationVersionInjectable from "../../../common/vars/store-migration-version.injectable";
 import createPersistentStorageInjectable from "../../persistent-storage/common/create.injectable";
 import persistentStorageMigrationsInjectable from "../../persistent-storage/common/migrations.injectable";
@@ -32,7 +32,7 @@ const weblinksPersistentStorageInjectable = getInjectable({
       configName: "lens-weblink-store",
       accessPropertiesByDotNotation: false, // To make dots safe in cluster context names
       syncOptions: {
-        equals: comparer.structural,
+        equals: compareStructural,
       },
       projectVersion: di.inject(storeMigrationVersionInjectable),
       migrations: di.inject(persistentStorageMigrationsInjectable, weblinkStoreMigrationInjectionToken),

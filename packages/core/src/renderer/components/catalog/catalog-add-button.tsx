@@ -9,8 +9,7 @@ import { Icon } from "@freelensapp/icon";
 import { SpeedDial, SpeedDialAction } from "@mui/material";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import autoBindReact from "auto-bind/react";
-import { EventEmitter } from "events";
-import { action, makeObservable, observable } from "mobx";
+import { action, observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import catalogCategoryRegistryInjectable from "../../../common/catalog/category-registry.injectable";
@@ -33,12 +32,11 @@ interface Dependencies {
 
 @observer
 class NonInjectedCatalogAddButton extends React.Component<CatalogAddButtonProps & Dependencies> {
-  @observable protected isOpen = false;
-  @observable menuItems = new Map<CategoryId, CatalogEntityAddMenu[]>();
+  @observable protected accessor isOpen = false;
+  @observable accessor menuItems = new Map<CategoryId, CatalogEntityAddMenu[]>();
 
   constructor(props: CatalogAddButtonProps & Dependencies) {
     super(props);
-    makeObservable(this);
     autoBindReact(this);
   }
 
@@ -69,15 +67,13 @@ class NonInjectedCatalogAddButton extends React.Component<CatalogAddButtonProps 
   }
 
   updateCategoryItems = action((category: CatalogCategory) => {
-    if (category instanceof EventEmitter) {
-      const menuItems: CatalogEntityAddMenu[] = [];
+    const menuItems: CatalogEntityAddMenu[] = [];
 
-      category.emit("catalogAddMenu", {
-        navigate: this.props.navigate,
-        menuItems,
-      });
-      this.menuItems.set(category.getId(), menuItems);
-    }
+    category.emit("catalogAddMenu", {
+      navigate: this.props.navigate,
+      menuItems,
+    });
+    this.menuItems.set(category.getId(), menuItems);
   });
 
   getCategoryFilteredItems = (category: CatalogCategory) => {
@@ -128,13 +124,17 @@ class NonInjectedCatalogAddButton extends React.Component<CatalogAddButtonProps 
             <SpeedDialAction
               key={index}
               icon={<Icon material={menuItem.icon} />}
-              tooltipTitle={menuItem.title}
               onClick={(evt) => {
                 evt.stopPropagation();
                 menuItem.onClick();
               }}
-              TooltipClasses={{
-                popper: "catalogSpeedDialPopper",
+              slotProps={{
+                tooltip: {
+                  title: menuItem.title,
+                  classes: {
+                    popper: "catalogSpeedDialPopper",
+                  },
+                },
               }}
             />
           );

@@ -8,7 +8,6 @@ import { loggerInjectionToken } from "@freelensapp/logger";
 import { showErrorNotificationInjectable, showSuccessNotificationInjectable } from "@freelensapp/notifications";
 import { getInjectable } from "@ogre-tools/injectable";
 import { when } from "mobx";
-import React from "react";
 import extensionDiscoveryInjectable from "../../../extensions/extension-discovery/extension-discovery.injectable";
 import extensionInstallationStateStoreInjectable from "../../../extensions/extension-installation-state-store/extension-installation-state-store.injectable";
 import extensionLoaderInjectable from "../../../extensions/extension-loader/extension-loader.injectable";
@@ -16,7 +15,7 @@ import { extensionDisplayName, getExtensionId, sanitizeExtensionName } from "../
 import userPreferencesStateInjectable from "../../../features/user-preferences/common/state.injectable";
 import { getMessageFromError } from "./get-message-from-error/get-message-from-error";
 
-import type { LensExtensionId } from "@freelensapp/legacy-extensions";
+import type { LensExtensionId } from "../../../extensions/installed-extension";
 
 const uninstallExtensionInjectable = getInjectable({
   id: "uninstall-extension",

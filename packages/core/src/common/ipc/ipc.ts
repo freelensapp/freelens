@@ -8,9 +8,9 @@
 // https://www.electronjs.org/docs/api/ipc-main
 // https://www.electronjs.org/docs/api/ipc-renderer
 
-import { getLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { ipcMain, ipcRenderer, webContents } from "electron";
+import { getDiForExtensionApi } from "../../extensions/extension-api-di";
 import ipcRendererInjectable from "../../renderer/utils/channel/ipc-renderer.injectable";
 import clusterFramesInjectable from "../cluster-frames.injectable";
 import { toJS } from "../utils/toJS";
@@ -21,7 +21,7 @@ import type { Disposer } from "@freelensapp/utilities";
 export const broadcastMainChannel = "ipc:broadcast-main";
 
 export function ipcMainHandle(channel: string, listener: (event: Electron.IpcMainInvokeEvent, ...args: any[]) => any) {
-  const di = getLegacyGlobalDiForExtensionApi();
+  const di = getDiForExtensionApi();
 
   const ipcMain = di.inject(ipcMainInjectionToken);
 
@@ -39,7 +39,7 @@ export async function broadcastMessage(channel: string, ...args: any[]): Promise
     return;
   }
 
-  const di = getLegacyGlobalDiForExtensionApi();
+  const di = getDiForExtensionApi();
   const logger = di.inject(loggerInjectionToken);
   const clusterFrames = di.inject(clusterFramesInjectable);
 
@@ -99,7 +99,7 @@ export async function broadcastMessage(channel: string, ...args: any[]): Promise
 }
 
 export function ipcMainOn(channel: string, listener: (event: Electron.IpcMainEvent, ...args: any[]) => any): Disposer {
-  const di = getLegacyGlobalDiForExtensionApi();
+  const di = getDiForExtensionApi();
 
   const ipcMain = di.inject(ipcMainInjectionToken);
 
@@ -112,7 +112,7 @@ export function ipcRendererOn(
   channel: string,
   listener: (event: Electron.IpcRendererEvent, ...args: any[]) => any,
 ): Disposer {
-  const di = getLegacyGlobalDiForExtensionApi();
+  const di = getDiForExtensionApi();
 
   const ipcRenderer = di.inject(ipcRendererInjectable);
 

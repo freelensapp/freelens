@@ -7,7 +7,7 @@
 import { beforeElectronIsReadyInjectionToken } from "@freelensapp/application-for-electron-main";
 import { runManyFor } from "@freelensapp/run-many";
 import { getInjectable } from "@ogre-tools/injectable";
-import { once } from "lodash";
+import { once } from "es-toolkit";
 import { onQuitOfBackEndInjectionToken } from "../../start-main-application/runnable-tokens/phases";
 import electronAppInjectable from "../electron-app.injectable";
 

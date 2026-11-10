@@ -6,7 +6,7 @@
 
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
-import { sortBy } from "lodash/fp";
+import { sortBy } from "es-toolkit";
 import downloadJsonViaChannelInjectable from "../../../../../../../renderer/fetch/download-json-via-channel-copy.injectable";
 
 import type { HelmRepo } from "../../../../../../../common/helm/helm-repo";
@@ -63,7 +63,7 @@ const requestPublicHelmRepositoriesInjectable = getInjectable({
         new Map(repos.map((repo) => [repo.name, { ...repo, cacheFilePath: "" }])).values(),
       );
 
-      return sortBy((repo) => repo.name, uniqueRepos);
+      return sortBy(uniqueRepos, [(repo) => repo.name]);
     };
   },
 

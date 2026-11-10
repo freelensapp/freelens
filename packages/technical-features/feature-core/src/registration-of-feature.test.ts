@@ -1,4 +1,5 @@
 import { createContainer, DiContainer, getInjectable, Injectable } from "@ogre-tools/injectable";
+import { beforeEach, describe, expect, it } from "vitest";
 import { deregisterFeature } from "./deregister-feature";
 import { getFeature } from "./feature";
 import { registerFeature } from "./register-feature";
@@ -109,9 +110,7 @@ describe("register-feature", () => {
       instantiate: (di) => di.inject(someInjectable),
     });
 
-    const di = createContainer("some-container", {
-      detectCycles: false,
-    });
+    const di = createContainer("some-container");
 
     const someFeature = getFeature({
       id: "some-feature-1",

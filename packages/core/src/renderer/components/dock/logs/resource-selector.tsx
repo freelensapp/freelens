@@ -7,9 +7,9 @@
 import "./resource-selector.scss";
 
 import { observer } from "mobx-react";
-import React from "react";
 import { Badge } from "../../badge";
 import { Select } from "../../select";
+import { findOptimalDefaultContainerOfPod } from "./default-container-helper";
 
 import type { Container, Pod } from "@freelensapp/kube-object";
 
@@ -61,7 +61,7 @@ export const LogResourceSelector = observer(({ model }: LogResourceSelectorProps
 
     model.updateLogTabData({
       selectedPodId: option.value.getId(),
-      selectedContainer: option.value.getAllContainers()[0]?.name,
+      selectedContainer: findOptimalDefaultContainerOfPod(option.value)?.name,
     });
     model.renameTab(`Pod ${option.value.getName()}`);
     model.reloadLogs();
@@ -85,7 +85,7 @@ export const LogResourceSelector = observer(({ model }: LogResourceSelectorProps
   ];
 
   return (
-    <div className="LogResourceSelector flex gaps align-center">
+    <div className="LogResourceSelector flex gap-2 items-center">
       <span>Namespace</span> <Badge data-testid="namespace-badge" label={pod.getNs()} />
       {owner && (
         <>

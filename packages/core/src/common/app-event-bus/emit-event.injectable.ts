@@ -18,7 +18,6 @@ const emitAppEventInjectable = getInjectable({
 
     return (event) => bus.emit(event);
   },
-  decorable: false,
 });
 
 export default emitAppEventInjectable;

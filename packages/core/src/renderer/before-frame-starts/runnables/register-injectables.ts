@@ -14,9 +14,9 @@ import refreshAccessibilityOnCrdChangesInjectable from "./refresh-accessibility-
 import setupAutoCrdApiCreationsInjectable from "./setup-auto-crd-api-creations.injectable";
 import setupAutoRegistrationInjectable from "./setup-auto-registration.injectable";
 import setupCurrentClusterBroadcastInjectable from "./setup-current-cluster-broadcast.injectable";
+import setupFreelensProxyCertificateInjectable from "./setup-freelens-proxy-certificate.injectable";
 import setupKubernetesClusterCatalogAddMenuListenerInjectable from "./setup-kubernetes-cluster-catalog-add-menu.injectable";
 import setupKubernetesClusterContextMenuOpenInjectable from "./setup-kubernetes-cluster-context-menu-open.injectable";
-import setupLensProxyCertificateInjectable from "./setup-lens-proxy-certificate.injectable";
 import setupRootMacClassnameInjectable from "./setup-root-mac-class.injectable";
 import setupWeblinkContextMenuOpenInjectable from "./setup-weblink-context-menu-open.injectable";
 
@@ -64,17 +64,17 @@ export function registerInjectables(di: DiContainerForInjection): void {
     /* Ignore duplicate registration */
   }
   try {
+    di.register(setupFreelensProxyCertificateInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
     di.register(setupKubernetesClusterCatalogAddMenuListenerInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }
   try {
     di.register(setupKubernetesClusterContextMenuOpenInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(setupLensProxyCertificateInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

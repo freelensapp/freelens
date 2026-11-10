@@ -10,9 +10,9 @@ import { Spinner } from "@freelensapp/spinner";
 import { bytesToUnits, cssNames, interval, prevDefault } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import autoBindReact from "auto-bind/react";
-import kebabCase from "lodash/kebabCase";
-import { reaction } from "mobx";
-import { disposeOnUnmount, observer } from "mobx-react";
+import { kebabCase } from "es-toolkit";
+import { untracked } from "mobx";
+import { observer } from "mobx-react";
 import React from "react";
 import { DrawerTitle } from "../drawer";
 import showDetailsInjectable from "../kube-detail-params/show-details.injectable";
@@ -20,6 +20,7 @@ import { LinkToNamespace, LinkToNode, LinkToPod } from "../kube-object-link";
 import { LineProgress } from "../line-progress";
 import { Table, TableCell, TableHead, TableRow } from "../table";
 import { WithTooltip } from "../with-tooltip";
+import { PodPortsCell } from "./pod-ports-cell";
 import podStoreInjectable from "./store.injectable";
 
 import type { KubeObject, Pod } from "@freelensapp/kube-object";
@@ -60,12 +61,15 @@ class NonInjectedPodDetailsList extends React.Component<PodDetailsListProps & De
 
   componentDidMount() {
     this.metricsWatcher.start(true);
-    disposeOnUnmount(this, [
-      reaction(
-        () => this.props.owner,
-        () => this.metricsWatcher.restart(true),
-      ),
-    ]);
+  }
+
+  componentDidUpdate(prevProps: PodDetailsListProps & Dependencies) {
+    // Restart the metrics watcher when the owner prop changes. Previously a
+    // reaction on this.props.owner did this; mobx-react 9 no longer makes
+    // this.props observable, so react to the prop change in the lifecycle instead.
+    if (prevProps.owner !== this.props.owner) {
+      this.metricsWatcher.restart(true);
+    }
   }
 
   componentWillUnmount() {
@@ -73,7 +77,9 @@ class NonInjectedPodDetailsList extends React.Component<PodDetailsListProps & De
   }
 
   renderCpuUsage(id: string, usage: number) {
-    const { maxCpu } = this.props;
+    // Invoked by getTableRow from Table/VirtualList's render reaction, so
+    // read this.props untracked to avoid mobx-react 9's foreign-derivation guard.
+    const { maxCpu } = untracked(() => this.props);
     const value = usage.toFixed(3);
 
     if (!maxCpu) {
@@ -94,7 +100,9 @@ class NonInjectedPodDetailsList extends React.Component<PodDetailsListProps & De
   }
 
   renderMemoryUsage(id: string, usage: number) {
-    const { maxMemory } = this.props;
+    // Invoked by getTableRow from Table/VirtualList's render reaction, so
+    // read this.props untracked to avoid mobx-react 9's foreign-derivation guard.
+    const { maxMemory } = untracked(() => this.props);
 
     if (!maxMemory) return usage ? bytesToUnits(usage) : 0;
 
@@ -110,7 +118,11 @@ class NonInjectedPodDetailsList extends React.Component<PodDetailsListProps & De
   }
 
   getTableRow(uid: string) {
-    const { pods, owner, podStore, showDetails } = this.props;
+    // getTableRow is invoked by Table/VirtualList from *their* render
+    // reaction, so reading this.props directly trips mobx-react 9's
+    // foreign-derivation guard. Read props untracked; the podStore metric
+    // reads below stay tracked so live CPU/memory updates still work.
+    const { pods, owner, podStore, showDetails } = untracked(() => this.props);
     const pod = pods.find((pod) => pod.getId() == uid);
 
     const hideNode = owner.kind === "Node";
@@ -144,6 +156,9 @@ class NonInjectedPodDetailsList extends React.Component<PodDetailsListProps & De
         <TableCell className="ready">
           {`${pod.getRunningContainers().length} / ${pod.getContainers().length}`}
         </TableCell>
+        <TableCell className="ports">
+          <PodPortsCell pod={pod} />
+        </TableCell>
         <TableCell className="cpu">{this.renderCpuUsage(`cpu-${pod.getId()}`, metrics.cpu)}</TableCell>
         <TableCell className="memory">{this.renderMemoryUsage(`memory-${pod.getId()}`, metrics.memory)}</TableCell>
         <TableCell className={cssNames("status", kebabCase(pod.getStatusMessage()))}>
@@ -173,7 +188,7 @@ class NonInjectedPodDetailsList extends React.Component<PodDetailsListProps & De
     const virtual = pods.length > 20;
 
     return (
-      <div className="PodDetailsList flex column">
+      <div className="PodDetailsList flex flex-col">
         <DrawerTitle>Pods</DrawerTitle>
         <Table
           tableId="workloads_pod_details_list"
@@ -194,7 +209,7 @@ class NonInjectedPodDetailsList extends React.Component<PodDetailsListProps & De
           sortSyncWithUrl={false}
           getTableRow={this.getTableRow}
           renderRow={virtual ? undefined : (pod) => this.getTableRow(pod.getId())}
-          className="box grow"
+          className="grow shrink-0 basis-0"
         >
           <TableHead flat sticky={virtual}>
             <TableCell className="name" sortBy={sortBy.name}>
@@ -209,6 +224,7 @@ class NonInjectedPodDetailsList extends React.Component<PodDetailsListProps & De
               Namespace
             </TableCell>
             <TableCell className="ready">Ready</TableCell>
+            <TableCell className="ports">Ports</TableCell>
             <TableCell className="cpu" sortBy={sortBy.cpu}>
               CPU
             </TableCell>

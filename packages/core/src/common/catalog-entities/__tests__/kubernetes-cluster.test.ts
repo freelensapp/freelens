@@ -4,6 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { beforeEach, describe, expect, it } from "vitest";
 import { getDiForUnitTesting } from "../../../renderer/getDiForUnitTesting";
 import kubernetesClusterCategoryInjectable from "../../catalog/categories/kubernetes-cluster.injectable";
 

@@ -4,8 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { autorun, makeObservable, observable } from "mobx";
-import { disposeOnUnmount, observer } from "mobx-react";
+import { autorun, observable } from "mobx";
+import { observer } from "mobx-react";
 import React from "react";
 import { Input } from "../input";
 import { isRequired } from "../input/input_validators";
@@ -21,20 +21,28 @@ export interface ClusterNameSettingProps {
 
 @observer
 export class ClusterNameSetting extends React.Component<ClusterNameSettingProps> {
-  @observable name = "";
+  private readonly disposers: (() => void)[] = [];
+
+  @observable accessor name = "";
 
   constructor(props: ClusterNameSettingProps) {
     super(props);
-    makeObservable(this);
   }
 
   componentDidMount() {
-    disposeOnUnmount(
-      this,
+    // Capture props before the autorun: mobx-react 9 forbids reading this.props
+    // inside a derivation (the autorun below).
+    const { cluster, entity } = this.props;
+
+    this.disposers.push(
       autorun(() => {
-        this.name = this.props.cluster.preferences.clusterName || this.props.entity.getName();
+        this.name = cluster.preferences.clusterName || entity.getName();
       }),
     );
+  }
+
+  componentWillUnmount() {
+    this.disposers.forEach((dispose) => dispose());
   }
 
   save = () => {

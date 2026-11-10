@@ -7,20 +7,12 @@
  */
 
 import computedChannelInjectable from "./computed-channel/computed-channel.injectable";
-import {
-  computedChannelAdministrationChannel,
-  computedChannelAdministrationListenerInjectable,
-} from "./computed-channel/computed-channel-administration-channel.injectable";
+import { computedChannelAdministrationListenerInjectable } from "./computed-channel/computed-channel-administration-channel.injectable";
 import { duplicateChannelObserverGuardInjectable } from "./computed-channel/duplicate-channel-observer-guard.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(computedChannelAdministrationChannel);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
   try {
     di.register(computedChannelAdministrationListenerInjectable);
   } catch (e) {

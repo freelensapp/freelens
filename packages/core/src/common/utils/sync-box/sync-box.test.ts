@@ -6,6 +6,7 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import { observe, runInAction } from "mobx";
+import { beforeEach, describe, expect, it } from "vitest";
 import { getApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
 import createSyncBoxInjectable from "./create-sync-box.injectable";
 import { syncBoxInjectionToken } from "./sync-box-injection-token";

@@ -4,8 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { ExecException, ExecFileException } from "child_process";
-import type { IncomingMessage } from "http";
+import type { ExecException, ExecFileException } from "node:child_process";
+import type { IncomingMessage } from "node:http";
 
 /**
  * Narrows `val` to include the property `key` (if true is returned)

@@ -6,15 +6,15 @@
 
 import "./helm-chart-details.scss";
 
+import assert from "node:assert";
 import { Button } from "@freelensapp/button";
 import { Spinner } from "@freelensapp/spinner";
 import { stopPropagation } from "@freelensapp/utilities";
 import { styled, Tooltip } from "@mui/material";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import assert from "assert";
 import autoBindReact from "auto-bind/react";
 import { observer } from "mobx-react";
-import React, { Component } from "react";
+import { Component } from "react";
 import { Badge } from "../badge";
 import createInstallChartTabInjectable from "../dock/install-chart/create-install-chart-tab.injectable";
 import { Drawer, DrawerItem } from "../drawer";
@@ -25,9 +25,8 @@ import helmChartDetailsVersionSelectionInjectable from "./details/versions/helm-
 import versionsOfSelectedHelmChartInjectable from "./details/versions-of-selected-helm-chart.injectable";
 import { HelmChartIcon } from "./icon";
 
-import type { IAsyncComputed } from "@ogre-tools/injectable-react";
-
 import type { HelmChart } from "../../../common/k8s-api/endpoints/helm-charts.api";
+import type { IAsyncComputed } from "../../../common/utils/async-computed";
 import type { HelmChartDetailsVersionSelection } from "./details/versions/helm-chart-details-version-selection.injectable";
 
 export interface HelmChartDetailsProps {
@@ -72,10 +71,10 @@ class NonInjectedHelmChartDetails extends Component<HelmChartDetailsProps & Depe
     const testId = selectedChart.getFullName("-");
 
     return (
-      <div className="introduction flex align-flex-start">
+      <div className="introduction flex items-start">
         <HelmChartIcon imageUrl={selectedChart.getIcon()} className="intro-logo" />
-        <div className="intro-contents box grow">
-          <div className="description flex align-center justify-space-between" data-testid="selected-chart-description">
+        <div className="intro-contents grow shrink-0 basis-0">
+          <div className="description flex items-center justify-between" data-testid="selected-chart-description">
             {selectedChart.getDescription()}
             <Button primary label="Install" onClick={this.install} data-testid={`install-chart-for-${testId}`} />
           </div>
@@ -138,7 +137,7 @@ class NonInjectedHelmChartDetails extends Component<HelmChartDetailsProps & Depe
     }
 
     return (
-      <div className="box grow">
+      <div className="grow shrink-0 basis-0">
         {this.renderIntroduction(this.chart)}
 
         {readmeIsLoading ? <Spinner center data-testid="spinner-for-chart-readme" /> : this.renderReadme()}

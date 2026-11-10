@@ -4,6 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import assert from "node:assert";
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
 import customAccentColorInjectable from "../../features/user-preferences/common/custom-accent-color.injectable";
@@ -13,6 +14,10 @@ import { lensThemeDeclarationInjectionToken } from "./declaration";
 import defaultLensThemeInjectable from "./default-theme.injectable";
 import systemThemeConfigurationInjectable from "./system-theme.injectable";
 import lensThemesInjectable from "./themes.injectable";
+
+import type { Injectable } from "@ogre-tools/injectable";
+import type { IComputedValue } from "mobx";
+import type { ReadonlyDeep } from "type-fest";
 
 import type { LensColorName, LensTheme } from "./lens-theme";
 
@@ -32,7 +37,8 @@ const ACCENT_COLOR_KEYS: readonly LensColorName[] = [
   "sidebarSubmenuActiveColor",
 ];
 
-const activeThemeInjectable = getInjectable({
+// Annotated for declaration emit; see ./declaration.ts.
+const activeThemeInjectable: Injectable<IComputedValue<ReadonlyDeep<LensTheme>>> = getInjectable({
   id: "active-theme",
   instantiate: (di) => {
     const lensThemes = di.inject(lensThemesInjectable);
@@ -50,7 +56,9 @@ const activeThemeInjectable = getInjectable({
         const systemThemeType = systemThemeConfiguration.get();
         const matchingTheme = themeDecls.find((theme) => theme.type === systemThemeType);
 
-        baseTheme = matchingTheme ?? defaultLensTheme;
+        assert(matchingTheme, `Missing theme declaration for system theme "${systemThemeType}"`);
+
+        baseTheme = matchingTheme;
       } else {
         baseTheme = lensThemes.get(pref.lensThemeId) ?? defaultLensTheme;
       }

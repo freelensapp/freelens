@@ -6,7 +6,6 @@
 
 import { Icon } from "@freelensapp/icon";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import React from "react";
 import { Input } from "../../../../../../../renderer/components/input";
 import isPathInjectable from "../../../../../../../renderer/components/input/validators/is-path.injectable";
 import requestFilePathsInjectable from "./get-file-paths.injectable";
@@ -36,11 +35,11 @@ const NonInjectedHelmFileInput = ({
   isPath,
   "data-testid": testId,
 }: Dependencies & HelmFileInputProps) => (
-  <div className="flex gaps align-center">
+  <div className="flex gap-3 items-center">
     <Input
       placeholder={placeholder}
       validators={isPath}
-      className="box grow"
+      className="grow shrink-0 basis-0"
       value={value}
       onChange={(v) => setValue(v)}
       data-testid={testId}

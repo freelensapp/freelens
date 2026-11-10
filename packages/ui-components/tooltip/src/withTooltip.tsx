@@ -5,7 +5,7 @@
  */
 
 import { isReactNode, type StrictReactNode } from "@freelensapp/utilities";
-import uniqueId from "lodash/uniqueId";
+import { uniqueId } from "es-toolkit/compat";
 import React, { useState } from "react";
 import { Tooltip, type TooltipContentFormatters, type TooltipProps } from "./tooltip";
 

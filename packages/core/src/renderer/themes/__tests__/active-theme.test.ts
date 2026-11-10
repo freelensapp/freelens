@@ -1,10 +1,10 @@
 /**
  * Copyright (c) Freelens Authors. All rights reserved.
- * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import { computed } from "mobx";
+import { beforeEach, describe, expect, it } from "vitest";
 import customAccentColorInjectable from "../../../features/user-preferences/common/custom-accent-color.injectable";
 import lensColorThemePreferenceInjectable from "../../../features/user-preferences/common/lens-color-theme.injectable";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";

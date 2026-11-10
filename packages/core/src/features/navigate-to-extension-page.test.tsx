@@ -4,9 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { fireEvent } from "@testing-library/react";
-import isEmpty from "lodash/isEmpty";
-import React from "react";
+import { act, fireEvent } from "@testing-library/react";
+import { isEmpty } from "es-toolkit/compat";
+import { beforeEach, describe, expect, it } from "vitest";
 import { getApplicationBuilder } from "../renderer/components/test-utils/get-application-builder";
 import currentPathInjectable from "../renderer/routes/current-path.injectable";
 import queryParametersInjectable from "../renderer/routes/query-parameters.injectable";
@@ -44,7 +44,9 @@ describe("navigate to extension page", () => {
 
   describe("when extension navigates to route without parameters", () => {
     beforeEach(() => {
-      testExtension.navigate();
+      act(() => {
+        testExtension.navigate();
+      });
     });
 
     it("renders", () => {
@@ -86,10 +88,12 @@ describe("navigate to extension page", () => {
 
   describe("when extension navigates to route with parameters", () => {
     beforeEach(() => {
-      testExtension.navigate(undefined, {
-        someStringParameter: "some-string-value-from-navigate",
-        someNumberParameter: 126,
-        someArrayParameter: ["some-array-value-from-navigate"],
+      act(() => {
+        testExtension.navigate(undefined, {
+          someStringParameter: "some-string-value-from-navigate",
+          someNumberParameter: 126,
+          someArrayParameter: ["some-array-value-from-navigate"],
+        });
       });
     });
 
@@ -112,7 +116,9 @@ describe("navigate to extension page", () => {
 
   describe("when extension navigates to child route", () => {
     beforeEach(() => {
-      testExtension.navigate("some-child-page-id");
+      act(() => {
+        testExtension.navigate("some-child-page-id");
+      });
     });
 
     it("renders", () => {

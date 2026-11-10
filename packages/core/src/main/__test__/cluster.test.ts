@@ -4,6 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import directoryForTempInjectable from "../../common/app-paths/directory-for-temp/directory-for-temp.injectable";
 import directoryForUserDataInjectable from "../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import createCanIInjectable from "../../common/cluster/create-can-i.injectable";
@@ -43,8 +44,8 @@ describe("create clusters", () => {
     di.override(createRequestNamespaceListPermissionsInjectable, () => () => async () => () => true);
     di.override(createListNamespacesInjectable, () => () => () => Promise.resolve(["default"]));
     di.override(prometheusHandlerInjectable, () => ({
-      getPrometheusDetails: jest.fn(),
-      setupPrometheus: jest.fn(),
+      getPrometheusDetails: vi.fn(),
+      setupPrometheus: vi.fn(),
     }));
 
     writeJsonSync("/kind-config.yml", {
@@ -84,7 +85,7 @@ describe("create clusters", () => {
         }) as Partial<KubeconfigManager> as KubeconfigManager,
     );
 
-    jest.spyOn(Kubectl.prototype, "ensureKubectl").mockReturnValue(Promise.resolve(true));
+    vi.spyOn(Kubectl.prototype, "ensureKubectl").mockReturnValue(Promise.resolve(true));
 
     const addCluster = di.inject(addClusterInjectable);
 
@@ -105,8 +106,8 @@ describe("create clusters", () => {
   });
 
   it("activating cluster should try to connect to cluster and do a refresh", async () => {
-    jest.spyOn(clusterConnection, "reconnect").mockImplementation(async () => {});
-    jest.spyOn(clusterConnection, "refreshConnectionStatus").mockImplementation(async () => {});
+    vi.spyOn(clusterConnection, "reconnect").mockImplementation(async () => {});
+    vi.spyOn(clusterConnection, "refreshConnectionStatus").mockImplementation(async () => {});
 
     await clusterConnection.activate();
 

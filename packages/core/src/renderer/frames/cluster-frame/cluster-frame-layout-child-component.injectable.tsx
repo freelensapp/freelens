@@ -5,12 +5,12 @@
  */
 
 import { clusterFrameChildComponentInjectionToken } from "@freelensapp/react-application";
+import { Redirect } from "@freelensapp/routing";
 import { getInjectable } from "@ogre-tools/injectable";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { computed } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
-import { Redirect } from "react-router";
 import { Dock } from "../../components/dock";
 import { MainLayout } from "../../components/layout/main-layout";
 import { Sidebar } from "../../components/layout/sidebar";
@@ -32,8 +32,9 @@ const NonInjectedClusterFrameLayout = observer((props: Dependencies) => {
   const starting = props.startUrl.get();
   const current = props.currentPath.get();
 
+  // The path keys the crash of the page, so that another page, or the same page for another path, renders again.
   return (
-    <MainLayout sidebar={<Sidebar />} footer={<Dock />}>
+    <MainLayout sidebar={<Sidebar />} footer={<Dock />} resetKey={current}>
       {Component ? (
         <Component />
       ) : // NOTE: this check is to prevent an infinite loop

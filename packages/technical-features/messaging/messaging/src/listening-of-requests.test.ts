@@ -2,8 +2,9 @@ import { applicationFeature, startApplicationInjectionToken } from "@freelensapp
 import { registerFeature } from "@freelensapp/feature-core";
 import { createContainer, type DiContainer, type Injectable } from "@ogre-tools/injectable";
 import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
-import { noop } from "lodash/fp";
+import { noop } from "es-toolkit";
 import { _resetGlobalState, configure, runInAction } from "mobx";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { listeningOfChannelsInjectionToken } from "./features/actual/listening-of-channels/listening-of-channels.injectable";
 import {
   type EnlistRequestChannelListener,
@@ -17,11 +18,13 @@ import {
 } from "./features/actual/request/request-channel-listener-injection-token";
 import { messagingFeatureForUnitTesting } from "./features/unit-testing";
 
+import type { Mock, MockedFunction } from "vitest";
+
 describe("listening-of-requests", () => {
   let di: DiContainer;
-  let enlistRequestChannelListenerMock: jest.MockedFunction<EnlistRequestChannelListener>;
-  let disposeSomeListenerMock: jest.Mock;
-  let disposeSomeUnrelatedListenerMock: jest.Mock;
+  let enlistRequestChannelListenerMock: MockedFunction<EnlistRequestChannelListener>;
+  let disposeSomeListenerMock: Mock;
+  let disposeSomeUnrelatedListenerMock: Mock;
 
   beforeEach(() => {
     configure({
@@ -34,10 +37,10 @@ describe("listening-of-requests", () => {
 
     registerMobX(di);
 
-    disposeSomeListenerMock = jest.fn();
-    disposeSomeUnrelatedListenerMock = jest.fn();
+    disposeSomeListenerMock = vi.fn();
+    disposeSomeUnrelatedListenerMock = vi.fn();
 
-    enlistRequestChannelListenerMock = jest.fn((listener) =>
+    enlistRequestChannelListenerMock = vi.fn((listener) =>
       listener.id === "some-channel-id-request-listener-some-listener"
         ? disposeSomeListenerMock
         : disposeSomeUnrelatedListenerMock,

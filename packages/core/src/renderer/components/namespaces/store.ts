@@ -7,7 +7,7 @@
 import { Namespace } from "@freelensapp/kube-object";
 import { noop, toggle } from "@freelensapp/utilities";
 import autoBind from "auto-bind";
-import { action, comparer, computed, makeObservable, reaction } from "mobx";
+import { action, compareShallow, computed, reaction } from "mobx";
 import { KubeObjectStore } from "../../../common/k8s-api/kube-object.store";
 
 import type { NamespaceApi } from "@freelensapp/kube-api";
@@ -20,12 +20,6 @@ import type {
 } from "../../../common/k8s-api/kube-object.store";
 import type { StorageLayer } from "../../utils/storage-helper";
 
-export interface NamespaceTree {
-  id: string;
-  namespace: Namespace;
-  children?: NamespaceTree[];
-}
-
 interface Dependencies extends KubeObjectStoreDependencies {
   readonly storage: StorageLayer<string[]>;
   readonly clusterConfiguredAccessibleNamespaces: IComputedValue<string[]>;
@@ -37,7 +31,6 @@ export class NamespaceStore extends KubeObjectStore<Namespace, NamespaceApi> {
     api: NamespaceApi,
   ) {
     super(dependencies, api);
-    makeObservable(this);
     autoBind(this);
   }
 
@@ -47,7 +40,7 @@ export class NamespaceStore extends KubeObjectStore<Namespace, NamespaceApi> {
   ): IReactionDisposer {
     return reaction(() => Array.from(this.contextNamespaces), callback, {
       fireImmediately: opts.fireImmediately,
-      equals: comparer.shallow,
+      equals: compareShallow,
     });
   }
 
@@ -208,16 +201,6 @@ export class NamespaceStore extends KubeObjectStore<Namespace, NamespaceApi> {
   toggleAll(selectAll?: boolean) {
     void selectAll;
     this.selectAll();
-  }
-
-  getNamespaceTree(root: Namespace): NamespaceTree {
-    const children = this.items.filter((namespace) => namespace.isChildOf(root.getName()));
-
-    return {
-      id: root.getId(),
-      namespace: root,
-      children: children.map((child) => this.getNamespaceTree(child)),
-    };
   }
 
   @action

@@ -1,10 +1,10 @@
 /**
  * Copyright (c) Freelens Authors. All rights reserved.
- * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import "@testing-library/jest-dom";
+import { describe, expect, it, vi } from "vitest";
+import "@testing-library/jest-dom/vitest";
 
 import { NonInjectedItemListLayoutContent } from "../content";
 
@@ -75,9 +75,9 @@ const baseProps: ItemListLayoutContentProps<ItemObject, boolean> & {
   columnResizeStorage: makeStorage(),
   activeTheme: { get: () => ({ type: "light" }) },
   pageFiltersStore: {},
-  openConfirmDialog: jest.fn(),
-  toggleTableColumnVisibility: jest.fn(),
-  isTableColumnHidden: jest.fn(),
+  openConfirmDialog: vi.fn(),
+  toggleTableColumnVisibility: vi.fn(),
+  isTableColumnHidden: vi.fn(),
   copyClassNameFromHeadCells: false,
   isConfigurable: false,
 };

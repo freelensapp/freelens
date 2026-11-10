@@ -9,15 +9,14 @@ import "./resource-metrics.scss";
 import { Spinner } from "@freelensapp/spinner";
 import { cssNames } from "@freelensapp/utilities";
 import { isComputed } from "mobx";
-import { observer } from "mobx-react-lite";
-import React, { createContext, useState } from "react";
+import { observer } from "mobx-react";
+import React, { createContext, useRef, useState } from "react";
 import { Radio, RadioGroup } from "../radio";
 
 import type { KubeObject } from "@freelensapp/kube-object";
 
-import type { IAsyncComputed } from "@ogre-tools/injectable-react";
-
 import type { MetricData } from "../../../common/k8s-api/endpoints/metrics.api";
+import type { IAsyncComputed } from "../../../common/utils/async-computed";
 import type { MetricsTab } from "../chart/options";
 
 export type AtLeastOneMetricTab = [MetricsTab, ...MetricsTab[]];
@@ -26,8 +25,9 @@ export interface ResourceMetricsProps<Keys extends string> {
   tabs: AtLeastOneMetricTab;
   object: KubeObject;
   className?: string;
+  metricsKey?: string;
   metrics: IAsyncComputed<Partial<Record<Keys, MetricData>> | null | undefined> | Partial<Record<Keys, MetricData>>;
-  children: React.ReactChild | React.ReactChild[];
+  children: React.ReactNode | React.ReactNode[];
 }
 
 function isAsyncComputedMetrics<Keys extends string>(
@@ -40,32 +40,45 @@ export interface ResourceMetricsValue {
   object: KubeObject;
   tab: MetricsTab;
   metrics: Partial<Record<string, MetricData>> | null | undefined;
+  isPending: boolean;
 }
 
 export const ResourceMetricsContext = createContext<ResourceMetricsValue | null>(null);
 
 export const ResourceMetrics = observer(
-  <Keys extends string>({ object, tabs, children, className, metrics }: ResourceMetricsProps<Keys>) => {
+  <Keys extends string>({ object, tabs, children, className, metrics, metricsKey }: ResourceMetricsProps<Keys>) => {
     const [tab, setTab] = useState<MetricsTab>(tabs[0]);
+    const lastResolvedMetricsKeyRef = useRef<string | undefined>(undefined);
+    const isAsyncMetrics = isAsyncComputedMetrics(metrics);
+    const isPending = isAsyncMetrics ? metrics.pending.get() : false;
+    const shouldHideStaleMetrics =
+      isAsyncMetrics && isPending && metricsKey !== undefined && metricsKey !== lastResolvedMetricsKeyRef.current;
+
+    if (!isPending) {
+      lastResolvedMetricsKeyRef.current = metricsKey;
+    }
+
+    const currentMetrics = isAsyncMetrics ? (shouldHideStaleMetrics ? undefined : metrics.value.get()) : metrics;
 
     return (
-      <div className={cssNames("ResourceMetrics flex column", className)}>
-        <div className="switchers">
-          <RadioGroup asButtons className="flex box grow gaps" value={tab} onChange={setTab}>
+      <div className={cssNames("ResourceMetrics flex flex-col", className)}>
+        <div className="switchers flex gap-2">
+          <RadioGroup asButtons className="flex gap-2 grow shrink-0 basis-0" value={tab} onChange={setTab}>
             {tabs.map((tab, index) => (
-              <Radio key={index} className="box grow" label={tab} value={tab} />
+              <Radio key={index} className="grow shrink-0 basis-0" label={tab} value={tab} />
             ))}
           </RadioGroup>
         </div>
-        <ResourceMetricsContext.Provider
+        <ResourceMetricsContext
           value={{
             object,
             tab,
-            metrics: isAsyncComputedMetrics(metrics) ? metrics.value.get() : metrics,
+            metrics: currentMetrics,
+            isPending,
           }}
         >
           <div className="graph">{children}</div>
-        </ResourceMetricsContext.Provider>
+        </ResourceMetricsContext>
         <div className="loader">
           <Spinner />
         </div>

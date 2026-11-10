@@ -4,7 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { makeObservable } from "mobx";
 import { DockTabStore } from "../dock-tab-store/dock-tab.store";
 
 import type { HelmReleaseUpdateDetails } from "../../../../common/k8s-api/endpoints/helm-releases.api";
@@ -30,7 +29,6 @@ export interface InstallChartTabStoreDependencies extends DockTabStoreDependenci
 export class InstallChartTabStore extends DockTabStore<IChartInstallData> {
   constructor(protected readonly dependencies: InstallChartTabStoreDependencies) {
     super(dependencies, { storageKey: "install_charts" });
-    makeObservable(this);
   }
 
   get versions() {

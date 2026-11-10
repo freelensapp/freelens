@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { noop } from "lodash/fp";
+import { noop } from "es-toolkit";
 import { action, observable } from "mobx";
 
 import type { ForwardedPort } from "../port-forward-item";

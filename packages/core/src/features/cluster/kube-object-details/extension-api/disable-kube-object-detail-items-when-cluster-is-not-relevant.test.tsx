@@ -5,8 +5,9 @@
  */
 
 import { KubeObject } from "@freelensapp/kube-object";
+import { act } from "@testing-library/react";
 import { observable } from "mobx";
-import React from "react";
+import { beforeEach, describe, expect, it } from "vitest";
 import apiManagerInjectable from "../../../../common/k8s-api/api-manager/manager.injectable";
 import showDetailsInjectable from "../../../../renderer/components/kube-detail-params/show-details.injectable";
 import { getApplicationBuilder } from "../../../../renderer/components/test-utils/get-application-builder";
@@ -66,7 +67,9 @@ describe("disable kube object detail items when cluster is not relevant", () => 
     const windowDi = builder.applicationWindow.only.di;
     const showDetails = windowDi.inject(showDetailsInjectable);
 
-    showDetails("/api/some-api-version/namespaces/some-namespace/some-kind/some-name");
+    await act(async () => {
+      showDetails("/api/some-api-version/namespaces/some-namespace/some-kind/some-name");
+    });
 
     builder.extensions.enable(testExtension);
   });
@@ -85,7 +88,9 @@ describe("disable kube object detail items when cluster is not relevant", () => 
 
   describe("given extension shouldn't be enabled for the cluster", () => {
     beforeEach(() => {
-      isVisible.set(false);
+      act(() => {
+        isVisible.set(false);
+      });
     });
 
     it("renders", () => {
@@ -101,7 +106,9 @@ describe("disable kube object detail items when cluster is not relevant", () => 
 
   describe("given extension should be enabled for the cluster", () => {
     beforeEach(() => {
-      isVisible.set(true);
+      act(() => {
+        isVisible.set(true);
+      });
     });
 
     it("renders", () => {

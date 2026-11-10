@@ -1,11 +1,11 @@
 /**
  * Copyright (c) Freelens Authors. All rights reserved.
- * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { noop } from "lodash/fp";
+import { noop } from "es-toolkit";
 import { computed, type IObservableValue, observable } from "mobx";
+import { beforeEach, describe, expect, it } from "vitest";
 import { FavoritesStore } from "./store.injectable";
 
 import type { SidebarItemDeclaration } from "@freelensapp/cluster-sidebar";
@@ -18,6 +18,7 @@ const makeSidebarItem = (overrides: Partial<SidebarItemDeclaration> & { id: stri
   onClick: noop,
   isActive: computed(() => false),
   isVisible: computed(() => true),
+  isHiddenInTree: computed(() => false),
   children: [],
   ...overrides,
 });

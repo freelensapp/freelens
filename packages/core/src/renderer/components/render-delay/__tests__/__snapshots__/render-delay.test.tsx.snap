@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`<RenderDelay/> when rendered with placeholder renders 1`] = `
+exports[`<RenderDelay/> > when rendered with placeholder > renders 1`] = `
 <body>
   <div>
     <div
@@ -10,7 +10,7 @@ exports[`<RenderDelay/> when rendered with placeholder renders 1`] = `
 </body>
 `;
 
-exports[`<RenderDelay/> when rendered with placeholder when the idle callback is called renders 1`] = `
+exports[`<RenderDelay/> > when rendered with placeholder > when the idle callback is called > renders 1`] = `
 <body>
   <div>
     <div
@@ -20,13 +20,13 @@ exports[`<RenderDelay/> when rendered with placeholder when the idle callback is
 </body>
 `;
 
-exports[`<RenderDelay/> when rendered without placeholder renders 1`] = `
+exports[`<RenderDelay/> > when rendered without placeholder > renders 1`] = `
 <body>
   <div />
 </body>
 `;
 
-exports[`<RenderDelay/> when rendered without placeholder when the idle callback is called renders 1`] = `
+exports[`<RenderDelay/> > when rendered without placeholder > when the idle callback is called > renders 1`] = `
 <body>
   <div>
     <div

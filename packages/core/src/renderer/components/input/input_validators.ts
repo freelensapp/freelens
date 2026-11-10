@@ -4,8 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { namedCaptures } from "@freelensapp/utilities";
 import fse from "fs-extra";
-import { TypedRegEx } from "typed-regex";
 
 import type { StrictReactNode } from "@freelensapp/utilities";
 
@@ -187,22 +187,19 @@ export const isUrl = inputValidator({
 });
 
 /**
- * NOTE: this cast is needed because of two bugs in the typed regex package
- * - https://github.com/phenax/typed-regex/issues/6
- * - https://github.com/phenax/typed-regex/issues/7
+ * The pattern is anchored, so the `g` flag it used to carry only made `test`
+ * and `exec` resume from `lastIndex` and answer differently on every other
+ * call.
  */
-export const isExtensionNameInstallRegex = TypedRegEx(
-  "^(?<name>(@[-\\w]+\\/)?[-\\w]+)(@(?<version>[a-z0-9-_.]+))?$",
-  "gi",
-) as {
-  isMatch(val: string): boolean;
-  captures(val: string): undefined | { name: string; version?: string };
-};
+export const isExtensionNameInstallRegex = /^(?<name>(@[-\w]+\/)?[-\w]+)(@(?<version>[a-z0-9-_.]+))?$/i;
+
+export const extensionNameInstallCaptures = (value: string) =>
+  namedCaptures<{ name: string; version?: string }>(isExtensionNameInstallRegex, value);
 
 export const isExtensionNameInstall = inputValidator({
   condition: ({ type }) => type === "text",
   message: () => "Not an extension name with optional version",
-  validate: (value) => isExtensionNameInstallRegex.isMatch(value),
+  validate: (value) => isExtensionNameInstallRegex.test(value),
 });
 
 export const isPath = asyncInputValidator({

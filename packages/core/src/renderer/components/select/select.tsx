@@ -11,7 +11,7 @@ import "./select.scss";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import autoBindReact from "auto-bind/react";
-import { action, computed, makeObservable } from "mobx";
+import { action } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import ReactSelect, { components, createFilter } from "react-select";
@@ -138,11 +138,13 @@ class NonInjectedSelect<
 
   constructor(props: SelectProps<Value, Option, IsMulti, Group> & Dependencies) {
     super(props);
-    makeObservable(this);
     autoBindReact(this);
   }
 
-  @computed get themeClass() {
+  // Plain getter (not @computed): reads this.props, which mobx-react 9 forbids
+  // inside a derivation. Read from render, reactivity is preserved by the
+  // observer render reaction.
+  get themeClass() {
     const themeName = this.props.themeName || this.props.activeTheme.get().type;
 
     return `theme-${themeName}`;

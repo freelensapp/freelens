@@ -3,16 +3,18 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+import { vi } from "vitest";
+
 export default {
-  require: jest.fn(),
-  match: jest.fn(),
+  require: vi.fn(),
+  match: vi.fn(),
   app: {
-    getVersion: jest.fn().mockReturnValue("3.0.0"),
-    getLocale: jest.fn().mockRejectedValue("en"),
-    getPath: jest.fn(() => "tmp"),
+    getVersion: vi.fn().mockReturnValue("3.0.0"),
+    getLocale: vi.fn().mockRejectedValue("en"),
+    getPath: vi.fn(() => "tmp"),
   },
-  dialog: jest.fn(),
+  dialog: vi.fn(),
   ipcRenderer: {
-    on: jest.fn(),
+    on: vi.fn(),
   },
 };

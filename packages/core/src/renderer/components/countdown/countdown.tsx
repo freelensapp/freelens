@@ -5,7 +5,6 @@
  */
 
 import { observer } from "mobx-react";
-import React from "react";
 
 import type { IComputedValue } from "mobx";
 import type { HTMLAttributes } from "react";

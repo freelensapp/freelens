@@ -7,6 +7,7 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import kubernetesClusterCategoryInjectable from "../../../common/catalog/categories/kubernetes-cluster.injectable";
 import navigateToAddClusterInjectable from "../../../common/front-end-routing/routes/add-cluster/navigate-to-add-cluster.injectable";
+import kubeDirectoryPathInjectable from "../../../common/os/kube-directory-path.injectable";
 import isLinuxInjectable from "../../../common/vars/is-linux.injectable";
 import isWindowsInjectable from "../../../common/vars/is-windows.injectable";
 import openPathPickingDialogInjectable from "../../../features/path-picking-dialog/renderer/pick-paths.injectable";
@@ -23,6 +24,7 @@ const setupKubernetesClusterCatalogAddMenuListenerInjectable = getInjectable({
       const isWindows = di.inject(isWindowsInjectable);
       const isLinux = di.inject(isLinuxInjectable);
       const openPathPickingDialog = di.inject(openPathPickingDialogInjectable);
+      const kubeDirectoryPath = di.inject(kubeDirectoryPathInjectable);
 
       kubernetesClusterCategory.on("catalogAddMenu", (ctx) => {
         ctx.menuItems.push({
@@ -41,6 +43,7 @@ const setupKubernetesClusterCatalogAddMenuListenerInjectable = getInjectable({
                 openPathPickingDialog({
                   message: "Sync folder(s)",
                   buttonLabel: "Sync",
+                  defaultPath: kubeDirectoryPath,
                   properties: ["showHiddenFiles", "multiSelections", "openDirectory"],
                   onPick: addSyncEntries,
                 }),
@@ -52,6 +55,7 @@ const setupKubernetesClusterCatalogAddMenuListenerInjectable = getInjectable({
                 openPathPickingDialog({
                   message: "Sync file(s)",
                   buttonLabel: "Sync",
+                  defaultPath: kubeDirectoryPath,
                   properties: ["showHiddenFiles", "multiSelections", "openFile"],
                   onPick: addSyncEntries,
                 }),
@@ -66,6 +70,7 @@ const setupKubernetesClusterCatalogAddMenuListenerInjectable = getInjectable({
               openPathPickingDialog({
                 message: "Sync file(s)",
                 buttonLabel: "Sync",
+                defaultPath: kubeDirectoryPath,
                 properties: ["showHiddenFiles", "multiSelections", "openFile", "openDirectory"],
                 onPick: addSyncEntries,
               }),

@@ -43,5 +43,7 @@ export * from "./service-account.api.injectable";
 export * from "./stateful-set.api.injectable";
 export * from "./storage-class.api.injectable";
 export * from "./token";
+export * from "./validating-admission-policy-api.injectable";
+export * from "./validating-admission-policy-binding-api.injectable";
 export * from "./validating-webhook-configuration-api.injectable";
 export * from "./vertical-pod-autoscaler.api.injectable";

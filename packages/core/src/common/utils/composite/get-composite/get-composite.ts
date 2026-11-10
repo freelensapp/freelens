@@ -4,8 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { pipeline } from "@ogre-tools/fp";
-import { compact, countBy, filter, identity, map, nth, toPairs, uniq, without } from "lodash/fp";
+import { countBy, identity } from "es-toolkit";
 
 export interface Composite<T> {
   id: string;
@@ -31,20 +30,13 @@ export const getCompositeFor =
     handleMissingParentIds = throwMissingParentIds,
   }: Configuration<T>) =>
   (source: T[]) => {
-    const undefinedIds = pipeline(
-      source,
-      filter((x) => getId(x) === undefined),
-    );
+    const undefinedIds = source.filter((x) => getId(x) === undefined);
 
     if (undefinedIds.length) {
       throw new Error(`Tried to get a composite but encountered ${undefinedIds.length} undefined ids`);
     }
 
-    const selfReferencingIds = pipeline(
-      source,
-      filter((x) => getId(x) === getParentId(x)),
-      map(getId),
-    );
+    const selfReferencingIds = source.filter((x) => getId(x) === getParentId(x)).map(getId);
 
     if (selfReferencingIds.length) {
       throw new Error(
@@ -52,13 +44,9 @@ export const getCompositeFor =
       );
     }
 
-    const duplicateIds = pipeline(
-      source,
-      countBy(getId),
-      toPairs,
-      filter(([, count]) => count > 1),
-      map(nth(0)),
-    );
+    const duplicateIds = Object.entries(countBy(source, getId))
+      .filter(([, count]) => count > 1)
+      .map(([id]) => id);
 
     if (duplicateIds.length) {
       throw new Error(
@@ -66,11 +54,11 @@ export const getCompositeFor =
       );
     }
 
-    const allIds = pipeline(source, map(getId));
+    const allIds = source.map(getId);
 
-    const allParentIds = pipeline(source, map(getParentId), uniq, compact);
+    const allParentIds = [...new Set(source.map(getParentId))].filter((id): id is string => id != null);
 
-    const missingParentIds = without(allIds, allParentIds);
+    const missingParentIds = allParentIds.filter((id) => !allIds.includes(id));
 
     if (missingParentIds.length) {
       handleMissingParentIds({ missingParentIds, availableParentIds: allIds });
@@ -84,19 +72,13 @@ export const getCompositeFor =
         parentId: getParentId(thing),
         value: thing,
 
-        children: pipeline(
-          source,
-
-          filter((childThing) => {
+        children: transformChildren(
+          source.filter((childThing) => {
             const parentId = getParentId(childThing);
 
             return parentId === thingId;
           }),
-
-          transformChildren,
-
-          map(toComposite),
-        ),
+        ).map(toComposite),
       };
     };
 

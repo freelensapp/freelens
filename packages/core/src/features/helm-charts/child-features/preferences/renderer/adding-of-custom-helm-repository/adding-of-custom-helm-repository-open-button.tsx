@@ -6,7 +6,6 @@
 
 import { Button } from "@freelensapp/button";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import React from "react";
 import showDialogForAddingCustomHelmRepositoryInjectable from "./dialog-visibility/show-dialog-for-adding-custom-helm-repository.injectable";
 
 interface Dependencies {

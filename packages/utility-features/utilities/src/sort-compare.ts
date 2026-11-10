@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import semver, { coerce } from "semver";
+import * as verkit from "verkit";
 
 /** */
 
@@ -56,12 +56,12 @@ export function sortCompare<T>(left: T, right: T): Ordering {
 export function sortBySemverVersion<T extends { version: string }>(versioned: T[]): T[] {
   return versioned
     .map((versioned) => ({
-      __version: coerce(versioned.version, { loose: true }),
+      __version: verkit.coerce(versioned.version, { loose: true }),
       raw: versioned,
     }))
     .sort((left, right) => {
       if (left.__version && right.__version) {
-        return semver.compare(right.__version, left.__version);
+        return verkit.compare(right.__version, left.__version);
       }
 
       if (!left.__version && right.__version) {

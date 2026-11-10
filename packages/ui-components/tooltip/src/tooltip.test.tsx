@@ -4,15 +4,16 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import assert from "node:assert";
 import { render } from "@testing-library/react";
 import userEvent, { UserEvent } from "@testing-library/user-event";
-import assert from "assert";
-import React from "react";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { computeNextPosition, RectangleDimensions } from "./helpers";
 import { Tooltip, TooltipPosition } from "./tooltip";
 
 import type { RenderResult } from "@testing-library/react";
-import "@testing-library/jest-dom";
+import type { MockInstance } from "vitest";
+import "@testing-library/jest-dom/vitest";
 
 const getRectangle = (parts: Omit<RectangleDimensions, "width" | "height">): RectangleDimensions => {
   assert(parts.right >= parts.left);
@@ -26,11 +27,11 @@ const getRectangle = (parts: Omit<RectangleDimensions, "width" | "height">): Rec
 };
 
 describe("<Tooltip />", () => {
-  let requestAnimationFrameSpy: jest.SpyInstance<number, [callback: FrameRequestCallback]>;
+  let requestAnimationFrameSpy: MockInstance<(callback: FrameRequestCallback) => number>;
   let user: UserEvent;
 
   beforeEach(() => {
-    requestAnimationFrameSpy = jest.spyOn(window, "requestAnimationFrame");
+    requestAnimationFrameSpy = vi.spyOn(window, "requestAnimationFrame");
 
     requestAnimationFrameSpy.mockImplementation((cb) => {
       cb(0);

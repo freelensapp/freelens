@@ -7,8 +7,8 @@
 import "./resizing-anchor.scss";
 
 import { cssNames, noop } from "@freelensapp/utilities";
-import _ from "lodash";
-import { action, makeObservable, observable } from "mobx";
+import { throttle } from "es-toolkit";
+import { action, observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 
@@ -151,13 +151,13 @@ function directionDelta(P1: number, P2: number, M: number): number | false {
 
 @observer
 export class ResizingAnchor extends React.PureComponent<ResizingAnchorProps> {
-  @observable lastMouseEvent?: MouseEvent;
+  @observable accessor lastMouseEvent: MouseEvent | undefined;
 
   ref = React.createRef<HTMLDivElement>();
 
-  @observable isDragging = false;
+  @observable accessor isDragging = false;
 
-  @observable wasDragging = false;
+  @observable accessor wasDragging = false;
 
   static defaultProps = {
     onStart: noop,
@@ -179,8 +179,6 @@ export class ResizingAnchor extends React.PureComponent<ResizingAnchorProps> {
 
   constructor(props: ResizingAnchorProps) {
     super(props);
-
-    makeObservable(this);
 
     if (props.maxExtent < props.minExtent) {
       throw new Error("maxExtent must be >= minExtent");
@@ -237,7 +235,7 @@ export class ResizingAnchor extends React.PureComponent<ResizingAnchorProps> {
     }
   }
 
-  onDrag = _.throttle((event: MouseEvent) => {
+  onDrag = throttle((event: MouseEvent) => {
     /**
      * Some notes to help understand the following:
      *  - A browser's origin point is in the top left of the screen

@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { sidebarItemsInjectable } from "@freelensapp/cluster-sidebar";
+import { isShownInSidebarTree, sidebarItemsInjectable } from "@freelensapp/cluster-sidebar";
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
 
@@ -19,7 +19,7 @@ const siblingTabsInjectable = getInjectable({
         sidebarItems
           .get()
           .find(({ isActive }) => isActive.get())
-          ?.children.filter(({ isVisible }) => isVisible.get()) ?? [],
+          ?.children.filter(isShownInSidebarTree) ?? [],
     );
   },
 });

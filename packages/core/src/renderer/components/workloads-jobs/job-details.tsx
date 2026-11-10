@@ -10,7 +10,7 @@ import { Job } from "@freelensapp/kube-object";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { formatDuration } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { disposeOnUnmount, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import React from "react";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
 import { Badge, BadgeBoolean } from "../badge";
@@ -43,8 +43,14 @@ interface Dependencies {
 
 @observer
 class NonInjectedJobDetails extends React.Component<JobDetailsProps & Dependencies> {
+  private readonly disposers: (() => void)[] = [];
+
   componentDidMount() {
-    disposeOnUnmount(this, [this.props.subscribeStores([this.props.podStore])]);
+    this.disposers.push(this.props.subscribeStores([this.props.podStore]));
+  }
+
+  componentWillUnmount() {
+    this.disposers.forEach((dispose) => dispose());
   }
 
   render() {

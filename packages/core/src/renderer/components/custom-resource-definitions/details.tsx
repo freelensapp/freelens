@@ -9,10 +9,10 @@ import "./details.scss";
 import { Icon } from "@freelensapp/icon";
 import { CustomResourceDefinition } from "@freelensapp/kube-object";
 import { loggerInjectionToken } from "@freelensapp/logger";
+import { Link } from "@freelensapp/routing";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
-import { Link } from "react-router-dom";
 import { Badge } from "../badge";
 import { DrawerItem, DrawerTitle } from "../drawer";
 import { Input } from "../input";
@@ -83,12 +83,12 @@ class NonInjectedCustomResourceDefinitionDetails extends React.Component<
         <DrawerItem name="Resource">
           <Link to={crd.getResourceUrl()}>{crd.getResourceTitle()}</Link>
         </DrawerItem>
-        <DrawerItem name="Conversion" className="flex gaps align-flex-start">
-          <Input multiLine theme="round-black" className="box grow" value={crd.getConversion()} readOnly />
+        <DrawerItem name="Conversion" className="flex gap-2 items-start">
+          <Input multiLine theme="round-black" className="grow shrink-0 basis-0" value={crd.getConversion()} readOnly />
         </DrawerItem>
         <KubeObjectConditionsDrawer object={crd} />
         <DrawerTitle>Names</DrawerTitle>
-        <Table selectable className="names box grow">
+        <Table selectable className="names">
           <TableHead>
             <TableCell>plural</TableCell>
             <TableCell>singular</TableCell>
@@ -117,7 +117,7 @@ class NonInjectedCustomResourceDefinitionDetails extends React.Component<
         {printerColumns.length > 0 && (
           <>
             <DrawerTitle>Additional Printer Columns</DrawerTitle>
-            <Table selectable className="printer-columns box grow">
+            <Table selectable className="printer-columns">
               <TableHead>
                 <TableCell className="name">Name</TableCell>
                 <TableCell className="type">Type</TableCell>

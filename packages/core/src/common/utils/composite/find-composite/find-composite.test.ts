@@ -4,6 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { beforeEach, describe, expect, it } from "vitest";
 import { getCompositeFor } from "../get-composite/get-composite";
 import { findComposite } from "./find-composite";
 

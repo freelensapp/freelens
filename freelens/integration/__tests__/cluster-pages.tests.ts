@@ -5,8 +5,7 @@
  */
 
 import { describeIf } from "@freelensapp/test-utils";
-import { pipeline } from "@ogre-tools/fp";
-import { groupBy, toPairs } from "lodash/fp";
+import { afterEach, beforeEach, it } from "vitest";
 import { kindReady } from "../helpers/kind";
 /*
   Cluster tests are run if there is a pre-existing kind cluster. Before running cluster tests the TEST_NAMESPACE
@@ -60,15 +59,22 @@ describeIf(kindReady(TEST_KIND_CLUSTER_NAME, TEST_NAMESPACE))("KinD based tests"
   it(
     "should navigate around common cluster pages",
     async () => {
-      const scenariosByParent = pipeline(scenarios, groupBy("parentSidebarItemTestId"), toPairs);
+      const scenariosByParent = Object.entries(
+        scenarios.reduce<Record<string, typeof scenarios>>((grouped, scenario) => {
+          const key = String(scenario.parentSidebarItemTestId);
+
+          (grouped[key] ??= []).push(scenario);
+          return grouped;
+        }, {}),
+      );
 
       for (const [parentSidebarItemTestId, scenarios] of scenariosByParent) {
         if (parentSidebarItemTestId !== "null") {
-          await frame.click(`[data-testid="${parentSidebarItemTestId}"]`);
+          await utils.clickSidebarItem(frame, parentSidebarItemTestId);
         }
 
         for (const scenario of scenarios) {
-          await frame.click(`[data-testid="${scenario.sidebarItemTestId}"]`);
+          await utils.clickSidebarItem(frame, scenario.sidebarItemTestId);
 
           await frame.waitForSelector(scenario.expectedSelector, selectorTimeout);
         }
@@ -375,13 +381,25 @@ const scenarios = [
     parentSidebarItemTestId: "link-for-sidebar-item-config",
     sidebarItemTestId: "link-for-sidebar-item-mutating-webhook-configurations",
   },
+
+  {
+    expectedSelector: "h5.title",
+    parentSidebarItemTestId: "link-for-sidebar-item-config",
+    sidebarItemTestId: "link-for-sidebar-item-validating-admission-policies",
+  },
+
+  {
+    expectedSelector: "h5.title",
+    parentSidebarItemTestId: "link-for-sidebar-item-config",
+    sidebarItemTestId: "link-for-sidebar-item-validating-admission-policy-bindings",
+  },
 ];
 
 const navigateToPods = async (frame: Frame) => {
-  await frame.click(`[data-testid="link-for-sidebar-item-workloads"]`);
-  await frame.click(`[data-testid="link-for-sidebar-item-pods"]`);
+  await utils.clickSidebarItem(frame, "link-for-sidebar-item-workloads");
+  await utils.clickSidebarItem(frame, "link-for-sidebar-item-pods");
 };
 
 const navigateToNamespaces = async (frame: Frame) => {
-  await frame.click(`[data-testid="link-for-sidebar-item-namespaces"]`);
+  await utils.clickSidebarItem(frame, "link-for-sidebar-item-namespaces");
 };

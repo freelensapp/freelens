@@ -4,18 +4,20 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import assert from "node:assert";
 import { KubeApi } from "@freelensapp/kube-api";
 import { maybeKubeApiInjectable } from "@freelensapp/kube-api-specifics";
 import { KubeObject } from "@freelensapp/kube-object";
 import {
+  logDebugInjectionToken,
   logErrorInjectionToken,
   loggerInjectionToken,
   logInfoInjectionToken,
   logWarningInjectionToken,
 } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
-import assert from "assert";
 import { runInAction } from "mobx";
+import { beforeEach, describe, expect, it } from "vitest";
 import { KubeApi as ExternalKubeApi } from "../../../extensions/common-api/k8s-api";
 import clusterFrameContextForNamespacedResourcesInjectable from "../../../renderer/cluster-frame-context/for-namespaced-resources.injectable";
 import hostedClusterInjectable from "../../../renderer/cluster-frame-context/hosted-cluster.injectable";
@@ -70,6 +72,7 @@ describe("ApiManager", () => {
       const fallbackApiBase = "/apis/extensions/v1beta1/foo";
       const kubeApi = new TestApi(
         {
+          logDebug: di.inject(logDebugInjectionToken),
           logError: di.inject(logErrorInjectionToken),
           logInfo: di.inject(logInfoInjectionToken),
           logWarn: di.inject(logWarningInjectionToken),
@@ -160,6 +163,7 @@ describe("ApiManager", () => {
               return Object.assign(
                 new KubeApi(
                   {
+                    logDebug: di.inject(logDebugInjectionToken),
                     logError: di.inject(logErrorInjectionToken),
                     logInfo: di.inject(logInfoInjectionToken),
                     logWarn: di.inject(logWarningInjectionToken),

@@ -10,9 +10,9 @@ import { jobApiInjectable } from "@freelensapp/kube-api-specifics";
 import { showCheckedErrorNotificationInjectable, showErrorNotificationInjectable } from "@freelensapp/notifications";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { makeObservable, observable } from "mobx";
+import { observable } from "mobx";
 import { observer } from "mobx-react";
-import React, { Component } from "react";
+import { Component } from "react";
 import { Dialog } from "../../dialog";
 import { Input } from "../../input";
 import { maxLength, systemName } from "../../input/input_validators";
@@ -40,11 +40,10 @@ interface Dependencies {
 
 @observer
 class NonInjectedCronJobTriggerDialog extends Component<CronJobTriggerDialogProps & Dependencies> {
-  @observable jobName = "";
+  @observable accessor jobName = "";
 
   constructor(props: CronJobTriggerDialogProps & Dependencies) {
     super(props);
-    makeObservable(this);
   }
 
   onOpen = () => {
@@ -102,9 +101,9 @@ class NonInjectedCronJobTriggerDialog extends Component<CronJobTriggerDialogProp
         }
         done={this.props.closeCronJobTriggerDialog}
       >
-        <WizardStep contentClass="flex gaps column" next={() => this.trigger(cronJob)} nextLabel="Trigger">
-          <div className="flex gaps">Job name:</div>
-          <div className="flex gaps">
+        <WizardStep contentClass="flex gap-2 flex-col" next={() => this.trigger(cronJob)} nextLabel="Trigger">
+          <div className="flex gap-2">Job name:</div>
+          <div className="flex gap-2">
             <Input
               required
               autoFocus
@@ -114,7 +113,7 @@ class NonInjectedCronJobTriggerDialog extends Component<CronJobTriggerDialogProp
               maxLength={63}
               value={this.jobName}
               onChange={(v) => (this.jobName = v.toLowerCase())}
-              className="box grow"
+              className="grow shrink-0 basis-0"
             />
           </div>
         </WizardStep>

@@ -3,35 +3,32 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-/**
- * Copyright (c) Freelens Authors. All rights reserved.
- * Copyright (c) OpenLens Authors. All rights reserved.
- * Licensed under MIT License. See LICENSE in root directory for more information.
- */
 
 import { Icon } from "@freelensapp/icon";
 import { Spinner } from "@freelensapp/spinner";
 import { bytesToUnits, cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { isNumber } from "lodash";
 import { observer } from "mobx-react";
-import React from "react";
+import { useRef } from "react";
 import { getMetricLastPoints } from "../../../common/k8s-api/endpoints/metrics.api";
 import activeThemeInjectable from "../../themes/active.injectable";
 import { PieChart } from "../chart";
 import clusterOverviewMetricsInjectable from "./cluster-metrics.injectable";
 import { ClusterNoMetrics } from "./cluster-no-metrics";
 import styles from "./cluster-pie-charts.module.scss";
+import selectedMetricsTimeRangeInjectable from "./overview/selected-metrics-time-range.injectable";
 import selectedNodeRoleForMetricsInjectable from "./overview/selected-node-role-for-metrics.injectable";
+import { createMetricsTimeRangeKey } from "./overview/time-range-key";
 
 import type { Node } from "@freelensapp/kube-object";
 
-import type { IAsyncComputed } from "@ogre-tools/injectable-react";
 import type { IComputedValue } from "mobx";
 
 import type { ClusterMetricData } from "../../../common/k8s-api/endpoints/metrics.api/request-cluster-metrics-by-node-names.injectable";
+import type { IAsyncComputed } from "../../../common/utils/async-computed";
 import type { LensTheme } from "../../themes/lens-theme";
 import type { PieChartData } from "../chart";
+import type { SelectedMetricsTimeRange } from "./overview/selected-metrics-time-range.injectable";
 import type { SelectedNodeRoleForMetrics } from "./overview/selected-node-role-for-metrics.injectable";
 
 function createLabels(rawLabelData: [string, number | undefined][]): string[] {
@@ -42,12 +39,13 @@ const checkedBytesToUnits = (value: number | undefined) => (typeof value === "nu
 
 interface Dependencies {
   selectedNodeRoleForMetrics: SelectedNodeRoleForMetrics;
-  clusterOverviewMetrics: IAsyncComputed<ClusterMetricData | undefined>;
+  clusterOverviewMetrics: IAsyncComputed<Partial<ClusterMetricData> | undefined>;
   activeTheme: IComputedValue<LensTheme>;
+  selectedMetricsTimeRange: SelectedMetricsTimeRange;
 }
 
 const renderLimitWarning = () => (
-  <div className="node-warning flex gaps align-center">
+  <div className="node-warning flex gap-4 items-center">
     <Icon material="info" />
     <p>Specified limits are higher than node capacity!</p>
   </div>
@@ -71,14 +69,14 @@ const renderCharts = (defaultColor: string, lastPoints: Partial<Record<keyof Clu
   } = lastPoints;
 
   if (
-    !isNumber(cpuCapacity) ||
-    !isNumber(cpuAllocatableCapacity) ||
-    !isNumber(podCapacity) ||
-    !isNumber(podAllocatableCapacity) ||
-    !isNumber(memoryAllocatableCapacity) ||
-    !isNumber(memoryCapacity) ||
-    !isNumber(memoryUsage) ||
-    !isNumber(memoryRequests)
+    typeof cpuCapacity !== "number" ||
+    typeof cpuAllocatableCapacity !== "number" ||
+    typeof podCapacity !== "number" ||
+    typeof podAllocatableCapacity !== "number" ||
+    typeof memoryAllocatableCapacity !== "number" ||
+    typeof memoryCapacity !== "number" ||
+    typeof memoryUsage !== "number" ||
+    typeof memoryRequests !== "number"
   ) {
     return null;
   }
@@ -155,8 +153,8 @@ const renderCharts = (defaultColor: string, lastPoints: Partial<Record<keyof Clu
   };
 
   return (
-    <div className="flex justify-center box grow gaps">
-      <div className={cssNames(styles.chart, "flex column align-center box grow")}>
+    <div className="flex justify-center grow shrink-0 basis-0 gap-2">
+      <div className={cssNames(styles.chart, "flex flex-col items-center grow shrink-0 basis-0")}>
         <PieChart
           data={cpuData}
           title="CPU"
@@ -164,7 +162,7 @@ const renderCharts = (defaultColor: string, lastPoints: Partial<Record<keyof Clu
         />
         {(cpuLimits ?? cpuAllocatableCapacity) > cpuAllocatableCapacity && renderLimitWarning()}
       </div>
-      <div className={cssNames(styles.chart, "flex column align-center box grow")}>
+      <div className={cssNames(styles.chart, "flex flex-col items-center grow shrink-0 basis-0")}>
         <PieChart
           data={memoryData}
           title="Memory"
@@ -172,17 +170,17 @@ const renderCharts = (defaultColor: string, lastPoints: Partial<Record<keyof Clu
         />
         {(memoryLimits ?? memoryAllocatableCapacity) > memoryAllocatableCapacity && renderLimitWarning()}
       </div>
-      <div className={cssNames(styles.chart, "flex column align-center box grow")}>
+      <div className={cssNames(styles.chart, "flex flex-col items-center grow shrink-0 basis-0")}>
         <PieChart data={podsData} title="Pods" legendColors={["#4caf50", defaultColor]} />
       </div>
     </div>
   );
 };
 
-const renderContent = (defaultColor: string, nodes: Node[], metrics: ClusterMetricData | undefined) => {
+const renderContent = (defaultColor: string, nodes: Node[], metrics: Partial<ClusterMetricData> | undefined) => {
   if (!nodes.length) {
     return (
-      <div className={cssNames(styles.empty, "flex column box grow align-center justify-center")}>
+      <div className={cssNames(styles.empty, "flex flex-col grow shrink-0 basis-0 items-center justify-center")}>
         <Icon material="info" />
         No Nodes Available.
       </div>
@@ -191,7 +189,7 @@ const renderContent = (defaultColor: string, nodes: Node[], metrics: ClusterMetr
 
   if (!metrics) {
     return (
-      <div className={cssNames(styles.empty, "flex justify-center align-center box grow")}>
+      <div className={cssNames(styles.empty, "flex justify-center items-center grow shrink-0 basis-0")}>
         <Spinner />
       </div>
     );
@@ -212,15 +210,28 @@ const renderContent = (defaultColor: string, nodes: Node[], metrics: ClusterMetr
 };
 
 const NonInjectedClusterPieCharts = observer(
-  ({ selectedNodeRoleForMetrics, clusterOverviewMetrics, activeTheme }: Dependencies) => (
-    <div className="flex">
-      {renderContent(
-        activeTheme.get().colors.pieChartDefaultColor,
-        selectedNodeRoleForMetrics.nodes.get(),
-        clusterOverviewMetrics.value.get(),
-      )}
-    </div>
-  ),
+  ({ selectedNodeRoleForMetrics, clusterOverviewMetrics, activeTheme, selectedMetricsTimeRange }: Dependencies) => {
+    const currentRangeKey = createMetricsTimeRangeKey(selectedMetricsTimeRange.value.get());
+    const lastResolvedRangeKeyRef = useRef<string | undefined>(undefined);
+    const isPending = clusterOverviewMetrics.pending.get();
+
+    if (!isPending) {
+      lastResolvedRangeKeyRef.current = currentRangeKey;
+    }
+
+    const visibleMetrics =
+      isPending && currentRangeKey !== lastResolvedRangeKeyRef.current ? undefined : clusterOverviewMetrics.value.get();
+
+    return (
+      <div className="flex">
+        {renderContent(
+          activeTheme.get().colors.pieChartDefaultColor,
+          selectedNodeRoleForMetrics.nodes.get(),
+          visibleMetrics,
+        )}
+      </div>
+    );
+  },
 );
 
 export const ClusterPieCharts = withInjectables<Dependencies>(NonInjectedClusterPieCharts, {
@@ -228,5 +239,6 @@ export const ClusterPieCharts = withInjectables<Dependencies>(NonInjectedCluster
     activeTheme: di.inject(activeThemeInjectable),
     clusterOverviewMetrics: di.inject(clusterOverviewMetricsInjectable),
     selectedNodeRoleForMetrics: di.inject(selectedNodeRoleForMetricsInjectable),
+    selectedMetricsTimeRange: di.inject(selectedMetricsTimeRangeInjectable),
   }),
 });

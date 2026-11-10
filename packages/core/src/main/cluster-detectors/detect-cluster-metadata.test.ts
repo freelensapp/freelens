@@ -4,6 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import appPathsStateInjectable from "../../common/app-paths/app-paths-state.injectable";
 import directoryForKubeConfigsInjectable from "../../common/app-paths/directory-for-kube-configs/directory-for-kube-configs.injectable";
 import directoryForUserDataInjectable from "../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
@@ -28,10 +29,10 @@ describe("detect-cluster-metadata", () => {
   beforeEach(async () => {
     const di = getDiForUnitTesting();
 
-    const lastSeenDetectMock = jest.fn().mockReturnValue(Promise.resolve({ value: "some-time-stamp", accuracy: 100 }));
-    const nodeCountDetectMock = jest.fn().mockReturnValue(Promise.resolve({ value: 42, accuracy: 100 }));
-    const clusterIdDetectMock = jest.fn().mockReturnValue(Promise.resolve({ value: "some-cluster-id", accuracy: 100 }));
-    const distributionDetectMock = jest
+    const lastSeenDetectMock = vi.fn().mockReturnValue(Promise.resolve({ value: "some-time-stamp", accuracy: 100 }));
+    const nodeCountDetectMock = vi.fn().mockReturnValue(Promise.resolve({ value: 42, accuracy: 100 }));
+    const clusterIdDetectMock = vi.fn().mockReturnValue(Promise.resolve({ value: "some-cluster-id", accuracy: 100 }));
+    const distributionDetectMock = vi
       .fn()
       .mockReturnValue(Promise.resolve({ value: "some-distribution", accuracy: 100 }));
 

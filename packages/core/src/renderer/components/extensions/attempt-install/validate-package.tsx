@@ -4,11 +4,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { isObject, isString, listTarEntries, readFileFromTar } from "@freelensapp/utilities";
-import path from "path";
-import { manifestFilename } from "../../../../extensions/extension-discovery/extension-discovery";
+import path from "node:path";
+import { listTarEntries, readFileFromTar } from "@freelensapp/utilities";
+import { manifestFilename, validateExtensionManifest } from "../../../../features/extensions/installer/common/manifest";
 
-import type { LensExtensionManifest } from "@freelensapp/legacy-extensions";
+import type { LensExtensionManifest } from "../../../../extensions/installed-extension";
 
 export async function validatePackage(filePath: string): Promise<LensExtensionManifest> {
   const tarFiles = await listTarEntries(filePath);
@@ -34,13 +34,5 @@ export async function validatePackage(filePath: string): Promise<LensExtensionMa
     parseJson: true,
   });
 
-  if (!isObject(manifest) || (!isString(manifest.main) && !isString(manifest.renderer))) {
-    throw new Error(`${manifestFilename} must specify "main" and/or "renderer" field`);
-  }
-
-  if (!isObject(manifest.engines) || !isString(manifest.engines.freelens)) {
-    throw new Error(`${manifestFilename} must specify "freelens" in "engines" field`);
-  }
-
-  return manifest as unknown as LensExtensionManifest;
+  return validateExtensionManifest(manifest);
 }

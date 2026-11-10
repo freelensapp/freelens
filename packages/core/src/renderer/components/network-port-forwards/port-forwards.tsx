@@ -7,8 +7,8 @@
 import "./port-forwards.scss";
 
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { computed, makeObservable } from "mobx";
-import { disposeOnUnmount, observer } from "mobx-react";
+import { observableRef } from "mobx";
+import { observer } from "mobx-react";
 import React from "react";
 import navigateToPortForwardsInjectable from "../../../common/front-end-routing/routes/cluster/network/port-forwards/navigate-to-port-forwards.injectable";
 import portForwardStoreInjectable from "../../port-forward/port-forward-store/port-forward-store.injectable";
@@ -44,17 +44,34 @@ interface Dependencies {
 
 @observer
 class NonInjectedPortForwards extends React.Component<Dependencies> {
+  private readonly disposers: (() => void)[] = [];
+
+  // mobx-react 9 forbids reading this.props inside a derivation. getItems is invoked
+  // from ItemListLayout's render (a derivation other than this component's own render),
+  // so it reads props from this observable snapshot, refreshed on every update, instead
+  // of this.props.
+  @observableRef private accessor observableProps: Readonly<Dependencies>;
+
   constructor(props: Dependencies) {
     super(props);
-
-    makeObservable(this);
+    this.observableProps = props;
   }
 
   componentDidMount() {
-    disposeOnUnmount(this, [this.props.portForwardStore.watch()]);
+    this.disposers.push(this.props.portForwardStore.watch());
   }
 
-  @computed
+  componentWillUnmount() {
+    this.disposers.forEach((dispose) => dispose());
+  }
+
+  componentDidUpdate() {
+    this.observableProps = this.props;
+  }
+
+  // Plain getter (not @computed): reads this.props, which mobx-react 9 forbids
+  // inside a derivation. Read from render, reactivity is preserved by the
+  // observer render reaction.
   get selectedPortForward() {
     const forwardport = this.props.forwardport.get();
 
@@ -97,14 +114,16 @@ class NonInjectedPortForwards extends React.Component<Dependencies> {
   }
 
   render() {
+    // One page serves every path of the route, so the path parameter keys the crash of its content: another path
+    // renders it again.
     return (
-      <SiblingsInTabLayout>
+      <SiblingsInTabLayout resetKey={this.props.forwardport.get()}>
         <ItemListLayout
           isConfigurable
           tableId="port_forwards"
           className="PortForwards"
           store={this.props.portForwardStore}
-          getItems={() => this.props.portForwardStore.items}
+          getItems={() => this.observableProps.portForwardStore.items}
           sortingCallbacks={{
             [columnId.name]: (item) => item.getName(),
             [columnId.namespace]: (item) => item.getNs(),

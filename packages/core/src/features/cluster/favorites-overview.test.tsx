@@ -4,6 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { beforeEach, describe, expect, it } from "vitest";
 import navigateToFavoritesOverviewInjectable from "../../common/front-end-routing/routes/cluster/favorites/overview/navigate-to-favorites-overview.injectable";
 import {
   type ApplicationBuilder,

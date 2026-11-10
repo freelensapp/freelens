@@ -4,8 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import assert from "node:assert";
 import { getInjectable, getInjectionToken } from "@ogre-tools/injectable";
-import assert from "assert";
 
 import type { Runnable } from "@freelensapp/run-many";
 

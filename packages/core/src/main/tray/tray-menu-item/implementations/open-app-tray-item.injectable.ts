@@ -4,7 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { pipeline } from "@ogre-tools/fp";
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
 import withErrorLoggingInjectable from "../../../../common/utils/with-error-logging/with-error-logging.injectable";
@@ -29,10 +28,8 @@ const openAppTrayItemInjectable = getInjectable({
       enabled: computed(() => true),
       visible: computed(() => true),
 
-      click: pipeline(
-        showApplicationWindow,
-        withErrorLoggingFor(() => "[TRAY]: Opening of application window failed."),
-        withErrorSuppression,
+      click: withErrorSuppression(
+        withErrorLoggingFor(() => "[TRAY]: Opening of application window failed.")(showApplicationWindow),
       ),
     };
   },

@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { action, computed, makeObservable, observable } from "mobx";
+import { action, computed, observable } from "mobx";
 import { ipcRendererOn } from "../../../../common/ipc";
 
 import type {
@@ -20,8 +20,7 @@ import type {
 import "../../../../common/catalog-entities";
 import { iter } from "@freelensapp/utilities";
 import { ipcRenderer } from "electron";
-import { once } from "lodash";
-import { isMainFrame } from "process";
+import { once } from "es-toolkit";
 import { CatalogRunEvent } from "../../../../common/catalog/catalog-run-event";
 import { catalogEntityRunListener, catalogInitChannel, catalogItemsChannel } from "../../../../common/ipc/catalog";
 
@@ -54,9 +53,7 @@ export class CatalogEntityRegistry {
    */
   protected readonly rawEntities: (CatalogEntityData & CatalogEntityKindData)[] = [];
 
-  constructor(protected readonly dependencies: Dependencies) {
-    makeObservable(this);
-  }
+  constructor(protected readonly dependencies: Dependencies) {}
 
   protected getActiveEntityById() {
     const activeEntityId = this.activeEntityId.get();
@@ -101,7 +98,7 @@ export class CatalogEntityRegistry {
     // Make sure that we get items ASAP and not the next time one of them changes
     ipcRenderer.send(catalogInitChannel);
 
-    if (isMainFrame) {
+    if (process.isMainFrame) {
       ipcRendererOn(catalogEntityRunListener, (event, id: string) => {
         const entity = this.getById(id);
 

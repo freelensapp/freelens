@@ -5,7 +5,7 @@
  */
 
 import { ConfigMap, Pod, Secret, SecretType } from "@freelensapp/kube-object";
-import React from "react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import configMapStoreInjectable from "../../config-maps/store.injectable";
 import secretStoreInjectable from "../../config-secrets/store.injectable";
@@ -14,33 +14,35 @@ import { ContainerEnvironment } from "../pod-container-env";
 
 import type { Container } from "@freelensapp/kube-object";
 
+import type { Mocked } from "vitest";
+
 import type { ConfigMapStore } from "../../config-maps/store";
 import type { SecretStore } from "../../config-secrets/store";
 import type { DiRender } from "../../test-utils/renderFor";
 
 describe("<ContainerEnv />", () => {
   let render: DiRender;
-  let secretStore: jest.Mocked<Pick<SecretStore, "load" | "getByName">>;
-  let configMapStore: jest.Mocked<Pick<ConfigMapStore, "load" | "getByName">>;
+  let secretStore: Mocked<Pick<SecretStore, "load" | "getByName">>;
+  let configMapStore: Mocked<Pick<ConfigMapStore, "load" | "getByName">>;
 
   beforeEach(() => {
     const di = getDiForUnitTesting();
 
     secretStore = {
-      load: jest.fn().mockImplementation(async () => {
+      load: vi.fn().mockImplementation(async () => {
         return {} as Secret;
       }),
-      getByName: jest.fn(),
+      getByName: vi.fn(),
     };
     configMapStore = {
-      load: jest.fn().mockImplementation(async () => {
+      load: vi.fn().mockImplementation(async () => {
         return {} as ConfigMap;
       }),
-      getByName: jest.fn(),
+      getByName: vi.fn(),
     };
 
-    di.override(secretStoreInjectable, () => secretStore as jest.Mocked<SecretStore>);
-    di.override(configMapStoreInjectable, () => configMapStore as jest.Mocked<ConfigMapStore>);
+    di.override(secretStoreInjectable, () => secretStore as Mocked<SecretStore>);
+    di.override(configMapStoreInjectable, () => configMapStore as Mocked<ConfigMapStore>);
 
     render = renderFor(di);
   });

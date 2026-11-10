@@ -4,9 +4,14 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { getLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di";
 import { clusterSetFrameIdHandler, clusterStates } from "../../common/ipc/cluster";
-import { extensionDiscoveryStateChannel, extensionLoaderFromMainChannel } from "../../common/ipc/extension-handling";
+import {
+  extensionDiscoveryStateChannel,
+  extensionLoaderFromMainChannel,
+  extensionLoaderLoadFailuresFromMainChannel,
+  extensionLoaderSetIsEnabledChannel,
+  extensionLoaderTornDownChannel,
+} from "../../common/ipc/extension-handling";
 import {
   type WindowAction,
   windowActionHandleChannel,
@@ -14,16 +19,17 @@ import {
   windowOpenAppMenuAsContextMenuChannel,
 } from "../../common/ipc/window";
 import { toJS } from "../../common/utils";
+import { getDiForExtensionApi } from "../../extensions/extension-api-di";
 import ipcRendererInjectable from "../utils/channel/ipc-renderer.injectable";
 
-import type { InstalledExtension, LensExtensionId } from "@freelensapp/legacy-extensions";
-
-import type { Location } from "history";
+import type { Location } from "@freelensapp/routing";
 
 import type { ClusterId, ClusterState } from "../../common/cluster-types";
+import type { ExtensionLoadFailure } from "../../extensions/extension-loader/load-failure";
+import type { InstalledExtension, LensExtensionId } from "../../extensions/installed-extension";
 
 function requestMain(channel: string, ...args: any[]) {
-  const di = getLegacyGlobalDiForExtensionApi();
+  const di = getDiForExtensionApi();
 
   const ipcRenderer = di.inject(ipcRendererInjectable);
 
@@ -31,7 +37,7 @@ function requestMain(channel: string, ...args: any[]) {
 }
 
 function emitToMain(channel: string, ...args: any[]) {
-  const di = getLegacyGlobalDiForExtensionApi();
+  const di = getDiForExtensionApi();
 
   const ipcRenderer = di.inject(ipcRendererInjectable);
 
@@ -42,7 +48,10 @@ export function emitOpenAppMenuAsContextMenu(): void {
   emitToMain(windowOpenAppMenuAsContextMenuChannel);
 }
 
-export function emitWindowLocationChanged(location: Location): void {
+// `Partial<Location>` accepts both the history v5 `Location` and the
+// `mobx-observable-history` (history v4) location object; the payload is only
+// serialized and forwarded, the main process ignores its contents.
+export function emitWindowLocationChanged(location: Partial<Location>): void {
   emitToMain(windowLocationChangedChannel, location);
 }
 
@@ -64,4 +73,16 @@ export function requestInitialExtensionDiscovery(): Promise<{ isLoaded: boolean 
 
 export function requestExtensionLoaderInitialState(): Promise<[LensExtensionId, InstalledExtension][]> {
   return requestMain(extensionLoaderFromMainChannel);
+}
+
+export function requestExtensionLoaderMainLoadFailures(): Promise<[LensExtensionId, ExtensionLoadFailure][]> {
+  return requestMain(extensionLoaderLoadFailuresFromMainChannel);
+}
+
+export function requestExtensionLoaderSetIsEnabled(extensionId: LensExtensionId, isEnabled: boolean): Promise<void> {
+  return requestMain(extensionLoaderSetIsEnabledChannel, extensionId, isEnabled);
+}
+
+export function requestExtensionLoaderTornDown(extensionId: LensExtensionId): Promise<void> {
+  return requestMain(extensionLoaderTornDownChannel, extensionId);
 }

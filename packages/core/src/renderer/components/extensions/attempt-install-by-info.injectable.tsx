@@ -8,10 +8,8 @@ import { loggerInjectionToken } from "@freelensapp/logger";
 import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import { isObject } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
-import { reduce } from "lodash";
-import React from "react";
-import { SemVer } from "semver";
-import URLParse from "url-parse";
+import { reduce } from "es-toolkit/compat";
+import * as verkit from "verkit";
 import getBasenameOfPathInjectable from "../../../common/path/get-basename.injectable";
 import extensionInstallationStateStoreInjectable from "../../../extensions/extension-installation-state-store/extension-installation-state-store.injectable";
 import downloadBinaryViaChannelInjectable from "../../../renderer/fetch/download-binary-via-channel.injectable";
@@ -61,11 +59,12 @@ const attemptInstallByInfoInjectable = getInjectable({
       const { name, version: versionOrTagName, requireConfirmation = false } = info;
       const disposer = extensionInstallationStateStore.startPreInstall();
       const baseUrl = await getBaseRegistryUrl();
-      const registryUrl = new URLParse(baseUrl).set("pathname", name).toString();
+      const registryUrl = new URL(baseUrl);
+      registryUrl.pathname = name;
       let json: NpmRegistryPackageDescriptor;
 
       try {
-        const result = await downloadJson(registryUrl, { timeout: 15_000 });
+        const result = await downloadJson(registryUrl.href, { timeout: 15_000 });
 
         if (!result.callWasSuccessful) {
           showErrorNotification(`Failed to get registry information for extension: ${result.error}`);
@@ -140,13 +139,13 @@ const attemptInstallByInfoInjectable = getInjectable({
         }
       } else {
         const versions = Object.keys(json.versions)
-          .map((version) => new SemVer(version, { loose: true }))
+          .map((version) => verkit.parse(version, { loose: true }))
           // ignore pre-releases for auto picking the version
-          .filter((version) => version.prerelease.length === 0);
+          .filter((version) => !version.prerelease?.length);
 
-        const latestVersion = reduce(versions, (prev, curr) => (prev.compareMain(curr) === -1 ? curr : prev));
+        const latestVersion = reduce(versions, (prev, curr) => (verkit.compareMain(prev, curr) === -1 ? curr : prev));
 
-        version = latestVersion?.format();
+        version = (latestVersion && verkit.normalize(latestVersion)) ?? undefined;
       }
 
       if (!version) {
@@ -195,7 +194,23 @@ const attemptInstallByInfoInjectable = getInjectable({
         return disposer();
       }
 
-      return attemptInstall({ fileName, data: Buffer.from(request.response) }, disposer);
+      const integrity = versionInfo?.dist.integrity;
+
+      if (!integrity) {
+        logger.warn(`[ATTEMPT-INSTALL-BY-INFO]: registry has no integrity for ${name}@${version}`);
+      }
+
+      return attemptInstall(
+        {
+          fileName,
+          data: Buffer.from(request.response),
+          // The concrete version, not the tag that was asked for: a later tag
+          // move must not change what counts as installed.
+          source: { kind: "registry", name, version },
+          checksum: integrity ? { kind: "integrity", value: integrity } : undefined,
+        },
+        disposer,
+      );
     };
   },
 });

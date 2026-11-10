@@ -8,9 +8,9 @@ import { Button } from "@freelensapp/button";
 import { showErrorNotificationInjectable, showSuccessNotificationInjectable } from "@freelensapp/notifications";
 import { isDefined, iter } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
+import { debounce } from "es-toolkit/compat";
 import fse from "fs-extra";
-import { debounce } from "lodash";
-import { action, computed, makeObservable, observable } from "mobx";
+import { action, computed, observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import * as uuid from "uuid";
@@ -23,8 +23,9 @@ import { SettingLayout } from "../layout/setting-layout";
 import { MonacoEditor } from "../monaco-editor";
 import styles from "./add-cluster.module.scss";
 
-import type { KubeConfig } from "@freelensapp/kubernetes-client-node";
 import type { ShowNotification } from "@freelensapp/notifications";
+
+import type { KubeConfig } from "@kubernetes/client-node";
 
 import type { EmitAppEvent } from "../../../common/app-event-bus/emit-event.injectable";
 import type { NavigateToCatalog } from "../../../common/front-end-routing/routes/catalog/navigate-to-catalog.injectable";
@@ -58,14 +59,13 @@ function getContexts(config: KubeConfig): Map<string, Option> {
 
 @observer
 class NonInjectedAddCluster extends React.Component<Dependencies> {
-  @observable kubeContexts = observable.map<string, Option>();
-  @observable customConfig = "";
-  @observable isWaiting = false;
-  @observable errors: string[] = [];
+  @observable accessor kubeContexts = observable.map<string, Option>();
+  @observable accessor customConfig = "";
+  @observable accessor isWaiting = false;
+  @observable accessor errors: string[] = [];
 
   constructor(props: Dependencies) {
     super(props);
-    makeObservable(this);
   }
 
   componentDidMount() {
@@ -129,7 +129,7 @@ class NonInjectedAddCluster extends React.Component<Dependencies> {
             Read more about adding clusters.
           </a>
         </p>
-        <div className="flex column">
+        <div className="flex flex-col">
           <MonacoEditor
             autoFocus
             className={styles.editor}

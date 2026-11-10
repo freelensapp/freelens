@@ -12,8 +12,8 @@ import { showCheckedErrorNotificationInjectable, showSuccessNotificationInjectab
 import { Spinner } from "@freelensapp/spinner";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { computed, makeObservable, observable, reaction } from "mobx";
-import { disposeOnUnmount, observer } from "mobx-react";
+import { observable } from "mobx";
+import { observer } from "mobx-react";
 import React, { Component } from "react";
 import dockStoreInjectable from "./dock/store.injectable";
 
@@ -63,26 +63,26 @@ class NonInjectedInfoPanel extends Component<InfoPanelProps & Dependencies> {
     showStatusPanel: true,
   };
 
-  @observable error = "";
-  @observable waiting = false;
+  @observable accessor error = "";
+  @observable accessor waiting = false;
 
   constructor(props: InfoPanelProps & Dependencies) {
     super(props);
-    makeObservable(this);
   }
 
-  componentDidMount() {
-    disposeOnUnmount(this, [
-      reaction(
-        () => this.props.tabId,
-        () => {
-          this.waiting = false;
-        },
-      ),
-    ]);
+  componentDidUpdate(prevProps: InfoPanelProps & Dependencies) {
+    // Reset the waiting state when the panel is reused for a different dock tab.
+    // Previously a reaction on this.props.tabId did this; mobx-react 9 no longer
+    // makes this.props observable, so react to the prop change in the lifecycle.
+    if (prevProps.tabId !== this.props.tabId) {
+      this.waiting = false;
+    }
   }
 
-  @computed get errorInfo() {
+  // Plain getter (not @computed): reads this.props, which mobx-react 9 forbids
+  // inside a derivation. Read from render, reactivity is preserved by the
+  // observer render reaction.
+  get errorInfo() {
     return this.props.error;
   }
 
@@ -150,10 +150,10 @@ class NonInjectedInfoPanel extends Component<InfoPanelProps & Dependencies> {
     const isDisabled = !!(disableSubmit || waiting || error);
 
     return (
-      <div className={cssNames("InfoPanel flex gaps align-center", className)}>
+      <div className={cssNames("InfoPanel flex gap-2 items-center", className)}>
         <div className="controls">{controls}</div>
         {showStatusPanel && (
-          <div className="flex gaps align-center">
+          <div className="flex gap-2 items-center">
             {waiting ? (
               <>
                 <Spinner data-testid={this.props.submittingTestId} /> {submittingMessage}

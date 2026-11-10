@@ -10,9 +10,16 @@ import { computed } from "mobx";
 import rendererExtensionsInjectable from "../../extensions/renderer-extensions.injectable";
 import { staticKubeObjectHandlerInjectionToken } from "./handler";
 
+import type { Injectable } from "@ogre-tools/injectable";
+import type { IComputedValue } from "mobx";
+import type { ReadonlyDeep } from "type-fest";
+
 import type { KubeObjectHandlerRegistration, KubeObjectHandlers } from "./handler";
 
-const kubeObjectHandlersInjectable = getInjectable({
+// Annotated for declaration emit; see ../themes/declaration.ts.
+const kubeObjectHandlersInjectable: Injectable<
+  IComputedValue<ReadonlyDeep<Map<string, Map<string, Partial<KubeObjectHandlers>[]>>>>
+> = getInjectable({
   id: "kube-object-handlers",
   instantiate: (di) => {
     const extensions = di.inject(rendererExtensionsInjectable);

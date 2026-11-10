@@ -5,13 +5,12 @@
  */
 
 import { disposer } from "@freelensapp/utilities";
-import { action, computed, makeObservable, observable } from "mobx";
-
-import type { InstalledExtension, LensExtensionId, LensExtensionManifest } from "@freelensapp/legacy-extensions";
+import { action, computed, observable } from "mobx";
 
 import type { ProtocolHandlerRegistration } from "../common/protocol-handler/registration";
 import type { Logger } from "./common-api";
 import type { EnsureHashedDirectoryForExtension } from "./extension-loader/file-system-provisioner-store/ensure-hashed-directory-for-extension.injectable";
+import type { InstalledExtension, LensExtensionId, LensExtensionManifest } from "./installed-extension";
 
 export const Disposers = Symbol("disposers");
 
@@ -24,7 +23,6 @@ export class LensExtension {
   readonly id: LensExtensionId;
   readonly manifest: LensExtensionManifest;
   readonly manifestPath: string;
-  readonly isBundled: boolean;
 
   get sanitizedExtensionId() {
     return sanitizeExtensionName(this.name);
@@ -37,7 +35,7 @@ export class LensExtension {
 
   protocolHandlers: ProtocolHandlerRegistration[] = [];
 
-  @observable private _isEnabled = false;
+  @observable private accessor _isEnabled = false;
 
   @computed get isEnabled() {
     return this._isEnabled;
@@ -48,13 +46,11 @@ export class LensExtension {
    */
   [Disposers] = disposer();
 
-  constructor(deps: LensExtensionDependencies, { id, manifest, manifestPath, isBundled }: InstalledExtension) {
+  constructor(deps: LensExtensionDependencies, { id, manifest, manifestPath }: InstalledExtension) {
     this.dependencies = deps;
     this.id = id;
     this.manifest = manifest as LensExtensionManifest;
     this.manifestPath = manifestPath;
-    this.isBundled = isBundled;
-    makeObservable(this);
   }
 
   get name() {

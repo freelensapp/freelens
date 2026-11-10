@@ -4,36 +4,34 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import asyncFn from "@async-fn/jest";
+import asyncFn from "@async-fn/vitest";
 import { getPromiseStatus } from "@freelensapp/test-utils";
-import { pipeline } from "@ogre-tools/fp";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { getDiForUnitTesting } from "../../../main/getDiForUnitTesting";
 import logErrorInjectable from "../../log-error.injectable";
 import withErrorLoggingInjectable from "./with-error-logging.injectable";
 
-import type { AsyncFnMock } from "@async-fn/jest";
+import type { AsyncFnMock } from "@async-fn/vitest";
+import type { Mock } from "vitest";
 
 describe("with-error-logging", () => {
   describe("given decorated sync function", () => {
-    let toBeDecorated: jest.Mock<number | undefined, [string, string]>;
+    let toBeDecorated: Mock<(a: string, b: string) => number | undefined>;
     let decorated: (a: string, b: string) => number | undefined;
-    let logErrorMock: jest.Mock;
+    let logErrorMock: Mock;
 
     beforeEach(() => {
       const di = getDiForUnitTesting();
 
-      logErrorMock = jest.fn();
+      logErrorMock = vi.fn();
 
       di.override(logErrorInjectable, () => logErrorMock);
 
       const withErrorLoggingFor = di.inject(withErrorLoggingInjectable);
 
-      toBeDecorated = jest.fn();
+      toBeDecorated = vi.fn();
 
-      decorated = pipeline(
-        toBeDecorated,
-        withErrorLoggingFor((error: any) => `some-error-message-for-${error.message}`),
-      );
+      decorated = withErrorLoggingFor((error: any) => `some-error-message-for-${error.message}`)(toBeDecorated);
     });
 
     describe("when function does not throw and returns value", () => {
@@ -112,12 +110,12 @@ describe("with-error-logging", () => {
   describe("given decorated async function", () => {
     let decorated: (a: string, b: string) => Promise<number | undefined>;
     let toBeDecorated: AsyncFnMock<typeof decorated>;
-    let logErrorMock: jest.Mock;
+    let logErrorMock: Mock;
 
     beforeEach(() => {
       const di = getDiForUnitTesting();
 
-      logErrorMock = jest.fn();
+      logErrorMock = vi.fn();
 
       di.override(logErrorInjectable, () => logErrorMock);
 
@@ -125,10 +123,8 @@ describe("with-error-logging", () => {
 
       toBeDecorated = asyncFn();
 
-      decorated = pipeline(
+      decorated = withErrorLoggingFor((error: any) => `some-error-message-for-${error.message || error.someProperty}`)(
         toBeDecorated,
-
-        withErrorLoggingFor((error: any) => `some-error-message-for-${error.message || error.someProperty}`),
       );
     });
 

@@ -6,7 +6,7 @@
 
 import { Icon } from "@freelensapp/icon";
 import { observableCrate } from "@freelensapp/utilities";
-import { action, comparer, computed, observable } from "mobx";
+import { action, compareStructural, computed, observable } from "mobx";
 import React from "react";
 
 import type { IComputedValue } from "mobx";
@@ -44,7 +44,7 @@ export interface NamespaceSelectFilterModel {
   onKeyUp: React.KeyboardEventHandler;
   reset: () => void;
   isOptionSelected: (option: NamespaceSelectFilterOption) => boolean;
-  formatOptionLabel: (option: NamespaceSelectFilterOption) => JSX.Element;
+  formatOptionLabel: (option: NamespaceSelectFilterOption) => React.JSX.Element;
 }
 
 enum SelectMenuState {
@@ -68,7 +68,7 @@ export function namespaceSelectFilterModelFor(dependencies: Dependencies): Names
     },
   ]);
   const selectedNames = computed(() => new Set(context.contextNamespaces), {
-    equals: comparer.structural,
+    equals: compareStructural,
   });
   const optionsSortingSelected = observable.set(selectedNames.get());
   const sortNamespacesByIfTheyHaveBeenSelected = (left: string, right: string) => {
@@ -166,14 +166,14 @@ export function namespaceSelectFilterModelFor(dependencies: Dependencies): Names
       }
 
       return (
-        <div className="flex gaps align-center">
+        <div className="flex gap-2 items-center">
           <Icon small material="layers" />
           <span>{option.value}</span>
           {isOptionSelected(option) && (
             <Icon
               small
               material="check"
-              className="box right"
+              className="ml-auto"
               data-testid={`namespace-select-filter-option-${option.value}-selected`}
             />
           )}

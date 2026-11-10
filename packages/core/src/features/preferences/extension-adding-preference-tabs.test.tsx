@@ -5,8 +5,9 @@
  */
 
 import { discoverFor } from "@freelensapp/react-testing-library-discovery";
+import { act } from "@testing-library/react";
 import { computed, observable, runInAction } from "mobx";
-import React from "react";
+import { beforeEach, describe, expect, it } from "vitest";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 
 import type { Discover } from "@freelensapp/react-testing-library-discovery";
@@ -124,8 +125,10 @@ describe("preferences: extension adding preference tabs", () => {
     });
 
     it("when item becomes visible, shows the tab", () => {
-      runInAction(() => {
-        someObservable.set(true);
+      act(() => {
+        runInAction(() => {
+          someObservable.set(true);
+        });
       });
 
       const { discovered } = discover.getSingleElement(

@@ -12,7 +12,7 @@ import { JsonApiErrorParsed } from "@freelensapp/json-api";
 import { cssNames, prevDefault } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { reaction } from "mobx";
-import { disposeOnUnmount, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import React from "react";
 import { notificationsStoreInjectable } from "./notifications-store.injectable";
 
@@ -33,18 +33,27 @@ interface Dependencies {
 
 @observer
 class NonInjectedNotifications extends React.Component<Dependencies> {
+  private readonly disposers: (() => void)[] = [];
   public elem: HTMLDivElement | null = null;
 
   componentDidMount() {
-    disposeOnUnmount(this, [
+    // Capture props before the reaction: mobx-react 9 forbids reading this.props
+    // inside a derivation (the reaction's data function below).
+    const { store } = this.props;
+
+    this.disposers.push(
       reaction(
-        () => this.props.store.notifications.length,
+        () => store.notifications.length,
         () => {
           this.scrollToLastNotification();
         },
         { delay: 250 },
       ),
-    ]);
+    );
+  }
+
+  componentWillUnmount() {
+    this.disposers.forEach((dispose) => dispose());
   }
 
   scrollToLastNotification() {
@@ -71,7 +80,12 @@ class NonInjectedNotifications extends React.Component<Dependencies> {
     const { notifications, remove, addAutoHideTimer, removeAutoHideTimer } = this.props.store;
 
     return (
-      <div className="Notifications flex column align-flex-end" ref={(e) => (this.elem = e)}>
+      <div
+        className="Notifications"
+        ref={(e) => {
+          this.elem = e;
+        }}
+      >
         {notifications.map((notification) => {
           const { id, status, onClose } = notification;
           const msgText = this.getMessage(notification);
@@ -79,16 +93,16 @@ class NonInjectedNotifications extends React.Component<Dependencies> {
           return (
             <Animate key={id}>
               <div
-                className={cssNames("notification flex", status)}
+                className={cssNames("notification", status)}
                 onMouseLeave={() => addAutoHideTimer(id)}
                 onMouseEnter={() => removeAutoHideTimer(id)}
               >
-                <div className="box">
+                <div className="info-icon">
                   <Icon material="info_outline" />
                 </div>
-                <div className="message box grow">{msgText}</div>
+                <div className="message">{msgText}</div>
                 <div
-                  className="box close-icon"
+                  className="close-icon"
                   onClick={prevDefault(() => {
                     remove(id);
                     onClose?.();

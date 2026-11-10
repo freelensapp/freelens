@@ -1,12 +1,10 @@
 /**
  * Copyright (c) Freelens Authors. All rights reserved.
- * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import { KubeObject } from "@freelensapp/kube-object";
 import { observer } from "mobx-react";
-import React from "react";
 import { Badge } from "../badge";
 import { DrawerItem } from "../drawer";
 import { getClassName, getTooltip } from "./components";

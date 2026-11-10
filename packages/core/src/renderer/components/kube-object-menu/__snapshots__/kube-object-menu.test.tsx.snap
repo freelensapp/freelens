@@ -1,11 +1,13 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`kube-object-menu given kube object renders 1`] = `
+exports[`kube-object-menu > given kube object > renders 1`] = `
 <body>
   <div>
-    <div>
+    <div
+      style="position: relative;"
+    >
       <ul
-        class="Menu MenuActions flex KubeObjectMenu toolbar gaps right bottom"
+        class="Menu MenuActions flex KubeObjectMenu toolbar right bottom"
         data-testid="menu-actions-for-kube-object-menu-for-some-uid"
         id="menu-actions-for-kube-object-menu-for-some-uid"
       >
@@ -43,12 +45,14 @@ exports[`kube-object-menu given kube object renders 1`] = `
 </body>
 `;
 
-exports[`kube-object-menu given kube object when removing kube object renders 1`] = `
+exports[`kube-object-menu > given kube object > when removing kube object > renders 1`] = `
 <body>
   <div>
-    <div>
+    <div
+      style="position: relative;"
+    >
       <ul
-        class="Menu MenuActions flex KubeObjectMenu toolbar gaps right bottom"
+        class="Menu MenuActions flex KubeObjectMenu toolbar right bottom"
         data-testid="menu-actions-for-kube-object-menu-for-some-uid"
         id="menu-actions-for-kube-object-menu-for-some-uid"
       >
@@ -84,11 +88,11 @@ exports[`kube-object-menu given kube object when removing kube object renders 1`
     </div>
   </div>
   <div
-    class="Dialog flex center ConfirmDialog modal"
+    class="Dialog flex items-center justify-center ConfirmDialog modal"
     data-testid="confirmation-dialog"
   >
     <div
-      class="box"
+      class="dialog-content"
     >
       <div
         class="confirm-content"
@@ -139,12 +143,14 @@ exports[`kube-object-menu given kube object when removing kube object renders 1`
 </body>
 `;
 
-exports[`kube-object-menu given kube object when rerendered with different kube object renders 1`] = `
+exports[`kube-object-menu > given kube object > when rerendered with different kube object > renders 1`] = `
 <body>
   <div>
-    <div>
+    <div
+      style="position: relative;"
+    >
       <ul
-        class="Menu MenuActions flex KubeObjectMenu toolbar gaps right bottom"
+        class="Menu MenuActions flex KubeObjectMenu toolbar right bottom"
         data-testid="menu-actions-for-kube-object-menu-for-some-other-uid"
         id="menu-actions-for-kube-object-menu-for-some-other-uid"
       >
@@ -179,12 +185,14 @@ exports[`kube-object-menu given kube object when rerendered with different kube 
 </body>
 `;
 
-exports[`kube-object-menu given kube object when rerendered with different kube object when removing new kube object renders 1`] = `
+exports[`kube-object-menu > given kube object > when rerendered with different kube object > when removing new kube object > renders 1`] = `
 <body>
   <div>
-    <div>
+    <div
+      style="position: relative;"
+    >
       <ul
-        class="Menu MenuActions flex KubeObjectMenu toolbar gaps right bottom"
+        class="Menu MenuActions flex KubeObjectMenu toolbar right bottom"
         data-testid="menu-actions-for-kube-object-menu-for-some-other-uid"
         id="menu-actions-for-kube-object-menu-for-some-other-uid"
       >
@@ -217,11 +225,11 @@ exports[`kube-object-menu given kube object when rerendered with different kube 
     </div>
   </div>
   <div
-    class="Dialog flex center ConfirmDialog modal"
+    class="Dialog flex items-center justify-center ConfirmDialog modal"
     data-testid="confirmation-dialog"
   >
     <div
-      class="box"
+      class="dialog-content"
     >
       <div
         class="confirm-content"
@@ -272,12 +280,14 @@ exports[`kube-object-menu given kube object when rerendered with different kube 
 </body>
 `;
 
-exports[`kube-object-menu given kube object with namespace when removing kube object, renders confirmation dialog with namespace 1`] = `
+exports[`kube-object-menu > given kube object with namespace > when removing kube object, renders confirmation dialog with namespace 1`] = `
 <body>
   <div>
-    <div>
+    <div
+      style="position: relative;"
+    >
       <ul
-        class="Menu MenuActions flex KubeObjectMenu toolbar gaps right bottom"
+        class="Menu MenuActions flex KubeObjectMenu toolbar right bottom"
         data-testid="menu-actions-for-kube-object-menu-for-some-uid"
         id="menu-actions-for-kube-object-menu-for-some-uid"
       >
@@ -313,11 +323,11 @@ exports[`kube-object-menu given kube object with namespace when removing kube ob
     </div>
   </div>
   <div
-    class="Dialog flex center ConfirmDialog modal"
+    class="Dialog flex items-center justify-center ConfirmDialog modal"
     data-testid="confirmation-dialog"
   >
     <div
-      class="box"
+      class="dialog-content"
     >
       <div
         class="confirm-content"
@@ -368,12 +378,14 @@ exports[`kube-object-menu given kube object with namespace when removing kube ob
 </body>
 `;
 
-exports[`kube-object-menu given kube object without namespace when removing kube object, renders confirmation dialog without namespace 1`] = `
+exports[`kube-object-menu > given kube object without namespace > when removing kube object, renders confirmation dialog without namespace 1`] = `
 <body>
   <div>
-    <div>
+    <div
+      style="position: relative;"
+    >
       <ul
-        class="Menu MenuActions flex KubeObjectMenu toolbar gaps right bottom"
+        class="Menu MenuActions flex KubeObjectMenu toolbar right bottom"
         data-testid="menu-actions-for-kube-object-menu-for-some-uid"
         id="menu-actions-for-kube-object-menu-for-some-uid"
       >
@@ -409,11 +421,11 @@ exports[`kube-object-menu given kube object without namespace when removing kube
     </div>
   </div>
   <div
-    class="Dialog flex center ConfirmDialog modal"
+    class="Dialog flex items-center justify-center ConfirmDialog modal"
     data-testid="confirmation-dialog"
   >
     <div
-      class="box"
+      class="dialog-content"
     >
       <div
         class="confirm-content"
@@ -464,11 +476,13 @@ exports[`kube-object-menu given kube object without namespace when removing kube
 </body>
 `;
 
-exports[`kube-object-menu given no kube object, renders 1`] = `
+exports[`kube-object-menu > given no kube object, renders 1`] = `
 <body>
-  <div>
+  <div
+    style="position: relative;"
+  >
     <ul
-      class="Menu MenuActions flex KubeObjectMenu toolbar gaps right bottom"
+      class="Menu MenuActions flex KubeObjectMenu toolbar right bottom"
       data-testid="menu-actions-for-kube-object-menu-for-undefined"
       id="menu-actions-for-kube-object-menu-for-undefined"
     />

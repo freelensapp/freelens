@@ -6,12 +6,12 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import assert from "node:assert";
+import { mkdir, readFile } from "node:fs/promises";
+import path from "node:path";
+import { platform } from "node:process";
 import arg from "arg";
-import assert from "assert";
-import { mkdir, readFile } from "fs/promises";
 import { JSDOM } from "jsdom";
-import path from "path";
-import { platform } from "process";
 import sharp from "sharp";
 
 const options = arg({

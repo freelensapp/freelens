@@ -7,7 +7,7 @@
 import { statefulSetApiInjectable } from "@freelensapp/kube-api-specifics";
 import { StatefulSet } from "@freelensapp/kube-object";
 import { fireEvent, waitFor } from "@testing-library/react";
-import React from "react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import storesAndApisCanBeCreatedInjectable from "../../../stores-apis-can-be-created.injectable";
 import { type DiRender, renderFor } from "../../test-utils/renderFor";
@@ -123,7 +123,7 @@ describe("<StatefulSetScaleDialog />", () => {
     // when <StatefulSetScaleDialog /> rendered.
     const initReplicas = 1;
 
-    statefulSetApi.getReplicas = jest.fn().mockImplementationOnce(async () => Promise.resolve(initReplicas));
+    statefulSetApi.getReplicas = vi.fn().mockImplementationOnce(async () => Promise.resolve(initReplicas));
     const { getByTestId } = render(<StatefulSetScaleDialog />);
 
     openStatefulSetDialog(dummyStatefulSet);
@@ -143,7 +143,7 @@ describe("<StatefulSetScaleDialog />", () => {
   it("changes the desired scale when clicking the icon buttons +/-", async () => {
     const initReplicas = 1;
 
-    statefulSetApi.getReplicas = jest.fn().mockImplementationOnce(async () => Promise.resolve(initReplicas));
+    statefulSetApi.getReplicas = vi.fn().mockImplementationOnce(async () => Promise.resolve(initReplicas));
     const component = render(<StatefulSetScaleDialog />);
 
     openStatefulSetDialog(dummyStatefulSet);

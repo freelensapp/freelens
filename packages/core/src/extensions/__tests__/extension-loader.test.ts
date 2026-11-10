@@ -5,7 +5,7 @@
  */
 
 import { delay } from "@freelensapp/utilities";
-import { runInAction } from "mobx";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import directoryForUserDataInjectable from "../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import enabledExtensionsStateInjectable from "../../features/extensions/enabled/common/state.injectable";
 import { getDiForUnitTesting } from "../../renderer/getDiForUnitTesting";
@@ -26,6 +26,7 @@ const manifestPath3 = "manifest/path3";
 describe("ExtensionLoader", () => {
   let extensionLoader: ExtensionLoader;
   let enabledExtensionsState: ObservableMap<string, LensExtensionState>;
+  let ipcRenderer: IpcRenderer;
 
   beforeEach(() => {
     const di = getDiForUnitTesting();
@@ -37,7 +38,7 @@ describe("ExtensionLoader", () => {
       ipcRendererInjectable,
       () =>
         ({
-          invoke: jest.fn(async (channel: string) => {
+          invoke: vi.fn(async (channel: string) => {
             if (channel === "extension-loader:main:state") {
               return [
                 [
@@ -50,7 +51,6 @@ describe("ExtensionLoader", () => {
                     id: manifestPath,
                     absolutePath: "/test/1",
                     manifestPath,
-                    isBundled: false,
                     isEnabled: true,
                   },
                 ],
@@ -64,7 +64,6 @@ describe("ExtensionLoader", () => {
                     id: manifestPath2,
                     absolutePath: "/test/2",
                     manifestPath: manifestPath2,
-                    isBundled: false,
                     isEnabled: true,
                   },
                 ],
@@ -90,7 +89,6 @@ describe("ExtensionLoader", () => {
                       id: manifestPath,
                       absolutePath: "/test/1",
                       manifestPath,
-                      isBundled: false,
                       isEnabled: true,
                     },
                   ],
@@ -104,7 +102,6 @@ describe("ExtensionLoader", () => {
                       id: manifestPath3,
                       absolutePath: "/test/3",
                       manifestPath: manifestPath3,
-                      isBundled: false,
                       isEnabled: true,
                     },
                   ],
@@ -117,6 +114,7 @@ describe("ExtensionLoader", () => {
 
     extensionLoader = di.inject(extensionLoaderInjectable);
     enabledExtensionsState = di.inject(enabledExtensionsStateInjectable);
+    ipcRenderer = di.inject(ipcRendererInjectable);
   });
 
   it("renderer updates extension after ipc broadcast", async () => {
@@ -133,7 +131,6 @@ describe("ExtensionLoader", () => {
           {
             absolutePath: "/test/1",
             id: "manifest/path",
-            isBundled: false,
             isEnabled: true,
             manifest: {
               name: "TestExtension",
@@ -147,7 +144,6 @@ describe("ExtensionLoader", () => {
           {
             absolutePath: "/test/3",
             id: "manifest/path3",
-            isBundled: false,
             isEnabled: true,
             manifest: {
               name: "TestExtension3",
@@ -160,21 +156,14 @@ describe("ExtensionLoader", () => {
     );
   });
 
-  it("updates ExtensionsStore after isEnabled is changed", async () => {
+  it("asks main to change isEnabled rather than changing it in the renderer", async () => {
     await extensionLoader.init();
 
-    runInAction(() => {
-      extensionLoader.setIsEnabled("manifest/path", false);
-    });
+    await extensionLoader.setIsEnabled("manifest/path", false);
 
-    expect(enabledExtensionsState.size).toBe(2);
-    expect(enabledExtensionsState.get("manifest/path")).toMatchObject({
-      enabled: false,
-      name: "TestExtension",
-    });
-    expect(enabledExtensionsState.get("manifest/path2")).toMatchObject({
-      enabled: true,
-      name: "TestExtension2",
-    });
+    expect(ipcRenderer.invoke).toHaveBeenCalledWith("extension-loader:set-is-enabled", "manifest/path", false);
+    expect(extensionLoader.getExtensionById("manifest/path")?.isEnabled).toBe(true);
+    // Main writes the enabled state, and the renderer receives it from there.
+    expect(enabledExtensionsState.size).toBe(0);
   });
 });

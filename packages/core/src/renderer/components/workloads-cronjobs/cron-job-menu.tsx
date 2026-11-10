@@ -8,7 +8,6 @@ import { Icon } from "@freelensapp/icon";
 import { cronJobApiInjectable } from "@freelensapp/kube-api-specifics";
 import { showCheckedErrorNotificationInjectable } from "@freelensapp/notifications";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import React from "react";
 import openConfirmDialogInjectable from "../confirm-dialog/open.injectable";
 import { MenuItem } from "../menu";
 import openCronJobTriggerDialogInjectable from "./trigger-dialog/open.injectable";

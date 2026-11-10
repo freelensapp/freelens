@@ -5,10 +5,8 @@
  */
 
 import { hasDefinedTupleValue, isDefined, object } from "@freelensapp/utilities";
-import { pipeline } from "@ogre-tools/fp";
 import { getInjectable } from "@ogre-tools/injectable";
-import { groupBy, reduce } from "lodash";
-import { filter, map } from "lodash/fp";
+import { groupBy, reduce } from "es-toolkit/compat";
 import { clusterMetadataDetectorInjectionToken } from "./token";
 
 import type { Cluster } from "../../common/cluster/cluster";
@@ -37,19 +35,17 @@ const detectClusterMetadataInjectable = getInjectable({
     const clusterMetadataDetectors = di.injectMany(clusterMetadataDetectorInjectionToken);
 
     return async (cluster) => {
-      const entries = pipeline(
-        await Promise.all(clusterMetadataDetectors.map(detectMetadataWithFor(cluster))),
-        filter(isDefined),
-        (arg) => groupBy(arg, "key"),
-        (arg) => object.entries(arg),
-        map(([key, detectionResults]) => {
+      const detected = await Promise.all(clusterMetadataDetectors.map(detectMetadataWithFor(cluster)));
+
+      const entries = object
+        .entries(groupBy(detected.filter(isDefined), "key"))
+        .map(([key, detectionResults]) => {
           const results = detectionResults.map(({ result }) => result as ClusterDetectionResult);
           const highestAccuracyResult = reduce(results, pickHighestAccuracy)?.value;
 
           return [key, highestAccuracyResult] as const;
-        }),
-        filter(hasDefinedTupleValue),
-      );
+        })
+        .filter(hasDefinedTupleValue);
 
       return object.fromEntries(entries);
     };

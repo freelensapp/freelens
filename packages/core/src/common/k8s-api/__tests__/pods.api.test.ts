@@ -5,6 +5,7 @@
  */
 
 import { Pod } from "@freelensapp/kube-object";
+import { describe, expect, it } from "vitest";
 
 describe("Pod tests", () => {
   it("getAllContainers() should never throw", () => {

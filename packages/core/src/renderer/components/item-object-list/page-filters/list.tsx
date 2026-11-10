@@ -10,7 +10,6 @@ import { Icon } from "@freelensapp/icon";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import React from "react";
 import { Badge } from "../../badge";
 import searchUrlPageParamInjectable from "../../input/search-url-page-param.injectable";
 import { FilterIcon } from "../filter-icon";
@@ -45,7 +44,7 @@ const NonInjectedPageFiltersList = observer(
 
       return (
         <>
-          <div className="header flex gaps">
+          <div className="header flex gap-2">
             <span>Currently applied filters:</span>
             <a onClick={reset} className="reset">
               Reset
@@ -59,7 +58,7 @@ const NonInjectedPageFiltersList = observer(
                 <Badge
                   key={`${type}-${value}`}
                   title={type}
-                  className={cssNames("Badge flex gaps filter align-center", type)}
+                  className={cssNames("Badge flex gap-[0.25em] filter items-center", type)}
                   label={
                     <>
                       <FilterIcon type={type} />

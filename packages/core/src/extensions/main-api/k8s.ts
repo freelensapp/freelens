@@ -3,14 +3,14 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { asLegacyGlobalFunctionForExtensionApi } from "@freelensapp/legacy-global-di";
 import executeOnClusterHandlerInjectable from "../../features/cluster/execute/main/execute-handler.injectable";
 import { createK8sFunctions } from "../common-api/k8s-functions";
+import { asLazyInjectedFunctionForExtensionApi } from "../extension-api-di";
 import { getAllClusters } from "./catalog";
 
 export type { ClusterId, KubeApiPatchType, ResourceQuery } from "../../features/cluster/execute/common/types";
 
-const executeOnClusterHandler = asLegacyGlobalFunctionForExtensionApi(executeOnClusterHandlerInjectable);
+const executeOnClusterHandler = asLazyInjectedFunctionForExtensionApi(executeOnClusterHandlerInjectable);
 
 /**
  * K8s API functions for main process.
@@ -18,17 +18,17 @@ const executeOnClusterHandler = asLegacyGlobalFunctionForExtensionApi(executeOnC
  *
  * @example
  * ```typescript
- * import { K8s } from "@freelensapp/core/main";
+ * import { Main } from "@freelensapp/extensions";
  *
  * // Query pods from a cluster
- * const pods = await K8s.queryCluster<Pod>("my-cluster", {
+ * const pods = await Main.K8s.queryCluster<Main.K8sApi.KubeJsonApiData>("my-cluster", {
  *   apiVersion: "v1",
  *   kind: "Pod",
  *   namespace: "default",
  * });
  *
  * // Apply a resource
- * const configMap = await K8s.applyOnCluster("my-cluster", {
+ * const configMap = await Main.K8s.applyOnCluster("my-cluster", {
  *   apiVersion: "v1",
  *   kind: "ConfigMap",
  *   metadata: { name: "my-config", namespace: "default" },

@@ -5,6 +5,7 @@
  */
 
 import { isObservable, observable } from "mobx";
+import { describe, expect, test } from "vitest";
 import { toJS } from "../toJS";
 
 describe("utils/toJS(data: any)", () => {

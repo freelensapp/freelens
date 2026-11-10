@@ -1,4 +1,5 @@
 import { createContainer, DiContainer, getInjectable, Injectable } from "@ogre-tools/injectable";
+import { beforeEach, describe, expect, it } from "vitest";
 import { deregisterFeature } from "./deregister-feature";
 import { getFeature } from "./feature";
 import { registerFeature } from "./register-feature";
@@ -67,7 +68,7 @@ describe("feature-dependencies", () => {
 
       expect(() => {
         di.inject(someInjectableInDependencyFeature);
-      }).toThrow('Tried to inject non-registered injectable "irrelevant" -> "some-injectable".');
+      }).toThrow('Tried to inject non-registered injectable "some-injectable" from "irrelevant".');
     });
   });
 
@@ -176,7 +177,9 @@ describe("feature-dependencies", () => {
 
       expect(() => {
         di.inject(someInjectableInDependencyFeature);
-      }).toThrow('Tried to inject non-registered injectable "irrelevant" -> "some-injectable-in-dependency-feature".');
+      }).toThrow(
+        'Tried to inject non-registered injectable "some-injectable-in-dependency-feature" from "irrelevant".',
+      );
     });
   });
 
@@ -250,7 +253,9 @@ describe("feature-dependencies", () => {
 
       expect(() => {
         di.inject(someInjectableInDependencyFeature);
-      }).toThrow('Tried to inject non-registered injectable "irrelevant" -> "some-injectable-in-dependency-feature".');
+      }).toThrow(
+        'Tried to inject non-registered injectable "some-injectable-in-dependency-feature" from "irrelevant".',
+      );
     });
   });
 });

@@ -6,6 +6,7 @@
 
 import { sendMessageToChannelInjectionToken } from "@freelensapp/messaging";
 import { MESSAGE } from "triple-beam";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { getDiForUnitTesting } from "../../../renderer/getDiForUnitTesting";
 import ipcLogTransportInjectable from "./ipc-transport.injectable";
 import rendererLogFileIdInjectable from "./renderer-log-file-id.injectable";
@@ -19,7 +20,7 @@ describe("renderer log transport through ipc", () => {
   let sendIpcMock: SendMessageToChannel;
 
   beforeEach(() => {
-    sendIpcMock = jest.fn();
+    sendIpcMock = vi.fn();
     di = getDiForUnitTesting();
     di.override(sendMessageToChannelInjectionToken, () => sendIpcMock);
     di.override(rendererLogFileIdInjectable, () => "some-log-id");

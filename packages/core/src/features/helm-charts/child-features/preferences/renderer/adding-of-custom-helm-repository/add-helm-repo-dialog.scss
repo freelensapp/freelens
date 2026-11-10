@@ -7,8 +7,6 @@
 @use "../../../../../../renderer/components/vars" as *;
 
 .AddHelmRepoDialog {
-  --flex-gap: #{$margin * 1.5};
-
   .accordion {
     font-weight: bold;
     align-self: flex-start;

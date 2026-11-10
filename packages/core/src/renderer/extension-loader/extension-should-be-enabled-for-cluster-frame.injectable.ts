@@ -5,8 +5,8 @@
  */
 
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
-import { asyncComputed } from "@ogre-tools/injectable-react";
 import { untracked } from "mobx";
+import { asyncComputed } from "../../common/utils/async-computed";
 import extensionIsEnabledForClusterInjectable from "../../extensions/extension-loader/extension-is-enabled-for-cluster.injectable";
 import activeKubernetesClusterInjectable from "../cluster-frame-context/active-kubernetes-cluster.injectable";
 

@@ -4,8 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { URL } from "node:url";
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
-import { URL } from "url";
 import statInjectable from "../../../../common/fs/stat.injectable";
 import loadValidatedClusterConfigInjectable from "../../../../common/kube-helpers/load-validated-config-from-file.injectable";
 
@@ -27,7 +27,7 @@ const clusterApiUrlInjectable = getInjectable({
     return async () => {
       const stats = await stat(cluster.kubeConfigPath.get());
 
-      if (!state || state.lastReadMtimeMs >= stats.mtimeMs) {
+      if (!state || stats.mtimeMs > state.lastReadMtimeMs) {
         const result = await loadValidatedClusterConfig(cluster);
 
         if (result.error) {

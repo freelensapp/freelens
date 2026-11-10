@@ -11,9 +11,9 @@ import { statefulSetApiInjectable } from "@freelensapp/kube-api-specifics";
 import { showCheckedErrorNotificationInjectable } from "@freelensapp/notifications";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { computed, makeObservable, observable } from "mobx";
+import { computed, observable } from "mobx";
 import { observer } from "mobx-react";
-import React, { Component } from "react";
+import { Component } from "react";
 import { Dialog } from "../../dialog";
 import { Slider } from "../../slider";
 import { Wizard, WizardStep } from "../../wizard";
@@ -37,13 +37,12 @@ interface Dependencies {
 
 @observer
 class NonInjectedStatefulSetScaleDialog extends Component<StatefulSetScaleDialogProps & Dependencies> {
-  @observable ready = false;
-  @observable currentReplicas = 0;
-  @observable desiredReplicas = 0;
+  @observable accessor ready = false;
+  @observable accessor currentReplicas = 0;
+  @observable accessor desiredReplicas = 0;
 
   constructor(props: StatefulSetScaleDialogProps & Dependencies) {
     super(props);
-    makeObservable(this);
   }
 
   close = () => {
@@ -118,7 +117,7 @@ class NonInjectedStatefulSetScaleDialog extends Component<StatefulSetScaleDialog
         done={this.close}
       >
         <WizardStep
-          contentClass="flex gaps column"
+          contentClass="flex gap-2 flex-col"
           next={() => this.scale(statefulSet)}
           nextLabel="Scale"
           disabledNext={!this.ready}
@@ -126,14 +125,14 @@ class NonInjectedStatefulSetScaleDialog extends Component<StatefulSetScaleDialog
           <div className="current-scale" data-testid="current-scale">
             {`Current replica scale: ${currentReplicas}`}
           </div>
-          <div className="flex gaps align-center">
+          <div className="flex gap-2 items-center">
             <div className="desired-scale" data-testid="desired-scale">
               {`Desired number of replicas: ${desiredReplicas}`}
             </div>
-            <div className="slider-container flex align-center" data-testid="slider">
+            <div className="slider-container flex items-center" data-testid="slider">
               <Slider value={desiredReplicas} max={scaleMax} onChange={onChange} />
             </div>
-            <div className="plus-minus-container flex gaps">
+            <div className="plus-minus-container flex gap-2">
               <Icon
                 material="remove_circle_outline"
                 onClick={this.desiredReplicasDown}

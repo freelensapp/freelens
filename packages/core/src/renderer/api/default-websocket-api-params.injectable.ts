@@ -10,11 +10,19 @@ import isDevelopmentInjectable from "../../common/vars/is-development.injectable
 
 import type { TerminalMessage } from "../../common/terminal/channels";
 
-export type DefaultWebsocketApiParams = ReturnType<typeof defaultWebsocketApiParamsInjectable.instantiate>;
+// Written out rather than derived from the injectable: `WebSocketApi` exposes it
+// to extensions, and a type derived through `instantiate` would make the
+// published declaration import the DI library.
+export type DefaultWebsocketApiParams = {
+  logging: boolean;
+  reconnectDelay: number;
+  flushOnOpen: boolean;
+  pingMessage: string;
+};
 
 const defaultWebsocketApiParamsInjectable = getInjectable({
   id: "default-websocket-api-params",
-  instantiate: (di) => ({
+  instantiate: (di): DefaultWebsocketApiParams => ({
     logging: di.inject(isDevelopmentInjectable),
     reconnectDelay: 10,
     flushOnOpen: true,

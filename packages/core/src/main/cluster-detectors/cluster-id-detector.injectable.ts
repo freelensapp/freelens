@@ -4,8 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { createHash } from "node:crypto";
 import { getInjectable } from "@ogre-tools/injectable";
-import { createHash } from "crypto";
 import { ClusterMetadataKey } from "../../common/cluster-types";
 import clusterApiUrlInjectable from "../../features/cluster/connections/main/api-url.injectable";
 import k8SRequestInjectable from "../k8s-request.injectable";

@@ -11,7 +11,7 @@ import { Icon } from "@freelensapp/icon";
 import { resourceQuotaApiInjectable } from "@freelensapp/kube-api-specifics";
 import { showCheckedErrorNotificationInjectable } from "@freelensapp/notifications";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { computed, makeObservable, observable } from "mobx";
+import { computed, observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import { Dialog } from "../../dialog";
@@ -66,15 +66,14 @@ const getDefaultQuotas = (): ResourceQuotaValues => ({
 class NonInjectedAddQuotaDialog extends React.Component<AddQuotaDialogProps & Dependencies> {
   public defaultNamespace = "default";
 
-  @observable quotaName = "";
-  @observable quotaSelectValue: string | null = null;
-  @observable quotaInputValue = "";
-  @observable namespace: string | null = this.defaultNamespace;
+  @observable accessor quotaName = "";
+  @observable accessor quotaSelectValue: string | null = null;
+  @observable accessor quotaInputValue = "";
+  @observable accessor namespace: string | null = this.defaultNamespace;
   readonly quotas = observable.box(getDefaultQuotas());
 
   constructor(props: AddQuotaDialogProps & Dependencies) {
     super(props);
-    makeObservable(this);
   }
 
   @computed get quotaEntries() {
@@ -159,12 +158,12 @@ class NonInjectedAddQuotaDialog extends React.Component<AddQuotaDialogProps & De
       <Dialog {...dialogProps} className="AddQuotaDialog" isOpen={isAddQuotaDialogOpen.get()} close={this.close}>
         <Wizard header={header} done={this.close}>
           <WizardStep
-            contentClass="flex gaps column"
+            contentClass="flex gap-2 flex-col"
             disabledNext={!this.namespace || !this.quotaName}
             nextLabel="Create"
             next={this.addQuota}
           >
-            <div className="flex gaps">
+            <div className="flex gap-2">
               <Input
                 required
                 autoFocus
@@ -173,7 +172,7 @@ class NonInjectedAddQuotaDialog extends React.Component<AddQuotaDialogProps & De
                 validators={systemName}
                 value={this.quotaName}
                 onChange={(v) => (this.quotaName = v.toLowerCase())}
-                className="box grow"
+                className="grow shrink-0 basis-0"
               />
             </div>
 
@@ -182,17 +181,17 @@ class NonInjectedAddQuotaDialog extends React.Component<AddQuotaDialogProps & De
               id="namespace-input"
               value={this.namespace}
               placeholder="Namespace"
-              themeName="light"
-              className="box grow"
+              themeName="lens"
+              className="grow shrink-0 basis-0"
               onChange={(option) => (this.namespace = option?.value ?? null)}
             />
 
             <SubTitle title="Values" />
-            <div className="flex gaps align-center">
+            <div className="flex gap-2 items-center">
               <Select
                 id="quota-input"
                 className="quota-select"
-                themeName="light"
+                themeName="lens"
                 placeholder="Select a quota.."
                 options={Object.keys(this.quotas).map((quota) => ({
                   value: quota,
@@ -218,7 +217,7 @@ class NonInjectedAddQuotaDialog extends React.Component<AddQuotaDialogProps & De
                 value={this.quotaInputValue}
                 onChange={(v) => (this.quotaInputValue = v)}
                 onKeyDown={this.onInputQuota}
-                className="box grow"
+                className="grow shrink-0 basis-0"
               />
               <Button round primary onClick={this.setQuota}>
                 <Icon
@@ -229,7 +228,7 @@ class NonInjectedAddQuotaDialog extends React.Component<AddQuotaDialogProps & De
             </div>
             <div className="quota-entries">
               {this.quotaEntries.map(([quota, value]) => (
-                <div key={quota} className="quota gaps inline align-center">
+                <div key={quota} className="quota">
                   <div className="name">{quota}</div>
                   <div className="value">{value}</div>
                   <Icon material="clear" onClick={() => (this.quotas.get()[quota] = "")} />

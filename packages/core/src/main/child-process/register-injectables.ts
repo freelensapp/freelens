@@ -6,11 +6,17 @@
  * This replaces the webpack-based auto-registration system.
  */
 
+import killProcessGroupInjectable from "./kill-process-group.injectable";
 import spawnInjectable from "./spawn.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
+  try {
+    di.register(killProcessGroupInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
   try {
     di.register(spawnInjectable);
   } catch (e) {

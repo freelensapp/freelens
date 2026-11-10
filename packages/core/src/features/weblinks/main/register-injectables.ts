@@ -6,7 +6,6 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import currentVersionWeblinkStoreMigrationInjectable from "./currentVersion.injectable";
 import loadWeblinkStorageInjectable from "./load-storage.injectable";
 import setupSyncingOfWeblinksInjectable from "./setup-syncing-of-weblinks.injectable";
 import stopValidatingWeblinksInjectable from "./stop-validating-weblinks.injectable";
@@ -17,11 +16,6 @@ import weblinkVerificationsInjectable from "./weblink-verifications.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(currentVersionWeblinkStoreMigrationInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
   try {
     di.register(loadWeblinkStorageInjectable);
   } catch (e) {

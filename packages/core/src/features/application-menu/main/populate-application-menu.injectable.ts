@@ -4,10 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { pipeline } from "@ogre-tools/fp";
 import { getInjectable } from "@ogre-tools/injectable";
 import { Menu } from "electron";
-import { map, sortBy } from "lodash/fp";
+import { sortBy } from "es-toolkit";
 import { checkThatAllDiscriminablesAreExhausted } from "../../../common/utils/composable-responsibilities/discriminable/discriminable";
 
 import type { Composite } from "../../../common/utils/composite/get-composite/get-composite";
@@ -51,10 +50,8 @@ const toHierarchicalElectronMenuItem = (composite: Composite<ApplicationMenuItem
         ...(role ? { role } : {}),
         label,
 
-        submenu: pipeline(
-          composite.children,
-          sortBy((childComposite) => childComposite.value.orderNumber),
-          map(toHierarchicalElectronMenuItem),
+        submenu: sortBy(composite.children, [(childComposite) => childComposite.value.orderNumber]).map(
+          toHierarchicalElectronMenuItem,
         ),
       };
     }
@@ -67,10 +64,8 @@ const toHierarchicalElectronMenuItem = (composite: Composite<ApplicationMenuItem
         ...(id ? { id } : {}),
         label,
 
-        submenu: pipeline(
-          composite.children,
-          sortBy((childComposite) => childComposite.value.orderNumber),
-          map(toHierarchicalElectronMenuItem),
+        submenu: sortBy(composite.children, [(childComposite) => childComposite.value.orderNumber]).map(
+          toHierarchicalElectronMenuItem,
         ),
       };
     }

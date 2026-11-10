@@ -1,0 +1,95 @@
+{
+  "freelens-k8s-proxy": {
+    "version": "2.0.0",
+    "artifacts": {
+      "darwin/x64": {
+        "url": "https://github.com/freelensapp/freelens-k8s-proxy/releases/download/v2.0.0/freelens-k8s-proxy-darwin-amd64",
+        "sha256": "885ad311c916678101b7aa92003947e1fac73026675d4e56ff8e8bf26b05baf4"
+      },
+      "darwin/arm64": {
+        "url": "https://github.com/freelensapp/freelens-k8s-proxy/releases/download/v2.0.0/freelens-k8s-proxy-darwin-arm64",
+        "sha256": "450ceb4b15cd41275f8bd34a38cdcc23e03a63f542408d52860e5df5185591f2"
+      },
+      "linux/x64": {
+        "url": "https://github.com/freelensapp/freelens-k8s-proxy/releases/download/v2.0.0/freelens-k8s-proxy-linux-amd64",
+        "sha256": "4d0032f934841b71fb293ca67b98d3e62f691ed4a2766263e328038f1b49f063"
+      },
+      "linux/arm64": {
+        "url": "https://github.com/freelensapp/freelens-k8s-proxy/releases/download/v2.0.0/freelens-k8s-proxy-linux-arm64",
+        "sha256": "b717e7ba62654dc766bea7fe20fcdf116625b71499f46d2d58e7d8d0c79e39bd"
+      },
+      "windows/x64": {
+        "url": "https://github.com/freelensapp/freelens-k8s-proxy/releases/download/v2.0.0/freelens-k8s-proxy-windows-amd64.exe",
+        "sha256": "b89df58ba6fb747dd639c81a71689d0b1c3f13bf149471d855fbbb4d3870217f"
+      },
+      "windows/arm64": {
+        "url": "https://github.com/freelensapp/freelens-k8s-proxy/releases/download/v2.0.0/freelens-k8s-proxy-windows-arm64.exe",
+        "sha256": "815e983114a7e445fb8ef563f0f68ecde4509c51700b7cf942f75829d768f0d8"
+      }
+    }
+  },
+  "kubectl": {
+    "version": "1.37.2",
+    "artifacts": {
+      "darwin/x64": {
+        "url": "https://dl.k8s.io/release/v1.37.2/bin/darwin/amd64/kubectl",
+        "sha256": "88379aff5c8111de6be0a394adffba2819e44cde269f3ab23cef76de1a48eaa8"
+      },
+      "darwin/arm64": {
+        "url": "https://dl.k8s.io/release/v1.37.2/bin/darwin/arm64/kubectl",
+        "sha256": "55701af0d51815ee335f240e48acf0959c3c23017ed3fa816e880c4a92bae581"
+      },
+      "linux/x64": {
+        "url": "https://dl.k8s.io/release/v1.37.2/bin/linux/amd64/kubectl",
+        "sha256": "c04487523e7aa7d1493f7808174c899db93d7a9cf57531420cd76b9bd415f8f4"
+      },
+      "linux/arm64": {
+        "url": "https://dl.k8s.io/release/v1.37.2/bin/linux/arm64/kubectl",
+        "sha256": "fcc16f63186659d9722014b7e02d5fdd2d4e669cb8c0ab66365d7d3b8ba03509"
+      },
+      "windows/x64": {
+        "url": "https://dl.k8s.io/release/v1.37.2/bin/windows/amd64/kubectl.exe",
+        "sha256": "1691938f7de0e931969f9968c3601cf32d6b0d573573afb4ce471f3d28f51984"
+      },
+      "windows/arm64": {
+        "url": "https://dl.k8s.io/release/v1.37.2/bin/windows/arm64/kubectl.exe",
+        "sha256": "0f5965e47e4d864cf3409d8a744560b335a7c8244d0cab25e5bbba38738ef9ae"
+      }
+    }
+  },
+  "helm": {
+    "version": "4.3.1",
+    "artifacts": {
+      "darwin/x64": {
+        "url": "https://get.helm.sh/helm-v4.3.1-darwin-amd64.tar.gz",
+        "sha256": "34bec4eba761ba5c16d1965ee6b8f5b0abe5993974a802274e2a4f0418893d89",
+        "binarySha256": "b9de99056315096662fea6f1967b2da1294ec05add31c9d0f1ea979bdaa43592"
+      },
+      "darwin/arm64": {
+        "url": "https://get.helm.sh/helm-v4.3.1-darwin-arm64.tar.gz",
+        "sha256": "6b4e61c8cd27d99e5a801e63ff25dd5c70b36875c2cd659d3e9ce6b76fc23198",
+        "binarySha256": "c62da98a8e5728f5acc08b66bbe5c3ad1cb6b71d3d31b7bf939d9f4b6628c96d"
+      },
+      "linux/x64": {
+        "url": "https://get.helm.sh/helm-v4.3.1-linux-amd64.tar.gz",
+        "sha256": "0403a88ae20913d11b10a2467b50087721fea7581736da6b9d3992f5357fe54b",
+        "binarySha256": "b66cb19f2b31f9d427632ea6c4b4a1ff89b74ecaeaee323cd166da41a7af53bd"
+      },
+      "linux/arm64": {
+        "url": "https://get.helm.sh/helm-v4.3.1-linux-arm64.tar.gz",
+        "sha256": "8cf8f66ecbc252ac8f7f06cca68aba88508ddfde3a6a34feb1678ad1694b4f88",
+        "binarySha256": "d459cbff1331af4326a6f97ea83c547742b4056dac7404f20fc436c084178c43"
+      },
+      "windows/x64": {
+        "url": "https://get.helm.sh/helm-v4.3.1-windows-amd64.tar.gz",
+        "sha256": "5735a2bd59071b814546c6d0a76f29a8fd3ebe06e3a4791dd2784804ae895f34",
+        "binarySha256": "912d7210c880c48b2ac91102b1297d6ac637edd9aaaf05beb12da0b496b53ba9"
+      },
+      "windows/arm64": {
+        "url": "https://get.helm.sh/helm-v4.3.1-windows-arm64.tar.gz",
+        "sha256": "f1f8eea33cb72590724308f6a3940dc09945fb30df8bc814f130247df33ae2df",
+        "binarySha256": "82e20e023033d086f12b56fe8edaeb6f6ddba72e54152e28d103d259c795c0f1"
+      }
+    }
+  }
+}

@@ -6,8 +6,8 @@
 
 import "./pod-details-statuses.scss";
 
-import countBy from "lodash/countBy";
-import kebabCase from "lodash/kebabCase";
+import { kebabCase } from "es-toolkit";
+import { countBy } from "es-toolkit/compat";
 import React from "react";
 
 import type { Pod } from "@freelensapp/kube-object";

@@ -4,29 +4,25 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
-import { asyncComputed } from "@ogre-tools/injectable-react";
-import { now } from "mobx-utils";
 import requestPodMetricsForDaemonSetsInjectable from "../../../common/k8s-api/endpoints/metrics.api/request-pod-metrics-for-daemon-sets.injectable";
+import { createTimeRangedMetricsInjectable } from "../resource-metrics/create-time-ranged-metrics";
 
 import type { DaemonSet } from "@freelensapp/kube-object";
 
-const daemonSetMetricsInjectable = getInjectable({
+interface DaemonSetMetricsInjectableParams {
+  daemonSet: DaemonSet;
+}
+
+const daemonSetMetricsInjectable = createTimeRangedMetricsInjectable({
   id: "daemon-set-metrics",
-  instantiate: (di, daemonSet) => {
-    const requestPodMetricsForDaemonSets = di.inject(requestPodMetricsForDaemonSetsInjectable);
-
-    return asyncComputed({
-      getValueFromObservedPromise: () => {
-        now(60 * 1000); // update every minute
-
-        return requestPodMetricsForDaemonSets([daemonSet], daemonSet.getNs());
-      },
-    });
-  },
-  lifecycle: lifecycleEnum.keyedSingleton({
-    getInstanceKey: (di, daemonSet: DaemonSet) => daemonSet.getId(),
-  }),
+  getObject: ({ daemonSet }: DaemonSetMetricsInjectableParams) => daemonSet,
+  getObjectId: (daemonSet) => daemonSet.getId(),
+  request: ({ di, object: daemonSet, start, end, range }) =>
+    di.inject(requestPodMetricsForDaemonSetsInjectable)([daemonSet], daemonSet.getNs(), undefined, {
+      start,
+      end,
+      range,
+    }),
 });
 
 export default daemonSetMetricsInjectable;

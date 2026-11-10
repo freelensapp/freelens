@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`<CustomResourceDetails /> with a CRD with a boolean field should display false in an additionalPrinterColumn as 'false' 1`] = `
+exports[`<CustomResourceDetails /> > with a CRD with a boolean field > should display false in an additionalPrinterColumn as 'false' 1`] = `
 <div>
   <div
     class="CustomResourceDetails MyCrd"
@@ -27,7 +27,7 @@ exports[`<CustomResourceDetails /> with a CRD with a boolean field should displa
 </div>
 `;
 
-exports[`<CustomResourceDetails /> with a CRD with a boolean field should display true in an additionalPrinterColumn as 'true' 1`] = `
+exports[`<CustomResourceDetails /> > with a CRD with a boolean field > should display true in an additionalPrinterColumn as 'true' 1`] = `
 <div>
   <div
     class="CustomResourceDetails MyCrd"
@@ -54,7 +54,7 @@ exports[`<CustomResourceDetails /> with a CRD with a boolean field should displa
 </div>
 `;
 
-exports[`<CustomResourceDetails /> with a CRD with a number field should display 0 in an additionalPrinterColumn as '0' 1`] = `
+exports[`<CustomResourceDetails /> > with a CRD with a number field > should display 0 in an additionalPrinterColumn as '0' 1`] = `
 <div>
   <div
     class="CustomResourceDetails MyCrd"
@@ -77,7 +77,7 @@ exports[`<CustomResourceDetails /> with a CRD with a number field should display
 </div>
 `;
 
-exports[`<CustomResourceDetails /> with a CRD with a number field should display 1234 in an additionalPrinterColumn as '1234' 1`] = `
+exports[`<CustomResourceDetails /> > with a CRD with a number field > should display 1234 in an additionalPrinterColumn as '1234' 1`] = `
 <div>
   <div
     class="CustomResourceDetails MyCrd"

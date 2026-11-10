@@ -14,6 +14,11 @@ import type { StrictReactNode } from "@freelensapp/utilities";
 
 export interface LineProgressProps extends React.HTMLProps<HTMLDivElement> {
   value: number;
+  /**
+   * Optional second value rendered as a lighter line behind the main one,
+   * e.g. resource requests behind actual usage.
+   */
+  secondaryValue?: number;
   min?: number;
   max?: number;
   className?: any;
@@ -31,8 +36,16 @@ function valuePercent({
 }
 
 export const LineProgress = withTooltip(
-  ({ className, min = 0, max = 100, value, precise = 2, children, ...props }: LineProgressProps) => (
+  ({ className, min = 0, max = 100, value, secondaryValue, precise = 2, children, ...props }: LineProgressProps) => (
     <div className={cssNames("LineProgress", className)} {...props}>
+      {secondaryValue !== undefined && (
+        <div
+          className="line secondary"
+          style={{
+            width: `${valuePercent({ min, max, value: secondaryValue, precise })}%`,
+          }}
+        />
+      )}
       <div
         className="line"
         style={{

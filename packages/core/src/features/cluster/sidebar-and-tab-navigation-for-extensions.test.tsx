@@ -4,12 +4,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import assert from "node:assert";
 import { flushPromises } from "@freelensapp/test-utils";
-import { fireEvent } from "@testing-library/react";
-import assert from "assert";
-import { matches } from "lodash/fp";
+import { act, fireEvent } from "@testing-library/react";
 import { computed, observable, runInAction } from "mobx";
-import React from "react";
+import { beforeEach, describe, expect, it } from "vitest";
 import directoryForLensLocalStorageInjectable from "../../common/directory-for-lens-local-storage/directory-for-lens-local-storage.injectable";
 import { navigateToRouteInjectionToken } from "../../common/front-end-routing/navigate-to-route-injection-token";
 import pathExistsInjectable from "../../common/fs/path-exists.injectable";
@@ -139,11 +138,7 @@ describe("cluster - sidebar and tab navigation for extensions", () => {
         const route = windowDi
           .inject(routesInjectable)
           .get()
-          .find(
-            matches({
-              path: "/extension/some-extension-name/some-child-page-id",
-            }),
-          );
+          .find((route) => route.path === "/extension/some-extension-name/some-child-page-id");
 
         assert(route);
         navigateToRoute(route);
@@ -286,8 +281,10 @@ describe("cluster - sidebar and tab navigation for extensions", () => {
       });
 
       it("when sidebar item becomes visible, shows the sidebar item", () => {
-        runInAction(() => {
-          someObservable.set(true);
+        act(() => {
+          runInAction(() => {
+            someObservable.set(true);
+          });
         });
 
         const child = rendered.queryByTestId("sidebar-item-some-extension-name-some-menu-with-controlled-visibility");
@@ -510,11 +507,7 @@ describe("cluster - sidebar and tab navigation for extensions", () => {
         const route = windowDi
           .inject(routesInjectable)
           .get()
-          .find(
-            matches({
-              path: "/extension/some-extension-name/some-child-page-id",
-            }),
-          );
+          .find((route) => route.path === "/extension/some-extension-name/some-child-page-id");
 
         assert(route);
         navigateToRoute(route);

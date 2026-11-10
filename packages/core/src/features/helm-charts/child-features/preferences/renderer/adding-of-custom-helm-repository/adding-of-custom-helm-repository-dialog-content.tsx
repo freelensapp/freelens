@@ -11,7 +11,6 @@ import { Icon } from "@freelensapp/icon";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { action } from "mobx";
 import { observer } from "mobx-react";
-import React from "react";
 import { toJS } from "../../../../../../common/utils";
 import { Checkbox } from "../../../../../../renderer/components/checkbox";
 import { Input } from "../../../../../../renderer/components/input";
@@ -39,13 +38,13 @@ const NonInjectedActivationOfCustomHelmRepositoryDialogContent = observer(
   ({ helmRepo, submitCustomRepository, maximalOptionsAreShown, hideDialog }: Dependencies) => (
     <Wizard header={<h5>Add custom Helm Repo</h5>} done={hideDialog}>
       <WizardStep
-        contentClass="flow column"
+        contentClass="space-y-3"
         nextLabel="Add"
         next={() => submitCustomRepository(toJS(helmRepo))}
         testIdForNext="custom-helm-repository-submit-button"
         testIdForPrev="custom-helm-repository-cancel-button"
       >
-        <div className="flex column gaps" data-testid="add-custom-helm-repository-dialog">
+        <div className="flex flex-col gap-3" data-testid="add-custom-helm-repository-dialog">
           <Input
             autoFocus
             required

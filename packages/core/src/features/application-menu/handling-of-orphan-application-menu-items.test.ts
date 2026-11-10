@@ -6,6 +6,7 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import { runInAction } from "mobx";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import logErrorInjectable from "../../common/log-error.injectable";
 import { getCompositePaths } from "../../common/utils/composite/get-composite-paths/get-composite-paths";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
@@ -13,18 +14,20 @@ import { advanceFakeTime, testUsingFakeTime } from "../../test-utils/use-fake-ti
 import applicationMenuItemInjectionToken from "./main/menu-items/application-menu-item-injection-token";
 import populateApplicationMenuInjectable from "./main/populate-application-menu.injectable";
 
+import type { Mock } from "vitest";
+
 import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 
 describe("handling-of-orphan-application-menu-items, given orphan menu item", () => {
   let builder: ApplicationBuilder;
-  let populateApplicationMenuMock: jest.Mock;
-  let logErrorMock: jest.Mock;
+  let populateApplicationMenuMock: Mock;
+  let logErrorMock: Mock;
 
   beforeEach(async () => {
     testUsingFakeTime();
 
-    populateApplicationMenuMock = jest.fn();
-    logErrorMock = jest.fn();
+    populateApplicationMenuMock = vi.fn();
+    logErrorMock = vi.fn();
 
     builder = getApplicationBuilder();
 

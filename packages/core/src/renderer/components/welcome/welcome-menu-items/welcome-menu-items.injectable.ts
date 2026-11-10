@@ -6,6 +6,7 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import navigateToCatalogInjectable from "../../../../common/front-end-routing/routes/catalog/navigate-to-catalog.injectable";
+import navigateToTerminalInjectable from "../../../../common/front-end-routing/routes/terminal/navigate-to-terminal.injectable";
 import rendererExtensionsInjectable from "../../../../extensions/renderer-extensions.injectable";
 import { getWelcomeMenuItems } from "./get-welcome-menu-items";
 
@@ -16,6 +17,7 @@ const welcomeMenuItemsInjectable = getInjectable({
     getWelcomeMenuItems({
       extensions: di.inject(rendererExtensionsInjectable),
       navigateToCatalog: di.inject(navigateToCatalogInjectable),
+      navigateToTerminal: di.inject(navigateToTerminalInjectable),
     }),
 });
 

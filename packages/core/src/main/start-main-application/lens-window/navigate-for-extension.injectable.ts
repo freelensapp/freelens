@@ -4,9 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import assert from "node:assert";
 import { iter } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
-import assert from "assert";
 import clusterFramesInjectable from "../../../common/cluster-frames.injectable";
 import { navigateForExtensionChannel } from "../../../features/extensions/navigate/common/channel";
 import getCurrentApplicationWindowInjectable from "./application-window/get-current-application-window.injectable";

@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { spawnSync } from "child_process";
+import { spawnSync } from "node:child_process";
 
 export function kindReady(kindClusterName: string, testNamespace: string): boolean {
   // determine if kind is running

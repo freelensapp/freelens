@@ -5,6 +5,7 @@
  */
 
 import { noop } from "@freelensapp/utilities";
+import { beforeEach, describe, expect, it } from "vitest";
 import { CatalogEntity, categoryVersion } from "../../../../common/catalog";
 import catalogCategoryRegistryInjectable from "../../../../common/catalog/category-registry.injectable";
 import catalogEntityRegistryInjectable from "../../../api/catalog/entity/registry.injectable";

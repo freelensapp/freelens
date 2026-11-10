@@ -4,10 +4,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { createHash } from "node:crypto";
+import { homedir } from "node:os";
 import { getInjectable } from "@ogre-tools/injectable";
-import { createHash } from "crypto";
 import { action } from "mobx";
-import { homedir } from "os";
 import directoryForKubeConfigsInjectable from "../../../common/app-paths/directory-for-kube-configs/directory-for-kube-configs.injectable";
 import { Cluster } from "../../../common/cluster/cluster";
 import { loadConfigFromString } from "../../../common/kube-helpers";

@@ -11,7 +11,6 @@ import { registerInjectables as registerApiManagerInjectables } from "./api-mana
 import createJsonApiInjectable from "./create-json-api.injectable";
 import createKubeApiInjectable from "./create-kube-api.injectable";
 import createKubeApiForClusterInjectable from "./create-kube-api-for-cluster.injectable";
-import createKubeApiForRemoteClusterInjectable from "./create-kube-api-for-remote-cluster.injectable";
 import createKubeJsonApiInjectable from "./create-kube-json-api.injectable";
 import createKubeJsonApiForClusterInjectable from "./create-kube-json-api-for-cluster.injectable";
 import { registerInjectables as registerEndpointsInjectables } from "./endpoints/register-injectables";
@@ -34,11 +33,6 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(createKubeApiForClusterInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(createKubeApiForRemoteClusterInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

@@ -10,7 +10,7 @@ import { loggerInjectionToken } from "@freelensapp/logger";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import autoBindReact from "auto-bind/react";
-import { makeObservable, observable } from "mobx";
+import { observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 
@@ -33,12 +33,11 @@ interface Dependencies {
 
 @observer
 class NonInjectedDropFileInput<T extends HTMLElement> extends React.Component<DropFileInputProps<T> & Dependencies> {
-  @observable dropAreaActive = false;
+  @observable accessor dropAreaActive = false;
   dragCounter = 0; // Counter preventing firing onDragLeave() too early (https://stackoverflow.com/questions/7110353/html5-dragleave-fired-when-hovering-a-child-element)
 
   constructor(props: DropFileInputProps<T> & Dependencies) {
     super(props);
-    makeObservable(this);
     autoBindReact(this);
   }
 
