@@ -9,11 +9,13 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { DiContainer } from "@ogre-tools/injectable";
 import "@testing-library/jest-dom/vitest";
 
+import { Pod } from "@freelensapp/kube-object";
 import { podListLayoutColumnInjectionToken } from "@freelensapp/list-layout";
 import appPathsStateInjectable from "../../../common/app-paths/app-paths-state.injectable";
 import directoryForKubeConfigsInjectable from "../../../common/app-paths/directory-for-kube-configs/directory-for-kube-configs.injectable";
 import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import { Cluster } from "../../../common/cluster/cluster";
+import addCustomTableColumnInjectable from "../../../features/custom-table-columns/common/add-custom-table-column.injectable";
 import isTableColumnHiddenInjectable from "../../../features/user-preferences/common/is-table-column-hidden.injectable";
 import hostedClusterInjectable from "../../cluster-frame-context/hosted-cluster.injectable";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
@@ -86,6 +88,59 @@ describe("kube-object-list-layout", () => {
       );
 
       expect(result.baseElement).toMatchSnapshot();
+    });
+
+    describe("given a custom column for pods", () => {
+      beforeEach(() => {
+        const pod = new Pod({
+          apiVersion: "v1",
+          kind: "Pod",
+          metadata: {
+            name: "some-pod",
+            namespace: "default",
+            resourceVersion: "1",
+            selfLink: "/api/v1/namespaces/default/pods/some-pod",
+            uid: "some-pod-uid",
+            labels: {
+              "app.kubernetes.io/instance": "some-instance",
+            },
+          },
+        });
+
+        di.inject(addCustomTableColumnInjectable)({
+          kind: "Pod",
+          apiVersion: "v1",
+          title: "Instance",
+          jsonPath: ".metadata.labels['app.kubernetes.io/instance']",
+        });
+
+        result = render(
+          <div>
+            <KubeObjectListLayout
+              className="Pods"
+              store={podStore}
+              items={[pod]}
+              isReady
+              virtual={false}
+              tableId="workloads_pods"
+              isConfigurable
+              renderHeaderTitle="Pods"
+              renderTableHeader={[]}
+              renderTableContents={() => []}
+              columns={di.injectMany(podListLayoutColumnInjectionToken)}
+            />
+          </div>,
+        );
+      });
+
+      it("shows the column header", () => {
+        expect(result.getByText("Instance")).toBeInTheDocument();
+      });
+
+      it("shows the value of the json path for each item", () => {
+        // The cell renders the value and, for the tooltip, a copy of it.
+        expect(result.getAllByText("some-instance").length).toBeGreaterThan(0);
+      });
     });
 
     describe("given resourcename", () => {
