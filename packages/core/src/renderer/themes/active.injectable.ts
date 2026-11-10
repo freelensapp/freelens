@@ -22,12 +22,14 @@ import type { ReadonlyDeep } from "type-fest";
 import type { LensColorName, LensTheme } from "./lens-theme";
 
 /**
- * Color keys that represent the accent color across built-in themes.
- * Only these keys are considered when applying a custom accent override,
- * which avoids fragile, whole-theme hex scans that could recolor unrelated
- * colors in third-party themes or future built-in themes.
+ * Color keys where a theme may use the default accent color.
+ * A custom accent replaces one of these keys only when the base theme sets it to
+ * `DEFAULT_ACCENT_COLOR`; a key with any other value keeps it. The dark theme therefore
+ * keeps its white `sidebarSubmenuActiveColor`, while the light theme, which uses the
+ * default accent there, changes. Keeping to this list, rather than scanning the whole
+ * theme for the color, leaves unrelated colors of other themes alone.
  */
-const ACCENT_COLOR_KEYS: readonly LensColorName[] = [
+const DEFAULT_ACCENT_CANDIDATE_KEYS: readonly LensColorName[] = [
   "blue",
   "primary",
   "buttonPrimaryBackground",
@@ -65,13 +67,13 @@ const activeThemeInjectable: Injectable<IComputedValue<ReadonlyDeep<LensTheme>>>
 
       const accentColor = customAccentColor.get();
 
-      if (!accentColor) {
+      if (!accentColor || accentColor === DEFAULT_ACCENT_COLOR) {
         return baseTheme;
       }
 
       const colorOverrides: Partial<Record<LensColorName, string>> = {};
 
-      for (const key of ACCENT_COLOR_KEYS) {
+      for (const key of DEFAULT_ACCENT_CANDIDATE_KEYS) {
         if (baseTheme.colors[key] === DEFAULT_ACCENT_COLOR) {
           colorOverrides[key] = accentColor;
         }

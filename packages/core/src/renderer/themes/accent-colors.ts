@@ -3,6 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { defaultAccentColorPreference } from "../../common/vars";
+
 // =============================================================================
 // Accent color guidelines
 // =============================================================================
@@ -50,10 +52,10 @@ export interface AccentColorOption {
   label: string;
 }
 
-export const DEFAULT_ACCENT_COLOR = "#00a7a0";
+export const DEFAULT_ACCENT_COLOR = defaultAccentColorPreference;
 
 export const accentColorOptions: AccentColorOption[] = [
-  { value: "#00a7a0", label: "Teal" },
+  { value: DEFAULT_ACCENT_COLOR, label: "Teal" },
   { value: "#00bcd4", label: "Cyan" },
   { value: "#29b6f6", label: "Sky" },
   { value: "#2196f3", label: "Blue" },

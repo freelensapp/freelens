@@ -7,11 +7,13 @@ import { computed } from "mobx";
 import { beforeEach, describe, expect, it } from "vitest";
 import customAccentColorInjectable from "../../../features/user-preferences/common/custom-accent-color.injectable";
 import lensColorThemePreferenceInjectable from "../../../features/user-preferences/common/lens-color-theme.injectable";
+import userPreferenceDescriptorsInjectable from "../../../features/user-preferences/common/preference-descriptors.injectable";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import { DEFAULT_ACCENT_COLOR } from "../accent-colors";
 import activeThemeInjectable from "../active.injectable";
 import defaultLensThemeInjectable from "../default-theme.injectable";
 import systemThemeConfigurationInjectable from "../system-theme.injectable";
+import lensThemesInjectable from "../themes.injectable";
 
 import type { DiContainer } from "@ogre-tools/injectable";
 import type { IComputedValue } from "mobx";
@@ -296,5 +298,80 @@ describe("active theme with custom accent color", () => {
       expect(theme.colors.primary).toBe("#2196f3");
       expect(theme.type).toBe("dark");
     });
+  });
+});
+
+describe("active theme with the built-in themes", () => {
+  const customColor = "#2196f3";
+
+  let di: DiContainer;
+
+  const getThemes = (lensThemeId: string, accentColor: string | undefined) => {
+    di.override(customAccentColorInjectable, () => computed(() => accentColor));
+    di.override(lensColorThemePreferenceInjectable, () => computed(() => ({ useSystemTheme: false, lensThemeId })));
+
+    const baseTheme = di.inject(lensThemesInjectable).get(lensThemeId);
+
+    if (!baseTheme) {
+      throw new Error(`Missing built-in theme "${lensThemeId}"`);
+    }
+
+    return { activeTheme: di.inject(activeThemeInjectable).get(), baseTheme };
+  };
+
+  beforeEach(() => {
+    di = getDiForUnitTesting();
+  });
+
+  describe("when a custom accent color is selected", () => {
+    it("keeps the white sidebarSubmenuActiveColor of the dark theme", () => {
+      const { activeTheme } = getThemes("Dark", customColor);
+
+      expect(activeTheme.colors.sidebarSubmenuActiveColor).toBe("#ffffff");
+    });
+
+    it("replaces the keys of the dark theme that use the default accent", () => {
+      const { activeTheme } = getThemes("Dark", customColor);
+
+      expect(activeTheme.colors.primary).toBe(customColor);
+      expect(activeTheme.colors.colorInfo).toBe(customColor);
+    });
+
+    it("replaces the teal sidebarSubmenuActiveColor of the light theme", () => {
+      const { activeTheme } = getThemes("Light", customColor);
+
+      expect(activeTheme.colors.sidebarSubmenuActiveColor).toBe(customColor);
+    });
+
+    it("keeps the colorInfo of the light theme, which is not the default accent", () => {
+      const { activeTheme, baseTheme } = getThemes("Light", customColor);
+
+      expect(activeTheme.colors.colorInfo).toBe(baseTheme.colors.colorInfo);
+      expect(activeTheme.colors.colorInfo).not.toBe(DEFAULT_ACCENT_COLOR);
+    });
+  });
+
+  describe("when the default accent color is selected", () => {
+    it.each(["Dark", "Light"])("leaves the %s theme unchanged", (lensThemeId) => {
+      const { activeTheme, baseTheme } = getThemes(lensThemeId, DEFAULT_ACCENT_COLOR);
+
+      expect(activeTheme).toBe(baseTheme);
+    });
+  });
+});
+
+describe("customAccentColor preference", () => {
+  const getDescriptor = () => getDiForUnitTesting().inject(userPreferenceDescriptorsInjectable).customAccentColor;
+
+  it("does not store the default accent color", () => {
+    expect(getDescriptor().toStore(DEFAULT_ACCENT_COLOR)).toBeUndefined();
+  });
+
+  it("stores a custom accent color", () => {
+    expect(getDescriptor().toStore("#2196f3")).toBe("#2196f3");
+  });
+
+  it("stores nothing when no accent color is set", () => {
+    expect(getDescriptor().toStore(undefined)).toBeUndefined();
   });
 });
