@@ -39,9 +39,8 @@ const extensionSidebarItemRegistratorInjectable = getInjectable({
           ? getExtensionId(`${extension.sanitizedExtensionId}-${rawId}`)
           : getExtensionId(extension.sanitizedExtensionId);
         const parentId = rawParentId ? getExtensionId(`${extension.sanitizedExtensionId}-${rawParentId}`) : null;
-        const orderNumber = !rawParentId
-          ? getClusterPageMenuOrder(getExtensionId(sanitizeExtensionName(extension.name)), 9999)
-          : 9999;
+        const orderKey = !rawParentId ? getExtensionId(sanitizeExtensionName(extension.name)) : undefined;
+        const orderNumber = orderKey ? getClusterPageMenuOrder(orderKey, 9999) : 9999;
         const targetRoutePath = getExtensionRoutePath(extension, target?.pageId);
         const targetRoute = computed(() => extensionRoutes.get().find((route) => route.path === targetRoutePath));
 
@@ -49,6 +48,7 @@ const extensionSidebarItemRegistratorInjectable = getInjectable({
           id,
           instantiate: () => ({
             orderNumber,
+            orderKey,
             parentId,
             isVisible: computed(() => extensionShouldBeEnabledForClusterFrame.value.get() && (visible?.get() ?? true)),
             title,
