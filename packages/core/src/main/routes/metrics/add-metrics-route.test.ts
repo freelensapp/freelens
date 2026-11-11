@@ -108,7 +108,7 @@ describe("the metrics route", () => {
     });
   });
 
-  it("logs why each provider found no Prometheus service", async () => {
+  it("logs no details of the providers when no Prometheus service was found", async () => {
     getPrometheusDetails = async () => {
       throw new Error("No Prometheus service found", {
         cause: [
@@ -126,10 +126,6 @@ describe("the metrics route", () => {
 
     expect(logger.warn).toHaveBeenCalledWith(
       "[METRICS-ROUTE]: failed to get metrics for clusterId=some-cluster-id: Error: No Prometheus service found",
-      [
-        'Failed to find Prometheus provider for "Prometheus Operator": Failed to list services in all namespaces: services is forbidden',
-        'Failed to find Prometheus provider for "Lens": No service found from any namespace',
-      ],
     );
   });
 });
