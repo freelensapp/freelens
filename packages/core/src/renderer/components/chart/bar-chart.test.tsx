@@ -232,6 +232,23 @@ describe("BarChart", () => {
         { x: t0 + 2 * step, y: "2" },
         { x: t0 + 2 * step, y: null },
         { x: t0 + 10 * step, y: "3" },
+        { x: t0 + 11 * step, y: "3" },
+      ]);
+    });
+
+    it("holds the last sample only when it follows a gap", () => {
+      const data = [
+        { x: t0, y: "1" },
+        { x: t0 + 10 * step, y: "2" },
+        { x: t0 + 11 * step, y: "3" },
+      ];
+
+      expect(insertGapsInTimeSeries(data, step, true)).toEqual([
+        { x: t0, y: "1" },
+        { x: t0 + step, y: "1" },
+        { x: t0 + step, y: null },
+        { x: t0 + 10 * step, y: "2" },
+        { x: t0 + 11 * step, y: "3" },
       ]);
     });
 
@@ -299,7 +316,7 @@ describe("BarChart", () => {
       ]);
     });
 
-    it("breaks the line between isolated samples using the step of the queried range", () => {
+    it("breaks the line between isolated samples using the step passed by the caller", () => {
       const di = getDiForUnitTesting();
       const render = renderFor(di);
 
@@ -325,6 +342,7 @@ describe("BarChart", () => {
         <BarChart
           minTime={t0 / 1000}
           maxTime={t0 / 1000 + 25 * 60 * 60}
+          step={60 * 60}
           data={{
             datasets: [
               {
@@ -349,7 +367,56 @@ describe("BarChart", () => {
         { x: t0 + 2 * hourStep, y: "8" },
         { x: t0 + 2 * hourStep, y: null },
         { x: t0 + 24 * hourStep, y: "8" },
+        { x: t0 + 25 * hourStep, y: "8" },
       ]);
+    });
+
+    it("infers the step from the samples when the caller does not pass it", () => {
+      const di = getDiForUnitTesting();
+      const render = renderFor(di);
+
+      di.override(activeThemeInjectable, () =>
+        computed(
+          () =>
+            ({
+              colors: {
+                textColorPrimary: "#fff",
+                borderFaintColor: "#000",
+                chartStripesColor: "#111",
+              },
+            }) as never,
+        ),
+      );
+
+      // Without the query step the smallest distance between samples is used, so
+      // two samples 23 hours apart are taken as contiguous.
+      const hourStep = 3_600_000;
+      const samples = [
+        { x: t0 + hourStep, y: "8" },
+        { x: t0 + 24 * hourStep, y: "8" },
+      ];
+
+      render(
+        <BarChart
+          minTime={t0 / 1000}
+          maxTime={t0 / 1000 + 25 * 60 * 60}
+          data={{
+            datasets: [
+              {
+                id: "dataset-id",
+                label: "Dataset",
+                borderColor: "#00a7a0",
+                data: samples,
+              },
+            ],
+          }}
+        />,
+      );
+
+      const { type, data } = chartMock.mock.calls[0][0];
+
+      expect(type).toBe("line");
+      expect(data.datasets[0].data).toEqual(samples);
     });
   });
 });

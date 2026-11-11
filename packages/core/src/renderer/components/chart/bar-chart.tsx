@@ -10,7 +10,6 @@ import { withInjectables } from "@ogre-tools/injectable-react";
 import Color from "color";
 import { merge } from "es-toolkit/compat";
 import { observer } from "mobx-react";
-import { calculateAdaptiveStep } from "../../../common/k8s-api/endpoints/metrics.api/adaptive-step";
 import activeThemeInjectable from "../../themes/active.injectable";
 import { NoMetrics } from "../resource-metrics/no-metrics";
 import { Chart, ChartKind } from "./chart";
@@ -26,6 +25,11 @@ export interface BarChartProps extends ChartProps {
   name?: string;
   minTime?: number; // Minimum timestamp (unix seconds) for x-axis
   maxTime?: number; // Maximum timestamp (unix seconds) for x-axis
+  /**
+   * Step (seconds) of the range query that returned the data, used to detect
+   * periods without samples. When missing it is inferred from the samples.
+   */
+  step?: number;
 }
 
 const getBarColor = ({ dataset }: ScriptableContext<"bar" | "line">): string =>
@@ -169,7 +173,8 @@ const GAP_THRESHOLD_IN_STEPS = 1.5;
  *
  * With `holdValue` (stepped lines) the sample is first held for one step, as
  * stepped lines do between contiguous samples; otherwise a sample isolated by
- * gaps on both sides would not be drawn at all.
+ * gaps on both sides would not be drawn at all. For the same reason the last
+ * sample is held for one step when it follows a gap.
  */
 export const insertGapsInTimeSeries = <T,>(
   data: T[],
@@ -196,6 +201,18 @@ export const insertGapsInTimeSeries = <T,>(
     }
   });
 
+  const last = data[data.length - 1];
+  const beforeLast = data[data.length - 2];
+
+  if (
+    holdValue &&
+    isTimePoint(last) &&
+    isTimePoint(beforeLast) &&
+    last.x - beforeLast.x > stepMs * GAP_THRESHOLD_IN_STEPS
+  ) {
+    result.push({ x: last.x + stepMs, y: last.y });
+  }
+
   return result;
 };
 
@@ -217,6 +234,7 @@ const NonInjectedBarChart = observer(
     className,
     minTime,
     maxTime,
+    step,
     plugins,
     options: customOptions,
     ...settings
@@ -225,16 +243,10 @@ const NonInjectedBarChart = observer(
     const { datasets: rawDatasets = [], ...rest } = data;
     const timeRangeSeconds = maxTime && minTime ? maxTime - minTime : 3600;
     const timeUnit = getBarChartTimeUnit(timeRangeSeconds);
-    // The smallest distance between samples is the query step, except when every
-    // sample is isolated by a gap (e.g. a few minutes of data in a long range):
-    // then it is much larger, so cap it with the step used to query this range.
-    const rangeStepMs =
-      maxTime && minTime && maxTime > minTime ? calculateAdaptiveStep(timeRangeSeconds) * 1000 : undefined;
-    const minSampleDistanceMs = getSampleStepMs(rawDatasets);
-    const sampleStepMs =
-      minSampleDistanceMs !== undefined && rangeStepMs !== undefined
-        ? Math.min(minSampleDistanceMs, rangeStepMs)
-        : minSampleDistanceMs;
+    // Without the query step, the smallest distance between samples is used: it is
+    // the step unless every sample is isolated by a gap (e.g. a few minutes of data
+    // in a long range), so callers that know the step should pass it.
+    const sampleStepMs = step && step > 0 ? step * 1000 : getSampleStepMs(rawDatasets);
     const inferredStepSeconds = sampleStepMs
       ? Math.max(Math.floor(sampleStepMs / 1000), 1)
       : rawDatasets[0]?.data?.length

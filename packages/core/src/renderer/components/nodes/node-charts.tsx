@@ -34,7 +34,7 @@ const convertNodeMetricValuesToChartData = (values: Array<[number, string]>) =>
 
 const NonInjectedNodeCharts = observer(({ activeTheme, selectedMetricsTimeRange }: Dependencies & NodeChartsProps) => {
   const { metrics, tab, object } = useContext(ResourceMetricsContext) ?? {};
-  const { start: minTime, end: maxTime } = selectedMetricsTimeRange.timestamps.get();
+  const { start: minTime, end: maxTime, step } = selectedMetricsTimeRange.timestamps.get();
 
   if (!metrics || !object || !tab) return null;
   if (isMetricsEmpty(metrics)) return <NoMetrics />;
@@ -166,6 +166,7 @@ const NonInjectedNodeCharts = observer(({ activeTheme, selectedMetricsTimeRange 
       data={{ datasets: datasets[tab] }}
       minTime={minTime}
       maxTime={maxTime}
+      step={step}
     />
   );
 });
