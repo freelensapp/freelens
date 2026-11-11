@@ -38,7 +38,7 @@ const NonInjectablePodLogsMenu: React.FC<NonInjectablePodLogsMenuProps & Depende
 
   const containers = pod.getAllContainersWithType();
   const statuses = pod.getContainerStatuses();
-  const annotations = pod.getAnnotations(true);
+  const annotations = pod.metadata.annotations;
 
   const showLogs = (container: Container) => {
     const pod = props.object;

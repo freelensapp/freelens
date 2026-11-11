@@ -15,6 +15,7 @@ import { ClusterMetricsResourceType } from "../../../common/cluster-types";
 import enabledMetricsInjectable from "../../api/catalog/entity/metrics-enabled.injectable";
 import portForwardStoreInjectable from "../../port-forward/port-forward-store/port-forward-store.injectable";
 import { Badge } from "../badge";
+import { findOptimalDefaultContainerOfPod } from "../dock/logs/default-container-helper";
 import { DrawerItem } from "../drawer";
 import { DurationAbsoluteTimestamp } from "../events";
 import { StatusBrick } from "../status-brick";
@@ -109,12 +110,14 @@ class NonInjectedPodDetailsContainer extends React.Component<PodDetailsContainer
     const isMetricVisible = containerMetricsVisible.get();
     const requests = Object.entries(resources?.requests ?? {});
     const limits = Object.entries(resources?.limits ?? {});
+    const isDefaultContainer = findOptimalDefaultContainerOfPod(pod)?.name === name;
 
     return (
       <div className="PodDetailsContainer">
         <div className="pod-container-title" id={id}>
           <StatusBrick className={containerStatusClassName(container, status)} />
           {name}
+          {isDefaultContainer && <span className="text-secondary font-normal">{" (default)"}</span>}
         </div>
         {isMetricVisible && containersType === "containers" && (
           <>

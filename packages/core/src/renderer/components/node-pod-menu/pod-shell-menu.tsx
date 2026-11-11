@@ -45,7 +45,7 @@ const NonInjectablePodShellMenu: React.FC<PodShellMenuProps & Dependencies> = (p
 
   const containers = pod.getRunningContainersWithType();
   const statuses = pod.getContainerStatuses();
-  const annotations = pod.getAnnotations(true);
+  const annotations = pod.metadata.annotations;
 
   const execShell = async (container: Container | EphemeralContainer) => {
     const containerName = container.name;
