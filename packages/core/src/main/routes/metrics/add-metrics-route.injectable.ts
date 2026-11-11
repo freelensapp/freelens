@@ -55,7 +55,34 @@ async function describeError(query: string, error: unknown): Promise<MetricsErro
     }
   }
 
+  // k8sRequest reads the body itself, to keep what the proxy explains in it, so the response that it gives as the
+  // cause has no body left: the status and the body are on the error.
+  if (isRequestError(error) && typeof error.statusCode === "number") {
+    return { query, status: error.statusCode, response: error.error ?? error.message };
+  }
+
   return { query, message: error.message };
+}
+
+// The message of an error, then those of the errors that caused it.
+function describeErrorChain(error: unknown): string {
+  const messages: string[] = [];
+  let current = error;
+
+  for (let depth = 0; current !== undefined && depth < 5; depth += 1) {
+    messages.push(current instanceof Error ? current.message : String(current));
+    current = current instanceof Error ? current.cause : undefined;
+  }
+
+  return messages.join(": ");
+}
+
+// Why the metrics could not be loaded: the description of the failed query, or the error of each provider when no
+// Prometheus service was found.
+function describeFailure(error: unknown): unknown {
+  const cause = error instanceof Error ? error.cause : undefined;
+
+  return Array.isArray(cause) ? cause.map(describeErrorChain) : cause;
 }
 
 const loadMetricsFor =
@@ -163,7 +190,15 @@ const addMetricsRouteInjectable = getRouteInjectable({
         if (description?.status === 422) {
           logger.warn(`[METRICS-ROUTE]: query failed for clusterId=${cluster.id}`, description);
         } else {
-          logger.warn(`[METRICS-ROUTE]: failed to get metrics for clusterId=${cluster.id}: ${error}`);
+          const failure = describeFailure(error);
+          const message = `[METRICS-ROUTE]: failed to get metrics for clusterId=${cluster.id}: ${error}`;
+
+          // The reason, such as the refusal of the API server when the user may not use the proxy of the service.
+          if (failure === undefined) {
+            logger.warn(message);
+          } else {
+            logger.warn(message, failure);
+          }
         }
 
         return { response: {} };
