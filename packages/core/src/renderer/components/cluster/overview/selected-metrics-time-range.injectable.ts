@@ -6,6 +6,7 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import { action, computed } from "mobx";
 import { now } from "mobx-utils";
+import { calculateAdaptiveStep } from "../../../../common/k8s-api/endpoints/metrics.api/adaptive-step";
 import { getSecondsFromUnixEpoch } from "../../../../common/utils/date/get-current-date-time";
 import metricsTimeRangeStorageInjectable, { defaultMetricsTimeRange } from "./metrics-time-range-storage.injectable";
 
@@ -70,7 +71,8 @@ const selectedMetricsTimeRangeInjectable = getInjectable({
     const value = computed(() => normalizeTimeRange(storage.get()));
 
     /**
-     * Get start and end timestamps based on current selection
+     * Get start and end timestamps based on current selection, and the step
+     * that metric requests use for this range (see `requestMetrics`)
      */
     const timestamps = computed(() => {
       const timeRange = value.get();
@@ -84,6 +86,7 @@ const selectedMetricsTimeRangeInjectable = getInjectable({
           start: currentTime - timeRange.duration,
           end: currentTime,
           range: timeRange.duration,
+          step: calculateAdaptiveStep(timeRange.duration),
         };
       }
 
@@ -91,6 +94,7 @@ const selectedMetricsTimeRangeInjectable = getInjectable({
         start: timeRange.customStart,
         end: timeRange.customEnd,
         range: timeRange.customEnd - timeRange.customStart,
+        step: calculateAdaptiveStep(timeRange.customEnd - timeRange.customStart),
       };
     });
 

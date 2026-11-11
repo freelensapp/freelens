@@ -73,7 +73,7 @@ describe("NodeCharts", () => {
     );
     di.override(selectedMetricsTimeRangeInjectable, () => ({
       timestamps: {
-        get: () => ({ start: 100, end: 200, range: 100 }),
+        get: () => ({ start: 100, end: 200, range: 100, step: 60 }),
       },
     }));
 
@@ -94,6 +94,7 @@ describe("NodeCharts", () => {
       expect.objectContaining({
         minTime: 100,
         maxTime: 200,
+        step: 60,
       }),
     );
 
