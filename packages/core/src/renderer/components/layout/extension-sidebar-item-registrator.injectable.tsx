@@ -34,13 +34,24 @@ const extensionSidebarItemRegistratorInjectable = getInjectable({
 
     return computed(() =>
       extension.clusterPageMenus.map((registration) => {
-        const { components, title, parentId: rawParentId, visible, id: rawId, target } = registration;
+        const {
+          components,
+          title,
+          parentId: rawParentId,
+          visible,
+          id: rawId,
+          target,
+          orderNumber: declaredOrderNumber = 9999,
+        } = registration;
         const id = rawId
           ? getExtensionId(`${extension.sanitizedExtensionId}-${rawId}`)
           : getExtensionId(extension.sanitizedExtensionId);
         const parentId = rawParentId ? getExtensionId(`${extension.sanitizedExtensionId}-${rawParentId}`) : null;
+        // The saved order places the top-level menus of the extension as one block, which the user moves; the declared
+        // order number only orders the menus inside it, and never reaches the saved order. A child has no saved order.
         const orderKey = !rawParentId ? getExtensionId(sanitizeExtensionName(extension.name)) : undefined;
-        const orderNumber = orderKey ? getClusterPageMenuOrder(orderKey, 9999) : 9999;
+        const orderNumber = orderKey ? getClusterPageMenuOrder(orderKey, 9999) : declaredOrderNumber;
+        const orderNumberInBlock = orderKey ? declaredOrderNumber : undefined;
         const targetRoutePath = getExtensionRoutePath(extension, target?.pageId);
         const targetRoute = computed(() => extensionRoutes.get().find((route) => route.path === targetRoutePath));
 
@@ -49,6 +60,7 @@ const extensionSidebarItemRegistratorInjectable = getInjectable({
           instantiate: () => ({
             orderNumber,
             orderKey,
+            orderNumberInBlock,
             parentId,
             isVisible: computed(() => extensionShouldBeEnabledForClusterFrame.value.get() && (visible?.get() ?? true)),
             title,
