@@ -12,6 +12,10 @@
  * is not a boundary between extensions, nor a protection against programs
  * running as the same user.
  *
+ * Only the values are encrypted: the keys are written to disk in clear text.
+ * A key names a value and must not hold one, such as a user name or a host
+ * that should not be visible.
+ *
  * Keys are 1 to 128 characters of `A-Z`, `a-z`, `0-9`, `.`, `_` and `-`;
  * values are strings of at most 64 KiB in UTF-8. When the system has no secret
  * store, `isAvailable()` resolves to `false` and every other method rejects:

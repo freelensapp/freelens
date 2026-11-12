@@ -434,6 +434,10 @@ copied disk, from other accounts of the system.
   it.
 - **Small values.** A key is 1 to 128 characters of `A-Z`, `a-z`, `0-9`,
   `.`, `_` and `-`. A value is a string of at most 64 KiB in UTF-8.
+- **Keys are in clear text.** Only the values are encrypted; the keys are
+  written to the file as they are. A key names a value and must not hold one,
+  such as a user name or a host that should not be visible: put that in a
+  value, under a key such as `username`.
 - **One file per extension**, in the user data directory, named after the
   extension's sanitized ID. Uninstalling the extension removes it, for a
   managed and a development install alike; disabling the extension keeps it.
