@@ -13,12 +13,12 @@ import userEvent from "@testing-library/user-event";
 import * as selectEvent from "react-select-event";
 import directoryForUserDataInjectable from "../../../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import fsInjectable from "../../../../../common/fs/fs.injectable";
+import { defaultLogViewerPreferences } from "../../../../../features/user-preferences/common/preferences-helpers";
 import userPreferencesStateInjectable from "../../../../../features/user-preferences/common/state.injectable";
 import { getDiForUnitTesting } from "../../../../getDiForUnitTesting";
 import { renderFor } from "../../../test-utils/renderFor";
 import callForLogsInjectable from "../call-for-logs.injectable";
 import { LogTabViewModel } from "../logs-view-model";
-import { maxCombinedLogsPods } from "../merge-pod-logs";
 import { LogResourceSelector } from "../resource-selector";
 import { deploymentPod1, deploymentPod2, deploymentPod3, dockerPod } from "./pod.mock";
 import {
@@ -274,13 +274,33 @@ describe("<LogResourceSelector />", () => {
     });
 
     it("tells when the workload has more pods than the tab reads", async () => {
-      const manyPods = Array.from({ length: maxCombinedLogsPods + 5 }, () => deploymentPod1);
+      const manyPods = Array.from({ length: 25 }, () => deploymentPod1);
       const model = getCombinedLogsTabData("foobar", userPreferencesState, manyPods);
       const { findByTestId } = render(<LogResourceSelector model={model} />);
 
-      expect(await findByTestId("merged-pods-badge")).toHaveTextContent(
-        `${maxCombinedLogsPods} of ${maxCombinedLogsPods + 5} pods`,
-      );
+      expect(await findByTestId("merged-pods-badge")).toHaveTextContent("20 of 25 pods");
+    });
+
+    it("tells where the limit is set when the workload has more pods than the tab reads", async () => {
+      const manyPods = Array.from({ length: 25 }, () => deploymentPod1);
+      const model = getCombinedLogsTabData("foobar", userPreferencesState, manyPods);
+      const { findByTestId, findByText } = render(<LogResourceSelector model={model} />);
+
+      await user.hover(await findByTestId("merged-pods-badge"));
+
+      expect(
+        await findByText("Set how many in Preferences > Kubernetes > Logs.", { exact: false }),
+      ).toBeInTheDocument();
+    });
+
+    it("follows the preference for the number of pods the tab reads", async () => {
+      userPreferencesState.logViewerPreferences = { ...defaultLogViewerPreferences, maxCombinedLogsPods: 3 };
+
+      const manyPods = Array.from({ length: 5 }, () => deploymentPod1);
+      const model = getCombinedLogsTabData("foobar", userPreferencesState, manyPods);
+      const { findByTestId } = render(<LogResourceSelector model={model} />);
+
+      expect(await findByTestId("merged-pods-badge")).toHaveTextContent("3 of 5 pods");
     });
   });
 });

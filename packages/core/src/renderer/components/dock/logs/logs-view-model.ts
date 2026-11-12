@@ -7,9 +7,12 @@
 import assert from "node:assert";
 import { isDefined } from "@freelensapp/utilities";
 import { computed } from "mobx";
-import { defaultLogViewerPreferences } from "../../../../features/user-preferences/common/preferences-helpers";
+import {
+  clampMaxCombinedLogsPods,
+  defaultLogViewerPreferences,
+} from "../../../../features/user-preferences/common/preferences-helpers";
 import { getTimestampedLogFilename } from "./get-timestamped-log-filename";
-import { maxCombinedLogsPods, stripAnsiColors } from "./merge-pod-logs";
+import { stripAnsiColors } from "./merge-pod-logs";
 
 import type { ResourceDescriptor } from "@freelensapp/kube-api";
 import type { Pod, PodLogsQuery } from "@freelensapp/kube-object";
@@ -125,6 +128,15 @@ export class LogTabViewModel {
   });
 
   /**
+   * The most pods a combined logs tab reads, from the `maxCombinedLogsPods`
+   * log viewer preference. It is clamped again here, so that a value set
+   * outside the range before it was stored cannot get through.
+   */
+  readonly maxCombinedLogsPods = computed(() =>
+    clampMaxCombinedLogsPods(this.dependencies.userPreferencesState.logViewerPreferences?.maxCombinedLogsPods),
+  );
+
+  /**
    * The pods whose logs are fetched and merged into this tab's log stream:
    * just the selected pod normally, or the pods of the workload, up to
    * `maxCombinedLogsPods`, for a combined logs tab.
@@ -137,7 +149,7 @@ export class LogTabViewModel {
     }
 
     if (data.combined) {
-      return this.workloadPods.get().slice(0, maxCombinedLogsPods);
+      return this.workloadPods.get().slice(0, this.maxCombinedLogsPods.get());
     }
 
     return [this.dependencies.getPodById(data.selectedPodId)].filter(isDefined);

@@ -34,7 +34,7 @@ function getMergedPodsBadge(model: LogTabViewModel) {
 
   return {
     label: `${sourcePods.length} of ${workloadPods.length} pods`,
-    tooltip: `Only the first ${sourcePods.length} pods by name are read: ${names}`,
+    tooltip: `Only the first ${sourcePods.length} pods by name are read: ${names}. Set how many in Preferences > Kubernetes > Logs.`,
   };
 }
 
