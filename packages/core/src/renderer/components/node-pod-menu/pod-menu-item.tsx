@@ -66,8 +66,10 @@ const PodMenuItem: React.FC<NodePodMenuItemProps> = (props) => {
                 className="flex items-center"
               >
                 {brick}
-                <span>{name}</span>
-                {container === defaultContainer && <span className="text-secondary ml-1">(default)</span>}
+                <span>
+                  {name}
+                  {container === defaultContainer && <span className="text-secondary">{" (default)"}</span>}
+                </span>
               </MenuItem>
             );
           })}

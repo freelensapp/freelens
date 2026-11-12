@@ -265,7 +265,7 @@ describe("pod-menu-item", () => {
 
       expect(items.map((item) => item.textContent)).toEqual([
         "container-name-1",
-        "container-name-2(default)",
+        "container-name-2 (default)",
         "container-name-3",
       ]);
       expect(within(items[1]).getByText("(default)")).toHaveClass("text-secondary");
@@ -295,7 +295,7 @@ describe("pod-menu-item", () => {
         "kubectl.kubernetes.io/default-container": "missing",
       });
 
-      expect(items.map((item) => item.textContent)).toEqual(["container-name-1(default)", "container-name-2"]);
+      expect(items.map((item) => item.textContent)).toEqual(["container-name-1 (default)", "container-name-2"]);
     });
 
     it("given no annotation, marks the first container", () => {
@@ -306,7 +306,7 @@ describe("pod-menu-item", () => {
 
       const items = renderSubMenuItems(containers);
 
-      expect(items.map((item) => item.textContent)).toEqual(["container-name-1(default)", "container-name-2"]);
+      expect(items.map((item) => item.textContent)).toEqual(["container-name-1 (default)", "container-name-2"]);
     });
 
     it("marks exactly one container", () => {
