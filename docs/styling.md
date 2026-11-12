@@ -104,6 +104,18 @@ they are no longer loaded, so those class names now do nothing.
   be dead. Prefer `var(--…)` theme tokens over `dark:` variants — the token
   layer already re-themes automatically, which is why `dark:` is rarely
   needed.
+- **Never name a component custom property after a Tailwind theme
+  variable.** Tailwind v4 utilities read the theme variables where they are
+  used: `ml-1` is `calc(var(--spacing) * 1)`, `text-sm` reads `--text-sm`,
+  `font-bold` reads `--font-weight-bold`. A component that defines one of these
+  names for its own use replaces Tailwind's value for every utility inside it,
+  so `gap-2` in a component with `--spacing: 24px` is 48px, and with a value
+  that is not a single length the utility is dropped. The names to avoid are
+  `--spacing` and every variable of the theme namespaces (`--color-*`,
+  `--text-*`, `--font-*`, `--font-weight-*`, `--radius-*`, `--shadow-*`, …)
+  that Tailwind's `theme.css` or `tailwind.config.js` defines. Prefix the
+  property with the component instead: `--drawer-spacing`,
+  `--search-input-padding`.
 
 ### Cascade layers: what beats what
 
