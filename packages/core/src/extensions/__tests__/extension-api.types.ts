@@ -45,6 +45,12 @@ export type CommonInstalledExtension = Common.InstalledExtension;
 export type CommonCluster = Common.Catalog.KubernetesCluster;
 export type CommonCatalogEntity = Common.Catalog.CatalogEntity;
 export type CommonClusterConnectionStatus = Common.Clusters.ClusterConnectionStatus;
+export type CommonExtensionCredentials = Common.ExtensionCredentials;
+// What `forExtension` returns is the exported type, so that an extension can
+// name the field it keeps the result in.
+export type CommonCredentialsForExtensionReturnsTheExportedType = Holds<
+  ReturnType<typeof Common.Credentials.forExtension> extends Common.ExtensionCredentials ? true : false
+>;
 
 // `Common.Types` contributes nothing at runtime, so these are reachable from
 // here and from nowhere else. `KubeObjectMenuItemProps` is the one the fluxcd

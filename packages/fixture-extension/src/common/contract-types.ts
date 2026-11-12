@@ -27,6 +27,17 @@ export type FixtureLogger = Common.Logger;
 export type FixtureInstalledExtension = Common.InstalledExtension;
 export type FixtureCluster = Common.Catalog.KubernetesCluster;
 export type FixtureClusterConnectionStatus = Common.Clusters.ClusterConnectionStatus;
+export type FixtureExtensionCredentials = Common.ExtensionCredentials;
+export type CredentialsForExtensionReturnsTheExportedType = Holds<
+  ReturnType<typeof Common.Credentials.forExtension> extends Common.ExtensionCredentials ? true : false
+>;
+// It takes the extension instance of either process.
+export type CredentialsForExtensionTakesAMainExtension = Holds<
+  Main.LensExtension extends Parameters<typeof Common.Credentials.forExtension>[0] ? true : false
+>;
+export type CredentialsForExtensionTakesARendererExtension = Holds<
+  Renderer.LensExtension extends Parameters<typeof Common.Credentials.forExtension>[0] ? true : false
+>;
 export type FixtureStatusBarRegistration = Common.Types.StatusBarRegistration;
 export type FixtureShellEnvModifier = Common.Types.ShellEnvModifier;
 export type FixturePageRegistration = Common.Types.PageRegistration;
