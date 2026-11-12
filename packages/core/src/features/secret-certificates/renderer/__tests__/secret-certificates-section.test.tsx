@@ -83,6 +83,27 @@ describe("SecretCertificatesSection", () => {
     });
   });
 
+  it("marks the expiry of an expired certificate", () => {
+    const expiry = renderExpiry(Date.now() - day);
+
+    expect(expiry).toHaveClass("expired");
+    expect(expiry).not.toHaveClass("expires-soon");
+  });
+
+  it("marks the expiry of a certificate that expires within 30 days", () => {
+    const expiry = renderExpiry(Date.now() + 29 * day);
+
+    expect(expiry).toHaveClass("expires-soon");
+    expect(expiry).not.toHaveClass("expired");
+  });
+
+  it("does not mark the expiry of a certificate that expires later", () => {
+    const expiry = renderExpiry(Date.now() + 31 * day);
+
+    expect(expiry).not.toHaveClass("expires-soon");
+    expect(expiry).not.toHaveClass("expired");
+  });
+
   it("titles a certificate a level below the section title", () => {
     const result = render(
       <SecretCertificatesSection

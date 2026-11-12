@@ -5,7 +5,7 @@
 
 import "./secret-certificates.scss";
 
-import { formatDuration } from "@freelensapp/utilities";
+import { cssNames, formatDuration } from "@freelensapp/utilities";
 import { DrawerItem, DrawerTitle } from "../../../renderer/components/drawer";
 import { LocaleDate } from "../../../renderer/components/locale-date";
 
@@ -16,6 +16,11 @@ export interface SecretCertificatesSectionProps {
 }
 
 /**
+ * How long before its expiry a certificate is marked as expiring soon.
+ */
+const expiresSoonMs = 30 * 24 * 60 * 60 * 1000;
+
+/**
  * The time left until the expiry, or passed since it, in the words and units
  * of the "Created" item of the details. `formatDuration` writes English units
  * whatever the locale of the system, unlike `formatRelativeTime`.
@@ -23,11 +28,16 @@ export interface SecretCertificatesSectionProps {
 function describeExpiry(notAfter: number, now: number) {
   const remaining = notAfter - now;
 
-  return remaining <= 0 ? `${formatDuration(-remaining, false)} ago` : `in ${formatDuration(remaining, false)}`;
+  if (remaining <= 0) {
+    return { text: `${formatDuration(-remaining, false)} ago`, expired: true, expiresSoon: false };
+  }
+
+  return { text: `in ${formatDuration(remaining, false)}`, expired: false, expiresSoon: remaining <= expiresSoonMs };
 }
 
 function CertificateDetails({ title, certificate }: { title: string; certificate: CertificateInfo }) {
   const { commonName, organization, issuer, dnsNames, ipAddresses, serialNumber, notBefore, notAfter } = certificate;
+  const expiry = describeExpiry(notAfter, Date.now());
 
   return (
     <div className="certificate" data-testid={`${title}-certificate`}>
@@ -52,8 +62,11 @@ function CertificateDetails({ title, certificate }: { title: string; certificate
         <LocaleDate date={new Date(notBefore)} />
       </DrawerItem>
       <DrawerItem name="Expires">
-        <span data-testid={`${title}-certificate-expiry`}>
-          {describeExpiry(notAfter, Date.now())} (<LocaleDate date={new Date(notAfter)} />)
+        <span
+          className={cssNames("expiry", { expired: expiry.expired, "expires-soon": expiry.expiresSoon })}
+          data-testid={`${title}-certificate-expiry`}
+        >
+          {expiry.text} (<LocaleDate date={new Date(notAfter)} />)
         </span>
       </DrawerItem>
     </div>
