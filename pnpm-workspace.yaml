@@ -49,7 +49,7 @@ catalog:
   rolldown: 1.2.16
   rolldown-plugin-dts: 0.28.8
   sass-embedded: 1.105.2
-  tailwindcss: 4.3.3
+  tailwindcss: 4.3.5
   turbo: 2.11.10
   vite: 8.3.8
   # Electron
@@ -83,7 +83,7 @@ catalog:
   '@mui/material': 9.5.0
   '@noble/hashes': 2.4.0
   '@quantco/pnpm-licenses': 2.4.2
-  '@tailwindcss/postcss': 4.3.3
+  '@tailwindcss/postcss': 4.3.5
   '@xterm/addon-fit': 0.11.0
   '@xterm/addon-web-links': 0.12.0
   '@xterm/xterm': 6.0.0
