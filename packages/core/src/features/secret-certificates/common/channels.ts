@@ -35,11 +35,11 @@ export interface CertificateInfo {
  * The certificates read under one key, in the order of the blocks, without
  * the blocks that failed to parse.
  */
-export interface SecretCertificates {
+export interface SecretKeyCertificates {
   key: string;
   certificates: CertificateInfo[];
 }
 
-export const parseSecretCertificatesChannel = getRequestChannel<SecretCertificateBlocks[], SecretCertificates[]>(
+export const parseSecretCertificatesChannel = getRequestChannel<SecretCertificateBlocks[], SecretKeyCertificates[]>(
   "parse-secret-certificates",
 );

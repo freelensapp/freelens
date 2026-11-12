@@ -27,7 +27,7 @@ import { SecretDetails } from "../secret-details";
 
 import type { Mock } from "vitest";
 
-import type { SecretCertificates } from "../../../../features/secret-certificates/common/channels";
+import type { SecretKeyCertificates } from "../../../../features/secret-certificates/common/channels";
 import type { RequestSecretCertificates } from "../../../../features/secret-certificates/renderer/request-secret-certificates.injectable";
 import type { DiRender } from "../../test-utils/renderFor";
 
@@ -170,7 +170,7 @@ describe("SecretDetails tests", () => {
   });
 
   it("reads the certificates again when the data changes, and ignores the response to an older request", async () => {
-    const responders: ((value: SecretCertificates[]) => void)[] = [];
+    const responders: ((value: SecretKeyCertificates[]) => void)[] = [];
 
     requestSecretCertificates.mockImplementation(() => new Promise((resolve) => responders.push(resolve)));
 
