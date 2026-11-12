@@ -206,6 +206,12 @@ overrides:
   # monaco-editor release ships DOMPurify 3.4.17 or newer; the patch is keyed
   # by the exact version, so a monaco-editor bump reports it as unused.
   monaco-editor>dompurify: 'catalog:'
+  # vite and electron-vite pin rolldown with a tilde range, so a catalog
+  # rolldown of a newer minor installs a second copy next to theirs. Keep the
+  # whole tree on the catalog's rolldown, which the declaration bundle of
+  # @freelensapp/extensions uses too, so the app and the extension API build
+  # with the same bundler.
+  rolldown: 'catalog:'
   tmp@^0.2.0: ^0.2.7
 
 peerDependencyRules:
