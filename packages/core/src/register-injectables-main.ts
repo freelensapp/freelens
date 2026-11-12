@@ -36,6 +36,7 @@ import { registerInjectables as registerFeaturesFeaturesPopulationOfLogsToAFileM
 import { registerInjectables as registerFeaturesFeaturesPreferencesChildFeaturesApplicationMenuMainInjectables } from "./features/preferences/child-features/application-menu/main/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesPreferencesChildFeaturesTrayMainInjectables } from "./features/preferences/child-features/tray/main/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesPreferencesCommonInjectables } from "./features/preferences/common/register-injectables";
+import { registerInjectables as registerFeaturesFeaturesSecretCertificatesMainInjectables } from "./features/secret-certificates/main/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesShellSyncMainInjectables } from "./features/shell-sync/main/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesThemeSystemTypeMainInjectables } from "./features/theme/system-type/main/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesUserPreferencesMainInjectables } from "./features/user-preferences/main/register-injectables";
@@ -80,6 +81,7 @@ export function registerInjectables(di: DiContainerForInjection): void {
   registerFeaturesFeaturesPreferencesChildFeaturesApplicationMenuMainInjectables(di);
   registerFeaturesFeaturesPreferencesChildFeaturesTrayMainInjectables(di);
   registerFeaturesFeaturesPreferencesCommonInjectables(di);
+  registerFeaturesFeaturesSecretCertificatesMainInjectables(di);
   registerFeaturesFeaturesShellSyncMainInjectables(di);
   registerFeaturesFeaturesThemeSystemTypeMainInjectables(di);
   registerFeaturesFeaturesUserPreferencesMainInjectables(di);
