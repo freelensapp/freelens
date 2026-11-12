@@ -14,7 +14,7 @@ const combinedLogsPodsPreferenceBlockInjectable = getInjectable({
     kind: "block" as const,
     id: "combined-logs-pods",
     parentId: "kubernetes-page",
-    orderNumber: 20,
+    orderNumber: 40,
     Component: CombinedLogsPods,
   }),
 
