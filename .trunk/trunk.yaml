@@ -2,7 +2,7 @@
 # To learn more about the format of this file, see https://docs.trunk.io/reference/trunk-yaml
 version: 0.1
 cli:
-  version: 1.25.0
+  version: 1.29.0
 # Trunk provides extensibility via plugins. (https://docs.trunk.io/plugins)
 plugins:
   sources:
@@ -112,7 +112,7 @@ lint:
           run_from: ${root_or_parent_with(biome.jsonc)}
       run_timeout: 1m
   enabled:
-    - actionlint@1.17.0
+    - actionlint@1.17.1
     - biome@2.6.6! # datasource=npm depName=@biomejs/biome
     - git-diff-check
     - shellcheck@0.11.0
