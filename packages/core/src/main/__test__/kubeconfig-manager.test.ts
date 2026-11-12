@@ -12,11 +12,11 @@ import { Cluster } from "../../common/cluster/cluster";
 import ensureDirInjectable from "../../common/fs/ensure-dir.injectable";
 import pathExistsInjectable from "../../common/fs/path-exists.injectable";
 import pathExistsSyncInjectable from "../../common/fs/path-exists-sync.injectable";
-import readFileInjectable from "../../common/fs/read-file.injectable";
 import readJsonSyncInjectable from "../../common/fs/read-json-sync.injectable";
 import removePathInjectable from "../../common/fs/remove.injectable";
 import writeFileInjectable from "../../common/fs/write-file.injectable";
 import writeJsonSyncInjectable from "../../common/fs/write-json-sync.injectable";
+import readKubeconfigFileInjectable from "../../common/kube-helpers/read-kubeconfig-file.injectable";
 import normalizedPlatformInjectable from "../../common/vars/normalized-platform.injectable";
 import freelensK8sProxyManagerInjectable from "../cluster/freelens-k8s-proxy-manager.injectable";
 import freelensK8sProxyCredentialCommandInjectable from "../freelens-k8s-proxy/freelens-k8s-proxy-credential-command.injectable";
@@ -34,9 +34,9 @@ import type { Mocked, MockedFunction } from "vitest";
 
 import type { EnsureDirectory } from "../../common/fs/ensure-dir.injectable";
 import type { PathExists } from "../../common/fs/path-exists.injectable";
-import type { ReadFile } from "../../common/fs/read-file.injectable";
 import type { RemovePath } from "../../common/fs/remove.injectable";
 import type { WriteFile } from "../../common/fs/write-file.injectable";
+import type { ReadKubeconfigFile } from "../../common/kube-helpers/read-kubeconfig-file.injectable";
 import type { KubeconfigManager } from "../kubeconfig-manager/kubeconfig-manager";
 
 const clusterServerUrl = "https://192.168.64.3:8443";
@@ -45,7 +45,7 @@ describe("kubeconfig manager tests", () => {
   let clusterFake: Cluster;
   let di: DiContainer;
   let loggerMock: Mocked<Logger>;
-  let readFileMock: AsyncFnMock<ReadFile>;
+  let readFileMock: AsyncFnMock<ReadKubeconfigFile>;
   let deleteFileMock: AsyncFnMock<RemovePath>;
   let ensureDirMock: MockedFunction<EnsureDirectory>;
   let writeFileMock: AsyncFnMock<WriteFile>;
@@ -73,7 +73,7 @@ describe("kubeconfig manager tests", () => {
     di.override(freelensK8sProxyCredentialCommandInjectable, () => "/some-bin/freelens-k8s-proxy");
 
     readFileMock = asyncFn();
-    di.override(readFileInjectable, () => readFileMock);
+    di.override(readKubeconfigFileInjectable, () => readFileMock);
     writeFileMock = asyncFn();
     di.override(writeFileInjectable, () => writeFileMock);
     pathExistsMock = asyncFn();
