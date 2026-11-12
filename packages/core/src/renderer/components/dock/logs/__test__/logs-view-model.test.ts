@@ -40,6 +40,7 @@ describe("LogTabViewModel", () => {
     expect(userPreferencesState.logViewerPreferences).toEqual({
       showTimestamps: true,
       showWordWrap: true,
+      maxCombinedLogsPods: 20,
     });
     expect(setLogTabData).toHaveBeenCalledWith("tab-id", {
       ...getDefaultOnePodLogTabData(),

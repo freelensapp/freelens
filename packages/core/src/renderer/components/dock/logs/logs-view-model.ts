@@ -151,7 +151,13 @@ export class LogTabViewModel {
     this.dependencies.setLogTabData(this.tabId, { ...data, ...partialData });
   };
 
-  updateLogPreferences = (partialPreferences: Partial<LogViewerPreferences>) => {
+  /**
+   * Sets the preferences a log tab keeps a copy of in its data. The others,
+   * such as `maxCombinedLogsPods`, are not part of the tab data.
+   */
+  updateLogPreferences = (
+    partialPreferences: Partial<Pick<LogViewerPreferences, "showTimestamps" | "showWordWrap">>,
+  ) => {
     // Update the current tab and the saved defaults for future log tabs only.
     const logViewerPreferences =
       this.dependencies.userPreferencesState.logViewerPreferences ?? defaultLogViewerPreferences;
