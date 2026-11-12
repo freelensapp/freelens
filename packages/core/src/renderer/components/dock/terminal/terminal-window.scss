@@ -7,7 +7,6 @@
 @use "@xterm/xterm/css/xterm.css" as *;
 
 .TerminalWindow {
-  --terminal-window-spacing: calc(var(--unit) * 2);
   --vscode-scrollbar-shadow: transparent;
 
   flex: 1;
