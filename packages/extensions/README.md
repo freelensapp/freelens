@@ -70,5 +70,6 @@ that other agents read too:
   ports a v1 extension to this API.
 
 ```sh
-claude plugin install freelens --marketplace freelensapp/freelens
+claude plugin marketplace add freelensapp/freelens --sparse .claude-plugin plugins
+claude plugin install freelens@freelens
 ```
