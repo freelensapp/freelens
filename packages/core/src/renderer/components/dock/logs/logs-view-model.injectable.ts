@@ -12,11 +12,13 @@ import getPodsByOwnerIdInjectable from "../../workloads-pods/get-pods-by-owner-i
 import renameTabInjectable from "../dock/rename-tab.injectable";
 import areLogsPresentInjectable from "./are-logs-present.injectable";
 import downloadAllLogsInjectable from "./download-all-logs.injectable";
+import downloadAllLogsForPodsInjectable from "./download-all-logs-for-pods.injectable";
 import downloadLogsInjectable from "./download-logs.injectable";
 import getLogTabDataInjectable from "./get-log-tab-data.injectable";
 import getLogsInjectable from "./get-logs.injectable";
 import getLogsWithoutTimestampsInjectable from "./get-logs-without-timestamps.injectable";
 import getTimestampSplitLogsInjectable from "./get-timestamp-split-logs.injectable";
+import getWorkloadPodsInjectable from "./get-workload-pods.injectable";
 import loadLogsInjectable from "./load-logs.injectable";
 import { LogTabViewModel } from "./logs-view-model";
 import reloadLogsInjectable from "./reload-logs.injectable";
@@ -46,8 +48,10 @@ const logsViewModelInjectable = getInjectable({
       areLogsPresent: di.inject(areLogsPresentInjectable),
       getPodById: di.inject(getPodByIdInjectable),
       getPodsByOwnerId: di.inject(getPodsByOwnerIdInjectable),
+      getWorkloadPods: di.inject(getWorkloadPodsInjectable),
       downloadLogs: di.inject(downloadLogsInjectable),
       downloadAllLogs: di.inject(downloadAllLogsInjectable),
+      downloadAllLogsForPods: di.inject(downloadAllLogsForPodsInjectable),
       searchStore: di.inject(searchStoreInjectable),
       userPreferencesState: di.inject(userPreferencesStateInjectable),
     }),
