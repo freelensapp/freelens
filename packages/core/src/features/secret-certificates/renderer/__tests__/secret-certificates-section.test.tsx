@@ -4,7 +4,8 @@
  */
 
 import { formatRelativeTime } from "@freelensapp/utilities";
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { act } from "@testing-library/react";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import directoryForUserDataInjectable from "../../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import { renderFor } from "../../../../renderer/components/test-utils/renderFor";
 import { getDiForUnitTesting } from "../../../../renderer/getDiForUnitTesting";
@@ -102,6 +103,36 @@ describe("SecretCertificatesSection", () => {
 
     expect(expiry).not.toHaveClass("expires-soon");
     expect(expiry).not.toHaveClass("expired");
+  });
+
+  describe("while the details stay open", () => {
+    beforeEach(() => {
+      vi.useFakeTimers();
+    });
+
+    afterEach(() => {
+      vi.useRealTimers();
+    });
+
+    it("moves the expiry on, and marks it once the certificate expires", () => {
+      const result = render(
+        <SecretCertificatesSection
+          certificates={[{ key: "tls.crt", certificates: [certificateExpiringAt(Date.now() + 90 * 1000)] }]}
+        />,
+      );
+      const expiry = () => result.getByTestId("tls.crt-certificate-expiry");
+
+      expect(expiry()).toHaveTextContent(/^in 90s \(/);
+      expect(expiry()).toHaveClass("expires-soon");
+
+      act(() => {
+        vi.advanceTimersByTime(2 * 60 * 1000);
+      });
+
+      expect(expiry()).toHaveTextContent(/^30s ago \(/);
+      expect(expiry()).toHaveClass("expired");
+      expect(expiry()).not.toHaveClass("expires-soon");
+    });
   });
 
   it("titles a certificate a level below the section title", () => {

@@ -6,6 +6,8 @@
 import "./secret-certificates.scss";
 
 import { cssNames, formatDuration } from "@freelensapp/utilities";
+import { observer } from "mobx-react";
+import { reactiveNow } from "../../../common/utils/reactive-now/reactive-now";
 import { DrawerItem, DrawerTitle } from "../../../renderer/components/drawer";
 import { LocaleDate } from "../../../renderer/components/locale-date";
 
@@ -35,9 +37,27 @@ function describeExpiry(notAfter: number, now: number) {
   return { text: `in ${formatDuration(remaining, false)}`, expired: false, expiresSoon: remaining <= expiresSoonMs };
 }
 
+/**
+ * The expiry moves on while the details stay open, as "Created" does: every
+ * second while `formatDuration` shows seconds, under three hours away, and
+ * every minute otherwise. The marks change with it when the time comes.
+ */
+const CertificateExpiry = observer(({ title, notAfter }: { title: string; notAfter: number }) => {
+  const interval = Math.abs(notAfter - Date.now()) < 3 * 60 * 60 * 1000 ? 1000 : 60 * 1000;
+  const expiry = describeExpiry(notAfter, reactiveNow(interval));
+
+  return (
+    <span
+      className={cssNames("expiry", { expired: expiry.expired, "expires-soon": expiry.expiresSoon })}
+      data-testid={`${title}-certificate-expiry`}
+    >
+      {expiry.text} (<LocaleDate date={new Date(notAfter)} />)
+    </span>
+  );
+});
+
 function CertificateDetails({ title, certificate }: { title: string; certificate: CertificateInfo }) {
   const { commonName, organization, issuer, dnsNames, ipAddresses, serialNumber, notBefore, notAfter } = certificate;
-  const expiry = describeExpiry(notAfter, Date.now());
 
   return (
     <div className="certificate" data-testid={`${title}-certificate`}>
@@ -62,12 +82,7 @@ function CertificateDetails({ title, certificate }: { title: string; certificate
         <LocaleDate date={new Date(notBefore)} />
       </DrawerItem>
       <DrawerItem name="Expires">
-        <span
-          className={cssNames("expiry", { expired: expiry.expired, "expires-soon": expiry.expiresSoon })}
-          data-testid={`${title}-certificate-expiry`}
-        >
-          {expiry.text} (<LocaleDate date={new Date(notAfter)} />)
-        </span>
+        <CertificateExpiry title={title} notAfter={notAfter} />
       </DrawerItem>
     </div>
   );
