@@ -532,10 +532,12 @@ version change goes into both `mise.toml` and `.nvmrc`.
 ### Debugging the Application
 
 **Main Process:**
+
 - Logs in terminal where `pnpm start` was run
 - Use `console.log()` or proper logger
 
 **Renderer Process:**
+
 - Open DevTools in the app
 - Check Console tab for errors and logs
 - Use React DevTools for component inspection
@@ -546,6 +548,7 @@ version change goes into both `mise.toml` and `.nvmrc`.
   AI-agent inspection notes in DEVELOPMENT.md.
 
 **Common Errors:**
+
 - `Tried to register same injectable multiple times` - See DI section above
 - `Tried to inject non-registered injectable` - Check registration files were
   generated. In a unit test, a newly added `*.injectable.ts` can report this
