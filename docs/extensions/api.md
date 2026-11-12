@@ -456,6 +456,12 @@ copied disk, from other accounts of the system.
   no fallback to clear text and no in-memory substitute: an extension that
   needs the value asks the user for it again, or tells the user why it cannot
   keep it.
+- On a Linux desktop the host does not recognise, a user with a running
+  secret store makes it available by starting Freelens with
+  `--password-store=gnome-libsecret` for a Secret Service provider such as
+  GNOME Keyring or KeePassXC, or `--password-store=kwallet6` (or `kwallet5`)
+  for KWallet. An extension that tells the user why it cannot keep a value can
+  point to this.
 - A value that is not an extension instance the host loaded rejects every
   method with a `TypeError`. So do a key and a value outside the limits.
 - A credentials file that cannot be read as one rejects every method of that

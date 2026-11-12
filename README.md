@@ -149,6 +149,24 @@ The package is available on the [Arch User Repository
 Check the [freelens-bin](https://aur.archlinux.org/packages/freelens-bin)
 package page.
 
+#### Secret store
+
+Extensions keep tokens and passwords encrypted with the desktop's secret
+store: GNOME Keyring or another Secret Service provider through libsecret, or
+KWallet. The application finds it on its own on GNOME, KDE, Cinnamon, XFCE
+and other common desktops. On a desktop it does not recognise, such as sway,
+Hyprland or i3, the extensions cannot keep such values, so name the secret
+store when you start the application:
+
+```sh
+freelens --password-store=gnome-libsecret
+```
+
+Use `gnome-libsecret` for any Secret Service provider, such as GNOME Keyring
+or KeePassXC, and `kwallet5` or `kwallet6` for KWallet. The provider must be
+running in the session. The AppImage and `flatpak run app.freelens.Freelens`
+take the same argument.
+
 ### Windows
 
 Windows 10 or later is required.
