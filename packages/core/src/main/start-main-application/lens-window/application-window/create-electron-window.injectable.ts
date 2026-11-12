@@ -14,7 +14,9 @@ import openLinkInBrowserInjectable from "../../../../common/utils/open-link-in-b
 import isLinuxInjectable from "../../../../common/vars/is-linux.injectable";
 import lensResourcesDirInjectable from "../../../../common/vars/lens-resources-dir.injectable";
 import applicationWindowStateInjectable from "./application-window-state.injectable";
+import { logFailedLoad } from "./log-failed-load";
 import sessionCertificateVerifierInjectable from "./session-certificate-verifier.injectable";
+import setFreelensProxyTokenCookieInjectable from "./set-freelens-proxy-token-cookie.injectable";
 
 import type { RequireExactlyOne } from "type-fest";
 
@@ -61,6 +63,7 @@ const createElectronWindowInjectable = getInjectable({
     const applicationInformation = di.inject(applicationInformationToken);
     const pathExistsSync = di.inject(pathExistsSyncInjectable);
     const sessionCertificateVerifier = di.inject(sessionCertificateVerifierInjectable);
+    const setFreelensProxyTokenCookie = di.inject(setFreelensProxyTokenCookieInjectable);
 
     return (configuration) => {
       const applicationWindowState = di.inject(applicationWindowStateInjectable, {
@@ -127,11 +130,8 @@ const createElectronWindowInjectable = getInjectable({
         .webContents.on("dom-ready", () => {
           configuration.onDomReady?.();
         })
-        .on("did-fail-load", (_event, code, desc) => {
-          logger.error(`[CREATE-ELECTRON-WINDOW]: Failed to load window "${configuration.id}"`, {
-            code,
-            desc,
-          });
+        .on("did-fail-load", (_event, code, desc, url, isMainFrame) => {
+          logFailedLoad(logger, configuration.id, { code, desc, url, isMainFrame });
         })
         .on("did-finish-load", () => {
           logger.info(`[CREATE-ELECTRON-WINDOW]: Window "${configuration.id}" loaded`);
@@ -159,6 +159,10 @@ const createElectronWindowInjectable = getInjectable({
 
         loadUrl: async (url) => {
           logger.info(`[CREATE-ELECTRON-WINDOW]: Loading content for window "${configuration.id}" from url: ${url}...`);
+
+          // Before the window makes its first request to freelens-proxy, so the
+          // root frame and the cluster frames carry the token.
+          await setFreelensProxyTokenCookie(browserWindow.webContents.session);
 
           // Retry logic for handling firewall/proxy delays and connection issues
           const maxAttempts = 3;

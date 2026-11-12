@@ -509,7 +509,7 @@ exports[`welcome - navigation using application menu > when navigated somewhere 
           id="lens-views"
         />
         <div
-          class="SettingLayout showNavigation Preferences"
+          class="SettingLayout showNavigation withCloseButton Preferences"
         >
           <nav
             class="sidebarRegion"

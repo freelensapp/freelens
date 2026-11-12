@@ -7,15 +7,17 @@
 import assert from "node:assert";
 import { pathToFileURL } from "node:url";
 import { EventEmitter } from "@freelensapp/event-emitter";
-import { isDefined, iter } from "@freelensapp/utilities";
-import { ipcMain, ipcRenderer } from "electron";
+import { isDefined, iter, noop } from "@freelensapp/utilities";
+import { ipcMain } from "electron";
 import { isEqual } from "es-toolkit";
-import { action, computed, observable, reaction, runInAction, toJS, when } from "mobx";
-import { broadcastMessage, ipcMainHandle, ipcMainOn, ipcRendererOn } from "../../common/ipc";
+import { action, compareStructural, computed, observable, reaction, runInAction, toJS, when } from "mobx";
+import { broadcastMessage, ipcMainHandle, ipcRendererOn } from "../../common/ipc";
 import {
   extensionLoaderFromMainChannel,
-  extensionLoaderFromRendererChannel,
+  extensionLoaderLoadFailuresFromMainChannel,
   extensionLoaderReloadDevelopmentChannel,
+  extensionLoaderSetIsEnabledChannel,
+  extensionLoaderTornDownChannel,
 } from "../../common/ipc/extension-handling";
 import { developmentBuildSegment } from "../../features/extensions/loader/common/build-segment";
 import {
@@ -24,8 +26,14 @@ import {
   extensionFileUrl,
   toFileSegments,
 } from "../../features/extensions/loader/common/scheme";
-import { requestExtensionLoaderInitialState } from "../../renderer/ipc";
+import {
+  requestExtensionLoaderInitialState,
+  requestExtensionLoaderMainLoadFailures,
+  requestExtensionLoaderSetIsEnabled,
+  requestExtensionLoaderTornDown,
+} from "../../renderer/ipc";
 import { sanitizeExtensionName } from "../lens-extension";
+import { extensionLoadFailureMessageOf } from "./load-failure";
 
 import type { Fetch } from "@freelensapp/json-api";
 import type { Logger } from "@freelensapp/logger";
@@ -45,8 +53,15 @@ import type {
 } from "../installed-extension";
 import type { LensExtension } from "../lens-extension";
 import type { Extension } from "./extension/extension.injectable";
+import type { ExtensionLoadFailure, ExtensionLoadFailureInProcess, ExtensionLoadStage } from "./load-failure";
 
 const logModule = "[EXTENSIONS-LOADER]";
+
+/**
+ * How long `whenTornDown` waits for one process, which is mostly how long an
+ * extension's `onDeactivate` may take.
+ */
+const tearDownTimeout = 10_000;
 
 /**
  * How Node will load an entry point: as an ES module, or through `require`.
@@ -150,8 +165,33 @@ export class ExtensionLoader {
   // Extensions whose entry point is being imported right now. `import()` is
   // asynchronous, so the check against `extensionInstances` no longer runs in
   // the same tick as the write to it, and a second reaction firing meanwhile
-  // would otherwise load the same extension twice.
-  private readonly extensionsBeingLoaded = new Set<LensExtensionId>();
+  // would otherwise load the same extension twice. Observable, because a load
+  // in flight is one `whenTornDown` has to wait out.
+  private readonly extensionsBeingLoaded = observable.set<LensExtensionId>();
+
+  // The `disable()` of each instance which was taken out and whose
+  // `onDeactivate` and disposers are still running. `removeInstance` drops the
+  // instance at once and does not wait for them, so without this the loader
+  // would have no state that says when an extension has finished going away.
+  private readonly teardowns = observable.map<LensExtensionId, Promise<void>>(undefined, { deep: false });
+
+  /**
+   * The extensions whose code failed to load in this process, and the step it
+   * failed at. Kept apart from `InstalledExtension`, which is main's state and
+   * which main alone writes: a failure in a renderer is that renderer's, and
+   * writing it into the shared object would broadcast it as main's.
+   *
+   * An extension in here is not loaded again until something clears it: a
+   * disable, an uninstall or a development reload. Otherwise every change to
+   * the list of extensions would retry the same import and log the same error.
+   */
+  protected readonly loadFailures = observable.map<LensExtensionId, ExtensionLoadFailure>();
+
+  /**
+   * In a renderer, the failures main reported for its own process. Always
+   * empty in main.
+   */
+  protected readonly mainLoadFailures = observable.map<LensExtensionId, ExtensionLoadFailure>();
 
   readonly isLoaded = observable.box(false);
 
@@ -174,6 +214,62 @@ export class ExtensionLoader {
     }
 
     return this.instancesByName.get().get(name);
+  }
+
+  /**
+   * What failed when this extension was last loaded: in a renderer, main's
+   * failure and its own, in that order; in main, only main's.
+   */
+  getLoadFailures(lensExtensionId: LensExtensionId): ExtensionLoadFailureInProcess[] {
+    const ownProcess = this.dependencies.extensionEntryPointName;
+    const failures: ExtensionLoadFailureInProcess[] = [];
+    const mainFailure = this.mainLoadFailures.get(lensExtensionId);
+    const ownFailure = this.loadFailures.get(lensExtensionId);
+
+    if (mainFailure) {
+      failures.push({ process: "main", ...mainFailure });
+    }
+
+    if (ownFailure) {
+      failures.push({ process: ownProcess, ...ownFailure });
+    }
+
+    return failures;
+  }
+
+  /**
+   * Record that loading an extension failed at `stage`. The first failure of a
+   * load is kept, because it is the cause: an `enable` which rejects after an
+   * `onActivate` which did is a consequence of it.
+   *
+   * Nothing is recorded for an extension which is no longer installed and
+   * enabled here. It was taken out while it was loading, and the failure of a
+   * load nobody wants any more would only stop the next one from starting.
+   */
+  private recordLoadFailure(lensExtensionId: LensExtensionId, stage: ExtensionLoadStage, error: unknown) {
+    if (!this.extensions.get(lensExtensionId)?.isEnabled || this.loadFailures.has(lensExtensionId)) {
+      return;
+    }
+
+    runInAction(() => {
+      this.loadFailures.set(lensExtensionId, { stage, message: extensionLoadFailureMessageOf(error) });
+    });
+  }
+
+  private clearLoadFailure(lensExtensionId: LensExtensionId) {
+    runInAction(() => {
+      this.loadFailures.delete(lensExtensionId);
+    });
+  }
+
+  private loadFailuresState(): [LensExtensionId, ExtensionLoadFailure][] {
+    return Array.from(this.loadFailures, ([lensExtensionId, failure]) => [lensExtensionId, { ...failure }]);
+  }
+
+  private replaceMainLoadFailures(failures: [LensExtensionId, ExtensionLoadFailure][]) {
+    runInAction(() => {
+      this.mainLoadFailures.replace(failures);
+    });
   }
 
   // Transform userExtensions to a state object for storing into ExtensionsStore
@@ -199,22 +295,6 @@ export class ExtensionLoader {
     }
 
     await when(() => this.isLoaded.get());
-
-    // broadcasting extensions between main/renderer processes
-    reaction(
-      () => this.toJSON(),
-      () => this.broadcastExtensions(),
-      {
-        fireImmediately: true,
-      },
-    );
-
-    reaction(
-      () => this.storeState.get(),
-      (state) => {
-        this.dependencies.updateExtensionsState(state);
-      },
-    );
   }
 
   initExtensions(extensions: Map<LensExtensionId, InstalledExtension>) {
@@ -243,12 +323,17 @@ export class ExtensionLoader {
       this.removeInjectedStyles(extensionName);
     }
 
+    // Before the instance check too: an extension which failed to import or to
+    // construct has a failure and no instance. Taking it out is what lets it
+    // be loaded again when it is enabled again.
+    this.clearLoadFailure(lensExtensionId);
+
     if (!instance) {
       return;
     }
 
     try {
-      instance.disable();
+      this.trackTeardown(lensExtensionId, instance.disable());
 
       const extension = this.dependencies.getExtension(instance);
 
@@ -262,6 +347,75 @@ export class ExtensionLoader {
     }
   }
 
+  private trackTeardown(lensExtensionId: LensExtensionId, disabling: Promise<void> | void) {
+    const teardown = Promise.resolve(disabling).catch(noop);
+
+    runInAction(() => {
+      this.teardowns.set(lensExtensionId, teardown);
+    });
+
+    void teardown.then(() => {
+      // Only its own entry: a later teardown of the same extension replaced it.
+      if (this.teardowns.get(lensExtensionId) === teardown) {
+        runInAction(() => {
+          this.teardowns.delete(lensExtensionId);
+        });
+      }
+    });
+  }
+
+  /**
+   * Whether nothing of the extension is running in this process any more: it
+   * is not enabled here, it has no instance, nothing is importing it and its
+   * `onDeactivate` and disposers have returned.
+   */
+  private isTornDownHere(lensExtensionId: LensExtensionId): boolean {
+    return (
+      !this.extensions.get(lensExtensionId)?.isEnabled &&
+      !this.dependencies.extensionInstances.has(lensExtensionId) &&
+      !this.extensionsBeingLoaded.has(lensExtensionId) &&
+      !this.teardowns.has(lensExtensionId)
+    );
+  }
+
+  private async whenTornDownHere(lensExtensionId: LensExtensionId): Promise<void> {
+    try {
+      await when(() => this.isTornDownHere(lensExtensionId), { timeout: tearDownTimeout });
+    } catch {
+      throw new Error(
+        `the ${this.dependencies.extensionEntryPointName} process did not finish tearing it down within ${tearDownTimeout / 1000} seconds`,
+      );
+    }
+  }
+
+  /**
+   * Resolve once the extension is disabled and torn down in this process and,
+   * from a renderer, in main as well; reject when either does not get there in
+   * time.
+   *
+   * This is what to wait on before touching the files of a build that was
+   * running. `setIsEnabled(id, false)` settles once main has changed the flag,
+   * and the loaders react to that asynchronously: an `onDeactivate` may still
+   * be running, or an import still be reading the build, after it has
+   * settled. Only main's and this frame's loaders are waited on; any other
+   * frame tears down from the same broadcast, in parallel.
+   */
+  async whenTornDown(lensExtensionId: LensExtensionId): Promise<void> {
+    if (ipcMain) {
+      return this.whenTornDownHere(lensExtensionId);
+    }
+
+    const results = await Promise.allSettled([
+      this.whenTornDownHere(lensExtensionId),
+      requestExtensionLoaderTornDown(lensExtensionId),
+    ]);
+    const failure = results.find((result) => result.status === "rejected");
+
+    if (failure) {
+      throw failure.reason;
+    }
+  }
+
   removeExtension(lensExtensionId: LensExtensionId) {
     this.removeInstance(lensExtensionId);
 
@@ -270,12 +424,26 @@ export class ExtensionLoader {
     }
   }
 
-  setIsEnabled(lensExtensionId: LensExtensionId, isEnabled: boolean) {
+  /**
+   * Enable or disable an extension.
+   *
+   * Main is the only process which changes `isEnabled`, and the only one which
+   * writes it to the enabled-extensions state. A renderer asks main, and its
+   * own copy changes when main broadcasts the result; the promise settles once
+   * main has applied the change. See `extensionLoaderSetIsEnabledChannel`.
+   */
+  async setIsEnabled(lensExtensionId: LensExtensionId, isEnabled: boolean): Promise<void> {
+    if (!ipcMain) {
+      return requestExtensionLoaderSetIsEnabled(lensExtensionId, isEnabled);
+    }
+
     const extension = this.extensions.get(lensExtensionId);
 
     assert(extension, `Extension "${lensExtensionId}" must be registered before it can be enabled.`);
 
-    extension.isEnabled = isEnabled;
+    runInAction(() => {
+      extension.isEnabled = isEnabled;
+    });
   }
 
   protected async initMain() {
@@ -287,9 +455,39 @@ export class ExtensionLoader {
 
     ipcMainHandle(extensionLoaderFromMainChannel, () => [...this.toJSON()]);
 
-    ipcMainOn(extensionLoaderFromRendererChannel, (event, extensions: [LensExtensionId, InstalledExtension][]) => {
-      this.syncExtensions(extensions);
-    });
+    ipcMainHandle(extensionLoaderSetIsEnabledChannel, (event, lensExtensionId: LensExtensionId, isEnabled: boolean) =>
+      this.setIsEnabled(lensExtensionId, isEnabled),
+    );
+
+    ipcMainHandle(extensionLoaderLoadFailuresFromMainChannel, () => this.loadFailuresState());
+
+    ipcMainHandle(extensionLoaderTornDownChannel, (event, lensExtensionId: LensExtensionId) =>
+      this.whenTornDown(lensExtensionId),
+    );
+
+    reaction(
+      () => this.loadFailuresState(),
+      (failures) => void broadcastMessage(extensionLoaderLoadFailuresFromMainChannel, failures),
+      { equals: compareStructural },
+    );
+
+    // Main holds the state and the renderers follow it. A renderer applies
+    // what it receives and sends nothing back, so nothing it sends can
+    // overtake a newer state.
+    reaction(
+      () => this.toJSON(),
+      () => this.broadcastExtensions(),
+      {
+        fireImmediately: true,
+      },
+    );
+
+    reaction(
+      () => this.storeState.get(),
+      (state) => {
+        this.dependencies.updateExtensionsState(state);
+      },
+    );
   }
 
   protected async initRenderer() {
@@ -316,6 +514,27 @@ export class ExtensionLoader {
     ipcRendererOn(extensionLoaderReloadDevelopmentChannel, (event, extensionId: LensExtensionId, token: string) => {
       void this.reloadDevelopmentExtension(extensionId, token);
     });
+
+    // A broadcast is always the newer state, so an answer to the request which
+    // arrives after one is dropped rather than applied over it.
+    let hasMainLoadFailuresBroadcast = false;
+
+    requestExtensionLoaderMainLoadFailures()
+      .then((failures) => {
+        if (!hasMainLoadFailuresBroadcast) {
+          this.replaceMainLoadFailures(failures);
+        }
+      })
+      .catch((error: unknown) => {
+        this.dependencies.logger.warn(`${logModule}: failed to get the load failures of main`, { error });
+      });
+    ipcRendererOn(
+      extensionLoaderLoadFailuresFromMainChannel,
+      (event, failures: [LensExtensionId, ExtensionLoadFailure][]) => {
+        hasMainLoadFailuresBroadcast = true;
+        this.replaceMainLoadFailures(failures);
+      },
+    );
   }
 
   /**
@@ -454,6 +673,11 @@ export class ExtensionLoader {
 
     this.dependencies.logger.info(`${logModule}: reloading ${extension.manifest.name} after a rebuild`);
 
+    // A rebuild is what an author makes to fix a failure, so the failure of
+    // the previous build is not carried over to the next: if it fails again,
+    // that is recorded again.
+    this.clearLoadFailure(extensionId);
+
     await this.disposeInstance(extensionId);
 
     // The previous load may have concluded that this process has no class to
@@ -499,9 +723,7 @@ export class ExtensionLoader {
   }
 
   broadcastExtensions() {
-    const channel = ipcRenderer ? extensionLoaderFromRendererChannel : extensionLoaderFromMainChannel;
-
-    broadcastMessage(channel, Array.from(this.extensions));
+    broadcastMessage(extensionLoaderFromMainChannel, Array.from(this.extensions));
   }
 
   syncExtensions(extensions: [LensExtensionId, InstalledExtension][]) {
@@ -523,6 +745,7 @@ export class ExtensionLoader {
             ext: extension.installedExtension,
             error,
           });
+          this.recordLoadFailure(extension.installedExtension.id, "activate", error);
         }),
       ),
     );
@@ -536,6 +759,7 @@ export class ExtensionLoader {
     return extensions.map((extension) => {
       const loaded = extension.instance.enable().catch((err) => {
         this.dependencies.logger.error(`${logModule}: failed to enable`, { ext: extension, err });
+        this.recordLoadFailure(extension.installedExtension.id, "enable", err);
       });
 
       return { loaded };
@@ -553,14 +777,27 @@ export class ExtensionLoader {
       const alreadyInit =
         this.dependencies.extensionInstances.has(extId) ||
         this.nonInstancesByName.has(installedExtension.manifest.name) ||
-        this.extensionsBeingLoaded.has(extId);
+        this.extensionsBeingLoaded.has(extId) ||
+        this.loadFailures.has(extId);
 
       if (installedExtension.isCompatible && installedExtension.isEnabled && !alreadyInit) {
-        this.extensionsBeingLoaded.add(extId);
+        runInAction(() => {
+          this.extensionsBeingLoaded.add(extId);
+        });
 
         try {
-          const LensExtensionClass = await this.requireExtension(installedExtension);
+          let LensExtensionClass: LensExtensionConstructor | null;
 
+          try {
+            LensExtensionClass = await this.requireExtension(installedExtension);
+          } catch (error) {
+            this.recordLoadFailure(extId, "import", error);
+
+            return null;
+          }
+
+          // Only a manifest without an entry point for this process gets here:
+          // there is nothing to instantiate, and nothing failed.
           if (!LensExtensionClass) {
             this.nonInstancesByName.add(installedExtension.manifest.name);
 
@@ -596,8 +833,11 @@ export class ExtensionLoader {
           } as ExtensionBeingActivated;
         } catch (err) {
           this.dependencies.logger.error(`${logModule}: error loading extension`, { ext: installedExtension, err });
+          this.recordLoadFailure(extId, "instantiate", err);
         } finally {
-          this.extensionsBeingLoaded.delete(extId);
+          runInAction(() => {
+            this.extensionsBeingLoaded.delete(extId);
+          });
         }
       } else if (!installedExtension.isEnabled && alreadyInit) {
         this.removeInstance(extId);
@@ -638,6 +878,9 @@ export class ExtensionLoader {
    * exists. The renderer imports a URL on the privileged scheme main serves,
    * which is what lets a renderer without filesystem privileges keep working
    * (#2399) and what makes top-level await in a renderer entry point legal.
+   *
+   * Resolves to `null` when the manifest declares no entry point for this
+   * process, and rejects when the declared one cannot be imported.
    */
   protected async requireExtension(extension: InstalledExtension): Promise<LensExtensionConstructor | null> {
     const entryPointPath = extension.manifest[this.dependencies.extensionEntryPointName];
@@ -679,9 +922,11 @@ export class ExtensionLoader {
         `${logModule}: can't load ${this.dependencies.extensionEntryPointName} for "${extension.manifest.name}": ${message}`,
         { extension },
       );
-    }
 
-    return null;
+      // Thrown on rather than turned into `null`, which would make an entry
+      // point that failed look like one the manifest does not declare.
+      throw error;
+    }
   }
 
   /**

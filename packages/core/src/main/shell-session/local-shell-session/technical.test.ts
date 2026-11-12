@@ -4,7 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { computed } from "mobx";
+import { EventEmitter } from "node:events";
+import { computed, observable } from "mobx";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import directoryForTempInjectable from "../../../common/app-paths/directory-for-temp/directory-for-temp.injectable";
 import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
@@ -25,8 +26,10 @@ import freelensProxyPortInjectable from "../../freelens-proxy/freelens-proxy-por
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import kubeconfigManagerInjectable from "../../kubeconfig-manager/kubeconfig-manager.injectable";
 import createKubectlInjectable from "../../kubectl/create-kubectl.injectable";
+import shellSessionProcessesInjectable from "../processes.injectable";
 import spawnPtyInjectable from "../spawn-pty.injectable";
 import openLocalShellSessionInjectable from "./open.injectable";
+import type { Stats } from "node:fs";
 
 import type { DiContainer } from "@ogre-tools/injectable";
 import type { IPty } from "node-pty";
@@ -466,6 +469,29 @@ describe("technical unit tests for local shell sessions", () => {
       });
     });
 
+    it("starts the shell the setting names now, not the one of an earlier terminal of the cluster", async () => {
+      const shellSetting = observable.box("/bin/bash");
+      const cluster = new Cluster({
+        contextName: "some-context-name",
+        id: "some-cluster-id",
+        kubeConfigPath: "/some-kube-config-path",
+      });
+
+      di.override(platformInjectable, () => "linux");
+      di.override(userShellSettingInjectable, () => computed(() => shellSetting.get()));
+
+      const openLocalShellSession = di.inject(openLocalShellSessionInjectable);
+
+      await openLocalShellSession({ cluster, tabId: "some-tab-id", websocket: websocket() });
+      shellSetting.set("/bin/zsh");
+      await openLocalShellSession({ cluster, tabId: "other-tab-id", websocket: websocket() });
+
+      expect(spawnPtyMock.mock.calls.map(([file, , options]) => [file, options.env?.PTYSHELL])).toEqual([
+        ["/bin/bash", "/bin/bash"],
+        ["/bin/zsh", "/bin/zsh"],
+      ]);
+    });
+
     it("points KUBECONFIG at the cluster's proxy kubeconfig", async () => {
       const { env } = await openWithShell("/bin/bash");
 
@@ -483,6 +509,13 @@ describe("technical unit tests for local shell sessions", () => {
 
       expect(env.KUBECACHEDIR).toBe("/some-proxy-kubeconfig-cache-directory");
       expect((env.WSLENV ?? "").split(":")).toContain("KUBECACHEDIR/up");
+    });
+
+    it("passes FREELENS_PROXY_TOKEN on to WSL and back out of it, with no flag", async () => {
+      const { env } = await openWithShell("powershell.exe", "win32");
+
+      expect(env.FREELENS_PROXY_TOKEN).toBeTruthy();
+      expect((env.WSLENV ?? "").split(":")).toContain("FREELENS_PROXY_TOKEN");
     });
 
     it("starts bash with the init file that re-prepends the kubectl directory", async () => {
@@ -529,6 +562,179 @@ describe("technical unit tests for local shell sessions", () => {
 
       expect(options).toHaveProperty("useConptyDll", true);
       expect(options).not.toHaveProperty("useConpty");
+    });
+
+    /**
+     * node-pty looks a shell given by name only up in the current folder of
+     * Freelens first, and starts nothing when the file is there
+     * (microsoft/node-pty#1005): `wsl.exe` failed when Freelens started in
+     * `C:\Windows\System32` (#2918). Freelens gives it the full path instead.
+     */
+    describe("when the shell is given by name only on Windows", () => {
+      let files: Set<string>;
+      let statted: string[];
+
+      beforeEach(() => {
+        files = new Set(["C:\\Windows\\System32\\wsl.exe", "C:\\Windows\\System32\\cmd.exe"]);
+        statted = [];
+        di.override(computeShellEnvironmentInjectable, () => async () => ({
+          callWasSuccessful: true as const,
+          response: {
+            Path: "C:\\Users\\some-user\\bin;C:\\Windows\\System32;C:\\Windows",
+            PATHEXT: ".COM;.EXE;.BAT;.CMD",
+            USERPROFILE: "C:\\Users\\some-user",
+          },
+        }));
+        di.override(statInjectable, () => async (file: string) => {
+          statted.push(file);
+
+          if (files.has(file)) {
+            return { isFile: () => true, isDirectory: () => false } as Stats;
+          }
+
+          throw Object.assign(new Error(`ENOENT: no such file or directory, stat '${file}'`), { code: "ENOENT" });
+        });
+      });
+
+      it("starts it by its full path in the directory of PATH that has it", async () => {
+        const { file } = await openWithShell("wsl.exe", "win32");
+
+        expect(file).toBe("C:\\Windows\\System32\\wsl.exe");
+      });
+
+      it("adds the extensions of PATHEXT to a name without one", async () => {
+        const { file } = await openWithShell("wsl", "win32");
+
+        expect(file).toBe("C:\\Windows\\System32\\wsl.exe");
+      });
+
+      it("takes the first directory of PATH that has it", async () => {
+        files.add("C:\\Users\\some-user\\bin\\cmd.exe");
+
+        const { file } = await openWithShell("cmd.exe", "win32");
+
+        expect(file).toBe("C:\\Users\\some-user\\bin\\cmd.exe");
+      });
+
+      it("starts a shell given with its path as it is, without looking it up", async () => {
+        const { file } = await openWithShell("C:\\Tools\\my-shell.exe", "win32");
+
+        expect(file).toBe("C:\\Tools\\my-shell.exe");
+        expect(statted.filter((statPath) => statPath.endsWith("my-shell.exe"))).toEqual([]);
+      });
+
+      it("leaves a name that no directory of PATH has as it is", async () => {
+        const { file } = await openWithShell("missing-shell.exe", "win32");
+
+        expect(file).toBe("missing-shell.exe");
+      });
+
+      it("leaves a name as it is on other platforms, where the system looks it up", async () => {
+        const { file } = await openWithShell("bash", "linux");
+
+        expect(file).toBe("bash");
+      });
+    });
+
+    /**
+     * The websocket emits `close` once, and the shell starts only after a
+     * series of awaits: a tab closed during any of them must leave no PTY
+     * behind, because nothing would ever kill it.
+     */
+    describe("when the terminal closes while the session starts", () => {
+      type Stage = "proxy" | "kubectl" | "init-scripts" | "shell-environment" | "cwd";
+
+      let closeDuring: Stage | undefined;
+      let closableWebsocket: EventEmitter & { readyState: number };
+
+      const reach = (stage: Stage) => {
+        if (closeDuring === stage) {
+          closableWebsocket.readyState = 3;
+          closableWebsocket.emit("close", 1000);
+        }
+      };
+
+      const open = () =>
+        di.inject(openLocalShellSessionInjectable)({
+          cluster: new Cluster({
+            contextName: "some-context-name",
+            id: "some-cluster-id",
+            kubeConfigPath: "/some-kube-config-path",
+          }),
+          tabId: "my-tab-id",
+          websocket: closableWebsocket as unknown as WebSocket,
+        });
+
+      beforeEach(() => {
+        closeDuring = undefined;
+        closableWebsocket = Object.assign(new EventEmitter(), { send: vi.fn(), readyState: 1, OPEN: 1 });
+
+        di.override(platformInjectable, () => "linux");
+        di.override(userShellSettingInjectable, () => computed(() => "/bin/bash"));
+        di.override(
+          kubeconfigManagerInjectable,
+          () =>
+            ({
+              ensurePaths: async () => {
+                reach("proxy");
+
+                return {
+                  kubeconfigPath: "/some-proxy-kubeconfig-file",
+                  cacheDirectoryPath: "/some-proxy-kubeconfig-cache-directory",
+                };
+              },
+            }) as Partial<KubeconfigManager> as KubeconfigManager,
+        );
+        di.override(
+          createKubectlInjectable,
+          () => () =>
+            ({
+              kubectlVersion: "1.33.4",
+              getPath: async () => {
+                reach("kubectl");
+
+                return kubectlPath;
+              },
+              getVersionMatchedPath: () => "/some-kubectl-binary-dir/kubectl",
+              writeInitScripts: async () => {
+                reach("init-scripts");
+
+                return "/some-kubectl-binary-dir";
+              },
+            }) as Partial<Kubectl> as Kubectl,
+        );
+        di.override(computeShellEnvironmentInjectable, () => async () => {
+          reach("shell-environment");
+
+          return {
+            callWasSuccessful: true as const,
+            response: { PATH: "/usr/bin", HOME: "/home/some-user" },
+          };
+        });
+        di.override(statInjectable, () => async () => {
+          reach("cwd");
+
+          throw new Error("no such directory");
+        });
+      });
+
+      it("starts the shell when the terminal stays open", async () => {
+        await open();
+
+        expect(spawnPtyMock).toHaveBeenCalledOnce();
+      });
+
+      it.each<Stage>(["proxy", "kubectl", "init-scripts", "shell-environment", "cwd"])(
+        "spawns no PTY when it closes during the %s stage",
+        async (stage) => {
+          closeDuring = stage;
+
+          await open();
+
+          expect(spawnPtyMock).not.toHaveBeenCalled();
+          expect(di.inject(shellSessionProcessesInjectable).size).toBe(0);
+        },
+      );
     });
   });
 });

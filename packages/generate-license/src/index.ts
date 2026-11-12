@@ -197,6 +197,7 @@ async function main() {
   }
 
   if (outputFile) {
+    await fs.mkdir(path.dirname(outputFile), { recursive: true });
     await fs.writeFile(outputFile, finalContent, "utf8");
   } else {
     console.log(finalContent);

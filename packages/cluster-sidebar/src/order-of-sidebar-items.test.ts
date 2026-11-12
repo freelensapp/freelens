@@ -175,3 +175,56 @@ describe("order of sidebar items", () => {
     ]);
   });
 });
+
+describe("order of sidebar items that share an order key", () => {
+  const getBlockItemInjectable = (id: string, orderKey: string, orderNumberInBlock?: number) =>
+    getInjectable({
+      id,
+      instantiate: () => ({
+        parentId: null,
+        title: id,
+        onClick: noop,
+        orderNumber: 9999,
+        orderKey,
+        orderNumberInBlock,
+      }),
+      injectionToken: sidebarItemInjectionToken,
+    });
+
+  let sidebarItems: IComputedValue<SidebarItemDeclaration[]>;
+
+  beforeEach(() => {
+    const di = createContainer("test");
+
+    di.register(
+      getBlockItemInjectable("some-block-undeclared", "some-block"),
+      getBlockItemInjectable("some-block-second", "some-block", 200),
+      getBlockItemInjectable("some-other-block-only", "some-other-block", 50),
+      getBlockItemInjectable("some-block-first", "some-block", 100),
+      getBlockItemInjectable("some-block-tied-first", "some-block", 150),
+      getBlockItemInjectable("some-block-tied-second", "some-block", 150),
+      getInjectable({
+        id: "some-host-item",
+        instantiate: () => ({ parentId: null, title: "Some host item", onClick: noop, orderNumber: 10 }),
+        injectionToken: sidebarItemInjectionToken,
+      }),
+    );
+
+    clusterSidebarFeature.register(di);
+    registerMobX(di);
+
+    sidebarItems = di.inject(sidebarItemsInjectable);
+  });
+
+  it("orders the items of a block by their order number in the block, without interleaving another block placed at the same number", () => {
+    expect(sidebarItems.get().map((item) => item.id)).toEqual([
+      "some-host-item",
+      "some-block-first",
+      "some-block-tied-first",
+      "some-block-tied-second",
+      "some-block-second",
+      "some-block-undeclared",
+      "some-other-block-only",
+    ]);
+  });
+});

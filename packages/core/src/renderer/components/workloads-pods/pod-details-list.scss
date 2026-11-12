@@ -19,7 +19,7 @@
     }
 
     .TableHead.sticky {
-      top: calc(var(--spacing) * -1);
+      top: calc(var(--drawer-spacing) * -1);
     }
   }
 
@@ -42,6 +42,12 @@
 
     &.namespace {
       flex-grow: 1.2;
+    }
+
+    &.ports {
+      flex-grow: 1.2;
+      min-width: 0;
+      overflow: hidden;
     }
 
     &.cpu {

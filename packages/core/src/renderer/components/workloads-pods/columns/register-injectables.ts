@@ -16,6 +16,7 @@ import { podsNameColumnInjectable } from "./pods-name-column.injectable";
 import { podsNamespaceColumnInjectable } from "./pods-namespace-column.injectable";
 import { podsNodeColumnInjectable } from "./pods-node-column.injectable";
 import { podsOwnersColumnInjectable } from "./pods-owners-column.injectable";
+import { podsPortsColumnInjectable } from "./pods-ports-column.injectable";
 import { podsQosColumnInjectable } from "./pods-qos-column.injectable";
 import { podsRestartsColumnInjectable } from "./pods-restarts-column.injectable";
 import { podsStatusColumnInjectable } from "./pods-status-column.injectable";
@@ -56,6 +57,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(podsOwnersColumnInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(podsPortsColumnInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

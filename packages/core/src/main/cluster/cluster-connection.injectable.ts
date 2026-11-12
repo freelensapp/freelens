@@ -24,7 +24,7 @@ import { replaceObservableObject } from "../../common/utils/replace-observable-o
 import clusterVersionDetectorInjectable from "../cluster-detectors/cluster-version-detector.injectable";
 import detectClusterMetadataInjectable from "../cluster-detectors/detect-cluster-metadata.injectable";
 import broadcastConnectionUpdateInjectable from "./broadcast-connection-update.injectable";
-import freelensK8sProxyServerInjectable from "./freelens-k8s-proxy-server.injectable";
+import freelensK8sProxyManagerInjectable from "./freelens-k8s-proxy-manager.injectable";
 import loadProxyKubeconfigInjectable from "./load-proxy-kubeconfig.injectable";
 import prometheusHandlerInjectable from "./prometheus-handler/prometheus-handler.injectable";
 import removeProxyKubeconfigInjectable from "./remove-proxy-kubeconfig.injectable";
@@ -47,7 +47,7 @@ import type { KubeApiResource } from "../../common/rbac";
 import type { DetectClusterMetadata } from "../cluster-detectors/detect-cluster-metadata.injectable";
 import type { FallibleOnlyClusterMetadataDetector } from "../cluster-detectors/token";
 import type { BroadcastConnectionUpdate } from "./broadcast-connection-update.injectable";
-import type { FreelensK8sProxyServer } from "./freelens-k8s-proxy-server.injectable";
+import type { FreelensK8sProxyManager } from "./freelens-k8s-proxy-manager.injectable";
 import type { LoadProxyKubeconfig } from "./load-proxy-kubeconfig.injectable";
 import type { ClusterPrometheusHandler } from "./prometheus-handler/prometheus-handler";
 import type { RemoveProxyKubeconfig } from "./remove-proxy-kubeconfig.injectable";
@@ -56,7 +56,7 @@ import type { RequestApiResources } from "./request-api-resources.injectable";
 interface Dependencies {
   readonly logger: Logger;
   readonly prometheusHandler: ClusterPrometheusHandler;
-  readonly freelensK8sProxyServer: FreelensK8sProxyServer;
+  readonly freelensK8sProxyManager: FreelensK8sProxyManager;
   readonly clusterVersionDetector: FallibleOnlyClusterMetadataDetector;
   createCanI: CreateCanI;
   requestApiResources: RequestApiResources;
@@ -367,7 +367,7 @@ class ClusterConnection {
   async reconnect() {
     this.dependencies.logger.info(`[CLUSTER]: reconnect`, this.cluster.getMeta());
     this.resetAuthFailureTracking();
-    await this.dependencies.freelensK8sProxyServer?.restart();
+    await this.dependencies.freelensK8sProxyManager?.restart();
 
     runInAction(() => {
       this.cluster.disconnected.set(false);
@@ -379,7 +379,7 @@ class ClusterConnection {
       // A request through freelens-proxy and a user of the proxy kubeconfig
       // start the proxy whether the cluster is connected or not, so a
       // disconnected cluster can still hold a running one.
-      this.dependencies.freelensK8sProxyServer?.stop();
+      this.dependencies.freelensK8sProxyManager?.stop();
 
       return this.dependencies.logger.debug("[CLUSTER]: already disconnected", { id: this.cluster.id });
     }
@@ -389,7 +389,7 @@ class ClusterConnection {
     runInAction(() => {
       this.dependencies.logger.info(`[CLUSTER]: disconnecting`, { id: this.cluster.id });
       this.eventsDisposer();
-      this.dependencies.freelensK8sProxyServer?.stop();
+      this.dependencies.freelensK8sProxyManager?.stop();
       this.cluster.disconnected.set(true);
       this.cluster.online.set(false);
       this.cluster.accessible.set(false);
@@ -647,7 +647,7 @@ const clusterConnectionInjectable = getInjectable({
     new ClusterConnection(
       {
         clusterVersionDetector: di.inject(clusterVersionDetectorInjectable),
-        freelensK8sProxyServer: di.inject(freelensK8sProxyServerInjectable, cluster),
+        freelensK8sProxyManager: di.inject(freelensK8sProxyManagerInjectable, cluster),
         logger: di.inject(loggerInjectionToken),
         prometheusHandler: di.inject(prometheusHandlerInjectable, cluster),
         broadcastConnectionUpdate: di.inject(broadcastConnectionUpdateInjectable, cluster),

@@ -149,6 +149,12 @@ describe("Main.Shell", () => {
       expect(env.DEBUG).toBeUndefined();
     });
 
+    it("exports the application's proxy preference as HTTPS_PROXY, as the terminal does", async () => {
+      di.inject(userPreferencesStateInjectable).httpsProxy = "socks5://some-application-proxy:1080";
+
+      expect((await Main.Shell.getEnvironment()).HTTPS_PROXY).toBe("socks5://some-application-proxy:1080");
+    });
+
     it("never constructs a kubectl nor starts a cluster proxy", async () => {
       await Main.Shell.getKubectlPath();
       await Main.Shell.getEnvironment();
@@ -214,6 +220,8 @@ describe("Main.Shell", () => {
     });
 
     it("reaches the cluster through Freelens, replacing every kubeconfig variable of the user's", async () => {
+      di.inject(userPreferencesStateInjectable).httpsProxy = "socks5://some-application-proxy:1080";
+
       const env = await Main.Shell.getEnvironment(cluster.id);
 
       expect(env).toMatchObject({

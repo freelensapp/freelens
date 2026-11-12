@@ -5,10 +5,10 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import { onQuitOfBackEndInjectionToken } from "../start-main-application/runnable-tokens/phases";
-import freelensK8sProxyServersInjectable from "./freelens-k8s-proxy-servers.injectable";
+import freelensK8sProxyManagersInjectable from "./freelens-k8s-proxy-managers.injectable";
 
 /**
- * Stops the proxy process of every freelens-k8s-proxy server. A child process
+ * Stops the proxy process of every freelens-k8s-proxy manager. A child process
  * outlives the application that spawned it, so one left running here ends up
  * under PID 1 with the credentials of its cluster.
  *
@@ -19,8 +19,8 @@ const stopFreelensK8sProxiesOnQuitInjectable = getInjectable({
   id: "stop-freelens-k8s-proxies-on-quit",
   instantiate: (di) => ({
     run: () => {
-      for (const freelensK8sProxyServer of di.inject(freelensK8sProxyServersInjectable)) {
-        freelensK8sProxyServer.stop();
+      for (const freelensK8sProxyManager of di.inject(freelensK8sProxyManagersInjectable)) {
+        freelensK8sProxyManager.stop();
       }
     },
   }),

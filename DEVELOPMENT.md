@@ -34,8 +34,8 @@ mise settings add idiomatic_version_file_enable_tools node
 mise install
 # or
 winget install CoreyButler.NVMforWindows
-nvm install 24.21.0
-nvm use 24.21.0
+nvm install 24.22.1
+nvm use 24.22.1
 ```
 
 Install Pnpm (if is not yet installed with mise-en-place):
@@ -78,12 +78,12 @@ pnpm build
 
 ### Bundled binaries
 
-`pnpm build:resources:client` downloads `freelens-k8s-proxy`, `kubectl` and
-`helm`. Their versions live in the `config` block of `freelens/package.json`,
-and their exact digests are pinned in `freelens/binaries.lock.json`. The build
-verifies every download against that lock rather than against a checksum served
-by the same host as the artifact, so bumping a version without regenerating the
-lock fails the build:
+`pnpm build:binaries` in `freelens/` downloads `freelens-k8s-proxy`, `kubectl`
+and `helm`. Their versions live in the `config` block of
+`freelens/package.json`, and their exact digests are pinned in
+`freelens/binaries.lock.json`. The build verifies every download against that
+lock rather than against a checksum served by the same host as the artifact, so
+bumping a version without regenerating the lock fails the build:
 
 ```sh
 pnpm update-binaries-lock
@@ -131,7 +131,7 @@ trunk check
 pnpm trunk:check
 ```
 
-For main project TypeScript and HTML files, you can run Biome directly:
+For main project TypeScript, HTML, CSS, SCSS and YAML files, you can run Biome directly:
 
 ```sh
 biome check
@@ -172,6 +172,31 @@ package. If it fails, `pnpm dev` stops before starting the app:
 - if a broken download is cached, delete the Electron cache directory
   (`~/.cache/electron`, `~/Library/Caches/electron` or
   `%LOCALAPPDATA%\electron\Cache`) and retry.
+
+### Kubeconfig syncs of the dev profile
+
+`pnpm dev` runs the app in development mode, with its own `FreelensDev`
+profile in the application data directory (`~/.config/FreelensDev`,
+`~/Library/Application Support/FreelensDev` or `%APPDATA%\FreelensDev`), or
+in `$FREELENS_INTEGRATION_TESTING_DIR/FreelensDev` when that variable points
+into the system temporary directory. Unlike a production
+profile, a dev profile starts with no kubeconfig sync: it does not read your
+`~/.kube`, so the catalog shows none of your real clusters until you add them.
+
+To work with your own clusters, add `~/.kube` (or any other file or folder)
+once in Preferences > Kubernetes > Kubeconfig Syncs. To start a fresh profile
+with it already in place, preseed `lens-user-store.json` in the profile
+directory:
+
+```json
+{
+  "preferences": {
+    "syncKubeconfigEntries": [{ "filePath": "/home/me/.kube" }]
+  }
+}
+```
+
+The `filePath` must be absolute; `~` is not expanded.
 
 ### Inspecting the running dev app from an AI agent (optional)
 

@@ -170,7 +170,7 @@ async function verifyPgpOverFile(filePath: string, signatureUrl: string): Promis
 }
 
 /** SHA-256 of one entry inside a gzipped tarball. */
-async function digestOfTarEntry(tarPath: string, entryName: string): Promise<string> {
+export async function digestOfTarEntry(tarPath: string, entryName: string): Promise<string> {
   const extracting = extract();
   let digest: string | undefined;
 

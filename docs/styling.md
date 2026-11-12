@@ -10,13 +10,20 @@ changing any stylesheet or `className`.
 Four mechanisms coexist. They are not interchangeable — each has a distinct
 role (see [Roles](#roles-which-mechanism-to-use)):
 
-1. **Theme tokens (CSS custom properties).** The TS theme objects
-   (`packages/core/src/renderer/themes/lens-dark.injectable.ts`, `lens-light…`)
-   are written to `:root` as `--<name>` custom properties at runtime by
-   `themes/apply-lens-theme.injectable.ts`. Everything else reads these:
-   SCSS as `var(--textColorPrimary)`, Tailwind through the four bridged color
+1. **Theme tokens (CSS custom properties).** The colors come from the TS theme
+   objects (`packages/core/src/renderer/themes/lens-dark.injectable.ts`,
+   `lens-light…`), which `themes/apply-lens-theme.injectable.ts` writes to
+   `:root` as `--<name>` custom properties at runtime. Fonts, font sizes and
+   spacing units (`--font-main`, `--font-size`, `--unit`, `--padding`, …) are
+   static custom properties on `:root` in
+   `packages/core/src/renderer/components/app.scss` and do not change with the
+   theme. The other mechanisms read these custom properties: SCSS as
+   `var(--textColorPrimary)`, Tailwind through the four bridged color
    utilities. **This layer is the one contract all other systems agree on** —
    it is what makes theming work regardless of which mechanism draws a rule.
+   Font weights are not part of it: they are SCSS constants
+   (`$font-weight-thin`, `$font-weight-normal`, `$font-weight-bold` in
+   `vars.scss`) with no custom property, so `var()` cannot read them.
 2. **Global plain SCSS** (~200 files). Side-effect `import "./pods.scss"`,
    scoped by convention: one PascalCase root class matching the component
    (`.Pods`, `.Drawer`, `.IngressDetails`) with plain nested selectors inside.
@@ -39,24 +46,24 @@ classes: see
 
 ## Roles: which mechanism to use
 
-| Context | Mechanism | Why |
-|---|---|---|
-| Theme values (colors, fonts, spacing tokens) | CSS custom properties from the TS theme system (`var(--…)`) | The single cross-system contract; the only way a value re-themes at runtime |
-| **Shared components** (`packages/ui-components`) and anything an extension may restyle | Global PascalCase class + plain SCSS + `var(--…)`. **No Tailwind, no CSS Modules** | The class names (`.Tooltip`, `.Button`, `.Icon`) are **public API** — extensions target and override them; mangled ids would break that. Tailwind cannot reach here at all (see below) |
-| **Core single components / full views** | CSS Modules (`*.module.scss`, mangled ids) | Component-private styling that should not leak into the global namespace |
-| Local layout/spacing **inside core-only TSX** | Tailwind utilities | Throwaway layout that never needs to be themed beyond the bridged tokens or restyled from outside |
-| Extensions | CSS Modules + a working injection mechanism | See [`docs/extensions/migrating-from-v1.md`](./extensions/migrating-from-v1.md#styling-and-css) |
+| Context                                                                                | Mechanism                                                                                                                                          | Why                                                                                                                                                                                    |
+| -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Theme values (colors, fonts, spacing units)                                            | `var(--…)`: colors from the TS theme system, fonts and spacing units from `:root` in `app.scss`; font weights as SCSS constants (`$font-weight-*`) | The single cross-system contract; the TS theme colors are the only values that re-theme at runtime                                                                                     |
+| **Shared components** (`packages/ui-components`) and anything an extension may restyle | Global PascalCase class + plain SCSS + `var(--…)`. **No Tailwind, no CSS Modules**                                                                 | The class names (`.Tooltip`, `.Button`, `.Icon`) are **public API** — extensions target and override them; mangled ids would break that. Tailwind cannot reach here at all (see below) |
+| **Core single components / full views**                                                | CSS Modules (`*.module.scss`, mangled ids)                                                                                                         | Component-private styling that should not leak into the global namespace                                                                                                               |
+| Local layout/spacing **inside core-only TSX**                                          | Tailwind utilities                                                                                                                                 | Throwaway layout that never needs to be themed beyond the bridged tokens or restyled from outside                                                                                      |
+| Extensions                                                                             | CSS Modules + a working injection mechanism                                                                                                        | See [`docs/extensions/migrating-from-v1.md`](./extensions/migrating-from-v1.md#styling-and-css)                                                                                        |
 
 So the answer to "Tailwind or mangled CSS ids?" is **both, with a boundary**:
 Tailwind for disposable layout in core-only TSX; CSS Modules for anything that
-*is* a component's styling; global classes only where the class name is part of
+_is_ a component's styling; global classes only where the class name is part of
 the public surface.
 
 ### Why Tailwind is core-only
 
 `packages/core/tailwind.config.js` sets `content: ["src/**/*.tsx"]`, so the
 Tailwind JIT scans **only core's own TSX**. A Tailwind class written in
-`packages/ui-components` or in an extension that core does not *also* happen to
+`packages/ui-components` or in an extension that core does not _also_ happen to
 use produces **no CSS** — it silently does nothing. Never use Tailwind
 utilities outside core TSX expecting the host to emit them. (An extension can
 still run its **own** Tailwind build and ship the generated utilities in its
@@ -83,7 +90,7 @@ they are no longer loaded, so those class names now do nothing.
   vocabulary, and do not mix vocabularies in one `className`.
 - `packages/ui-components` cannot use Tailwind (the host JIT scans only core
   TSX — see above); style layout with plain rules in the component's own SCSS.
-  Extensions cannot use the *host's* Tailwind either, but may run their own
+  Extensions cannot use the _host's_ Tailwind either, but may run their own
   Tailwind build (see
   [Bringing your own Tailwind](./extensions/migrating-from-v1.md#bringing-your-own-tailwind)).
 - Extension authors migrating code that still uses the old classes: the
@@ -104,6 +111,20 @@ they are no longer loaded, so those class names now do nothing.
   be dead. Prefer `var(--…)` theme tokens over `dark:` variants — the token
   layer already re-themes automatically, which is why `dark:` is rarely
   needed.
+- **Never name a custom property after a Tailwind theme variable**, whether
+  it is defined on `:root` or in a component. Tailwind v4 utilities read the
+  theme variables where they are used: `ml-1` is `calc(var(--spacing) * 1)`,
+  `text-sm` reads `--text-sm`, `font-bold` reads `--font-weight-bold`. A rule
+  that defines one of these names replaces Tailwind's value for every utility
+  in its scope, so `gap-2` in a component with `--spacing: 24px` is 48px, and
+  with a value that is not a single length the utility is dropped. The names
+  to avoid are exactly the variables that Tailwind's `tailwindcss/theme.css`
+  defines, plus those that `tailwind.config.js` adds: for example
+  `--spacing`, `--font-sans`, `--font-mono`, `--font-weight-bold`,
+  `--text-sm`. Other names in the same namespaces do not collide and are fine,
+  such as `--font-main` and `--font-size` on `:root`. Prefix a component's
+  property with the component instead: `--drawer-spacing`,
+  `--search-input-padding`.
 
 ### Cascade layers: what beats what
 
@@ -113,7 +134,7 @@ every `@layer`, regardless of specificity**. Two consequences to keep in mind:
 
 - The global reset in `app.scss` (`*, *:before, *:after { margin: 0; padding:
   0; border: 0 }`) is wrapped in `@layer base` **on purpose**. Left unlayered it
-  would override *every* margin/padding utility (`mb-5`, `ml-auto`, ...)
+  would override _every_ margin/padding utility (`mb-5`, `ml-auto`, ...)
   app-wide — only `gap`/flex utilities, which the reset does not touch, would
   survive, which is a trap: `flex`/`gap-*` work but `m-*`/`p-*` silently do
   nothing. Keep any app-wide reset in a layer so utilities can win. Note that
@@ -146,6 +167,6 @@ in a stylesheet.
   (`network-ingresses/`, `events/` have a `.module.scss` next to a plain
   `.scss` for structurally identical components).
 - Pick **one** loading mechanism for `packages/ui-components` styles — the
-  component-level side-effect import *or* the `/styles` entry re-import in
+  component-level side-effect import _or_ the `/styles` entry re-import in
   `freelens/src/renderer/index.ts`, not both.
 - Inline the seven `@apply` usages.

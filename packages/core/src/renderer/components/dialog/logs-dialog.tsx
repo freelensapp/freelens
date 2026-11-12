@@ -8,14 +8,13 @@ import "./logs-dialog.scss";
 
 import { Button } from "@freelensapp/button";
 import { Icon } from "@freelensapp/icon";
-import { showSuccessNotificationInjectable } from "@freelensapp/notifications";
+import { showCheckedErrorNotificationInjectable, showSuccessNotificationInjectable } from "@freelensapp/notifications";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { clipboard } from "electron";
 import { kebabCase } from "es-toolkit";
 import { Dialog } from "../dialog";
 import { Wizard, WizardStep } from "../wizard";
 
-import type { ShowNotification } from "@freelensapp/notifications";
+import type { ShowCheckedErrorNotification, ShowNotification } from "@freelensapp/notifications";
 
 import type { DialogProps } from "../dialog";
 
@@ -26,10 +25,11 @@ export interface LogsDialogProps extends DialogProps {
 
 interface Dependencies {
   showSuccessNotification: ShowNotification;
+  showCheckedErrorNotification: ShowCheckedErrorNotification;
 }
 
 const NonInjectedLogsDialog = (props: LogsDialogProps & Dependencies) => {
-  const { title, logs, showSuccessNotification, ...dialogProps } = props;
+  const { title, logs, showSuccessNotification, showCheckedErrorNotification, ...dialogProps } = props;
 
   return (
     <Dialog {...dialogProps} className="LogsDialog" data-testid={`logs-dialog-for-${kebabCase(title)}`}>
@@ -41,8 +41,10 @@ const NonInjectedLogsDialog = (props: LogsDialogProps & Dependencies) => {
               <Button
                 plain
                 onClick={() => {
-                  clipboard.writeText(logs);
-                  showSuccessNotification(`Logs copied to clipboard.`);
+                  navigator.clipboard.writeText(logs).then(
+                    () => showSuccessNotification(`Logs copied to clipboard.`),
+                    (error) => showCheckedErrorNotification(error, "Failed to copy logs to clipboard"),
+                  );
                 }}
               >
                 <Icon material="assignment" />
@@ -65,5 +67,6 @@ export const LogsDialog = withInjectables<Dependencies, LogsDialogProps>(NonInje
   getProps: (di, props) => ({
     ...props,
     showSuccessNotification: di.inject(showSuccessNotificationInjectable),
+    showCheckedErrorNotification: di.inject(showCheckedErrorNotificationInjectable),
   }),
 });

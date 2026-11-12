@@ -28,6 +28,8 @@ export interface MainLayoutProps {
   className?: string;
   footer?: StrictReactNode;
   children?: StrictReactNode;
+  /** Clears a crash of the children when it changes, see `ErrorBoundaryProps.resetKey`. */
+  resetKey?: string;
 }
 
 /**
@@ -47,7 +49,7 @@ class NonInjectedMainLayout extends React.Component<MainLayoutProps & Dependenci
   };
 
   render() {
-    const { className, footer, children, sidebar } = this.props;
+    const { className, footer, children, sidebar, resetKey } = this.props;
     const { width: sidebarWidth } = this.props.sidebarStorage.get();
     const style = { "--sidebar-width": `${sidebarWidth}px` } as React.CSSProperties;
 
@@ -68,7 +70,7 @@ class NonInjectedMainLayout extends React.Component<MainLayoutProps & Dependenci
         </div>
 
         <div className={styles.contents}>
-          <ErrorBoundary>{children}</ErrorBoundary>
+          <ErrorBoundary resetKey={resetKey}>{children}</ErrorBoundary>
         </div>
 
         <div className={styles.footer}>{footer}</div>

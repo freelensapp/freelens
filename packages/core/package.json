@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/core",
-  "version": "2.0.0-0",
+  "version": "2.0.1-0",
   "private": true,
   "description": "Freelens Core",
   "keywords": [],
@@ -48,7 +48,7 @@
     "tsconfig.json"
   ],
   "scripts": {
-    "clean:dist": "pnpm dlx rimraf@6.1.3 dist static/build",
+    "clean:dist": "pnpm dlx rimraf@6.1.4 dist static/build",
     "test:unit": "TZ=UTC vitest run -c ../../vitest.config.ts --project @freelensapp/core",
     "test:watch": "TZ=UTC vitest -c ../../vitest.config.ts --project @freelensapp/core"
   },
@@ -118,10 +118,8 @@
     "marked": "catalog:",
     "mobx": "catalog:",
     "mobx-react": "catalog:",
-    "mobx-react-lite": "catalog:",
     "mobx-utils": "catalog:",
     "monaco-editor": "catalog:",
-    "undici": "catalog:",
     "node-pty": "catalog:",
     "proper-lockfile": "catalog:",
     "react": "catalog:",
@@ -134,6 +132,7 @@
     "tcp-port-used": "catalog:",
     "tempy": "catalog:",
     "triple-beam": "catalog:",
+    "undici": "catalog:",
     "uuid": "catalog:",
     "verkit": "catalog:",
     "winston": "catalog:",

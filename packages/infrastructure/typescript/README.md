@@ -11,9 +11,11 @@ npm install @freelensapp/typescript
 ## Features
 
 ### Base configuration
+
 Base configuration for minimal duplication.
 
 **tsconfig.json**
+
 ```json
 {
   "extends": "@freelensapp/typescript/config/base.json"

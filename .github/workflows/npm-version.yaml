@@ -19,14 +19,10 @@ jobs:
   npm-version:
     name: npm version
 
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - runs-on: ubuntu-24.04-arm
-            arch: arm64
+    # Never on a fork: it has no GH_TOKEN secret, so the job could only fail.
+    if: github.repository_owner == 'freelensapp'
 
-    runs-on: ${{ matrix.runs-on }}
+    runs-on: ubuntu-26.04-arm
     environment: automated
     timeout-minutes: 10
 
@@ -44,7 +40,7 @@ jobs:
       - name: Set up mise
         uses: jdx/mise-action@v5
         with:
-          version: 2026.10.11 # datasource=github-releases depName=jdx/mise
+          version: 2026.11.7 # datasource=github-releases depName=jdx/mise
           install_args: yq
 
       - name: Setup node
@@ -66,9 +62,9 @@ jobs:
         uses: actions/cache@v6
         with:
           path: ${{ env.pnpm_cache_dir }}
-          key: ${{ matrix.runs-on }}-${{ matrix.arch }}-node-${{ hashFiles('pnpm-lock.yaml') }}
+          key: ubuntu-26.04-arm-arm64-node-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ matrix.runs-on }}-${{ matrix.arch }}-node-
+            ubuntu-26.04-arm-arm64-node-
 
       - name: Install pnpm dependencies
         id: install-pnpm

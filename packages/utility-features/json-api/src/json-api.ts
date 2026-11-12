@@ -15,7 +15,7 @@ import type { Defaulted } from "@freelensapp/utilities";
 import type { Patch } from "rfc6902";
 import type { PartialDeep, ValueOf } from "type-fest";
 
-import type { Fetch, FetchRequestInit as RequestInit, FetchResponse as Response } from "./fetch";
+import type { Fetch, FetchMethod, FetchRequestInit as RequestInit, FetchResponse as Response } from "./fetch";
 
 export interface JsonApiData {}
 
@@ -54,7 +54,7 @@ export interface JsonApiParams<D> {
 }
 
 export interface JsonApiLog {
-  method: string;
+  method: FetchMethod;
   reqUrl: string;
   reqInit: RequestInit;
   data?: any;
@@ -80,6 +80,21 @@ export type QueryParam =
   | readonly number[]
   | readonly boolean[];
 export type QueryParams = Partial<Record<string, QueryParam | undefined>>;
+
+/**
+ * Serializes query parameters, leaving out the ones that are `undefined` or `null`.
+ *
+ * `stringify` of `node:querystring` writes those as an empty value (`previous=`), and the
+ * Kubernetes API server reads an empty boolean parameter as `true`, so an optional field left
+ * unset would turn its option on.
+ */
+export function stringifyQuery(query: QueryParams): string {
+  const defined = Object.fromEntries(
+    Object.entries(query).filter(([, value]) => value !== undefined && value !== null),
+  );
+
+  return stringify(defined as QueryParams);
+}
 
 export type ParamsAndQuery<Params, Query> =
   ValueOf<Query> extends QueryParam ? Params & { query?: Query } : Params & { query?: undefined };
@@ -144,12 +159,11 @@ export class JsonApi<Data = JsonApiData, Params extends JsonApiParams<Data> = Js
     let reqUrl = `${this.config.serverAddress}${this.config.apiBase}${path}`;
     // No keep-alive agent is supplied: undici pools per dispatcher and Chromium
     // pools on its own, so neither client needs one per request.
-    const reqInit = merge({ method: "get" }, this.reqInit, await this.getRequestOptions(), init);
+    const reqInit = merge({ method: "GET" }, this.reqInit, await this.getRequestOptions(), init);
     const { query } = params ?? {};
+    const queryString = query ? stringifyQuery(query as unknown as QueryParams) : "";
 
-    if (query && Object.keys(query).length > 0) {
-      const queryString = stringify(query as unknown as QueryParams);
-
+    if (queryString) {
       reqUrl += (reqUrl.includes("?") ? "&" : "?") + queryString;
     }
 
@@ -161,7 +175,7 @@ export class JsonApi<Data = JsonApiData, Params extends JsonApiParams<Data> = Js
     params?: ParamsAndQuery<Params, Query>,
     reqInit: RequestInit = {},
   ) {
-    return this.request<OutData, Query>(path, params, { ...reqInit, method: "get" });
+    return this.request<OutData, Query>(path, params, { ...reqInit, method: "GET" });
   }
 
   post<OutData = Data, Query = QueryParams>(
@@ -169,7 +183,7 @@ export class JsonApi<Data = JsonApiData, Params extends JsonApiParams<Data> = Js
     params?: ParamsAndQuery<Params, Query>,
     reqInit: RequestInit = {},
   ) {
-    return this.request<OutData, Query>(path, params, { ...reqInit, method: "post" });
+    return this.request<OutData, Query>(path, params, { ...reqInit, method: "POST" });
   }
 
   put<OutData = Data, Query = QueryParams>(
@@ -177,7 +191,7 @@ export class JsonApi<Data = JsonApiData, Params extends JsonApiParams<Data> = Js
     params?: ParamsAndQuery<Params, Query>,
     reqInit: RequestInit = {},
   ) {
-    return this.request<OutData, Query>(path, params, { ...reqInit, method: "put" });
+    return this.request<OutData, Query>(path, params, { ...reqInit, method: "PUT" });
   }
 
   patch<OutData = Data, Query = QueryParams>(
@@ -185,7 +199,7 @@ export class JsonApi<Data = JsonApiData, Params extends JsonApiParams<Data> = Js
     params?: ParamsAndQuery<Omit<Params, "data">, Query> & { data?: Patch | PartialDeep<Data> },
     reqInit: RequestInit = {},
   ) {
-    return this.request<OutData, Query>(path, params, { ...reqInit, method: "patch" });
+    return this.request<OutData, Query>(path, params, { ...reqInit, method: "PATCH" });
   }
 
   del<OutData = Data, Query = QueryParams>(
@@ -193,7 +207,7 @@ export class JsonApi<Data = JsonApiData, Params extends JsonApiParams<Data> = Js
     params?: ParamsAndQuery<Params, Query>,
     reqInit: RequestInit = {},
   ) {
-    return this.request<OutData, Query>(path, params, { ...reqInit, method: "delete" });
+    return this.request<OutData, Query>(path, params, { ...reqInit, method: "DELETE" });
   }
 
   protected async request<OutData, Query = QueryParams>(
@@ -209,13 +223,13 @@ export class JsonApi<Data = JsonApiData, Params extends JsonApiParams<Data> = Js
       reqInit.body = JSON.stringify(data);
     }
 
-    if (query && Object.keys(query).length > 0) {
-      const queryString = stringify(query as unknown as QueryParams);
+    const queryString = query ? stringifyQuery(query as unknown as QueryParams) : "";
 
+    if (queryString) {
       reqUrl += (reqUrl.includes("?") ? "&" : "?") + queryString;
     }
     const infoLog: JsonApiLog = {
-      method: reqInit.method.toUpperCase(),
+      method: reqInit.method,
       reqUrl,
       reqInit,
     };

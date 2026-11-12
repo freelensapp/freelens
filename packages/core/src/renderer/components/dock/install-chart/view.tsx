@@ -12,7 +12,6 @@ import { Spinner } from "@freelensapp/spinner";
 import { prevDefault } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import { Badge } from "../../badge";
 import { Checkbox } from "../../checkbox";
 import { LogsDialog } from "../../dialog/logs-dialog";
 import { Input } from "../../input";
@@ -83,8 +82,6 @@ const NonInjectedInstallChart = observer(({ model: model, tabId }: InstallChartP
         tabId={tabId}
         controls={
           <div className="install-controls flex gap-2 items-center">
-            <span>Chart</span>
-            <Badge label={model.chartName} title="Repo/Name" />
             <span>Version</span>
             <Select
               className="chart-version"

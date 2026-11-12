@@ -10,7 +10,7 @@ import { cssNames, noop } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import autoBindReact from "auto-bind/react";
 import { groupBy } from "es-toolkit";
-import { observableRef, untracked } from "mobx";
+import { computed, observableRef, untracked } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import selectedFilterNamespacesInjectable from "../../../common/k8s-api/selected-filter-namespaces.injectable";
@@ -176,7 +176,7 @@ interface Dependencies {
 }
 
 @observer
-class NonInjectedItemListLayout<I extends ItemObject, PreLoadStores extends boolean> extends React.Component<
+export class NonInjectedItemListLayout<I extends ItemObject, PreLoadStores extends boolean> extends React.Component<
   ItemListLayoutProps<I, PreLoadStores> & Dependencies
 > {
   static defaultProps = defaultProps as object;
@@ -276,7 +276,10 @@ class NonInjectedItemListLayout<I extends ItemObject, PreLoadStores extends bool
     },
   };
 
-  get items() {
+  // Computed: the content reads the items once for every row it renders, each
+  // row in an observer of its own, so the filters run once for every change of
+  // the items or of the filters instead of once for every row.
+  @computed get items() {
     const filterGroups = groupBy(this.filters, ({ type }) => type);
     const filterItems: ListLayoutItemsFilter<I>[] = [];
 

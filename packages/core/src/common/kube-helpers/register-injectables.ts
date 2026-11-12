@@ -8,6 +8,7 @@
 
 import loadConfigFromFileInjectable from "./load-config-from-file.injectable";
 import loadValidatedClusterConfigInjectable from "./load-validated-config-from-file.injectable";
+import readKubeconfigFileInjectable from "./read-kubeconfig-file.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
@@ -19,6 +20,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(loadValidatedClusterConfigInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(readKubeconfigFileInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

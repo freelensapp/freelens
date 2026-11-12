@@ -35,13 +35,15 @@ jobs:
   scan:
     name: scan the last release
 
-    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    # Never on a fork: it has no GH_TOKEN secret, so the job could only fail.
+    if: github.repository_owner == 'freelensapp' && (github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success')
 
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
+    # GH_TOKEN, which edits the discussion, is a secret of this environment.
+    environment: automated
 
     permissions:
       contents: read
-      discussions: write
 
     env:
       # Renovate keeps this version up to date via the inline datasource hint
@@ -49,9 +51,9 @@ jobs:
       # "v" because that manager's extractVersionTemplate strips it on every
       # bump; grype's installer needs the exact tag, so the "v" is re-added
       # where this is consumed rather than kept here (it would not survive).
-      GRYPE_VERSION: 0.120.1 # datasource=github-releases depName=anchore/grype
+      GRYPE_VERSION: 0.121.3 # datasource=github-releases depName=anchore/grype
       DISCUSSION_NUMBER: 2339
-      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
     steps:
       # Only needed for mise.toml and mise.lock: every step below works on
@@ -64,7 +66,7 @@ jobs:
       - name: Set up mise
         uses: jdx/mise-action@v5
         with:
-          version: 2026.10.11 # datasource=github-releases depName=jdx/mise
+          version: 2026.11.7 # datasource=github-releases depName=jdx/mise
           install_args: yq
 
       - name: Install Grype
@@ -340,22 +342,4 @@ jobs:
           echo "runtime vulnerabilities: $count"
 
       - name: Update discussion
-        run: |-
-          set -eo pipefail
-          discussion_id=$(gh api graphql -f query='
-            query($owner:String!,$repo:String!,$num:Int!){
-              repository(owner:$owner,name:$repo){
-                discussion(number:$num){ id }
-              }
-            }' -f owner="${{ github.repository_owner }}" -f repo="${{ github.event.repository.name }}" -F num="$DISCUSSION_NUMBER" \
-            --jq '.data.repository.discussion.id')
-          if [[ -z "$discussion_id" || "$discussion_id" == "null" ]]; then
-            echo "Discussion #$DISCUSSION_NUMBER not found" >&2
-            exit 1
-          fi
-          gh api graphql -f query='
-            mutation($id:ID!,$body:String!){
-              updateDiscussion(input:{discussionId:$id, body:$body}){
-                discussion{ id }
-              }
-            }' -f id="$discussion_id" -F body=@body.md
+        run: gh discussion edit "$DISCUSSION_NUMBER" --repo "$GITHUB_REPOSITORY" --body-file body.md

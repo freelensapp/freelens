@@ -9,8 +9,10 @@ import { KubeObjectStore } from "../../../../common/k8s-api/kube-object.store";
 import type { ClusterRoleApi } from "@freelensapp/kube-api";
 import type { ClusterRole, ClusterRoleData } from "@freelensapp/kube-object";
 
+import type { ItemSorting } from "../../../../common/item.store";
+
 export class ClusterRoleStore extends KubeObjectStore<ClusterRole, ClusterRoleApi, ClusterRoleData> {
-  protected sortItems(items: ClusterRole[]) {
-    return super.sortItems(items, [(clusterRole) => clusterRole.kind, (clusterRole) => clusterRole.getName()]);
-  }
+  protected readonly sorting: ItemSorting<ClusterRole> = {
+    by: [(clusterRole) => clusterRole.kind, (clusterRole) => clusterRole.getName()],
+  };
 }

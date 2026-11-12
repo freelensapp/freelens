@@ -18,7 +18,7 @@ import { connect } from "node:tls";
 import { Cluster } from "../../common/cluster/cluster";
 import { apiKubePrefix } from "../../common/vars";
 import clusterApiUrlInjectable from "../../features/cluster/connections/main/api-url.injectable";
-import freelensK8sProxyServerInjectable from "../cluster/freelens-k8s-proxy-server.injectable";
+import freelensK8sProxyManagerInjectable from "../cluster/freelens-k8s-proxy-manager.injectable";
 import freelensK8sProxyCertificateInjectable from "../freelens-k8s-proxy/freelens-k8s-proxy-certificate.injectable";
 import kubeApiUpgradeRequestInjectable from "../freelens-proxy/proxy-functions/kube-api-upgrade-request.injectable";
 import { getDiForUnitTesting } from "../getDiForUnitTesting";
@@ -59,7 +59,7 @@ describe("kube api upgrade request", () => {
     });
 
     di.override(clusterApiUrlInjectable, () => async () => new URL("https://cluster.example.test"));
-    di.override(freelensK8sProxyServerInjectable, () => ({
+    di.override(freelensK8sProxyManagerInjectable, () => ({
       getApiTarget: vi.fn(),
       ensureFreelensK8sProxyUrl: vi.fn(async () => "https://127.0.0.1:9443/proxy-prefix"),
       restart: vi.fn(),
@@ -130,7 +130,7 @@ describe("kube api upgrade request", () => {
     });
 
     di.override(clusterApiUrlInjectable, () => async () => new URL("https://cluster.example.test"));
-    di.override(freelensK8sProxyServerInjectable, () => ({
+    di.override(freelensK8sProxyManagerInjectable, () => ({
       getApiTarget: vi.fn(),
       ensureFreelensK8sProxyUrl: vi.fn(async () => "https://127.0.0.1:9443/proxy-prefix"),
       restart: vi.fn(),
@@ -187,7 +187,7 @@ describe("kube api upgrade request", () => {
     });
 
     di.override(clusterApiUrlInjectable, () => async () => new URL("https://cluster.example.test"));
-    di.override(freelensK8sProxyServerInjectable, () => ({
+    di.override(freelensK8sProxyManagerInjectable, () => ({
       getApiTarget: vi.fn(),
       ensureFreelensK8sProxyUrl: vi.fn(async () => "https://127.0.0.1:9443/proxy-prefix"),
       restart: vi.fn(),
@@ -244,7 +244,7 @@ describe("kube api upgrade request", () => {
     });
 
     di.override(clusterApiUrlInjectable, () => async () => new URL("https://cluster.example.test"));
-    di.override(freelensK8sProxyServerInjectable, () => ({
+    di.override(freelensK8sProxyManagerInjectable, () => ({
       getApiTarget: vi.fn(),
       ensureFreelensK8sProxyUrl: vi.fn(async () => "https://127.0.0.1:9443/proxy-prefix"),
       restart: vi.fn(),

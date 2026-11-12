@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/electron-userland/electron-builder/refs/heads/master/packages/app-builder-lib/scheme.json
 
-electronVersion: 43.7.11 # datasource=npm depName=electron
+electronVersion: 44.10.1 # datasource=npm depName=electron
 
 ## node-pty is our only native module and it is a N-API (node-addon-api)
 ## addon, so its bundled prebuilt binaries are ABI-stable and load as-is on
@@ -87,7 +87,6 @@ deb:
     - libgtk-3-0
     - libnotify4
     - libnss3
-    - libxss1
     - libxtst6
     - xdg-utils
     - libatspi2.0-0
@@ -124,12 +123,11 @@ rpm:
     - gtk3
     - libnotify
     - nss
-    - libXScrnSaver
     - (libXtst or libXtst6)
     - xdg-utils
     - at-spi2-core
     - (libdrm2 or libdrm)
-    - (libgbm1 or libgmb or mesa-libgbm)
+    - (libgbm1 or mesa-libgbm)
     - (alsa-lib or libalsa2 or libasound2)
   executableArgs:
     - --ozone-platform-hint=auto
@@ -159,8 +157,15 @@ mac:
       to: ./${arch}/helm
   publish: null
 
+dmg:
+  icon: build/installerIcon.icns
+
 pkg:
   license: static/build/license.txt
+  background:
+    file: build/installerBackground.png
+    alignment: bottomleft
+    scaling: none
 
 ## For Windows targets
 win:
@@ -182,6 +187,7 @@ msi:
 
 nsis:
   include: build/installer.nsh
+  installerIcon: build/installerIcon.ico
   oneClick: false
   allowElevation: true
   createStartMenuShortcut: true

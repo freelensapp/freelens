@@ -23,7 +23,7 @@ import { getDiForUnitTesting } from "../getDiForUnitTesting";
 import kubeconfigManagerInjectable from "../kubeconfig-manager/kubeconfig-manager.injectable";
 import { onQuitOfBackEndInjectionToken } from "../start-main-application/runnable-tokens/phases";
 import clusterConnectionInjectable from "./cluster-connection.injectable";
-import freelensK8sProxyServerInjectable from "./freelens-k8s-proxy-server.injectable";
+import freelensK8sProxyManagerInjectable from "./freelens-k8s-proxy-manager.injectable";
 import { catalogEntityFromCluster } from "./manager";
 import startDisconnectingClustersRemovedFromCatalogInjectable from "./start-disconnecting-clusters-removed-from-catalog.injectable";
 import stopFreelensK8sProxiesOnQuitInjectable from "./stop-freelens-k8s-proxies-on-quit.injectable";
@@ -55,9 +55,10 @@ describe("freelens-k8s-proxy of a removed cluster and on quit", () => {
   let logger: Record<"debug" | "info" | "warn" | "error" | "silly", Mock>;
 
   // What a request through freelens-proxy does for a cluster: it gets a target
-  // from the cluster's proxy server, which starts the proxy if it is not running.
+  // from the cluster's freelens-k8s-proxy manager, which starts the proxy if it
+  // is not running.
   const requestThroughFreelensProxy = (cluster: Cluster) =>
-    di.inject(freelensK8sProxyServerInjectable, cluster).getApiTarget();
+    di.inject(freelensK8sProxyManagerInjectable, cluster).getApiTarget();
 
   const proxyKubeconfigClearOf = (cluster: Cluster) => di.inject(kubeconfigManagerInjectable, cluster).clear;
 
@@ -109,7 +110,7 @@ describe("freelens-k8s-proxy of a removed cluster and on quit", () => {
           });
           const port = nextPort++;
 
-          processes.set(options.env.KUBECONFIG_CONTEXT as string, proxyProcess);
+          processes.set(options.env.FREELENS_PROXY_CONTEXT as string, proxyProcess);
           queueMicrotask(() => proxyProcess.stdout.emit("data", `Starting to serve on 127.0.0.1:${port}`));
 
           return proxyProcess as unknown as ChildProcess;

@@ -44,6 +44,7 @@ interface Dependencies {
   releases: IComputedValue<RemovableHelmRelease[]>;
   releasesArePending: IComputedValue<boolean>;
   namespace: IComputedValue<string>;
+  name: IComputedValue<string>;
   navigateToHelmReleases: NavigateToHelmReleases;
 }
 
@@ -122,8 +123,10 @@ class NonInjectedHelmReleases extends Component<Dependencies> {
       pickOnlySelected: (releases) => releases.filter((release) => release.isSelected),
     };
 
+    // One page serves every path of the route, so the path parameters key the crash of its content: another path
+    // renders it again.
     return (
-      <SiblingsInTabLayout>
+      <SiblingsInTabLayout resetKey={[this.props.namespace.get(), this.props.name.get()].join("/")}>
         <ItemListLayout<RemovableHelmRelease, false>
           store={legacyReleaseStore}
           getItems={() => releases.get()}

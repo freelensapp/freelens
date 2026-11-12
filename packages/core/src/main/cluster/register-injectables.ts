@@ -10,8 +10,8 @@ import clustersThatAreBeingDeletedInjectable from "./are-being-deleted.injectabl
 import broadcastConnectionUpdateInjectable from "./broadcast-connection-update.injectable";
 import clusterConnectionInjectable from "./cluster-connection.injectable";
 import disconnectClustersRemovedFromCatalogInjectable from "./disconnect-clusters-removed-from-catalog.injectable";
-import freelensK8sProxyServerInjectable from "./freelens-k8s-proxy-server.injectable";
-import freelensK8sProxyServersInjectable from "./freelens-k8s-proxy-servers.injectable";
+import freelensK8sProxyManagerInjectable from "./freelens-k8s-proxy-manager.injectable";
+import freelensK8sProxyManagersInjectable from "./freelens-k8s-proxy-managers.injectable";
 import freelensProxyClusterUrlInjectable from "./freelens-proxy-cluster-url.injectable";
 import initializeClusterManagerInjectable from "./initialize-manager.injectable";
 import loadProxyKubeconfigInjectable from "./load-proxy-kubeconfig.injectable";
@@ -65,12 +65,12 @@ export function registerInjectables(di: DiContainerForInjection): void {
     /* Ignore duplicate registration */
   }
   try {
-    di.register(freelensK8sProxyServerInjectable);
+    di.register(freelensK8sProxyManagerInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }
   try {
-    di.register(freelensK8sProxyServersInjectable);
+    di.register(freelensK8sProxyManagersInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

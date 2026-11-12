@@ -22,7 +22,7 @@ import { Kubectl } from "../kubectl/kubectl";
 import kubectlDownloadingNormalizedArchInjectable from "../kubectl/normalized-arch.injectable";
 import broadcastConnectionUpdateInjectable from "./broadcast-connection-update.injectable";
 import clusterConnectionInjectable from "./cluster-connection.injectable";
-import freelensK8sProxyServerInjectable from "./freelens-k8s-proxy-server.injectable";
+import freelensK8sProxyManagerInjectable from "./freelens-k8s-proxy-manager.injectable";
 import prometheusHandlerInjectable from "./prometheus-handler/prometheus-handler.injectable";
 import requestApiResourcesInjectable from "./request-api-resources.injectable";
 
@@ -32,7 +32,7 @@ import type { Mock } from "vitest";
 
 import type { KubeconfigManager } from "../kubeconfig-manager/kubeconfig-manager";
 import type { ClusterConnection } from "./cluster-connection.injectable";
-import type { FreelensK8sProxyServer } from "./freelens-k8s-proxy-server.injectable";
+import type { FreelensK8sProxyManager } from "./freelens-k8s-proxy-manager.injectable";
 
 describe("ClusterConnection activation", () => {
   let clusterConnection: ClusterConnection;
@@ -118,7 +118,7 @@ describe("ClusterConnection activation", () => {
         }),
     );
 
-    const proxyServerMock: FreelensK8sProxyServer = {
+    const proxyManagerMock: FreelensK8sProxyManager = {
       getApiTarget: vi.fn().mockResolvedValue({}),
       ensureFreelensK8sProxyUrl: vi.fn().mockResolvedValue("https://127.0.0.1:9999/test"),
       restart: restartMock,
@@ -126,7 +126,7 @@ describe("ClusterConnection activation", () => {
       stop: vi.fn(),
     };
 
-    di.override(freelensK8sProxyServerInjectable, () => proxyServerMock);
+    di.override(freelensK8sProxyManagerInjectable, () => proxyManagerMock);
     di.override(clusterVersionDetectorInjectable, () => ({
       key: ClusterMetadataKey.VERSION,
       detect: vi.fn().mockResolvedValue({ value: "v1.28.0", accuracy: 100 }),

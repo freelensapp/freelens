@@ -76,7 +76,7 @@ exports[`preferences - closing-preferences > given accessing preferences directl
         id="lens-views"
       />
       <div
-        class="SettingLayout showNavigation Preferences"
+        class="SettingLayout showNavigation withCloseButton Preferences"
       >
         <nav
           class="sidebarRegion"
@@ -878,7 +878,7 @@ exports[`preferences - closing-preferences > given accessing preferences directl
         id="lens-views"
       />
       <div
-        class="SettingLayout showNavigation Preferences"
+        class="SettingLayout showNavigation withCloseButton Preferences"
       >
         <nav
           class="sidebarRegion"
@@ -1770,7 +1770,7 @@ exports[`preferences - closing-preferences > given already in a page and then na
         id="lens-views"
       />
       <div
-        class="SettingLayout showNavigation Preferences"
+        class="SettingLayout showNavigation withCloseButton Preferences"
       >
         <nav
           class="sidebarRegion"
@@ -2572,7 +2572,7 @@ exports[`preferences - closing-preferences > given already in a page and then na
         id="lens-views"
       />
       <div
-        class="SettingLayout showNavigation Preferences"
+        class="SettingLayout showNavigation withCloseButton Preferences"
       >
         <nav
           class="sidebarRegion"

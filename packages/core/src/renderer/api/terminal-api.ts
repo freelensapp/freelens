@@ -108,25 +108,14 @@ export class TerminalApi extends WebSocketApi<TerminalEvents> {
       slashes: true,
     });
 
-    const onReady = once((data?: string) => {
+    // A session that the main process resumes, as after a reload, sends its
+    // last output again right after "connected"
+    const onReady = once(() => {
       this.isReady = true;
       this.emit("ready");
       this.removeListener("data", onReady);
       this.removeListener("connected", onReady);
       this.flush();
-
-      // data is undefined if the event that was handled is "connected"
-      if (data === undefined) {
-        const lastData = window.localStorage.getItem(`${this.query.id}:last-data`);
-
-        if (lastData) {
-          /**
-           * Output the last line, the makes sure that the terminal isn't completely
-           * empty when the user refreshes.
-           */
-          this.emit("data", lastData);
-        }
-      }
     });
 
     this.prependListener("data", onReady);
@@ -136,7 +125,19 @@ export class TerminalApi extends WebSocketApi<TerminalEvents> {
   }
 
   sendMessage(message: TerminalMessage) {
-    return this.send(JSON.stringify(message));
+    const command = JSON.stringify(message);
+
+    /**
+     * The session reads the websocket only once its shell process exists,
+     * which can be long after the socket opens (kubectl download, node shell
+     * pod), and drops whatever arrives before. Hold everything but pings until
+     * then; `onReady` flushes it.
+     */
+    if (!this.isReady && message.type !== TerminalChannels.PING) {
+      this.pendingCommands.push(command);
+    } else {
+      this.send(command);
+    }
   }
 
   sendTerminalSize(cols: number, rows: number) {
@@ -157,11 +158,6 @@ export class TerminalApi extends WebSocketApi<TerminalEvents> {
 
       switch (message.type) {
         case TerminalChannels.STDOUT:
-          /**
-           * save the last data for reconnections. User localStorage because we
-           * don't want this data to survive if the app is closed
-           */
-          window.localStorage.setItem(`${this.query.id}:last-data`, message.data);
           super._onMessage({ data: message.data, ...evt });
           break;
         case TerminalChannels.STATUS:
@@ -185,9 +181,12 @@ export class TerminalApi extends WebSocketApi<TerminalEvents> {
   }
 
   protected _onOpen(evt: Event) {
-    // Client should send terminal size in special channel 4,
-    // But this size will be changed by terminal.fit()
-    this.sendTerminalSize(120, 80);
+    // The session on the other end knows no size yet: send the last one the
+    // terminal reported, or a placeholder until fit() reports one.
+    const { width, height } = this.size ?? { width: 120, height: 80 };
+
+    this.size = undefined;
+    this.sendTerminalSize(width, height);
     super._onOpen(evt);
   }
 

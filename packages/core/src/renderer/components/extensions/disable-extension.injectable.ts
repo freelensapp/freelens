@@ -11,7 +11,7 @@ import userPreferencesStateInjectable from "../../../features/user-preferences/c
 
 import type { LensExtensionId } from "../../../extensions/installed-extension";
 
-export type DisableExtension = (extId: LensExtensionId) => void;
+export type DisableExtension = (extId: LensExtensionId) => Promise<void>;
 
 const disableExtensionInjectable = getInjectable({
   id: "disable-extension",
@@ -20,17 +20,17 @@ const disableExtensionInjectable = getInjectable({
     const extensionLoader = di.inject(extensionLoaderInjectable);
     const userPreferences = di.inject(userPreferencesStateInjectable);
 
-    return (extId) => {
+    return async (extId) => {
       const ext = extensionLoader.getExtensionById(extId);
 
       if (ext) {
-        ext.isEnabled = false;
-
         // Remove extension order from user store
         if (userPreferences.clusterPageMenuOrder) {
           const extensionName = sanitizeExtensionName(getExtensionId(ext.manifest.name));
           delete userPreferences.clusterPageMenuOrder[extensionName];
         }
+
+        await extensionLoader.setIsEnabled(extId, false);
       }
     };
   },

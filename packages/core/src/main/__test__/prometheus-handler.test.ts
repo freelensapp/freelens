@@ -8,7 +8,7 @@ import { prometheusProviderInjectionToken } from "@freelensapp/prometheus";
 import { getInjectable } from "@ogre-tools/injectable";
 import { runInAction } from "mobx";
 import { beforeEach, describe, expect, it } from "vitest";
-import directoryForTempInjectable from "../../common/app-paths/directory-for-temp/directory-for-temp.injectable";
+import directoryForUserDataInjectable from "../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import { Cluster } from "../../common/cluster/cluster";
 import writeJsonFileInjectable from "../../common/fs/write-json-file.injectable";
 import prometheusHandlerInjectable from "../cluster/prometheus-handler/prometheus-handler.injectable";
@@ -60,7 +60,7 @@ describe("PrometheusHandler", () => {
       port: 9191,
       isRunning: true,
     }));
-    di.override(directoryForTempInjectable, () => "/some-temp-dir");
+    di.override(directoryForUserDataInjectable, () => "/some-user-data-dir");
     di.inject(freelensProxyPortInjectable).set(12345);
 
     const writeJsonFile = di.inject(writeJsonFileInjectable);

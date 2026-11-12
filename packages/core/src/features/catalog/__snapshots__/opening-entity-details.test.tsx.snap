@@ -970,7 +970,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                       <div
                         class="list"
                         role="list"
-                        style="position: relative; max-height: 100%; flex-grow: 1; overflow-y: auto; width: 100%; height: 100%;"
+                        style="position: relative; flex-grow: 1; max-height: 100%; overflow-y: auto; width: 100%; height: 100%;"
                       >
                         <div
                           data-react-window-index="0"
@@ -1968,7 +1968,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                       <div
                         class="list"
                         role="list"
-                        style="position: relative; max-height: 100%; flex-grow: 1; overflow-y: auto; width: 100%; height: 100%;"
+                        style="position: relative; flex-grow: 1; max-height: 100%; overflow-y: auto; width: 100%; height: 100%;"
                       >
                         <div
                           data-react-window-index="0"
@@ -2998,7 +2998,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                       <div
                         class="list"
                         role="list"
-                        style="position: relative; max-height: 100%; flex-grow: 1; overflow-y: auto; width: 100%; height: 100%;"
+                        style="position: relative; flex-grow: 1; max-height: 100%; overflow-y: auto; width: 100%; height: 100%;"
                       >
                         <div
                           data-react-window-index="0"
@@ -4280,7 +4280,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                       <div
                         class="list"
                         role="list"
-                        style="position: relative; max-height: 100%; flex-grow: 1; overflow-y: auto; width: 100%; height: 100%;"
+                        style="position: relative; flex-grow: 1; max-height: 100%; overflow-y: auto; width: 100%; height: 100%;"
                       >
                         <div
                           data-react-window-index="0"
@@ -5530,7 +5530,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                       <div
                         class="list"
                         role="list"
-                        style="position: relative; max-height: 100%; flex-grow: 1; overflow-y: auto; width: 100%; height: 100%;"
+                        style="position: relative; flex-grow: 1; max-height: 100%; overflow-y: auto; width: 100%; height: 100%;"
                       >
                         <div
                           data-react-window-index="0"
@@ -6548,7 +6548,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                       <div
                         class="list"
                         role="list"
-                        style="position: relative; max-height: 100%; flex-grow: 1; overflow-y: auto; width: 100%; height: 100%;"
+                        style="position: relative; flex-grow: 1; max-height: 100%; overflow-y: auto; width: 100%; height: 100%;"
                       >
                         <div
                           data-react-window-index="0"
@@ -7737,7 +7737,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                       <div
                         class="list"
                         role="list"
-                        style="position: relative; max-height: 100%; flex-grow: 1; overflow-y: auto; width: 100%; height: 100%;"
+                        style="position: relative; flex-grow: 1; max-height: 100%; overflow-y: auto; width: 100%; height: 100%;"
                       >
                         <div
                           data-react-window-index="0"

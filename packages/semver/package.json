@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/semver",
-  "version": "2.0.0-0",
+  "version": "2.0.1-0",
   "private": true,
   "description": "CLI over verkit package for picking parts of a version",
   "homepage": "https://freelens.app",
@@ -20,7 +20,7 @@
   "scripts": {
     "build": "tsc --pretty --project .",
     "build:dev": "tsc --pretty --project .",
-    "clean:dist": "pnpm dlx rimraf@6.1.3 dist"
+    "clean:dist": "pnpm dlx rimraf@6.1.4 dist"
   },
   "dependencies": {
     "command-line-args": "catalog:",

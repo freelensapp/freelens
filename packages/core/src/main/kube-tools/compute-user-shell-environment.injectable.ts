@@ -4,14 +4,13 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import defaultShellInjectable from "../../common/vars/default-shell.injectable";
 import computeShellEnvironmentInjectable from "../../features/shell-sync/main/compute-shell-environment.injectable";
-import userShellSettingInjectable from "../../features/user-preferences/common/shell-setting.injectable";
+import getUserShellInjectable from "./get-user-shell.injectable";
 
 import type { EnvironmentVariables } from "../../features/shell-sync/main/compute-shell-environment.injectable";
 
 export interface UserShellEnvironment {
-  /** The user's shell setting, else the system default shell. */
+  /** The shell the environment is of. */
   readonly shell: string;
   /** The environment of a login shell of {@link shell}, else `process.env`. */
   readonly environment: EnvironmentVariables;
@@ -19,7 +18,11 @@ export interface UserShellEnvironment {
   readonly error?: string;
 }
 
-export type ComputeUserShellEnvironment = () => Promise<UserShellEnvironment>;
+/**
+ * @param shell the shell to read the environment of, by default the one
+ * `getUserShell` gives now.
+ */
+export type ComputeUserShellEnvironment = (shell?: string) => Promise<UserShellEnvironment>;
 
 /**
  * The environment the terminals and the extension API start from: what the
@@ -29,12 +32,10 @@ const computeUserShellEnvironmentInjectable = getInjectable({
   id: "compute-user-shell-environment",
 
   instantiate: (di): ComputeUserShellEnvironment => {
-    const userShellSetting = di.inject(userShellSettingInjectable);
-    const defaultShell = di.inject(defaultShellInjectable);
+    const getUserShell = di.inject(getUserShellInjectable);
     const computeShellEnvironment = di.inject(computeShellEnvironmentInjectable);
 
-    return async () => {
-      const shell = userShellSetting.get() || defaultShell;
+    return async (shell = getUserShell()) => {
       const result = await computeShellEnvironment(shell);
 
       if (result.callWasSuccessful) {
