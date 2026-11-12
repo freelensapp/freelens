@@ -3,6 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import "./secret-certificates.scss";
+
 import { formatRelativeTime } from "@freelensapp/utilities";
 import { DrawerItem, DrawerTitle } from "../../../renderer/components/drawer";
 import { LocaleDate } from "../../../renderer/components/locale-date";
@@ -17,8 +19,8 @@ function CertificateDetails({ title, certificate }: { title: string; certificate
   const { commonName, organization, issuer, dnsNames, ipAddresses, serialNumber, notBefore, notAfter } = certificate;
 
   return (
-    <div className="mb-2" data-testid={`${title}-certificate`}>
-      <DrawerTitle size="sub-title">{title}</DrawerTitle>
+    <div className="certificate" data-testid={`${title}-certificate`}>
+      <div className="certificate-title">{title}</div>
       <DrawerItem name="Common Name" hidden={!commonName}>
         {commonName}
       </DrawerItem>
@@ -56,7 +58,7 @@ export function SecretCertificatesSection({ certificates }: SecretCertificatesSe
   }
 
   return (
-    <>
+    <div className="SecretCertificates">
       <DrawerTitle>Certificates</DrawerTitle>
       {certificates.flatMap(({ key, certificates: chain }) =>
         chain.map((certificate, index) => {
@@ -65,6 +67,6 @@ export function SecretCertificatesSection({ certificates }: SecretCertificatesSe
           return <CertificateDetails key={`${key}\0${index}`} title={title} certificate={certificate} />;
         }),
       )}
-    </>
+    </div>
   );
 }
