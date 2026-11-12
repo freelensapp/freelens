@@ -10,6 +10,7 @@ import { defaultColorThemePreference } from "../../../../../../common/vars";
 import { SubTitle } from "../../../../../../renderer/components/layout/sub-title";
 import { Select } from "../../../../../../renderer/components/select";
 import { lensThemeDeclarationInjectionToken } from "../../../../../../renderer/themes/declaration";
+import { sortThemesForDisplay } from "../../../../../../renderer/themes/sort-for-display";
 import userPreferencesStateInjectable from "../../../../../user-preferences/common/state.injectable";
 
 import type { LensTheme } from "../../../../../../renderer/themes/lens-theme";
@@ -26,7 +27,7 @@ const NonInjectedTheme = observer(({ state, themes }: Dependencies) => {
       value: defaultColorThemePreference,
       label: "Sync with computer",
     },
-    ...themes.map((theme) => ({
+    ...sortThemesForDisplay(themes).map((theme) => ({
       value: theme.name,
       label: theme.name,
     })),
