@@ -139,6 +139,13 @@
       }
     }
   },
+  "markdown": {
+    "parser": {
+      // The SKILL.md files of the agent skills start with YAML frontmatter,
+      // which Biome otherwise reads as a thematic break and a setext heading.
+      "frontmatter": true
+    }
+  },
   "overrides": [
     {
       // Test-only modules, kept out of production code. No tsconfig declares

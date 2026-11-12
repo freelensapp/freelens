@@ -235,6 +235,26 @@ discussion to see them and write in the [appropriate
 discussion](https://github.com/freelensapp/freelens/discussions/117) if you
 also want to propose yours.
 
+The skills for coding agents that create Freelens extensions and port v1
+extensions to the v2 extension API are the `freelens` plugin of
+[Claude Code](https://code.claude.com/docs/en/plugins), whose `SKILL.md` files
+in [`plugins/freelens/skills`](plugins/freelens/skills) other agents read too:
+
+```text
+/plugin install freelens --marketplace freelensapp/freelens
+```
+
+or from the shell, as the editor extensions have no `/plugin`:
+
+```sh
+claude plugin install freelens --marketplace freelensapp/freelens
+```
+
+`/freelens:create-extension` starts a new extension from a copy of
+[freelens-example-extension](https://github.com/freelensapp/freelens-example-extension),
+and `/freelens:port-extension-to-v2` ports an extension written for the v1
+extension API.
+
 ## Community
 
 Get updates about Freelens & keep in touch with our community

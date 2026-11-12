@@ -59,18 +59,16 @@ you import none; mark the host-provided modules external all the same.
   the reference template for building, type-checking, testing and releasing an
   extension
 
-The template also ships two agent skills, in the
-[Agent Skills](https://agentskills.io/specification) format that coding agents
-read:
+The skills for coding agents are the `freelens` plugin of
+[Claude Code](https://code.claude.com/docs/en/plugins) in the Freelens
+repository, in the [Agent Skills](https://agentskills.io/specification) format
+that other agents read too:
 
-- [`create-freelens-extension`](https://github.com/freelensapp/freelens-example-extension/blob/main/skills/create-freelens-extension/SKILL.md)
+- [`create-extension`](https://github.com/freelensapp/freelens/blob/main/plugins/freelens/skills/create-extension/SKILL.md)
   starts a new extension from a copy of the template.
-- [`port-freelens-extension-to-v2`](https://github.com/freelensapp/freelens-example-extension/blob/main/skills/port-freelens-extension-to-v2/SKILL.md)
+- [`port-extension-to-v2`](https://github.com/freelensapp/freelens/blob/main/plugins/freelens/skills/port-extension-to-v2/SKILL.md)
   ports a v1 extension to this API.
 
-Install them into the extension's repository, both or one by name:
-
 ```sh
-npx skills add freelensapp/freelens-example-extension
-npx skills add freelensapp/freelens-example-extension --skill port-freelens-extension-to-v2
+claude plugin install freelens --marketplace freelensapp/freelens
 ```
