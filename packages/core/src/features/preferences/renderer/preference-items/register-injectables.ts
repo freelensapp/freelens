@@ -7,6 +7,7 @@
  */
 
 import { registerInjectables as registerApplicationInjectables } from "./application/register-injectables";
+import { registerInjectables as registerCrdInjectables } from "./crd/register-injectables";
 import currentPreferenceTabCompositeInjectable from "./current-preference-tab-composite.injectable";
 import currentPreferenceTabIdInjectable from "./current-preference-tab-id.injectable";
 import { registerInjectables as registerEditorInjectables } from "./editor/register-injectables";
@@ -47,6 +48,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     registerApplicationInjectables(di);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    registerCrdInjectables(di);
   } catch (e) {
     /* Ignore duplicate registration */
   }
