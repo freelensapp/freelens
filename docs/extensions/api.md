@@ -441,9 +441,14 @@ copied disk, from other accounts of the system.
 
 **Failure mode.**
 
-- When the system has no secret store, including the `basic_text` backend of
-  Linux (`--password-store=basic`, or a desktop the host does not recognise),
-  `isAvailable()` resolves to `false` and every other method rejects. There is
+- When the system has no secret store, `isAvailable()` resolves to `false` and
+  every other method rejects. On Linux the check fails closed: the store is
+  available only when Electron reports the libsecret or KWallet backend
+  (`gnome_libsecret`, `kwallet`, `kwallet5`, `kwallet6`), and not for
+  `basic_text` (`--password-store=basic`, or a desktop the host does not
+  recognise), `unknown`, any other backend, or an Electron that cannot report
+  one. A session with no secret service at all therefore has no credentials,
+  even where Electron's asynchronous API offers a fallback provider. There is
   no fallback to clear text and no in-memory substitute: an extension that
   needs the value asks the user for it again, or tells the user why it cannot
   keep it.

@@ -16,7 +16,12 @@ export interface CredentialsSafeStorage {
   isAsyncEncryptionAvailable(): Promise<boolean>;
   encryptStringAsync(plainText: string): Promise<Buffer>;
   decryptStringAsync(encrypted: Buffer): Promise<{ shouldReEncrypt: boolean; result: string }>;
-  getSelectedStorageBackend(): string;
+  /**
+   * Linux only. Electron documents it with the synchronous API, which is
+   * deprecated and may take it along when it goes, so the store treats a
+   * missing function as an unknown backend.
+   */
+  getSelectedStorageBackend?(): string;
 }
 
 /** The file operations the store uses, with the signatures of `node:fs/promises`. */
@@ -47,6 +52,14 @@ interface CredentialsFile {
 }
 
 const fileVersion = 1;
+
+/**
+ * The Linux backends that keep the key in a secret store of the session. Every
+ * other backend counts as no secret store, `basic_text` and `unknown` included,
+ * and so does any value a later Electron adds: the check fails closed.
+ */
+const linuxSecretStoreBackends: ReadonlySet<string> = new Set(["gnome_libsecret", "kwallet", "kwallet5", "kwallet6"]);
+
 const fileNamePattern = /^[A-Za-z0-9][A-Za-z0-9._~-]*$/;
 
 const isErrorWithCode = (error: unknown, code: string) =>
@@ -80,9 +93,28 @@ export class ExtensionCredentialsStore implements ExtensionCredentialsBackend {
       return false;
     }
 
-    // `basic_text` encrypts with a key that is itself kept in clear text,
-    // which is no protection at rest.
-    return !(this.dependencies.isLinux && this.dependencies.safeStorage.getSelectedStorageBackend() === "basic_text");
+    return !this.dependencies.isLinux || this.hasLinuxSecretStore();
+  }
+
+  /**
+   * Whether Linux encrypts with a key that a secret store of the session holds.
+   * `basic_text` encrypts with a key that is itself kept in clear text, which
+   * is no protection at rest, and the asynchronous API also has a fallback
+   * provider for sessions without a secret store, which Electron does not say
+   * how to recognise. So the backend has to be one known to use a secret store.
+   */
+  private hasLinuxSecretStore() {
+    const { safeStorage } = this.dependencies;
+
+    if (typeof safeStorage.getSelectedStorageBackend !== "function") {
+      return false;
+    }
+
+    try {
+      return linuxSecretStoreBackends.has(safeStorage.getSelectedStorageBackend());
+    } catch {
+      return false;
+    }
   }
 
   async get(extensionId: string, key: string): Promise<string | undefined> {

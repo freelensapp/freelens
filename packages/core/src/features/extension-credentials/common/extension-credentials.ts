@@ -20,7 +20,9 @@
 export interface ExtensionCredentials {
   /**
    * Whether the system has a secret store to encrypt with. On Linux it is
-   * `false` for the `basic_text` backend, which keeps the key in clear text.
+   * `true` only for the libsecret and KWallet backends, and `false` for
+   * `basic_text`, which keeps the key in clear text, and for any backend the
+   * host cannot identify.
    */
   isAvailable(): Promise<boolean>;
   /** The value under `key`, or `undefined` when there is none. */

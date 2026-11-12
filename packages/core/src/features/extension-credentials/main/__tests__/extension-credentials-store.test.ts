@@ -178,6 +178,46 @@ describe("ExtensionCredentialsStore", () => {
       expect(await readdir(root)).toEqual([]);
     });
 
+    it.each(["unknown", "a_backend_of_a_later_electron", ""])(
+      "is not available with the %j backend of Linux",
+      async (backend) => {
+        safeStorage.backend = backend;
+
+        const store = createStore();
+
+        expect(await store.isAvailable()).toBe(false);
+        await expect(store.set("my-extension", "token", secret)).rejects.toThrow("not available");
+        expect(await readdir(root)).toEqual([]);
+      },
+    );
+
+    it.each(["gnome_libsecret", "kwallet", "kwallet5", "kwallet6"])(
+      "is available with the %j backend of Linux",
+      async (backend) => {
+        safeStorage.backend = backend;
+
+        expect(await createStore().isAvailable()).toBe(true);
+      },
+    );
+
+    it("is not available on Linux when Electron has no function to tell the backend", async () => {
+      delete safeStorage.getSelectedStorageBackend;
+
+      const store = createStore();
+
+      expect(await store.isAvailable()).toBe(false);
+      await expect(store.set("my-extension", "token", secret)).rejects.toThrow("not available");
+      expect(await readdir(root)).toEqual([]);
+    });
+
+    it("is not available on Linux when telling the backend throws", async () => {
+      safeStorage.getSelectedStorageBackend = () => {
+        throw new Error("getSelectedStorageBackend failed");
+      };
+
+      expect(await createStore().isAvailable()).toBe(false);
+    });
+
     it("asks for the backend on Linux only", async () => {
       safeStorage.backend = "basic_text";
       safeStorage.getSelectedStorageBackend = () => {
