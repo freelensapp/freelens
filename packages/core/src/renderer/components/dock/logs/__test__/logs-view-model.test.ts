@@ -4,9 +4,9 @@
  */
 
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { defaultLogViewerPreferences } from "../../../../../features/user-preferences/common/preferences-helpers";
 import userPreferencesStateInjectable from "../../../../../features/user-preferences/common/state.injectable";
 import { getDiForUnitTesting } from "../../../../getDiForUnitTesting";
-import { maxCombinedLogsPods } from "../merge-pod-logs";
 import { deploymentPod1, deploymentPod2, dockerPod } from "./pod.mock";
 import { createMockLogTabViewModel, getDefaultOnePodLogTabData } from "./test-utils";
 
@@ -40,6 +40,7 @@ describe("LogTabViewModel", () => {
     expect(userPreferencesState.logViewerPreferences).toEqual({
       showTimestamps: true,
       showWordWrap: true,
+      maxCombinedLogsPods: 20,
     });
     expect(setLogTabData).toHaveBeenCalledWith("tab-id", {
       ...getDefaultOnePodLogTabData(),
@@ -102,15 +103,47 @@ describe("LogTabViewModel", () => {
       });
     });
 
-    it("reads a limited number of pods of a large workload", () => {
-      const manyPods = Array.from({ length: maxCombinedLogsPods + 5 }, () => deploymentPod1);
+    it("reads at most 20 pods of a large workload by default", () => {
+      const manyPods = Array.from({ length: 25 }, () => deploymentPod1);
       const model = createMockLogTabViewModel("tab-id", userPreferencesState, {
         getLogTabData: getCombinedLogTabData,
         getWorkloadPods: () => manyPods,
       });
 
-      expect(model.workloadPods.get()).toHaveLength(maxCombinedLogsPods + 5);
-      expect(model.logSourcePods.get()).toHaveLength(maxCombinedLogsPods);
+      expect(model.workloadPods.get()).toHaveLength(25);
+      expect(model.logSourcePods.get()).toHaveLength(20);
+    });
+
+    it("reads as many pods as the preference says", () => {
+      userPreferencesState.logViewerPreferences = { ...defaultLogViewerPreferences, maxCombinedLogsPods: 7 };
+
+      const manyPods = Array.from({ length: 25 }, () => deploymentPod1);
+      const model = createMockLogTabViewModel("tab-id", userPreferencesState, {
+        getLogTabData: getCombinedLogTabData,
+        getWorkloadPods: () => manyPods,
+      });
+
+      expect(model.logSourcePods.get()).toHaveLength(7);
+
+      userPreferencesState.logViewerPreferences = { ...defaultLogViewerPreferences, maxCombinedLogsPods: 12 };
+
+      expect(model.logSourcePods.get()).toHaveLength(12);
+    });
+
+    it("reads the preference clamped to its range", () => {
+      userPreferencesState.logViewerPreferences = { ...defaultLogViewerPreferences, maxCombinedLogsPods: 500 };
+
+      const manyPods = Array.from({ length: 150 }, () => deploymentPod1);
+      const model = createMockLogTabViewModel("tab-id", userPreferencesState, {
+        getLogTabData: getCombinedLogTabData,
+        getWorkloadPods: () => manyPods,
+      });
+
+      expect(model.logSourcePods.get()).toHaveLength(100);
+
+      userPreferencesState.logViewerPreferences = { ...defaultLogViewerPreferences, maxCombinedLogsPods: 0 };
+
+      expect(model.logSourcePods.get()).toHaveLength(1);
     });
 
     it("downloads the visible logs under the name of the workload, without color codes", () => {

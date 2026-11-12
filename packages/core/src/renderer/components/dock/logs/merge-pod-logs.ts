@@ -4,13 +4,6 @@
  */
 
 /**
- * A combined logs tab reads at most this many pods of its workload. Every
- * refresh sends one request per pod, so a DaemonSet on a large cluster would
- * otherwise turn into a burst of requests every few seconds.
- */
-export const maxCombinedLogsPods = 20;
-
-/**
  * At most this many requests for the logs of one tab run at the same time, as
  * `kubectl logs --max-log-requests` does by default.
  */

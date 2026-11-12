@@ -6,13 +6,8 @@
 import { Pod } from "@freelensapp/kube-object";
 import { computed, observable } from "mobx";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import {
-  maxCombinedLogLines,
-  maxCombinedLogsPods,
-  maxConcurrentLogRequests,
-  podLogColors,
-  stripAnsiColors,
-} from "../merge-pod-logs";
+import { defaultMaxCombinedLogsPods } from "../../../../../features/user-preferences/common/preferences-helpers";
+import { maxCombinedLogLines, maxConcurrentLogRequests, podLogColors, stripAnsiColors } from "../merge-pod-logs";
 import { LogStore } from "../store";
 import { dockerPod } from "./pod.mock";
 
@@ -433,8 +428,8 @@ describe("LogStore combined logs", () => {
   });
 
   it("asks every pod for at most its share of the lines of a combined tab", async () => {
-    const share = Math.floor(maxCombinedLogLines / maxCombinedLogsPods);
-    const manyPods = Array.from({ length: maxCombinedLogsPods }, (_, index) => createPod(`pod-${index}`));
+    const share = Math.floor(maxCombinedLogLines / defaultMaxCombinedLogsPods);
+    const manyPods = Array.from({ length: defaultMaxCombinedLogsPods }, (_, index) => createPod(`pod-${index}`));
 
     callForLogs.mockImplementation(async ({ name }) =>
       Array.from({ length: share - 100 }, (_, index) => `2026-01-01T00:00:00Z ${name} ${index}`).join("\n"),
@@ -447,8 +442,8 @@ describe("LogStore combined logs", () => {
   });
 
   it("asks no pod for more than its share, even when it has more", async () => {
-    const share = Math.floor(maxCombinedLogLines / maxCombinedLogsPods);
-    const manyPods = Array.from({ length: maxCombinedLogsPods }, (_, index) => createPod(`pod-${index}`));
+    const share = Math.floor(maxCombinedLogLines / defaultMaxCombinedLogsPods);
+    const manyPods = Array.from({ length: defaultMaxCombinedLogsPods }, (_, index) => createPod(`pod-${index}`));
 
     callForLogs.mockImplementation(async ({ name }) =>
       Array.from({ length: share + 100 }, (_, index) => `2026-01-01T00:00:00Z ${name} ${index}`).join("\n"),

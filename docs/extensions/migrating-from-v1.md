@@ -1826,7 +1826,9 @@ What to check in an extension that calls it:
 
 - The title of the tab is the workload (`Deployment my-app`), no longer its
   first pod.
-- The tab reads at most 20 pods of the workload, the first ones by name.
+- The tab reads at most 20 pods of the workload by default, the first ones
+  by name. The user sets the number, from 1 to 100, in Preferences >
+  Kubernetes > Logs.
 - `logTabStore.createPodTab` is unchanged, and is the one to call for the logs
   of a single pod.
 

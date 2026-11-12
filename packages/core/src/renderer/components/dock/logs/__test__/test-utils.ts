@@ -24,7 +24,8 @@ export function getDefaultOnePodLogTabData(overrides: Partial<LogTabData> = {}):
     selectedContainer: dockerPod.getContainers()[0].name,
     namespace: dockerPod.getNs(),
     showPrevious: false,
-    ...defaultLogViewerPreferences,
+    showTimestamps: defaultLogViewerPreferences.showTimestamps,
+    showWordWrap: defaultLogViewerPreferences.showWordWrap,
     ...overrides,
   };
 }
