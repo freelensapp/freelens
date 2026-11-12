@@ -95,6 +95,15 @@
       "matchDepNames": ["http-proxy-3", "http-proxy"]
     },
     {
+      "description": [
+        "One PR for rolldown and the bundlers that pin it, vite and electron-vite: the catalog's rolldown stays on the version they build the application with, which the declaration bundle of @freelensapp/extensions checks.",
+        "A rolldown of a minor that no vite release pins yet fails that check, and its PR waits until a vite that pins the minor joins the group."
+      ],
+      "groupName": "rolldown and vite",
+      "groupSlug": "rolldown-vite",
+      "matchDepNames": ["rolldown", "vite", "electron-vite"]
+    },
+    {
       "description": "Packages that misuse semver.",
       "matchDepNames": ["node-pty"],
       "versioning": "deb",
