@@ -160,7 +160,9 @@ const createFreelensK8sProxyInjectable = getInjectable({
           return new Error(output ? `${message}: ${output}` : message);
         };
 
-        proxyProcess = spawn(freeLensK8sProxyPath, ["proxy"], {
+        // The proxy reads --kubeconfig as one file, while KUBECONFIG is a list of files separated by ":" (";" on
+        // Windows) that would split such a path. KUBECONFIG stays in the environment for credential plugins.
+        proxyProcess = spawn(freeLensK8sProxyPath, ["proxy", "--kubeconfig", cluster.kubeConfigPath.get()], {
           env: {
             ...env,
             KUBECONFIG: cluster.kubeConfigPath.get(),

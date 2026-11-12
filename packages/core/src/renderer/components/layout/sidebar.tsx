@@ -36,7 +36,8 @@ interface Dependencies {
 const NonInjectedSidebar = observer(
   ({ sidebarItems, entityRegistry, userPreferences: sidebarStorage, favoritesSidebarItems }: Dependencies) => {
     const sidebarHook = useSidebarHook({ userPreferences: sidebarStorage });
-    const favoritesMainEntry = sidebarItems.get().find((item) => item.id === favoritesSidebarItemInjectable.id);
+    const items = sidebarItems.get();
+    const favoritesMainEntry = items.find((item) => item.id === favoritesSidebarItemInjectable.id);
     const favoritesEntries = favoritesSidebarItems.get();
 
     const favoritesWithChildren = favoritesMainEntry
@@ -50,8 +51,11 @@ const NonInjectedSidebar = observer(
       <div className={cssNames("flex flex-col")} data-testid="cluster-sidebar">
         <SidebarCluster clusterEntity={entityRegistry.activeEntity} />
 
-        <OrderableList className={`${styles.sidebarNav} sidebar-active-status`} onReorder={sidebarHook.saveOrderInfo}>
-          {sidebarItems.get().map((item) => {
+        <OrderableList
+          className={`${styles.sidebarNav} sidebar-active-status`}
+          onReorder={(dragIndex, dropIndex) => sidebarHook.saveOrderInfo(items[dragIndex], items[dropIndex], items)}
+        >
+          {items.map((item) => {
             if (item.id === favoritesSidebarItemInjectable.id && favoritesWithChildren) {
               return <SidebarItem item={favoritesWithChildren} key={favoritesWithChildren.id} />;
             }

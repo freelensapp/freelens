@@ -46,7 +46,7 @@ describe("pod-menu-item", () => {
         tooltip="tooltip"
         toolbar={true}
         containers={null as never}
-        annotations={[]}
+        annotations={{}}
         statuses={[]}
         onMenuItemClick={() => {}}
       />,
@@ -65,7 +65,7 @@ describe("pod-menu-item", () => {
         tooltip="tooltip"
         toolbar={true}
         containers={[]}
-        annotations={[]}
+        annotations={{}}
         statuses={[]}
         onMenuItemClick={() => {}}
       />,
@@ -89,7 +89,7 @@ describe("pod-menu-item", () => {
           tooltip="tooltip"
           toolbar={true}
           containers={containers}
-          annotations={[]}
+          annotations={{}}
           statuses={[]}
           onMenuItemClick={callback}
         />,
@@ -127,7 +127,7 @@ describe("pod-menu-item", () => {
         tooltip="tooltip"
         toolbar={true}
         containers={containers}
-        annotations={[]}
+        annotations={{}}
         // @ts-ignore
         statuses={statuses}
         onMenuItemClick={callback}
@@ -185,7 +185,7 @@ describe("pod-menu-item", () => {
           tooltip="tooltip"
           toolbar={true}
           containers={containers}
-          annotations={[]}
+          annotations={{}}
           // @ts-ignore
           statuses={statuses}
           onMenuItemClick={callback}
@@ -207,7 +207,7 @@ describe("pod-menu-item", () => {
       { name: "container-name-1", type: "containers" },
       { name: "container-name-2", type: "containers" },
     ];
-    const annotations: string[] = ["kubectl.kubernetes.io/default-container=container-name-2"];
+    const annotations = { "kubectl.kubernetes.io/default-container": "container-name-2" };
 
     // WHEN
     expect(() => {
@@ -232,5 +232,92 @@ describe("pod-menu-item", () => {
 
     fireEvent.click(menuItem[0]);
     expect(callback).toBeCalledWith(containers[1]);
+  });
+
+  describe("default container marker", () => {
+    const renderSubMenuItems = (containers: ContainerWithType[], annotations?: Record<string, string>) => {
+      const { container } = render(
+        <PodMenuItem
+          material="pageview"
+          title="title"
+          tooltip="tooltip"
+          toolbar={true}
+          containers={containers}
+          annotations={annotations}
+          statuses={[]}
+          onMenuItemClick={callback}
+        />,
+      );
+
+      return within(container.querySelector(".SubMenu") as HTMLElement).getAllByTestId("menu-item-testid");
+    };
+
+    it("marks the annotated container and keeps the order of the containers", () => {
+      const containers: ContainerWithType[] = [
+        { name: "container-name-1", type: "containers" },
+        { name: "container-name-2", type: "containers" },
+        { name: "container-name-3", type: "containers" },
+      ];
+
+      const items = renderSubMenuItems(containers, {
+        "kubectl.kubernetes.io/default-container": "container-name-2",
+      });
+
+      expect(items.map((item) => item.textContent)).toEqual([
+        "container-name-1",
+        "container-name-2 (default)",
+        "container-name-3",
+      ]);
+      expect(within(items[1]).getByText("(default)")).toHaveClass("text-secondary");
+    });
+
+    it("marks the container that a click on the menu item opens", () => {
+      const containers: ContainerWithType[] = [
+        { name: "container-name-1", type: "containers" },
+        { name: "container-name-2", type: "containers" },
+      ];
+
+      renderSubMenuItems(containers, { "kubectl.kubernetes.io/default-container": "container-name-2" });
+
+      const [mainItem] = screen.getAllByTestId("menu-item-testid");
+
+      fireEvent.click(mainItem);
+      expect(callback).toBeCalledWith(containers[1]);
+    });
+
+    it("given the annotation names a missing container, marks the first container", () => {
+      const containers: ContainerWithType[] = [
+        { name: "container-name-1", type: "containers" },
+        { name: "container-name-2", type: "containers" },
+      ];
+
+      const items = renderSubMenuItems(containers, {
+        "kubectl.kubernetes.io/default-container": "missing",
+      });
+
+      expect(items.map((item) => item.textContent)).toEqual(["container-name-1 (default)", "container-name-2"]);
+    });
+
+    it("given no annotation, marks the first container", () => {
+      const containers: ContainerWithType[] = [
+        { name: "container-name-1", type: "containers" },
+        { name: "container-name-2", type: "containers" },
+      ];
+
+      const items = renderSubMenuItems(containers);
+
+      expect(items.map((item) => item.textContent)).toEqual(["container-name-1 (default)", "container-name-2"]);
+    });
+
+    it("marks exactly one container", () => {
+      const containers: ContainerWithType[] = [
+        { name: "container-name-1", type: "containers" },
+        { name: "container-name-2", type: "containers" },
+      ];
+
+      renderSubMenuItems(containers, { "kubectl.kubernetes.io/default-container": "container-name-2" });
+
+      expect(screen.getAllByText("(default)")).toHaveLength(1);
+    });
   });
 });
