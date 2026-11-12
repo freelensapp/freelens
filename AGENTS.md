@@ -572,6 +572,29 @@ layer was removed in #2118.
 **Cache issues:** Delete the build output and rebuild
 (`rm -rf .turbo packages/core/dist freelens/dist`)
 
+### Rolldown Follows Vite
+
+Rolldown builds the application through vite and electron-vite, which pin it
+with a tilde range, and builds the declaration of `@freelensapp/extensions`
+directly, from the catalog of `pnpm-workspace.yaml`. The catalog's rolldown is
+the version that vite and electron-vite build with, so that the lockfile has a
+single rolldown and both builds use it.
+
+Vite moves to a new minor of rolldown in a release of its own, because its
+plugins depend on what rolldown emits. A newer rolldown forced on a vite that
+does not pin it can break the application without failing the build: the
+bundle is written, and the renderer fails to parse it at runtime, which only
+the integration tests notice. So the catalog never runs ahead of vite, and no
+`overrides` entry forces the catalog's rolldown on vite.
+
+`rolldown.dts.config.mjs` checks it: the `rolldown-follows-vite` plugin fails
+the declaration bundle when the rolldown that vite or electron-vite resolves is
+not the one it runs on. After a bump inside the minor that vite pins,
+`pnpm dedupe` brings both onto one version; on a Renovate branch the
+"Automated npm dedupe for Renovate" workflow does that. Renovate updates
+rolldown, vite and electron-vite in one group, so a new minor of rolldown waits
+in its PR, failing that check, until a vite that pins the minor joins it.
+
 ### The Electron binary
 
 `pnpm install` leaves the `electron` package without its runtime binary. The
