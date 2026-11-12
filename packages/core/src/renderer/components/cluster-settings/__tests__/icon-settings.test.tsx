@@ -65,12 +65,13 @@ describe("Icon settings", () => {
   let rendered: RenderResult;
   let di: DiContainer;
   let user: UserEvent;
+  let cluster: Cluster;
 
   beforeEach(() => {
     di = getDiForUnitTesting();
 
     const render = renderFor(di);
-    const cluster = new Cluster({
+    cluster = new Cluster({
       contextName: "some-context",
       id: "some-id",
       kubeConfigPath: "/some/path/to/kubeconfig",
@@ -97,6 +98,21 @@ describe("Icon settings", () => {
     rendered = render(<ClusterIconSetting cluster={cluster} entity={clusterEntity} />);
 
     user = userEvent.setup();
+  });
+
+  describe("when changing background color", () => {
+    it("updates cluster preferences icon when predefined color is clicked", async () => {
+      const rubyRedBtn = screen.getByTitle("#e06c75");
+      await user.click(rubyRedBtn);
+      expect(cluster.preferences.icon).toBe("#e06c75");
+    });
+
+    it("resets cluster preferences icon when auto button is clicked", async () => {
+      cluster.preferences.icon = "#e06c75";
+      const autoBtn = screen.getByTitle("Auto-generated color");
+      await user.click(autoBtn);
+      expect(cluster.preferences.icon).toBeNull();
+    });
   });
 
   describe("given no external registrations for cluster settings menu injection token", () => {

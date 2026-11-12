@@ -36,6 +36,17 @@ interface Dependencies {
   showErrorNotification: ShowNotification;
 }
 
+const colors = [
+  "#e06c75", // Ruby Red
+  "#ff7f50", // Sunset Orange
+  "#e5c07b", // Amber Yellow
+  "#98c379", // Emerald Green
+  "#56b6c2", // Teal / Cyan
+  "#61afef", // Royal Blue
+  "#c678dd", // Purple
+  "#abb2bf", // Slate Gray
+];
+
 const NonInjectedClusterIconSetting = observer((props: ClusterIconSettingProps & Dependencies) => {
   const element = React.createRef<HTMLDivElement>();
   const { cluster, entity } = props;
@@ -58,6 +69,15 @@ const NonInjectedClusterIconSetting = observer((props: ClusterIconSettingProps &
   const onUploadClick = () => {
     element.current?.querySelector<HTMLInputElement>("input[type=file]")?.click();
   };
+
+  const selectColor = (color: string | null) => {
+    cluster.preferences.icon = color;
+  };
+
+  const isCustomColorSelected =
+    cluster.preferences.icon &&
+    !cluster.preferences.icon.startsWith("data:") &&
+    !colors.includes(cluster.preferences.icon);
 
   return (
     <div ref={element}>
@@ -97,6 +117,104 @@ const NonInjectedClusterIconSetting = observer((props: ClusterIconSettingProps &
           ))}
         </MenuActions>
       </div>
+
+      <div style={{ marginTop: "16px" }}>
+        <div style={{ marginBottom: "8px", fontWeight: 500, fontSize: "calc(var(--font-size) * 0.9)", opacity: 0.8 }}>
+          Background Color
+        </div>
+        <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
+          {/* Auto/Clear Button */}
+          <button
+            type="button"
+            onClick={() => selectColor(null)}
+            style={{
+              width: "26px",
+              height: "26px",
+              borderRadius: "50%",
+              backgroundColor: "transparent",
+              border: !cluster.preferences.icon ? "2px solid var(--primary)" : "2px solid var(--borderFaint)",
+              boxShadow: !cluster.preferences.icon ? "0 0 4px var(--primary)" : "0 0 2px rgba(0,0,0,0.1)",
+              cursor: "pointer",
+              padding: 0,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              transform: !cluster.preferences.icon ? "scale(1.1)" : "scale(1)",
+              transition: "transform 0.1s ease, border-color 0.1s ease",
+            }}
+            title="Auto-generated color"
+          >
+            <span style={{ fontSize: "9px", fontWeight: "bold", opacity: 0.8 }}>Auto</span>
+          </button>
+
+          {/* Predefined Colors */}
+          {colors.map((color) => {
+            const isSelected = cluster.preferences.icon === color;
+            return (
+              <button
+                key={color}
+                type="button"
+                onClick={() => selectColor(color)}
+                style={{
+                  width: "26px",
+                  height: "26px",
+                  borderRadius: "50%",
+                  backgroundColor: color,
+                  border: isSelected ? "2px solid var(--primary)" : "2px solid transparent",
+                  boxShadow: isSelected ? "0 0 4px var(--primary)" : "0 0 2px rgba(0,0,0,0.15)",
+                  cursor: "pointer",
+                  padding: 0,
+                  transform: isSelected ? "scale(1.1)" : "scale(1)",
+                  transition: "transform 0.1s ease, border-color 0.1s ease",
+                }}
+                title={color}
+              />
+            );
+          })}
+
+          {/* Custom Color Rainbow Picker */}
+          <div
+            style={{
+              position: "relative",
+              width: "26px",
+              height: "26px",
+              borderRadius: "50%",
+              cursor: "pointer",
+              border: isCustomColorSelected ? "2px solid var(--primary)" : "2px solid var(--borderFaint)",
+              boxShadow: isCustomColorSelected ? "0 0 4px var(--primary)" : "0 0 2px rgba(0,0,0,0.15)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              overflow: "hidden",
+              background: cluster.preferences.icon && !cluster.preferences.icon.startsWith("data:")
+                ? cluster.preferences.icon
+                : "linear-gradient(45deg, red, orange, yellow, green, blue, purple)",
+              transform: isCustomColorSelected ? "scale(1.1)" : "scale(1)",
+              transition: "transform 0.1s ease, border-color 0.1s ease",
+            }}
+            title="Custom Color"
+          >
+            <input
+              type="color"
+              value={cluster.preferences.icon && !cluster.preferences.icon.startsWith("data:") ? cluster.preferences.icon : "#61afef"}
+              onChange={(e) => selectColor(e.target.value)}
+              style={{
+                position: "absolute",
+                top: "-5px",
+                left: "-5px",
+                width: "36px",
+                height: "36px",
+                opacity: 0,
+                cursor: "pointer",
+              }}
+            />
+            {!isCustomColorSelected && (
+              <span style={{ fontSize: "14px", fontWeight: "bold", color: "#fff", textShadow: "0 0 2px rgba(0,0,0,0.5)" }}>+</span>
+            )}
+          </div>
+        </div>
+      </div>
+
       {props.settingComponents.get().map((item) => {
         return <item.Component key={item.id} preferences={cluster.preferences} />;
       })}
