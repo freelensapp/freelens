@@ -3,11 +3,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-/**
- * Copyright (c) Freelens Authors. All rights reserved.
- * Licensed under MIT License. See LICENSE in root directory for more information.
- */
-
 import fs, { mkdtemp, readdir, readFile, rm, stat, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
