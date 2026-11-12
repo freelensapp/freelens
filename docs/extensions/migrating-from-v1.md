@@ -28,7 +28,8 @@ skill, in the [Agent Skills](https://agentskills.io/specification) format,
 which other agents read too:
 
 ```sh
-claude plugin install freelens --marketplace freelensapp/freelens
+claude plugin marketplace add freelensapp/freelens --sparse .claude-plugin plugins
+claude plugin install freelens@freelens
 ```
 
 The skill holds the workflow of the port and follows this guide, which it links

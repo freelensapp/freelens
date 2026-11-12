@@ -698,10 +698,18 @@ extension.
 The skills for the coding agents that write Freelens extensions are the
 `freelens` plugin of Claude Code in `plugins/freelens`, one skill in each
 `skills/<name>/SKILL.md`. The marketplace in `.claude-plugin/marketplace.json`
-lists the plugin, so that
-`claude plugin install freelens --marketplace freelensapp/freelens` installs
-it. They are for work in an extension's repository, not in this one, so they
-are not in `.claude/skills/`.
+lists the plugin. They are for work in an extension's repository, not in this
+one, so they are not in `.claude/skills/`.
+
+The documents install the plugin in two steps, the marketplace added with
+`--sparse .claude-plugin plugins` and the plugin installed from it, because a
+marketplace is a git checkout that Claude Code keeps and updates.
+`claude plugin install freelens --marketplace freelensapp/freelens` works in
+one step, but `install` has no `--sparse`, so its marketplace is a shallow
+checkout of the whole repository. A marketplace added without `--sparse` is
+declared under `extraKnownMarketplaces` in the user settings, and
+`claude plugin marketplace add` with `--sparse` then refuses the same name for
+a different source until `claude plugin marketplace remove freelens` drops it.
 
 | Skill                  | Does                                                                                             |
 | ---------------------- | ------------------------------------------------------------------------------------------------ |
