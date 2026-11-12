@@ -6,6 +6,7 @@
  * This replaces the webpack-based auto-registration system.
  */
 
+import { registerInjectables as registerCombinedLogsPodsInjectables } from "./combined-logs-pods/register-injectables";
 import { registerInjectables as registerHelmInjectables } from "./helm/register-injectables";
 import { registerInjectables as registerKubeconfigSyncInjectables } from "./kubeconfig-sync/register-injectables";
 import { registerInjectables as registerKubectlInjectables } from "./kubectl/register-injectables";
@@ -22,6 +23,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(kubernetesPreferenceTabInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    registerCombinedLogsPodsInjectables(di);
   } catch (e) {
     /* Ignore duplicate registration */
   }

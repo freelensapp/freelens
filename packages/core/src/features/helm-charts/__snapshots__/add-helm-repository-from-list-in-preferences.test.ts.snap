@@ -457,6 +457,53 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                   class="HorizontalLine size-xl"
                 />
                 <div
+                  data-preference-item-test="combined-logs-pods"
+                >
+                  <section
+                    id="logs"
+                  >
+                    <h2>
+                      Logs
+                    </h2>
+                    <div
+                      class="SubTitle"
+                    >
+                      Pods in a combined logs tab
+                       
+                    </div>
+                    <div
+                      class="Input theme round black"
+                    >
+                      <label
+                        class="input-area flex items-center gap-2"
+                        id=""
+                      >
+                        <input
+                          class="input grow"
+                          data-testid="max-combined-logs-pods-input"
+                          max="100"
+                          min="1"
+                          spellcheck="false"
+                          step="1"
+                          type="number"
+                          value="20"
+                        />
+                      </label>
+                      <div
+                        class="input-info flex gap-2"
+                      />
+                    </div>
+                    <div
+                      class="hint"
+                    >
+                      The Logs of a Deployment, DaemonSet, StatefulSet, ReplicaSet or Job read at most this many of its pods, the first ones by name, from 1 to 100. Every refresh of the tab, every 10 seconds, asks each of these pods for its lines, at most 5 at a time.
+                    </div>
+                  </section>
+                </div>
+                <div
+                  class="HorizontalLine size-xl"
+                />
+                <div
                   data-preference-item-test="helm-charts"
                 >
                   <section
@@ -1287,6 +1334,53 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                           When enabled, Helm will use server-side apply (--server-side=true) for install and upgrade operations. This is always enabled when "Force conflicts" is checked.
                         </div>
                       </section>
+                    </div>
+                  </section>
+                </div>
+                <div
+                  class="HorizontalLine size-xl"
+                />
+                <div
+                  data-preference-item-test="combined-logs-pods"
+                >
+                  <section
+                    id="logs"
+                  >
+                    <h2>
+                      Logs
+                    </h2>
+                    <div
+                      class="SubTitle"
+                    >
+                      Pods in a combined logs tab
+                       
+                    </div>
+                    <div
+                      class="Input theme round black"
+                    >
+                      <label
+                        class="input-area flex items-center gap-2"
+                        id=""
+                      >
+                        <input
+                          class="input grow"
+                          data-testid="max-combined-logs-pods-input"
+                          max="100"
+                          min="1"
+                          spellcheck="false"
+                          step="1"
+                          type="number"
+                          value="20"
+                        />
+                      </label>
+                      <div
+                        class="input-info flex gap-2"
+                      />
+                    </div>
+                    <div
+                      class="hint"
+                    >
+                      The Logs of a Deployment, DaemonSet, StatefulSet, ReplicaSet or Job read at most this many of its pods, the first ones by name, from 1 to 100. Every refresh of the tab, every 10 seconds, asks each of these pods for its lines, at most 5 at a time.
                     </div>
                   </section>
                 </div>
@@ -2162,6 +2256,53 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                           When enabled, Helm will use server-side apply (--server-side=true) for install and upgrade operations. This is always enabled when "Force conflicts" is checked.
                         </div>
                       </section>
+                    </div>
+                  </section>
+                </div>
+                <div
+                  class="HorizontalLine size-xl"
+                />
+                <div
+                  data-preference-item-test="combined-logs-pods"
+                >
+                  <section
+                    id="logs"
+                  >
+                    <h2>
+                      Logs
+                    </h2>
+                    <div
+                      class="SubTitle"
+                    >
+                      Pods in a combined logs tab
+                       
+                    </div>
+                    <div
+                      class="Input theme round black"
+                    >
+                      <label
+                        class="input-area flex items-center gap-2"
+                        id=""
+                      >
+                        <input
+                          class="input grow"
+                          data-testid="max-combined-logs-pods-input"
+                          max="100"
+                          min="1"
+                          spellcheck="false"
+                          step="1"
+                          type="number"
+                          value="20"
+                        />
+                      </label>
+                      <div
+                        class="input-info flex gap-2"
+                      />
+                    </div>
+                    <div
+                      class="hint"
+                    >
+                      The Logs of a Deployment, DaemonSet, StatefulSet, ReplicaSet or Job read at most this many of its pods, the first ones by name, from 1 to 100. Every refresh of the tab, every 10 seconds, asks each of these pods for its lines, at most 5 at a time.
                     </div>
                   </section>
                 </div>
@@ -3102,6 +3243,53 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                   class="HorizontalLine size-xl"
                 />
                 <div
+                  data-preference-item-test="combined-logs-pods"
+                >
+                  <section
+                    id="logs"
+                  >
+                    <h2>
+                      Logs
+                    </h2>
+                    <div
+                      class="SubTitle"
+                    >
+                      Pods in a combined logs tab
+                       
+                    </div>
+                    <div
+                      class="Input theme round black"
+                    >
+                      <label
+                        class="input-area flex items-center gap-2"
+                        id=""
+                      >
+                        <input
+                          class="input grow"
+                          data-testid="max-combined-logs-pods-input"
+                          max="100"
+                          min="1"
+                          spellcheck="false"
+                          step="1"
+                          type="number"
+                          value="20"
+                        />
+                      </label>
+                      <div
+                        class="input-info flex gap-2"
+                      />
+                    </div>
+                    <div
+                      class="hint"
+                    >
+                      The Logs of a Deployment, DaemonSet, StatefulSet, ReplicaSet or Job read at most this many of its pods, the first ones by name, from 1 to 100. Every refresh of the tab, every 10 seconds, asks each of these pods for its lines, at most 5 at a time.
+                    </div>
+                  </section>
+                </div>
+                <div
+                  class="HorizontalLine size-xl"
+                />
+                <div
                   data-preference-item-test="helm-charts"
                 >
                   <section
@@ -3970,6 +4158,53 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                           When enabled, Helm will use server-side apply (--server-side=true) for install and upgrade operations. This is always enabled when "Force conflicts" is checked.
                         </div>
                       </section>
+                    </div>
+                  </section>
+                </div>
+                <div
+                  class="HorizontalLine size-xl"
+                />
+                <div
+                  data-preference-item-test="combined-logs-pods"
+                >
+                  <section
+                    id="logs"
+                  >
+                    <h2>
+                      Logs
+                    </h2>
+                    <div
+                      class="SubTitle"
+                    >
+                      Pods in a combined logs tab
+                       
+                    </div>
+                    <div
+                      class="Input theme round black"
+                    >
+                      <label
+                        class="input-area flex items-center gap-2"
+                        id=""
+                      >
+                        <input
+                          class="input grow"
+                          data-testid="max-combined-logs-pods-input"
+                          max="100"
+                          min="1"
+                          spellcheck="false"
+                          step="1"
+                          type="number"
+                          value="20"
+                        />
+                      </label>
+                      <div
+                        class="input-info flex gap-2"
+                      />
+                    </div>
+                    <div
+                      class="hint"
+                    >
+                      The Logs of a Deployment, DaemonSet, StatefulSet, ReplicaSet or Job read at most this many of its pods, the first ones by name, from 1 to 100. Every refresh of the tab, every 10 seconds, asks each of these pods for its lines, at most 5 at a time.
                     </div>
                   </section>
                 </div>
@@ -4852,6 +5087,53 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                   class="HorizontalLine size-xl"
                 />
                 <div
+                  data-preference-item-test="combined-logs-pods"
+                >
+                  <section
+                    id="logs"
+                  >
+                    <h2>
+                      Logs
+                    </h2>
+                    <div
+                      class="SubTitle"
+                    >
+                      Pods in a combined logs tab
+                       
+                    </div>
+                    <div
+                      class="Input theme round black"
+                    >
+                      <label
+                        class="input-area flex items-center gap-2"
+                        id=""
+                      >
+                        <input
+                          class="input grow"
+                          data-testid="max-combined-logs-pods-input"
+                          max="100"
+                          min="1"
+                          spellcheck="false"
+                          step="1"
+                          type="number"
+                          value="20"
+                        />
+                      </label>
+                      <div
+                        class="input-info flex gap-2"
+                      />
+                    </div>
+                    <div
+                      class="hint"
+                    >
+                      The Logs of a Deployment, DaemonSet, StatefulSet, ReplicaSet or Job read at most this many of its pods, the first ones by name, from 1 to 100. Every refresh of the tab, every 10 seconds, asks each of these pods for its lines, at most 5 at a time.
+                    </div>
+                  </section>
+                </div>
+                <div
+                  class="HorizontalLine size-xl"
+                />
+                <div
                   data-preference-item-test="helm-charts"
                 >
                   <section
@@ -5710,6 +5992,53 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                           When enabled, Helm will use server-side apply (--server-side=true) for install and upgrade operations. This is always enabled when "Force conflicts" is checked.
                         </div>
                       </section>
+                    </div>
+                  </section>
+                </div>
+                <div
+                  class="HorizontalLine size-xl"
+                />
+                <div
+                  data-preference-item-test="combined-logs-pods"
+                >
+                  <section
+                    id="logs"
+                  >
+                    <h2>
+                      Logs
+                    </h2>
+                    <div
+                      class="SubTitle"
+                    >
+                      Pods in a combined logs tab
+                       
+                    </div>
+                    <div
+                      class="Input theme round black"
+                    >
+                      <label
+                        class="input-area flex items-center gap-2"
+                        id=""
+                      >
+                        <input
+                          class="input grow"
+                          data-testid="max-combined-logs-pods-input"
+                          max="100"
+                          min="1"
+                          spellcheck="false"
+                          step="1"
+                          type="number"
+                          value="20"
+                        />
+                      </label>
+                      <div
+                        class="input-info flex gap-2"
+                      />
+                    </div>
+                    <div
+                      class="hint"
+                    >
+                      The Logs of a Deployment, DaemonSet, StatefulSet, ReplicaSet or Job read at most this many of its pods, the first ones by name, from 1 to 100. Every refresh of the tab, every 10 seconds, asks each of these pods for its lines, at most 5 at a time.
                     </div>
                   </section>
                 </div>
@@ -6619,6 +6948,53 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                           When enabled, Helm will use server-side apply (--server-side=true) for install and upgrade operations. This is always enabled when "Force conflicts" is checked.
                         </div>
                       </section>
+                    </div>
+                  </section>
+                </div>
+                <div
+                  class="HorizontalLine size-xl"
+                />
+                <div
+                  data-preference-item-test="combined-logs-pods"
+                >
+                  <section
+                    id="logs"
+                  >
+                    <h2>
+                      Logs
+                    </h2>
+                    <div
+                      class="SubTitle"
+                    >
+                      Pods in a combined logs tab
+                       
+                    </div>
+                    <div
+                      class="Input theme round black"
+                    >
+                      <label
+                        class="input-area flex items-center gap-2"
+                        id=""
+                      >
+                        <input
+                          class="input grow"
+                          data-testid="max-combined-logs-pods-input"
+                          max="100"
+                          min="1"
+                          spellcheck="false"
+                          step="1"
+                          type="number"
+                          value="20"
+                        />
+                      </label>
+                      <div
+                        class="input-info flex gap-2"
+                      />
+                    </div>
+                    <div
+                      class="hint"
+                    >
+                      The Logs of a Deployment, DaemonSet, StatefulSet, ReplicaSet or Job read at most this many of its pods, the first ones by name, from 1 to 100. Every refresh of the tab, every 10 seconds, asks each of these pods for its lines, at most 5 at a time.
                     </div>
                   </section>
                 </div>
@@ -7603,6 +7979,53 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                   class="HorizontalLine size-xl"
                 />
                 <div
+                  data-preference-item-test="combined-logs-pods"
+                >
+                  <section
+                    id="logs"
+                  >
+                    <h2>
+                      Logs
+                    </h2>
+                    <div
+                      class="SubTitle"
+                    >
+                      Pods in a combined logs tab
+                       
+                    </div>
+                    <div
+                      class="Input theme round black"
+                    >
+                      <label
+                        class="input-area flex items-center gap-2"
+                        id=""
+                      >
+                        <input
+                          class="input grow"
+                          data-testid="max-combined-logs-pods-input"
+                          max="100"
+                          min="1"
+                          spellcheck="false"
+                          step="1"
+                          type="number"
+                          value="20"
+                        />
+                      </label>
+                      <div
+                        class="input-info flex gap-2"
+                      />
+                    </div>
+                    <div
+                      class="hint"
+                    >
+                      The Logs of a Deployment, DaemonSet, StatefulSet, ReplicaSet or Job read at most this many of its pods, the first ones by name, from 1 to 100. Every refresh of the tab, every 10 seconds, asks each of these pods for its lines, at most 5 at a time.
+                    </div>
+                  </section>
+                </div>
+                <div
+                  class="HorizontalLine size-xl"
+                />
+                <div
                   data-preference-item-test="helm-charts"
                 >
                   <section
@@ -8505,6 +8928,53 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                           When enabled, Helm will use server-side apply (--server-side=true) for install and upgrade operations. This is always enabled when "Force conflicts" is checked.
                         </div>
                       </section>
+                    </div>
+                  </section>
+                </div>
+                <div
+                  class="HorizontalLine size-xl"
+                />
+                <div
+                  data-preference-item-test="combined-logs-pods"
+                >
+                  <section
+                    id="logs"
+                  >
+                    <h2>
+                      Logs
+                    </h2>
+                    <div
+                      class="SubTitle"
+                    >
+                      Pods in a combined logs tab
+                       
+                    </div>
+                    <div
+                      class="Input theme round black"
+                    >
+                      <label
+                        class="input-area flex items-center gap-2"
+                        id=""
+                      >
+                        <input
+                          class="input grow"
+                          data-testid="max-combined-logs-pods-input"
+                          max="100"
+                          min="1"
+                          spellcheck="false"
+                          step="1"
+                          type="number"
+                          value="20"
+                        />
+                      </label>
+                      <div
+                        class="input-info flex gap-2"
+                      />
+                    </div>
+                    <div
+                      class="hint"
+                    >
+                      The Logs of a Deployment, DaemonSet, StatefulSet, ReplicaSet or Job read at most this many of its pods, the first ones by name, from 1 to 100. Every refresh of the tab, every 10 seconds, asks each of these pods for its lines, at most 5 at a time.
                     </div>
                   </section>
                 </div>
