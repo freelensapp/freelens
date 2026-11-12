@@ -11,6 +11,7 @@ import configureMobxInjectable from "./configure-mobx.injectable";
 import listenUnloadInjectable from "./listen-unload.injectable";
 import loadMonacoThemesInjectable from "./load-monaco-themes.injectable";
 import refreshAccessibilityOnCrdChangesInjectable from "./refresh-accessibility-on-crd-changes.injectable";
+import registerMonacoYamlFoldingInjectable from "./register-monaco-yaml-folding.injectable";
 import setupAutoCrdApiCreationsInjectable from "./setup-auto-crd-api-creations.injectable";
 import setupAutoRegistrationInjectable from "./setup-auto-registration.injectable";
 import setupCurrentClusterBroadcastInjectable from "./setup-current-cluster-broadcast.injectable";
@@ -45,6 +46,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(refreshAccessibilityOnCrdChangesInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(registerMonacoYamlFoldingInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }
