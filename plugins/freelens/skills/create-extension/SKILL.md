@@ -201,7 +201,8 @@ resources, one file per API version.
   classes and files in place of `Example`. Keep "GitHub Actions (Claude Code
   Action) Rules" only with the Claude workflows below, with
   `freelensapp/freelens-example-extension` and `freelensapp` replaced by the
-  new repository and its owner.
+  new repository and its owner. Drop the "Agent Skills" section, which is
+  about the template's place behind these skills.
 
 ### Workflows tied to the repository
 
