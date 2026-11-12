@@ -90,6 +90,7 @@ export type FixtureRendererExtensionType = Renderer.LensExtension;
 export type FixtureRendererFetch = typeof Renderer.Util.fetch;
 export type FixtureRendererNavigate = typeof Renderer.Navigation.navigate;
 export type FixtureIconProps = Renderer.Component.IconProps;
+export type FixtureSecretCertificatesProps = Renderer.Component.SecretCertificatesProps;
 
 // The same pairs in `Renderer.K8sApi`.
 export type FixtureRendererKubeApi = Renderer.K8sApi.KubeApi<Renderer.K8sApi.Pod>;

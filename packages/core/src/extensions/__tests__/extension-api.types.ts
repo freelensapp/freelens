@@ -98,6 +98,7 @@ export type RendererKubeObjectMenuProps = Renderer.Component.KubeObjectMenuProps
 export type RendererIconProps = Renderer.Component.IconProps;
 export type RendererTableOrderBy = Renderer.Component.TableOrderBy;
 export type RendererPieChartData = Renderer.Component.PieChartData;
+export type RendererSecretCertificatesProps = Renderer.Component.SecretCertificatesProps;
 
 // The custom-resource vocabulary: both published extensions declare their CRDs
 // with these four and register the result with `apiManager`.
