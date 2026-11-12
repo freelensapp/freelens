@@ -17,12 +17,13 @@ role (see [Roles](#roles-which-mechanism-to-use)):
    spacing units (`--font-main`, `--font-size`, `--unit`, `--padding`, …) are
    static custom properties on `:root` in
    `packages/core/src/renderer/components/app.scss` and do not change with the
-   theme. Font weights have no custom property at all: they are SCSS constants
-   (`$font-weight-thin`, `$font-weight-normal`, `$font-weight-bold` in
-   `vars.scss`), so `var()` cannot read them. Everything else reads these:
-   SCSS as `var(--textColorPrimary)`, Tailwind through the four bridged color
+   theme. The other mechanisms read these custom properties: SCSS as
+   `var(--textColorPrimary)`, Tailwind through the four bridged color
    utilities. **This layer is the one contract all other systems agree on** —
    it is what makes theming work regardless of which mechanism draws a rule.
+   Font weights are not part of it: they are SCSS constants
+   (`$font-weight-thin`, `$font-weight-normal`, `$font-weight-bold` in
+   `vars.scss`) with no custom property, so `var()` cannot read them.
 2. **Global plain SCSS** (~200 files). Side-effect `import "./pods.scss"`,
    scoped by convention: one PascalCase root class matching the component
    (`.Pods`, `.Drawer`, `.IngressDetails`) with plain nested selectors inside.
