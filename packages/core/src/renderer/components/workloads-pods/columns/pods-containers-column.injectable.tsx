@@ -9,6 +9,7 @@ import { object } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import { startCase } from "es-toolkit";
 import React from "react";
+import { findOptimalDefaultContainerOfPod } from "../../dock/logs/default-container-helper";
 import { StatusBrick } from "../../status-brick";
 import { containerStatusClassName } from "../container-status-class-name";
 import { COLUMN_PRIORITY } from "./column-priority";
@@ -23,7 +24,11 @@ import type {
   PodContainerStatus,
 } from "@freelensapp/kube-object";
 
-const renderState = (container: ContainerWithType | EphemeralContainerWithType, status?: PodContainerStatus) => {
+const renderState = (
+  container: ContainerWithType | EphemeralContainerWithType,
+  status: PodContainerStatus | undefined,
+  isDefault: boolean,
+) => {
   const state = status ? Object.keys(status?.state ?? {})[0] : "";
   const terminated = status?.state ? (status?.state.terminated ?? "") : "";
 
@@ -44,6 +49,7 @@ const renderState = (container: ContainerWithType | EphemeralContainerWithType, 
           {container.type === "ephemeralContainers" ? ", ephemeral" : ""}
           {status?.restartCount ? ", restarted" : ""}
           {status?.ready ? ", ready" : ""}
+          {isDefault ? ", default" : ""}
           {terminated ? ` - ${terminated.reason} (exit code: ${terminated.exitCode})` : ""}
         </span>
       </div>
@@ -78,6 +84,8 @@ const renderState = (container: ContainerWithType | EphemeralContainerWithType, 
 
 const renderContainersStatus = (pod: Pod) => {
   const statuses = pod.getContainerStatuses();
+  const defaultContainerName = findOptimalDefaultContainerOfPod(pod)?.name;
+
   return (
     <>
       {pod.getAllContainersWithType().map((container) => {
@@ -91,7 +99,7 @@ const renderContainersStatus = (pod: Pod) => {
                 tableView: true,
                 nowrap: true,
               },
-              children: renderState(container, status) ?? <></>,
+              children: renderState(container, status, container.name === defaultContainerName) ?? <></>,
             }}
           />
         );

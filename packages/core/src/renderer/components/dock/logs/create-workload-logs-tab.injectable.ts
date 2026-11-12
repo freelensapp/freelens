@@ -34,9 +34,14 @@ const createWorkloadLogsTab =
     }
 
     const selectedPod = pods[0];
+    const selectedContainer = findOptimalDefaultContainerOfPod(selectedPod);
+
+    if (!selectedContainer) {
+      return undefined;
+    }
 
     return createLogsTab(`${workload.kind} ${selectedPod.getName()}`, {
-      selectedContainer: findOptimalDefaultContainerOfPod(selectedPod).name,
+      selectedContainer: selectedContainer.name,
       selectedPodId: selectedPod.getId(),
       namespace: selectedPod.getNs(),
       owner: {

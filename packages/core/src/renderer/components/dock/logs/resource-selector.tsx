@@ -67,6 +67,19 @@ export const LogResourceSelector = observer(({ model }: LogResourceSelectorProps
     model.reloadLogs();
   };
 
+  const defaultContainer = findOptimalDefaultContainerOfPod(pod);
+
+  // The label stays a plain string, so that the select can still filter the options by it.
+  const formatContainerOptionLabel = (option: SelectOption<Container>) =>
+    option.value.name === defaultContainer?.name ? (
+      <>
+        {option.label}
+        <span className="text-secondary">{" (default)"}</span>
+      </>
+    ) : (
+      option.label
+    );
+
   const containerSelectOptions = [
     {
       label: "Containers",
@@ -107,6 +120,7 @@ export const LogResourceSelector = observer(({ model }: LogResourceSelectorProps
         options={containerSelectOptions}
         value={container}
         onChange={onContainerChange}
+        formatOptionLabel={formatContainerOptionLabel}
         className="container-selector"
         menuClass="container-selector-menu"
         controlShouldRenderValue
