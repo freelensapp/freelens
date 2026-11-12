@@ -34,6 +34,9 @@ users:
       token: some-token
 `;
 
+// Windows PowerShell 5.1 writes UTF-16 LE with a byte order mark and CRLF line endings
+const kubeconfigWithCrlf = kubeconfig.replaceAll("\n", "\r\n");
+
 describe("diffChangedKubeconfig", () => {
   let diffChangedKubeconfig: DiffChangedKubeconfig;
   let computeKubeconfigDiffMock: Mock;
@@ -73,18 +76,24 @@ describe("diffChangedKubeconfig", () => {
   };
 
   it.each([
-    ["UTF-8", Buffer.from(kubeconfig, "utf-8")],
-    ["UTF-8 with a byte order mark", Buffer.from(`﻿${kubeconfig}`, "utf-8")],
-    ["UTF-16 LE with a byte order mark", Buffer.from(`﻿${kubeconfig}`, "utf16le")],
-    ["UTF-16 BE with a byte order mark", Buffer.from(`﻿${kubeconfig}`, "utf16le").swap16()],
-  ])("reads a file in %s", (_, contents) => {
+    ["UTF-8", Buffer.from(kubeconfig, "utf-8"), kubeconfig],
+    ["UTF-8 with a byte order mark", Buffer.from(`\uFEFF${kubeconfig}`, "utf-8"), kubeconfig],
+    ["UTF-8 with CRLF line endings", Buffer.from(kubeconfigWithCrlf, "utf-8"), kubeconfigWithCrlf],
+    ["UTF-16 LE with a byte order mark", Buffer.from(`\uFEFF${kubeconfig}`, "utf16le"), kubeconfig],
+    [
+      "UTF-16 LE with a byte order mark and CRLF line endings",
+      Buffer.from(`\uFEFF${kubeconfigWithCrlf}`, "utf16le"),
+      kubeconfigWithCrlf,
+    ],
+    ["UTF-16 BE with a byte order mark", Buffer.from(`\uFEFF${kubeconfig}`, "utf16le").swap16(), kubeconfig],
+  ])("reads a file in %s", (_, contents, expected) => {
     read(contents);
 
-    expect(computeKubeconfigDiffMock).toHaveBeenCalledWith(kubeconfig, expect.anything(), "/some/kubeconfig");
+    expect(computeKubeconfigDiffMock).toHaveBeenCalledWith(expected, expect.anything(), "/some/kubeconfig");
   });
 
   it("reads a file in UTF-16 LE split inside a character", () => {
-    const contents = Buffer.from(`﻿${kubeconfig}`, "utf16le");
+    const contents = Buffer.from(`\uFEFF${kubeconfig}`, "utf16le");
 
     read(contents.subarray(0, 11), contents.subarray(11));
 
@@ -93,6 +102,15 @@ describe("diffChangedKubeconfig", () => {
 
   it("skips a file that is not valid UTF-8", () => {
     read(Buffer.from([0x61, 0xc3, 0x28]));
+
+    expect(computeKubeconfigDiffMock).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    ["UTF-8", Buffer.from([...Buffer.from(kubeconfig, "utf-8"), 0xc3])],
+    ["UTF-16 LE", Buffer.from([...Buffer.from(`\uFEFF${kubeconfig}`, "utf16le"), 0x61])],
+  ])("skips a file in %s that ends inside a character", (_, contents) => {
+    read(contents);
 
     expect(computeKubeconfigDiffMock).not.toHaveBeenCalled();
   });

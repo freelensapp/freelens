@@ -30,11 +30,16 @@ users:
       token: some-token
 `;
 
+// Windows PowerShell 5.1 writes UTF-16 LE with a byte order mark and CRLF line endings
+const kubeconfigWithCrlf = kubeconfig.replaceAll("\n", "\r\n");
+
 describe.each([
   ["UTF-8", Buffer.from(kubeconfig, "utf-8")],
-  ["UTF-8 with a byte order mark", Buffer.from(`﻿${kubeconfig}`, "utf-8")],
-  ["UTF-16 LE with a byte order mark", Buffer.from(`﻿${kubeconfig}`, "utf16le")],
-  ["UTF-16 BE with a byte order mark", Buffer.from(`﻿${kubeconfig}`, "utf16le").swap16()],
+  ["UTF-8 with a byte order mark", Buffer.from(`\uFEFF${kubeconfig}`, "utf-8")],
+  ["UTF-8 with CRLF line endings", Buffer.from(kubeconfigWithCrlf, "utf-8")],
+  ["UTF-16 LE with a byte order mark", Buffer.from(`\uFEFF${kubeconfig}`, "utf16le")],
+  ["UTF-16 LE with a byte order mark and CRLF line endings", Buffer.from(`\uFEFF${kubeconfigWithCrlf}`, "utf16le")],
+  ["UTF-16 BE with a byte order mark", Buffer.from(`\uFEFF${kubeconfig}`, "utf16le").swap16()],
 ])("given a kubeconfig file in %s", (_, contents) => {
   let di: DiContainer;
 
