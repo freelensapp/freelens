@@ -592,8 +592,10 @@ the declaration bundle when the rolldown that vite or electron-vite resolves is
 not the one it runs on. After a bump inside the minor that vite pins,
 `pnpm dedupe` brings both onto one version; on a Renovate branch the
 "Automated npm dedupe for Renovate" workflow does that. Renovate updates
-rolldown, vite and electron-vite in one group, so a new minor of rolldown waits
-in its PR, failing that check, until a vite that pins the minor joins it.
+rolldown, vite and electron-vite in one group, and rolldown by patches only, so
+it never proposes a minor that no vite pins yet. A vite update that pins a new
+minor fails the check in its PR: move the catalog's rolldown on that branch to
+the version vite resolves, and run `pnpm dedupe`.
 
 ### The Electron binary
 
