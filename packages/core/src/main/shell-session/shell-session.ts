@@ -310,6 +310,13 @@ export abstract class ShellSession {
    * `File not found: ` with an empty path (microsoft/node-pty#1005). That is
    * the case of `wsl.exe` and `cmd.exe` when Freelens starts in
    * `C:\Windows\System32`.
+   *
+   * Keep it when node-pty fixes that (microsoft/node-pty#1006): the lookup of
+   * node-pty still differs. It reads the `Path` of the Freelens process rather
+   * than of the shell's environment, adds no `PATHEXT` extension, skips the
+   * last directory of `Path`, and prefers a file of that name in the current
+   * folder of Freelens. node-pty takes a full path as it is, so this lookup
+   * does not get in the way of its fix.
    */
   protected async findWindowsShell(shell: string, env: Record<string, string | undefined>): Promise<string> {
     if (!shell || /[\\/:]/.test(shell)) {
