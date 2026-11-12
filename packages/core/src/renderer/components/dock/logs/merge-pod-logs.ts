@@ -17,10 +17,11 @@ export const maxCombinedLogsPods = 20;
 export const maxConcurrentLogRequests = 5;
 
 /**
- * Scrolling to the top of a combined logs tab asks every pod for more lines,
- * up to this many for all the pods together. Without a limit the logs of a
- * large workload would grow with every scroll until they no longer fit in the
- * cluster frame.
+ * A combined logs tab holds at most this many lines. Scrolling to its top asks
+ * every pod for more lines, up to its share of them, and the refresh drops the
+ * oldest lines once the new ones take the tab over the limit. Without it the
+ * logs of a large workload would grow with every scroll and every refresh
+ * until they no longer fit in the cluster frame.
  */
 export const maxCombinedLogLines = 100_000;
 
@@ -206,14 +207,45 @@ export function mergeIntoLogs(logs: readonly string[], newLines: readonly string
     return [...logs];
   }
 
-  const timedLogs = toTimedLines(logs);
   const timedNewLines = toTimedLines(newLines);
   const oldestNewTimestamp = timedNewLines[0].timestamp;
-  let start = timedLogs.length;
+  let start = logs.length;
 
-  while (start > 0 && compareLogTimestamps(timedLogs[start - 1].timestamp, oldestNewTimestamp) > 0) {
-    start -= 1;
+  // From the bottom, and only as far as the lines newer than the new ones go:
+  // the tab holds up to `maxCombinedLogLines` lines and is merged at every
+  // refresh, while the new lines rarely reach far back. A line without a
+  // timestamp moves with the message it continues.
+  for (let index = logs.length - 1; index >= 0; index -= 1) {
+    const timestamp = getLeadingTimestamp(logs[index]);
+
+    if (timestamp === undefined) {
+      continue;
+    }
+
+    if (compareLogTimestamps(timestamp, oldestNewTimestamp) <= 0) {
+      break;
+    }
+
+    start = index;
   }
 
-  return [...logs.slice(0, start), ...mergeTimedLines([timedLogs.slice(start), timedNewLines])];
+  return [...logs.slice(0, start), ...mergeTimedLines([toTimedLines(logs.slice(start)), timedNewLines])];
+}
+
+/**
+ * The newest `maxLines` lines of `logs`, starting at a line with a timestamp,
+ * so that the first line shown is not the continuation of a message cut off.
+ */
+export function keepNewestLogLines(logs: string[], maxLines: number): string[] {
+  if (logs.length <= maxLines) {
+    return logs;
+  }
+
+  let start = logs.length - maxLines;
+
+  while (start < logs.length && getLeadingTimestamp(logs[start]) === undefined) {
+    start += 1;
+  }
+
+  return logs.slice(start);
 }

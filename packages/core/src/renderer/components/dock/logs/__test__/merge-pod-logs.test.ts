@@ -8,6 +8,7 @@ import {
   compareLogTimestamps,
   getLeadingTimestamp,
   getPodLogColor,
+  keepNewestLogLines,
   mergeIntoLogs,
   mergePodLogs,
   podLogColors,
@@ -205,6 +206,47 @@ describe("mergeIntoLogs", () => {
 
   it("starts from an empty list", () => {
     expect(mergeIntoLogs([], ["2024-01-01T00:00:00.000000000Z a1"])).toEqual(["2024-01-01T00:00:00.000000000Z a1"]);
+  });
+
+  it("keeps a line without a timestamp with the line it continues when a new line goes before them", () => {
+    const merged = mergeIntoLogs(
+      [
+        "2024-01-01T00:00:00.000000000Z [pod-a] a1",
+        "  continued a1",
+        "2024-01-01T00:00:04.000000000Z [pod-a] a2",
+        "  continued a2",
+      ],
+      ["2024-01-01T00:00:02.000000000Z [pod-b] b1"],
+    );
+
+    expect(merged).toEqual([
+      "2024-01-01T00:00:00.000000000Z [pod-a] a1",
+      "  continued a1",
+      "2024-01-01T00:00:02.000000000Z [pod-b] b1",
+      "2024-01-01T00:00:04.000000000Z [pod-a] a2",
+      "  continued a2",
+    ]);
+  });
+});
+
+describe("keepNewestLogLines", () => {
+  const logs = [
+    "2024-01-01T00:00:00.000000000Z a1",
+    "2024-01-01T00:00:01.000000000Z a2",
+    "  continued a2",
+    "2024-01-01T00:00:02.000000000Z a3",
+  ];
+
+  it("returns the lines as they are when they fit", () => {
+    expect(keepNewestLogLines(logs, 4)).toBe(logs);
+  });
+
+  it("keeps the newest lines", () => {
+    expect(keepNewestLogLines(logs, 3)).toEqual(logs.slice(1));
+  });
+
+  it("does not start with a line that continues one it leaves out", () => {
+    expect(keepNewestLogLines(logs, 2)).toEqual(["2024-01-01T00:00:02.000000000Z a3"]);
   });
 });
 

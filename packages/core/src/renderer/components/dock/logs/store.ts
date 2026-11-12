@@ -9,6 +9,7 @@ import { observable, when } from "mobx";
 import {
   compareLogTimestamps,
   getLeadingTimestamp,
+  keepNewestLogLines,
   maxCombinedLogLines,
   maxConcurrentLogRequests,
   mergeIntoLogs,
@@ -98,7 +99,7 @@ export class LogStore {
         this.cursors.set(tabId, cursors);
         this.lineCounts.set(tabId, new Map());
         this.getRefresher(tabId, computedPods, logTabData).start();
-        this.podLogs.set(tabId, this.mergeNewLines(tabId, cursors, logsOfPods, tagged));
+        this.podLogs.set(tabId, this.limitLines(this.mergeNewLines(tabId, cursors, logsOfPods, tagged), tagged));
       },
     );
   }
@@ -106,9 +107,9 @@ export class LogStore {
   /**
    * The lines to ask a pod for: the ones it has in the tab and
    * `logLinesToLoad` more. In a combined tab every pod asks for its own lines,
-   * not the lines of the whole tab, and older lines only up to its share of
-   * `maxCombinedLogLines`: a pod that has its share asks for the lines it has,
-   * so the ones the polling added stay in the tab.
+   * not the lines of the whole tab, and for no more than its share of
+   * `maxCombinedLogLines`, even when the polling has given it more since: the
+   * tab keeps no more than that, so a request for more would only be cut.
    */
   private getTailLines(podLines: number, podCount: number): number {
     const tailLines = podLines + logLinesToLoad;
@@ -119,7 +120,15 @@ export class LogStore {
 
     const share = Math.max(logLinesToLoad, Math.floor(maxCombinedLogLines / podCount));
 
-    return Math.max(podLines, Math.min(tailLines, share));
+    return Math.min(tailLines, share);
+  }
+
+  /**
+   * A combined tab keeps its newest `maxCombinedLogLines` lines. The tab of a
+   * single pod is left as it is.
+   */
+  private limitLines(logs: string[], tagged: boolean): string[] {
+    return tagged ? keepNewestLogLines(logs, maxCombinedLogLines) : logs;
   }
 
   private getRefresher(
@@ -182,7 +191,7 @@ export class LogStore {
         const newLines = this.mergeNewLines(tabId, cursors, logsOfPods, tagged);
 
         // Add newly received logs to bottom.
-        this.podLogs.set(tabId, mergeIntoLogs(this.podLogs.get(tabId) ?? oldLogs, newLines));
+        this.podLogs.set(tabId, this.limitLines(mergeIntoLogs(this.podLogs.get(tabId) ?? oldLogs, newLines), tagged));
       },
     );
   }

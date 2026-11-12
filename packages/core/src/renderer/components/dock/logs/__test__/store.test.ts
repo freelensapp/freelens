@@ -446,7 +446,7 @@ describe("LogStore combined logs", () => {
     expect(getCallsFor("pod-0").map(([, query]) => query?.tailLines)).toEqual([500, share]);
   });
 
-  it("does not take lines away from a pod that has more than its share", async () => {
+  it("asks no pod for more than its share, even when it has more", async () => {
     const share = Math.floor(maxCombinedLogLines / maxCombinedLogsPods);
     const manyPods = Array.from({ length: maxCombinedLogsPods }, (_, index) => createPod(`pod-${index}`));
 
@@ -457,7 +457,47 @@ describe("LogStore combined logs", () => {
     await store.load(tabId, computedPods, computedTabData);
     await store.load(tabId, computedPods, computedTabData);
 
-    expect(getCallsFor("pod-0").map(([, query]) => query?.tailLines)).toEqual([500, share + 100]);
+    expect(getCallsFor("pod-0").map(([, query]) => query?.tailLines)).toEqual([500, share]);
+  });
+
+  describe("when the refresh brings more lines than the tab holds", () => {
+    const linesPerPod = Math.ceil((maxCombinedLogLines * 3) / 4);
+    // The lines of the two pods take turns, a millisecond apart, after the ones of the first load.
+    const newLinesOf = (name: string, offset: number) =>
+      Array.from(
+        { length: linesPerPod },
+        (_, index) => `${new Date(Date.UTC(2026, 0, 1, 0, 1) + index * 2 + offset).toISOString()} ${name} ${index}`,
+      ).join("\n");
+    const newestLine = `${new Date(Date.UTC(2026, 0, 1, 0, 1) + (linesPerPod - 1) * 2 + 1).toISOString()} [pod-b] pod-b ${linesPerPod - 1}`;
+
+    beforeEach(() => {
+      callForLogs.mockImplementation(async ({ name }, query) => {
+        if (!query?.sinceTime) {
+          return logsOfPods.get(name) ?? "";
+        }
+
+        return newLinesOf(name, name === "pod-a" ? 0 : 1);
+      });
+    });
+
+    it("keeps the newest lines of a combined tab, up to its limit", async () => {
+      await store.load(tabId, computedPods, computedTabData);
+      await vi.advanceTimersByTimeAsync(10_000);
+
+      const logs = getLogs();
+
+      expect(logs).toHaveLength(maxCombinedLogLines);
+      expect(logs.at(-1)).toBe(newestLine);
+      expect(logs.some((line) => line.endsWith("[pod-a] a1"))).toBe(false);
+    });
+
+    it("keeps every line of the tab of a single pod", async () => {
+      pods.set([podA]);
+      await store.load(tabId, computedPods, computedTabData);
+      await vi.advanceTimersByTimeAsync(10_000);
+
+      expect(getLogs()).toHaveLength(2 + linesPerPod);
+    });
   });
 
   it("counts the lines that the polling added when loading older lines", async () => {

@@ -1815,7 +1815,7 @@ rows are Kubernetes objects.
 ## `logTabStore.createWorkloadTab` opens a combined logs tab
 
 `Renderer.Component.logTabStore.createWorkloadTab({ workload })` keeps its
-signature and changes what it opens (#2418). In v1 the tab showed the logs of
+signature and changes what it opens. In v1 the tab showed the logs of
 the first pod of the workload, with the other pods in a dropdown. In v2 it
 shows the logs of all the pods of the workload, merged in chronological order
 and tagged with the name of their pod, and it follows the workload: the pods
