@@ -42,7 +42,7 @@ export const ClusterIconAppearanceSetting = observer(({ cluster, entity }: Clust
   };
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="mt-4 flex flex-col gap-4">
       <div>
         <SubTitle title="Icon Label" />
         <Input
