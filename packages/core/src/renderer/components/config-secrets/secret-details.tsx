@@ -13,12 +13,10 @@ import { loggerInjectionToken } from "@freelensapp/logger";
 import { showCheckedErrorNotificationInjectable, showSuccessNotificationInjectable } from "@freelensapp/notifications";
 import { base64, toggle } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { autorun, compareStructural, observable, reaction, runInAction } from "mobx";
+import { autorun, observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
-import { extractCertificateBlocks } from "../../../features/secret-certificates/renderer/extract-certificate-blocks";
-import requestSecretCertificatesInjectable from "../../../features/secret-certificates/renderer/request-secret-certificates.injectable";
-import { SecretCertificatesSection } from "../../../features/secret-certificates/renderer/secret-certificates";
+import { SecretCertificates } from "../../../features/secret-certificates/renderer/secret-certificates";
 import { DrawerItem, DrawerTitle } from "../drawer";
 import { Input } from "../input";
 import secretStoreInjectable from "./store.injectable";
@@ -26,11 +24,6 @@ import secretStoreInjectable from "./store.injectable";
 import type { Logger } from "@freelensapp/logger";
 import type { ShowCheckedErrorNotification, ShowNotification } from "@freelensapp/notifications";
 
-import type {
-  SecretCertificateBlocks,
-  SecretCertificates,
-} from "../../../features/secret-certificates/common/channels";
-import type { RequestSecretCertificates } from "../../../features/secret-certificates/renderer/request-secret-certificates.injectable";
 import type { KubeObjectDetailsProps } from "../kube-object-details";
 import type { SecretStore } from "./store";
 
@@ -41,7 +34,6 @@ interface Dependencies {
   logger: Logger;
   showSuccessNotification: ShowNotification;
   showCheckedErrorNotification: ShowCheckedErrorNotification;
-  requestSecretCertificates: RequestSecretCertificates;
 }
 
 @observer
@@ -50,14 +42,6 @@ class NonInjectedSecretDetails extends React.Component<SecretDetailsProps & Depe
   @observable accessor isSaving = false;
   @observable accessor data: Partial<Record<string, string>> = {};
   @observable accessor revealSecret = observable.set<string>();
-  @observable accessor certificates: SecretCertificates[] = [];
-
-  /**
-   * Counts the certificate requests, so that a response that arrives after a
-   * newer request, or after the panel has closed or moved on to another
-   * secret, is ignored.
-   */
-  private certificatesRequest = 0;
 
   constructor(props: SecretDetailsProps & Dependencies) {
     super(props);
@@ -75,45 +59,11 @@ class NonInjectedSecretDetails extends React.Component<SecretDetailsProps & Depe
           this.revealSecret.clear();
         }
       }),
-      // The certificate blocks are compared rather than the data, so that
-      // editing any other value does not request the certificates again.
-      reaction(
-        () => extractCertificateBlocks(this.data),
-        (blocks) => this.requestCertificates(blocks),
-        { equals: compareStructural, fireImmediately: true },
-      ),
     );
   }
 
   componentWillUnmount() {
     this.disposers.forEach((dispose) => dispose());
-    this.certificatesRequest += 1;
-  }
-
-  requestCertificates(blocks: SecretCertificateBlocks[]) {
-    const request = ++this.certificatesRequest;
-
-    if (blocks.length === 0) {
-      this.certificates = [];
-
-      return;
-    }
-
-    void (async () => {
-      let certificates: SecretCertificates[] = [];
-
-      try {
-        certificates = await this.props.requestSecretCertificates(blocks);
-      } catch (error) {
-        this.props.logger.warn("[SecretDetails]: failed to read the certificates of the secret", error);
-      }
-
-      if (request === this.certificatesRequest) {
-        runInAction(() => {
-          this.certificates = certificates;
-        });
-      }
-    })();
   }
 
   saveSecret = () => {
@@ -211,7 +161,7 @@ class NonInjectedSecretDetails extends React.Component<SecretDetailsProps & Depe
       <div className="SecretDetails">
         <DrawerItem name="Type">{secret.type}</DrawerItem>
         {this.renderData()}
-        <SecretCertificatesSection certificates={this.certificates} />
+        <SecretCertificates data={this.data} />
       </div>
     );
   }
@@ -221,7 +171,6 @@ export const SecretDetails = withInjectables<Dependencies, SecretDetailsProps>(N
   getProps: (di, props) => ({
     ...props,
     logger: di.inject(loggerInjectionToken),
-    requestSecretCertificates: di.inject(requestSecretCertificatesInjectable),
     secretStore: di.inject(secretStoreInjectable),
     showCheckedErrorNotification: di.inject(showCheckedErrorNotificationInjectable),
     showSuccessNotification: di.inject(showSuccessNotificationInjectable),

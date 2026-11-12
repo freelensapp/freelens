@@ -5,7 +5,7 @@
 
 import { X509Certificate } from "node:crypto";
 
-import type { CertificateInfo, SecretCertificateBlocks, SecretCertificates } from "../common/channels";
+import type { CertificateInfo, SecretCertificateBlocks, SecretKeyCertificates } from "../common/channels";
 
 type LegacyName = Partial<Record<string, string | string[]>>;
 
@@ -79,8 +79,8 @@ export function parseCertificate(pem: string): CertificateInfo | undefined {
  * parse, so that one broken entry cannot hide the certificates next to it. A
  * key none of whose blocks parse is left out.
  */
-export function parseSecretCertificates(blocks: SecretCertificateBlocks[]): SecretCertificates[] {
-  const result: SecretCertificates[] = [];
+export function parseSecretCertificates(blocks: SecretCertificateBlocks[]): SecretKeyCertificates[] {
+  const result: SecretKeyCertificates[] = [];
 
   if (!Array.isArray(blocks)) {
     return result;

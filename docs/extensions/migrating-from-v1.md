@@ -1576,7 +1576,7 @@ the renderer:
 | ---------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `node:crypto` hashing                                                                                                  | `Util.sha256Hex` (synchronous SHA-256), `Util.createReactKey` for a React `key`, or Web Crypto `crypto.subtle.digest` where asynchronous is fine |
 | `node:crypto` `randomUUID()` / `randomBytes(n)`                                                                        | `globalThis.crypto.randomUUID()` / `globalThis.crypto.getRandomValues(new Uint8Array(n))`, with no import                                        |
-| `crypto.X509Certificate`                                                                                               | main plus `Ipc`; there is no web equivalent                                                                                                      |
+| `crypto.X509Certificate`                                                                                               | `Renderer.Component.SecretCertificates` to show the certificates of a secret; otherwise main plus `Ipc`, as there is no web equivalent           |
 | `http` / `https`                                                                                                       | `fetch`                                                                                                                                          |
 | `electron` `ipcRenderer`                                                                                               | `Renderer.Ipc`                                                                                                                                   |
 | `electron` `clipboard`                                                                                                 | `navigator.clipboard.writeText()` / `readText()`, which return Promises; Electron 44 removes `clipboard` from the renderer                       |
@@ -1829,6 +1829,43 @@ What to check in an extension that calls it:
 - The tab reads at most 20 pods of the workload, the first ones by name.
 - `logTabStore.createPodTab` is unchanged, and is the one to call for the logs
   of a single pod.
+
+## `Renderer.Component.SecretCertificates` shows the certificates of a secret
+
+An extension that shows a secret holding PEM certificates, the secret behind a
+`certSecretRef` or a `tls` section for one, renders the same certificate
+section as the host's secret details with one component, and needs no parser
+or `Ipc` of its own:
+
+```tsx
+import { Renderer } from "@freelensapp/extensions";
+
+const { SecretCertificates } = Renderer.Component;
+
+export const MyCertificates = ({ secret }: { secret: Renderer.K8sApi.Secret }) => (
+  <SecretCertificates data={secret.data} />
+);
+```
+
+- `data` is the data of the secret as the API returns it, every value base64
+  encoded, as in `Secret.data`. It is the one prop.
+- The component finds the `-----BEGIN CERTIFICATE-----` blocks in the values
+  and sends only those blocks to the host's main process, which parses them.
+  A private key or any other value next to a certificate never leaves the
+  renderer.
+- For each certificate it shows the subject, the issuer, the DNS names and IP
+  addresses, the serial number and the validity, titled with its key, or with
+  `key (n/m)` for each certificate of a chain under one key. A block that does
+  not parse is left out, and the certificates next to it are still shown.
+- It renders nothing while no value holds a certificate that parses, so it can
+  be placed unconditionally.
+- When `data` changes, it parses the certificates again only if the
+  certificate blocks changed, and a response to an older request is ignored.
+- It renders under the global class `SecretCertificates`, which a stylesheet
+  of the extension may target (see [Styling and CSS](#styling-and-css)).
+
+The props are the contract. The parsed certificate data and the request to
+main are internal to the host and are not exported.
 
 ## Chart.js v4 (`Renderer.Component.BarChart` / `PieChart`)
 
