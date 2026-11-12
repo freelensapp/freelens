@@ -246,11 +246,11 @@ before the first extension loads.
 **Guarantee.** These are the members of each namespace. A symbol not listed here
 is not reachable (see [C1](#c1-packaging-and-publication)).
 
-| Namespace  | Members                                                                                                                                                                              |
-| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `Common`   | `App`, `Catalog`, `Clusters`, `EventBus`, `Proxy`, `Store`, `Types`, `Util`, `logger`; types `InstalledExtension`, `LensExtension`, `LensExtensionManifest`, `Logger`, `PackageJson` |
-| `Main`     | `Catalog`, `Ipc`, `K8s`, `K8sApi`, `LensExtension`, `Navigation`, `Power`, `Shell`, `Util`                                                                                           |
-| `Renderer` | `Catalog`, `Component`, `Ipc`, `K8s`, `K8sApi`, `LensExtension`, `Navigation`, `Theme`, `Util`                                                                                       |
+| Namespace  | Members                                                                                                                                                                                                                     |
+| ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Common`   | `App`, `Catalog`, `Clusters`, `Credentials`, `EventBus`, `Proxy`, `Store`, `Types`, `Util`, `logger`; types `ExtensionCredentials`, `InstalledExtension`, `LensExtension`, `LensExtensionManifest`, `Logger`, `PackageJson` |
+| `Main`     | `Catalog`, `Ipc`, `K8s`, `K8sApi`, `LensExtension`, `Navigation`, `Power`, `Shell`, `Util`                                                                                                                                  |
+| `Renderer` | `Catalog`, `Component`, `Ipc`, `K8s`, `K8sApi`, `LensExtension`, `Navigation`, `Theme`, `Util`                                                                                                                              |
 
 There is no `Renderer.React`, no `Renderer.ReactDOM` and no
 `Renderer.Registrations`. React reaches extensions through
@@ -386,6 +386,94 @@ function through the API and change a cluster's status the way the host does.
 **Failure mode.** A reaction made with the extension's own copy of mobx rather
 than the host's fails silently, as [C3](#c3-host-provided-singletons)
 describes: it does not fire where it should, and nothing reports it.
+
+### `Credentials` keeps an extension's values encrypted at rest
+
+`Common.Credentials.forExtension(extension)` returns the credentials of an
+extension, typed as `Common.ExtensionCredentials`: string values under string
+keys, for the token, password or API key of a service outside the cluster. It
+works in both processes. `Common.Store.ExtensionStore` writes a plain JSON
+file, which is the wrong place for such a value.
+
+```ts
+import { Common, Main } from "@freelensapp/extensions";
+
+export default class MyExtension extends Main.LensExtension {
+  private readonly credentials = Common.Credentials.forExtension(this);
+
+  async onActivate() {
+    if (await this.credentials.isAvailable()) {
+      const token = await this.credentials.get("api-token");
+      // ...
+    }
+  }
+}
+```
+
+**Guarantee.** A value is never written to disk in clear text. It is
+encrypted with Electron's `safeStorage`, with a key that the operating
+system's secret store holds: the Keychain on macOS, DPAPI on Windows,
+libsecret or KWallet on Linux. That protects it at rest: in backups, on a
+copied disk, from other accounts of the system.
+
+**Surface.**
+
+| Member            | Does                                                                 |
+| ----------------- | -------------------------------------------------------------------- |
+| `isAvailable()`   | resolves to whether the system has a secret store to encrypt with    |
+| `get(key)`        | resolves to the value under `key`, or `undefined` when there is none |
+| `set(key, value)` | stores `value` under `key`, replacing a previous value               |
+| `delete(key)`     | removes the value under `key`; a key without a value is no error     |
+| `keys()`          | resolves to the keys that have a value, sorted                       |
+
+- **Bound to the instance.** `forExtension` takes the extension instance,
+  `this` in the `Main.LensExtension` or `Renderer.LensExtension` subclass, and
+  the host derives the scope from the instance it loaded, never from a string
+  or a property of the instance. Both processes of one extension reach the
+  same values. A field initializer, as above, is a supported place to call
+  it.
+- **Small values.** A key is 1 to 128 characters of `A-Z`, `a-z`, `0-9`,
+  `.`, `_` and `-`. A value is a string of at most 64 KiB in UTF-8.
+- **Keys are in clear text.** Only the values are encrypted; the keys are
+  written to the file as they are. A key names a value and must not hold one,
+  such as a user name or a host that should not be visible: put that in a
+  value, under a key such as `username`.
+- **One file per extension**, in the user data directory, named after the
+  extension's sanitized ID. Uninstalling the extension removes it, for a
+  managed and a development install alike; disabling the extension keeps it.
+- **Errors never contain a value**, nor a key.
+
+**Failure mode.**
+
+- When the system has no secret store, `isAvailable()` resolves to `false` and
+  every other method rejects. On Linux the check fails closed: the store is
+  available only when Electron reports the libsecret or KWallet backend
+  (`gnome_libsecret`, `kwallet`, `kwallet5`, `kwallet6`), and not for
+  `basic_text` (`--password-store=basic`, or a desktop the host does not
+  recognise), `unknown`, any other backend, or an Electron that cannot report
+  one. A session with no secret service at all therefore has no credentials,
+  even where Electron's asynchronous API offers a fallback provider. There is
+  no fallback to clear text and no in-memory substitute: an extension that
+  needs the value asks the user for it again, or tells the user why it cannot
+  keep it.
+- A value that is not an extension instance the host loaded rejects every
+  method with a `TypeError`. So do a key and a value outside the limits.
+- A credentials file that cannot be read as one rejects every method of that
+  extension, and of no other, with an error that names the extension. The
+  host does not replace the file.
+
+**Not guaranteed.** The credentials are not a boundary between extensions, and
+not a protection against programs running as the same user. Extensions run in
+the host's processes and can call `safeStorage` themselves; on Windows any
+process of the user can decrypt DPAPI data, and on Linux any process of the
+session can read an unlocked keyring. Binding the credentials to the extension
+instance keeps one extension from reaching another's values by mistake, not by
+intent.
+
+`packages/core/src/features/extension-credentials/main/__tests__/extension-credentials-store.test.ts`
+covers the store, and
+`packages/core/src/extensions/__tests__/extension-api-credentials.test.ts` the
+binding to the instance through the API.
 
 ---
 

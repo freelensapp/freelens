@@ -719,11 +719,11 @@ moved between `Common`, `Main`, and `Renderer`.
 
 This is what each namespace provides in v2:
 
-| Namespace  | Members                                                                                                                                                                              |
-| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `Common`   | `App`, `Catalog`, `Clusters`, `EventBus`, `Proxy`, `Store`, `Types`, `Util`, `logger`; types `InstalledExtension`, `LensExtension`, `LensExtensionManifest`, `Logger`, `PackageJson` |
-| `Main`     | `Catalog`, `Ipc`, `K8s`, `K8sApi`, `LensExtension`, `Navigation`, `Power`, `Shell`, `Util`                                                                                           |
-| `Renderer` | `Catalog`, `Component`, `Ipc`, `K8s`, `K8sApi`, `LensExtension`, `Navigation`, `Theme`, `Util`                                                                                       |
+| Namespace  | Members                                                                                                                                                                                                                     |
+| ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Common`   | `App`, `Catalog`, `Clusters`, `Credentials`, `EventBus`, `Proxy`, `Store`, `Types`, `Util`, `logger`; types `ExtensionCredentials`, `InstalledExtension`, `LensExtension`, `LensExtensionManifest`, `Logger`, `PackageJson` |
+| `Main`     | `Catalog`, `Ipc`, `K8s`, `K8sApi`, `LensExtension`, `Navigation`, `Power`, `Shell`, `Util`                                                                                                                                  |
+| `Renderer` | `Catalog`, `Component`, `Ipc`, `K8s`, `K8sApi`, `LensExtension`, `Navigation`, `Theme`, `Util`                                                                                                                              |
 
 **If a symbol is not reachable through one of those, it is not reachable at
 all.** Every other `@freelensapp/*` package is private and is inlined into the
@@ -1866,6 +1866,44 @@ export const MyCertificates = ({ secret }: { secret: Renderer.K8sApi.Secret }) =
 
 The props are the contract. The parsed certificate data and the request to
 main are internal to the host and are not exported.
+
+## `Common.Credentials` for tokens and passwords
+
+`Common.Store.ExtensionStore` writes its model to a plain JSON file in the user
+data directory. A token, a password or an API key kept there is on disk in
+clear text: in backups, in a copied profile, readable by other accounts with
+access to the disk. Keep such a value in the extension's credentials instead,
+which encrypts it with Electron's `safeStorage`:
+
+```ts
+import { Common, Renderer } from "@freelensapp/extensions";
+
+export default class MyExtension extends Renderer.LensExtension {
+  private readonly credentials = Common.Credentials.forExtension(this);
+
+  async saveToken(token: string) {
+    if (!(await this.credentials.isAvailable())) {
+      throw new Error("This system has no secret store to keep the token in");
+    }
+
+    await this.credentials.set("api-token", token);
+  }
+}
+```
+
+- Pass the extension instance, `this`; the host derives the scope from it.
+- The methods are asynchronous in both processes, and every one of them but
+  `isAvailable()` rejects when the system has no secret store. There is no
+  fallback to clear text, so handle `false` rather than assume the value was
+  kept.
+- The values are removed when the extension is uninstalled, and kept when it
+  is disabled.
+- A value already in an `ExtensionStore` stays there until the extension moves
+  it: read it from the store, `set` it in the credentials, and remove it from
+  the store.
+
+The guarantee, its limits and the failure modes are in
+[`Credentials` keeps an extension's values encrypted at rest](./api.md#credentials-keeps-an-extensions-values-encrypted-at-rest).
 
 ## Chart.js v4 (`Renderer.Component.BarChart` / `PieChart`)
 
