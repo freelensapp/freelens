@@ -5,7 +5,7 @@
 
 import "./secret-certificates.scss";
 
-import { formatRelativeTime } from "@freelensapp/utilities";
+import { formatDuration } from "@freelensapp/utilities";
 import { DrawerItem, DrawerTitle } from "../../../renderer/components/drawer";
 import { LocaleDate } from "../../../renderer/components/locale-date";
 
@@ -13,6 +13,17 @@ import type { CertificateInfo, SecretKeyCertificates } from "../common/channels"
 
 export interface SecretCertificatesSectionProps {
   certificates: SecretKeyCertificates[];
+}
+
+/**
+ * The time left until the expiry, or passed since it, in the words and units
+ * of the "Created" item of the details. `formatDuration` writes English units
+ * whatever the locale of the system, unlike `formatRelativeTime`.
+ */
+function describeExpiry(notAfter: number, now: number) {
+  const remaining = notAfter - now;
+
+  return remaining <= 0 ? `${formatDuration(-remaining, false)} ago` : `in ${formatDuration(remaining, false)}`;
 }
 
 function CertificateDetails({ title, certificate }: { title: string; certificate: CertificateInfo }) {
@@ -41,7 +52,9 @@ function CertificateDetails({ title, certificate }: { title: string; certificate
         <LocaleDate date={new Date(notBefore)} />
       </DrawerItem>
       <DrawerItem name="Expires">
-        {formatRelativeTime(notAfter)} (<LocaleDate date={new Date(notAfter)} />)
+        <span data-testid={`${title}-certificate-expiry`}>
+          {describeExpiry(notAfter, Date.now())} (<LocaleDate date={new Date(notAfter)} />)
+        </span>
       </DrawerItem>
     </div>
   );
