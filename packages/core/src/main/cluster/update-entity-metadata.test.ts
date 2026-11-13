@@ -154,4 +154,27 @@ describe("update-entity-metadata", () => {
     updateEntityMetadata(entity, cluster);
     expect(entity.metadata.name).toEqual("some-cluster-name");
   });
+
+  it("given cluster preferences has icon short name, updates entity metadata with short name", () => {
+    cluster.preferences.iconShortName = "W2NP";
+
+    updateEntityMetadata(entity, cluster);
+    expect(entity.metadata.shortName).toEqual("W2NP");
+  });
+
+  it("given cluster icon short name is null, clears it from both", () => {
+    entity.metadata.shortName = "W2NP";
+    cluster.preferences.iconShortName = null;
+
+    updateEntityMetadata(entity, cluster);
+    expect(entity.metadata.shortName).toBeUndefined();
+    expect(cluster.preferences.iconShortName).toBeUndefined();
+  });
+
+  it("given cluster preferences has no icon short name, keeps the short name of the entity", () => {
+    entity.metadata.shortName = "some-short-name";
+
+    updateEntityMetadata(entity, cluster);
+    expect(entity.metadata.shortName).toEqual("some-short-name");
+  });
 });

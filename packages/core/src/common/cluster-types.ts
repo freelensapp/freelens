@@ -101,6 +101,7 @@ export interface ClusterPreferences extends ClusterPrometheusPreferences {
    * cleared by preferences.
    */
   icon?: string | null;
+  iconShortName?: string | null;
   httpsProxy?: string;
   hiddenMetrics?: string[];
   nodeShellImage?: string;

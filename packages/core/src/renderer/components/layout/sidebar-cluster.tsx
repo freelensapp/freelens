@@ -101,6 +101,7 @@ const NonInjectedSidebarCluster = observer(
       >
         <Avatar
           title={clusterEntity.getName()}
+          shortName={clusterEntity.metadata.shortName}
           colorHash={`${clusterEntity.getName()}-${clusterEntity.metadata.source}`}
           size={40}
           src={clusterEntity.spec.icon?.src}
