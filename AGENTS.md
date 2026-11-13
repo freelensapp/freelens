@@ -798,6 +798,42 @@ claude plugin validate .
 claude plugin validate ./plugins/freelens
 ```
 
+## Before Opening a Pull Request
+
+A test that fails on `main` and passes on the branch proves the claim of the
+pull request, not that nothing around the change broke. Check the
+surroundings of the change too:
+
+- **The extension API.** Whatever `Common`, `Main` and `Renderer` reach is
+  public. That includes `@freelensapp/utilities` through `Util` and all of
+  `@freelensapp/kube-object` through `K8sApi` (C5 of
+  [`docs/extensions/api.md`](./docs/extensions/api.md)). Changing what such a
+  function returns, or how it compares, orders or fails, changes the contract
+  for every extension (C14). Decide whether the change belongs there, or in a
+  function of the core of its own. A new member there is an addition to the
+  contract as well.
+- **Comparators and sort keys.** A comparator has to be consistent for every
+  value it gets. `<` and `>` are both false for `undefined` and `null`, so
+  `sortCompare` finds them equal to everything, and `sort` then returns an
+  order that depends on the input. The sorting callback of a table column with
+  an optional value returns `""`, as the time zone of cron jobs does, and so
+  does its search filter: the search turns every value into text with
+  `String()`, so `undefined` matches a search for `undef`.
+- **Objects from a watch.** A store builds a new object for every event of
+  its watch, including the events that change only metadata, such as labels,
+  annotations, `managedFields` or the status. A view that copies the data of
+  an object into its own state for editing must not discard unsaved edits on
+  such an event. Replace them only when the data it shows has changed.
+- **Values computed in main.** In the renderer, `process.env` is not the
+  environment of main, which lacks `SHELL` for one, so an injectable that reads
+  the environment or the file system answers differently in each process. A
+  value the renderer shows about what main does, such as a default shell or
+  a path, comes from main over a request channel.
+- **Checking in the application.** Besides the path the description claims,
+  try the empty value, the missing field, and a change in the cluster while
+  the view is open or being edited, and repeat the same steps on `main` as a
+  control.
+
 ## Best Practices
 
 1. **Always regenerate DI files** after adding/moving injectables
