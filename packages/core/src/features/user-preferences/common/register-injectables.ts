@@ -10,6 +10,7 @@ import {
   getClusterPageMenuOrderInjectable,
   resetClusterPageMenuOrderInjectable,
 } from "./cluster-page-menu-order.injectable";
+import customAccentColorInjectable from "./custom-accent-color.injectable";
 import httpsProxyConfigurationInjectable from "./https-proxy.injectable";
 import isTableColumnHiddenInjectable from "./is-table-column-hidden.injectable";
 import kubeconfigSyncsInjectable from "./kubeconfig-syncs.injectable";
@@ -27,6 +28,11 @@ import toggleTableColumnVisibilityInjectable from "./toggle-table-column-visibil
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
+  try {
+    di.register(customAccentColorInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
   try {
     di.register(getClusterPageMenuOrderInjectable);
   } catch (e) {
