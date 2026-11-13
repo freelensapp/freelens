@@ -7,6 +7,8 @@
 import { describe, expect, it } from "vitest";
 import { Node } from "./node";
 
+import type { NodeCondition } from "./node";
+
 describe("Node tests", () => {
   describe("isMasterNode()", () => {
     it("given a master node labelled before kubernetes 1.20, should return true", () => {
@@ -186,6 +188,75 @@ describe("Node tests", () => {
       });
 
       expect(node.getRoleLabels()).toBe("foobar, master, master-v2-max");
+    });
+  });
+
+  describe("getWarningConditions()", () => {
+    const createNode = (conditions: NodeCondition[]) =>
+      new Node({
+        apiVersion: "v1",
+        kind: "Node",
+        metadata: {
+          name: "bar",
+          resourceVersion: "1",
+          uid: "bat",
+          selfLink: "/api/v1/nodes/bar",
+        },
+        spec: {},
+        status: {
+          conditions,
+        },
+      });
+
+    const pressureTypes = ["MemoryPressure", "DiskPressure", "PIDPressure", "NetworkUnavailable"];
+
+    it("given a ready node without pressure, should return no warnings", () => {
+      const node = createNode([
+        { type: "Ready", status: "True" },
+        ...pressureTypes.map((type): NodeCondition => ({ type, status: "False" })),
+      ]);
+
+      expect(node.getWarningConditions()).toEqual([]);
+    });
+
+    it("given k3s's EtcdIsVoter condition, should not return it as a warning", () => {
+      const node = createNode([
+        { type: "Ready", status: "True" },
+        {
+          type: "EtcdIsVoter",
+          status: "True",
+          reason: "MemberNotLearner",
+          message: "Node is a voting member of the etcd cluster",
+        },
+      ]);
+
+      expect(node.getWarningConditions()).toEqual([]);
+    });
+
+    it("given conditions that kubernetes does not define, should not judge them", () => {
+      const node = createNode([
+        { type: "Ready", status: "True" },
+        { type: "KernelDeadlock", status: "True" },
+        { type: "XfsShutdown", status: "True" },
+        { type: "HostUpgrades", status: "True" },
+        { type: "SchedulingDisabled", status: "True" },
+      ]);
+
+      expect(node.getWarningConditions()).toEqual([]);
+    });
+
+    it.each(["False", "Unknown"] as const)("given Ready=%s, should return it as a warning", (status) => {
+      const ready: NodeCondition = { type: "Ready", status, message: "Kubelet stopped posting node status." };
+      const node = createNode([ready]);
+
+      expect(node.getWarningConditions()).toEqual([ready]);
+    });
+
+    it.each(pressureTypes)("given %s=True, should return it as a warning", (type) => {
+      const pressure: NodeCondition = { type, status: "True", message: `${type} on the node` };
+      const node = createNode([{ type: "Ready", status: "True" }, pressure]);
+
+      expect(node.getWarningConditions()).toEqual([pressure]);
     });
   });
 
