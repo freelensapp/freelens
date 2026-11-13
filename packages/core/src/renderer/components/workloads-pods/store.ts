@@ -40,12 +40,25 @@ export class PodStore extends KubeObjectStore<Pod, PodApi> {
   }
 
   async loadKubeMetrics(namespace?: string) {
-    try {
-      const metrics = await this.dependencies.podMetricsApi.list({ namespace });
+    const { context, podMetricsApi } = this.dependencies;
+    const namespaces =
+      namespace || context.isLoadingAll(context.contextNamespaces) ? [namespace] : context.contextNamespaces;
+    const results = await Promise.allSettled(namespaces.map((ns) => podMetricsApi.list({ namespace: ns })));
+    const metrics: PodMetrics[] = [];
 
-      this.kubeMetrics.replace(metrics ?? []);
-    } catch (error) {
-      console.warn("loadKubeMetrics failed", error);
+    for (const result of results) {
+      switch (result.status) {
+        case "fulfilled":
+          metrics.push(...(result.value ?? []));
+          break;
+
+        case "rejected":
+          console.warn("loadKubeMetrics failed", result.reason);
+      }
+    }
+
+    if (results.some((result) => result.status === "fulfilled")) {
+      this.kubeMetrics.replace(metrics);
     }
   }
 
