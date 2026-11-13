@@ -54,6 +54,69 @@ describe("Ingress", () => {
 
     expect(ingress.getLoadBalancers()).toEqual(["10.0.0.27", "localhost"]);
   });
+
+  describe("getIngressClassName", () => {
+    it("given spec.ingressClassName, should return it", () => {
+      const ingress = new Ingress({
+        apiVersion: "networking.k8s.io/v1",
+        kind: "Ingress",
+        metadata: {
+          name: "foo",
+          resourceVersion: "1",
+          uid: "bar",
+          namespace: "default",
+          selfLink: "/apis/networking.k8s.io/v1/ingresses/default/foo",
+          annotations: {
+            "kubernetes.io/ingress.class": "from-annotation",
+          },
+        },
+        spec: {
+          ingressClassName: "nginx",
+          tls: [],
+        },
+      });
+
+      expect(ingress.getIngressClassName()).toBe("nginx");
+    });
+
+    it("given only the kubernetes.io/ingress.class annotation, should return its value", () => {
+      const ingress = new Ingress({
+        apiVersion: "networking.k8s.io/v1",
+        kind: "Ingress",
+        metadata: {
+          name: "foo",
+          resourceVersion: "1",
+          uid: "bar",
+          namespace: "default",
+          selfLink: "/apis/networking.k8s.io/v1/ingresses/default/foo",
+          annotations: {
+            "kubernetes.io/ingress.class": "traefik",
+          },
+        },
+        spec: {
+          tls: [],
+        },
+      });
+
+      expect(ingress.getIngressClassName()).toBe("traefik");
+    });
+
+    it("given neither spec.ingressClassName nor the annotation, should return undefined", () => {
+      const ingress = new Ingress({
+        apiVersion: "networking.k8s.io/v1",
+        kind: "Ingress",
+        metadata: {
+          name: "foo",
+          resourceVersion: "1",
+          uid: "bar",
+          namespace: "default",
+          selfLink: "/apis/networking.k8s.io/v1/ingresses/default/foo",
+        },
+      });
+
+      expect(ingress.getIngressClassName()).toBeUndefined();
+    });
+  });
 });
 
 describe("computeRuleDeclarations", () => {
