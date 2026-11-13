@@ -29,4 +29,5 @@ export const Uri = {
 export const languages = {
   register: vi.fn(),
   registerCompletionItemProvider: vi.fn(),
+  registerFoldingRangeProvider: vi.fn(),
 };
