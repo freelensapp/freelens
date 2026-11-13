@@ -58,37 +58,37 @@
     }
   },
   "helm": {
-    "version": "4.3.1",
+    "version": "4.3.2",
     "artifacts": {
       "darwin/x64": {
-        "url": "https://get.helm.sh/helm-v4.3.1-darwin-amd64.tar.gz",
-        "sha256": "34bec4eba761ba5c16d1965ee6b8f5b0abe5993974a802274e2a4f0418893d89",
-        "binarySha256": "b9de99056315096662fea6f1967b2da1294ec05add31c9d0f1ea979bdaa43592"
+        "url": "https://get.helm.sh/helm-v4.3.2-darwin-amd64.tar.gz",
+        "sha256": "9e0068e9ae18c441d27388190ee7f53ae65eba44bfe910b40bdac44c4b51fa71",
+        "binarySha256": "2c64b9b95ed010cf217c9e9f145941afbbafa74e1090fea10f9da35a76def5a0"
       },
       "darwin/arm64": {
-        "url": "https://get.helm.sh/helm-v4.3.1-darwin-arm64.tar.gz",
-        "sha256": "6b4e61c8cd27d99e5a801e63ff25dd5c70b36875c2cd659d3e9ce6b76fc23198",
-        "binarySha256": "c62da98a8e5728f5acc08b66bbe5c3ad1cb6b71d3d31b7bf939d9f4b6628c96d"
+        "url": "https://get.helm.sh/helm-v4.3.2-darwin-arm64.tar.gz",
+        "sha256": "6f3421de3a8cc2ac578c8cfb33b8edde290dde2871bc1bab12e24f2e5caeaa90",
+        "binarySha256": "090e6b29ce89a1eb5cbb60925d66b9c8fa43dd2f7c14bcf64f6bdc9331295e5a"
       },
       "linux/x64": {
-        "url": "https://get.helm.sh/helm-v4.3.1-linux-amd64.tar.gz",
-        "sha256": "0403a88ae20913d11b10a2467b50087721fea7581736da6b9d3992f5357fe54b",
-        "binarySha256": "b66cb19f2b31f9d427632ea6c4b4a1ff89b74ecaeaee323cd166da41a7af53bd"
+        "url": "https://get.helm.sh/helm-v4.3.2-linux-amd64.tar.gz",
+        "sha256": "d1c0278d46beab79582d7e50f5b3dc206944ba8e577cde618513fd07daa53983",
+        "binarySha256": "876242ea89b1fc07692e179d9abdc47028979fb64b20d85448e85193c8b04931"
       },
       "linux/arm64": {
-        "url": "https://get.helm.sh/helm-v4.3.1-linux-arm64.tar.gz",
-        "sha256": "8cf8f66ecbc252ac8f7f06cca68aba88508ddfde3a6a34feb1678ad1694b4f88",
-        "binarySha256": "d459cbff1331af4326a6f97ea83c547742b4056dac7404f20fc436c084178c43"
+        "url": "https://get.helm.sh/helm-v4.3.2-linux-arm64.tar.gz",
+        "sha256": "df31cb61680ef728f82c770e5280dd565617bee6b039d37e85c677288be4bbb0",
+        "binarySha256": "0a070741409d3ec702ae2732f15d2e148984fd48b9b5287b5143781f414e231f"
       },
       "windows/x64": {
-        "url": "https://get.helm.sh/helm-v4.3.1-windows-amd64.tar.gz",
-        "sha256": "5735a2bd59071b814546c6d0a76f29a8fd3ebe06e3a4791dd2784804ae895f34",
-        "binarySha256": "912d7210c880c48b2ac91102b1297d6ac637edd9aaaf05beb12da0b496b53ba9"
+        "url": "https://get.helm.sh/helm-v4.3.2-windows-amd64.tar.gz",
+        "sha256": "03af0db72f7ba1108065365a21e2a9e581a6fdf9fd8191156373e17aab75e4dc",
+        "binarySha256": "f21b63927c36ca5fd402da51289c23b4b041b5197c806abd98b1ccfe39b76ab9"
       },
       "windows/arm64": {
-        "url": "https://get.helm.sh/helm-v4.3.1-windows-arm64.tar.gz",
-        "sha256": "f1f8eea33cb72590724308f6a3940dc09945fb30df8bc814f130247df33ae2df",
-        "binarySha256": "82e20e023033d086f12b56fe8edaeb6f6ddba72e54152e28d103d259c795c0f1"
+        "url": "https://get.helm.sh/helm-v4.3.2-windows-arm64.tar.gz",
+        "sha256": "d409f931b42c47b68c29a7bdad79cb264cf8889eaff0033d6a168ad070005096",
+        "binarySha256": "604ff914da0f384c10afe203eb081c754a3e4e68b69b9df4f7fc99f682475180"
       }
     }
   }
