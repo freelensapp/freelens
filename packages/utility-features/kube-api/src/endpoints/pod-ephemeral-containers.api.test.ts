@@ -4,6 +4,7 @@
  */
 
 import { Pod } from "@freelensapp/kube-object";
+import { expect, it, vi } from "vitest";
 import { KubeJsonApi } from "../kube-json-api";
 import { PodApi } from "./pod.api";
 

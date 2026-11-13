@@ -4,6 +4,7 @@
  */
 
 import { JsonApiErrorParsed } from "@freelensapp/json-api";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { buildDebugContainer } from "../common/debug-container";
 import { debugRequest, debugTestPod } from "../test-utils";
 import { DebugContainers } from "./debug-containers";

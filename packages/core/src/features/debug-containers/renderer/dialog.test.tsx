@@ -5,6 +5,7 @@
 
 import { fireEvent, screen, waitFor } from "@testing-library/react";
 import { computed } from "mobx";
+import { expect, it, vi } from "vitest";
 import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import rendererExtensionsInjectable from "../../../extensions/renderer-extensions.injectable";
 import { renderFor } from "../../../renderer/components/test-utils/renderFor";
