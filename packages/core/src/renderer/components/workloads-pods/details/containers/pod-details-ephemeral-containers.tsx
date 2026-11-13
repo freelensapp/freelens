@@ -25,6 +25,7 @@ const PodDetailsEphemeralContainers = observer(({ pod }: PodDetailsContainersPro
   return (
     <>
       <DrawerTitle>Ephemeral Containers</DrawerTitle>
+      <p>Stopped ephemeral containers remain listed until the pod is deleted.</p>
       {ephemeralContainers.map((container) => (
         <PodDetailsContainer key={container.name} pod={pod} container={container}>
           <DebugContainerActions pod={pod} container={container} />

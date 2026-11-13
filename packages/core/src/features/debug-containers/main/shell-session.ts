@@ -24,9 +24,10 @@ export class DebugContainerShellSession extends ShellSession {
     const { namespace, name, containerName } = this.args.debugContainer;
     const env = await this.getCachedShellEnv();
 
+    if (this.closedDuring("resolving the debug shell environment")) return;
     this.status.info(`Opening shell in ${containerName} ...`);
     await this.openShellProcess(
-      await this.kubectl.getPath(),
+      this.dependencies.kubeTools.kubectlPath,
       [
         "--kubeconfig",
         this.dependencies.proxyKubeconfigPath,

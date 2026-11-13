@@ -11,6 +11,7 @@ import execFileInjectable from "../../../common/fs/exec-file.injectable";
 import createKubeApiInjectable from "../../../common/k8s-api/create-kube-api.injectable";
 import createKubeJsonApiForClusterInjectable from "../../../common/k8s-api/create-kube-json-api-for-cluster.injectable";
 import loadProxyKubeconfigInjectable from "../../../main/cluster/load-proxy-kubeconfig.injectable";
+import withFreelensProxyCredentialEnvInjectable from "../../../main/freelens-proxy/with-freelens-proxy-credential-env.injectable";
 import kubeconfigManagerInjectable from "../../../main/kubeconfig-manager/kubeconfig-manager.injectable";
 import createKubectlInjectable from "../../../main/kubectl/create-kubectl.injectable";
 import { DebugContainers } from "./debug-containers";
@@ -27,6 +28,7 @@ const debugContainersInjectable = getInjectable({
     const createKubectl = di.inject(createKubectlInjectable);
     const manager = di.inject(kubeconfigManagerInjectable, cluster);
     const execFile = di.inject(execFileInjectable);
+    const withProxyCredentialEnv = di.inject(withFreelensProxyCredentialEnvInjectable);
 
     return new DebugContainers({
       podApi: createApi(PodApi, { request }),
@@ -34,14 +36,13 @@ const debugContainersInjectable = getInjectable({
       canI: async (attributes) => createCanI((await loadKubeconfig()).makeApiClient(AuthorizationV1Api))(attributes),
       execInPod: async (reference, command) => {
         const kubectl = createKubectl(cluster.version.get());
-        const kubeconfig = await manager.ensurePath();
+        const { kubeconfigPath, cacheDirectoryPath } = await manager.ensurePaths();
 
-        await kubectl.ensureKubectl();
         const result = await execFile(
-          await kubectl.getPath(),
+          await kubectl.getPath(undefined, { whenBundleUnusable: "reject" }),
           [
             "--kubeconfig",
-            kubeconfig,
+            kubeconfigPath,
             "exec",
             "--namespace",
             reference.namespace,
@@ -51,7 +52,11 @@ const debugContainersInjectable = getInjectable({
             "--",
             ...command,
           ],
-          { timeout: 15000, windowsHide: true },
+          {
+            timeout: 15000,
+            windowsHide: true,
+            env: withProxyCredentialEnv({ ...process.env, KUBECACHEDIR: cacheDirectoryPath }),
+          },
         );
 
         if (!result.callWasSuccessful) throw new Error(result.error.stderr || result.error.message);

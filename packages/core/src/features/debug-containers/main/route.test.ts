@@ -3,6 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { describe, expect, it } from "vitest";
 import { debugRequest } from "../test-utils";
 import { debugContainerRequestValidator } from "./route.injectable";
 
