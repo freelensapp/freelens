@@ -86,7 +86,7 @@ export const WebhookConfig: React.FC<WebhookProps> = ({ webhook }) => {
       <DrawerItem name="Rules" className={styles.lastItem}>
         {webhook.rules?.map((rule, index) => (
           <div key={index}>
-            <div>API Groups: {rule.apiGroups.join(", ")}</div>
+            <div>API Groups: {rule.apiGroups.map((group) => group || "core").join(", ")}</div>
             <div>API Versions: {rule.apiVersions?.join(", ")}</div>
             <div>Operations: {rule.operations.join(", ")}</div>
             {rule.resources && <div>Resources: {rule.resources.join(", ")}</div>}
