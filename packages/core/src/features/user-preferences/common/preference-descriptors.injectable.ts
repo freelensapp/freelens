@@ -58,6 +58,8 @@ export type PreferenceDescriptors = {
   readonly openAtLogin: PreferenceDescription<boolean>;
   readonly showTrayIcon: PreferenceDescription<boolean>;
   readonly hotbarAutoHide: PreferenceDescription<boolean>;
+  readonly groupCustomResourcesByDomain: PreferenceDescription<boolean>;
+  readonly customResourceGroupRootDepth: PreferenceDescription<number>;
   readonly persistentSearch: PreferenceDescription<boolean>;
   readonly logViewerPreferences: PreferenceDescription<Partial<LogViewerPreferences>, LogViewerPreferences>;
   readonly terminalCopyOnSelect: PreferenceDescription<boolean>;
@@ -147,6 +149,14 @@ const userPreferenceDescriptorsInjectable = getInjectable({
       hotbarAutoHide: getPreferenceDescriptor<boolean>({
         fromStore: (val) => val ?? false,
         toStore: (val) => (!val ? undefined : val),
+      }),
+      groupCustomResourcesByDomain: getPreferenceDescriptor<boolean>({
+        fromStore: (val) => val ?? false,
+        toStore: (val) => (!val ? undefined : val),
+      }),
+      customResourceGroupRootDepth: getPreferenceDescriptor<number>({
+        fromStore: (val) => (typeof val === "number" && Number.isInteger(val) && val >= 1 ? val : 1),
+        toStore: (val) => (val === 1 ? undefined : val),
       }),
       persistentSearch: getPreferenceDescriptor<boolean>({
         fromStore: (val) => val ?? false,

@@ -478,6 +478,33 @@ exports[`preferences - navigation to extension specific preferences > given in p
                   class="HorizontalLine size-xl"
                 />
                 <div
+                  data-preference-item-test="custom-resource-domain-grouping"
+                >
+                  <section
+                    id="customResourceDomainGrouping"
+                  >
+                    <div
+                      class="SubTitle"
+                    >
+                      Custom Resource Groups
+                       
+                    </div>
+                    <label
+                      class="Switch"
+                      data-testid="switch"
+                    >
+                      Group by API domain
+                      <input
+                        role="switch"
+                        type="checkbox"
+                      />
+                    </label>
+                  </section>
+                </div>
+                <div
+                  class="HorizontalLine size-xl"
+                />
+                <div
                   data-preference-item-test="sidebar-menu"
                 >
                   <section
@@ -3023,6 +3050,33 @@ exports[`preferences - navigation to extension specific preferences > given in p
                 class="HorizontalLine size-xl"
               />
               <div
+                data-preference-item-test="custom-resource-domain-grouping"
+              >
+                <section
+                  id="customResourceDomainGrouping"
+                >
+                  <div
+                    class="SubTitle"
+                  >
+                    Custom Resource Groups
+                     
+                  </div>
+                  <label
+                    class="Switch"
+                    data-testid="switch"
+                  >
+                    Group by API domain
+                    <input
+                      role="switch"
+                      type="checkbox"
+                    />
+                  </label>
+                </section>
+              </div>
+              <div
+                class="HorizontalLine size-xl"
+              />
+              <div
                 data-preference-item-test="sidebar-menu"
               >
                 <section
@@ -3841,6 +3895,33 @@ exports[`preferences - navigation to extension specific preferences > given in p
                     Show tray icon in the menu bar
                     <input
                       checked=""
+                      role="switch"
+                      type="checkbox"
+                    />
+                  </label>
+                </section>
+              </div>
+              <div
+                class="HorizontalLine size-xl"
+              />
+              <div
+                data-preference-item-test="custom-resource-domain-grouping"
+              >
+                <section
+                  id="customResourceDomainGrouping"
+                >
+                  <div
+                    class="SubTitle"
+                  >
+                    Custom Resource Groups
+                     
+                  </div>
+                  <label
+                    class="Switch"
+                    data-testid="switch"
+                  >
+                    Group by API domain
+                    <input
                       role="switch"
                       type="checkbox"
                     />
