@@ -198,6 +198,7 @@ exports[`MutatingAdmissionPolicyDetails > renders 1`] = `
           <div>
             <div>
               API Groups: 
+              core
             </div>
             <div>
               API Versions: 
@@ -362,6 +363,7 @@ exports[`MutatingAdmissionPolicyDetails > renders with no mutations 1`] = `
           <div>
             <div>
               API Groups: 
+              core
             </div>
             <div>
               API Versions: 

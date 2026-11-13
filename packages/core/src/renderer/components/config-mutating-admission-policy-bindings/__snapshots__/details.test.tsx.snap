@@ -114,6 +114,7 @@ exports[`MutatingAdmissionPolicyBindingDetails > renders 1`] = `
           <div>
             <div>
               API Groups: 
+              core
             </div>
             <div>
               API Versions: 
