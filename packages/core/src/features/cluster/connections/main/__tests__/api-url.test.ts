@@ -5,8 +5,8 @@
 
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { Cluster } from "../../../../../common/cluster/cluster";
-import readFileInjectable from "../../../../../common/fs/read-file.injectable";
 import statInjectable from "../../../../../common/fs/stat.injectable";
+import readKubeconfigFileInjectable from "../../../../../common/kube-helpers/read-kubeconfig-file.injectable";
 import { getDiForUnitTesting } from "../../../../../main/getDiForUnitTesting";
 import clusterApiUrlInjectable from "../api-url.injectable";
 import type { Stats } from "node:fs";
@@ -45,7 +45,7 @@ describe("clusterApiUrl", () => {
     mtimeMs = 1000;
     readFileMock = vi.fn(async () => kubeConfig);
 
-    di.override(readFileInjectable, () => readFileMock);
+    di.override(readKubeconfigFileInjectable, () => readFileMock);
     di.override(statInjectable, () => async () => ({ mtimeMs }) as Stats);
 
     const cluster = new Cluster({

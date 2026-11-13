@@ -34,9 +34,9 @@
 // leaves out included, together with their `node:` imports.
 
 import { readFileSync } from "node:fs";
-import { isBuiltin } from "node:module";
+import { createRequire, isBuiltin } from "node:module";
 import path from "node:path";
-import { defineConfig } from "rolldown";
+import { defineConfig, VERSION } from "rolldown";
 import { parseAst } from "rolldown/parseAst";
 import { dts } from "rolldown-plugin-dts";
 import { enumerateWorkspaceEntries } from "./scripts/workspace-entries.mjs";
@@ -218,6 +218,42 @@ const declaredExternals = {
   },
 };
 
+const readManifest = (manifestPath) => JSON.parse(readFileSync(manifestPath, "utf8"));
+
+// The catalog's rolldown follows the one that vite and electron-vite pin, so
+// the declaration and the application build with the same bundler from a
+// single copy. A rolldown that Vite does not pin can break the application
+// build without failing it; see "Rolldown Follows Vite" in AGENTS.md.
+const rolldownFollowsVite = {
+  name: "rolldown-follows-vite",
+
+  buildStart() {
+    const requireFromApp = createRequire(path.join(repoRoot, "freelens/package.json"));
+    const mismatches = [];
+
+    for (const bundler of ["vite", "electron-vite"]) {
+      const bundlerManifestPath = requireFromApp.resolve(`${bundler}/package.json`);
+      const bundlerManifest = readManifest(bundlerManifestPath);
+      const theirs = readManifest(createRequire(bundlerManifestPath).resolve("rolldown/package.json")).version;
+
+      if (theirs !== VERSION) {
+        mismatches.push(
+          `  ${bundler} ${bundlerManifest.version} pins rolldown ${bundlerManifest.dependencies.rolldown} and builds with ${theirs}`,
+        );
+      }
+    }
+
+    if (mismatches.length > 0) {
+      this.error(
+        `the declaration builds with rolldown ${VERSION}, but the application does not:\n` +
+          mismatches.join("\n") +
+          "\nKeep rolldown in the catalog of pnpm-workspace.yaml on the version that vite and electron-vite build" +
+          " with, and run pnpm dedupe; move it to a new minor only together with a vite that pins that minor.",
+      );
+    }
+  },
+};
+
 export default defineConfig({
   input: {
     "extension-api": path.join(outRoot, "packages/extensions/src/extension-api.d.ts"),
@@ -228,6 +264,7 @@ export default defineConfig({
   },
   external,
   plugins: [
+    rolldownFollowsVite,
     workspaceDtsAlias,
     // No generator runs on declaration input, but the plugin still picks one
     // up front, and with TypeScript 7 installed it picks `tsgo`, which refuses

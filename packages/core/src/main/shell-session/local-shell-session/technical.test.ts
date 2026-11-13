@@ -29,6 +29,7 @@ import createKubectlInjectable from "../../kubectl/create-kubectl.injectable";
 import shellSessionProcessesInjectable from "../processes.injectable";
 import spawnPtyInjectable from "../spawn-pty.injectable";
 import openLocalShellSessionInjectable from "./open.injectable";
+import type { Stats } from "node:fs";
 
 import type { DiContainer } from "@ogre-tools/injectable";
 import type { IPty } from "node-pty";
@@ -561,6 +562,78 @@ describe("technical unit tests for local shell sessions", () => {
 
       expect(options).toHaveProperty("useConptyDll", true);
       expect(options).not.toHaveProperty("useConpty");
+    });
+
+    /**
+     * node-pty looks a shell given by name only up in the current folder of
+     * Freelens first, and starts nothing when the file is there
+     * (microsoft/node-pty#1005): `wsl.exe` failed when Freelens started in
+     * `C:\Windows\System32` (#2918). Freelens gives it the full path instead.
+     */
+    describe("when the shell is given by name only on Windows", () => {
+      let files: Set<string>;
+      let statted: string[];
+
+      beforeEach(() => {
+        files = new Set(["C:\\Windows\\System32\\wsl.exe", "C:\\Windows\\System32\\cmd.exe"]);
+        statted = [];
+        di.override(computeShellEnvironmentInjectable, () => async () => ({
+          callWasSuccessful: true as const,
+          response: {
+            Path: "C:\\Users\\some-user\\bin;C:\\Windows\\System32;C:\\Windows",
+            PATHEXT: ".COM;.EXE;.BAT;.CMD",
+            USERPROFILE: "C:\\Users\\some-user",
+          },
+        }));
+        di.override(statInjectable, () => async (file: string) => {
+          statted.push(file);
+
+          if (files.has(file)) {
+            return { isFile: () => true, isDirectory: () => false } as Stats;
+          }
+
+          throw Object.assign(new Error(`ENOENT: no such file or directory, stat '${file}'`), { code: "ENOENT" });
+        });
+      });
+
+      it("starts it by its full path in the directory of PATH that has it", async () => {
+        const { file } = await openWithShell("wsl.exe", "win32");
+
+        expect(file).toBe("C:\\Windows\\System32\\wsl.exe");
+      });
+
+      it("adds the extensions of PATHEXT to a name without one", async () => {
+        const { file } = await openWithShell("wsl", "win32");
+
+        expect(file).toBe("C:\\Windows\\System32\\wsl.exe");
+      });
+
+      it("takes the first directory of PATH that has it", async () => {
+        files.add("C:\\Users\\some-user\\bin\\cmd.exe");
+
+        const { file } = await openWithShell("cmd.exe", "win32");
+
+        expect(file).toBe("C:\\Users\\some-user\\bin\\cmd.exe");
+      });
+
+      it("starts a shell given with its path as it is, without looking it up", async () => {
+        const { file } = await openWithShell("C:\\Tools\\my-shell.exe", "win32");
+
+        expect(file).toBe("C:\\Tools\\my-shell.exe");
+        expect(statted.filter((statPath) => statPath.endsWith("my-shell.exe"))).toEqual([]);
+      });
+
+      it("leaves a name that no directory of PATH has as it is", async () => {
+        const { file } = await openWithShell("missing-shell.exe", "win32");
+
+        expect(file).toBe("missing-shell.exe");
+      });
+
+      it("leaves a name as it is on other platforms, where the system looks it up", async () => {
+        const { file } = await openWithShell("bash", "linux");
+
+        expect(file).toBe("bash");
+      });
     });
 
     /**

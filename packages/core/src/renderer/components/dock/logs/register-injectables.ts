@@ -13,12 +13,14 @@ import createLogsTabInjectable from "./create-logs-tab.injectable";
 import createPodLogsTabInjectable from "./create-pod-logs-tab.injectable";
 import createWorkloadLogsTabInjectable from "./create-workload-logs-tab.injectable";
 import downloadAllLogsInjectable from "./download-all-logs.injectable";
+import downloadAllLogsForPodsInjectable from "./download-all-logs-for-pods.injectable";
 import downloadLogsInjectable from "./download-logs.injectable";
 import getLogTabDataInjectable from "./get-log-tab-data.injectable";
 import getLogsInjectable from "./get-logs.injectable";
 import getLogsWithoutTimestampsInjectable from "./get-logs-without-timestamps.injectable";
 import getRandomIdForPodLogsTabInjectable from "./get-random-id-for-pod-logs-tab.injectable";
 import getTimestampSplitLogsInjectable from "./get-timestamp-split-logs.injectable";
+import getWorkloadPodsInjectable from "./get-workload-pods.injectable";
 import isLogsTabDataValidInjectable from "./is-logs-tab-data-valid.injectable";
 import loadLogsInjectable from "./load-logs.injectable";
 import logsViewModelInjectable from "./logs-view-model.injectable";
@@ -62,6 +64,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
     /* Ignore duplicate registration */
   }
   try {
+    di.register(downloadAllLogsForPodsInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
     di.register(downloadAllLogsInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
@@ -93,6 +100,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(getTimestampSplitLogsInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(getWorkloadPodsInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

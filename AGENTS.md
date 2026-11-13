@@ -532,10 +532,12 @@ version change goes into both `mise.toml` and `.nvmrc`.
 ### Debugging the Application
 
 **Main Process:**
+
 - Logs in terminal where `pnpm start` was run
 - Use `console.log()` or proper logger
 
 **Renderer Process:**
+
 - Open DevTools in the app
 - Check Console tab for errors and logs
 - Use React DevTools for component inspection
@@ -546,6 +548,7 @@ version change goes into both `mise.toml` and `.nvmrc`.
   AI-agent inspection notes in DEVELOPMENT.md.
 
 **Common Errors:**
+
 - `Tried to register same injectable multiple times` - See DI section above
 - `Tried to inject non-registered injectable` - Check registration files were
   generated. In a unit test, a newly added `*.injectable.ts` can report this
@@ -568,6 +571,31 @@ layer was removed in #2118.
 
 **Cache issues:** Delete the build output and rebuild
 (`rm -rf .turbo packages/core/dist freelens/dist`)
+
+### Rolldown Follows Vite
+
+Rolldown builds the application through vite and electron-vite, which pin it
+with a tilde range, and builds the declaration of `@freelensapp/extensions`
+directly, from the catalog of `pnpm-workspace.yaml`. The catalog's rolldown is
+the version that vite and electron-vite build with, so that the lockfile has a
+single rolldown and both builds use it.
+
+Vite moves to a new minor of rolldown in a release of its own, because its
+plugins depend on what rolldown emits. A newer rolldown forced on a vite that
+does not pin it can break the application without failing the build: the
+bundle is written, and the renderer fails to parse it at runtime, which only
+the integration tests notice. So the catalog never runs ahead of vite, and no
+`overrides` entry forces the catalog's rolldown on vite.
+
+`rolldown.dts.config.mjs` checks it: the `rolldown-follows-vite` plugin fails
+the declaration bundle when the rolldown that vite or electron-vite resolves is
+not the one it runs on. After a bump inside the minor that vite pins,
+`pnpm dedupe` brings both onto one version; on a Renovate branch the
+"Automated npm dedupe for Renovate" workflow does that. Renovate updates
+rolldown, vite and electron-vite in one group, and rolldown by patches only, so
+it never proposes a minor that no vite pins yet. A vite update that pins a new
+minor fails the check in its PR: move the catalog's rolldown on that branch to
+the version vite resolves, and run `pnpm dedupe`.
 
 ### The Electron binary
 
@@ -624,15 +652,13 @@ depends on the question:
 - [`docs/extensions/migrating-from-v1.md`](./docs/extensions/migrating-from-v1.md) — the
   author-facing **porting guide** from v1.
 
-The agent skills of freelensapp/freelens-example-extension,
-`create-freelens-extension` and `port-freelens-extension-to-v2`, link to these
-documents on `main` and cite their sections by name. So does the template of
-the v2 migration issue that a port copies,
-`skills/port-freelens-extension-to-v2/references/migration-issue.md`, except
-that its links are pinned to a commit of this repository. Renaming or removing
-one of the sections below therefore needs a matching change to the `SKILL.md`
-files under `skills/` in that repository, and to that template when its pin
-moves to a commit with the change:
+The skills of the `freelens` plugin ("Skills for Coding Agents") and the
+template of the v2 migration issue that comes with them cite sections of these
+documents by name, and read the documents at the release tag the template pins.
+A section renamed or removed on `main` therefore reaches them when the pin
+moves to a release that has the change: moving the pin checks each of the
+sections below against that release and updates the skills and the template
+with it. Keep this list complete, so that the check has something to go by:
 
 - in `api.md`, the contracts C1 to C15 by number as a range, and C3
   (host-provided singletons), C6 (registration), C9 (routing), C10 (styling
@@ -691,6 +717,86 @@ the Node-bound members `Common.Util` leaves out, with their `node:` imports.
 builtin or references Node's types, and names that tree-shaking as the likely
 cause, so a regression in the plugin fails the build rather than reaching an
 extension.
+
+## Skills for Coding Agents
+
+The skills for the coding agents that write Freelens extensions are the
+`freelens` plugin of Claude Code in `plugins/freelens`, one skill in each
+`skills/<name>/SKILL.md`. The marketplace in `.claude-plugin/marketplace.json`
+lists the plugin. They are for work in an extension's repository, not in this
+one, so they are not in `.claude/skills/`.
+
+The documents install the plugin in two steps, the marketplace added with
+`--sparse .claude-plugin plugins` and the plugin installed from it, because a
+marketplace is a git checkout that Claude Code keeps and updates.
+`claude plugin install freelens --marketplace freelensapp/freelens` works in
+one step, but `install` has no `--sparse`, so its marketplace is a shallow
+checkout of the whole repository. A marketplace added without `--sparse` is
+declared under `extraKnownMarketplaces` in the user settings, and
+`claude plugin marketplace add` with `--sparse` then refuses the same name for
+a different source until `claude plugin marketplace remove freelens` drops it.
+
+| Skill                  | Does                                                                                             |
+| ---------------------- | ------------------------------------------------------------------------------------------------ |
+| `create-extension`     | starts a new extension from a copy of freelensapp/freelens-example-extension                     |
+| `port-extension-to-v2` | ports a v1 extension to v2, with the template of the migration issue in `references/` next to it |
+
+The plugin is not in the root of the repository, because Claude Code warns
+about a `CLAUDE.md` in the root of a plugin. It has no `version`, so that
+Claude Code updates it with each commit instead of a version that every change
+of a skill would have to bump; the warning `claude plugin validate` prints
+about it is expected. Its icon, `.claude-plugin/icon.png`, is a copy of
+`freelens/build/icons/512x512.png`, as Claude Code takes no SVG for it.
+
+The front matter has only the fields of the
+[Agent Skills](https://agentskills.io/specification) format, which other agents
+read too: Claude Code ignores a field it does not know, other agents reject it.
+`name` equals the directory name, `description` (at most 1024 characters) says
+what the skill does, when to use it and which of the two skills applies
+otherwise, `license` is `MIT`, and `compatibility` names the network access
+the links need. Keep each `SKILL.md` well under 500 lines. Biome formats them
+with `markdown.parser.frontmatter` of `biome.jsonc`, without which it reads the
+front matter as Markdown and turns its YAML into a heading.
+
+A skill carries the workflow and links to what it relies on rather than
+copying it, so nothing drifts. Links within the plugin, to `references/` and
+to the other skill, are relative, because an installed plugin has only its own
+directory. Every other link is a full URL: the extension documents of this
+repository at the release tag the template of the migration issue pins, and
+freelensapp/freelens-example-extension at `main`, because the template is read
+as it is now. A `references/` file is only for content that exists nowhere
+else, which is the template of the migration issue.
+
+The skills depend on freelensapp/freelens-example-extension by name: they cite
+sections of its `AGENTS.md` and `README.md` by their headings and its files by
+their paths, and `create-extension` puts every tracked file of the template
+into one of its groups (keep, adapt, remove, rewrite). A change there that
+renames such a section, moves or removes such a file, or adds a tracked file
+needs a matching change of the skill here.
+
+The template of the migration issue, `references/migration-issue.md` of
+`port-extension-to-v2`, is an issue body:
+
+- It keeps one paragraph per line, because GitHub turns every newline of an
+  issue body into a line break, and Biome does not rewrap a paragraph.
+- Every mention of the Claude handle in it stays split as `@<!-- -->claude`,
+  and every reference to an issue or a repository is written in full
+  (`owner/repo#N`), because the body is opened in other repositories.
+- Its pin in "Source of truth", a Freelens release tag and the
+  `@freelensapp/extensions` release of the same version, is never older than
+  what the skills or the documents they link to require. Moving it moves the
+  links of the skills to the same tag and the versions of "Stack alignment"
+  with it.
+- A finding of a port that applies to any port is folded into the generic
+  section it affects. The template keeps no list of findings: the history is
+  in git and in the migration issues of the extensions.
+
+Check the marketplace and the plugin as Claude Code reads them:
+
+```sh
+claude plugin validate .
+claude plugin validate ./plugins/freelens
+```
 
 ## Best Practices
 

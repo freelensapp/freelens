@@ -16,6 +16,7 @@ import { withInjectables } from "@ogre-tools/injectable-react";
 import { autorun, observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
+import { SecretCertificates } from "../../../features/secret-certificates/renderer/secret-certificates";
 import { DrawerItem, DrawerTitle } from "../drawer";
 import { Input } from "../input";
 import secretStoreInjectable from "./store.injectable";
@@ -160,6 +161,7 @@ class NonInjectedSecretDetails extends React.Component<SecretDetailsProps & Depe
       <div className="SecretDetails">
         <DrawerItem name="Type">{secret.type}</DrawerItem>
         {this.renderData()}
+        <SecretCertificates data={this.data} />
       </div>
     );
   }

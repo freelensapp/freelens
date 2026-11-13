@@ -11,6 +11,7 @@ import { asLazyInjectedForExtensionApi } from "../extension-api-di";
 export { App } from "./app";
 export * as Catalog from "./catalog";
 export * as Clusters from "./cluster-types";
+export * as Credentials from "./credentials";
 export * as EventBus from "./event-bus";
 export * as Proxy from "./proxy";
 export * as Store from "./stores";
@@ -19,6 +20,7 @@ export { Util } from "./utils";
 
 export type { Logger } from "@freelensapp/logger";
 
+export type { ExtensionCredentials } from "../../features/extension-credentials/common/extension-credentials";
 export type { InstalledExtension, LensExtensionManifest } from "../installed-extension";
 
 // A plain alias instead of a re-export: type-fest declares PackageJson as a

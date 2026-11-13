@@ -23,7 +23,7 @@ export interface NodePodMenuItemProps {
   title: string;
   tooltip: string;
   toolbar: boolean;
-  annotations: string[];
+  annotations: Partial<Record<string, string>> | undefined;
   containers: (ContainerWithType | EphemeralContainerWithType)[];
   statuses: PodContainerStatus[];
   onMenuItemClick: (container: Container) => any;
@@ -32,7 +32,11 @@ export interface NodePodMenuItemProps {
 const PodMenuItem: React.FC<NodePodMenuItemProps> = (props) => {
   const { material, svg, title, tooltip, toolbar, annotations, containers, statuses, onMenuItemClick } = props;
 
-  if (!containers || !containers.length) return null;
+  if (!containers) return null;
+
+  const defaultContainer = findOptimalDefaultContainer(containers, annotations);
+
+  if (!defaultContainer) return null;
 
   return (
     <>
@@ -40,7 +44,7 @@ const PodMenuItem: React.FC<NodePodMenuItemProps> = (props) => {
         onClick={(evt) => {
           // Prevent parent menu-item click without preventing submenu auto-close.
           evt.stopPropagation();
-          onMenuItemClick(findOptimalDefaultContainer(containers, annotations));
+          onMenuItemClick(defaultContainer);
         }}
       >
         <Icon material={material} svg={svg} interactive={toolbar} tooltip={toolbar && tooltip} />
@@ -62,7 +66,10 @@ const PodMenuItem: React.FC<NodePodMenuItemProps> = (props) => {
                 className="flex items-center"
               >
                 {brick}
-                <span>{name}</span>
+                <span>
+                  {name}
+                  {container === defaultContainer && <span className="text-secondary">{" (default)"}</span>}
+                </span>
               </MenuItem>
             );
           })}

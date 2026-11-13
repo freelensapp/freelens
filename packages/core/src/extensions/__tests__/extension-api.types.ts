@@ -45,6 +45,12 @@ export type CommonInstalledExtension = Common.InstalledExtension;
 export type CommonCluster = Common.Catalog.KubernetesCluster;
 export type CommonCatalogEntity = Common.Catalog.CatalogEntity;
 export type CommonClusterConnectionStatus = Common.Clusters.ClusterConnectionStatus;
+export type CommonExtensionCredentials = Common.ExtensionCredentials;
+// What `forExtension` returns is the exported type, so that an extension can
+// name the field it keeps the result in.
+export type CommonCredentialsForExtensionReturnsTheExportedType = Holds<
+  ReturnType<typeof Common.Credentials.forExtension> extends Common.ExtensionCredentials ? true : false
+>;
 
 // `Common.Types` contributes nothing at runtime, so these are reachable from
 // here and from nowhere else. `KubeObjectMenuItemProps` is the one the fluxcd
@@ -98,6 +104,7 @@ export type RendererKubeObjectMenuProps = Renderer.Component.KubeObjectMenuProps
 export type RendererIconProps = Renderer.Component.IconProps;
 export type RendererTableOrderBy = Renderer.Component.TableOrderBy;
 export type RendererPieChartData = Renderer.Component.PieChartData;
+export type RendererSecretCertificatesProps = Renderer.Component.SecretCertificatesProps;
 
 // The custom-resource vocabulary: both published extensions declare their CRDs
 // with these four and register the result with `apiManager`.

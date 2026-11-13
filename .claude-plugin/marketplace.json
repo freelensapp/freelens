@@ -1,0 +1,15 @@
+{
+  "name": "freelens",
+  "owner": {
+    "name": "Freelens Authors",
+    "url": "https://github.com/freelensapp"
+  },
+  "description": "Skills for coding agents that write Freelens extensions",
+  "plugins": [
+    {
+      "name": "freelens",
+      "source": "./plugins/freelens",
+      "description": "Skills for creating Freelens extensions and porting v1 extensions to the v2 extension API"
+    }
+  ]
+}

@@ -13,6 +13,7 @@ import currentTimezoneInjectable from "../../../common/vars/current-timezone.inj
 import isDevelopmentInjectable from "../../../common/vars/is-development.injectable";
 import {
   ClusterPageMenuOrder,
+  clampMaxCombinedLogsPods,
   defaultEditorConfig,
   defaultExtensionRegistryUrlLocation,
   defaultLogViewerPreferences,
@@ -155,13 +156,18 @@ const userPreferenceDescriptorsInjectable = getInjectable({
         fromStore: (val) => ({
           ...defaultLogViewerPreferences,
           ...val,
+          maxCombinedLogsPods: clampMaxCombinedLogsPods(val?.maxCombinedLogsPods),
         }),
         toStore: (val) => {
+          const clampedValue: LogViewerPreferences = {
+            ...val,
+            maxCombinedLogsPods: clampMaxCombinedLogsPods(val.maxCombinedLogsPods),
+          };
           const storedValue: Partial<LogViewerPreferences> = {};
 
           for (const key of Object.keys(defaultLogViewerPreferences) as (keyof LogViewerPreferences)[]) {
-            if (val[key] !== defaultLogViewerPreferences[key]) {
-              storedValue[key] = val[key];
+            if (clampedValue[key] !== defaultLogViewerPreferences[key]) {
+              (storedValue as Record<string, unknown>)[key] = clampedValue[key];
             }
           }
 

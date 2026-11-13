@@ -13,18 +13,21 @@ import userEvent from "@testing-library/user-event";
 import * as selectEvent from "react-select-event";
 import directoryForUserDataInjectable from "../../../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import fsInjectable from "../../../../../common/fs/fs.injectable";
+import { defaultLogViewerPreferences } from "../../../../../features/user-preferences/common/preferences-helpers";
 import userPreferencesStateInjectable from "../../../../../features/user-preferences/common/state.injectable";
 import { getDiForUnitTesting } from "../../../../getDiForUnitTesting";
 import { renderFor } from "../../../test-utils/renderFor";
 import callForLogsInjectable from "../call-for-logs.injectable";
 import { LogTabViewModel } from "../logs-view-model";
 import { LogResourceSelector } from "../resource-selector";
-import { deploymentPod1, deploymentPod2, dockerPod } from "./pod.mock";
+import { deploymentPod1, deploymentPod2, deploymentPod3, dockerPod } from "./pod.mock";
 import {
   createMockLogTabViewModel,
   getDefaultOnePodLogTabData,
   initializeDefaultLogViewerPreferences,
 } from "./test-utils";
+
+import type { Pod } from "@freelensapp/kube-object";
 
 import type { UserEvent } from "@testing-library/user-event";
 
@@ -95,6 +98,32 @@ const getFewPodsTabData = (
     ...deps,
   });
 };
+
+const getCombinedLogsTabData = (
+  tabId: TabId,
+  userPreferencesState: UserPreferencesState,
+  workloadPods: Pod[],
+  deps: Partial<LogTabViewModelDependencies> = {},
+): LogTabViewModel =>
+  createMockLogTabViewModel(tabId, userPreferencesState, {
+    getLogTabData: () => ({
+      ...getDefaultOnePodLogTabData({
+        // The pod the tab was opened with: a rollout has replaced it since.
+        selectedPodId: "uid-of-a-pod-that-is-gone",
+        selectedContainer: deploymentPod1.getContainers()[0].name,
+        namespace: deploymentPod1.getNs(),
+      }),
+      combined: true,
+      podSelector: ["app=super"],
+      owner: {
+        uid: "uuid",
+        kind: "Deployment",
+        name: "super-deployment",
+      },
+    }),
+    getWorkloadPods: () => workloadPods,
+    ...deps,
+  });
 
 describe("<LogResourceSelector />", () => {
   let render: DiRender;
@@ -202,6 +231,76 @@ describe("<LogResourceSelector />", () => {
       selectEvent.openMenu(selector);
       await user.click(await findByText("deploymentPod2", { selector: ".pod-selector-menu .Select__option" }));
       expect(renameTab).toBeCalledWith("foobar", "Pod deploymentPod2");
+    });
+  });
+
+  describe("with combined logs of several pods", () => {
+    let model: LogTabViewModel;
+
+    beforeEach(() => {
+      model = getCombinedLogsTabData("foobar", userPreferencesState, [deploymentPod1, deploymentPod2, deploymentPod3]);
+    });
+
+    it("shows a pod count badge instead of the pod switcher dropdown", async () => {
+      const { container, findByTestId } = render(<LogResourceSelector model={model} />);
+
+      expect(await findByTestId("merged-pods-badge")).toHaveTextContent("3 pods");
+      expect(container.querySelector(".pod-selector")).not.toBeInTheDocument();
+    });
+
+    it("still renders the owner and container selector", async () => {
+      const { findByText, container } = render(<LogResourceSelector model={model} />);
+
+      expect(await findByText("super-deployment", { exact: false })).toBeInTheDocument();
+      expect(container.querySelector(".container-selector")).toBeInTheDocument();
+    });
+  });
+
+  describe("with combined logs of a workload whose pods changed", () => {
+    it("counts the pods the workload has now, not the ones it had when the tab was opened", async () => {
+      const model = getCombinedLogsTabData("foobar", userPreferencesState, [deploymentPod2]);
+      const { findByTestId } = render(<LogResourceSelector model={model} />);
+
+      expect(await findByTestId("merged-pods-badge")).toHaveTextContent("1 pod");
+    });
+
+    it("keeps the header, without the container selector, while the workload has no pods", async () => {
+      const model = getCombinedLogsTabData("foobar", userPreferencesState, []);
+      const { container, findByTestId, findByText } = render(<LogResourceSelector model={model} />);
+
+      expect(await findByTestId("merged-pods-badge")).toHaveTextContent("0 pods");
+      expect(await findByText("super-deployment", { exact: false })).toBeInTheDocument();
+      expect(container.querySelector(".container-selector")).not.toBeInTheDocument();
+    });
+
+    it("tells when the workload has more pods than the tab reads", async () => {
+      const manyPods = Array.from({ length: 25 }, () => deploymentPod1);
+      const model = getCombinedLogsTabData("foobar", userPreferencesState, manyPods);
+      const { findByTestId } = render(<LogResourceSelector model={model} />);
+
+      expect(await findByTestId("merged-pods-badge")).toHaveTextContent("20 of 25 pods");
+    });
+
+    it("tells where the limit is set when the workload has more pods than the tab reads", async () => {
+      const manyPods = Array.from({ length: 25 }, () => deploymentPod1);
+      const model = getCombinedLogsTabData("foobar", userPreferencesState, manyPods);
+      const { findByTestId, findByText } = render(<LogResourceSelector model={model} />);
+
+      await user.hover(await findByTestId("merged-pods-badge"));
+
+      expect(
+        await findByText("Set how many in Preferences > Kubernetes > Logs.", { exact: false }),
+      ).toBeInTheDocument();
+    });
+
+    it("follows the preference for the number of pods the tab reads", async () => {
+      userPreferencesState.logViewerPreferences = { ...defaultLogViewerPreferences, maxCombinedLogsPods: 3 };
+
+      const manyPods = Array.from({ length: 5 }, () => deploymentPod1);
+      const model = getCombinedLogsTabData("foobar", userPreferencesState, manyPods);
+      const { findByTestId } = render(<LogResourceSelector model={model} />);
+
+      expect(await findByTestId("merged-pods-badge")).toHaveTextContent("3 of 5 pods");
     });
   });
 });

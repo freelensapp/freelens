@@ -5,9 +5,12 @@
  */
 
 import { constants } from "node:fs";
+// Imported for its type: without DOM, the global TextDecoder of @types/node is a value only
+import { TextDecoder } from "node:util";
 import { bytesToUnits, noop } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import createReadFileStreamInjectable from "../../../common/fs/create-read-file-stream.injectable";
+import { getKubeconfigEncoding } from "../../../common/kube-helpers/read-kubeconfig-file.injectable";
 import computeKubeconfigDiffInjectable from "./compute-diff.injectable";
 import kubeconfigSyncLoggerInjectable from "./logger.injectable";
 import type { Stats } from "node:fs";
@@ -51,7 +54,7 @@ const diffChangedKubeconfigInjectable = getInjectable({
         mode: constants.O_RDONLY,
       });
       const readStream = fileReader as Readable;
-      const decoder = new TextDecoder("utf-8", { fatal: true });
+      let decoder: TextDecoder | undefined;
       let fileString = "";
       let closed = false;
 
@@ -71,6 +74,7 @@ const diffChangedKubeconfigInjectable = getInjectable({
       readStream
         .on("data", (chunk: Buffer) => {
           try {
+            decoder ??= new TextDecoder(getKubeconfigEncoding(chunk), { fatal: true });
             fileString += decoder.decode(chunk, { stream: true });
           } catch (error) {
             logger.warn(`skipping ${filePath}: ${error}`);
@@ -84,9 +88,23 @@ const diffChangedKubeconfigInjectable = getInjectable({
           logger.warn(`failed to read file: ${error}`, { filePath });
         })
         .on("end", () => {
-          if (!closed) {
-            computeKubeconfigDiff(fileString, source, filePath);
+          if (closed) {
+            return;
           }
+
+          try {
+            // Flushes a character the last chunk left unfinished, which a
+            // fatal decoder reports here rather than dropping it.
+            fileString += decoder?.decode() ?? "";
+          } catch (error) {
+            logger.warn(`skipping ${filePath}: ${error}`);
+            source.clear();
+            cleanup();
+
+            return;
+          }
+
+          computeKubeconfigDiff(fileString, source, filePath);
         });
 
       return cleanup;

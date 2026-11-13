@@ -5,9 +5,9 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import readFileInjectable from "../fs/read-file.injectable";
 import { loadValidatedConfig } from "../kube-helpers";
 import resolveTildeInjectable from "../path/resolve-tilde.injectable";
+import readKubeconfigFileInjectable from "./read-kubeconfig-file.injectable";
 
 import type { Cluster } from "../cluster/cluster";
 import type { ValidateKubeConfigResult } from "../kube-helpers";
@@ -17,11 +17,11 @@ export type LoadValidatedClusterConfig = (cluster: Cluster) => Promise<ValidateK
 const loadValidatedClusterConfigInjectable = getInjectable({
   id: "load-validated-cluster-config",
   instantiate: (di): LoadValidatedClusterConfig => {
-    const readFile = di.inject(readFileInjectable);
+    const readKubeconfigFile = di.inject(readKubeconfigFileInjectable);
     const resolveTilde = di.inject(resolveTildeInjectable);
 
     return async (cluster) => {
-      const data = await readFile(resolveTilde(cluster.kubeConfigPath.get()));
+      const data = await readKubeconfigFile(resolveTilde(cluster.kubeConfigPath.get()));
 
       return loadValidatedConfig(data, cluster.contextName.get());
     };

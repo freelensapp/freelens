@@ -53,7 +53,7 @@ jobs:
       # older one, without the Go symbol capture the scan needs (see Create
       # SBOM). Stored without the leading "v" for the same reason as
       # GRYPE_VERSION in security-scan.
-      SYFT_VERSION: 1.55.0 # datasource=github-releases depName=anchore/syft
+      SYFT_VERSION: 1.57.1 # datasource=github-releases depName=anchore/syft
 
     steps: &test-integration-steps
       - name: Checkout
@@ -74,7 +74,7 @@ jobs:
       - name: Set up mise
         uses: jdx/mise-action@v5
         with:
-          version: 2026.10.19 # datasource=github-releases depName=jdx/mise
+          version: 2026.11.7 # datasource=github-releases depName=jdx/mise
           install_args: yq
 
       - name: Setup node
@@ -561,7 +561,7 @@ jobs:
       # "v" because that manager's extractVersionTemplate strips it on every
       # bump; grype's installer needs the exact tag, so the "v" is re-added
       # where this is consumed rather than kept here (it would not survive).
-      GRYPE_VERSION: 0.121.0 # datasource=github-releases depName=anchore/grype
+      GRYPE_VERSION: 0.121.3 # datasource=github-releases depName=anchore/grype
 
     steps:
       - name: Checkout
@@ -572,7 +572,7 @@ jobs:
       - name: Set up mise
         uses: jdx/mise-action@v5
         with:
-          version: 2026.10.19 # datasource=github-releases depName=jdx/mise
+          version: 2026.11.7 # datasource=github-releases depName=jdx/mise
           install_args: yq
 
       - name: Download SBOMs
@@ -819,7 +819,7 @@ jobs:
       - name: Set up mise
         uses: jdx/mise-action@v5
         with:
-          version: 2026.10.19 # datasource=github-releases depName=jdx/mise
+          version: 2026.11.7 # datasource=github-releases depName=jdx/mise
           install_args: yq
 
       - name: Download merged vulnerability report

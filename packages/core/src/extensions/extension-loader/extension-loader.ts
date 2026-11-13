@@ -134,6 +134,15 @@ export class ExtensionLoader {
 
   private readonly onRemoveExtensionId = new EventEmitter<[string]>();
 
+  /**
+   * The ID of every instance this loader constructed, held weakly, so that an
+   * API scoped to an extension derives the scope from what the host knows
+   * rather than from a property the instance could change. An instance stays
+   * here after it is disabled, so that its `onDeactivate` can still use such
+   * an API.
+   */
+  private readonly constructedInstanceIds = new WeakMap<object, LensExtensionId>();
+
   // URLs of extension stylesheets already linked into the renderer document, so
   // a reload (the toJSON reaction re-loads user extensions) does not append the
   // same <link> twice. Keying on the URL rather than the file means a new build
@@ -806,6 +815,7 @@ export class ExtensionLoader {
 
           const instance = new LensExtensionClass(installedExtension);
 
+          this.constructedInstanceIds.set(instance, extId);
           this.dependencies.extensionInstances.set(extId, instance);
 
           // Creates the extension's view of the host's DI container, before
@@ -1115,6 +1125,14 @@ export class ExtensionLoader {
 
   getInstanceById(extId: LensExtensionId) {
     return this.dependencies.extensionInstances.get(extId);
+  }
+
+  /**
+   * The ID of the extension `value` is an instance of, when this loader
+   * constructed it, and `undefined` for any other value.
+   */
+  getIdOfConstructedInstance(value: unknown): LensExtensionId | undefined {
+    return typeof value === "object" && value !== null ? this.constructedInstanceIds.get(value) : undefined;
   }
 
   toJSON(): Map<LensExtensionId, InstalledExtension> {

@@ -32,7 +32,7 @@ jobs:
       - name: Set up mise
         uses: jdx/mise-action@v5
         with:
-          version: 2026.10.19 # datasource=github-releases depName=jdx/mise
+          version: 2026.11.7 # datasource=github-releases depName=jdx/mise
           install_args: yq
 
       - name: Check if package version matches
@@ -105,7 +105,7 @@ jobs:
       # SBOM for the vulnerability scan). Stored without the leading "v"
       # because the Renovate manager that bumps it strips the "v" on every
       # bump; it is re-added where this is consumed.
-      SYFT_VERSION: 1.55.0 # datasource=github-releases depName=anchore/syft
+      SYFT_VERSION: 1.57.1 # datasource=github-releases depName=anchore/syft
       # A release builds everything from scratch: turbo runs every task rather
       # than restore its output from a cache, so a stale or broken cache cannot
       # reach a release, such as an unsigned Windows app directory before the
@@ -131,7 +131,7 @@ jobs:
       - name: Set up mise
         uses: jdx/mise-action@v5
         with:
-          version: 2026.10.19 # datasource=github-releases depName=jdx/mise
+          version: 2026.11.7 # datasource=github-releases depName=jdx/mise
           install_args: yq
 
       - name: Setup node
@@ -1008,7 +1008,7 @@ jobs:
       - name: Set up mise
         uses: jdx/mise-action@v5
         with:
-          version: 2026.10.19 # datasource=github-releases depName=jdx/mise
+          version: 2026.11.7 # datasource=github-releases depName=jdx/mise
           install_args: yq
 
       - name: Download runtime package lists

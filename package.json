@@ -20,7 +20,7 @@
   ],
   "scripts": {
     "asar": "pnpm dlx @electron/asar@4.3.1",
-    "biome": "pnpm dlx @biomejs/biome@2.6.4",
+    "biome": "pnpm dlx @biomejs/biome@2.6.6",
     "biome:check": "pnpm biome check",
     "biome:fix": "pnpm biome check --fix",
     "biome:migrate": "pnpm biome migrate --write",
@@ -38,15 +38,15 @@
     "build:resources": "turbo run build:resources build:binaries --",
     "bump-version": "pnpm -r version --no-commit-hooks --no-git-checks --no-git-tag-version",
     "clean": "pnpm run clean:dist && pnpm purge",
-    "clean:cache": "pnpm dlx rimraf@6.1.3 .cache",
-    "clean:dist": "pnpm dlx rimraf@6.1.3 .rimraf-dlx-warmup && pnpm -r run clean:dist",
-    "clean:turbo": "pnpm dlx rimraf@6.1.3 .turbo",
+    "clean:cache": "pnpm dlx rimraf@6.1.4 .cache",
+    "clean:dist": "pnpm dlx rimraf@6.1.4 .rimraf-dlx-warmup && pnpm -r run clean:dist",
+    "clean:turbo": "pnpm dlx rimraf@6.1.4 .turbo",
     "compute-versions": "pnpm -r compute-versions",
     "update-binaries-lock": "pnpm -r update-binaries-lock",
     "update-kubectl-checksums": "pnpm -r update-kubectl-checksums",
     "dev": "turbo run dev --parallel --",
     "fmt": "pnpm trunk fmt",
-    "knip": "pnpm dlx knip@6.41.0 --dependencies --no-gitignore --no-config-hints",
+    "knip": "pnpm dlx knip@6.45.1 --dependencies --no-gitignore --no-config-hints",
     "knip:check": "pnpm \"/^knip:(development|production)\\$/\"",
     "knip:development": "pnpm knip --files",
     "knip:production": "pnpm knip --production --strict",
@@ -81,7 +81,7 @@
     "vite": "catalog:",
     "vitest": "catalog:"
   },
-  "packageManager": "pnpm@12.16.1+sha512.091d1dee7927575661b25dab3c2ae31cafc1c54d6b71ed6a6600cf0c1cb10434a447eae14015f1b23e2e6bedeed79df94a932e2164d2832280dce3fb32f656d1",
+  "packageManager": "pnpm@12.18.0+sha512.9d7882d5dc82147ecfc4e062aa34834e0ad0296710a1837a1115ae012127d36b7109e321ac1598a1dd0a65597681b1e99917e12ed0d749eae91187943363beb3",
   "engines": {
     "node": ">=24.0.0"
   }

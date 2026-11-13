@@ -21,20 +21,21 @@ workflows — is
 [freelens-example-extension](https://github.com/freelensapp/freelens-example-extension).
 Start from it rather than rediscovering them.
 
-To port with a coding agent, the template ships the
-[`port-freelens-extension-to-v2`](https://github.com/freelensapp/freelens-example-extension/blob/main/skills/port-freelens-extension-to-v2/SKILL.md)
-skill, in the [Agent Skills](https://agentskills.io/specification) format.
-Install it into the extension's repository:
+To port with a coding agent, the `freelens` plugin of Claude Code in this
+repository has the
+[`port-extension-to-v2`](../../plugins/freelens/skills/port-extension-to-v2/SKILL.md)
+skill, in the [Agent Skills](https://agentskills.io/specification) format,
+which other agents read too:
 
 ```sh
-npx skills add freelensapp/freelens-example-extension --skill port-freelens-extension-to-v2
+claude plugin marketplace add freelensapp/freelens --sparse .claude-plugin plugins
+claude plugin install freelens@freelens
 ```
 
 The skill holds the workflow of the port and follows this guide, which it links
 to for every API change; it does not replace it. For a new extension, the
-template's
-[`create-freelens-extension`](https://github.com/freelensapp/freelens-example-extension/blob/main/skills/create-freelens-extension/SKILL.md)
-skill starts one from a copy of the template.
+[`create-extension`](../../plugins/freelens/skills/create-extension/SKILL.md)
+skill of the same plugin starts one from a copy of the template.
 
 ## Step one: bump `engines.freelens`
 
@@ -718,11 +719,11 @@ moved between `Common`, `Main`, and `Renderer`.
 
 This is what each namespace provides in v2:
 
-| Namespace  | Members                                                                                                                                                                              |
-| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `Common`   | `App`, `Catalog`, `Clusters`, `EventBus`, `Proxy`, `Store`, `Types`, `Util`, `logger`; types `InstalledExtension`, `LensExtension`, `LensExtensionManifest`, `Logger`, `PackageJson` |
-| `Main`     | `Catalog`, `Ipc`, `K8s`, `K8sApi`, `LensExtension`, `Navigation`, `Power`, `Shell`, `Util`                                                                                           |
-| `Renderer` | `Catalog`, `Component`, `Ipc`, `K8s`, `K8sApi`, `LensExtension`, `Navigation`, `Theme`, `Util`                                                                                       |
+| Namespace  | Members                                                                                                                                                                                                                     |
+| ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Common`   | `App`, `Catalog`, `Clusters`, `Credentials`, `EventBus`, `Proxy`, `Store`, `Types`, `Util`, `logger`; types `ExtensionCredentials`, `InstalledExtension`, `LensExtension`, `LensExtensionManifest`, `Logger`, `PackageJson` |
+| `Main`     | `Catalog`, `Ipc`, `K8s`, `K8sApi`, `LensExtension`, `Navigation`, `Power`, `Shell`, `Util`                                                                                                                                  |
+| `Renderer` | `Catalog`, `Component`, `Ipc`, `K8s`, `K8sApi`, `LensExtension`, `Navigation`, `Theme`, `Util`                                                                                                                              |
 
 **If a symbol is not reachable through one of those, it is not reachable at
 all.** Every other `@freelensapp/*` package is private and is inlined into the
@@ -1575,7 +1576,7 @@ the renderer:
 | ---------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `node:crypto` hashing                                                                                                  | `Util.sha256Hex` (synchronous SHA-256), `Util.createReactKey` for a React `key`, or Web Crypto `crypto.subtle.digest` where asynchronous is fine |
 | `node:crypto` `randomUUID()` / `randomBytes(n)`                                                                        | `globalThis.crypto.randomUUID()` / `globalThis.crypto.getRandomValues(new Uint8Array(n))`, with no import                                        |
-| `crypto.X509Certificate`                                                                                               | main plus `Ipc`; there is no web equivalent                                                                                                      |
+| `crypto.X509Certificate`                                                                                               | `Renderer.Component.SecretCertificates` to show the certificates of a secret; otherwise main plus `Ipc`, as there is no web equivalent           |
 | `http` / `https`                                                                                                       | `fetch`                                                                                                                                          |
 | `electron` `ipcRenderer`                                                                                               | `Renderer.Ipc`                                                                                                                                   |
 | `electron` `clipboard`                                                                                                 | `navigator.clipboard.writeText()` / `readText()`, which return Promises; Electron 44 removes `clipboard` from the renderer                       |
@@ -1810,6 +1811,101 @@ unaffected and stays. It is the virtualized table the resource views use, it
 persists its sort order in the URL, and it expects items with a `getId()` /
 `getName()` shape — a different tool than `List` was, but the right one if your
 rows are Kubernetes objects.
+
+## `logTabStore.createWorkloadTab` opens a combined logs tab
+
+`Renderer.Component.logTabStore.createWorkloadTab({ workload })` keeps its
+signature and changes what it opens. In v1 the tab showed the logs of
+the first pod of the workload, with the other pods in a dropdown. In v2 it
+shows the logs of all the pods of the workload, merged in chronological order
+and tagged with the name of their pod, and it follows the workload: the pods
+are read again at every refresh, so a rollout or a scale does not leave the
+tab on pods that are gone.
+
+What to check in an extension that calls it:
+
+- The title of the tab is the workload (`Deployment my-app`), no longer its
+  first pod.
+- The tab reads at most 20 pods of the workload by default, the first ones
+  by name. The user sets the number, from 1 to 100, in Preferences >
+  Kubernetes > Logs.
+- `logTabStore.createPodTab` is unchanged, and is the one to call for the logs
+  of a single pod.
+
+## `Renderer.Component.SecretCertificates` shows the certificates of a secret
+
+An extension that shows a secret holding PEM certificates, the secret behind a
+`certSecretRef` or a `tls` section for one, renders the same certificate
+section as the host's secret details with one component, and needs no parser
+or `Ipc` of its own:
+
+```tsx
+import { Renderer } from "@freelensapp/extensions";
+
+const { SecretCertificates } = Renderer.Component;
+
+export const MyCertificates = ({ secret }: { secret: Renderer.K8sApi.Secret }) => (
+  <SecretCertificates data={secret.data} />
+);
+```
+
+- `data` is the data of the secret as the API returns it, every value base64
+  encoded, as in `Secret.data`. It is the one prop.
+- The component finds the `-----BEGIN CERTIFICATE-----` blocks in the values
+  and sends only those blocks to the host's main process, which parses them.
+  A private key or any other value next to a certificate never leaves the
+  renderer.
+- For each certificate it shows the subject, the issuer, the DNS names and IP
+  addresses, the serial number and the validity, titled with its key, or with
+  `key (n/m)` for each certificate of a chain under one key. A block that does
+  not parse is left out, and the certificates next to it are still shown.
+- It renders nothing while no value holds a certificate that parses, so it can
+  be placed unconditionally.
+- When `data` changes, it parses the certificates again only if the
+  certificate blocks changed, and a response to an older request is ignored.
+- It renders under the global class `SecretCertificates`, which a stylesheet
+  of the extension may target (see [Styling and CSS](#styling-and-css)).
+
+The props are the contract. The parsed certificate data and the request to
+main are internal to the host and are not exported.
+
+## `Common.Credentials` for tokens and passwords
+
+`Common.Store.ExtensionStore` writes its model to a plain JSON file in the user
+data directory. A token, a password or an API key kept there is on disk in
+clear text: in backups, in a copied profile, readable by other accounts with
+access to the disk. Keep such a value in the extension's credentials instead,
+which encrypts it with Electron's `safeStorage`:
+
+```ts
+import { Common, Renderer } from "@freelensapp/extensions";
+
+export default class MyExtension extends Renderer.LensExtension {
+  private readonly credentials = Common.Credentials.forExtension(this);
+
+  async saveToken(token: string) {
+    if (!(await this.credentials.isAvailable())) {
+      throw new Error("This system has no secret store to keep the token in");
+    }
+
+    await this.credentials.set("api-token", token);
+  }
+}
+```
+
+- Pass the extension instance, `this`; the host derives the scope from it.
+- The methods are asynchronous in both processes, and every one of them but
+  `isAvailable()` rejects when the system has no secret store. There is no
+  fallback to clear text, so handle `false` rather than assume the value was
+  kept.
+- The values are removed when the extension is uninstalled, and kept when it
+  is disabled.
+- A value already in an `ExtensionStore` stays there until the extension moves
+  it: read it from the store, `set` it in the credentials, and remove it from
+  the store.
+
+The guarantee, its limits and the failure modes are in
+[`Credentials` keeps an extension's values encrypted at rest](./api.md#credentials-keeps-an-extensions-values-encrypted-at-rest).
 
 ## Chart.js v4 (`Renderer.Component.BarChart` / `PieChart`)
 
