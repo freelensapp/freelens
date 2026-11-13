@@ -13,7 +13,7 @@ import { loggerInjectionToken } from "@freelensapp/logger";
 import { showCheckedErrorNotificationInjectable, showSuccessNotificationInjectable } from "@freelensapp/notifications";
 import { base64, toggle } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { autorun, observable } from "mobx";
+import { observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import { SecretCertificates } from "../../../features/secret-certificates/renderer/secret-certificates";
@@ -38,7 +38,6 @@ interface Dependencies {
 
 @observer
 class NonInjectedSecretDetails extends React.Component<SecretDetailsProps & Dependencies> {
-  private readonly disposers: (() => void)[] = [];
   @observable accessor isSaving = false;
   @observable accessor data: Partial<Record<string, string>> = {};
   @observable accessor revealSecret = observable.set<string>();
@@ -48,22 +47,24 @@ class NonInjectedSecretDetails extends React.Component<SecretDetailsProps & Depe
   }
 
   componentDidMount() {
-    // Capture the object before the autorun: mobx-react 9 forbids reading
-    // this.props inside a derivation (the autorun below).
-    const { object: secret } = this.props;
-
-    this.disposers.push(
-      autorun(() => {
-        if (secret) {
-          this.data = secret.data;
-          this.revealSecret.clear();
-        }
-      }),
-    );
+    this.showData();
   }
 
-  componentWillUnmount() {
-    this.disposers.forEach((dispose) => dispose());
+  componentDidUpdate(prevProps: SecretDetailsProps & Dependencies) {
+    // The store builds a new object for every change of the secret in the
+    // cluster, while the drawer keeps this component: show the newest data.
+    if (prevProps.object !== this.props.object) {
+      this.showData();
+    }
+  }
+
+  private showData() {
+    const { object: secret } = this.props;
+
+    if (secret) {
+      this.data = secret.data;
+      this.revealSecret.clear();
+    }
   }
 
   saveSecret = () => {

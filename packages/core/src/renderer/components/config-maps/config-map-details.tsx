@@ -11,7 +11,7 @@ import { ConfigMap } from "@freelensapp/kube-object";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { showErrorNotificationInjectable, showSuccessNotificationInjectable } from "@freelensapp/notifications";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { autorun, observable } from "mobx";
+import { observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import { DrawerTitle } from "../drawer";
@@ -35,7 +35,6 @@ interface Dependencies {
 
 @observer
 class NonInjectedConfigMapDetails extends React.Component<ConfigMapDetailsProps & Dependencies> {
-  private readonly disposers: (() => void)[] = [];
   @observable accessor isSaving = false;
   @observable accessor data = observable.map<string, string | undefined>();
 
@@ -44,21 +43,23 @@ class NonInjectedConfigMapDetails extends React.Component<ConfigMapDetailsProps 
   }
 
   componentDidMount() {
-    // Capture the object before the autorun: mobx-react 9 forbids reading
-    // this.props inside a derivation (the autorun below).
-    const { object: configMap } = this.props;
-
-    this.disposers.push(
-      autorun(() => {
-        if (configMap) {
-          this.data.replace(configMap.data); // refresh
-        }
-      }),
-    );
+    this.showData();
   }
 
-  componentWillUnmount() {
-    this.disposers.forEach((dispose) => dispose());
+  componentDidUpdate(prevProps: ConfigMapDetailsProps & Dependencies) {
+    // The store builds a new object for every change of the config map in the
+    // cluster, while the drawer keeps this component: show the newest data.
+    if (prevProps.object !== this.props.object) {
+      this.showData();
+    }
+  }
+
+  private showData() {
+    const { object: configMap } = this.props;
+
+    if (configMap) {
+      this.data.replace(configMap.data);
+    }
   }
 
   save = () => {

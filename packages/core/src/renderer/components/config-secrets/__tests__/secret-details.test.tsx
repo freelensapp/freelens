@@ -39,13 +39,13 @@ const privateKey = `-----BEGIN PRIVATE KEY-----
 not a real key
 -----END PRIVATE KEY-----`;
 
-function getSecret(type: SecretType, data: Partial<Record<string, string>>) {
+function getSecret(type: SecretType, data: Partial<Record<string, string>>, resourceVersion = "1") {
   return new Secret({
     apiVersion: "v1",
     kind: "secret",
     metadata: {
       name: "test",
-      resourceVersion: "1",
+      resourceVersion,
       uid: "uid",
       namespace: "default",
       selfLink: "/api/v1/secrets/default/test",
@@ -88,6 +88,22 @@ describe("SecretDetails tests", () => {
     const result = render(<SecretDetails object={getSecret(SecretType.Opaque, { foobar: "" })} />);
 
     expect(result.getByTestId("foobar-secret-entry").querySelector(".Icon")).toBeDefined();
+  });
+
+  it("shows the data of the newest object when the secret changes in the cluster", () => {
+    const result = render(
+      <SecretDetails object={getSecret(SecretType.Opaque, { password: base64.encode("hunter2") })} />,
+    );
+
+    // The store builds a new object for every change that comes from the watch.
+    result.rerender(
+      <SecretDetails
+        object={getSecret(SecretType.Opaque, { password: base64.encode("hunter3"), user: base64.encode("admin") }, "2")}
+      />,
+    );
+
+    expect(result.getByTestId("password-secret-entry").querySelector("textarea")).toHaveValue(base64.encode("hunter3"));
+    expect(result.getByTestId("user-secret-entry").querySelector("textarea")).toHaveValue(base64.encode("admin"));
   });
 
   it("shows what is in a certificate stored in the secret", async () => {
