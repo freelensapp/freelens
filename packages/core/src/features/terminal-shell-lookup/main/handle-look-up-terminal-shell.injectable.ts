@@ -20,7 +20,11 @@ const handleLookUpTerminalShellInjectable = getRequestChannelListenerInjectable(
     lookUpTerminalShell(setting, {
       defaultShell: di.inject(defaultShellInjectable),
       isWindows: di.inject(isWindowsInjectable),
-      // The PATH of Freelens, which already holds the one of the login shell (shell-sync)
+      // The PATH of the Freelens process, which shell-sync set at startup from the shell configured then: the hint says
+      // whether the shell is found on it. A terminal looks the shell up on the PATH of the environment it computes for
+      // the shell it starts, which can differ: after the setting changed to a shell whose startup files set another
+      // PATH, in the Snap package, where shell-sync does not merge the PATH into the process, and in a cluster terminal
+      // whose PATH an extension changes. Computing that environment here can take up to 30 seconds, too slow for a hint.
       env: di.inject(processEnvInjectable),
       stat: di.inject(statInjectable),
       accessPath: di.inject(accessPathInjectable),

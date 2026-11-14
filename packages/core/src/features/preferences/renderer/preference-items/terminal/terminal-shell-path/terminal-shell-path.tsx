@@ -6,7 +6,7 @@
 
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import defaultShellInjectable from "../../../../../../common/vars/default-shell.injectable";
 import { Input } from "../../../../../../renderer/components/input";
 import { SubTitle } from "../../../../../../renderer/components/layout/sub-title";
@@ -25,30 +25,51 @@ interface Dependencies {
 
 const NonInjectedTerminalShellPath = observer(({ state, defaultShell, requestTerminalShellLookup }: Dependencies) => {
   const [lookup, setLookup] = useState<TerminalShellLookup>();
+  // Terminals start the default shell of main when the setting is empty, and the renderer cannot compute it: it does
+  // not have the SHELL of main. The default shell of the renderer stands in for it until main answers.
+  const [placeholder, setPlaceholder] = useState(defaultShell);
   // Only the answer to the latest lookup is shown, whatever order the answers come back in
   const latestLookup = useRef(0);
 
+  const requestLookup = async (setting: string) => {
+    try {
+      const result = await requestTerminalShellLookup(setting);
+
+      if (!setting) {
+        setPlaceholder(result.shell);
+      }
+
+      return result;
+    } catch {
+      return undefined;
+    }
+  };
+
   const lookUpShell = async () => {
     const thisLookup = ++latestLookup.current;
-    let result: TerminalShellLookup | undefined;
-
-    try {
-      result = await requestTerminalShellLookup(state.shell ?? "");
-    } catch {
-      result = undefined;
-    }
+    const result = await requestLookup(state.shell ?? "");
 
     if (thisLookup === latestLookup.current) {
       setLookup(result);
     }
   };
 
+  useEffect(() => {
+    // A setting that is already broken shows its warning as soon as the section opens. The lookup of an empty
+    // setting also gives the default shell of main; for another setting it is asked for apart.
+    void lookUpShell();
+
+    if (state.shell) {
+      void requestLookup("");
+    }
+  }, []);
+
   return (
     <section id="shell">
       <SubTitle title="Terminal Shell Path" />
       <Input
         theme="round-black"
-        placeholder={defaultShell}
+        placeholder={placeholder}
         value={state.shell ?? ""}
         onChange={(value) => (state.shell = value)}
         onBlur={() => void lookUpShell()}
