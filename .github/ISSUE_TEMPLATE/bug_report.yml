@@ -44,7 +44,7 @@ body:
   - type: input
     id: freelens-version
     attributes:
-      label: Freelens version
+      label: ProLens version
     validations:
       required: true
 
@@ -69,7 +69,7 @@ body:
   - type: input
     id: kuernetes-version
     attributes:
-      label: Kubernetes cluster version used with Freelens
+      label: Kubernetes cluster version used with ProLens
       description: |
         e.g. 1.33.0
     validations:

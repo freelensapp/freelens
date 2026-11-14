@@ -1,22 +1,22 @@
 {
   "name": "freelens",
-  "version": "2.0.1-0",
+  "version": "1.0.0",
   "private": true,
-  "description": "ProLens - Free IDE for Kubernetes",
+  "description": "ProLens - Kubernetes IDE",
   "keywords": [],
-  "homepage": "https://freelens.app",
+  "homepage": "https://github.com/chago1991/prolens",
   "bugs": {
-    "url": "https://github.com/freelensapp/freelens/issues"
+    "url": "https://github.com/chago1991/prolens/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/freelensapp/freelens.git"
+    "url": "git+https://github.com/chago1991/prolens.git"
   },
   "license": "MIT",
   "type": "module",
   "author": {
-    "name": "Freelens Authors",
-    "email": "freelens@freelens.app"
+    "name": "ProLens Authors",
+    "url": "https://github.com/chago1991/prolens"
   },
   "main": "static/build/main.js",
   "scripts": {
@@ -31,7 +31,7 @@
     "build:dev": "NODE_ENV=development electron-vite build",
     "build:resources": "pnpm \"/^build:resources:/\"",
     "build:resources:license": "generate-license --prod --header license-header.txt --output static/build/license.txt",
-    "build:resources:tray": "generate-tray-icons --output static/build/tray --input @freelensapp/icon/icons/logo-lens.svg --notice-icon @freelensapp/icon/icons/notice.svg --spinner-icon @freelensapp/icon/icons/arrow-spinner.svg --none-color fbfbfb",
+    "build:resources:tray": "generate-tray-icons --output static/build/tray --input @freelensapp/icon/icons/logo-prolens.svg --notice-icon @freelensapp/icon/icons/notice.svg --spinner-icon @freelensapp/icon/icons/arrow-spinner.svg --none-color fbfbfb",
     "clean:dist": "pnpm dlx rimraf@6.1.4 binaries dist static/build",
     "preupdate-binaries-lock": "pnpm --filter @freelensapp/ensure-binaries build",
     "update-binaries-lock": "update-binaries-lock --package package.json",
@@ -142,6 +142,6 @@
   "engines": {
     "node": "^24.0.0"
   },
-  "copyright": "© 2024-2026 Freelens Authors",
+  "copyright": "© 2024-2026 Freelens Authors, © 2026 ProLens Authors",
   "productName": "ProLens"
 }
