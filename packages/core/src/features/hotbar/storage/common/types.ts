@@ -10,15 +10,39 @@ export interface HotbarItem {
     name: string;
     source?: string;
   };
+  /**
+   * A name shown for the entity in the hotbar instead of its own name. It only
+   * lives in the hotbar, the entity itself is not renamed.
+   */
+  displayName?: string;
   params?: {
     [key: string]: string;
   };
 }
 
+export interface HotbarFolder {
+  id: string;
+  name: string;
+  items: HotbarItem[];
+}
+
+/**
+ * A single hotbar cell that groups several entities, so that one cell can hold
+ * the clusters of a whole project.
+ */
+export interface HotbarFolderItem {
+  folder: HotbarFolder;
+}
+
+export type HotbarCellItem = HotbarItem | HotbarFolderItem;
+
+export const isHotbarFolderItem = (item: HotbarCellItem | null | undefined): item is HotbarFolderItem =>
+  !!item && "folder" in item;
+
 export interface CreateHotbarData {
   id?: string;
   name: string;
-  items?: (HotbarItem | null)[];
+  items?: (HotbarCellItem | null)[];
 }
 
 export interface CreateHotbarOptions {
