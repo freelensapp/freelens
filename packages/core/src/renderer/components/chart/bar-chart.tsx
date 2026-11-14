@@ -25,6 +25,11 @@ export interface BarChartProps extends ChartProps {
   name?: string;
   minTime?: number; // Minimum timestamp (unix seconds) for x-axis
   maxTime?: number; // Maximum timestamp (unix seconds) for x-axis
+  /**
+   * Step (seconds) of the range query that returned the data, used to detect
+   * periods without samples. When missing it is inferred from the samples.
+   */
+  step?: number;
 }
 
 const getBarColor = ({ dataset }: ScriptableContext<"bar" | "line">): string =>
@@ -120,6 +125,97 @@ const getTimeBucketAndLabel = (timestamp: string | number, timeRangeSeconds: num
   };
 };
 
+interface TimePoint {
+  x: number;
+  y: number | string | null;
+}
+
+const isTimePoint = (point: unknown): point is TimePoint =>
+  isObject(point) && "x" in point && typeof point.x === "number" && Number.isFinite(point.x);
+
+/**
+ * Returns the sampling step (in milliseconds) of the given datasets: the
+ * smallest distance between two consecutive samples. Prometheus range queries
+ * return samples on a fixed `start + n * step` grid, so this is the query step
+ * unless every single sample is isolated by a gap.
+ */
+const getSampleStepMs = (datasets: ReadonlyArray<{ data?: unknown[] }>): number | undefined => {
+  let step: number | undefined;
+
+  for (const { data = [] } of datasets) {
+    for (let i = 1; i < data.length; i++) {
+      const previous = data[i - 1];
+      const current = data[i];
+
+      if (!isTimePoint(previous) || !isTimePoint(current)) {
+        continue;
+      }
+
+      const distance = current.x - previous.x;
+
+      if (distance > 0 && (step === undefined || distance < step)) {
+        step = distance;
+      }
+    }
+  }
+
+  return step;
+};
+
+// A missing sample on the step grid makes two neighbours 2 steps apart, so
+// anything above 1.5 steps means at least one evaluation had no data.
+const GAP_THRESHOLD_IN_STEPS = 1.5;
+
+/**
+ * Inserts a `null` point after each sample that is followed by a gap, so that
+ * Chart.js breaks the line (and its filled area) instead of joining samples
+ * across periods without data, the same way Grafana shows them.
+ *
+ * With `holdValue` (stepped lines) the sample is first held for one step, as
+ * stepped lines do between contiguous samples; otherwise a sample isolated by
+ * gaps on both sides would not be drawn at all. For the same reason the last
+ * sample is held for one step when it follows a gap.
+ */
+export const insertGapsInTimeSeries = <T,>(
+  data: T[],
+  stepMs: number | undefined,
+  holdValue = false,
+): Array<T | TimePoint> => {
+  if (!stepMs || data.length < 2) {
+    return data;
+  }
+
+  const result: Array<T | TimePoint> = [];
+
+  data.forEach((point, index) => {
+    result.push(point);
+
+    const next = data[index + 1];
+
+    if (isTimePoint(point) && isTimePoint(next) && next.x - point.x > stepMs * GAP_THRESHOLD_IN_STEPS) {
+      if (holdValue) {
+        result.push({ x: point.x + stepMs, y: point.y });
+      }
+
+      result.push({ x: point.x + stepMs, y: null });
+    }
+  });
+
+  const last = data[data.length - 1];
+  const beforeLast = data[data.length - 2];
+
+  if (
+    holdValue &&
+    isTimePoint(last) &&
+    isTimePoint(beforeLast) &&
+    last.x - beforeLast.x > stepMs * GAP_THRESHOLD_IN_STEPS
+  ) {
+    result.push({ x: last.x + stepMs, y: last.y });
+  }
+
+  return result;
+};
+
 const getBarChartTickTimestamp = (tick: string | number | { value: string | number }) => {
   const rawValue = isObject(tick) && "value" in tick ? tick.value : tick;
 
@@ -138,6 +234,7 @@ const NonInjectedBarChart = observer(
     className,
     minTime,
     maxTime,
+    step,
     plugins,
     options: customOptions,
     ...settings
@@ -146,9 +243,15 @@ const NonInjectedBarChart = observer(
     const { datasets: rawDatasets = [], ...rest } = data;
     const timeRangeSeconds = maxTime && minTime ? maxTime - minTime : 3600;
     const timeUnit = getBarChartTimeUnit(timeRangeSeconds);
-    const inferredStepSeconds = rawDatasets[0]?.data?.length
-      ? Math.max(Math.floor(timeRangeSeconds / rawDatasets[0].data.length), 1)
-      : 60;
+    // Without the query step, the smallest distance between samples is used: it is
+    // the step unless every sample is isolated by a gap (e.g. a few minutes of data
+    // in a long range), so callers that know the step should pass it.
+    const sampleStepMs = step && step > 0 ? step * 1000 : getSampleStepMs(rawDatasets);
+    const inferredStepSeconds = sampleStepMs
+      ? Math.max(Math.floor(sampleStepMs / 1000), 1)
+      : rawDatasets[0]?.data?.length
+        ? Math.max(Math.floor(timeRangeSeconds / rawDatasets[0].data.length), 1)
+        : 60;
     const useSteppedStyle = inferredStepSeconds >= ONE_HOUR_SECONDS || timeRangeSeconds >= ONE_DAY_SECONDS;
 
     const datasets = rawDatasets
@@ -165,6 +268,7 @@ const NonInjectedBarChart = observer(
         fill: useSteppedStyle,
         backgroundColor: useSteppedStyle ? getBarColor({ dataset: item } as never) : undefined,
         ...item,
+        data: insertGapsInTimeSeries(item.data ?? [], sampleStepMs, useSteppedStyle),
       }));
 
     plugins ??= [

@@ -33,7 +33,7 @@ const convertVolumeClaimMetricValuesToChartData = (values: Array<[number, string
 const NonInjectedVolumeClaimDiskChart = observer(
   ({ activeTheme, selectedMetricsTimeRange }: Dependencies & VolumeClaimDiskChartProps) => {
     const { metrics, tab, object } = useContext(ResourceMetricsContext) ?? {};
-    const { start: minTime, end: maxTime } = selectedMetricsTimeRange.timestamps.get();
+    const { start: minTime, end: maxTime, step } = selectedMetricsTimeRange.timestamps.get();
 
     if (!metrics || !object || !tab) return null;
     if (isMetricsEmpty(metrics)) return <NoMetrics />;
@@ -69,6 +69,7 @@ const NonInjectedVolumeClaimDiskChart = observer(
         data={{ datasets }}
         minTime={minTime}
         maxTime={maxTime}
+        step={step}
       />
     );
   },

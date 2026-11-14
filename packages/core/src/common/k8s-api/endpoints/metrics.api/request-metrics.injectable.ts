@@ -7,6 +7,7 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import { getSecondsFromUnixEpoch } from "../../../utils/date/get-current-date-time";
 import apiBaseInjectable from "../../api-base.injectable";
+import { calculateAdaptiveStep } from "./adaptive-step";
 
 import type { MetricData } from "../metrics.api";
 
@@ -75,27 +76,6 @@ function normalizeTimestampToUnixSeconds(value: number | string | undefined): nu
   return Math.floor(milliseconds / 1000);
 }
 
-/**
- * Calculate adaptive step based on time range to avoid excessive data points.
- * The policy favors UI responsiveness for large ranges by aggressively downsampling.
- *
- * @param rangeSeconds - Time range in seconds
- * @returns Appropriate step in seconds
- */
-function calculateAdaptiveStep(rangeSeconds: number): number {
-  const HOUR = 3_600;
-  const DAY = 24 * HOUR;
-
-  // Keep point count bounded as time range grows.
-  if (rangeSeconds <= 4 * HOUR) return 60; // 1m  (max ~240 pts)
-  if (rangeSeconds <= DAY) return 10 * 60; // 10m (max ~144 pts)
-  if (rangeSeconds <= 4 * DAY) return HOUR; // 1h
-  if (rangeSeconds <= 14 * DAY) return 3 * HOUR; // 3h
-  if (rangeSeconds <= 30 * DAY) return 6 * HOUR; // 6h
-
-  return 12 * HOUR; // > 30d
-}
-
 const requestMetricsInjectable = getInjectable({
   id: "request-metrics",
   instantiate: (di): RequestMetrics => {
@@ -143,6 +123,14 @@ const requestMetricsInjectable = getInjectable({
       // Use adaptive step if not explicitly provided
       if (step === undefined) {
         step = calculateAdaptiveStep(actualRange);
+      }
+
+      // Prometheus evaluates range queries at `start + n * step`. When the range
+      // is not a multiple of the step the last evaluation falls before `end`, and
+      // up to one step of the newest data is missing (or everything, for objects
+      // younger than that). Move `start` back so that `end` is an evaluation point.
+      if (typeof start === "number" && typeof end === "number" && step > 0 && end > start) {
+        start = end - Math.ceil((end - start) / step) * step;
       }
 
       const requestKey = JSON.stringify({
