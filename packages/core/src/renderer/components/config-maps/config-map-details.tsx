@@ -11,6 +11,7 @@ import { ConfigMap } from "@freelensapp/kube-object";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { showErrorNotificationInjectable, showSuccessNotificationInjectable } from "@freelensapp/notifications";
 import { withInjectables } from "@ogre-tools/injectable-react";
+import { isEqual } from "es-toolkit";
 import { observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
@@ -48,8 +49,10 @@ class NonInjectedConfigMapDetails extends React.Component<ConfigMapDetailsProps 
 
   componentDidUpdate(prevProps: ConfigMapDetailsProps & Dependencies) {
     // The store builds a new object for every change of the config map in the
-    // cluster, while the drawer keeps this component: show the newest data.
-    if (prevProps.object !== this.props.object) {
+    // cluster, a change of its metadata only included, while the drawer keeps
+    // this component. Show the newest data when the data changed, and keep the
+    // unsaved edits when it did not.
+    if (!isEqual(prevProps.object?.data, this.props.object?.data)) {
       this.showData();
     }
   }

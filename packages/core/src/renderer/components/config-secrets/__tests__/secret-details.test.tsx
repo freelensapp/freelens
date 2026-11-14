@@ -39,7 +39,12 @@ const privateKey = `-----BEGIN PRIVATE KEY-----
 not a real key
 -----END PRIVATE KEY-----`;
 
-function getSecret(type: SecretType, data: Partial<Record<string, string>>, resourceVersion = "1") {
+function getSecret(
+  type: SecretType,
+  data: Partial<Record<string, string>>,
+  resourceVersion = "1",
+  annotations?: Partial<Record<string, string>>,
+) {
   return new Secret({
     apiVersion: "v1",
     kind: "secret",
@@ -49,6 +54,7 @@ function getSecret(type: SecretType, data: Partial<Record<string, string>>, reso
       uid: "uid",
       namespace: "default",
       selfLink: "/api/v1/secrets/default/test",
+      annotations,
     },
     data,
     type,
@@ -100,6 +106,38 @@ describe("SecretDetails tests", () => {
       <SecretDetails
         object={getSecret(SecretType.Opaque, { password: base64.encode("hunter3"), user: base64.encode("admin") }, "2")}
       />,
+    );
+
+    expect(result.getByTestId("password-secret-entry").querySelector("textarea")).toHaveValue(base64.encode("hunter3"));
+    expect(result.getByTestId("user-secret-entry").querySelector("textarea")).toHaveValue(base64.encode("admin"));
+  });
+
+  it("keeps an unsaved edit and the shown values when only the metadata of the secret changes in the cluster", () => {
+    const data = { password: base64.encode("hunter2"), user: base64.encode("admin") };
+    const result = render(<SecretDetails object={getSecret(SecretType.Opaque, data)} />);
+
+    fireEvent.click(result.getByTestId("user-secret-entry").querySelector(".Icon") as HTMLElement);
+    fireEvent.change(result.getByTestId("password-secret-entry").querySelector("textarea") as HTMLTextAreaElement, {
+      target: { value: base64.encode("edited") },
+    });
+    result.rerender(
+      <SecretDetails object={getSecret(SecretType.Opaque, { ...data }, "2", { "example.com/touched": "yes" })} />,
+    );
+
+    expect(result.getByTestId("password-secret-entry").querySelector("textarea")).toHaveValue(base64.encode("edited"));
+    expect(result.getByTestId("user-secret-entry").querySelector("textarea")).toHaveValue("admin");
+  });
+
+  it("replaces an unsaved edit and hides the shown values when the data of the secret changes in the cluster", () => {
+    const data = { password: base64.encode("hunter2"), user: base64.encode("admin") };
+    const result = render(<SecretDetails object={getSecret(SecretType.Opaque, data)} />);
+
+    fireEvent.click(result.getByTestId("user-secret-entry").querySelector(".Icon") as HTMLElement);
+    fireEvent.change(result.getByTestId("password-secret-entry").querySelector("textarea") as HTMLTextAreaElement, {
+      target: { value: base64.encode("edited") },
+    });
+    result.rerender(
+      <SecretDetails object={getSecret(SecretType.Opaque, { ...data, password: base64.encode("hunter3") }, "2")} />,
     );
 
     expect(result.getByTestId("password-secret-entry").querySelector("textarea")).toHaveValue(base64.encode("hunter3"));

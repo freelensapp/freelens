@@ -4,6 +4,7 @@
  */
 
 import { ConfigMap } from "@freelensapp/kube-object";
+import { fireEvent } from "@testing-library/react";
 import { beforeEach, describe, expect, it } from "vitest";
 import directoryForKubeConfigsInjectable from "../../../../common/app-paths/directory-for-kube-configs/directory-for-kube-configs.injectable";
 import directoryForUserDataInjectable from "../../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
@@ -16,7 +17,11 @@ import { ConfigMapDetails } from "../config-map-details";
 
 import type { DiRender } from "../../test-utils/renderFor";
 
-function getConfigMap(resourceVersion: string, data: Partial<Record<string, string>>) {
+function getConfigMap(
+  resourceVersion: string,
+  data: Partial<Record<string, string>>,
+  annotations?: Partial<Record<string, string>>,
+) {
   return new ConfigMap({
     apiVersion: "v1",
     kind: "ConfigMap",
@@ -26,6 +31,7 @@ function getConfigMap(resourceVersion: string, data: Partial<Record<string, stri
       uid: "uid",
       namespace: "default",
       selfLink: "/api/v1/namespaces/default/configmaps/test",
+      annotations,
     },
     data,
   });
@@ -68,5 +74,29 @@ describe("ConfigMapDetails", () => {
 
     expect(result.getByTestId("monaco-editor-for-config-map-data-greeting")).toHaveValue("hello-v2");
     expect(result.getByTestId("monaco-editor-for-config-map-data-farewell")).toHaveValue("bye");
+  });
+
+  it("keeps an unsaved edit when only the metadata of the config map changes in the cluster", () => {
+    const result = render(<ConfigMapDetails object={getConfigMap("1", { greeting: "hello-v1" })} />);
+
+    fireEvent.change(result.getByTestId("monaco-editor-for-config-map-data-greeting"), {
+      target: { value: "hello-edited" },
+    });
+    result.rerender(
+      <ConfigMapDetails object={getConfigMap("2", { greeting: "hello-v1" }, { "example.com/touched": "yes" })} />,
+    );
+
+    expect(result.getByTestId("monaco-editor-for-config-map-data-greeting")).toHaveValue("hello-edited");
+  });
+
+  it("replaces an unsaved edit when the data of the config map changes in the cluster", () => {
+    const result = render(<ConfigMapDetails object={getConfigMap("1", { greeting: "hello-v1" })} />);
+
+    fireEvent.change(result.getByTestId("monaco-editor-for-config-map-data-greeting"), {
+      target: { value: "hello-edited" },
+    });
+    result.rerender(<ConfigMapDetails object={getConfigMap("2", { greeting: "hello-v2" })} />);
+
+    expect(result.getByTestId("monaco-editor-for-config-map-data-greeting")).toHaveValue("hello-v2");
   });
 });
