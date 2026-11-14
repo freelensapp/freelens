@@ -12,6 +12,7 @@ import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
 import { ClusterMetricsResourceType } from "../../../common/cluster-types";
+import { AskAiButton } from "../../../features/ai-tools/renderer/ask-ai-button";
 import enabledMetricsInjectable from "../../api/catalog/entity/metrics-enabled.injectable";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
 import eventStoreInjectable from "../events/store.injectable";
@@ -68,6 +69,13 @@ class NonInjectedClusterOverview extends React.Component<Dependencies> {
 
     return (
       <TabLayout scrollable>
+        <div className={styles.askAi}>
+          <AskAiButton
+            label="Ask AI about this cluster"
+            data-testid="ask-ai-about-cluster"
+            getRequest={() => ({ target: { type: "cluster" }, presetId: "cluster-health" })}
+          />
+        </div>
         <div className={styles.ClusterOverview} data-testid="cluster-overview-page">
           {!nodeStore.isLoaded || !eventStore.isLoaded ? (
             <Spinner center />

@@ -7,6 +7,7 @@
 import { beforeApplicationIsLoadingInjectionToken } from "@freelensapp/application";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
+import { branding } from "../../../common/branding";
 import fetchInjectable from "../../../common/fetch/fetch.injectable";
 import { freelensProxyDispatcherInjectionToken } from "../../../common/fetch/freelens-proxy-dispatcher-injection-token";
 import isProductionInjectable from "../../../common/vars/is-production.injectable";
@@ -38,17 +39,17 @@ const setupFreelensProxyInjectable = getInjectable({
       const isProduction = di.inject(isProductionInjectable);
 
       try {
-        logger.info("🔌 Starting Freelens Proxy");
+        logger.info(`🔌 Starting ${branding.productName} Proxy`);
         await freelensProxy.listen(); // freelensProxy.port available
       } catch (error: any) {
-        showErrorPopup("Freelens Error", `Could not start proxy: ${error?.message || "unknown error"}`);
+        showErrorPopup(`${branding.productName} Error`, `Could not start proxy: ${error?.message || "unknown error"}`);
 
         return forceAppExit();
       }
 
       // test proxy connection
       try {
-        logger.info("🔎 Testing Freelens Proxy connection ...");
+        logger.info(`🔎 Testing ${branding.productName} Proxy connection ...`);
         const versionResponse = await fetch(`https://127.0.0.1:${freelensProxyPort.get()}/version`, {
           dispatcher: freelensProxyDispatcher(),
         });
@@ -61,19 +62,19 @@ const setupFreelensProxyInjectable = getInjectable({
           return forceAppExit();
         }
 
-        logger.info("⚡ Freelens Proxy connection OK");
+        logger.info(`⚡ ${branding.productName} Proxy connection OK`);
       } catch (error) {
-        logger.error(`🛑 Freelens Proxy: failed connection test: ${error}`);
+        logger.error(`🛑 ${branding.productName} Proxy: failed connection test: ${error}`);
 
         const hostsPath = isWindows ? "C:\\windows\\system32\\drivers\\etc\\hosts" : "/etc/hosts";
         const message = [
           `Failed connection test: ${error}`,
-          "Check to make sure that no other versions of Freelens are running",
+          `Check to make sure that no other versions of ${branding.productName} are running`,
           `Check ${hostsPath} to make sure that it is clean and that the localhost loopback is at the top and set to 127.0.0.1`,
           "If you have HTTP_PROXY or http_proxy set in your environment, make sure that the localhost and the ipv4 loopback address 127.0.0.1 are added to the NO_PROXY environment variable.",
         ];
 
-        showErrorPopup("Freelens Proxy Error", message.join("\n\n"));
+        showErrorPopup(`${branding.productName} Proxy Error`, message.join("\n\n"));
 
         return forceAppExit();
       }

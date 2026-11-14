@@ -6,6 +6,7 @@
 
 import http2 from "node:http2";
 import net from "node:net";
+import { branding } from "../../common/branding";
 import { apiKubePrefix, apiPrefix } from "../../common/vars";
 import { respondJson, respondText } from "../utils/http-responses";
 import { getBoolean } from "../utils/parse-query";
@@ -23,6 +24,7 @@ import type { SetRequired } from "type-fest";
 import type { EmitAppEvent } from "../../common/app-event-bus/emit-event.injectable";
 import type { SelfSignedCert } from "../../common/certificate/certificate";
 import type { Cluster } from "../../common/cluster/cluster";
+import type { AiSessionGate } from "../../features/ai-tools/main/ai-session-gate.injectable";
 import type { FreelensK8sProxyManager } from "../cluster/freelens-k8s-proxy-manager.injectable";
 import type { Router } from "../router/router";
 import type { ClusterRouteRedirect } from "./cluster-route-redirect";
@@ -53,6 +55,11 @@ interface Dependencies {
   readonly logger: Logger;
   readonly certificate: SelfSignedCert;
   readonly token: FreelensProxyToken;
+  /**
+   * Decides on requests that present an AI session token instead of the
+   * proxy's own (features/ai-tools/main/ai-session-gate.injectable.ts).
+   */
+  readonly aiSessionGate?: AiSessionGate;
 }
 
 /**
@@ -211,7 +218,26 @@ export class FreelensProxy {
         return;
       }
 
-      if (!this.dependencies.token.matches(tokenFromHeaders(req.headers))) {
+      const presentedToken = tokenFromHeaders(req.headers);
+      const hasProxyToken = this.dependencies.token.matches(presentedToken);
+      const isInternal = req.url.startsWith(`${apiPrefix}?`);
+      // The lookup rewrites the `/<clusterId>/…` path of kubectl, so it runs once.
+      let lookedUp: { cluster: Cluster | undefined } | undefined;
+      const lookUpCluster = () => (lookedUp ??= { cluster: this.dependencies.getClusterForRequest(req) }).cluster;
+      // An AI session token reaches the kube api of its own cluster only, and
+      // an upgrade (exec, attach, port-forward) only with the user's approval.
+      const aiSessionDecision = hasProxyToken
+        ? undefined
+        : this.dependencies.aiSessionGate?.({
+            token: presentedToken,
+            cluster: isInternal ? undefined : lookUpCluster(),
+            method: req.method ?? "GET",
+            kubePath:
+              !isInternal && req.url.startsWith(apiKubePrefix) ? req.url.slice(apiKubePrefix.length) : undefined,
+            isUpgrade: true,
+          });
+
+      if (!hasProxyToken && !aiSessionDecision) {
         this.dependencies.logger.warn(`[FREELENS-PROXY]: rejected an upgrade without a valid token`, { url: req.url });
         this.rejectUpgradeForbidden(socket);
 
@@ -223,10 +249,16 @@ export class FreelensProxy {
        * shell request, and a shell can be opened outside of any cluster
        * session. Everything else is a kube-api upgrade and still requires one.
        */
-      const isInternal = req.url.startsWith(`${apiPrefix}?`);
-      const cluster = this.dependencies.getClusterForRequest(req);
+      const cluster = lookUpCluster();
 
       (async () => {
+        if (aiSessionDecision && !(await aiSessionDecision).allowed) {
+          this.dependencies.logger.warn(`[FREELENS-PROXY]: an AI session upgrade was not approved`, { url: req.url });
+          this.rejectUpgradeForbidden(socket);
+
+          return;
+        }
+
         if (isInternal) {
           return this.dependencies.shellApiRequest({ req, socket, head, cluster });
         }
@@ -310,7 +342,9 @@ export class FreelensProxy {
          * through all the ports possible and we will not be able to get a safe
          * port.
          */
-        throw new Error("Failed to start Freelens Proxy due to seeing too many unsafe ports. Please restart Freelens.");
+        throw new Error(
+          `Failed to start ${branding.productName} Proxy due to seeing too many unsafe ports. Please restart ${branding.productName}.`,
+        );
       } else {
         seenPorts.add(port);
       }
@@ -465,10 +499,37 @@ export class FreelensProxy {
         return this.respondWithError(res, 403, "Forbidden");
       }
 
-      if (!this.dependencies.token.matches(tokenFromHeaders(req.headers))) {
-        this.dependencies.logger.warn(`[FREELENS-PROXY]: rejected a request without a valid token`, { url: req.url });
+      const presentedToken = tokenFromHeaders(req.headers);
 
-        return this.respondWithError(res, 403, "Forbidden");
+      if (!this.dependencies.token.matches(presentedToken)) {
+        const aiSessionDecision = this.dependencies.aiSessionGate?.({
+          token: presentedToken,
+          cluster,
+          method: req.method,
+          kubePath: req.url.startsWith(apiKubePrefix) ? req.url.slice(apiKubePrefix.length) : undefined,
+          isUpgrade: false,
+        });
+
+        if (!aiSessionDecision) {
+          this.dependencies.logger.warn(`[FREELENS-PROXY]: rejected a request without a valid token`, { url: req.url });
+
+          return this.respondWithError(res, 403, "Forbidden");
+        }
+
+        const decision = await aiSessionDecision;
+
+        if (!decision.allowed) {
+          // A Kubernetes Status, so that kubectl shows the message.
+          return this.respondWithError(res, 403, {
+            kind: "Status",
+            apiVersion: "v1",
+            metadata: {},
+            status: "Failure",
+            message: decision.message,
+            reason: "Forbidden",
+            code: 403,
+          });
+        }
       }
     }
 

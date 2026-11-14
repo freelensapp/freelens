@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright (c) 2024-2026 Freelens Authors -->
 <component type="desktop-application">
-  <id>app.freelens.Freelens</id>
+  <id>app.prolens.ProLens</id>
   <metadata_license>MIT</metadata_license>
   <project_license>MIT</project_license>
-  <name>Freelens</name>
-  <summary>Free IDE for Kubernetes</summary>
-  <developer_name>Freelens Authors</developer_name>
-  <url type="homepage">https://freelens.app/</url>
-  <url type="bugtracker">https://github.com/freelensapp/freelens/issues</url>
-  <url type="vcs-browser">https://github.com/freelensapp/freelens</url>
-  <url type="contribute">https://github.com/freelensapp/freelens/blob/main/CONTRIBUTING.md</url>
+  <name>ProLens</name>
+  <summary>Kubernetes IDE</summary>
+  <developer_name>ProLens Authors</developer_name>
+  <url type="homepage">https://github.com/chago1991/prolens</url>
+  <url type="bugtracker">https://github.com/chago1991/prolens/issues</url>
+  <url type="vcs-browser">https://github.com/chago1991/prolens</url>
+  <url type="contribute">https://github.com/chago1991/prolens/blob/main/CONTRIBUTING.md</url>
   <description>
-    <p>Freelens is a Kubernetes IDE that provides a graphical interface for managing and monitoring Kubernetes clusters.</p>
+    <p>ProLens is a Kubernetes IDE that provides a graphical interface for managing and monitoring Kubernetes clusters.</p>
     <p>It simplifies cluster operations by offering:</p>
     <ul>
       <li>A dashboard with real-time cluster insights</li>
@@ -21,20 +21,16 @@
       <li>Visualization of workloads, networking, storage, and configurations</li>
       <li>Extension support to add custom functionality</li>
     </ul>
-    <p>Freelens is maintained by the community.</p>
+    <p>ProLens is based on Freelens and OpenLens.</p>
   </description>
   <screenshots>
     <screenshot type="default">
-      <caption>Troubleshooting the pod</caption>
-      <image>https://freelensapp.github.io/images/freelens-screenshot-linux.png</image>
+      <caption>Welcome screen</caption>
+      <image>https://raw.githubusercontent.com/chago1991/prolens/main/docs/prolens/screenshots/welcome.png</image>
     </screenshot>
     <screenshot>
-      <caption>Cluster overview</caption>
-      <image>https://freelensapp.github.io/images/freelens-screenshot-linux-cluster.png</image>
-    </screenshot>
-    <screenshot>
-      <caption>Catalog</caption>
-      <image>https://freelensapp.github.io/images/freelens-screenshot-linux-catalog.png</image>
+      <caption>Theme gallery</caption>
+      <image>https://raw.githubusercontent.com/chago1991/prolens/main/docs/prolens/screenshots/themes.png</image>
     </screenshot>
   </screenshots>
   <branding>
@@ -49,9 +45,9 @@
   <requires>
     <display_length compare="ge">768</display_length>
   </requires>
-  <launchable type="desktop-id">freelens.desktop</launchable>
+  <launchable type="desktop-id">prolens.desktop</launchable>
   <provides>
-    <binary>freelens</binary>
+    <binary>prolens</binary>
   </provides>
   <categories>
     <category>Development</category>
@@ -65,12 +61,13 @@
     <keyword>ide</keyword>
     <keyword>kubernetes</keyword>
   </keywords>
-  <icon type="stock">freelens</icon>
-  <icon type="remote">https://freelensapp.github.io/images/freelens-logo-512.png</icon>
+  <icon type="stock">prolens</icon>
   <content_rating type="oars-1.1"></content_rating>
   <releases>
-    <release version="2.0.1-0" date="2026-10-29">
-      <description translatable="no">The latest release.</description>
+    <release version="1.0.0" date="2026-11-14">
+      <description translatable="no">
+        <p>First ProLens release: AI assistants with per-request approval of cluster changes, a theme engine, and ProLens branding.</p>
+      </description>
     </release>
   </releases>
 </component>

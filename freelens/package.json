@@ -1,22 +1,22 @@
 {
   "name": "freelens",
-  "version": "2.0.1-0",
+  "version": "1.0.0",
   "private": true,
-  "description": "Freelens - Free IDE for Kubernetes",
+  "description": "ProLens - Kubernetes IDE",
   "keywords": [],
-  "homepage": "https://freelens.app",
+  "homepage": "https://github.com/chago1991/prolens",
   "bugs": {
-    "url": "https://github.com/freelensapp/freelens/issues"
+    "url": "https://github.com/chago1991/prolens/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/freelensapp/freelens.git"
+    "url": "git+https://github.com/chago1991/prolens.git"
   },
   "license": "MIT",
   "type": "module",
   "author": {
-    "name": "Freelens Authors",
-    "email": "freelens@freelens.app"
+    "name": "ProLens Authors",
+    "url": "https://github.com/chago1991/prolens"
   },
   "main": "static/build/main.js",
   "scripts": {
@@ -31,7 +31,7 @@
     "build:dev": "NODE_ENV=development electron-vite build",
     "build:resources": "pnpm \"/^build:resources:/\"",
     "build:resources:license": "generate-license --prod --header license-header.txt --output static/build/license.txt",
-    "build:resources:tray": "generate-tray-icons --output static/build/tray --input @freelensapp/icon/icons/logo-lens.svg --notice-icon @freelensapp/icon/icons/notice.svg --spinner-icon @freelensapp/icon/icons/arrow-spinner.svg --none-color fbfbfb",
+    "build:resources:tray": "generate-tray-icons --output static/build/tray --input @freelensapp/icon/icons/logo-prolens.svg --notice-icon @freelensapp/icon/icons/notice.svg --spinner-icon @freelensapp/icon/icons/arrow-spinner.svg --none-color fbfbfb",
     "clean:dist": "pnpm dlx rimraf@6.1.4 binaries dist static/build",
     "preupdate-binaries-lock": "pnpm --filter @freelensapp/ensure-binaries build",
     "update-binaries-lock": "update-binaries-lock --package package.json",
@@ -39,17 +39,17 @@
     "dev": "NODE_ENV=development electron-vite dev --watch --inspect --remoteDebuggingPort 9223",
     "start": "pnpm dlx run-script-os@1.1.6 --",
     "start:darwin": "pnpm start:darwin:${npm_config_arch:-$(uname -m)}",
-    "start:darwin:arm64": "./dist/mac-arm64/Freelens.app/Contents/MacOS/Freelens",
-    "start:darwin:x64": "./dist/mac/Freelens.app/Contents/MacOS/Freelens",
-    "start:darwin:x86_64": "./dist/mac/Freelens.app/Contents/MacOS/Freelens",
+    "start:darwin:arm64": "./dist/mac-arm64/ProLens.app/Contents/MacOS/ProLens",
+    "start:darwin:x64": "./dist/mac/ProLens.app/Contents/MacOS/ProLens",
+    "start:darwin:x86_64": "./dist/mac/ProLens.app/Contents/MacOS/ProLens",
     "start:default": "exit 1",
     "start:electron": "electron --remote-debugging-port=9223 --inspect .",
     "start:linux": "pnpm start:linux:${npm_config_arch:-$(uname -m)}",
-    "start:linux:arm64": "./dist/linux-arm64-unpacked/freelens",
-    "start:linux:x64": "./dist/linux-unpacked/freelens",
-    "start:linux:x86_64": "./dist/linux-unpacked/freelens",
-    "start:win32:AMD64": "dist\\win-unpacked\\Freelens.exe",
-    "start:win32:ARM64": "dist\\win-arm64-unpacked\\Freelens.exe",
+    "start:linux:arm64": "./dist/linux-arm64-unpacked/prolens",
+    "start:linux:x64": "./dist/linux-unpacked/prolens",
+    "start:linux:x86_64": "./dist/linux-unpacked/prolens",
+    "start:win32:AMD64": "dist\\win-unpacked\\ProLens.exe",
+    "start:win32:ARM64": "dist\\win-arm64-unpacked\\ProLens.exe",
     "start:win32": "echo pnpm start:linux:${npm_config_arch:-${PROCESSOR_ARCHITECTURE}}",
     "test:integration": "vitest run --config vitest.integration.config.ts"
   },
@@ -142,6 +142,6 @@
   "engines": {
     "node": "^24.0.0"
   },
-  "copyright": "© 2024-2026 Freelens Authors",
-  "productName": "Freelens"
+  "copyright": "© 2024-2026 Freelens Authors, © 2026 ProLens Authors",
+  "productName": "ProLens"
 }

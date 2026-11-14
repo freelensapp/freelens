@@ -1,0 +1,73 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
+.dialog {
+  width: min(560px, calc(100vw - 48px));
+  background: var(--dialogBackground);
+  color: var(--textColorPrimary);
+  border: 1px solid var(--colorWarning);
+  border-radius: 10px;
+  box-shadow: 0 16px 48px var(--boxShadow);
+  overflow: hidden;
+}
+
+.header {
+  padding: 16px 20px 8px;
+
+  h2 {
+    margin: 0 0 4px;
+    font-size: 16px;
+    color: var(--textColorAccent);
+  }
+
+  p {
+    margin: 0;
+    color: var(--textColorSecondary);
+  }
+}
+
+.body {
+  display: grid;
+  gap: 10px;
+  padding: 8px 20px 16px;
+}
+
+.action {
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid color-mix(in srgb, var(--colorWarning) 45%, transparent);
+  background: color-mix(in srgb, var(--colorWarning) 10%, transparent);
+  color: var(--textColorAccent);
+  font-weight: 600;
+}
+
+.request {
+  overflow-x: auto;
+  padding: 8px 10px;
+  border-radius: 6px;
+  background: var(--canvasBackground);
+  border: 1px solid var(--borderFaintColor);
+  font-family: var(--font-monospace);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.hint {
+  color: var(--textColorTertiary);
+  font-size: var(--font-size-small);
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border-top: 1px solid var(--borderFaintColor);
+  background: var(--dialogFooterBackground);
+}
+
+.spacer {
+  flex: 1;
+}

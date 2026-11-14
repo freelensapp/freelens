@@ -11,6 +11,7 @@ import currentPreferenceTabCompositeInjectable from "./current-preference-tab-co
 import currentPreferenceTabIdInjectable from "./current-preference-tab-id.injectable";
 import { registerInjectables as registerEditorInjectables } from "./editor/register-injectables";
 import extensionsPreferenceTabGroupInjectable from "./extensions-preference-tab-group.injectable";
+import { registerInjectables as registerExternalToolsInjectables } from "./external-tools/register-injectables";
 import generalPreferenceTabGroupInjectable from "./general-preference-tab-group.injectable";
 import { registerInjectables as registerKubernetesInjectables } from "./kubernetes/register-injectables";
 import preferencesCompositeInjectable from "./preferences-composite.injectable";
@@ -52,6 +53,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     registerEditorInjectables(di);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    registerExternalToolsInjectables(di);
   } catch (e) {
     /* Ignore duplicate registration */
   }

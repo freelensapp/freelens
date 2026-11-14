@@ -40,7 +40,33 @@ exports[`disable kube object detail items when cluster is not relevant > given e
             class="Menu MenuActions flex KubeObjectMenu toolbar right bottom"
             data-testid="menu-actions-for-kube-object-menu-for-some-uid"
             id="menu-actions-for-kube-object-menu-for-some-uid"
-          />
+          >
+            <li
+              class="MenuItem"
+              data-testid="menu-action-ask-ai-for-"
+              tabindex="0"
+            >
+              <i
+                class="Icon material interactive focusable"
+                tabindex="0"
+              >
+                <span
+                  class="icon"
+                  data-icon-name="auto_awesome"
+                >
+                  auto_awesome
+                </span>
+              </i>
+              <div>
+                Ask AI
+              </div>
+              <span
+                class="title"
+              >
+                Ask AI
+              </span>
+            </li>
+          </ul>
           <i
             class="Icon material interactive focusable"
             tabindex="0"
@@ -837,7 +863,33 @@ exports[`disable kube object detail items when cluster is not relevant > given e
             class="Menu MenuActions flex KubeObjectMenu toolbar right bottom"
             data-testid="menu-actions-for-kube-object-menu-for-some-uid"
             id="menu-actions-for-kube-object-menu-for-some-uid"
-          />
+          >
+            <li
+              class="MenuItem"
+              data-testid="menu-action-ask-ai-for-"
+              tabindex="0"
+            >
+              <i
+                class="Icon material interactive focusable"
+                tabindex="0"
+              >
+                <span
+                  class="icon"
+                  data-icon-name="auto_awesome"
+                >
+                  auto_awesome
+                </span>
+              </i>
+              <div>
+                Ask AI
+              </div>
+              <span
+                class="title"
+              >
+                Ask AI
+              </span>
+            </li>
+          </ul>
           <i
             class="Icon material interactive focusable"
             tabindex="0"
@@ -1629,7 +1681,33 @@ exports[`disable kube object detail items when cluster is not relevant > given n
             class="Menu MenuActions flex KubeObjectMenu toolbar right bottom"
             data-testid="menu-actions-for-kube-object-menu-for-some-uid"
             id="menu-actions-for-kube-object-menu-for-some-uid"
-          />
+          >
+            <li
+              class="MenuItem"
+              data-testid="menu-action-ask-ai-for-"
+              tabindex="0"
+            >
+              <i
+                class="Icon material interactive focusable"
+                tabindex="0"
+              >
+                <span
+                  class="icon"
+                  data-icon-name="auto_awesome"
+                >
+                  auto_awesome
+                </span>
+              </i>
+              <div>
+                Ask AI
+              </div>
+              <span
+                class="title"
+              >
+                Ask AI
+              </span>
+            </li>
+          </ul>
           <i
             class="Icon material interactive focusable"
             tabindex="0"

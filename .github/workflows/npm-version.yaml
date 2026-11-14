@@ -19,8 +19,9 @@ jobs:
   npm-version:
     name: npm version
 
-    # Never on a fork: it has no GH_TOKEN secret, so the job could only fail.
-    if: github.repository_owner == 'freelensapp'
+    # Only in the ProLens repository, which needs a GH_TOKEN secret (a token that
+    # may push to it); never in upstream Freelens or in a fork of ProLens.
+    if: github.repository == 'chago1991/prolens'
 
     runs-on: ubuntu-26.04-arm
     environment: automated

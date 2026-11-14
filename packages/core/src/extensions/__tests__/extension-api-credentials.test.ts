@@ -145,7 +145,7 @@ describe("Common.Credentials", () => {
 
     await expect(credentials.isAvailable()).rejects.toThrow(TypeError);
     await expect(credentials.get("token")).rejects.toThrow(
-      "Credentials are only available to an extension instance that Freelens loaded",
+      "Credentials are only available to an extension instance that ProLens loaded",
     );
     await expect(credentials.set("token", "value")).rejects.toThrow(TypeError);
     await expect(credentials.delete("token")).rejects.toThrow(TypeError);

@@ -5,6 +5,7 @@
  */
 
 import { observer } from "mobx-react";
+import { AskAiButton } from "../../../../features/ai-tools/renderer/ask-ai-button";
 import { Checkbox } from "../../checkbox";
 import styles from "./controls.module.scss";
 import { DownloadLogsDropdown } from "./download-logs-dropdown";
@@ -64,6 +65,28 @@ export const LogControls = observer(({ model }: LogControlsProps) => {
           className="show-previous"
         />
 
+        <AskAiButton
+          label="Ask AI about logs"
+          data-testid="ask-ai-about-logs"
+          getRequest={() => {
+            const pod = model.pod.get();
+            const visible = model.logsWithoutTimestamps.get();
+
+            return {
+              target: {
+                type: "logs",
+                pod: {
+                  kind: "Pod",
+                  apiVersion: "v1",
+                  name: pod?.getName() ?? tabData.selectedPodId,
+                  namespace: pod?.getNs() ?? tabData.namespace,
+                },
+                container: tabData.combined ? undefined : tabData.selectedContainer,
+                logs: visible.length ? visible.slice(-400).join("\n") : undefined,
+              },
+            };
+          }}
+        />
         <DownloadLogsDropdown
           disabled={logs.length === 0}
           downloadVisibleLogs={model.downloadLogs}

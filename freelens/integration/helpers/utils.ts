@@ -15,9 +15,9 @@ import * as uuid from "uuid";
 import type { ElectronApplication, Frame, Page } from "playwright";
 
 export const appPaths: Partial<Record<NodeJS.Platform, string>> = {
-  win32: `./dist/win${process.arch === "arm64" ? "-arm64" : ""}-unpacked/Freelens.exe`,
-  linux: `./dist/linux${process.arch === "arm64" ? "-arm64" : ""}-unpacked/freelens`,
-  darwin: `./dist/mac${process.arch === "arm64" ? "-arm64" : ""}/Freelens.app/Contents/MacOS/Freelens`,
+  win32: `./dist/win${process.arch === "arm64" ? "-arm64" : ""}-unpacked/ProLens.exe`,
+  linux: `./dist/linux${process.arch === "arm64" ? "-arm64" : ""}-unpacked/prolens`,
+  darwin: `./dist/mac${process.arch === "arm64" ? "-arm64" : ""}/ProLens.app/Contents/MacOS/ProLens`,
 };
 
 async function getMainWindow(app: ElectronApplication, timeout = 50_000): Promise<Page> {
@@ -50,7 +50,7 @@ async function getMainWindow(app: ElectronApplication, timeout = 50_000): Promis
     const timeoutId = setTimeout(() => {
       cleanup();
       console.log(stdoutBuf);
-      reject(new Error(`Freelens did not open the main window within ${timeout}ms`));
+      reject(new Error(`ProLens did not open the main window within ${timeout}ms`));
     }, timeout);
 
     cleanup.push(() => clearTimeout(timeoutId));

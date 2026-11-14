@@ -9,7 +9,7 @@
 import assert from "node:assert";
 import { mkdir, readFile } from "node:fs/promises";
 import path from "node:path";
-import { platform } from "node:process";
+import { fileURLToPath } from "node:url";
 import arg from "arg";
 import { JSDOM } from "jsdom";
 import sharp from "sharp";
@@ -47,13 +47,9 @@ const joinWithInitCwd = (relativePath: string): string => {
 };
 
 const resolve = async (input: string) => {
-  const filePath = await import.meta.resolve?.(input);
+  const fileUrl = await import.meta.resolve?.(input);
 
-  if (platform === "win32") {
-    return filePath?.replace("file:///", "");
-  } else {
-    return filePath?.replace("file://", "");
-  }
+  return fileUrl ? fileURLToPath(fileUrl) : undefined;
 };
 
 const size = options["--output-size"] ?? 16;

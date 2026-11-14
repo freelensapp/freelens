@@ -6,6 +6,7 @@
 
 import { afterApplicationIsLoadedInjectionToken } from "@freelensapp/application";
 import { getInjectable } from "@ogre-tools/injectable";
+import { isDeepLinkUrl } from "../../../common/branding";
 import shouldStartHiddenInjectable from "../../electron-app/features/should-start-hidden.injectable";
 import openDeepLinkInjectable from "../../protocol-handler/lens-protocol-router-main/open-deep-link-for-url/open-deep-link.injectable";
 import commandLineArgumentsInjectable from "../../utils/command-line-arguments.injectable";
@@ -13,7 +14,7 @@ import createFirstApplicationWindowInjectable from "../lens-window/application-w
 import splashWindowInjectable from "../lens-window/splash-window/splash-window.injectable";
 
 const getDeepLinkUrl = (commandLineArguments: string[]) =>
-  commandLineArguments.map((arg) => arg.toLowerCase()).find((arg) => arg.startsWith("freelens://"));
+  commandLineArguments.map((arg) => arg.toLowerCase()).find(isDeepLinkUrl);
 
 const showInitialWindowInjectable = getInjectable({
   id: "show-initial-window",

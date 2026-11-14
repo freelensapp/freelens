@@ -1,0 +1,266 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(168px, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px;
+  border: 1px solid var(--borderColor);
+  border-radius: 10px;
+  background: var(--contentColor);
+  color: var(--textColorPrimary);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+
+  &:hover {
+    border-color: color-mix(in srgb, var(--primary) 60%, var(--borderColor));
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
+
+  &[aria-checked="true"] {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 1px var(--primary);
+  }
+}
+
+.preview {
+  display: grid;
+  grid-template-columns: 22% 1fr;
+  height: 84px;
+  overflow: hidden;
+  border-radius: 6px;
+  border: 1px solid rgb(127 127 127 / 25%);
+}
+
+.previewSplit {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: 84px;
+  overflow: hidden;
+  border-radius: 6px;
+  border: 1px solid rgb(127 127 127 / 25%);
+
+  > div {
+    display: grid;
+    grid-template-columns: 22% 1fr;
+  }
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 8px 5px;
+}
+
+.navItem {
+  height: 4px;
+  border-radius: 2px;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+}
+
+.bar {
+  height: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 6px;
+}
+
+.pill {
+  width: 18px;
+  height: 6px;
+  border-radius: 3px;
+}
+
+.lines {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 8px;
+}
+
+.line {
+  height: 4px;
+  border-radius: 2px;
+}
+
+.meta {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 0 2px 2px;
+
+  strong {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--textColorAccent);
+    font-weight: 600;
+  }
+
+  small {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--textColorTertiary);
+  }
+}
+
+.tag {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: rgb(0 0 0 / 55%);
+  color: #fff;
+  font-size: 10px;
+}
+
+.settings {
+  display: grid;
+  gap: 20px;
+  max-width: 640px;
+}
+
+.setting {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+
+  > label,
+  > .settingLabel {
+    width: 140px;
+    color: var(--textColorSecondary);
+  }
+}
+
+.segmented {
+  display: inline-flex;
+  border: 1px solid var(--borderColor);
+  border-radius: 8px;
+  overflow: hidden;
+
+  button {
+    padding: 5px 14px;
+    border: 0;
+    background: transparent;
+    color: var(--textColorPrimary);
+    font: inherit;
+    cursor: pointer;
+
+    & + button {
+      border-left: 1px solid var(--borderColor);
+    }
+
+    &[aria-pressed="true"] {
+      background: var(--primary);
+      color: #fff;
+    }
+  }
+}
+
+.swatches {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.swatch {
+  width: 22px;
+  height: 22px;
+  border: 2px solid transparent;
+  border-radius: 50%;
+  cursor: pointer;
+
+  &[aria-pressed="true"] {
+    border-color: var(--textColorAccent);
+    box-shadow: 0 0 0 2px var(--contentColor) inset;
+  }
+}
+
+.colorInput {
+  width: 30px;
+  height: 24px;
+  padding: 0;
+  border: 1px solid var(--borderColor);
+  border-radius: 6px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.textButton {
+  padding: 4px 10px;
+  border: 1px solid var(--borderColor);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--textColorPrimary);
+  font: inherit;
+  font-size: var(--font-size-small);
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    border-color: var(--primary);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.range {
+  width: 180px;
+  accent-color: var(--primary);
+}
+
+.customList {
+  display: grid;
+  gap: 6px;
+  width: 100%;
+}
+
+.customItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  span {
+    flex: 1;
+  }
+}
+
+.hint {
+  width: 100%;
+  color: var(--textColorTertiary);
+  font-size: var(--font-size-small);
+}
+
+.error {
+  width: 100%;
+  color: var(--colorError);
+  font-size: var(--font-size-small);
+}

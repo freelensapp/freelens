@@ -11,6 +11,8 @@ import kubeDirectoryPathInjectable from "../../../common/os/kube-directory-path.
 import { defaultColorThemePreference } from "../../../common/vars";
 import currentTimezoneInjectable from "../../../common/vars/current-timezone.injectable";
 import isDevelopmentInjectable from "../../../common/vars/is-development.injectable";
+import { normalizeAiToolSettings } from "../../ai-tools/common/ai-tools";
+import { normalizeAppearancePreferences, normalizeCustomThemes } from "../../theme/customization/common/appearance";
 import {
   ClusterPageMenuOrder,
   clampMaxCombinedLogsPods,
@@ -25,6 +27,8 @@ import {
 
 import type { ObservableMap } from "mobx";
 
+import type { AiToolId, AiToolSettings } from "../../ai-tools/common/ai-tools";
+import type { AppearancePreferences, CustomThemeDefinition } from "../../theme/customization/common/appearance";
 import type {
   EditorConfiguration,
   ExtensionRegistry,
@@ -70,6 +74,10 @@ export type PreferenceDescriptors = {
   readonly terminalConfig: PreferenceDescription<Partial<TerminalConfig>, TerminalConfig>;
   readonly extensionRegistryUrl: PreferenceDescription<StoredExtensionRegistry, ExtensionRegistry>;
   readonly clusterPageMenuOrder: PreferenceDescription<ClusterPageMenuOrder | undefined>;
+  readonly aiTool: PreferenceDescription<AiToolId | undefined>;
+  readonly aiToolSettings: PreferenceDescription<AiToolSettings | undefined, AiToolSettings>;
+  readonly appearance: PreferenceDescription<Partial<AppearancePreferences> | undefined, AppearancePreferences>;
+  readonly customThemes: PreferenceDescription<CustomThemeDefinition[] | undefined, CustomThemeDefinition[]>;
 };
 
 const userPreferenceDescriptorsInjectable = getInjectable({
@@ -243,6 +251,37 @@ const userPreferenceDescriptorsInjectable = getInjectable({
       clusterPageMenuOrder: getPreferenceDescriptor<ClusterPageMenuOrder | undefined>({
         fromStore: (val) => val,
         toStore: (val) => val,
+      }),
+      aiTool: getPreferenceDescriptor<AiToolId | undefined>({
+        fromStore: (val) => val,
+        toStore: (val) => val,
+      }),
+      aiToolSettings: getPreferenceDescriptor<AiToolSettings | undefined, AiToolSettings>({
+        fromStore: (val) => normalizeAiToolSettings(val),
+        toStore: (val) => {
+          const normalized = normalizeAiToolSettings(val);
+
+          return Object.keys(normalized).length ? normalized : undefined;
+        },
+      }),
+      appearance: getPreferenceDescriptor<Partial<AppearancePreferences> | undefined, AppearancePreferences>({
+        fromStore: (val) => normalizeAppearancePreferences(val),
+        toStore: (val) => {
+          const normalized = normalizeAppearancePreferences(val);
+          const stored: Partial<AppearancePreferences> = {};
+
+          if (normalized.accentColor) stored.accentColor = normalized.accentColor;
+          if (normalized.density !== "comfortable") stored.density = normalized.density;
+          if (normalized.fontSize !== normalizeAppearancePreferences(undefined).fontSize) {
+            stored.fontSize = normalized.fontSize;
+          }
+
+          return Object.keys(stored).length ? stored : undefined;
+        },
+      }),
+      customThemes: getPreferenceDescriptor<CustomThemeDefinition[] | undefined, CustomThemeDefinition[]>({
+        fromStore: (val) => normalizeCustomThemes(val),
+        toStore: (val) => (val.length ? normalizeCustomThemes(val) : undefined),
       }),
     } as const;
   },

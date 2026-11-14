@@ -19,7 +19,7 @@ const lensDarkThemeInjectable: Injectable<LensTheme, ReadonlyDeep<LensTheme>> = 
     const theme: LensTheme = {
       name: "Dark",
       type: "dark" as const,
-      description: "Original Lens dark theme",
+      description: "Classic Freelens/Lens dark theme",
       author: "Mirantis",
       monacoTheme: "clouds-midnight" as const,
       colors: {
@@ -158,7 +158,6 @@ const lensDarkThemeInjectable: Injectable<LensTheme, ReadonlyDeep<LensTheme>> = 
         brightCyan: "#34e2e2",
         brightWhite: "#eeeeec",
       },
-      isDefault: true,
     };
 
     return theme;

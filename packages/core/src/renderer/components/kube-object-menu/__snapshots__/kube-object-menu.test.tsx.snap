@@ -39,6 +39,31 @@ exports[`kube-object-menu > given kube object > renders 1`] = `
             Delete
           </span>
         </li>
+        <li
+          class="MenuItem"
+          data-testid="menu-action-ask-ai-for-/foo"
+          tabindex="0"
+        >
+          <i
+            class="Icon material interactive focusable"
+            tabindex="0"
+          >
+            <span
+              class="icon"
+              data-icon-name="auto_awesome"
+            >
+              auto_awesome
+            </span>
+          </i>
+          <div>
+            Ask AI
+          </div>
+          <span
+            class="title"
+          >
+            Ask AI
+          </span>
+        </li>
       </ul>
     </div>
   </div>
@@ -82,6 +107,31 @@ exports[`kube-object-menu > given kube object > when removing kube object > rend
             class="title"
           >
             Delete
+          </span>
+        </li>
+        <li
+          class="MenuItem"
+          data-testid="menu-action-ask-ai-for-/foo"
+          tabindex="0"
+        >
+          <i
+            class="Icon material interactive focusable"
+            tabindex="0"
+          >
+            <span
+              class="icon"
+              data-icon-name="auto_awesome"
+            >
+              auto_awesome
+            </span>
+          </i>
+          <div>
+            Ask AI
+          </div>
+          <span
+            class="title"
+          >
+            Ask AI
           </span>
         </li>
       </ul>
@@ -179,6 +229,31 @@ exports[`kube-object-menu > given kube object > when rerendered with different k
             Delete
           </span>
         </li>
+        <li
+          class="MenuItem"
+          data-testid="menu-action-ask-ai-for-/some-other-api-version/some-other-kind/some-other-namespace/some-other-name"
+          tabindex="0"
+        >
+          <i
+            class="Icon material interactive focusable"
+            tabindex="0"
+          >
+            <span
+              class="icon"
+              data-icon-name="auto_awesome"
+            >
+              auto_awesome
+            </span>
+          </i>
+          <div>
+            Ask AI
+          </div>
+          <span
+            class="title"
+          >
+            Ask AI
+          </span>
+        </li>
       </ul>
     </div>
   </div>
@@ -219,6 +294,31 @@ exports[`kube-object-menu > given kube object > when rerendered with different k
             class="title"
           >
             Delete
+          </span>
+        </li>
+        <li
+          class="MenuItem"
+          data-testid="menu-action-ask-ai-for-/some-other-api-version/some-other-kind/some-other-namespace/some-other-name"
+          tabindex="0"
+        >
+          <i
+            class="Icon material interactive focusable"
+            tabindex="0"
+          >
+            <span
+              class="icon"
+              data-icon-name="auto_awesome"
+            >
+              auto_awesome
+            </span>
+          </i>
+          <div>
+            Ask AI
+          </div>
+          <span
+            class="title"
+          >
+            Ask AI
           </span>
         </li>
       </ul>
@@ -319,6 +419,31 @@ exports[`kube-object-menu > given kube object with namespace > when removing kub
             Delete
           </span>
         </li>
+        <li
+          class="MenuItem"
+          data-testid="menu-action-ask-ai-for-/foo"
+          tabindex="0"
+        >
+          <i
+            class="Icon material interactive focusable"
+            tabindex="0"
+          >
+            <span
+              class="icon"
+              data-icon-name="auto_awesome"
+            >
+              auto_awesome
+            </span>
+          </i>
+          <div>
+            Ask AI
+          </div>
+          <span
+            class="title"
+          >
+            Ask AI
+          </span>
+        </li>
       </ul>
     </div>
   </div>
@@ -415,6 +540,31 @@ exports[`kube-object-menu > given kube object without namespace > when removing 
             class="title"
           >
             Delete
+          </span>
+        </li>
+        <li
+          class="MenuItem"
+          data-testid="menu-action-ask-ai-for-/foo"
+          tabindex="0"
+        >
+          <i
+            class="Icon material interactive focusable"
+            tabindex="0"
+          >
+            <span
+              class="icon"
+              data-icon-name="auto_awesome"
+            >
+              auto_awesome
+            </span>
+          </i>
+          <div>
+            Ask AI
+          </div>
+          <span
+            class="title"
+          >
+            Ask AI
           </span>
         </li>
       </ul>

@@ -6,11 +6,12 @@
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
 import * as verkit from "verkit";
+import { branding } from "../../../../../../common/branding";
 import openLinkInBrowserInjectable from "../../../../../../common/utils/open-link-in-browser.injectable";
 import { buildVersionInitializable } from "../../../../../vars/build-version/common/token";
 import applicationMenuItemInjectionToken from "../../application-menu-item-injection-token";
 
-const releasesUrl = "https://github.com/freelensapp/freelens/releases";
+const releasesUrl = `${branding.homepage}/releases`;
 
 /**
  * A prerelease has no release page on GitHub, and neither has a version that

@@ -8,7 +8,7 @@ import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
 import terminalThemePreferenceInjectable from "../../features/user-preferences/common/terminal-theme.injectable";
 import activeThemeInjectable from "./active.injectable";
-import lensThemesInjectable from "./themes.injectable";
+import allLensThemesInjectable from "./all-themes.injectable";
 
 import type { Injectable } from "@ogre-tools/injectable";
 import type { IComputedValue } from "mobx";
@@ -22,7 +22,7 @@ const xtermColorThemeInjectable: Injectable<IComputedValue<ReadonlyDeep<LensThem
   instantiate: (di) => {
     const activeTheme = di.inject(activeThemeInjectable);
     const terminalThemePreference = di.inject(terminalThemePreferenceInjectable);
-    const themes = di.inject(lensThemesInjectable);
+    const themes = di.inject(allLensThemesInjectable);
 
     const terminalTheme = computed(() => {
       const themePref = terminalThemePreference.get();
@@ -31,7 +31,7 @@ const xtermColorThemeInjectable: Injectable<IComputedValue<ReadonlyDeep<LensThem
         return activeTheme.get();
       }
 
-      return themes.get(themePref.themeId) ?? activeTheme.get();
+      return themes.get().get(themePref.themeId)?.theme ?? activeTheme.get();
     });
 
     return computed(() => terminalTheme.get().terminalColors);

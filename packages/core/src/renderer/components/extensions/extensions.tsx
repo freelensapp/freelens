@@ -23,7 +23,7 @@ import type { InstallOnDrop } from "./install-on-drop.injectable";
 
 const ExtensionsNotice = () => (
   <Notice className={styles.notice}>
-    <p>{"Add new features via Freelens Extensions."}</p>
+    <p>{"Add new features via extensions. ProLens runs Freelens-compatible extensions."}</p>
   </Notice>
 );
 

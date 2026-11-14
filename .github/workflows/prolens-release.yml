@@ -1,0 +1,1000 @@
+name: ProLens Release
+
+# Two stages in one workflow, so that a release is built by exactly the jobs
+# that validate every change:
+#
+# - Stage A, build and validation: pull requests, pushes to main and a manual
+#   run without a tag. Runs the checks and builds every installer as run
+#   artifacts. Nothing is released.
+# - Stage B, version release: a pushed v* tag, or a manual run naming one.
+#   Verifies the tag, runs the same checks and builds, and creates a DRAFT
+#   GitHub release with the installers and their checksums. It never
+#   publishes: a maintainer publishes the draft after reviewing it (see
+#   docs/prolens/releasing.md).
+#
+# Releases go to this repository only. Nothing is pushed to Freelens, npm or
+# any package repository.
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+    tags:
+      - v*
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing tag to build a draft release for (e.g. v1.0.0). Leave empty to only build.
+        type: string
+        required: false
+        default: ""
+      allow-partial:
+        description: Create the draft even when a platform failed to build. The missing platforms are listed in its notes.
+        type: boolean
+        required: false
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.head_ref || inputs.tag || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  DO_NOT_TRACK: "1"
+
+jobs:
+  prepare:
+    name: prepare
+    runs-on: ubuntu-26.04-arm
+    timeout-minutes: 10
+
+    permissions:
+      contents: read
+      # Reads the runs of this workflow to confirm the tagged commit was tested.
+      actions: read
+
+    outputs:
+      release: ${{ steps.mode.outputs.release }}
+      tag: ${{ steps.mode.outputs.tag }}
+      sha: ${{ steps.mode.outputs.sha }}
+      version: ${{ steps.mode.outputs.version }}
+      prerelease: ${{ steps.mode.outputs.prerelease }}
+      mac-signing: ${{ steps.signing.outputs.mac-signing }}
+      mac-notarization: ${{ steps.signing.outputs.mac-notarization }}
+      win-signing: ${{ steps.signing.outputs.win-signing }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ inputs.tag || github.ref }}
+          fetch-depth: 0
+
+      - name: Decide what this run does
+        id: mode
+        shell: bash
+        run: |
+          set -euo pipefail
+          version=$(node -p 'require("./freelens/package.json").version')
+          tag=""
+          if [[ $GITHUB_EVENT_NAME == push && $GITHUB_REF_TYPE == tag ]]; then
+            tag=$GITHUB_REF_NAME
+          elif [[ $GITHUB_EVENT_NAME == workflow_dispatch && -n $INPUT_TAG ]]; then
+            tag=$INPUT_TAG
+          fi
+          sha=$(git rev-parse HEAD)
+          {
+            echo "version=$version"
+            echo "sha=$sha"
+          } >> "$GITHUB_OUTPUT"
+
+          if [[ -z $tag ]]; then
+            echo "release=false" >> "$GITHUB_OUTPUT"
+            echo "Build and validation of $sha (ProLens $version). Nothing is released." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          if [[ $GITHUB_REPOSITORY != chago1991/prolens ]]; then
+            echo "::error::Releases are only made in chago1991/prolens, not in $GITHUB_REPOSITORY"
+            exit 1
+          fi
+          if [[ ! $tag =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.]+)?$ ]]; then
+            echo "::error::Tag $tag is not a version tag such as v1.2.3"
+            exit 1
+          fi
+          tag_sha=$(git rev-parse "refs/tags/$tag^{commit}")
+          if [[ $tag_sha != "$sha" ]]; then
+            echo "::error::Checked out $sha, but $tag points to $tag_sha"
+            exit 1
+          fi
+          if [[ $tag != "v$version" ]]; then
+            echo "::error::Tag $tag does not match the version $version in freelens/package.json"
+            exit 1
+          fi
+          git fetch --no-tags origin main
+          if ! git merge-base --is-ancestor "$sha" origin/main; then
+            echo "::error::$tag points to $sha, which is not on main. Only commits merged to main are released."
+            exit 1
+          fi
+          # The commit must have passed this workflow as a push to main, so a
+          # tag cannot release a commit that was never built and tested.
+          tested=$(gh api "repos/$GITHUB_REPOSITORY/actions/workflows/prolens-release.yml/runs?head_sha=$sha&event=push&branch=main&status=success" --jq '.total_count')
+          if [[ $tested -lt 1 ]]; then
+            echo "::error::No successful run of this workflow on main for $sha. Push it to main, wait for the run to pass, then tag it."
+            exit 1
+          fi
+
+          prerelease=false
+          [[ $tag == *-* ]] && prerelease=true
+          {
+            echo "release=true"
+            echo "tag=$tag"
+            echo "prerelease=$prerelease"
+          } >> "$GITHUB_OUTPUT"
+          {
+            echo "## Release $tag"
+            echo
+            echo "- Commit: \`$sha\` (on main, tested by run of this workflow)"
+            echo "- Version: $version"
+          } >> "$GITHUB_STEP_SUMMARY"
+        env:
+          INPUT_TAG: ${{ inputs.tag }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Signing is optional. Without credentials the release is built unsigned
+      # (macOS ad-hoc signed), and its notes say so.
+      - name: Detect signing credentials
+        id: signing
+        shell: bash
+        run: |
+          set -euo pipefail
+          mac_signing=false
+          mac_notarization=false
+          win_signing=none
+          if [[ $RELEASE == true ]]; then
+            if [[ -n $CSC_LINK && -n $CSC_KEY_PASSWORD ]]; then
+              mac_signing=true
+              if [[ -n $APPLEID && -n $APPLEIDPASS && -n $APPLETEAMID ]]; then
+                mac_notarization=true
+              fi
+            fi
+            if [[ -n $AZURE_TENANT_ID && -n $AZURE_CLIENT_ID && -n $AZURE_CLIENT_SECRET ]]; then
+              win_signing=azure
+            elif [[ -n $WIN_CSC_LINK && -n $WIN_CSC_KEY_PASSWORD ]]; then
+              win_signing=pfx
+            fi
+            [[ $mac_signing == true ]] || echo "::warning::No Developer ID certificate (CSC_LINK, CSC_KEY_PASSWORD): macOS builds are ad-hoc signed only"
+            [[ $mac_notarization == true ]] || echo "::warning::No notarization credentials (APPLEID, APPLEIDPASS, APPLETEAMID) or no certificate: macOS builds are not notarized"
+            [[ $win_signing != none ]] || echo "::warning::No Windows signing credentials: Windows builds are unsigned"
+          fi
+          {
+            echo "mac-signing=$mac_signing"
+            echo "mac-notarization=$mac_notarization"
+            echo "win-signing=$win_signing"
+          } >> "$GITHUB_OUTPUT"
+        env:
+          RELEASE: ${{ steps.mode.outputs.release }}
+          CSC_LINK: ${{ secrets.CSC_LINK }}
+          CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
+          APPLEID: ${{ secrets.APPLEID }}
+          APPLEIDPASS: ${{ secrets.APPLEIDPASS }}
+          APPLETEAMID: ${{ secrets.APPLETEAMID }}
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+          WIN_CSC_LINK: ${{ secrets.WIN_CSC_LINK }}
+          WIN_CSC_KEY_PASSWORD: ${{ secrets.WIN_CSC_KEY_PASSWORD }}
+
+  lint:
+    name: type check and lint
+    needs: prepare
+    runs-on: ubuntu-26.04-arm
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ needs.prepare.outputs.sha }}
+
+      - name: Setup node
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+
+      - name: Setup pnpm
+        run: corepack enable
+
+      - name: Get pnpm cache directory
+        run: echo "pnpm_cache_dir=$(pnpm store path)" | tee -a "${GITHUB_ENV}"
+
+      - name: Use pnpm cache
+        uses: actions/cache@v6
+        with:
+          path: ${{ env.pnpm_cache_dir }}
+          key: ubuntu-26.04-arm-arm64-node-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            ubuntu-26.04-arm-arm64-node-
+
+      - name: Install pnpm dependencies
+        run: |
+          timeout 300 pnpm install --color=always --prefer-offline --frozen-lockfile ||
+            timeout 300 pnpm install --color=always --prefer-offline --frozen-lockfile
+
+      - name: Type check
+        run: pnpm --color=always type:check
+
+      - name: Biome lint
+        run: pnpm --color=always biome:check
+
+  unit-tests:
+    name: unit tests (shard ${{ matrix.shard }}/4)
+    needs: prepare
+    runs-on: ubuntu-26.04-arm
+    timeout-minutes: 60
+
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4]
+
+    env:
+      ELECTRON_CACHE: ${{ github.workspace }}/.cache/electron
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ needs.prepare.outputs.sha }}
+
+      - name: Set up mise
+        uses: jdx/mise-action@v5
+        with:
+          version: 2026.11.7 # datasource=github-releases depName=jdx/mise
+          install_args: yq
+
+      - name: Setup node
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+
+      - name: Setup pnpm
+        run: corepack enable
+
+      - name: Get pnpm cache directory
+        run: echo "pnpm_cache_dir=$(pnpm store path)" | tee -a "${GITHUB_ENV}"
+
+      - name: Use pnpm cache
+        uses: actions/cache@v6
+        with:
+          path: ${{ env.pnpm_cache_dir }}
+          key: ubuntu-26.04-arm-arm64-node-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            ubuntu-26.04-arm-arm64-node-
+
+      - name: Restore bundled binaries cache
+        uses: actions/cache/restore@v6
+        with:
+          path: freelens/binaries
+          key: ${{ runner.os }}-${{ runner.arch }}-binaries-${{ hashFiles('freelens/binaries.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ runner.arch }}-binaries-
+
+      - name: Get Electron version
+        run: |
+          electron_version=$(yq ea -r '[.importers.freelens.devDependencies.electron.version | select(. != null)] | .[0] // error("electron not found in pnpm-lock.yaml") | split("(") | .[0]' pnpm-lock.yaml)
+          echo "electron_version=${electron_version}" | tee -a "${GITHUB_ENV}"
+
+      - name: Use Electron cache
+        uses: actions/cache@v6
+        with:
+          path: ${{ env.ELECTRON_CACHE }}
+          key: ubuntu-26.04-arm-arm64-electron-${{ env.electron_version }}
+
+      - name: Install pnpm dependencies
+        run: |
+          timeout 300 pnpm install --color=always --prefer-offline --frozen-lockfile ||
+            timeout 300 pnpm install --color=always --prefer-offline --frozen-lockfile
+
+      # Electron downloads its binary lazily on the first require(); do it once
+      # here so the parallel Vitest workers do not race to extract it.
+      - name: Install Electron binary
+        working-directory: freelens
+        env:
+          electron_config_cache: ${{ env.ELECTRON_CACHE }}
+        run: node "$(node -p "require.resolve('electron/install.js')")"
+
+      - name: Build packages
+        run: pnpm --color=always --stream build
+
+      - name: Run unit tests
+        run: pnpm --color=always test:unit --shard=${{ matrix.shard }}/4 --reporter=default --reporter=github-actions
+
+  build:
+    name: build ${{ matrix.os }} ${{ matrix.arch }}
+    needs: prepare
+
+    # Each platform is packaged on its own OS and architecture: node-pty and
+    # the bundled kubectl, helm and freelens-k8s-proxy are native, and
+    # electron-builder picks node-pty's prebuild for the host it runs on (see
+    # electron-builder.yml). Ubuntu stays on the oldest supported image for
+    # glibc compatibility with older distributions.
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runs-on: ubuntu-24.04
+            os: linux
+            arch: x64
+          - runs-on: ubuntu-24.04-arm
+            os: linux
+            arch: arm64
+          - runs-on: macos-26 # datasource=github-runners
+            os: macos
+            arch: arm64
+          - runs-on: macos-26-intel # datasource=github-runners
+            os: macos
+            arch: x64
+          - runs-on: windows-2025 # datasource=github-runners
+            os: windows
+            arch: x64
+          - runs-on: windows-11-arm # datasource=github-runners
+            os: windows
+            arch: arm64
+
+    runs-on: ${{ matrix.runs-on }}
+    timeout-minutes: 120
+
+    env:
+      ELECTRON_BUILDER_CACHE: ${{ github.workspace }}/.cache/electron-builder
+      # A release builds everything from scratch rather than from a cache.
+      TURBO_FORCE: "true"
+      OS: ${{ matrix.os }}
+      ARCH: ${{ matrix.arch }}
+      VERSION: ${{ needs.prepare.outputs.version }}
+      RELEASE: ${{ needs.prepare.outputs.release }}
+      MAC_SIGNING: ${{ needs.prepare.outputs.mac-signing }}
+      MAC_NOTARIZATION: ${{ needs.prepare.outputs.mac-notarization }}
+      WIN_SIGNING: ${{ needs.prepare.outputs.win-signing }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ needs.prepare.outputs.sha }}
+
+      - name: Set up mise
+        uses: jdx/mise-action@v5
+        with:
+          version: 2026.11.7 # datasource=github-releases depName=jdx/mise
+          install_args: yq
+
+      - name: Setup node
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+
+      - name: Setup pnpm
+        run: corepack enable
+
+      - name: Install rpm tooling (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq rpm
+
+      - name: Get pnpm cache directory
+        shell: bash
+        run: echo "pnpm_cache_dir=$(pnpm store path)" | tee -a "${GITHUB_ENV}"
+
+      - name: Use pnpm cache
+        uses: actions/cache@v6
+        with:
+          path: ${{ env.pnpm_cache_dir }}
+          key: ${{ matrix.runs-on }}-${{ matrix.arch }}-node-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ matrix.runs-on }}-${{ matrix.arch }}-node-
+
+      - name: Disable pre post scripts for pnpm
+        shell: bash
+        run: pnpm config set enablePrePostScripts false --location project
+
+      - name: Get Electron and Electron Builder versions
+        shell: bash
+        # pnpm-lock.yaml holds several YAML documents, so evaluate them all.
+        # The versions carry a peer suffix, e.g. 1.2.3(supports-color@8.1.1).
+        run: |
+          electron_version=$(yq ea -r '[.importers.freelens.devDependencies.electron.version | select(. != null)] | .[0] // error("electron not found in pnpm-lock.yaml") | split("(") | .[0]' pnpm-lock.yaml)
+          electron_builder_version=$(yq ea -r '[.importers.freelens.devDependencies.electron-builder.version | select(. != null)] | .[0] // error("electron-builder not found in pnpm-lock.yaml") | split("(") | .[0]' pnpm-lock.yaml)
+          echo "electron_version=${electron_version}" | tee -a "${GITHUB_ENV}"
+          echo "electron_builder_version=${electron_builder_version}" | tee -a "${GITHUB_ENV}"
+
+      # electron-builder always downloads Electron into the OS-default cache
+      # directory, so the Electron install step and the cache use that one.
+      - name: Get Electron cache directory
+        shell: bash
+        run: |
+          case "$OS" in
+            linux) dir="$HOME/.cache/electron" ;;
+            macos) dir="$HOME/Library/Caches/electron" ;;
+            windows) dir="$LOCALAPPDATA/electron/Cache" ;;
+          esac
+          echo "electron_cache_dir=$dir" | tee -a "$GITHUB_ENV"
+
+      - name: Restore Electron cache
+        id: electron-cache-restore
+        uses: actions/cache/restore@v6
+        with:
+          path: ${{ env.electron_cache_dir }}
+          key: ${{ matrix.runs-on }}-${{ matrix.arch }}-electron-${{ env.electron_version }}
+          restore-keys: |
+            ${{ matrix.runs-on }}-${{ matrix.arch }}-electron-
+
+      - name: Restore Electron Builder cache
+        id: electron-builder-cache-restore
+        uses: actions/cache/restore@v6
+        with:
+          path: ${{ env.ELECTRON_BUILDER_CACHE }}
+          key: ${{ matrix.runs-on }}-${{ matrix.arch }}-electron-builder-${{ env.electron_builder_version }}
+          restore-keys: |
+            ${{ matrix.runs-on }}-${{ matrix.arch }}-electron-builder-
+
+      # The binaries are verified against freelens/binaries.lock.json on every
+      # build, so restoring them from a cache is safe (see AGENTS.md).
+      - name: Restore bundled binaries cache
+        id: binaries-cache-restore
+        uses: actions/cache/restore@v6
+        with:
+          path: freelens/binaries
+          key: ${{ runner.os }}-${{ runner.arch }}-binaries-${{ hashFiles('freelens/binaries.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ runner.arch }}-binaries-
+
+      - name: Install pnpm dependencies
+        shell: bash
+        run: |
+          pnpm install --color=always --prefer-offline --frozen-lockfile ||
+            pnpm install --color=always --prefer-offline --frozen-lockfile
+
+      - name: Install Electron binary
+        shell: bash
+        working-directory: freelens
+        env:
+          electron_config_cache: ${{ env.electron_cache_dir }}
+        run: node "$(node -p "require.resolve('electron/install.js')")"
+
+      # Without known checksums @electron/get fetches SHASUMS256.txt from
+      # GitHub on every build. The electron package ships the same checksums,
+      # which the lockfile has verified.
+      - name: Seed Electron checksums
+        shell: bash
+        working-directory: freelens
+        run: |
+          mkdir -p "$electron_cache_dir"
+          node -e '
+            const checksums = require("electron/checksums.json");
+            const lines = Object.entries(checksums).map(([file, sha256]) => `${sha256} *${file}\n`);
+            require("node:fs").writeFileSync(process.argv[1], lines.join(""));
+          ' "$electron_cache_dir/SHASUMS256.txt-$electron_version"
+
+      - name: Build packages
+        shell: bash
+        run: |
+          # Turbo's parallel builds intermittently crash with
+          # STATUS_DLL_INIT_FAILED on the hosted Windows runners.
+          [[ $RUNNER_OS == Windows ]] && export TURBO_CONCURRENCY=2
+          pnpm --color=always --stream build
+
+      - name: Build extra resources
+        shell: bash
+        run: |
+          for attempt in 1 2 3; do
+            if pnpm --color=always build:resources; then exit 0; fi
+            echo "::warning::build:resources failed (attempt $attempt)"
+          done
+          exit 1
+
+      - name: Save bundled binaries cache
+        if: steps.binaries-cache-restore.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v6
+        with:
+          path: freelens/binaries
+          key: ${{ steps.binaries-cache-restore.outputs.cache-primary-key }}
+
+      # With a Developer ID certificate the app is signed with the hardened
+      # runtime and, with the Apple credentials, notarized and stapled by
+      # build/notarize.cjs. Without one it is ad-hoc signed: Apple Silicon
+      # runs no code without a signature, and an ad-hoc one lets the user
+      # open the app through System Settings rather than see it as damaged.
+      # Ad-hoc signing uses no secret, so it may also run for pull requests.
+      - name: Build Electron app (macOS)
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          args=(dmg zip "--$ARCH")
+          if [[ $MAC_SIGNING == true ]]; then
+            if [[ $MAC_NOTARIZATION != true ]]; then
+              unset APPLEID APPLEIDPASS APPLETEAMID
+            fi
+          else
+            unset CSC_LINK CSC_KEY_PASSWORD APPLEID APPLEIDPASS APPLETEAMID
+            export CSC_IDENTITY_AUTO_DISCOVERY=false CSC_FOR_PULL_REQUEST=true
+            args+=(--config.mac.identity=-)
+          fi
+          for attempt in 1 2; do
+            if pnpm --color=always build:app "${args[@]}"; then exit 0; fi
+            echo "::warning::Packaging failed (attempt $attempt)"
+          done
+          exit 1
+        env:
+          CSC_LINK: ${{ needs.prepare.outputs.mac-signing == 'true' && secrets.CSC_LINK || '' }}
+          CSC_KEY_PASSWORD: ${{ needs.prepare.outputs.mac-signing == 'true' && secrets.CSC_KEY_PASSWORD || '' }}
+          APPLEID: ${{ needs.prepare.outputs.mac-notarization == 'true' && secrets.APPLEID || '' }}
+          APPLEIDPASS: ${{ needs.prepare.outputs.mac-notarization == 'true' && secrets.APPLEIDPASS || '' }}
+          APPLETEAMID: ${{ needs.prepare.outputs.mac-notarization == 'true' && secrets.APPLETEAMID || '' }}
+
+      - name: Build Electron app (Linux)
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          for attempt in 1 2; do
+            if pnpm --color=always build:app AppImage deb rpm "--$ARCH"; then exit 0; fi
+            echo "::warning::Packaging failed (attempt $attempt)"
+          done
+          exit 1
+
+      # Windows is packed in two steps, so that the binaries inside the app
+      # can be signed before the installer wraps them.
+      - name: Build Electron app directory (Windows)
+        if: runner.os == 'Windows'
+        shell: bash
+        run: |
+          [[ $WIN_SIGNING == pfx ]] || unset WIN_CSC_LINK WIN_CSC_KEY_PASSWORD
+          export CSC_IDENTITY_AUTO_DISCOVERY=false
+          for attempt in 1 2; do
+            if pnpm --color=always build:app dir "--$ARCH"; then exit 0; fi
+            echo "::warning::Packaging failed (attempt $attempt)"
+          done
+          exit 1
+        env:
+          WIN_CSC_LINK: ${{ needs.prepare.outputs.win-signing == 'pfx' && secrets.WIN_CSC_LINK || '' }}
+          WIN_CSC_KEY_PASSWORD: ${{ needs.prepare.outputs.win-signing == 'pfx' && secrets.WIN_CSC_KEY_PASSWORD || '' }}
+
+      - name: List unpacked binaries to sign (Windows)
+        id: sign-list
+        if: runner.os == 'Windows' && needs.prepare.outputs.win-signing == 'azure'
+        shell: bash
+        run: |
+          set -euo pipefail
+          case "$ARCH" in
+            arm64) unpacked="win-arm64-unpacked" ;;
+            *) unpacked="win-unpacked" ;;
+          esac
+          ws='${{ github.workspace }}'
+          dir="freelens/dist/$unpacked"
+          # node-pty's bundled ConPTY is signed by Microsoft; keep that
+          # signature rather than replace it with ours.
+          conpty="$dir/resources/app.asar.unpacked/node_modules/node-pty/prebuilds/win32-$ARCH/conpty"
+          list="$RUNNER_TEMP/sign-files.txt"
+          : > "$list"
+          while IFS= read -r -d '' f; do
+            [[ "$f" == "$conpty/"* ]] && continue
+            if file -b "$f" | grep -q 'PE32'; then
+              rel="${f#./}"
+              printf '%s\\%s\n' "$ws" "${rel//\//\\}" >> "$list"
+            fi
+          done < <(find "$dir" -type f \( -iname '*.dll' -o -iname '*.exe' -o -iname '*.node' \) -print0)
+          if [[ ! -s "$list" ]]; then
+            echo "No Windows PE binaries found under ${dir} to sign" >&2
+            exit 1
+          fi
+          cat "$list"
+          {
+            echo "files<<SIGN_EOF"
+            cat "$list"
+            echo "SIGN_EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Azure Trusted Signing unpacked binaries (Windows)
+        if: runner.os == 'Windows' && needs.prepare.outputs.win-signing == 'azure'
+        uses: azure/artifact-signing-action@v2
+        with:
+          azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          azure-client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          azure-client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+          endpoint: ${{ vars.AZURE_ENDPOINT }}
+          trusted-signing-account-name: ${{ vars.AZURE_CODE_SIGNING_NAME }}
+          certificate-profile-name: ${{ vars.AZURE_CERT_PROFILE_NAME }}
+          files: ${{ steps.sign-list.outputs.files }}
+
+      - name: Build Electron app installer (Windows)
+        if: runner.os == 'Windows'
+        shell: bash
+        run: |
+          [[ $WIN_SIGNING == pfx ]] || unset WIN_CSC_LINK WIN_CSC_KEY_PASSWORD
+          export CSC_IDENTITY_AUTO_DISCOVERY=false
+          case "$ARCH" in
+            arm64) unpacked="win-arm64-unpacked" ;;
+            *) unpacked="win-unpacked" ;;
+          esac
+          for attempt in 1 2; do
+            if pnpm --color=always build:app nsis --prepackaged "$GITHUB_WORKSPACE/freelens/dist/$unpacked" "--$ARCH"; then exit 0; fi
+            echo "::warning::Packaging failed (attempt $attempt)"
+          done
+          exit 1
+        env:
+          WIN_CSC_LINK: ${{ needs.prepare.outputs.win-signing == 'pfx' && secrets.WIN_CSC_LINK || '' }}
+          WIN_CSC_KEY_PASSWORD: ${{ needs.prepare.outputs.win-signing == 'pfx' && secrets.WIN_CSC_KEY_PASSWORD || '' }}
+
+      - name: Azure Trusted Signing installer (Windows)
+        if: runner.os == 'Windows' && needs.prepare.outputs.win-signing == 'azure'
+        uses: azure/artifact-signing-action@v2
+        with:
+          azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          azure-client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          azure-client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+          endpoint: ${{ vars.AZURE_ENDPOINT }}
+          trusted-signing-account-name: ${{ vars.AZURE_CODE_SIGNING_NAME }}
+          certificate-profile-name: ${{ vars.AZURE_CERT_PROFILE_NAME }}
+          files-folder: ${{ github.workspace }}\freelens\dist
+          files-folder-filter: exe
+
+      # Whatever was downloaded is cached even when packaging failed, so a
+      # re-run does not download it again.
+      - name: Save Electron cache
+        if: always() && steps.electron-cache-restore.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v6
+        with:
+          path: ${{ env.electron_cache_dir }}
+          key: ${{ steps.electron-cache-restore.outputs.cache-primary-key }}
+
+      - name: Save Electron Builder cache
+        if: always() && steps.electron-builder-cache-restore.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v6
+        with:
+          path: ${{ env.ELECTRON_BUILDER_CACHE }}
+          key: ${{ steps.electron-builder-cache-restore.outputs.cache-primary-key }}
+
+      - name: Verify app.asar
+        shell: bash
+        run: |
+          set -eo pipefail
+          found=0
+          while IFS= read -r asar; do
+            tmpdir=$(mktemp -d)
+            pnpm dlx @electron/asar extract "${asar}" "${tmpdir}" > /dev/null
+            rm -rf "${tmpdir}"
+            found=$((found + 1))
+          done < <(find freelens/dist -type f -name app.asar)
+          if [[ "${found}" -eq 0 ]]; then
+            echo "No app.asar found under freelens/dist" >&2
+            exit 1
+          fi
+
+      # Guards against a package that carries native code of another
+      # architecture, such as an x64 node-pty or kubectl in an arm64 build.
+      - name: Verify native architecture
+        shell: bash
+        run: |
+          set -euo pipefail
+          case "$OS-$ARCH" in
+            linux-x64) app=freelens/dist/linux-unpacked; exe=$app/prolens; res=$app/resources; want='x86-64' ;;
+            linux-arm64) app=freelens/dist/linux-arm64-unpacked; exe=$app/prolens; res=$app/resources; want='aarch64' ;;
+            macos-x64) app=freelens/dist/mac/ProLens.app; exe=$app/Contents/MacOS/ProLens; res=$app/Contents/Resources; want='x86_64' ;;
+            macos-arm64) app=freelens/dist/mac-arm64/ProLens.app; exe=$app/Contents/MacOS/ProLens; res=$app/Contents/Resources; want='arm64' ;;
+            windows-x64) app=freelens/dist/win-unpacked; exe=$app/ProLens.exe; res=$app/resources; want='x86-64' ;;
+            windows-arm64) app=freelens/dist/win-arm64-unpacked; exe=$app/ProLens.exe; res=$app/resources; want='Aarch64' ;;
+          esac
+          ext=""
+          [[ $OS == windows ]] && ext=.exe
+          files=("$exe" "$res/$ARCH/kubectl$ext" "$res/$ARCH/helm$ext" "$res/$ARCH/freelens-k8s-proxy$ext")
+          while IFS= read -r -d '' f; do files+=("$f"); done < <(find "$res" -name '*.node' -print0)
+          status=0
+          for f in "${files[@]}"; do
+            if [[ ! -f $f ]]; then
+              echo "::error::Missing $f"
+              status=1
+              continue
+            fi
+            desc=$(file -b "$f")
+            echo "$f: $desc"
+            if [[ $desc != *"$want"* ]]; then
+              echo "::error::$f is not built for $ARCH ($desc)"
+              status=1
+            fi
+          done
+          exit $status
+
+      - name: Verify code signature (macOS)
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          set -euo pipefail
+          case "$ARCH" in
+            arm64) app=freelens/dist/mac-arm64/ProLens.app ;;
+            *) app=freelens/dist/mac/ProLens.app ;;
+          esac
+          codesign --verify --deep --strict --verbose=2 "$app"
+          codesign -dv --verbose=2 "$app" 2>&1 | tee "$RUNNER_TEMP/codesign.txt"
+          if [[ $MAC_SIGNING == true ]]; then
+            if grep -q '^TeamIdentifier=not set' "$RUNNER_TEMP/codesign.txt"; then
+              echo "::error::The app is not signed with a Developer ID"
+              exit 1
+            fi
+          elif ! grep -q '^Signature=adhoc' "$RUNNER_TEMP/codesign.txt"; then
+            echo "::error::The app is neither Developer ID nor ad-hoc signed"
+            exit 1
+          fi
+          if [[ $MAC_NOTARIZATION == true ]]; then
+            xcrun stapler validate "$app"
+            spctl --assess --type execute --verbose=4 "$app"
+          fi
+
+      - name: Verify code signature (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $unpacked = if ($env:ARCH -eq 'arm64') { 'win-arm64-unpacked' } else { 'win-unpacked' }
+          $files = @("freelens/dist/$unpacked/ProLens.exe") + (Get-ChildItem freelens/dist -Filter 'ProLens*.exe' -File | ForEach-Object { $_.FullName })
+          $failed = $false
+          foreach ($f in $files) {
+            $s = Get-AuthenticodeSignature -LiteralPath $f
+            Write-Host "$f : $($s.Status) $($s.SignerCertificate.Subject)"
+            if ($env:WIN_SIGNING -ne 'none' -and $s.Status -ne 'Valid') { $failed = $true }
+          }
+          if ($failed) { Write-Host "::error::A Windows binary has no valid signature"; exit 1 }
+
+      # One name scheme for every platform: ProLens-<version>-<os>-<arch>.<ext>
+      # (arch is x64 or arm64). Each leg must produce exactly its formats.
+      - name: Normalize file names
+        shell: bash
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          cd freelens/dist
+          case "$OS" in
+            macos) exts=(dmg zip) ;;
+            linux) exts=(AppImage deb rpm) ;;
+            windows) exts=(exe) ;;
+          esac
+          for ext in "${exts[@]}"; do
+            found=(ProLens*."$ext")
+            if [[ ${#found[@]} -ne 1 ]]; then
+              echo "::error::Expected one .$ext, found ${#found[@]}: ${found[*]:-none}"
+              exit 1
+            fi
+            dst="ProLens-$VERSION-$OS-$ARCH.$ext"
+            [[ ${found[0]} == "$dst" ]] || mv -v "${found[0]}" "$dst"
+          done
+          ls -l ProLens-*
+
+      - name: Make checksums
+        shell: bash
+        working-directory: freelens/dist
+        run: |
+          node -e '
+            const { createHash } = require("node:crypto");
+            const fs = require("node:fs");
+            for (const file of process.argv.slice(1)) {
+              const hash = createHash("sha256").update(fs.readFileSync(file)).digest("hex");
+              fs.writeFileSync(`${file}.sha256`, `${hash}  ${file}\n`);
+              console.log(`${hash}  ${file}`);
+            }
+          ' ProLens-"$VERSION"-"$OS"-"$ARCH".*
+
+      - name: Upload installers
+        uses: actions/upload-artifact@v7
+        with:
+          name: prolens-${{ matrix.os }}-${{ matrix.arch }}
+          path: freelens/dist/ProLens-${{ needs.prepare.outputs.version }}-${{ matrix.os }}-${{ matrix.arch }}.*
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: ${{ needs.prepare.outputs.release == 'true' && 30 || 7 }}
+
+  release:
+    name: create draft release
+    needs:
+      - prepare
+      - lint
+      - unit-tests
+      - build
+
+    # Runs after a failed build too, to report what is missing; it only
+    # creates a draft when the checks passed and every platform built, or a
+    # manual run allowed a partial draft.
+    if: always() && needs.prepare.outputs.release == 'true'
+
+    runs-on: ubuntu-26.04-arm
+    timeout-minutes: 30
+
+    # One draft per tag at a time.
+    concurrency:
+      group: prolens-draft-release-${{ needs.prepare.outputs.tag }}
+      cancel-in-progress: false
+
+    permissions:
+      contents: write
+      id-token: write
+      attestations: write
+
+    env:
+      TAG: ${{ needs.prepare.outputs.tag }}
+      VERSION: ${{ needs.prepare.outputs.version }}
+      SHA: ${{ needs.prepare.outputs.sha }}
+      PRERELEASE: ${{ needs.prepare.outputs.prerelease }}
+      ALLOW_PARTIAL: ${{ inputs.allow-partial == true }}
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GH_REPO: ${{ github.repository }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ needs.prepare.outputs.sha }}
+
+      - name: Require passing checks
+        shell: bash
+        run: |
+          echo "type check and lint: $LINT, unit tests: $UNIT, builds: $BUILD"
+          if [[ $LINT != success || $UNIT != success ]]; then
+            echo "::error::The checks did not pass, so no release is created"
+            exit 1
+          fi
+        env:
+          LINT: ${{ needs.lint.result }}
+          UNIT: ${{ needs.unit-tests.result }}
+          BUILD: ${{ needs.build.result }}
+
+      - name: Download installers
+        uses: actions/download-artifact@v8
+        with:
+          pattern: prolens-*
+          path: dist
+          merge-multiple: true
+
+      - name: Verify installers and checksums
+        id: verify
+        shell: bash
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          cd dist
+          expected=(
+            "macos-arm64:dmg zip"
+            "macos-x64:dmg zip"
+            "windows-x64:exe"
+            "windows-arm64:exe"
+            "linux-x64:AppImage deb rpm"
+            "linux-arm64:AppImage deb rpm"
+          )
+          missing=()
+          {
+            echo "## Platforms"
+            echo
+            echo "| Platform | Files |"
+            echo "| --- | --- |"
+          } >> "$GITHUB_STEP_SUMMARY"
+          for entry in "${expected[@]}"; do
+            platform=${entry%%:*}
+            present=()
+            for ext in ${entry#*:}; do
+              f="ProLens-$VERSION-$platform.$ext"
+              if [[ -f $f && -f $f.sha256 ]]; then
+                present+=("$ext")
+              else
+                missing+=("$f")
+              fi
+            done
+            echo "| $platform | ${present[*]:-**missing**} |" >> "$GITHUB_STEP_SUMMARY"
+          done
+          for f in *.sha256; do
+            sha256sum --check --strict "$f"
+          done
+          printf '%s\n' "${missing[@]}" > "$RUNNER_TEMP/missing.txt"
+          if [[ ${#missing[@]} -gt 0 ]]; then
+            printf '::error::Missing %s\n' "${missing[@]}"
+            if [[ $ALLOW_PARTIAL != true ]]; then
+              echo "::error::Not every platform built, so no draft is created. Re-run the failed jobs, or run the workflow manually with allow-partial."
+              exit 1
+            fi
+          fi
+          cat ProLens-*.sha256 | sort -k2 > "ProLens-$VERSION-SHA256SUMS.txt"
+          cat "ProLens-$VERSION-SHA256SUMS.txt"
+
+      - name: Attest build provenance
+        uses: actions/attest-build-provenance@v4
+        with:
+          subject-checksums: dist/ProLens-${{ needs.prepare.outputs.version }}-SHA256SUMS.txt
+
+      - name: Write release notes
+        shell: bash
+        run: |
+          set -euo pipefail
+          notes="$RUNNER_TEMP/notes.md"
+          if grep -q "v$VERSION" RELEASE_NOTES.md; then
+            sed '1{/^# /d;}' RELEASE_NOTES.md > "$notes"
+          else
+            echo "::warning::RELEASE_NOTES.md does not mention v$VERSION; the notes only list the files"
+            : > "$notes"
+          fi
+          sign_mac="Not signed with a Developer ID (ad-hoc signature only) and not notarized."
+          if [[ $MAC_SIGNING == true && $MAC_NOTARIZATION == true ]]; then
+            sign_mac="Signed with a Developer ID, notarized and stapled."
+          elif [[ $MAC_SIGNING == true ]]; then
+            sign_mac="Signed with a Developer ID, not notarized."
+          fi
+          case "$WIN_SIGNING" in
+            azure) sign_win="Signed with Azure Trusted Signing." ;;
+            pfx) sign_win="Signed with an Authenticode certificate." ;;
+            *) sign_win="Not signed." ;;
+          esac
+          {
+            echo
+            echo "## Signing"
+            echo
+            echo "- macOS: $sign_mac"
+            echo "- Windows: $sign_win"
+            echo "- Linux: packages are not signed; verify them with the checksums."
+            if [[ -s $RUNNER_TEMP/missing.txt ]]; then
+              echo
+              echo "## Missing files"
+              echo
+              echo "These platforms failed to build and are not part of this release:"
+              echo
+              sed 's/^/- /' "$RUNNER_TEMP/missing.txt"
+            fi
+            echo
+            echo "## Verifying a download"
+            echo
+            echo "Compare the SHA-256 of a file with \`ProLens-$VERSION-SHA256SUMS.txt\`, or check its build provenance:"
+            echo
+            echo '```sh'
+            echo "gh attestation verify ProLens-$VERSION-<platform>.<ext> --repo $GH_REPO"
+            echo '```'
+            echo
+            echo "Built from commit $SHA."
+          } >> "$notes"
+          cat "$notes"
+        env:
+          MAC_SIGNING: ${{ needs.prepare.outputs.mac-signing }}
+          MAC_NOTARIZATION: ${{ needs.prepare.outputs.mac-notarization }}
+          WIN_SIGNING: ${{ needs.prepare.outputs.win-signing }}
+
+      # Creates the draft, or refreshes the files of an existing draft on a
+      # re-run. A published release is never touched.
+      - name: Create draft release
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(dist/ProLens-*)
+          title="ProLens $TAG"
+          if is_draft=$(gh release view "$TAG" --json isDraft --jq .isDraft 2> /dev/null); then
+            if [[ $is_draft != true ]]; then
+              echo "::error::Release $TAG is already published; it is not changed"
+              exit 1
+            fi
+            gh release edit "$TAG" --title "$title" --notes-file "$RUNNER_TEMP/notes.md" --prerelease="$PRERELEASE"
+            gh release upload "$TAG" "${files[@]}" --clobber
+          else
+            gh release create "$TAG" "${files[@]}" \
+              --draft \
+              --verify-tag \
+              --title "$title" \
+              --notes-file "$RUNNER_TEMP/notes.md" \
+              --prerelease="$PRERELEASE"
+          fi
+          url=$(gh release view "$TAG" --json url --jq .url)
+          {
+            echo
+            echo "Draft release: $url"
+            echo
+            echo "It stays a draft until a maintainer publishes it."
+          } >> "$GITHUB_STEP_SUMMARY"

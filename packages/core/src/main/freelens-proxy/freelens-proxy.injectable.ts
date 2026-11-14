@@ -10,6 +10,7 @@ import { createProxyServer } from "http-proxy-3";
 import emitAppEventInjectable from "../../common/app-event-bus/emit-event.injectable";
 import freelensProxyCertificateInjectable from "../../common/certificate/freelens-proxy-certificate.injectable";
 import contentSecurityPolicyInjectable from "../../common/vars/content-security-policy.injectable";
+import aiSessionGateInjectable from "../../features/ai-tools/main/ai-session-gate.injectable";
 import freelensK8sProxyManagerInjectable from "../cluster/freelens-k8s-proxy-manager.injectable";
 import routerInjectable from "../router/router.injectable";
 import { FreelensProxy } from "./freelens-proxy";
@@ -35,6 +36,7 @@ const freelensProxyInjectable = getInjectable({
       logger: di.inject(loggerInjectionToken),
       certificate: di.inject(freelensProxyCertificateInjectable).get(),
       token: di.inject(freelensProxyTokenInjectable),
+      aiSessionGate: di.inject(aiSessionGateInjectable),
       getFreelensK8sProxyManager: (cluster) => di.inject(freelensK8sProxyManagerInjectable, cluster),
     }),
 });

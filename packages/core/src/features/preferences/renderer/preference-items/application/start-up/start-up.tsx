@@ -20,7 +20,7 @@ const NonInjectedStartUp = observer(({ state }: Dependencies) => (
   <section id="other">
     <SubTitle title="Start-up" />
     <Switch checked={state.openAtLogin} onChange={() => (state.openAtLogin = !state.openAtLogin)}>
-      Automatically start Freelens on login
+      Automatically start ProLens on login
     </Switch>
   </section>
 ));

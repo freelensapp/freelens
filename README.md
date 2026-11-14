@@ -1,43 +1,56 @@
-# Freelens
+# ProLens
 
-[![Home](https://img.shields.io/badge/%F0%9F%8F%A0-freelens.app-02a7a0)](https://freelens.app)
-[![GitHub](https://img.shields.io/github/stars/freelensapp/freelens?style=flat&label=GitHub%20%E2%AD%90&logo=github)](https://github.com/freelensapp/freelens)
-[![Discord](https://img.shields.io/badge/dynamic/json?color=blue&label=Discord&style=flat&query=approximate_member_count&url=https%3A%2F%2Fdiscordapp.com%2Fapi%2Finvites%2F%2FNjKZERK95Y%3Fwith_counts%3Dtrue&logo=discord)](https://discord.gg/NjKZERK95Y)
-[![Subreddit](https://img.shields.io/reddit/subreddit-subscribers/freelens?style=flat&label=r%2Ffreelens&logo=reddit)](https://www.reddit.com/r/freelens/)
-[![Bounties on BountyHub](https://img.shields.io/badge/Bounties-on%20BountyHub-yellow)](https://bountyhub.dev/bounties?repo=freelens)
-[![DeepWiki](https://img.shields.io/badge/Ask-DeepWiki-blue)](https://deepwiki.com/freelensapp/freelens)
-[![LFX Health Score](https://insights.linuxfoundation.org/api/badge/health-score?project=freelens)](https://insights.linuxfoundation.org/project/freelens)
-[![license](https://img.shields.io/github/license/freelensapp/freelens.svg)](https://github.com/freelensapp/freelens?tab=MIT-1-ov-file#readme)
-[![release](https://img.shields.io/github/v/release/freelensapp/freelens?display_name=tag&sort=semver)](https://github.com/freelensapp/freelens/releases/latest)
-[![Homebrew Cask Version](https://img.shields.io/homebrew/cask/v/freelens?label=homebrew)](https://formulae.brew.sh/cask/freelens#default)
-[![WinGet Package Version](https://img.shields.io/winget/v/Freelensapp.Freelens)](https://winstall.app/apps/Freelensapp.Freelens)
-[![Scoop Package Version](https://img.shields.io/scoop/v/freelens?bucket=extras)](https://scoop.sh/#/apps?q=freelens&s=1&d=0)
-[![Flathub Version](https://img.shields.io/flathub/v/app.freelens.Freelens)](https://flathub.org/apps/app.freelens.Freelens)
-[![Snap Store Version](https://img.shields.io/snapcraft/v/freelens/latest/stable)](https://snapcraft.io/freelens)
-[![AUR Version](https://img.shields.io/aur/version/freelens-bin)](https://aur.archlinux.org/packages/freelens-bin)
-[![NPM Version](https://img.shields.io/npm/v/%40freelensapp%2Fextensions)](https://www.npmjs.com/package/@freelensapp/extensions)
-[![Unit tests](https://github.com/freelensapp/freelens/actions/workflows/unit-tests.yaml/badge.svg?branch=main)](https://github.com/freelensapp/freelens/actions/workflows/unit-tests.yaml)
-[![Integration tests](https://github.com/freelensapp/freelens/actions/workflows/integration-tests.yaml/badge.svg?branch=main)](https://github.com/freelensapp/freelens/actions/workflows/integration-tests.yaml)
-[![Trunk Check](https://github.com/freelensapp/freelens/actions/workflows/trunk-check.yaml/badge.svg?branch=main)](https://github.com/freelensapp/freelens/actions/workflows/trunk-check.yaml)
+[![license](https://img.shields.io/github/license/chago1991/prolens.svg)](https://github.com/chago1991/prolens?tab=MIT-1-ov-file#readme)
+[![release](https://img.shields.io/github/v/release/chago1991/prolens?display_name=tag&sort=semver)](https://github.com/chago1991/prolens/releases/latest)
 
 <picture>
-  <img alt="Freelens logo" src="docs/images/logo.svg" width="110" align="left">
+  <img alt="ProLens logo" src="freelens/build/icon.svg" width="110" align="left">
 </picture>
 
-[Freelens](https://freelens.app) is a free and open-source user interface
-designed for managing Kubernetes clusters. It provides a standalone
-application compatible with macOS, Windows, and Linux operating systems,
-making it accessible to a wide range of users. The application aims to
-simplify the complexities of Kubernetes management by offering an intuitive
-and user-friendly interface.
+ProLens is an independently branded, open-source Kubernetes IDE for macOS,
+Windows and Linux. It manages and monitors Kubernetes clusters from a desktop
+application: cluster dashboards, workloads, networking, storage and
+configuration, a built-in terminal, Helm, and extensions.
 
 <br clear="left">
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/images/macos-pods-dark.jpg">
-  <source media="(prefers-color-scheme: light)" srcset="docs/images/macos-pods-light.jpg">
-  <img alt="Screenshot" src="docs/images/macos-pods-light.jpg">
-</picture>
+## Relationship to Freelens and OpenLens
+
+ProLens is a fork of [Freelens](https://github.com/freelensapp/freelens),
+which is itself a fork of OpenLens. It keeps the code, the MIT license and the
+copyright notices of the Freelens Authors and the OpenLens Authors, and follows
+Freelens upstream.
+
+What ProLens changes is its identity, so that both applications can be
+installed side by side:
+
+- the application is named ProLens, with its own icons and the application id
+  `app.prolens.ProLens`;
+- it keeps its settings in its own user-data directory (`ProLens`, or
+  `ProLensDev` in development), separate from the one of Freelens;
+- it registers itself for `prolens://` links. Links that start with
+  `freelens://` still work when they are passed to ProLens, but ProLens does not
+  register for them, so they keep opening Freelens.
+
+ProLens runs Freelens-compatible extensions: the extension API is still
+`@freelensapp/extensions`, and an extension declares the versions it supports
+in the `freelens` field of its `engines`.
+
+## Building from source
+
+ProLens needs Node.js 24 and pnpm (the version pinned in `packageManager` of
+`package.json`):
+
+```sh
+pnpm install
+pnpm build          # build all packages and the application bundle
+pnpm build:app:dir  # package the application into freelens/dist without an installer
+pnpm start          # start the packaged application
+```
+
+`pnpm build:app` builds the installers for the current platform. See
+[DEVELOPMENT.md](DEVELOPMENT.md) for the development loop and the checks to run
+before a change.
 
 ## Requirements
 
@@ -46,197 +59,52 @@ which may not work correctly; a different one can be set in Preferences.
 
 ## Downloads
 
-See the [releases](https://github.com/freelensapp/freelens/releases) page and
-download the right package for your system.
+ProLens is distributed only through the
+[releases](https://github.com/chago1991/prolens/releases) of this repository.
+There is no Homebrew cask, Flatpak, Snap, APT repository, AUR package, WinGet
+or Scoop package for ProLens; the packages of those names install Freelens.
+A release built without signing secrets is not code-signed or notarized, and
+says so in its notes. Every release lists the SHA-256 of its files in
+`ProLens-<version>-SHA256SUMS.txt`. ProLens tells you when a newer release is
+available but does not update itself. How releases are made is described in
+[docs/prolens/releasing.md](docs/prolens/releasing.md).
 
 ### macOS
 
-macOS 13 or later is required.
-
-Download either the PKG (installer) or DMG (image) package from the
-[releases](https://github.com/freelensapp/freelens/releases) page. Both arm64
-(M1 chip or newer) and amd64 (Intel) variants are available.
-
-All binary packages are built on macOS 15 and should be compatible with newer
-systems.
-
-#### Homebrew
-
-Run the following command:
-
-```sh
-brew install --cask freelens
-```
+macOS 13 or later is required. Download the DMG (disk image) or ZIP for arm64
+(Apple silicon) or x64 (Intel). A release built without a Developer ID
+certificate is signed ad-hoc only: the first time, open the app, then choose
+**Open Anyway** in System Settings → Privacy & Security.
 
 ### Linux
 
-Linux with GNU C Library 2.34 or later is required. It is provided ie. by
-Debian 12, Fedora 35, Mint 21, openSUSE Leap 15.4, Ubuntu 22.04 and by
-rolling release distributions like Arch, Manjaro or Tumbleweed.
+Linux with GNU C Library 2.34 or later is required (Debian 12, Fedora 35,
+Ubuntu 22.04 or newer, or a rolling release distribution). Download the DEB,
+RPM or AppImage for x64 (x86_64) or arm64 (aarch64). The packages install
+the `prolens` command and do not touch an installed Freelens.
 
-Download DEB or RPM (package) or AppImage (executable) from the
-[releases](https://github.com/freelensapp/freelens/releases) page. Both arm64
-(aarch64) and amd64 (x86_64) variants are available.
-
-All binary packages are built on Ubuntu 22.04 and should be compatible with
-new systems.
-
-#### AppImage
-
-The Linux AppImage file requires libz.so and libfuse.so.2. You can add them
-by running:
+The AppImage requires libz.so and libfuse.so.2 (`sudo apt install libfuse2
+zlib1g-dev`) and runs with:
 
 ```sh
-sudo apt install libfuse2 zlib1g-dev
+./ProLens*.AppImage --no-sandbox --ozone-platform-hint=auto --enable-features=WebRTCPipeWireCapturer --enable-features=WaylandWindowDecorations --disable-gpu-compositing
 ```
 
-Run the application with additional arguments:
-
-```sh
-./Freelens*.AppImage --no-sandbox --ozone-platform-hint=auto --enable-features=WebRTCPipeWireCapturer --enable-features=WaylandWindowDecorations --disable-gpu-compositing
-```
-
-#### Flatpak
-
-The package is available on the
-[Flathub](https://flathub.org/apps/app.freelens.Freelens) App Store for
-Linux.
-
-Use GNOME Software application or run the following commands:
-
-```sh
-flatpak install flathub app.freelens.Freelens
-flatpak run app.freelens.Freelens
-```
-
-The application is sandboxed. It includes bundled `kubectl` and `helm`
-commands and uses the `~/.kube/config` file by default.
-
-Flatpak adds wrappers for the `aws`, `doctl`, `gke-gcloud-auth-plugin`, and
-`kubelogin` tools, running them as commands from the host system.
-
-The terminal uses `/bin/sh` by default, but it can be switched to, for
-example, `/bin/bash` for a sandboxed environment or `/app/bin/host-spawn` for
-a host environment.
-
-#### Snap
-
-The package is available on the [Snap](https://snapcraft.io/freelens) Store
-for Linux.
-
-Use App Center application or run the following command:
-
-```sh
-snap install freelens --classic
-```
-
-#### APT repository
-
-Run the following commands:
-
-```sh
-curl -L https://raw.githubusercontent.com/freelensapp/freelens/refs/heads/main/freelens/build/apt/freelens.asc | sudo tee /etc/apt/keyrings/freelens.asc
-curl -L https://raw.githubusercontent.com/freelensapp/freelens/refs/heads/main/freelens/build/apt/freelens.sources | sudo tee /etc/apt/sources.list.d/freelens.sources
-sudo apt update
-sudo apt install freelens
-```
-
-#### Arch User Repository
-
-The package is available on the [Arch User Repository
-(AUR)](https://wiki.archlinux.org/title/Arch_User_Repository).
-
-Check the [freelens-bin](https://aur.archlinux.org/packages/freelens-bin)
-package page.
-
-#### Secret store
-
-Extensions keep tokens and passwords encrypted with the desktop's secret
-store: GNOME Keyring or another Secret Service provider through libsecret, or
-KWallet. The application finds it on its own on GNOME, KDE, Cinnamon, XFCE
-and other common desktops. On a desktop it does not recognise, such as sway,
-Hyprland or i3, the extensions cannot keep such values, so name the secret
-store when you start the application:
-
-```sh
-freelens --password-store=gnome-libsecret
-```
-
-Use `gnome-libsecret` for any Secret Service provider, such as GNOME Keyring
-or KeePassXC, and `kwallet5` or `kwallet6` for KWallet. The provider must be
-running in the session. The AppImage and `flatpak run app.freelens.Freelens`
-take the same argument.
+Extensions keep tokens and passwords in the desktop's secret store. On a
+desktop the application does not recognise, such as sway, Hyprland or i3,
+name it when you start the application: `prolens
+--password-store=gnome-libsecret` (any Secret Service provider) or
+`--password-store=kwallet6` (KWallet).
 
 ### Windows
 
-Windows 10 or later is required.
-
-Download the EXE (NSIS) or MSI installers from the
-[releases](https://github.com/freelensapp/freelens/releases) page.
-
-Both the x64 (amd64) and arm64 versions of the Windows binaries are provided.
-However, an EXE installer (NSIS) itself is x86 binary only even if it installs
-arm64 application and then installs to `C:\Program Files (x86)\Freelens` path
-by default.
-
-The version of the MSI package has the last 4th digit always `0` and this is a
-limitation of this package format.
-
-#### Portable
-
-Download the Portable EXE from the
-[releases](https://github.com/freelensapp/freelens/releases) page. It is a
-self-contained executable that can be run without installation.
-
-#### WinGet
-
-The package is available in
-[WinGet](https://winstall.app/apps/Freelensapp.Freelens) Community
-[repository](https://github.com/microsoft/winget-pkgs).
-
-Run the following command:
-
-```powershell
-winget install Freelensapp.Freelens
-```
-
-The `--silent` option is supported to suppress all UI.
-
-The `--scope user` or `--scope machine` option can be used to install it
-either to local user directory or to `C:\Program Files`.
-
-WinGet installs the application from EXE installer (NSIS).
-
-#### Scoop
-
-The package is available in the
-[Scoop](https://scoop.sh/#/apps?q=freelens&s=1&d=0) command-line installer for
-Windows.
-
-Run the following command:
-
-```powershell
-scoop bucket add extras
-scoop install freelens
-```
-
-Scoop uses MSI package to install the application.
-
-#### WSL
+Windows 10 or later is required. Download the installer (EXE) for x64 or
+arm64. An unsigned installer is reported by SmartScreen: choose **More info**,
+then **Run anyway**.
 
 The terminal can run a WSL shell: set the shell to `wsl.exe` in the terminal
-preferences. The `kubectl` and `helm` commands of the WSL distribution then
-use the cluster opened in Freelens.
-
-WSL 2 requires the mirrored networking mode. Add it to the
-`%UserProfile%\.wslconfig` file:
-
-```ini
-[wsl2]
-networkingMode=mirrored
-```
-
-Then restart WSL with `wsl --shutdown`.
+preferences. WSL 2 needs the mirrored networking mode (`networkingMode=mirrored`
+under `[wsl2]` in `%UserProfile%\.wslconfig`, then `wsl --shutdown`).
 
 ## Development
 

@@ -79,6 +79,23 @@ describe("protocol router tests", () => {
     expect(broadcastMessageMock).toHaveBeenCalledWith(ProtocolHandlerInternal, "freelens://app", "matched");
   });
 
+  it("should broadcast internal route when called with the prolens:// scheme", async () => {
+    lpr.addInternalHandler("/", noop);
+
+    try {
+      expect(await lpr.route("prolens://app")).toBeUndefined();
+    } catch (error) {
+      expect(throwIfDefined(error)).not.toThrow();
+    }
+
+    expect(broadcastMessageMock).toHaveBeenCalledWith(ProtocolHandlerInternal, "prolens://app", "matched");
+  });
+
+  it("should broadcast invalid protocol on lookalike schemes", async () => {
+    await lpr.route("openlens://app");
+    expect(broadcastMessageMock).toBeCalledWith(ProtocolHandlerInvalid, "invalid protocol", "openlens://app");
+  });
+
   it("should broadcast external route when called with valid host", async () => {
     const extId = uuid.v4();
     const ext = new LensMainExtension({

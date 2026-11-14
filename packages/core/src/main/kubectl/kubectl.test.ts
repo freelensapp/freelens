@@ -310,7 +310,7 @@ describe("kubectl", () => {
         });
 
         await vi.waitFor(() =>
-          expect(phases).toEqual([`Waiting for another Freelens process to prepare kubectl v${pinnedVersion} ...`]),
+          expect(phases).toEqual([`Waiting for another ProLens process to prepare kubectl v${pinnedVersion} ...`]),
         );
 
         // What the other process downloaded before it let go of the lock.
@@ -407,7 +407,7 @@ describe("kubectl", () => {
         ),
       ).rejects.toThrow(
         `The bundled kubectl v${pinnedVersion} is not usable, so kubectl v${pinnedVersion} was not prepared ` +
-          "and Freelens has no kubectl of its own to run",
+          "and ProLens has no kubectl of its own to run",
       );
       expect(problems).toEqual([]);
     });

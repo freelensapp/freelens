@@ -6,6 +6,7 @@
 
 import { disposer, noop } from "@freelensapp/utilities";
 import { observable, when } from "mobx";
+import { isAcceptedProtocol } from "../../../common/branding";
 import * as proto from "../../../common/protocol-handler";
 import { ProtocolHandlerInvalid } from "../../../common/protocol-handler";
 
@@ -65,7 +66,7 @@ export class LensProtocolRouterMain extends proto.LensProtocolRouter {
     try {
       const url = new URL(rawUrl);
 
-      if (url.protocol.toLowerCase() !== "freelens:") {
+      if (!isAcceptedProtocol(url.protocol)) {
         throw new proto.RoutingError(proto.RoutingErrorType.INVALID_PROTOCOL, url);
       }
 

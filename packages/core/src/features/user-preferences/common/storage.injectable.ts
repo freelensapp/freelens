@@ -15,7 +15,28 @@ import { userPreferencesMigrationInjectionToken } from "./migrations-token";
 import userPreferenceDescriptorsInjectable from "./preference-descriptors.injectable";
 import userPreferencesStateInjectable from "./state.injectable";
 
+import type { AiToolSettings } from "../../ai-tools/common/ai-tools";
 import type { UserPreferencesModel } from "./preferences-helpers";
+
+/**
+ * Early ProLens builds stored the command of the custom AI tool on its own,
+ * as `customAiToolCommand`. It now lives with the other per-tool settings.
+ */
+export const migrateLegacyCustomAiToolCommand = (
+  settings: AiToolSettings | undefined,
+  preferences: UserPreferencesModel & { customAiToolCommand?: unknown },
+): AiToolSettings | undefined => {
+  const legacy = preferences.customAiToolCommand;
+
+  if (typeof legacy !== "string" || !legacy.trim() || settings?.custom?.executablePath) {
+    return settings;
+  }
+
+  return {
+    ...settings,
+    custom: { ...settings?.custom, executablePath: legacy.trim() },
+  };
+};
 
 export interface UserStoreModel {
   preferences: UserPreferencesModel;
@@ -37,6 +58,7 @@ const userPreferencesPersistentStorageInjectable = getInjectable({
         logger.debug("fromStore()", { preferences });
 
         state.allowErrorReporting = descriptors.allowErrorReporting.fromStore(preferences.allowErrorReporting);
+        state.aiTool = descriptors.aiTool.fromStore(preferences.aiTool);
         state.allowUntrustedCAs = descriptors.allowUntrustedCAs.fromStore(preferences.allowUntrustedCAs);
         state.colorTheme = descriptors.colorTheme.fromStore(preferences.colorTheme);
         state.downloadBinariesPath = descriptors.downloadBinariesPath.fromStore(preferences.downloadBinariesPath);
@@ -63,12 +85,18 @@ const userPreferencesPersistentStorageInjectable = getInjectable({
         state.terminalConfig = descriptors.terminalConfig.fromStore(preferences.terminalConfig);
         state.terminalCopyOnSelect = descriptors.terminalCopyOnSelect.fromStore(preferences.terminalCopyOnSelect);
         state.terminalTheme = descriptors.terminalTheme.fromStore(preferences.terminalTheme);
+        state.aiToolSettings = descriptors.aiToolSettings.fromStore(
+          migrateLegacyCustomAiToolCommand(preferences.aiToolSettings, preferences),
+        );
+        state.appearance = descriptors.appearance.fromStore(preferences.appearance);
+        state.customThemes = descriptors.customThemes.fromStore(preferences.customThemes);
         state.clusterPageMenuOrder = descriptors.clusterPageMenuOrder.fromStore(preferences.clusterPageMenuOrder);
       }),
       toJSON: () =>
         toJS({
           preferences: {
             allowErrorReporting: descriptors.allowErrorReporting.toStore(state.allowErrorReporting),
+            aiTool: descriptors.aiTool.toStore(state.aiTool),
             allowUntrustedCAs: descriptors.allowUntrustedCAs.toStore(state.allowUntrustedCAs),
             colorTheme: descriptors.colorTheme.toStore(state.colorTheme),
             downloadBinariesPath: descriptors.downloadBinariesPath.toStore(state.downloadBinariesPath),
@@ -93,6 +121,9 @@ const userPreferencesPersistentStorageInjectable = getInjectable({
             terminalConfig: descriptors.terminalConfig.toStore(state.terminalConfig),
             terminalCopyOnSelect: descriptors.terminalCopyOnSelect.toStore(state.terminalCopyOnSelect),
             terminalTheme: descriptors.terminalTheme.toStore(state.terminalTheme),
+            aiToolSettings: descriptors.aiToolSettings.toStore(state.aiToolSettings),
+            appearance: descriptors.appearance.toStore(state.appearance),
+            customThemes: descriptors.customThemes.toStore(state.customThemes),
             clusterPageMenuOrder: descriptors.clusterPageMenuOrder.toStore(state.clusterPageMenuOrder),
           },
         }),

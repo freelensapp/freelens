@@ -1,5 +1,5 @@
 name: ✨ Enhancement Request
-description: Suggest an enhancement to the Freelens application
+description: Suggest an enhancement to the ProLens application
 labels: [enhancement]
 body:
   - type: textarea

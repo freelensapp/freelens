@@ -6,12 +6,18 @@
  * This replaces the webpack-based auto-registration system.
  */
 
+import getLatestReleaseVersionInjectable from "./get-latest-release-version.injectable";
 import getLatestVersionInjectable from "./get-latest-version.injectable";
 import getLatestVersionChannelListenerInjectable from "./get-latest-version-channel-listener.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
+  try {
+    di.register(getLatestReleaseVersionInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
   try {
     di.register(getLatestVersionChannelListenerInjectable);
   } catch (e) {

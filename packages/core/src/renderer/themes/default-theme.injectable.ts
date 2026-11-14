@@ -20,11 +20,11 @@ const defaultLensThemeInjectable: Injectable<ReadonlyDeep<LensTheme>> = getInjec
     const [defaultTheme, ...rest] = themes.filter((theme) => theme.isDefault);
 
     if (rest.length > 0) {
-      throw new Error("Multiple Freelens Theme's are declared as the default");
+      throw new Error("Multiple ProLens Themes are declared as the default");
     }
 
     if (!defaultTheme) {
-      throw new Error("No Freelens Theme is declared as the default");
+      throw new Error("No ProLens Theme is declared as the default");
     }
 
     return defaultTheme;

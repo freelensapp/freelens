@@ -70,6 +70,38 @@ exports[`custom category columns for catalog > renders 1`] = `
           <div
             class="separator"
           />
+          <div
+            class="preventedDragging"
+          >
+            <div
+              class="root"
+              data-testid="ai-assistant-top-bar-item"
+            >
+              <button
+                class="ask"
+                data-testid="ai-assistant-ask"
+                title="Choose an AI assistant"
+                type="button"
+              >
+                <span
+                  class="sparkle"
+                >
+                  ✦
+                </span>
+                Set up AI
+              </button>
+              <button
+                aria-expanded="false"
+                aria-haspopup="menu"
+                aria-label="Choose AI assistant"
+                class="toggle"
+                data-testid="ai-assistant-menu-toggle"
+                type="button"
+              >
+                ▾
+              </button>
+            </div>
+          </div>
         </div>
       </div>
       <main>
@@ -792,6 +824,38 @@ exports[`custom category columns for catalog > when category is added using defa
           <div
             class="separator"
           />
+          <div
+            class="preventedDragging"
+          >
+            <div
+              class="root"
+              data-testid="ai-assistant-top-bar-item"
+            >
+              <button
+                class="ask"
+                data-testid="ai-assistant-ask"
+                title="Choose an AI assistant"
+                type="button"
+              >
+                <span
+                  class="sparkle"
+                >
+                  ✦
+                </span>
+                Set up AI
+              </button>
+              <button
+                aria-expanded="false"
+                aria-haspopup="menu"
+                aria-label="Choose AI assistant"
+                class="toggle"
+                data-testid="ai-assistant-menu-toggle"
+                type="button"
+              >
+                ▾
+              </button>
+            </div>
+          </div>
         </div>
       </div>
       <main>
@@ -1545,6 +1609,38 @@ exports[`custom category columns for catalog > when category is added using defa
           <div
             class="separator"
           />
+          <div
+            class="preventedDragging"
+          >
+            <div
+              class="root"
+              data-testid="ai-assistant-top-bar-item"
+            >
+              <button
+                class="ask"
+                data-testid="ai-assistant-ask"
+                title="Choose an AI assistant"
+                type="button"
+              >
+                <span
+                  class="sparkle"
+                >
+                  ✦
+                </span>
+                Set up AI
+              </button>
+              <button
+                aria-expanded="false"
+                aria-haspopup="menu"
+                aria-label="Choose AI assistant"
+                class="toggle"
+                data-testid="ai-assistant-menu-toggle"
+                type="button"
+              >
+                ▾
+              </button>
+            </div>
+          </div>
         </div>
       </div>
       <main>
@@ -2288,6 +2384,38 @@ exports[`custom category columns for catalog > when category is added using defa
           <div
             class="separator"
           />
+          <div
+            class="preventedDragging"
+          >
+            <div
+              class="root"
+              data-testid="ai-assistant-top-bar-item"
+            >
+              <button
+                class="ask"
+                data-testid="ai-assistant-ask"
+                title="Choose an AI assistant"
+                type="button"
+              >
+                <span
+                  class="sparkle"
+                >
+                  ✦
+                </span>
+                Set up AI
+              </button>
+              <button
+                aria-expanded="false"
+                aria-haspopup="menu"
+                aria-label="Choose AI assistant"
+                class="toggle"
+                data-testid="ai-assistant-menu-toggle"
+                type="button"
+              >
+                ▾
+              </button>
+            </div>
+          </div>
         </div>
       </div>
       <main>
@@ -3017,6 +3145,38 @@ exports[`custom category columns for catalog > when category is added with custo
           <div
             class="separator"
           />
+          <div
+            class="preventedDragging"
+          >
+            <div
+              class="root"
+              data-testid="ai-assistant-top-bar-item"
+            >
+              <button
+                class="ask"
+                data-testid="ai-assistant-ask"
+                title="Choose an AI assistant"
+                type="button"
+              >
+                <span
+                  class="sparkle"
+                >
+                  ✦
+                </span>
+                Set up AI
+              </button>
+              <button
+                aria-expanded="false"
+                aria-haspopup="menu"
+                aria-label="Choose AI assistant"
+                class="toggle"
+                data-testid="ai-assistant-menu-toggle"
+                type="button"
+              >
+                ▾
+              </button>
+            </div>
+          </div>
         </div>
       </div>
       <main>
@@ -3770,6 +3930,38 @@ exports[`custom category columns for catalog > when category is added with custo
           <div
             class="separator"
           />
+          <div
+            class="preventedDragging"
+          >
+            <div
+              class="root"
+              data-testid="ai-assistant-top-bar-item"
+            >
+              <button
+                class="ask"
+                data-testid="ai-assistant-ask"
+                title="Choose an AI assistant"
+                type="button"
+              >
+                <span
+                  class="sparkle"
+                >
+                  ✦
+                </span>
+                Set up AI
+              </button>
+              <button
+                aria-expanded="false"
+                aria-haspopup="menu"
+                aria-label="Choose AI assistant"
+                class="toggle"
+                data-testid="ai-assistant-menu-toggle"
+                type="button"
+              >
+                ▾
+              </button>
+            </div>
+          </div>
         </div>
       </div>
       <main>
@@ -4451,6 +4643,38 @@ exports[`custom category columns for catalog > when category is added without de
           <div
             class="separator"
           />
+          <div
+            class="preventedDragging"
+          >
+            <div
+              class="root"
+              data-testid="ai-assistant-top-bar-item"
+            >
+              <button
+                class="ask"
+                data-testid="ai-assistant-ask"
+                title="Choose an AI assistant"
+                type="button"
+              >
+                <span
+                  class="sparkle"
+                >
+                  ✦
+                </span>
+                Set up AI
+              </button>
+              <button
+                aria-expanded="false"
+                aria-haspopup="menu"
+                aria-label="Choose AI assistant"
+                class="toggle"
+                data-testid="ai-assistant-menu-toggle"
+                type="button"
+              >
+                ▾
+              </button>
+            </div>
+          </div>
         </div>
       </div>
       <main>
@@ -5204,6 +5428,38 @@ exports[`custom category columns for catalog > when category is added without de
           <div
             class="separator"
           />
+          <div
+            class="preventedDragging"
+          >
+            <div
+              class="root"
+              data-testid="ai-assistant-top-bar-item"
+            >
+              <button
+                class="ask"
+                data-testid="ai-assistant-ask"
+                title="Choose an AI assistant"
+                type="button"
+              >
+                <span
+                  class="sparkle"
+                >
+                  ✦
+                </span>
+                Set up AI
+              </button>
+              <button
+                aria-expanded="false"
+                aria-haspopup="menu"
+                aria-label="Choose AI assistant"
+                class="toggle"
+                data-testid="ai-assistant-menu-toggle"
+                type="button"
+              >
+                ▾
+              </button>
+            </div>
+          </div>
         </div>
       </div>
       <main>

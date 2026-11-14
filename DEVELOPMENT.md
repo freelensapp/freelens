@@ -175,10 +175,10 @@ package. If it fails, `pnpm dev` stops before starting the app:
 
 ### Kubeconfig syncs of the dev profile
 
-`pnpm dev` runs the app in development mode, with its own `FreelensDev`
-profile in the application data directory (`~/.config/FreelensDev`,
-`~/Library/Application Support/FreelensDev` or `%APPDATA%\FreelensDev`), or
-in `$FREELENS_INTEGRATION_TESTING_DIR/FreelensDev` when that variable points
+`pnpm dev` runs the app in development mode, with its own `ProLensDev`
+profile in the application data directory (`~/.config/ProLensDev`,
+`~/Library/Application Support/ProLensDev` or `%APPDATA%\ProLensDev`), or
+in `$FREELENS_INTEGRATION_TESTING_DIR/ProLensDev` when that variable points
 into the system temporary directory. Unlike a production
 profile, a dev profile starts with no kubeconfig sync: it does not read your
 `~/.kube`, so the catalog shows none of your real clusters until you add them.

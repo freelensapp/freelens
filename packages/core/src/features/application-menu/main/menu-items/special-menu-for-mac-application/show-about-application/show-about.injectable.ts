@@ -7,6 +7,7 @@
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
 import * as verkit from "verkit";
+import { branding } from "../../../../../../common/branding";
 import openLinkInBrowserInjectable from "../../../../../../common/utils/open-link-in-browser.injectable";
 import appNameInjectable from "../../../../../../common/vars/app-name.injectable";
 import applicationCopyrightInjectable from "../../../../../../common/vars/application-copyright.injectable";
@@ -14,7 +15,7 @@ import extensionApiVersionInjectable from "../../../../../../common/vars/extensi
 import isWindowsInjectable from "../../../../../../common/vars/is-windows.injectable";
 import productNameInjectable from "../../../../../../common/vars/product-name.injectable";
 import showMessagePopupInjectable from "../../../../../../main/electron-app/features/show-message-popup.injectable";
-import getLatestVersionInjectable from "../../../../../../main/versions/get-latest-version.injectable";
+import getLatestReleaseVersionInjectable from "../../../../../../main/versions/get-latest-release-version.injectable";
 import { buildVersionInitializable } from "../../../../../vars/build-version/common/token";
 
 const showAboutInjectable = getInjectable({
@@ -30,7 +31,7 @@ const showAboutInjectable = getInjectable({
     const applicationCopyright = di.inject(applicationCopyrightInjectable);
     const openLinkInBrowser = di.inject(openLinkInBrowserInjectable);
     const logger = di.inject(loggerInjectionToken);
-    const getLatestVersion = di.inject(getLatestVersionInjectable);
+    const getLatestReleaseVersion = di.inject(getLatestReleaseVersionInjectable);
 
     return async () => {
       let newVersion: string | undefined;
@@ -49,7 +50,7 @@ const showAboutInjectable = getInjectable({
       const buttons = ["Close"];
 
       try {
-        const latestVersion = await getLatestVersion("@freelensapp/core");
+        const latestVersion = await getLatestReleaseVersion();
         if (latestVersion && verkit.isGreaterThan(latestVersion, buildVersion)) {
           newVersion = latestVersion;
           appInfo.push("", `Latest version: ${latestVersion}`);
@@ -70,7 +71,7 @@ const showAboutInjectable = getInjectable({
       );
 
       if (newVersion && returnValue.response === 1) {
-        await openLinkInBrowser(`https://github.com/freelensapp/freelens/releases/tag/v${newVersion}`);
+        await openLinkInBrowser(`${branding.homepage}/releases/tag/v${newVersion}`);
       }
     };
   },

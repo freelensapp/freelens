@@ -69,6 +69,38 @@ exports[`navigating between routes > given route with optional path parameters >
         <div
           class="separator"
         />
+        <div
+          class="preventedDragging"
+        >
+          <div
+            class="root"
+            data-testid="ai-assistant-top-bar-item"
+          >
+            <button
+              class="ask"
+              data-testid="ai-assistant-ask"
+              title="Choose an AI assistant"
+              type="button"
+            >
+              <span
+                class="sparkle"
+              >
+                ✦
+              </span>
+              Set up AI
+            </button>
+            <button
+              aria-expanded="false"
+              aria-haspopup="menu"
+              aria-label="Choose AI assistant"
+              class="toggle"
+              data-testid="ai-assistant-menu-toggle"
+              type="button"
+            >
+              ▾
+            </button>
+          </div>
+        </div>
       </div>
     </div>
     <main>
@@ -320,6 +352,38 @@ exports[`navigating between routes > given route without path parameters > when 
         <div
           class="separator"
         />
+        <div
+          class="preventedDragging"
+        >
+          <div
+            class="root"
+            data-testid="ai-assistant-top-bar-item"
+          >
+            <button
+              class="ask"
+              data-testid="ai-assistant-ask"
+              title="Choose an AI assistant"
+              type="button"
+            >
+              <span
+                class="sparkle"
+              >
+                ✦
+              </span>
+              Set up AI
+            </button>
+            <button
+              aria-expanded="false"
+              aria-haspopup="menu"
+              aria-label="Choose AI assistant"
+              class="toggle"
+              data-testid="ai-assistant-menu-toggle"
+              type="button"
+            >
+              ▾
+            </button>
+          </div>
+        </div>
       </div>
     </div>
     <main>

@@ -2549,6 +2549,19 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                         Managed Fields
                       </span>
                     </label>
+                    <button
+                      class="button"
+                      data-testid="ask-ai-about-yaml-some-first-tab-id"
+                      type="button"
+                    >
+                      <span
+                        aria-hidden="true"
+                        class="sparkle"
+                      >
+                        ✦
+                      </span>
+                      Ask AI about this YAML
+                    </button>
                   </div>
                 </div>
                 <div
@@ -4417,6 +4430,19 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                         Managed Fields
                       </span>
                     </label>
+                    <button
+                      class="button"
+                      data-testid="ask-ai-about-yaml-some-second-tab-id"
+                      type="button"
+                    >
+                      <span
+                        aria-hidden="true"
+                        class="sparkle"
+                      >
+                        ✦
+                      </span>
+                      Ask AI about this YAML
+                    </button>
                   </div>
                 </div>
                 <div
@@ -5401,6 +5427,19 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                         Managed Fields
                       </span>
                     </label>
+                    <button
+                      class="button"
+                      data-testid="ask-ai-about-yaml-some-first-tab-id"
+                      type="button"
+                    >
+                      <span
+                        aria-hidden="true"
+                        class="sparkle"
+                      >
+                        ✦
+                      </span>
+                      Ask AI about this YAML
+                    </button>
                   </div>
                 </div>
                 <div
@@ -6335,6 +6374,19 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                         Managed Fields
                       </span>
                     </label>
+                    <button
+                      class="button"
+                      data-testid="ask-ai-about-yaml-some-first-tab-id"
+                      type="button"
+                    >
+                      <span
+                        aria-hidden="true"
+                        class="sparkle"
+                      >
+                        ✦
+                      </span>
+                      Ask AI about this YAML
+                    </button>
                   </div>
                 </div>
                 <div
@@ -7283,6 +7335,19 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                         Managed Fields
                       </span>
                     </label>
+                    <button
+                      class="button"
+                      data-testid="ask-ai-about-yaml-some-first-tab-id"
+                      type="button"
+                    >
+                      <span
+                        aria-hidden="true"
+                        class="sparkle"
+                      >
+                        ✦
+                      </span>
+                      Ask AI about this YAML
+                    </button>
                   </div>
                 </div>
                 <div
@@ -8226,6 +8291,19 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                         Managed Fields
                       </span>
                     </label>
+                    <button
+                      class="button"
+                      data-testid="ask-ai-about-yaml-some-first-tab-id"
+                      type="button"
+                    >
+                      <span
+                        aria-hidden="true"
+                        class="sparkle"
+                      >
+                        ✦
+                      </span>
+                      Ask AI about this YAML
+                    </button>
                   </div>
                 </div>
                 <div
@@ -9160,6 +9238,19 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                         Managed Fields
                       </span>
                     </label>
+                    <button
+                      class="button"
+                      data-testid="ask-ai-about-yaml-some-first-tab-id"
+                      type="button"
+                    >
+                      <span
+                        aria-hidden="true"
+                        class="sparkle"
+                      >
+                        ✦
+                      </span>
+                      Ask AI about this YAML
+                    </button>
                   </div>
                 </div>
                 <div
@@ -10094,6 +10185,19 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                         Managed Fields
                       </span>
                     </label>
+                    <button
+                      class="button"
+                      data-testid="ask-ai-about-yaml-some-first-tab-id"
+                      type="button"
+                    >
+                      <span
+                        aria-hidden="true"
+                        class="sparkle"
+                      >
+                        ✦
+                      </span>
+                      Ask AI about this YAML
+                    </button>
                   </div>
                 </div>
                 <div
@@ -11767,6 +11871,19 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                         Managed Fields
                       </span>
                     </label>
+                    <button
+                      class="button"
+                      data-testid="ask-ai-about-yaml-some-first-tab-id"
+                      type="button"
+                    >
+                      <span
+                        aria-hidden="true"
+                        class="sparkle"
+                      >
+                        ✦
+                      </span>
+                      Ask AI about this YAML
+                    </button>
                   </div>
                 </div>
                 <div
@@ -12710,6 +12827,19 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                         Managed Fields
                       </span>
                     </label>
+                    <button
+                      class="button"
+                      data-testid="ask-ai-about-yaml-some-first-tab-id"
+                      type="button"
+                    >
+                      <span
+                        aria-hidden="true"
+                        class="sparkle"
+                      >
+                        ✦
+                      </span>
+                      Ask AI about this YAML
+                    </button>
                   </div>
                 </div>
                 <div
@@ -13644,6 +13774,19 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                         Managed Fields
                       </span>
                     </label>
+                    <button
+                      class="button"
+                      data-testid="ask-ai-about-yaml-some-first-tab-id"
+                      type="button"
+                    >
+                      <span
+                        aria-hidden="true"
+                        class="sparkle"
+                      >
+                        ✦
+                      </span>
+                      Ask AI about this YAML
+                    </button>
                   </div>
                 </div>
                 <div

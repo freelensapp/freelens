@@ -6,18 +6,18 @@
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getRequestChannelListenerInjectable } from "@freelensapp/messaging";
 import { getLatestVersionChannel } from "../../common/utils/get-latest-version-channel";
-import getLatestVersionInjectable from "./get-latest-version.injectable";
+import getLatestReleaseVersionInjectable from "./get-latest-release-version.injectable";
 
 const getLatestVersionChannelListenerInjectable = getRequestChannelListenerInjectable({
   id: "get-latest-version-channel-listener",
   channel: getLatestVersionChannel,
   getHandler: (di) => {
-    const getLatestVersion = di.inject(getLatestVersionInjectable);
+    const getLatestReleaseVersion = di.inject(getLatestReleaseVersionInjectable);
     const logger = di.inject(loggerInjectionToken);
 
     return async () => {
       try {
-        return await getLatestVersion("@freelensapp/core");
+        return await getLatestReleaseVersion();
       } catch (error) {
         logger.error(`[GET-LATEST-VERSION]: Failed to fetch latest version`, { error });
 

@@ -5,6 +5,7 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
+import { branding } from "../../common/branding";
 
 const freelensProxyPortInjectable = getInjectable({
   id: "freelens-proxy-port",
@@ -15,7 +16,9 @@ const freelensProxyPortInjectable = getInjectable({
     return {
       get: () => {
         if (!_portNumber) {
-          throw new Error("Tried to access port number of Freelens Proxy while it has not been set yet.");
+          throw new Error(
+            `Tried to access port number of ${branding.productName} Proxy while it has not been set yet.`,
+          );
         }
 
         return _portNumber;
@@ -23,7 +26,7 @@ const freelensProxyPortInjectable = getInjectable({
 
       set: (portNumber: number) => {
         if (_portNumber) {
-          throw new Error("Tried to set port number for Freelens Proxy when it has already been set.");
+          throw new Error(`Tried to set port number for ${branding.productName} Proxy when it has already been set.`);
         }
 
         _portNumber = portNumber;

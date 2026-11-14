@@ -20,7 +20,7 @@ exports.default = async function notarizing(context) {
   const appName = context.packager.appInfo.productFilename;
 
   return await notarize({
-    appBundleId: process.env.APPBUNDLEID || "io.freelens.freelensapp",
+    appBundleId: process.env.APPBUNDLEID || "app.prolens.ProLens",
     appPath: `${appOutDir}/${appName}.app`,
     appleId: process.env.APPLEID,
     appleIdPassword: process.env.APPLEIDPASS,

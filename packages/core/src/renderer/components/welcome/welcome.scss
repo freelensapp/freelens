@@ -43,10 +43,12 @@
     }
   }
 
-  .Icon.logo {
-    width: 200px;
-    height: 200px;
-    color: var(--primary);
+  .logo {
+    display: block;
+    width: 160px;
+    height: 160px;
+    margin: 0 auto;
+    filter: drop-shadow(0 12px 32px rgb(76 141 255 / 25%));
   }
 
   a.link {

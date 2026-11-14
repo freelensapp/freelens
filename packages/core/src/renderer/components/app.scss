@@ -292,3 +292,27 @@ input:-webkit-autofill {
   -webkit-animation-name: autofill-remove-bgc;
   -webkit-animation-fill-mode: both;
 }
+
+/*
+ * ProLens appearance preferences (themes/setup-apply-appearance.injectable.ts).
+ * The base font size is set at runtime through --font-size, --font-size-small
+ * and --font-size-big. Compact density tightens spacing only: virtualized
+ * lists size their rows in code, so row heights stay as they are.
+ */
+html[data-density="compact"] {
+  --padding: 6px;
+  --margin: 6px;
+
+  .TableCell {
+    padding-top: 4px;
+    padding-bottom: 4px;
+  }
+
+  .SubTitle {
+    margin-bottom: 6px;
+  }
+
+  .Dialog .Wizard .WizardStep > .step-content {
+    padding: 12px 16px;
+  }
+}

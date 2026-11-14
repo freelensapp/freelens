@@ -12,6 +12,7 @@ import { noop } from "es-toolkit";
 import { ensureDir, pathExists } from "fs-extra";
 import * as lockFile from "proper-lockfile";
 import * as verkit from "verkit";
+import { branding } from "../../common/branding";
 import {
   customPackageMirror,
   defaultPackageMirror,
@@ -292,7 +293,7 @@ export class Kubectl {
 
       if (whenBundleUnusable === "reject") {
         // The rejection is the report: the caller does not go on.
-        throw new Error(`${problem} and Freelens has no kubectl of its own to run`);
+        throw new Error(`${problem} and ${branding.productName} has no kubectl of its own to run`);
       }
 
       opts?.onProblem?.(`${problem} - using whichever kubectl is on PATH`);
@@ -470,7 +471,9 @@ export class Kubectl {
     }
 
     this.dependencies.logger.info(`[KUBECTL]: waiting for another process to prepare kubectl ${this.kubectlVersion}`);
-    opts.onPhase?.(`Waiting for another Freelens process to prepare kubectl v${this.kubectlVersion} ...`);
+    opts.onPhase?.(
+      `Waiting for another ${branding.productName} process to prepare kubectl v${this.kubectlVersion} ...`,
+    );
 
     return lockFile.lock(this.dirname, { retries: lockRetries });
   }

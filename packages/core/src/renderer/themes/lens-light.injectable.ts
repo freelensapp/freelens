@@ -19,7 +19,7 @@ const lensLightThemeInjectable: Injectable<LensTheme, ReadonlyDeep<LensTheme>> =
     const theme: LensTheme = {
       name: "Light",
       type: "light" as const,
-      description: "Original Lens light theme",
+      description: "Classic Freelens/Lens light theme",
       author: "Mirantis",
       monacoTheme: "vs" as const,
       colors: {

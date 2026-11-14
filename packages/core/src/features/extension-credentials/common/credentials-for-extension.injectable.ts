@@ -4,6 +4,7 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
+import { branding } from "../../../common/branding";
 import extensionLoaderInjectable from "../../../extensions/extension-loader/extension-loader.injectable";
 import { extensionCredentialsBackendInjectionToken } from "./extension-credentials-backend-injection-token";
 import { assertCredentialKey, assertCredentialValue } from "./validation";
@@ -34,7 +35,9 @@ const credentialsForExtensionInjectable = getInjectable({
         const extensionId = extensionLoader.getIdOfConstructedInstance(extension);
 
         if (extensionId === undefined) {
-          throw new TypeError("Credentials are only available to an extension instance that Freelens loaded");
+          throw new TypeError(
+            `Credentials are only available to an extension instance that ${branding.productName} loaded`,
+          );
         }
 
         return extensionId;
