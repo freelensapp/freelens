@@ -418,7 +418,7 @@ jobs:
         if: runner.os == 'macOS'
         run: |
           if [[ -n $APPLEID && -n $APPLEIDPASS && -n $APPLETEAMID ]]; then
-            pkgname=$(ls -1 freelens/dist/Freelens*.pkg | head -n1)
+            pkgname=$(ls -1 freelens/dist/ProLens*.pkg | head -n1)
             auth="--apple-id $APPLEID --password $APPLEIDPASS --team-id $APPLETEAMID"
             xcrun notarytool submit $pkgname $auth --wait 2>&1 | tee freelens/dist/notarytool.log
             uuid=$(awk '/id: / { print $2; exit; }' freelens/dist/notarytool.log)
@@ -440,7 +440,7 @@ jobs:
         run: |
           if [[ -n $APPLEID && -n $APPLEIDPASS && -n $APPLETEAMID ]]; then
             sleep 600
-            pkgname=$(ls -1 freelens/dist/Freelens*.pkg | head -n1)
+            pkgname=$(ls -1 freelens/dist/ProLens*.pkg | head -n1)
             auth="--apple-id $APPLEID --password $APPLEIDPASS --team-id $APPLETEAMID"
             xcrun notarytool submit $pkgname $auth --wait 2>&1 | tee freelens/dist/notarytool.log
             uuid=$(awk '/id: / { print $2; exit; }' freelens/dist/notarytool.log)
@@ -461,7 +461,7 @@ jobs:
         run: |
           if [[ -n $APPLEID && -n $APPLEIDPASS && -n $APPLETEAMID ]]; then
             sleep 600
-            pkgname=$(ls -1 freelens/dist/Freelens*.pkg | head -n1)
+            pkgname=$(ls -1 freelens/dist/ProLens*.pkg | head -n1)
             auth="--apple-id $APPLEID --password $APPLEIDPASS --team-id $APPLETEAMID"
             xcrun notarytool submit $pkgname $auth --wait 2>&1 | tee freelens/dist/notarytool.log
             uuid=$(awk '/id: / { print $2; exit; }' freelens/dist/notarytool.log)
@@ -693,7 +693,7 @@ jobs:
           chdir "freelens/dist" or die $!;
           my %arch = (x64 => "amd64", arm64 => "arm64");
           my $arch = $arch{$ENV{ARCH}};
-          while (<Freelens*>) {
+          while (<ProLens*>) {
             my $src = $_;
             s/[ _]/-/g;
             if (/\.(dmg|exe|msi|pkg)$/ && !/-(amd64|arm64)\./) {
@@ -725,7 +725,7 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: "${{ github.event.repository.name }}-macos-${{ matrix.arch == 'x64' && 'amd64' || matrix.arch }}-pkg"
-          path: freelens/dist/Freelens-*.pkg
+          path: freelens/dist/ProLens-*.pkg
           if-no-files-found: error
           retention-days: 7
           compression-level: 0
@@ -733,13 +733,13 @@ jobs:
       - name: Remove PKG from upload (macOS)
         if: runner.os == 'macOS'
         shell: bash
-        run: rm -v freelens/dist/Freelens-*.pkg
+        run: rm -v freelens/dist/ProLens-*.pkg
 
       - name: Make checksums for binaries (Linux, Windows)
         if: runner.os == 'Linux' || runner.os == 'Windows'
         shell: bash
         run: |
-          for f in freelens/dist/Freelens*.*; do
+          for f in freelens/dist/ProLens*.*; do
             pushd freelens/dist > /dev/null
             sha256sum $(basename $f) | tee $(basename $f).sha256
             popd > /dev/null
@@ -749,7 +749,7 @@ jobs:
         if: runner.os == 'macOS'
         shell: bash
         run: |
-          for f in freelens/dist/Freelens*.*; do
+          for f in freelens/dist/ProLens*.*; do
             pushd freelens/dist > /dev/null
             shasum -a 256 $(basename $f) | tee $(basename $f).sha256
             popd > /dev/null
@@ -806,7 +806,7 @@ jobs:
           # because the workspace does not set inject-workspace-packages, and
           # allow-unused-patches because patchedDependencies also patches
           # devDependencies, which a production deploy does not install. The
-          # lowercase repo-name prefix keeps this file out of the Freelens*.*
+          # lowercase repo-name prefix keeps this file out of the ProLens*.*
           # release-upload glob; it travels as a run artifact instead.
           deploy_dir="$RUNNER_TEMP/freelens-prod"
           rm -rf "$deploy_dir"
@@ -843,7 +843,7 @@ jobs:
           os="${{ matrix.os }}"
           arch="${{ matrix.arch == 'x64' && 'amd64' || matrix.arch }}"
           for f in freelens/dist/*-sbom.spdx.json freelens/dist/*-sbom.syft.json; do
-            newname="freelens/dist/Freelens-${version}-${os}-${arch}-sbom.${f##*-sbom.}"
+            newname="freelens/dist/ProLens-${version}-${os}-${arch}-sbom.${f##*-sbom.}"
             mv "$f" "$newname"
             if [ -f "${f}.sha256" ]; then
               mv "${f}.sha256" "${newname}.sha256"
@@ -873,7 +873,7 @@ jobs:
       - name: List files before upload
         shell: bash
         run: |
-          for f in freelens/dist/Freelens*.*; do
+          for f in freelens/dist/ProLens*.*; do
             echo "$(ls -l "$f")" "|" "$(file -b "$f")"
           done
 
@@ -885,12 +885,12 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: "${{ github.event.repository.name }}-${{ matrix.os }}-${{ matrix.arch == 'x64' && 'amd64' || matrix.arch }}-checksums"
-          path: freelens/dist/Freelens-*.sha256
+          path: freelens/dist/ProLens-*.sha256
 
       - name: Upload files
         shell: bash
         run: |
-          gh release upload ${GITHUB_REF_NAME#sign/} freelens/dist/Freelens*.*
+          gh release upload ${GITHUB_REF_NAME#sign/} freelens/dist/ProLens*.*
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -928,7 +928,7 @@ jobs:
         run: |
           set -eo pipefail
           shopt -s nullglob
-          pkgs=(pkg/Freelens-*.pkg)
+          pkgs=(pkg/ProLens-*.pkg)
           if [[ ${#pkgs[@]} -eq 0 ]]; then
             echo "No PKG to staple" >&2
             exit 1
@@ -948,7 +948,7 @@ jobs:
       - name: Make checksums for PKGs
         shell: bash
         run: |
-          for f in pkg/Freelens-*.pkg; do
+          for f in pkg/ProLens-*.pkg; do
             pushd pkg > /dev/null
             shasum -a 256 $(basename $f) | tee $(basename $f).sha256
             popd > /dev/null
@@ -958,7 +958,7 @@ jobs:
       # failed halfway through the upload.
       - name: Upload files
         shell: bash
-        run: gh release upload ${GITHUB_REF_NAME} pkg/Freelens-*.pkg* --clobber --repo "$GITHUB_REPOSITORY"
+        run: gh release upload ${GITHUB_REF_NAME} pkg/ProLens-*.pkg* --clobber --repo "$GITHUB_REPOSITORY"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -969,7 +969,7 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: "${{ github.event.repository.name }}-macos-pkg-checksums"
-          path: pkg/Freelens-*.pkg.sha256
+          path: pkg/ProLens-*.pkg.sha256
           overwrite: true
 
   publish-runtime-package-list:
@@ -1023,7 +1023,7 @@ jobs:
         run: |
           set -eo pipefail
           shopt -s nullglob
-          out="Freelens-${GITHUB_REF_NAME#v}-prod-packages.json"
+          out="ProLens-${GITHUB_REF_NAME#v}-prod-packages.json"
           # Union of the per-platform <name>@<version> -> pnpm-store-path maps,
           # the same reduce release-scan.yaml applies to what it downloads.
           yq ea -pj -oj '. as $i ireduce ({}; . * $i)' prod/*-prod-packages.json > "$out"
@@ -1038,7 +1038,7 @@ jobs:
       - name: Upload files
         shell: bash
         run: |
-          gh release upload ${GITHUB_REF_NAME#sign/} Freelens-*-prod-packages.json*
+          gh release upload ${GITHUB_REF_NAME#sign/} ProLens-*-prod-packages.json*
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -1049,7 +1049,7 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: "${{ github.event.repository.name }}-prod-packages-checksums"
-          path: Freelens-*-prod-packages.json.sha256
+          path: ProLens-*-prod-packages.json.sha256
 
   attest-artifacts:
     name: attest build provenance

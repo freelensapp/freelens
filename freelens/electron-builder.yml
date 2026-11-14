@@ -52,7 +52,7 @@ afterSign: build/notarize.cjs
 
 ## Used to register the app as a handler for the freelens:// protocol
 protocols:
-  name: Freelens Protocol Handler
+  name: ProLens Protocol Handler
   schemes:
     - freelens
   role: Viewer

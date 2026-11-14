@@ -2,7 +2,7 @@
   "name": "freelens",
   "version": "2.0.1-0",
   "private": true,
-  "description": "Freelens - Free IDE for Kubernetes",
+  "description": "ProLens - Free IDE for Kubernetes",
   "keywords": [],
   "homepage": "https://freelens.app",
   "bugs": {
@@ -39,17 +39,17 @@
     "dev": "NODE_ENV=development electron-vite dev --watch --inspect --remoteDebuggingPort 9223",
     "start": "pnpm dlx run-script-os@1.1.6 --",
     "start:darwin": "pnpm start:darwin:${npm_config_arch:-$(uname -m)}",
-    "start:darwin:arm64": "./dist/mac-arm64/Freelens.app/Contents/MacOS/Freelens",
-    "start:darwin:x64": "./dist/mac/Freelens.app/Contents/MacOS/Freelens",
-    "start:darwin:x86_64": "./dist/mac/Freelens.app/Contents/MacOS/Freelens",
+    "start:darwin:arm64": "./dist/mac-arm64/ProLens.app/Contents/MacOS/ProLens",
+    "start:darwin:x64": "./dist/mac/ProLens.app/Contents/MacOS/ProLens",
+    "start:darwin:x86_64": "./dist/mac/ProLens.app/Contents/MacOS/ProLens",
     "start:default": "exit 1",
     "start:electron": "electron --remote-debugging-port=9223 --inspect .",
     "start:linux": "pnpm start:linux:${npm_config_arch:-$(uname -m)}",
-    "start:linux:arm64": "./dist/linux-arm64-unpacked/freelens",
-    "start:linux:x64": "./dist/linux-unpacked/freelens",
-    "start:linux:x86_64": "./dist/linux-unpacked/freelens",
-    "start:win32:AMD64": "dist\\win-unpacked\\Freelens.exe",
-    "start:win32:ARM64": "dist\\win-arm64-unpacked\\Freelens.exe",
+    "start:linux:arm64": "./dist/linux-arm64-unpacked/prolens",
+    "start:linux:x64": "./dist/linux-unpacked/prolens",
+    "start:linux:x86_64": "./dist/linux-unpacked/prolens",
+    "start:win32:AMD64": "dist\\win-unpacked\\ProLens.exe",
+    "start:win32:ARM64": "dist\\win-arm64-unpacked\\ProLens.exe",
     "start:win32": "echo pnpm start:linux:${npm_config_arch:-${PROCESSOR_ARCHITECTURE}}",
     "test:integration": "vitest run --config vitest.integration.config.ts"
   },
@@ -143,5 +143,5 @@
     "node": "^24.0.0"
   },
   "copyright": "© 2024-2026 Freelens Authors",
-  "productName": "Freelens"
+  "productName": "ProLens"
 }

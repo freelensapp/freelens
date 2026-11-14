@@ -25,6 +25,7 @@ import {
 
 import type { ObservableMap } from "mobx";
 
+import type { AiToolId } from "../../ai-tools/common/ai-tools";
 import type {
   EditorConfiguration,
   ExtensionRegistry,
@@ -70,6 +71,8 @@ export type PreferenceDescriptors = {
   readonly terminalConfig: PreferenceDescription<Partial<TerminalConfig>, TerminalConfig>;
   readonly extensionRegistryUrl: PreferenceDescription<StoredExtensionRegistry, ExtensionRegistry>;
   readonly clusterPageMenuOrder: PreferenceDescription<ClusterPageMenuOrder | undefined>;
+  readonly aiTool: PreferenceDescription<AiToolId | undefined>;
+  readonly customAiToolCommand: PreferenceDescription<string | undefined, string>;
 };
 
 const userPreferenceDescriptorsInjectable = getInjectable({
@@ -243,6 +246,14 @@ const userPreferenceDescriptorsInjectable = getInjectable({
       clusterPageMenuOrder: getPreferenceDescriptor<ClusterPageMenuOrder | undefined>({
         fromStore: (val) => val,
         toStore: (val) => val,
+      }),
+      aiTool: getPreferenceDescriptor<AiToolId | undefined>({
+        fromStore: (val) => val,
+        toStore: (val) => val,
+      }),
+      customAiToolCommand: getPreferenceDescriptor<string | undefined, string>({
+        fromStore: (val) => val || "",
+        toStore: (val) => val || undefined,
       }),
     } as const;
   },

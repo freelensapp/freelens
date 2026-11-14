@@ -7,6 +7,7 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import { observable } from "mobx";
 
+import type { AiToolId } from "../../ai-tools/common/ai-tools";
 import type { PreferenceDescriptors } from "./preference-descriptors.injectable";
 import type { StoreType } from "./preferences-helpers";
 
@@ -24,6 +25,8 @@ const userPreferencesStateInjectable = getInjectable({
       // Default them to empty observable collections so a not-yet-loaded store
       // cannot crash those views; fromStore() reassigns the fields on load.
       hiddenTableColumns: observable.map<string, Set<string>>(),
+      aiTool: undefined as AiToolId | undefined,
+      customAiToolCommand: "",
     } as unknown as UserPreferencesState),
 });
 

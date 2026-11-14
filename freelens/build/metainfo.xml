@@ -4,7 +4,7 @@
   <id>app.freelens.Freelens</id>
   <metadata_license>MIT</metadata_license>
   <project_license>MIT</project_license>
-  <name>Freelens</name>
+  <name>ProLens</name>
   <summary>Free IDE for Kubernetes</summary>
   <developer_name>Freelens Authors</developer_name>
   <url type="homepage">https://freelens.app/</url>
@@ -12,7 +12,7 @@
   <url type="vcs-browser">https://github.com/freelensapp/freelens</url>
   <url type="contribute">https://github.com/freelensapp/freelens/blob/main/CONTRIBUTING.md</url>
   <description>
-    <p>Freelens is a Kubernetes IDE that provides a graphical interface for managing and monitoring Kubernetes clusters.</p>
+    <p>ProLens is a Kubernetes IDE that provides a graphical interface for managing and monitoring Kubernetes clusters.</p>
     <p>It simplifies cluster operations by offering:</p>
     <ul>
       <li>A dashboard with real-time cluster insights</li>
@@ -21,7 +21,7 @@
       <li>Visualization of workloads, networking, storage, and configurations</li>
       <li>Extension support to add custom functionality</li>
     </ul>
-    <p>Freelens is maintained by the community.</p>
+    <p>ProLens is maintained by the community.</p>
   </description>
   <screenshots>
     <screenshot type="default">
@@ -49,9 +49,9 @@
   <requires>
     <display_length compare="ge">768</display_length>
   </requires>
-  <launchable type="desktop-id">freelens.desktop</launchable>
+  <launchable type="desktop-id">prolens.desktop</launchable>
   <provides>
-    <binary>freelens</binary>
+    <binary>prolens</binary>
   </provides>
   <categories>
     <category>Development</category>
