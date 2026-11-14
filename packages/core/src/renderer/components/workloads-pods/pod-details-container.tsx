@@ -33,6 +33,7 @@ import type { PortForwardStore } from "../../port-forward";
 export interface PodDetailsContainerProps {
   pod: Pod;
   container: ContainerWithType | EphemeralContainerWithType;
+  children?: React.ReactNode;
 }
 
 interface Dependencies {
@@ -119,6 +120,7 @@ class NonInjectedPodDetailsContainer extends React.Component<PodDetailsContainer
           {name}
           {isDefaultContainer && <span className="text-secondary font-normal">{" (default)"}</span>}
         </div>
+        {this.props.children}
         {isMetricVisible && containersType === "containers" && (
           <>
             {containerMetrics.map((ContainerMetrics) => (
