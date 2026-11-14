@@ -60,6 +60,20 @@ describe("ItemStore", () => {
     expect(sorted.map((item) => item.getId())).toEqual(["manual1", "manual5", "manual10", "manual12"]);
   });
 
+  it.each([
+    { order: "asc", expected: ["b", "c", "null", "undefined"] },
+    { order: "desc", expected: ["undefined", "null", "c", "b"] },
+  ] as const)("puts null and undefined last ascending and first descending ($order)", ({ order, expected }) => {
+    const items = [
+      new Item("undefined", undefined as never),
+      new Item("b", 1),
+      new Item("null", null as never),
+      new Item("c", 2),
+    ];
+
+    expect(store["sortItems"](items, [(item) => item.rank], order).map((item) => item.getId())).toEqual(expected);
+  });
+
   describe.each(["update", "load"] as const)("%s", (method) => {
     it("sorts when the sort key changes", async () => {
       await store[method](new Item("b", 0));

@@ -20,6 +20,19 @@ export interface ItemSorting<Item> {
   readonly order?: "asc" | "desc";
 }
 
+/**
+ * `null` and then `undefined` sort after every other value, as they did with
+ * `orderBy` of es-toolkit: last ascending, first descending.
+ */
+const sortedLast: unknown[] = [null, undefined];
+const lastRank = (value: unknown) => sortedLast.indexOf(value) + 1;
+
+function compareSortValues(left: unknown, right: unknown) {
+  const rank = lastRank(left) - lastRank(right);
+
+  return rank ? Math.sign(rank) : sortCompare(left, right);
+}
+
 export abstract class ItemStore<Item extends ItemObject> {
   protected defaultSorting = (item: Item) => item.getName();
 
@@ -80,7 +93,7 @@ export abstract class ItemStore<Item extends ItemObject> {
 
     return [...items].sort((left, right) => {
       for (const sort of by) {
-        const ordering = rectifyOrdering(sortCompare(sort(left), sort(right)), direction);
+        const ordering = rectifyOrdering(compareSortValues(sort(left), sort(right)), direction);
 
         if (ordering) return ordering;
       }
