@@ -10,14 +10,13 @@ import deleteHelmReleaseInjectable from "./delete-helm-release.injectable";
 import { registerInjectables as registerExecHelmInjectables } from "./exec-helm/register-injectables";
 import { registerInjectables as registerGetHelmEnvInjectables } from "./get-helm-env/register-injectables";
 import getHelmReleaseHistoryInjectable from "./get-helm-release-history.injectable";
-import getHelmReleaseValuesInjectable from "./get-helm-release-values.injectable";
 import helmBinaryPathInjectable from "./helm-binary-path.injectable";
 import helmChartManagerInjectable from "./helm-chart-manager.injectable";
 import helmChartManagerCacheInjectable from "./helm-chart-manager-cache.injectable";
 import { registerInjectables as registerHelmServiceInjectables } from "./helm-service/register-injectables";
 import installHelmChartInjectable from "./install-helm-chart.injectable";
-import listHelmReleasesInjectable from "./list-helm-releases.injectable";
 import { registerInjectables as registerRepositoriesInjectables } from "./repositories/register-injectables";
+import requestStoredHelmReleasesInjectable from "./request-stored-helm-releases.injectable";
 import rollbackHelmReleaseInjectable from "./rollback-helm-release.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
@@ -30,11 +29,6 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(getHelmReleaseHistoryInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(getHelmReleaseValuesInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }
@@ -59,7 +53,7 @@ export function registerInjectables(di: DiContainerForInjection): void {
     /* Ignore duplicate registration */
   }
   try {
-    di.register(listHelmReleasesInjectable);
+    di.register(requestStoredHelmReleasesInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

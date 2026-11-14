@@ -6,26 +6,60 @@
 
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
-import kubeconfigManagerInjectable from "../../kubeconfig-manager/kubeconfig-manager.injectable";
-import getHelmReleaseValuesInjectable from "../get-helm-release-values.injectable";
+import * as yaml from "js-yaml";
+import requestStoredHelmReleasesInjectable from "../request-stored-helm-releases.injectable";
 
 import type { Cluster } from "../../../common/cluster/cluster";
-import type { GetHelmReleaseValuesData } from "../get-helm-release-values.injectable";
+
+export interface GetHelmReleaseValuesData {
+  name: string;
+  namespace: string;
+  all?: boolean;
+}
+
+type Values = Record<string, unknown>;
+
+const isTable = (value: unknown): value is Values =>
+  value !== null && typeof value === "object" && !Array.isArray(value);
+
+/**
+ * Helm's CoalesceValues: the chart defaults fill in what the user did not set, and a user `null` removes a default.
+ * The stored chart carries no subcharts, so `helm get values --all` merges only this level too.
+ */
+export const coalesceValues = (dst: Values, src: Values): Values => {
+  for (const [key, value] of Object.entries(src)) {
+    if (!(key in dst)) {
+      dst[key] = value;
+    } else if (dst[key] === null) {
+      delete dst[key];
+    } else if (isTable(value) && isTable(dst[key])) {
+      coalesceValues(dst[key], value);
+    }
+  }
+
+  return dst;
+};
 
 const getClusterHelmReleaseValuesInjectable = getInjectable({
   id: "get-cluster-helm-release-values",
 
   instantiate: (di) => {
     const logger = di.inject(loggerInjectionToken);
-    const getHelmReleaseValues = di.inject(getHelmReleaseValuesInjectable);
+    const requestStoredHelmReleases = di.inject(requestStoredHelmReleasesInjectable);
 
-    return async (cluster: Cluster, data: GetHelmReleaseValuesData) => {
-      const proxyKubeconfigManager = di.inject(kubeconfigManagerInjectable, cluster);
-      const proxyKubeconfig = await proxyKubeconfigManager.ensurePaths();
+    return async (cluster: Cluster, { name, namespace, all = false }: GetHelmReleaseValuesData) => {
+      logger.debug(`[CLUSTER]: getting helm release values`, { name, namespace, all });
 
-      logger.debug(`[CLUSTER]: getting helm release values`, data);
+      const [release] = await requestStoredHelmReleases(cluster, namespace, name);
 
-      return getHelmReleaseValues(proxyKubeconfig, data);
+      if (!release) {
+        throw new Error(`release ${name} not found in ${namespace}`);
+      }
+
+      const config = structuredClone(release.config ?? {});
+      const values = all ? coalesceValues(config, release.chart.values ?? {}) : config;
+
+      return Object.keys(values).length ? yaml.dump(values) : "";
     };
   },
 });

@@ -377,8 +377,8 @@ describe("showing details for helm release", () => {
               expect(rendered.getByTestId("helm-release-detail-error")).toBeInTheDocument();
             });
 
-            it("does not call for release configuration", () => {
-              expect(requestHelmReleaseConfigurationMock).not.toHaveBeenCalled();
+            it("has already called for release configuration in parallel", () => {
+              expect(requestHelmReleaseConfigurationMock).toHaveBeenCalledWith("some-name", "some-namespace", true);
             });
           });
 
