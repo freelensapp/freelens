@@ -16,6 +16,7 @@ import { observer } from "mobx-react";
 import React from "react";
 import navigateToEventsInjectable from "../../../common/front-end-routing/routes/cluster/events/navigate-to-events.injectable";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
+import { AskAiButton } from "../../../features/ai-tools/renderer/ask-ai-button";
 import { ReactiveDuration } from "../duration/reactive-duration";
 import getDetailsUrlInjectable from "../kube-detail-params/get-details-url.injectable";
 import { KubeObjectAge } from "../kube-object/age";
@@ -151,6 +152,12 @@ class NonInjectedEvents extends React.Component<Dependencies & EventsProps> {
         <>
           {info}
           <Icon small material="help_outline" className="help-icon" tooltip={`Limited to ${eventStore.limit}`} />
+          <AskAiButton
+            label="Ask AI about events"
+            className="ml-2"
+            data-testid="ask-ai-about-events"
+            getRequest={() => ({ target: { type: "events" }, presetId: "analyze-events" })}
+          />
         </>
       ),
       title,

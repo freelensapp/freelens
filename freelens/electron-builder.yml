@@ -50,16 +50,21 @@ files:
 ## Notarization
 afterSign: build/notarize.cjs
 
-## Used to register the app as a handler for the freelens:// protocol
+## Used to register the app as a handler for the prolens:// protocol. Legacy
+## freelens:// links are still accepted when passed to the app, but the scheme
+## is not registered, so Freelens can stay installed next to ProLens.
 protocols:
   name: ProLens Protocol Handler
   schemes:
-    - freelens
+    - prolens
   role: Viewer
 
 ## For Linux targets
 linux:
-  appId: app.freelens.Freelens
+  appId: app.prolens.ProLens
+  executableName: prolens
+  ## package.json has no author email, which the .deb maintainer defaults to
+  maintainer: ProLens Authors
   category: Development;Network
   artifactName: ${productName}-${version}.${arch}.${ext}
   target:
@@ -102,10 +107,8 @@ deb:
   afterInstall: ./build/after-install-deb.sh
   afterRemove: ./build/after-remove-deb.sh
   fpm:
-    - ./build/apparmor-profile.aa=/etc/apparmor.d/freelens
-    - ./build/apt/freelens.asc=/etc/apt/keyrings/freelens.asc
-    - ./build/apt/freelens.sources=/etc/apt/sources.list.d/freelens.sources
-    - ./build/metainfo.xml=/usr/share/metainfo/app.freelens.Freelens.metainfo.xml
+    - ./build/apparmor-profile.aa=/etc/apparmor.d/prolens
+    - ./build/metainfo.xml=/usr/share/metainfo/app.prolens.ProLens.metainfo.xml
   packageCategory: devel
 
 ## Official Flatpak is built from the separate repository
@@ -136,12 +139,12 @@ rpm:
     - --disable-gpu-compositing
   fpm:
     - --rpm-rpmbuild-define=_build_id_links none
-    - ./build/metainfo.xml=/usr/share/metainfo/app.freelens.Freelens.metainfo.xml
+    - ./build/metainfo.xml=/usr/share/metainfo/app.prolens.ProLens.metainfo.xml
   packageCategory: devel
 
 ## For macOS targets
 mac:
-  appId: app.freelens.Freelens
+  appId: app.prolens.ProLens
   hardenedRuntime: true
   gatekeeperAssess: false
   category: public.app-category.developer-tools
@@ -169,7 +172,7 @@ pkg:
 
 ## For Windows targets
 win:
-  appId: app.freelens.Freelens
+  appId: app.prolens.ProLens
   target:
     - nsis
     - portable

@@ -6,6 +6,7 @@
 
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import { generate } from "selfsigned";
+import { branding } from "../../common/branding";
 
 import type { SelfSignedCert } from "../../common/certificate/certificate";
 
@@ -23,8 +24,8 @@ const freelensK8sProxyCertificateInjectable = getInjectable({
     // explicit dates; consumers await this injectable.
     generate(
       [
-        { name: "commonName", value: "Freelens Certificate Authority" },
-        { name: "organizationName", value: "Freelens" },
+        { name: "commonName", value: branding.certificateAuthorityName },
+        { name: "organizationName", value: branding.organizationName },
       ],
       {
         keySize: 2048,

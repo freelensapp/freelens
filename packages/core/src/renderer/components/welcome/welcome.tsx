@@ -4,6 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { ProLensLogo } from "./prolens-logo";
 import "./welcome.scss";
 
 import { Icon } from "@freelensapp/icon";
@@ -35,7 +36,7 @@ const NonInjectedWelcome = observer(({ welcomeMenuItems, productName, newVersion
   return (
     <div className="flex justify-center Welcome items-center" data-testid="welcome-page">
       <div style={{ width: `${defaultWidth}px` }} data-testid="welcome-banner-container">
-        <Icon svg="logo-lens" className="logo" welcomeLogo={true} data-testid="no-welcome-banners-icon" />
+        <ProLensLogo className="logo" data-testid="no-welcome-banners-icon" />
 
         <div className="flex justify-center">
           <div style={{ width: `${defaultWidth}px` }} data-testid="welcome-text-container">

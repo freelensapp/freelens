@@ -5,6 +5,7 @@
  */
 
 import * as verkit from "verkit";
+import { branding } from "../../../common/branding";
 
 import type { LensExtensionManifest } from "../../installed-extension";
 
@@ -23,7 +24,7 @@ export const isCompatibleExtension = ({
       const errorInfo = [
         `Invalid format for "manifest.engines.freelens"="${manifestLensEngine}"`,
         `Range versions can only be specified starting with '^'.`,
-        `Otherwise it's recommended to use plain %MAJOR.%MINOR to match with supported Freelens version.`,
+        `Otherwise it's recommended to use plain %MAJOR.%MINOR to match with supported ${branding.productName} version.`,
       ].join("\n");
 
       throw new Error(errorInfo);

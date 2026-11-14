@@ -1486,6 +1486,19 @@ exports[`cluster/namespaces - edit namespaces from previously opened tab > given
                         Managed Fields
                       </span>
                     </label>
+                    <button
+                      class="button"
+                      data-testid="ask-ai-about-yaml-some-first-tab-id"
+                      type="button"
+                    >
+                      <span
+                        aria-hidden="true"
+                        class="sparkle"
+                      >
+                        ✦
+                      </span>
+                      Ask AI about this YAML
+                    </button>
                   </div>
                 </div>
                 <div

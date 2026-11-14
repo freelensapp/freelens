@@ -42,12 +42,12 @@ describe("open-whats-new-menu-item", () => {
   it("opens the release notes of a released version", () => {
     click("2.0.1");
 
-    expect(openLinkInBrowserMock).toHaveBeenCalledWith("https://github.com/freelensapp/freelens/releases/tag/v2.0.1");
+    expect(openLinkInBrowserMock).toHaveBeenCalledWith("https://github.com/chago1991/prolens/releases/tag/v2.0.1");
   });
 
   it("opens the list of releases for a prerelease version", () => {
     click("2.0.1-0");
 
-    expect(openLinkInBrowserMock).toHaveBeenCalledWith("https://github.com/freelensapp/freelens/releases");
+    expect(openLinkInBrowserMock).toHaveBeenCalledWith("https://github.com/chago1991/prolens/releases");
   });
 });

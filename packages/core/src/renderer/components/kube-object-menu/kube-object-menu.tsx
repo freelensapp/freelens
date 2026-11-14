@@ -13,8 +13,7 @@ import { observable, reaction, runInAction } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
-import aiToolIsSelectedInjectable from "../../../features/ai-tools/renderer/ai-tool-is-selected.injectable";
-import askAiInjectable from "../../../features/ai-tools/renderer/ask-ai.injectable";
+import openAskAiInjectable from "../../../features/ai-tools/renderer/open-ask-ai.injectable";
 import navigateInjectable from "../../navigation/navigate.injectable";
 import withConfirmationInjectable from "../confirm-dialog/with-confirm.injectable";
 import createEditResourceTabInjectable from "../dock/edit-resource/edit-resource-tab.injectable";
@@ -30,6 +29,7 @@ import type { KubeObject, Pod } from "@freelensapp/kube-object";
 import type { IComputedValue } from "mobx";
 
 import type { ApiManager } from "../../../common/k8s-api/api-manager";
+import type { OpenAskAi } from "../../../features/ai-tools/renderer/open-ask-ai.injectable";
 import type { KubeObjectContextMenuItem } from "../../kube-object/handler";
 import type { Navigate } from "../../navigation/navigate.injectable";
 import type { WithConfirmation } from "../confirm-dialog/with-confirm.injectable";
@@ -56,8 +56,7 @@ interface Dependencies {
   withConfirmation: WithConfirmation;
   navigate: Navigate;
   kubeObjectDeleteService: KubeObjectDeleteService;
-  askAi: (object: KubeObject, clusterName?: string) => Promise<void>;
-  aiToolIsSelected: IComputedValue<boolean>;
+  openAskAi: OpenAskAi;
 }
 
 @observer
@@ -202,8 +201,7 @@ class NonInjectedKubeObjectMenu<Kube extends KubeObject> extends React.Component
       navigate,
       updateAction,
       kubeObjectDeleteService,
-      askAi,
-      aiToolIsSelected,
+      openAskAi,
     } = this.props;
 
     // Get the latest object from the store to ensure we have current state
@@ -216,14 +214,25 @@ class NonInjectedKubeObjectMenu<Kube extends KubeObject> extends React.Component
     runInAction(() => {
       this.menuItems.clear();
 
-      if (aiToolIsSelected.get()) {
-        this.menuItems.push({
-          id: "ask-ai-about-kube-object",
-          title: "Ask AI",
-          icon: "auto_awesome",
-          onClick: (currentObject) => askAi(currentObject, this.props.clusterName.get()),
-        });
-      }
+      this.menuItems.push({
+        id: "ask-ai-about-kube-object",
+        title: "Ask AI",
+        icon: "auto_awesome",
+        onClick: (currentObject) =>
+          openAskAi({
+            target: {
+              type: "resource",
+              resource: {
+                kind: currentObject.kind,
+                apiVersion: currentObject.apiVersion,
+                name: currentObject.getName(),
+                namespace: currentObject.getNs(),
+                uid: currentObject.getId(),
+              },
+              manifest: currentObject.toPlainObject() as Record<string, unknown>,
+            },
+          }),
+      });
 
       if (isRemovable) {
         // Determine the appropriate delete modes based on current object state
@@ -370,8 +379,7 @@ export const KubeObjectMenu = withInjectables<Dependencies, KubeObjectMenuProps<
       navigate: di.inject(navigateInjectable),
       withConfirmation: di.inject(withConfirmationInjectable),
       kubeObjectDeleteService: di.inject(kubeObjectDeleteServiceInjectable),
-      askAi: di.inject(askAiInjectable),
-      aiToolIsSelected: di.inject(aiToolIsSelectedInjectable),
+      openAskAi: di.inject(openAskAiInjectable),
     }),
   },
 ) as <T extends KubeObject>(props: KubeObjectMenuProps<T>) => React.ReactElement;

@@ -7,6 +7,7 @@ import { loggerInjectionToken } from "@freelensapp/logger";
 import { showInfoNotificationInjectable } from "@freelensapp/notifications";
 import { getInjectable } from "@ogre-tools/injectable";
 import * as verkit from "verkit";
+import { branding } from "../../../common/branding";
 import productNameInjectable from "../../../common/vars/product-name.injectable";
 import { buildVersionInitializable } from "../../../features/vars/build-version/common/token";
 import getLatestVersionViaChannelInjectable from "../../common/utils/get-latest-version-via-channel.injectable";
@@ -36,12 +37,7 @@ const newVersionNotificationInjectable = getInjectable({
           <div className="flex flex-col gap-2">
             <div>
               {productName} v{newVersion} is available! Open the{" "}
-              <a
-                href={`https://github.com/freelensapp/freelens/releases`}
-                target="_blank"
-                rel="noreferrer"
-                className="NotificationLink"
-              >
+              <a href={`${branding.homepage}/releases`} target="_blank" rel="noreferrer" className="NotificationLink">
                 release notes
               </a>{" "}
               to learn more.

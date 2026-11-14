@@ -1211,6 +1211,23 @@ exports[`<ClusterFrame /> > given cluster with list nodes and namespaces permiss
           class="scrollable"
         >
           <div
+            class="askAi"
+          >
+            <button
+              class="button"
+              data-testid="ask-ai-about-cluster"
+              type="button"
+            >
+              <span
+                aria-hidden="true"
+                class="sparkle"
+              >
+                ✦
+              </span>
+              Ask AI about this cluster
+            </button>
+          </div>
+          <div
             class="ClusterOverview"
             data-testid="cluster-overview-page"
           >

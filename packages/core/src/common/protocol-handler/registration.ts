@@ -14,7 +14,7 @@ export interface ProtocolHandlerRegistration {
 }
 
 /**
- * The collection of the dynamic parts of a URI which initiated a `freelens://`
+ * The collection of the dynamic parts of a URI which initiated a `prolens://` (or legacy `freelens://`)
  * protocol request
  */
 export interface RouteParams {
@@ -43,7 +43,7 @@ export interface RouteParams {
 
 /**
  * RouteHandler represents the function signature of the handler function for
- * `freelens://` protocol routing.
+ * `prolens://` (or legacy `freelens://`) protocol routing.
  */
 export interface RouteHandler {
   (params: RouteParams): void;

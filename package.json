@@ -1,18 +1,19 @@
 {
   "name": "freelens-monorepo",
   "private": true,
-  "homepage": "https://freelens.app",
+  "description": "ProLens - Kubernetes IDE",
+  "homepage": "https://github.com/chago1991/prolens",
   "bugs": {
-    "url": "https://github.com/freelensapp/freelens/issues"
+    "url": "https://github.com/chago1991/prolens/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/freelensapp/freelens.git"
+    "url": "git+https://github.com/chago1991/prolens.git"
   },
   "license": "MIT",
   "author": {
-    "name": "Freelens Authors",
-    "email": "freelens@freelens.app"
+    "name": "ProLens Authors",
+    "url": "https://github.com/chago1991/prolens"
   },
   "workspaces": [
     "freelens",

@@ -24,3 +24,10 @@
     grid-template-areas: none;
   }
 }
+
+/* Above the grid, so that it takes no cell of it. */
+.askAi {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: var(--margin);
+}

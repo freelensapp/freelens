@@ -7,6 +7,7 @@
 import { beforeApplicationIsLoadingInjectionToken } from "@freelensapp/application";
 import { getInjectable } from "@ogre-tools/injectable";
 import { generate } from "selfsigned";
+import { branding } from "../../../common/branding";
 import freelensProxyCertificateInjectable from "../../../common/certificate/freelens-proxy-certificate.injectable";
 
 const setupFreelensProxyCertificateInjectable = getInjectable({
@@ -22,8 +23,8 @@ const setupFreelensProxyCertificateInjectable = getInjectable({
 
       const cert = await generate(
         [
-          { name: "commonName", value: "Freelens Certificate Authority" },
-          { name: "organizationName", value: "Freelens" },
+          { name: "commonName", value: branding.certificateAuthorityName },
+          { name: "organizationName", value: branding.organizationName },
         ],
         {
           keySize: 2048,

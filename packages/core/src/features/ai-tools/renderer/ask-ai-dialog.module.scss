@@ -1,0 +1,176 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
+.dialog {
+  width: min(720px, calc(100vw - 48px));
+  max-height: calc(100vh - 64px);
+  display: flex;
+  flex-direction: column;
+  background: var(--dialogBackground);
+  color: var(--textColorPrimary);
+  border: 1px solid var(--borderColor);
+  border-radius: 10px;
+  box-shadow: 0 16px 48px var(--boxShadow);
+  overflow: hidden;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--borderFaintColor);
+
+  h2 {
+    margin: 0;
+    font-size: 16px;
+    color: var(--textColorAccent);
+  }
+
+  .subtitle {
+    color: var(--textColorTertiary);
+    font-size: var(--font-size-small);
+  }
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px 20px;
+  overflow-y: auto;
+}
+
+.label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: var(--font-size-small);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--textColorTertiary);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border: 1px solid var(--borderColor);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--textColorPrimary);
+  font: inherit;
+  font-size: var(--font-size-small);
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    border-color: var(--primary);
+  }
+
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  &[aria-pressed="true"] {
+    border-color: var(--primary);
+    background: color-mix(in srgb, var(--primary) 16%, transparent);
+    color: var(--textColorAccent);
+  }
+}
+
+.question {
+  width: 100%;
+  min-height: 72px;
+  padding: 8px 10px;
+  resize: vertical;
+  border: 1px solid var(--inputControlBorder);
+  border-radius: 6px;
+  background: var(--inputControlBackground);
+  color: var(--textColorPrimary);
+  font: inherit;
+
+  &:focus {
+    border-color: var(--primary);
+  }
+}
+
+.sources {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.source {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  cursor: pointer;
+
+  input {
+    margin-top: 3px;
+    accent-color: var(--primary);
+  }
+
+  small {
+    display: block;
+    color: var(--textColorTertiary);
+  }
+}
+
+.notice {
+  display: flex;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid color-mix(in srgb, var(--colorSuccess) 40%, transparent);
+  background: color-mix(in srgb, var(--colorSuccess) 10%, transparent);
+  font-size: var(--font-size-small);
+}
+
+.warning {
+  border-color: color-mix(in srgb, var(--colorWarning) 45%, transparent);
+  background: color-mix(in srgb, var(--colorWarning) 10%, transparent);
+}
+
+.error {
+  color: var(--colorError);
+  font-size: var(--font-size-small);
+}
+
+.preview {
+  max-height: 260px;
+  overflow: auto;
+  margin: 0;
+  padding: 10px;
+  border-radius: 6px;
+  background: var(--canvasBackground);
+  border: 1px solid var(--borderFaintColor);
+  font-family: var(--font-monospace);
+  font-size: 12px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border-top: 1px solid var(--borderFaintColor);
+  background: var(--dialogFooterBackground);
+}
+
+.spacer {
+  flex: 1;
+}

@@ -5,6 +5,7 @@
 
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
+import { branding } from "../../common/branding";
 import isWindowsInjectable from "../../common/vars/is-windows.injectable";
 import getClusterByIdInjectable from "../../features/cluster/storage/common/get-by-id.injectable";
 import httpsProxyConfigurationInjectable from "../../features/user-preferences/common/https-proxy.injectable";
@@ -57,7 +58,7 @@ const kubeToolsForExtensionsInjectable = getInjectable({
       (refreshing ??= computeUserShellEnvironment()
         .then(({ environment, error }) => {
           if (error !== undefined) {
-            logger.warn(`[KUBE-TOOLS]: using Freelens' own environment for extensions: ${error}`);
+            logger.warn(`[KUBE-TOOLS]: using ${branding.productName}'s own environment for extensions: ${error}`);
           }
 
           return (shellEnvironment = environment);

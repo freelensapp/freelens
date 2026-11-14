@@ -5,9 +5,7 @@ if [[ $1 == "remove" ]]; then
 		update-alternatives --remove prolens /opt/ProLens/prolens || true
 	fi
 
-	for path in /usr/bin/prolens /usr/bin/freelens; do
-		if [[ -L "$path" && "$(readlink "$path" || true)" == "/opt/ProLens/prolens" ]]; then
-			rm -f "$path"
-		fi
-	done
+	if [[ -L /usr/bin/prolens && "$(readlink /usr/bin/prolens || true)" == "/opt/ProLens/prolens" ]]; then
+		rm -f /usr/bin/prolens
+	fi
 fi

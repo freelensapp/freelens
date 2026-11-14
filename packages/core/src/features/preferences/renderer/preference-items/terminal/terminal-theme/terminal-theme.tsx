@@ -8,26 +8,28 @@ import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import { SubTitle } from "../../../../../../renderer/components/layout/sub-title";
 import { Select } from "../../../../../../renderer/components/select";
-import { lensThemeDeclarationInjectionToken } from "../../../../../../renderer/themes/declaration";
+import allLensThemesInjectable from "../../../../../../renderer/themes/all-themes.injectable";
 import userPreferencesStateInjectable from "../../../../../user-preferences/common/state.injectable";
 
-import type { LensTheme } from "../../../../../../renderer/themes/lens-theme";
+import type { IComputedValue } from "mobx";
+
+import type { ThemeWithOrigin } from "../../../../../../renderer/themes/all-themes.injectable";
 import type { UserPreferencesState } from "../../../../../user-preferences/common/state.injectable";
 
 interface Dependencies {
   state: UserPreferencesState;
-  themes: LensTheme[];
+  themes: IComputedValue<Map<string, ThemeWithOrigin>>;
 }
 
 const NonInjectedTerminalTheme = observer(({ state, themes }: Dependencies) => {
   const themeOptions = [
     {
       value: "", // TODO: replace with a sentinel value that isn't string (and serialize it differently)
-      label: "Match Freelens Theme",
+      label: "Match ProLens Theme",
     },
-    ...themes.map((theme) => ({
+    ...[...themes.get().values()].map(({ theme, isCustom }) => ({
       value: theme.name,
-      label: theme.name,
+      label: isCustom ? `${theme.name} (custom)` : theme.name,
     })),
   ];
 
@@ -48,6 +50,6 @@ const NonInjectedTerminalTheme = observer(({ state, themes }: Dependencies) => {
 export const TerminalTheme = withInjectables<Dependencies>(NonInjectedTerminalTheme, {
   getProps: (di) => ({
     state: di.inject(userPreferencesStateInjectable),
-    themes: di.injectMany(lensThemeDeclarationInjectionToken),
+    themes: di.inject(allLensThemesInjectable),
   }),
 });

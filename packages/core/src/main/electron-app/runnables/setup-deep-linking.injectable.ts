@@ -7,6 +7,7 @@
 import { onLoadOfApplicationInjectionToken } from "@freelensapp/application";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
+import { branding, isDeepLinkUrl } from "../../../common/branding";
 import openDeepLinkInjectable from "../../protocol-handler/lens-protocol-router-main/open-deep-link-for-url/open-deep-link.injectable";
 import showApplicationWindowInjectable from "../../start-main-application/lens-window/show-application-window.injectable";
 import commandLineArgumentsInjectable from "../../utils/command-line-arguments.injectable";
@@ -23,9 +24,9 @@ const setupDeepLinkingInjectable = getInjectable({
       const showApplicationWindow = di.inject(showApplicationWindowInjectable);
       const firstInstanceCommandLineArguments = di.inject(commandLineArgumentsInjectable);
 
-      logger.info(`📟 Setting protocol client for freelens://`);
+      logger.info(`📟 Setting protocol client for ${branding.protocolScheme}://`);
 
-      if (app.setAsDefaultProtocolClient("freelens")) {
+      if (app.setAsDefaultProtocolClient(branding.protocolScheme)) {
         logger.info("📟 Protocol client register succeeded ✅");
       } else {
         logger.info("📟 Protocol client register failed ❗");
@@ -61,4 +62,4 @@ const setupDeepLinkingInjectable = getInjectable({
 export default setupDeepLinkingInjectable;
 
 const getDeepLinkUrl = (commandLineArguments: string[]) =>
-  commandLineArguments.map((argument) => argument.toLowerCase()).find((argument) => argument.startsWith("freelens://"));
+  commandLineArguments.map((argument) => argument.toLowerCase()).find(isDeepLinkUrl);

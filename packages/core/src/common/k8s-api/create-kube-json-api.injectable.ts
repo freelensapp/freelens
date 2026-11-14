@@ -8,6 +8,7 @@ import { KubeJsonApi } from "@freelensapp/kube-api";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
 import packageJson from "../../../package.json";
+import { branding } from "../branding";
 import fetchInjectable from "../fetch/fetch.injectable";
 import { freelensProxyDispatcherInjectionToken } from "../fetch/freelens-proxy-dispatcher-injection-token";
 
@@ -37,7 +38,7 @@ const createKubeJsonApiInjectable = getInjectable({
             ? {
                 dispatcher,
                 headers: {
-                  "User-Agent": `Freelens/${packageJson.version}`,
+                  "User-Agent": `${branding.userAgentProduct}/${packageJson.version}`,
                 },
               }
             : {};

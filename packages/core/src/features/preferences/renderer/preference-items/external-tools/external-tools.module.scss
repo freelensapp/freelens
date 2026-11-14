@@ -1,0 +1,207 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
+.intro {
+  margin-bottom: 16px;
+  color: var(--textColorSecondary);
+  line-height: 1.5;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  color: var(--textColorTertiary);
+  font-size: var(--font-size-small);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--borderColor);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.tool {
+  border-top: 1px solid var(--borderFaintColor);
+  background: var(--contentColor);
+
+  &:first-child {
+    border-top: 0;
+  }
+
+  &.selected {
+    background: color-mix(in srgb, var(--primary) 8%, var(--contentColor));
+  }
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+}
+
+.radio {
+  accent-color: var(--primary);
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  cursor: pointer;
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+
+.info {
+  flex: 1;
+  min-width: 0;
+}
+
+.name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--textColorAccent);
+  font-weight: 600;
+}
+
+.vendor {
+  color: var(--textColorTertiary);
+  font-weight: 400;
+  font-size: var(--font-size-small);
+}
+
+.description {
+  color: var(--textColorSecondary);
+  font-size: var(--font-size-small);
+}
+
+.path {
+  margin-top: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--textColorTertiary);
+  font-family: var(--font-monospace);
+  font-size: 11px;
+}
+
+.status {
+  flex-shrink: 0;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.installed {
+  color: var(--colorSuccess);
+  background: color-mix(in srgb, var(--colorSuccess) 14%, transparent);
+}
+
+.missing {
+  color: var(--textColorTertiary);
+  background: color-mix(in srgb, var(--textColorTertiary) 14%, transparent);
+}
+
+.failed {
+  color: var(--colorError);
+  background: color-mix(in srgb, var(--colorError) 14%, transparent);
+}
+
+.linkButton {
+  flex-shrink: 0;
+  padding: 4px 8px;
+  border: 1px solid var(--borderColor);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--textColorPrimary);
+  font: inherit;
+  font-size: var(--font-size-small);
+  cursor: pointer;
+
+  &:hover {
+    border-color: var(--primary);
+    color: var(--textColorAccent);
+  }
+}
+
+.details {
+  display: grid;
+  gap: 12px;
+  padding: 0 16px 16px 62px;
+}
+
+.field {
+  display: grid;
+  gap: 4px;
+
+  label {
+    color: var(--textColorTertiary);
+    font-size: var(--font-size-small);
+    font-weight: 600;
+  }
+
+  input {
+    padding: 6px 8px;
+    border: 1px solid var(--inputControlBorder);
+    border-radius: 6px;
+    background: var(--inputControlBackground);
+    color: var(--textColorPrimary);
+    font-family: var(--font-monospace);
+    font-size: 12px;
+
+    &:focus {
+      border-color: var(--primary);
+    }
+  }
+
+  small {
+    color: var(--textColorTertiary);
+  }
+}
+
+.steps {
+  display: grid;
+  gap: 6px;
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  code {
+    flex: 1;
+    min-width: 0;
+    overflow-x: auto;
+    padding: 6px 8px;
+    border-radius: 6px;
+    background: var(--canvasBackground);
+    border: 1px solid var(--borderFaintColor);
+    font-family: var(--font-monospace);
+    font-size: 12px;
+    white-space: nowrap;
+  }
+
+  span {
+    width: 96px;
+    flex-shrink: 0;
+    color: var(--textColorTertiary);
+    font-size: var(--font-size-small);
+  }
+}
+
+.footnote {
+  margin-top: 16px;
+  color: var(--textColorTertiary);
+  font-size: var(--font-size-small);
+  line-height: 1.5;
+}

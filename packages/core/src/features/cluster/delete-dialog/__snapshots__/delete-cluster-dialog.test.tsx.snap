@@ -70,6 +70,38 @@ exports[`Deleting a cluster > when an internal kubeconfig cluster is used > when
           <div
             class="separator"
           />
+          <div
+            class="preventedDragging"
+          >
+            <div
+              class="root"
+              data-testid="ai-assistant-top-bar-item"
+            >
+              <button
+                class="ask"
+                data-testid="ai-assistant-ask"
+                title="Choose an AI assistant"
+                type="button"
+              >
+                <span
+                  class="sparkle"
+                >
+                  ✦
+                </span>
+                Set up AI
+              </button>
+              <button
+                aria-expanded="false"
+                aria-haspopup="menu"
+                aria-label="Choose AI assistant"
+                class="toggle"
+                data-testid="ai-assistant-menu-toggle"
+                type="button"
+              >
+                ▾
+              </button>
+            </div>
+          </div>
         </div>
       </div>
       <main>
@@ -735,7 +767,7 @@ exports[`Deleting a cluster > when an internal kubeconfig cluster is used > when
           <b>
             some-context
           </b>
-           context from Freelens's internal kubeconfig?
+           context from ProLens's internal kubeconfig?
         </div>
         <div
           class="warning"
@@ -848,6 +880,38 @@ exports[`Deleting a cluster > when the kubeconfig has multiple clusters > when t
           <div
             class="separator"
           />
+          <div
+            class="preventedDragging"
+          >
+            <div
+              class="root"
+              data-testid="ai-assistant-top-bar-item"
+            >
+              <button
+                class="ask"
+                data-testid="ai-assistant-ask"
+                title="Choose an AI assistant"
+                type="button"
+              >
+                <span
+                  class="sparkle"
+                >
+                  ✦
+                </span>
+                Set up AI
+              </button>
+              <button
+                aria-expanded="false"
+                aria-haspopup="menu"
+                aria-label="Choose AI assistant"
+                class="toggle"
+                data-testid="ai-assistant-menu-toggle"
+                type="button"
+              >
+                ▾
+              </button>
+            </div>
+          </div>
         </div>
       </div>
       <main>
@@ -1659,6 +1723,38 @@ exports[`Deleting a cluster > when the kubeconfig has multiple clusters > when t
           <div
             class="separator"
           />
+          <div
+            class="preventedDragging"
+          >
+            <div
+              class="root"
+              data-testid="ai-assistant-top-bar-item"
+            >
+              <button
+                class="ask"
+                data-testid="ai-assistant-ask"
+                title="Choose an AI assistant"
+                type="button"
+              >
+                <span
+                  class="sparkle"
+                >
+                  ✦
+                </span>
+                Set up AI
+              </button>
+              <button
+                aria-expanded="false"
+                aria-haspopup="menu"
+                aria-label="Choose AI assistant"
+                class="toggle"
+                data-testid="ai-assistant-menu-toggle"
+                type="button"
+              >
+                ▾
+              </button>
+            </div>
+          </div>
         </div>
       </div>
       <main>
@@ -2551,6 +2647,38 @@ exports[`Deleting a cluster > when the kubeconfig has multiple clusters > when t
           <div
             class="separator"
           />
+          <div
+            class="preventedDragging"
+          >
+            <div
+              class="root"
+              data-testid="ai-assistant-top-bar-item"
+            >
+              <button
+                class="ask"
+                data-testid="ai-assistant-ask"
+                title="Choose an AI assistant"
+                type="button"
+              >
+                <span
+                  class="sparkle"
+                >
+                  ✦
+                </span>
+                Set up AI
+              </button>
+              <button
+                aria-expanded="false"
+                aria-haspopup="menu"
+                aria-label="Choose AI assistant"
+                class="toggle"
+                data-testid="ai-assistant-menu-toggle"
+                type="button"
+              >
+                ▾
+              </button>
+            </div>
+          </div>
         </div>
       </div>
       <main>
@@ -3443,6 +3571,38 @@ exports[`Deleting a cluster > when the kubeconfig has only one cluster > when th
           <div
             class="separator"
           />
+          <div
+            class="preventedDragging"
+          >
+            <div
+              class="root"
+              data-testid="ai-assistant-top-bar-item"
+            >
+              <button
+                class="ask"
+                data-testid="ai-assistant-ask"
+                title="Choose an AI assistant"
+                type="button"
+              >
+                <span
+                  class="sparkle"
+                >
+                  ✦
+                </span>
+                Set up AI
+              </button>
+              <button
+                aria-expanded="false"
+                aria-haspopup="menu"
+                aria-label="Choose AI assistant"
+                class="toggle"
+                data-testid="ai-assistant-menu-toggle"
+                type="button"
+              >
+                ▾
+              </button>
+            </div>
+          </div>
         </div>
       </div>
       <main>

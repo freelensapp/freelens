@@ -10,7 +10,6 @@ import { pathNames } from "../../common/app-paths/app-path-names";
 import appPathsStateInjectable from "../../common/app-paths/app-paths-state.injectable";
 import joinPathsInjectable from "../../common/path/join-paths.injectable";
 import appNameInjectable from "../../common/vars/app-name.injectable";
-import productNameInjectable from "../../common/vars/product-name.injectable";
 import directoryForIntegrationTestingInjectable from "./directory-for-integration-testing/directory-for-integration-testing.injectable";
 import getElectronAppPathInjectable from "./get-electron-app-path/get-electron-app-path.injectable";
 import setElectronAppPathInjectable from "./set-electron-app-path/set-electron-app-path.injectable";
@@ -24,7 +23,6 @@ const setupAppPathsInjectable = getInjectable({
     run: () => {
       const setElectronAppPath = di.inject(setElectronAppPathInjectable);
       const appName = di.inject(appNameInjectable);
-      const productName = di.inject(productNameInjectable);
       const getElectronAppPath = di.inject(getElectronAppPathInjectable);
       const appPathsState = di.inject(appPathsStateInjectable);
       const directoryForIntegrationTesting = di.inject(directoryForIntegrationTestingInjectable);
@@ -35,9 +33,8 @@ const setupAppPathsInjectable = getInjectable({
       }
 
       const appDataPath = getElectronAppPath("appData");
-      const userDataDirectoryName = productName === "ProLens" ? appName.replace(productName, "Freelens") : appName;
 
-      setElectronAppPath("userData", joinPaths(appDataPath, userDataDirectoryName));
+      setElectronAppPath("userData", joinPaths(appDataPath, appName));
       setElectronAppPath("sessionData", getElectronAppPath("userData"));
 
       const appPaths = Object.fromEntries(pathNames.map((name) => [name, getElectronAppPath(name)])) as AppPaths;

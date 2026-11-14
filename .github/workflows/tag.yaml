@@ -26,9 +26,10 @@ jobs:
     env:
       DO_NOT_TRACK: "1"
 
-    # Never on a fork: it has no GH_TOKEN secret, so the job could only fail.
+    # Only in the ProLens repository, which needs a GH_TOKEN secret (a token that
+    # may push to it); never in upstream Freelens or in a fork of ProLens.
     if: >-
-      github.repository_owner == 'freelensapp' && ((startsWith(github.event.issue.title, 'Automated npm version') && github.event.issue.state == 'closed' && github.event.comment.body == '/tag' && contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association)) || (startsWith(github.event.pull_request.title,
+      github.repository == 'chago1991/prolens' && ((startsWith(github.event.issue.title, 'Automated npm version') && github.event.issue.state == 'closed' && github.event.comment.body == '/tag' && contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association)) || (startsWith(github.event.pull_request.title,
       'Automated npm version') && github.event.pull_request.merged))
     steps:
       # author_association in the job condition is only a cheap pre-filter:

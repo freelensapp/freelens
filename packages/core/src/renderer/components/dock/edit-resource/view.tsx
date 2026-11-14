@@ -7,6 +7,7 @@
 import { Spinner } from "@freelensapp/spinner";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
+import { AskAiButton } from "../../../../features/ai-tools/renderer/ask-ai-button";
 import { Badge } from "../../badge";
 import { Checkbox } from "../../checkbox";
 import { Notice } from "../../extensions/notice";
@@ -54,6 +55,23 @@ const NonInjectedEditResource = observer(({ model, tabId }: EditResourceProps & 
                 label="Managed Fields"
                 value={model.managedFields.value.get()}
                 onChange={model.managedFields.onChange}
+              />
+              <AskAiButton
+                label="Ask AI about this YAML"
+                data-testid={`ask-ai-about-yaml-${tabId}`}
+                getRequest={() => ({
+                  target: {
+                    type: "yaml",
+                    resource: {
+                      kind: model.kind,
+                      apiVersion: model.resource?.apiVersion ?? "v1",
+                      name: model.name,
+                      namespace: model.namespace,
+                    },
+                    yaml: model.configuration.value.get(),
+                  },
+                  presetId: "explain-config",
+                })}
               />
             </div>
           }

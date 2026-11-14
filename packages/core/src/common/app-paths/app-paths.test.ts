@@ -9,6 +9,7 @@ import directoryForIntegrationTestingInjectable from "../../main/app-paths/direc
 import getElectronAppPathInjectable from "../../main/app-paths/get-electron-app-path/get-electron-app-path.injectable";
 import setElectronAppPathInjectable from "../../main/app-paths/set-electron-app-path/set-electron-app-path.injectable";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
+import isDevelopmentInjectable from "../vars/is-development.injectable";
 import productNameInjectable from "../vars/product-name.injectable";
 import appPathsInjectable from "./app-paths.injectable";
 
@@ -151,15 +152,38 @@ describe("app-paths", () => {
     });
   });
 
-  it("preserves the existing user data directory for ProLens", async () => {
-    builder.beforeApplicationStart(({ mainDi }) => {
-      mainDi.override(productNameInjectable, () => "ProLens");
+  describe("given the product name is ProLens", () => {
+    beforeEach(() => {
+      builder.beforeApplicationStart(({ mainDi }) => {
+        mainDi.override(productNameInjectable, () => "ProLens");
+      });
     });
 
-    await builder.render();
+    it("given not in development, uses its own user data directory, not the one of Freelens", async () => {
+      builder.beforeApplicationStart(({ mainDi }) => {
+        mainDi.override(isDevelopmentInjectable, () => false);
+      });
 
-    const { userData } = builder.mainDi.inject(appPathsInjectable);
+      await builder.render();
 
-    expect(userData).toBe("/some-app-data/Freelens");
+      const { userData, sessionData } = builder.mainDi.inject(appPathsInjectable);
+
+      expect({ userData, sessionData }).toEqual({
+        userData: "/some-app-data/ProLens",
+        sessionData: "/some-app-data/ProLens",
+      });
+    });
+
+    it("given in development, uses a separate development user data directory", async () => {
+      builder.beforeApplicationStart(({ mainDi }) => {
+        mainDi.override(isDevelopmentInjectable, () => true);
+      });
+
+      await builder.render();
+
+      const { userData } = builder.mainDi.inject(appPathsInjectable);
+
+      expect(userData).toBe("/some-app-data/ProLensDev");
+    });
   });
 });
