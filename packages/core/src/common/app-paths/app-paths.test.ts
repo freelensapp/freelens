@@ -9,6 +9,7 @@ import directoryForIntegrationTestingInjectable from "../../main/app-paths/direc
 import getElectronAppPathInjectable from "../../main/app-paths/get-electron-app-path/get-electron-app-path.injectable";
 import setElectronAppPathInjectable from "../../main/app-paths/set-electron-app-path/set-electron-app-path.injectable";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
+import productNameInjectable from "../vars/product-name.injectable";
 import appPathsInjectable from "./app-paths.injectable";
 
 import type { DiContainer } from "@ogre-tools/injectable";
@@ -148,5 +149,17 @@ describe("app-paths", () => {
         userData: "/some-integration-testing-app-data/some-product-name",
       });
     });
+  });
+
+  it("preserves the existing user data directory for ProLens", async () => {
+    builder.beforeApplicationStart(({ mainDi }) => {
+      mainDi.override(productNameInjectable, () => "ProLens");
+    });
+
+    await builder.render();
+
+    const { userData } = builder.mainDi.inject(appPathsInjectable);
+
+    expect(userData).toBe("/some-app-data/Freelens");
   });
 });

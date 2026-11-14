@@ -2,18 +2,21 @@
 
 if [[ $1 == "configure" ]]; then
 	if type update-alternatives 2>/dev/null >&1; then
-		if [[ -L /usr/bin/freelens && -e /usr/bin/freelens && "$(readlink /usr/bin/freelens || true)" != "/etc/alternatives/freelens" ]]; then
-			rm -f /usr/bin/freelens
+		if [[ -L /usr/bin/prolens && -e /usr/bin/prolens && "$(readlink /usr/bin/prolens || true)" != "/etc/alternatives/prolens" ]]; then
+			rm -f /usr/bin/prolens
 		fi
-		update-alternatives --install /usr/bin/freelens freelens /opt/Freelens/freelens 100 || ln -sf /opt/Freelens/freelens /usr/bin/freelens
+		update-alternatives --install /usr/bin/prolens prolens /opt/ProLens/prolens 100 || ln -sf /opt/ProLens/prolens /usr/bin/prolens
+		update-alternatives --remove freelens /opt/Freelens/freelens 2>/dev/null || true
 	else
-		ln -sf /opt/Freelens/freelens /usr/bin/freelens
+		ln -sf /opt/ProLens/prolens /usr/bin/prolens
 	fi
 
+	ln -sf /opt/ProLens/prolens /usr/bin/freelens
+
 	if ! { [[ -L /proc/self/ns/user ]] && unshare --user true; }; then
-		chmod 4755 /opt/Freelens/chrome-sandbox || true
+		chmod 4755 /opt/ProLens/chrome-sandbox || true
 	else
-		chmod 0755 /opt/Freelens/chrome-sandbox || true
+		chmod 0755 /opt/ProLens/chrome-sandbox || true
 	fi
 
 	if hash apparmor_parser 2>/dev/null; then

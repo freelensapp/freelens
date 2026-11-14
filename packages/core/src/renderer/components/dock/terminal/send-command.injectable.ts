@@ -31,6 +31,8 @@ export interface SendCommandOptions {
    * Specify a specific terminal tab to send this command to
    */
   tabId?: TabId;
+
+  redactCommandFromLogs?: boolean;
 }
 
 export type SendCommand = (command: string, options?: SendCommandOptions) => Promise<void>;
@@ -76,7 +78,10 @@ const sendCommandInjectable = getInjectable({
           data: command,
         });
       } else {
-        logger.warn("The selected tab is does not have a connection. Cannot send command.", { tabId, command });
+        logger.warn("The selected tab is does not have a connection. Cannot send command.", {
+          tabId,
+          ...(!options.redactCommandFromLogs && { command }),
+        });
       }
     };
   },

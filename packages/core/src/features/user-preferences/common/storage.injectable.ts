@@ -37,6 +37,7 @@ const userPreferencesPersistentStorageInjectable = getInjectable({
         logger.debug("fromStore()", { preferences });
 
         state.allowErrorReporting = descriptors.allowErrorReporting.fromStore(preferences.allowErrorReporting);
+        state.aiTool = descriptors.aiTool.fromStore(preferences.aiTool);
         state.allowUntrustedCAs = descriptors.allowUntrustedCAs.fromStore(preferences.allowUntrustedCAs);
         state.colorTheme = descriptors.colorTheme.fromStore(preferences.colorTheme);
         state.downloadBinariesPath = descriptors.downloadBinariesPath.fromStore(preferences.downloadBinariesPath);
@@ -63,12 +64,14 @@ const userPreferencesPersistentStorageInjectable = getInjectable({
         state.terminalConfig = descriptors.terminalConfig.fromStore(preferences.terminalConfig);
         state.terminalCopyOnSelect = descriptors.terminalCopyOnSelect.fromStore(preferences.terminalCopyOnSelect);
         state.terminalTheme = descriptors.terminalTheme.fromStore(preferences.terminalTheme);
+        state.customAiToolCommand = descriptors.customAiToolCommand.fromStore(preferences.customAiToolCommand);
         state.clusterPageMenuOrder = descriptors.clusterPageMenuOrder.fromStore(preferences.clusterPageMenuOrder);
       }),
       toJSON: () =>
         toJS({
           preferences: {
             allowErrorReporting: descriptors.allowErrorReporting.toStore(state.allowErrorReporting),
+            aiTool: descriptors.aiTool.toStore(state.aiTool),
             allowUntrustedCAs: descriptors.allowUntrustedCAs.toStore(state.allowUntrustedCAs),
             colorTheme: descriptors.colorTheme.toStore(state.colorTheme),
             downloadBinariesPath: descriptors.downloadBinariesPath.toStore(state.downloadBinariesPath),
@@ -93,6 +96,7 @@ const userPreferencesPersistentStorageInjectable = getInjectable({
             terminalConfig: descriptors.terminalConfig.toStore(state.terminalConfig),
             terminalCopyOnSelect: descriptors.terminalCopyOnSelect.toStore(state.terminalCopyOnSelect),
             terminalTheme: descriptors.terminalTheme.toStore(state.terminalTheme),
+            customAiToolCommand: descriptors.customAiToolCommand.toStore(state.customAiToolCommand),
             clusterPageMenuOrder: descriptors.clusterPageMenuOrder.toStore(state.clusterPageMenuOrder),
           },
         }),
