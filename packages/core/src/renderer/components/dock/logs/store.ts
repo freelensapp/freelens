@@ -292,7 +292,15 @@ export class LogStore {
             signal,
           );
 
-          logsOfPods.push({ pod, lines: result.trimEnd().replace(/\r/g, "\n").split("\n") });
+          // Only the line break that ends the logs is removed. The last line
+          // keeps the spaces it ends with, so that it is the same line when
+          // the next request returns it again.
+          const lines = result
+            .replace(/\r?\n$/, "")
+            .replace(/\r/g, "\n")
+            .split("\n");
+
+          logsOfPods.push({ pod, lines });
         } catch (error) {
           errors.push(error);
         }

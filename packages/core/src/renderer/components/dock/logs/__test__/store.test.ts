@@ -255,6 +255,27 @@ describe("LogStore request lifecycle", () => {
     expect(store.getLogs(tabId)).toEqual([lastLog, sameSecondLog]);
   });
 
+  it.each([
+    ["is empty", "2026-01-01T00:00:05.250000000Z ", "2026-01-01T00:00:05.250000000Z "],
+    ["ends with a space", "2026-01-01T00:00:05.250000000Z last line ", "2026-01-01T00:00:05.250000000Z last line "],
+    [
+      "ends with a carriage return",
+      "2026-01-01T00:00:05.250000000Z last line\r",
+      "2026-01-01T00:00:05.250000000Z last line",
+    ],
+  ])("does not show the last line twice when it %s", async (_case, written, shown) => {
+    const nextLog = "2026-01-01T00:00:06.250000000Z next line";
+
+    callForLogs.mockResolvedValue(`${written}\n`);
+    await store.load(tabId, computedPods, computedTabData);
+    expect(store.getLogs(tabId)).toEqual([shown]);
+
+    callForLogs.mockResolvedValue(`${written}\n${nextLog}\n`);
+    await vi.advanceTimersByTimeAsync(10_000);
+
+    expect(store.getLogs(tabId)).toEqual([shown, nextLog]);
+  });
+
   it("keeps two different lines that carry the same timestamp", async () => {
     const otherLog = "2026-01-01T00:00:00Z second line of that instant";
 
