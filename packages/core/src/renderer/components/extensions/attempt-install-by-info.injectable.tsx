@@ -70,7 +70,8 @@ const attemptInstallByInfoInjectable = getInjectable({
       const { name, version: versionOrTagName, requireConfirmation = false } = info;
       const registryUrl = new URL(baseUrl);
       // keep the path of a registry served under a prefix, such as Artifactory's /artifactory/api/npm/<repo>/
-      registryUrl.pathname = registryUrl.pathname.replace(/\/?$/, "/") + name;
+      // a scoped name is escaped the way npm does it: @scope%2fname
+      registryUrl.pathname = registryUrl.pathname.replace(/\/?$/, "/") + name.replace("/", "%2f");
       let json: NpmRegistryPackageDescriptor;
 
       try {

@@ -39,7 +39,7 @@ describe("attemptInstallByInfo", () => {
     [
       "https://registry.npmjs.org/",
       "@freelensapp/some-extension",
-      "https://registry.npmjs.org/@freelensapp/some-extension",
+      "https://registry.npmjs.org/@freelensapp%2fsome-extension",
     ],
     [
       "https://example.com/artifactory/api/npm/all-npm/",
@@ -54,7 +54,7 @@ describe("attemptInstallByInfo", () => {
     [
       "https://example.com/artifactory/api/npm/all-npm/",
       "@freelensapp/some-extension",
-      "https://example.com/artifactory/api/npm/all-npm/@freelensapp/some-extension",
+      "https://example.com/artifactory/api/npm/all-npm/@freelensapp%2fsome-extension",
     ],
   ])("requests the metadata from %s for %s at %s", async (base, name, expected) => {
     baseRegistryUrl = base;
