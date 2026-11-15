@@ -14,6 +14,7 @@ import removePathInjectable from "../../common/fs/remove.injectable";
 import watchInjectable from "../../common/fs/watch/watch.injectable";
 import getBasenameOfPathInjectable from "../../common/path/get-basename.injectable";
 import joinPathsInjectable from "../../common/path/join-paths.injectable";
+import { extensionCredentialsBackendInjectionToken } from "../../features/extension-credentials/common/extension-credentials-backend-injection-token";
 import isExtensionEnabledInjectable from "../../features/extensions/enabled/common/is-enabled.injectable";
 import extensionsRootInjectable from "../../features/extensions/installer/common/extensions-root.injectable";
 import forgetInstalledExtensionInjectable from "../../features/extensions/installer/common/forget-installed-extension.injectable";
@@ -36,6 +37,10 @@ const extensionDiscoveryInjectable = getInjectable({
       isCompatibleExtension: di.inject(isCompatibleExtensionInjectable),
       recordInstalledExtension: di.inject(recordInstalledExtensionInjectable),
       forgetInstalledExtension: di.inject(forgetInstalledExtensionInjectable),
+      // Injected when an extension is uninstalled, not before: in the main
+      // process the store reaches Electron's safeStorage.
+      removeExtensionCredentials: (extensionId) =>
+        di.inject(extensionCredentialsBackendInjectionToken).remove(extensionId),
       sweepOrphanedExtensionBuilds: di.inject(sweepOrphanedExtensionBuildsInjectable),
       readJsonFile: di.inject(readJsonFileInjectable),
       pathExists: di.inject(pathExistsInjectable),

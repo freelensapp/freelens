@@ -29,6 +29,7 @@ describe("create logs tab", () => {
     userPreferencesState.logViewerPreferences = {
       showTimestamps: true,
       showWordWrap: false,
+      maxCombinedLogsPods: 20,
     };
 
     const createLogsTab = di.inject(createLogsTabInjectable);
@@ -52,6 +53,7 @@ describe("create logs tab", () => {
     userPreferencesState.logViewerPreferences = {
       showTimestamps: true,
       showWordWrap: false,
+      maxCombinedLogsPods: 20,
     };
 
     const createLogsTab = di.inject(createLogsTabInjectable);
@@ -65,5 +67,23 @@ describe("create logs tab", () => {
     expect(getLogTabData(tabId)).toMatchObject({
       showPrevious: false,
     });
+  });
+
+  it("keeps the preferences that are not tab data out of the tab data", () => {
+    userPreferencesState.logViewerPreferences = {
+      showTimestamps: false,
+      showWordWrap: true,
+      maxCombinedLogsPods: 50,
+    };
+
+    const createLogsTab = di.inject(createLogsTabInjectable);
+    const getLogTabData = di.inject(getLogTabDataInjectable);
+    const tabId = createLogsTab("Pod some-pod", {
+      namespace: "default",
+      selectedPodId: "pod-1",
+      selectedContainer: "container-1",
+    });
+
+    expect(getLogTabData(tabId)).not.toHaveProperty("maxCombinedLogsPods");
   });
 });

@@ -54,6 +54,8 @@ describe("lowerAndPluralize tests", () => {
     ["Lease", "leases"],
     ["LimitRange", "limitranges"],
     ["LocalSubjectAccessReview", "localsubjectaccessreviews"],
+    ["MutatingAdmissionPolicy", "mutatingadmissionpolicies"],
+    ["MutatingAdmissionPolicyBinding", "mutatingadmissionpolicybindings"],
     ["MutatingWebhookConfiguration", "mutatingwebhookconfigurations"],
     ["Namespace", "namespaces"],
     ["NetworkPolicy", "networkpolicies"],

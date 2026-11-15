@@ -5,6 +5,7 @@
 
 import { observer } from "mobx-react";
 import React from "react";
+import { AdmissionPolicySelectors } from "../admission-policy-selectors/admission-policy-selectors";
 import { DrawerItem, DrawerTitle } from "../drawer";
 
 import type { ValidatingAdmissionPolicy } from "@freelensapp/kube-object";
@@ -85,10 +86,14 @@ export class ValidatingAdmissionPolicyDetails extends React.Component<Validating
             {matchConstraints.matchPolicy && (
               <DrawerItem name="Match Policy">{matchConstraints.matchPolicy}</DrawerItem>
             )}
+            <AdmissionPolicySelectors
+              namespaceSelector={matchConstraints.namespaceSelector}
+              objectSelector={matchConstraints.objectSelector}
+            />
             <DrawerItem name="Resource Rules">
               {matchConstraints.resourceRules?.map((rule, index) => (
                 <div key={index}>
-                  <div>API Groups: {rule.apiGroups.join(", ")}</div>
+                  <div>API Groups: {rule.apiGroups.map((group) => group || "core").join(", ")}</div>
                   <div>API Versions: {rule.apiVersions?.join(", ")}</div>
                   <div>Operations: {rule.operations.join(", ")}</div>
                   {rule.resources && <div>Resources: {rule.resources.join(", ")}</div>}

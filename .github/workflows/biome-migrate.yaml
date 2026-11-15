@@ -2,11 +2,12 @@ name: Automated biome migrate
 
 # Renovate bumps the Biome version (the biome script in package.json and the
 # linter in .trunk/trunk.yaml) but cannot run `biome migrate`, so the schema
-# and any renamed rules in biome.jsonc stay behind. This workflow migrates the
-# config on the Renovate branch itself, so that the bump and its migration land
-# in one pull request instead of a second one against main. The paths are a
-# coarse filter: on a branch that does not change the Biome version, the
-# migration finds nothing to do.
+# and any renamed rules in biome.jsonc stay behind, and so do the files whose
+# formatting the new version changes. This workflow migrates the config and
+# reformats the files on the Renovate branch itself, so that the bump, its
+# migration and the reformatting land in one pull request instead of a second
+# one against main. The paths are a coarse filter: on a branch that does not
+# change the Biome version, the migration and the formatter find nothing to do.
 on:
   pull_request:
     branches:
@@ -34,7 +35,7 @@ jobs:
 
     env:
       DO_NOT_TRACK: "1"
-      MESSAGE: Migrate biome.jsonc to the new Biome version
+      MESSAGE: Migrate biome.jsonc and reformat the files for the new Biome version
 
     steps:
       # The Renovate branch is checked out at its head rather than merged with
@@ -59,35 +60,42 @@ jobs:
       - name: Run biome migrate
         run: pnpm biome:migrate
 
+      # The formatter runs after the migration, so that it reads the migrated
+      # config. Only formatting, without the fixes of `biome check --write`: a
+      # lint fix changes code, and that is for a person to review.
+      - name: Reformat files
+        run: pnpm biome format --write
+
       - name: Check for changes
         run: |-
-          if git diff --exit-code --stat -- biome.jsonc; then
+          if git diff --exit-code --stat; then
             echo "changes=false" | tee -a "$GITHUB_ENV"
           else
             echo "changes=true" | tee -a "$GITHUB_ENV"
           fi
 
       # A run on a commit this job made must never find the config to migrate
-      # again; if it does, committing once more would only loop.
+      # or a file to reformat again; if it does, committing once more would
+      # only loop.
       - name: Refuse to migrate twice
         if: env.changes == 'true'
         run: |-
           if [ "$(git log -1 --format=%s)" = "$MESSAGE" ]; then
-            echo "::error::biome.jsonc still needs migrating after it was migrated and committed." >&2
+            echo "::error::biome.jsonc or the files still change after they were migrated, reformatted and committed." >&2
             exit 1
           fi
 
       # The push uses GH_TOKEN rather than the workflow token, so that it starts
-      # the checks again on the migrated config. If the branch moved meanwhile,
-      # the push is rejected as non-fast-forward, and the run on the newer
-      # commit takes over. The checkout of the head SHA leaves HEAD detached,
-      # so the push names the branch itself.
+      # the checks again on the migrated config and the reformatted files. If
+      # the branch moved meanwhile, the push is rejected as non-fast-forward,
+      # and the run on the newer commit takes over. The checkout of the head
+      # SHA leaves HEAD detached, so the push names the branch itself.
       - name: Commit and push to the pull request branch
         if: env.changes == 'true'
         uses: EndBug/add-and-commit@v11
         with:
           github_token: ${{ secrets.GH_TOKEN }}
           default_author: github_actions
-          add: biome.jsonc
+          add: .
           message: ${{ env.MESSAGE }}
           push: origin HEAD:refs/heads/${{ github.head_ref }}

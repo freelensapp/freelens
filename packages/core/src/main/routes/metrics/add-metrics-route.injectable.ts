@@ -55,7 +55,17 @@ async function describeError(query: string, error: unknown): Promise<MetricsErro
     }
   }
 
+  // k8sRequest reads the body itself, to keep what the proxy explains in it, so the response that it gives as the
+  // cause has no body left: the status and the body are on the error.
+  if (isRequestError(error) && typeof error.statusCode === "number") {
+    return { query, status: error.statusCode, response: error.error ?? error.message };
+  }
+
   return { query, message: error.message };
+}
+
+function isMetricsErrorDescription(value: unknown): value is MetricsErrorDescription {
+  return isObject(value) && typeof (value as { query?: unknown }).query === "string";
 }
 
 const loadMetricsFor =
@@ -158,12 +168,17 @@ const addMetricsRouteInjectable = getRouteInjectable({
         return { response: {} };
       } catch (error) {
         prometheusMetadata.success = false;
-        const description = error instanceof Error ? (error.cause as MetricsErrorDescription | undefined) : undefined;
+        const description = error instanceof Error && isMetricsErrorDescription(error.cause) ? error.cause : undefined;
+        const message = `[METRICS-ROUTE]: failed to get metrics for clusterId=${cluster.id}: ${error}`;
 
         if (description?.status === 422) {
           logger.warn(`[METRICS-ROUTE]: query failed for clusterId=${cluster.id}`, description);
+        } else if (description) {
+          logger.warn(message, description);
         } else {
-          logger.warn(`[METRICS-ROUTE]: failed to get metrics for clusterId=${cluster.id}: ${error}`);
+          // The route is polled, and a cluster without Prometheus is common: the errors of the providers would flood
+          // the log on every request.
+          logger.warn(message);
         }
 
         return { response: {} };

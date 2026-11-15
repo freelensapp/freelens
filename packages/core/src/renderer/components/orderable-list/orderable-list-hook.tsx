@@ -33,6 +33,11 @@ const useOrderableListHook = ({ children, onReorder }: OrderableListHookDependen
     const dragIndex = items.findIndex((item) => item.key === (active.id as string));
     const dropIndex = items.findIndex((item) => item.key === (over?.id as string));
 
+    // A drop outside the list, or on the dragged item itself, changes nothing.
+    if (dragIndex < 0 || dropIndex < 0 || dragIndex === dropIndex) {
+      return;
+    }
+
     const newItems = [...items];
     const [draggedItem] = newItems.splice(dragIndex, 1);
     newItems.splice(dropIndex, 0, draggedItem);

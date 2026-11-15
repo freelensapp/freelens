@@ -37,7 +37,7 @@ describe("pod-menu-item inside a menu", () => {
           tooltip="Pod Logs"
           toolbar={false}
           containers={containers}
-          annotations={[]}
+          annotations={{}}
           statuses={[]}
           onMenuItemClick={onMenuItemClick}
         />

@@ -114,11 +114,13 @@ describe("user store tests", () => {
       expect(state.logViewerPreferences).toEqual({
         showTimestamps: true,
         showWordWrap: false,
+        maxCombinedLogsPods: 20,
       });
 
       state.logViewerPreferences = {
         showTimestamps: true,
         showWordWrap: false,
+        maxCombinedLogsPods: 20,
       };
 
       expect(readJsonSync("/some-directory-for-user-data/lens-user-store.json")).toMatchObject({
@@ -133,11 +135,92 @@ describe("user store tests", () => {
       state.logViewerPreferences = {
         showTimestamps: false,
         showWordWrap: true,
+        maxCombinedLogsPods: 20,
       };
 
       expect(
         readJsonSync("/some-directory-for-user-data/lens-user-store.json").preferences.logViewerPreferences,
       ).toBeUndefined();
+    });
+
+    describe("maxCombinedLogsPods of logViewerPreferences", () => {
+      const loadStoredLogViewerPreferences = (logViewerPreferences: unknown) => {
+        const writeJsonSync = di.inject(writeJsonSyncInjectable);
+
+        writeJsonSync("/some-directory-for-user-data/lens-user-store.json", {
+          preferences: { logViewerPreferences },
+        });
+        writeJsonSync("/some-directory-for-user-data/kube_config", {});
+
+        di.inject(userPreferencesPersistentStorageInjectable).loadAndStartSyncing();
+      };
+
+      const readStoredLogViewerPreferences = () =>
+        di.inject(readJsonSyncInjectable)("/some-directory-for-user-data/lens-user-store.json").preferences
+          .logViewerPreferences;
+
+      it("defaults to 20 without a stored value", () => {
+        loadStoredLogViewerPreferences(undefined);
+
+        expect(state.logViewerPreferences.maxCombinedLogsPods).toBe(20);
+      });
+
+      it("defaults to 20 for an older store without the field", () => {
+        loadStoredLogViewerPreferences({ showTimestamps: true });
+
+        expect(state.logViewerPreferences).toEqual({
+          showTimestamps: true,
+          showWordWrap: true,
+          maxCombinedLogsPods: 20,
+        });
+      });
+
+      it("reads a stored value inside the range", () => {
+        loadStoredLogViewerPreferences({ maxCombinedLogsPods: 50 });
+
+        expect(state.logViewerPreferences.maxCombinedLogsPods).toBe(50);
+      });
+
+      it.each([
+        [500, 100],
+        [101, 100],
+        [0, 1],
+        [-3, 1],
+        [12.4, 12],
+        ["50", 20],
+        [null, 20],
+      ])("reads a stored value of %j as %j", (stored, expected) => {
+        loadStoredLogViewerPreferences({ maxCombinedLogsPods: stored });
+
+        expect(state.logViewerPreferences.maxCombinedLogsPods).toBe(expected);
+      });
+
+      it("stores a value inside the range", () => {
+        loadStoredLogViewerPreferences(undefined);
+
+        state.logViewerPreferences = { ...state.logViewerPreferences, maxCombinedLogsPods: 40 };
+
+        expect(readStoredLogViewerPreferences()).toEqual({ maxCombinedLogsPods: 40 });
+      });
+
+      it.each([
+        [1000, 100],
+        [0, 1],
+      ])("stores a value of %j as %j", (value, expected) => {
+        loadStoredLogViewerPreferences(undefined);
+
+        state.logViewerPreferences = { ...state.logViewerPreferences, maxCombinedLogsPods: value };
+
+        expect(readStoredLogViewerPreferences()).toEqual({ maxCombinedLogsPods: expected });
+      });
+
+      it("does not store the default", () => {
+        loadStoredLogViewerPreferences({ maxCombinedLogsPods: 40 });
+
+        state.logViewerPreferences = { ...state.logViewerPreferences, maxCombinedLogsPods: 20 };
+
+        expect(readStoredLogViewerPreferences()).toBeUndefined();
+      });
     });
   });
 });

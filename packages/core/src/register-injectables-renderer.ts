@@ -13,6 +13,8 @@ import { registerInjectables as registerFeaturesFeaturesClusterExecuteRendererIn
 import { registerInjectables as registerFeaturesFeaturesClusterInjectables } from "./features/cluster/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesClusterStateSyncRendererInjectables } from "./features/cluster/state-sync/renderer/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesClusterStorageRendererInjectables } from "./features/cluster/storage/renderer/register-injectables";
+import { registerInjectables as registerFeaturesFeaturesExtensionCredentialsInjectables } from "./features/extension-credentials/register-injectables";
+import { registerInjectables as registerFeaturesFeaturesExtensionCredentialsRendererInjectables } from "./features/extension-credentials/renderer/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesExtensionsEnabledRendererInjectables } from "./features/extensions/enabled/renderer/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesExtensionsInstallerRendererInjectables } from "./features/extensions/installer/renderer/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesExtensionsLoaderRendererInjectables } from "./features/extensions/loader/renderer/register-injectables";
@@ -35,6 +37,7 @@ import { registerInjectables as registerFeaturesFeaturesPersistentStorageRendere
 import { registerInjectables as registerFeaturesFeaturesPopulationOfLogsToAFileRendererInjectables } from "./features/population-of-logs-to-a-file/renderer/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesPreferencesInjectables } from "./features/preferences/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesPreferencesRendererInjectables } from "./features/preferences/renderer/register-injectables";
+import { registerInjectables as registerFeaturesFeaturesSecretCertificatesRendererInjectables } from "./features/secret-certificates/renderer/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesShellSyncRendererInjectables } from "./features/shell-sync/renderer/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesStandaloneTerminalRendererInjectables } from "./features/standalone-terminal/renderer/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesTerminalRendererInjectables } from "./features/terminal/renderer/register-injectables";
@@ -59,6 +62,8 @@ export function registerInjectables(di: DiContainerForInjection): void {
   registerFeaturesFeaturesClusterExecuteRendererInjectables(di);
   registerFeaturesFeaturesClusterStateSyncRendererInjectables(di);
   registerFeaturesFeaturesClusterStorageRendererInjectables(di);
+  registerFeaturesFeaturesExtensionCredentialsRendererInjectables(di);
+  registerFeaturesFeaturesExtensionCredentialsInjectables(di);
   registerFeaturesFeaturesExtensionsInjectables(di);
   registerFeaturesFeaturesExtensionsEnabledRendererInjectables(di);
   registerFeaturesFeaturesExtensionsInstallerRendererInjectables(di);
@@ -81,6 +86,7 @@ export function registerInjectables(di: DiContainerForInjection): void {
   registerFeaturesFeaturesPopulationOfLogsToAFileRendererInjectables(di);
   registerFeaturesFeaturesPreferencesRendererInjectables(di);
   registerFeaturesFeaturesPreferencesInjectables(di);
+  registerFeaturesFeaturesSecretCertificatesRendererInjectables(di);
   registerFeaturesFeaturesShellSyncRendererInjectables(di);
   registerFeaturesFeaturesStandaloneTerminalRendererInjectables(di);
   registerFeaturesFeaturesTerminalRendererInjectables(di);

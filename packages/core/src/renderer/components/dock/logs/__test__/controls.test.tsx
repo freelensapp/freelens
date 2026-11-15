@@ -76,6 +76,7 @@ describe("LogControls", () => {
     expect(userPreferencesState.logViewerPreferences).toEqual({
       showTimestamps: true,
       showWordWrap: true,
+      maxCombinedLogsPods: 20,
     });
   });
 
@@ -87,6 +88,7 @@ describe("LogControls", () => {
     expect(userPreferencesState.logViewerPreferences).toEqual({
       showTimestamps: false,
       showWordWrap: false,
+      maxCombinedLogsPods: 20,
     });
   });
 
@@ -112,6 +114,7 @@ describe("LogControls", () => {
     expect(userPreferencesState.logViewerPreferences).toEqual({
       showTimestamps: false,
       showWordWrap: true,
+      maxCombinedLogsPods: 20,
     });
     expect(reloadLogsSpy).toHaveBeenCalledTimes(1);
   });

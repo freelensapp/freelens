@@ -50,6 +50,7 @@ enum columnId {
   taints = "taints",
   roles = "roles",
   version = "version",
+  kernelVersion = "kernelVersion",
   internalIp = "internalIp",
   age = "age",
   schedulable = "schedulable",
@@ -438,7 +439,13 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
       <TabLayout>
         <KubeObjectListLayout
           isConfigurable
-          defaultHiddenTableColumns={[columnId.pods, columnId.instanceType, columnId.nodeGroup, columnId.capacityType]}
+          defaultHiddenTableColumns={[
+            columnId.pods,
+            columnId.instanceType,
+            columnId.nodeGroup,
+            columnId.capacityType,
+            columnId.kernelVersion,
+          ]}
           tableId="nodes"
           className="Nodes"
           store={nodeStore}
@@ -457,6 +464,7 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
             [columnId.taints]: (node) => node.getTaints().length,
             [columnId.roles]: (node) => node.getRoleLabels(),
             [columnId.version]: (node) => node.getKubeletVersion(),
+            [columnId.kernelVersion]: (node) => node.getKernelVersion(),
             [columnId.internalIp]: (node) => node.getInternalIP(),
             [columnId.age]: (node) => -node.getCreationTimestamp(),
             [columnId.schedulable]: (node) => (node.isUnschedulable() ? "False" : "True"),
@@ -466,6 +474,7 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
             (node) => node.getSearchFields(),
             (node) => node.getRoleLabels(),
             (node) => node.getKubeletVersion(),
+            (node) => node.getKernelVersion(),
             (node) => node.getNodeConditionText(),
             (node) => node.getInternalIP(),
             (node) => node.getExternalIP(),
@@ -501,6 +510,12 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
             { title: "Roles", className: "roles", sortBy: columnId.roles, id: columnId.roles },
             { title: "Taints", className: "taints", sortBy: columnId.taints, id: columnId.taints },
             { title: "Version", className: "version", sortBy: columnId.version, id: columnId.version },
+            {
+              title: "Kernel Version",
+              className: "kernelVersion",
+              sortBy: columnId.kernelVersion,
+              id: columnId.kernelVersion,
+            },
             { title: "Internal IP", className: "internalIp", sortBy: columnId.internalIp, id: columnId.internalIp },
             { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
             { title: "Schedulable", className: "schedulable", sortBy: columnId.schedulable, id: columnId.schedulable },
@@ -532,6 +547,7 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
                 </Tooltip>
               </>,
               <WithTooltip>{node.getKubeletVersion()}</WithTooltip>,
+              <WithTooltip>{node.getKernelVersion()}</WithTooltip>,
               <WithTooltip>{node.getInternalIP()}</WithTooltip>,
               <KubeObjectAge key="age" object={node} />,
               <BadgeBoolean value={!node.isUnschedulable()} />,
