@@ -109,6 +109,7 @@ type ExtensionDiscoveryEvents = {
   add: (ext: InstalledExtension) => void;
   remove: (extId: LensExtensionId) => void;
   rebuild: (ext: InstalledExtension) => void;
+  verify: (ext: InstalledExtension) => void;
 };
 
 /**
@@ -129,6 +130,9 @@ type ExtensionDiscoveryEvents = {
  * - "remove": When an extension is removed. The event is of type LensExtensionId
  * - "rebuild": When the files of a development install changed under us. The
  *   event is of type InstalledExtension
+ * - "verify": When the live build of an extension was recorded again at the
+ *   same path, with a different `verified`. The event is of type
+ *   InstalledExtension
  */
 export class ExtensionDiscovery {
   private loadStarted = false;
@@ -195,11 +199,17 @@ export class ExtensionDiscovery {
   }
 
   /**
-   * A value which changes exactly when the set of live installs does, so the
-   * rescan is not triggered by unrelated bookkeeping.
+   * A value which changes exactly when the set of live installs does, or when
+   * whether one of them is verified does, so the rescan is not triggered by
+   * unrelated bookkeeping. The second covers reinstalling the same build with
+   * a checksum it lacked before, or without one: the tarball has the same
+   * digest, so the record keeps its path and changes only `verified`.
    */
   private registryFingerprint(): string {
-    return Array.from(this.dependencies.installedExtensions.entries(), ([name, entry]) => `${name}\u0000${entry.path}`)
+    return Array.from(
+      this.dependencies.installedExtensions.entries(),
+      ([name, entry]) => `${name}\u0000${entry.path}\u0000${entry.verified}`,
+    )
       .sort()
       .join("\u0001");
   }
@@ -430,7 +440,9 @@ export class ExtensionDiscovery {
    *
    * A build becoming live under the same name is a remove followed by an add:
    * the loader holds an instance per extension, constructed from one particular
-   * directory.
+   * directory. The same build recorded again is neither, since nothing about
+   * its code changed; only whether it is verified can have, and that is
+   * passed on as it is.
    */
   private async rescan(): Promise<void> {
     try {
@@ -440,6 +452,14 @@ export class ExtensionDiscovery {
         const replacement = discovered.get(id);
 
         if (replacement && replacement.absolutePath === extension.absolutePath) {
+          if (replacement.isVerified !== extension.isVerified) {
+            this.extensions.set(id, replacement);
+            this.dependencies.logger.info(
+              `${logModule} ${extension.manifest.name} is ${replacement.isVerified ? "verified" : "unverified"} now`,
+            );
+            this.events.emit("verify", replacement);
+          }
+
           continue;
         }
 

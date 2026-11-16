@@ -446,6 +446,25 @@ export class ExtensionLoader {
   }
 
   /**
+   * Bring whether a loaded extension is verified in line with its record, when
+   * the same build was installed again with a checksum it lacked before, or
+   * without one. The build is the same, so nothing is torn down or loaded
+   * again; only the flag changes, and it reaches the renderers with the next
+   * broadcast. Main only, like `isEnabled`: it is main's state.
+   */
+  setIsVerified(lensExtensionId: LensExtensionId, isVerified: boolean): void {
+    const extension = this.extensions.get(lensExtensionId);
+
+    if (!extension || extension.isVerified === isVerified) {
+      return;
+    }
+
+    runInAction(() => {
+      this.extensions.set(lensExtensionId, { ...extension, isVerified });
+    });
+  }
+
+  /**
    * Enable or disable an extension.
    *
    * Main is the only process which changes `isEnabled`, and the only one which

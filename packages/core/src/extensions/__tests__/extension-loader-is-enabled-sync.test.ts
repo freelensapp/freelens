@@ -452,6 +452,28 @@ describe("ExtensionLoader keeps isEnabled consistent between main and the render
       "cluster-frame": true,
     });
   });
+
+  it("brings a changed verified flag of the same build to the renderer frames, and leaves it enabled", () => {
+    ipc.runAs("main", () => {
+      runInAction(() => loaders.main.addExtension({ ...discoveredExtension(true), isVerified: false }));
+    });
+    settle();
+
+    const isVerifiedEverywhere = () => ({
+      main: loaders.main.getExtensionById(extensionId)?.isVerified,
+      "root-frame": loaders["root-frame"].getExtensionById(extensionId)?.isVerified,
+      "cluster-frame": loaders["cluster-frame"].getExtensionById(extensionId)?.isVerified,
+    });
+
+    expect(isVerifiedEverywhere()).toEqual({ main: false, "root-frame": false, "cluster-frame": false });
+
+    ipc.runAs("main", () => loaders.main.setIsVerified(extensionId, true));
+    settle();
+
+    expect(isVerifiedEverywhere()).toEqual({ main: true, "root-frame": true, "cluster-frame": true });
+    expect(isEnabledEverywhere()).toEqual({ main: true, "root-frame": true, "cluster-frame": true });
+    expect(persistedByMain.at(-1)).toBe(true);
+  });
 });
 
 describe("ExtensionLoader brings main's load failures to the renderer frames", () => {
