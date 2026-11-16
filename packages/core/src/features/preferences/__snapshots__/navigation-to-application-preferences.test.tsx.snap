@@ -221,7 +221,6 @@ exports[`preferences - navigation to application preferences > given in preferen
                             aria-autocomplete="list"
                             aria-expanded="false"
                             aria-haspopup="true"
-                            aria-label="Theme"
                             autocapitalize="none"
                             autocomplete="off"
                             autocorrect="off"
@@ -262,6 +261,17 @@ exports[`preferences - navigation to application preferences > given in preferen
                       </div>
                     </div>
                   </div>
+                </section>
+              </div>
+              <div
+                class="HorizontalLine size-xl"
+              />
+              <div
+                data-preference-item-test="accent-color"
+              >
+                <section
+                  id="accent-color"
+                >
                   <div
                     class="SubTitle"
                   >
@@ -1206,7 +1216,6 @@ exports[`preferences - navigation to application preferences > given in preferen
                             aria-autocomplete="list"
                             aria-expanded="false"
                             aria-haspopup="true"
-                            aria-label="Theme"
                             autocapitalize="none"
                             autocomplete="off"
                             autocorrect="off"
@@ -1247,6 +1256,17 @@ exports[`preferences - navigation to application preferences > given in preferen
                       </div>
                     </div>
                   </div>
+                </section>
+              </div>
+              <div
+                class="HorizontalLine size-xl"
+              />
+              <div
+                data-preference-item-test="accent-color"
+              >
+                <section
+                  id="accent-color"
+                >
                   <div
                     class="SubTitle"
                   >
@@ -2672,7 +2692,6 @@ exports[`preferences - navigation to application preferences > given in some chi
                             aria-autocomplete="list"
                             aria-expanded="false"
                             aria-haspopup="true"
-                            aria-label="Theme"
                             autocapitalize="none"
                             autocomplete="off"
                             autocorrect="off"
@@ -2713,6 +2732,17 @@ exports[`preferences - navigation to application preferences > given in some chi
                       </div>
                     </div>
                   </div>
+                </section>
+              </div>
+              <div
+                class="HorizontalLine size-xl"
+              />
+              <div
+                data-preference-item-test="accent-color"
+              >
+                <section
+                  id="accent-color"
+                >
                   <div
                     class="SubTitle"
                   >
@@ -3658,7 +3688,6 @@ exports[`preferences - navigation to application preferences > given in some chi
                               aria-autocomplete="list"
                               aria-expanded="false"
                               aria-haspopup="true"
-                              aria-label="Theme"
                               autocapitalize="none"
                               autocomplete="off"
                               autocorrect="off"
@@ -3699,6 +3728,17 @@ exports[`preferences - navigation to application preferences > given in some chi
                         </div>
                       </div>
                     </div>
+                  </section>
+                </div>
+                <div
+                  class="HorizontalLine size-xl"
+                />
+                <div
+                  data-preference-item-test="accent-color"
+                >
+                  <section
+                    id="accent-color"
+                  >
                     <div
                       class="SubTitle"
                     >

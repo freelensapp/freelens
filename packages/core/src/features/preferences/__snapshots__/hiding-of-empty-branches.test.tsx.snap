@@ -221,7 +221,6 @@ exports[`preferences - hiding-of-empty-branches, given in preferences page > giv
                             aria-autocomplete="list"
                             aria-expanded="false"
                             aria-haspopup="true"
-                            aria-label="Theme"
                             autocapitalize="none"
                             autocomplete="off"
                             autocorrect="off"
@@ -262,6 +261,17 @@ exports[`preferences - hiding-of-empty-branches, given in preferences page > giv
                       </div>
                     </div>
                   </div>
+                </section>
+              </div>
+              <div
+                class="HorizontalLine size-xl"
+              />
+              <div
+                data-preference-item-test="accent-color"
+              >
+                <section
+                  id="accent-color"
+                >
                   <div
                     class="SubTitle"
                   >
@@ -1234,7 +1244,6 @@ exports[`preferences - hiding-of-empty-branches, given in preferences page > giv
                             aria-autocomplete="list"
                             aria-expanded="false"
                             aria-haspopup="true"
-                            aria-label="Theme"
                             autocapitalize="none"
                             autocomplete="off"
                             autocorrect="off"
@@ -1275,6 +1284,17 @@ exports[`preferences - hiding-of-empty-branches, given in preferences page > giv
                       </div>
                     </div>
                   </div>
+                </section>
+              </div>
+              <div
+                class="HorizontalLine size-xl"
+              />
+              <div
+                data-preference-item-test="accent-color"
+              >
+                <section
+                  id="accent-color"
+                >
                   <div
                     class="SubTitle"
                   >
@@ -2259,7 +2279,6 @@ exports[`preferences - hiding-of-empty-branches, given in preferences page > giv
                             aria-autocomplete="list"
                             aria-expanded="false"
                             aria-haspopup="true"
-                            aria-label="Theme"
                             autocapitalize="none"
                             autocomplete="off"
                             autocorrect="off"
@@ -2300,6 +2319,17 @@ exports[`preferences - hiding-of-empty-branches, given in preferences page > giv
                       </div>
                     </div>
                   </div>
+                </section>
+              </div>
+              <div
+                class="HorizontalLine size-xl"
+              />
+              <div
+                data-preference-item-test="accent-color"
+              >
+                <section
+                  id="accent-color"
+                >
                   <div
                     class="SubTitle"
                   >

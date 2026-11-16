@@ -234,7 +234,6 @@ exports[`preferences - navigation to extension specific preferences > given in p
                               aria-autocomplete="list"
                               aria-expanded="false"
                               aria-haspopup="true"
-                              aria-label="Theme"
                               autocapitalize="none"
                               autocomplete="off"
                               autocorrect="off"
@@ -275,6 +274,17 @@ exports[`preferences - navigation to extension specific preferences > given in p
                         </div>
                       </div>
                     </div>
+                  </section>
+                </div>
+                <div
+                  class="HorizontalLine size-xl"
+                />
+                <div
+                  data-preference-item-test="accent-color"
+                >
+                  <section
+                    id="accent-color"
+                  >
                     <div
                       class="SubTitle"
                     >
@@ -2974,7 +2984,6 @@ exports[`preferences - navigation to extension specific preferences > given in p
                             aria-autocomplete="list"
                             aria-expanded="false"
                             aria-haspopup="true"
-                            aria-label="Theme"
                             autocapitalize="none"
                             autocomplete="off"
                             autocorrect="off"
@@ -3015,6 +3024,17 @@ exports[`preferences - navigation to extension specific preferences > given in p
                       </div>
                     </div>
                   </div>
+                </section>
+              </div>
+              <div
+                class="HorizontalLine size-xl"
+              />
+              <div
+                data-preference-item-test="accent-color"
+              >
+                <section
+                  id="accent-color"
+                >
                   <div
                     class="SubTitle"
                   >
@@ -3997,7 +4017,6 @@ exports[`preferences - navigation to extension specific preferences > given in p
                             aria-autocomplete="list"
                             aria-expanded="false"
                             aria-haspopup="true"
-                            aria-label="Theme"
                             autocapitalize="none"
                             autocomplete="off"
                             autocorrect="off"
@@ -4038,6 +4057,17 @@ exports[`preferences - navigation to extension specific preferences > given in p
                       </div>
                     </div>
                   </div>
+                </section>
+              </div>
+              <div
+                class="HorizontalLine size-xl"
+              />
+              <div
+                data-preference-item-test="accent-color"
+              >
+                <section
+                  id="accent-color"
+                >
                   <div
                     class="SubTitle"
                   >

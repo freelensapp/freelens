@@ -246,7 +246,6 @@ exports[`preferences: extension adding preference tabs > given in preferences, w
                               aria-autocomplete="list"
                               aria-expanded="false"
                               aria-haspopup="true"
-                              aria-label="Theme"
                               autocapitalize="none"
                               autocomplete="off"
                               autocorrect="off"
@@ -287,6 +286,17 @@ exports[`preferences: extension adding preference tabs > given in preferences, w
                         </div>
                       </div>
                     </div>
+                  </section>
+                </div>
+                <div
+                  class="HorizontalLine size-xl"
+                />
+                <div
+                  data-preference-item-test="accent-color"
+                >
+                  <section
+                    id="accent-color"
+                  >
                     <div
                       class="SubTitle"
                     >

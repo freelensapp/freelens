@@ -221,7 +221,6 @@ exports[`preferences - navigation to kubernetes preferences > given in preferenc
                             aria-autocomplete="list"
                             aria-expanded="false"
                             aria-haspopup="true"
-                            aria-label="Theme"
                             autocapitalize="none"
                             autocomplete="off"
                             autocorrect="off"
@@ -262,6 +261,17 @@ exports[`preferences - navigation to kubernetes preferences > given in preferenc
                       </div>
                     </div>
                   </div>
+                </section>
+              </div>
+              <div
+                class="HorizontalLine size-xl"
+              />
+              <div
+                data-preference-item-test="accent-color"
+              >
+                <section
+                  id="accent-color"
+                >
                   <div
                     class="SubTitle"
                   >

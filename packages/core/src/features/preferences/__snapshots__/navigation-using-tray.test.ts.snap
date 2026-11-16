@@ -656,7 +656,6 @@ exports[`show-about-using-tray > when navigating using tray > renders 1`] = `
                               aria-autocomplete="list"
                               aria-expanded="false"
                               aria-haspopup="true"
-                              aria-label="Theme"
                               autocapitalize="none"
                               autocomplete="off"
                               autocorrect="off"
@@ -697,6 +696,17 @@ exports[`show-about-using-tray > when navigating using tray > renders 1`] = `
                         </div>
                       </div>
                     </div>
+                  </section>
+                </div>
+                <div
+                  class="HorizontalLine size-xl"
+                />
+                <div
+                  data-preference-item-test="accent-color"
+                >
+                  <section
+                    id="accent-color"
+                  >
                     <div
                       class="SubTitle"
                     >
