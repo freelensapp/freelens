@@ -131,7 +131,7 @@ const NonInjectedThemes = observer(
           case "invalid":
             showErrorNotification(
               <div>
-                <b>The theme cannot be imported from {response.filePath}</b>
+                <b>The theme cannot be imported from {response.source}</b>
                 <pre className="whitespace-pre-wrap">{response.error}</pre>
               </div>,
             );
