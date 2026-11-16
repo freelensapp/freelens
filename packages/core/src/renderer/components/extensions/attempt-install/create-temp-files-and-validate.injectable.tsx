@@ -20,7 +20,7 @@ import type { InstallRequest } from "./attempt-install.injectable";
 
 export interface InstallRequestValidated {
   fileName: string;
-  data: Buffer;
+  data: Uint8Array;
   id: LensExtensionId;
   manifest: LensExtensionManifest;
   tempFile: string; // temp system path to packed extension for unpacking

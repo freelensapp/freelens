@@ -203,7 +203,7 @@ const attemptInstallByInfoInjectable = getInjectable({
       return attemptInstall(
         {
           fileName,
-          data: Buffer.from(request.response),
+          data: request.response,
           // The concrete version, not the tag that was asked for: a later tag
           // move must not change what counts as installed.
           source: { kind: "registry", name, version },

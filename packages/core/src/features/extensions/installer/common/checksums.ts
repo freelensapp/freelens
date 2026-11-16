@@ -26,7 +26,7 @@ export interface ChecksumMismatch {
  * The identity of an installed build: sha256 over the archive bytes, not over
  * the extracted tree, whose hash depends on extraction order and filesystem.
  */
-export function computeTarballDigest(data: Buffer): string {
+export function computeTarballDigest(data: Uint8Array): string {
   return createHash("sha256").update(data).digest("hex");
 }
 
@@ -46,7 +46,7 @@ function isSupportedAlgorithm(algorithm: string): algorithm is SupportedAlgorith
  * Throws only when the string is not something we know how to check, which is
  * a different failure: an unverifiable download rather than a corrupt one.
  */
-export function verifySubresourceIntegrity(data: Buffer, integrity: string): ChecksumMismatch | undefined {
+export function verifySubresourceIntegrity(data: Uint8Array, integrity: string): ChecksumMismatch | undefined {
   const separatorIndex = integrity.indexOf("-");
 
   if (separatorIndex < 0) {
@@ -69,7 +69,7 @@ export function verifySubresourceIntegrity(data: Buffer, integrity: string): Che
  * Verify a tarball against a hex sha256 digest, as carried by a `.tgz.sha256`
  * sidecar.
  */
-export function verifySha256(data: Buffer, expected: string): ChecksumMismatch | undefined {
+export function verifySha256(data: Uint8Array, expected: string): ChecksumMismatch | undefined {
   const actual = computeTarballDigest(data);
   const wanted = expected.toLowerCase();
 
@@ -86,7 +86,7 @@ export function verifySha256(data: Buffer, expected: string): ChecksumMismatch |
  */
 export type InstallChecksum = { kind: "integrity"; value: string } | { kind: "sha256"; value: string };
 
-export function verifyInstallChecksum(data: Buffer, checksum: InstallChecksum): ChecksumMismatch | undefined {
+export function verifyInstallChecksum(data: Uint8Array, checksum: InstallChecksum): ChecksumMismatch | undefined {
   return checksum.kind === "integrity"
     ? verifySubresourceIntegrity(data, checksum.value)
     : verifySha256(data, checksum.value);

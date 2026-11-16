@@ -35,7 +35,11 @@ import type { UnpackExtension } from "./unpack-extension.injectable";
 
 export interface InstallRequest {
   fileName: string;
-  data: Buffer;
+  /**
+   * The tarball. A `Uint8Array` rather than a `Buffer`, because that is what
+   * a download over IPC delivers, and nothing here needs more.
+   */
+  data: Uint8Array;
   /**
    * What the user asked for, recorded with the install because it cannot be
    * recovered from the extracted tree afterwards.

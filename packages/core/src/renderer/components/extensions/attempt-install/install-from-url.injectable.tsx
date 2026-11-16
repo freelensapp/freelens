@@ -52,7 +52,9 @@ const installFromUrlInjectable = getInjectable({
         return undefined;
       }
 
-      const value = parseChecksumSidecar(result.response.toString("utf-8"), fileName);
+      // A `Uint8Array` over IPC, whose own `toString` lists the bytes rather
+      // than decoding them.
+      const value = parseChecksumSidecar(new TextDecoder().decode(result.response), fileName);
 
       if (!value) {
         logger.info(`[EXTENSION-INSTALL]: the checksum at ${sidecarUrl.href} says nothing about ${fileName}`);
