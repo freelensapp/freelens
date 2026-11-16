@@ -17,14 +17,16 @@ import type { ColorInstance } from "color";
 import type { LensTheme } from "../../themes/lens-theme";
 
 // The text of the overview cards has to reach WCAG AA on the card in every built-in theme and
-// variant. The test reads every `color` of the stylesheets of the cards, so a new text color is
+// variant, and on the hover background of a card that is a button, with the custom properties the
+// hover sets. The test reads every `color` of the stylesheets of the cards, so a new text color is
 // checked as soon as it is written, and resolves it against the colors of each theme.
 
 const componentsDirectory = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-// Each stylesheet with the class of its badge, the warning or error label drawn on a tint of its color.
+// Each stylesheet with the class of its badge, the warning or error label drawn on a tint of its
+// color, and whether the card can be a button with a hover.
 const stylesheets = [
-  { file: "overview-cards/capacity-card.scss", badge: "CapacityCard-overcommit" },
-  { file: "overview-cards/status-card.scss", badge: "StatusCard-failing" },
+  { file: "overview-cards/capacity-card.scss", badge: "CapacityCard-overcommit", hasHover: false },
+  { file: "overview-cards/status-card.scss", badge: "StatusCard-failing", hasHover: true },
 ];
 
 // The cards are drawn in contentColor.
@@ -36,11 +38,16 @@ const readStylesheet = (file: string) => readFileSync(path.join(componentsDirect
 const getCustomProperties = (source: string) =>
   new Map(Array.from(source.matchAll(/(--[\w-]+):\s*([^;]+);/g), ([, name, value]) => [name, value.trim()]));
 
+// The declarations of the `&:hover` block, up to the first rule nested in it.
+const getHoverDeclarations = (source: string) => /&:hover\s*\{([^{}]*)/.exec(source)?.[1];
+
+const getDeclaration = (body: string, property: string) =>
+  new RegExp(`(?<![\\w-])${property}:\\s*([^;]+);`).exec(body)?.[1].trim();
+
 const getRule = (source: string, className: string) => {
   const body = new RegExp(`\\.${className}\\s*\\{([^}]*)\\}`).exec(source)?.[1] ?? "";
-  const declaration = (property: string) => new RegExp(`(?<![\\w-])${property}:\\s*([^;]+);`).exec(body)?.[1].trim();
 
-  return { color: declaration("color"), background: declaration("background") };
+  return { color: getDeclaration(body, "color"), background: getDeclaration(body, "background") };
 };
 
 const getTextColors = (source: string) =>
@@ -130,11 +137,28 @@ const themeVariants = builtInThemes.flatMap(({ theme }) =>
 );
 
 describe("contrast of the text of the overview cards", () => {
-  describe.each(stylesheets)("$file", ({ file, badge }) => {
+  describe.each(stylesheets)("$file", ({ file, badge, hasHover }) => {
     const source = readStylesheet(file);
-    const customProperties = getCustomProperties(source);
+    const hoverDeclarations = getHoverDeclarations(source);
+    // The custom properties of the card at rest, without the ones the hover sets.
+    const customProperties = getCustomProperties(
+      hoverDeclarations === undefined ? source : source.replace(hoverDeclarations, ""),
+    );
     const textColors = [...getTextColors(source)];
     const badgeRule = getRule(source, badge);
+    // The backgrounds the text is drawn on, each with the custom properties in effect on it.
+    const backgrounds = [
+      { name: "card", background: cardBackground, properties: customProperties },
+      ...(hoverDeclarations === undefined
+        ? []
+        : [
+            {
+              name: "hover background",
+              background: getDeclaration(hoverDeclarations, "background") ?? "",
+              properties: new Map([...customProperties, ...getCustomProperties(hoverDeclarations)]),
+            },
+          ]),
+    ];
 
     it("has text colors and a badge to check", () => {
       expect(textColors.length).toBeGreaterThan(0);
@@ -142,27 +166,35 @@ describe("contrast of the text of the overview cards", () => {
       expect(badgeRule.background).toBeDefined();
     });
 
-    const contrastOn = (theme: LensTheme, textColor: string, background: ColorInstance) => {
-      const foreground = resolveColor(textColor, theme, customProperties, background);
-
-      return getContrastRatio(foreground.hex(), background.hex()) ?? 0;
-    };
-
-    it.each(themeVariants)("reaches WCAG AA on the card in $name", ({ theme }) => {
-      const card = resolveColor(cardBackground, theme, customProperties);
-      const failures = textColors
-        .map((textColor) => ({ textColor, ratio: contrastOn(theme, textColor, card) }))
-        .filter(({ ratio }) => ratio < minimumContrast)
-        .map(({ textColor, ratio }) => `${textColor}: ${ratio.toFixed(2)}`);
-
-      expect(failures).toEqual([]);
+    it(hasHover ? "shows the hover with a background" : "has no hover", () => {
+      expect(hoverDeclarations === undefined ? undefined : getDeclaration(hoverDeclarations, "background")).toEqual(
+        hasHover ? expect.stringContaining("var(--contentColor)") : undefined,
+      );
     });
 
-    it.each(themeVariants)("reaches WCAG AA on the badge in $name", ({ theme }) => {
-      const card = resolveColor(cardBackground, theme, customProperties);
-      const background = resolveColor(badgeRule.background ?? "", theme, customProperties, card);
+    describe.each(backgrounds)("on the $name", ({ background, properties }) => {
+      const contrastOn = (theme: LensTheme, textColor: string, behind: ColorInstance) => {
+        const foreground = resolveColor(textColor, theme, properties, behind);
 
-      expect(contrastOn(theme, badgeRule.color ?? "", background)).toBeGreaterThanOrEqual(minimumContrast);
+        return getContrastRatio(foreground.hex(), behind.hex()) ?? 0;
+      };
+
+      it.each(themeVariants)("reaches WCAG AA in $name", ({ theme }) => {
+        const card = resolveColor(background, theme, properties);
+        const failures = textColors
+          .map((textColor) => ({ textColor, ratio: contrastOn(theme, textColor, card) }))
+          .filter(({ ratio }) => ratio < minimumContrast)
+          .map(({ textColor, ratio }) => `${textColor}: ${ratio.toFixed(2)}`);
+
+        expect(failures).toEqual([]);
+      });
+
+      it.each(themeVariants)("reaches WCAG AA on the badge in $name", ({ theme }) => {
+        const card = resolveColor(background, theme, properties);
+        const badgeBackground = resolveColor(badgeRule.background ?? "", theme, properties, card);
+
+        expect(contrastOn(theme, badgeRule.color ?? "", badgeBackground)).toBeGreaterThanOrEqual(minimumContrast);
+      });
     });
   });
 });

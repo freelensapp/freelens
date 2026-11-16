@@ -11,20 +11,27 @@
 // light, 10% of the error color, so the text also reaches AA on it in the dark themes whose
 // textColorAccent is not far from the card, such as Solarized.
 //
+// The card is a square panel without a border, drawn in contentColor like the other panels of
+// the overviews. A card that is a button shows the hover with its background, 6% of the primary
+// color mixed into contentColor. In freelens dark and Solarized dark, textColorPrimary is only
+// just at AA on the card, and any tint that shows takes it below, so the hover also moves the
+// secondary text 30% towards textColorAccent. The badge is mixed into contentColor rather than
+// laid over the card, so it reads the same on the hover background as on the card.
+//
 // The class names are public: an extension that renders the card may restyle it. Every part
 // has a class of its own that starts with `StatusCard-`, so that the styles of the page the
 // card is on, such as the `.header` of the workloads overview, do not reach into the card.
 
 .StatusCard {
   --status-card-error-text: color-mix(in srgb, var(--colorError) 30%, var(--textColorAccent));
+  --status-card-text: var(--textColorPrimary);
 
   display: flex;
   flex-direction: column;
   gap: $margin * 1.5;
   min-width: 0;
   padding: $padding * 2;
-  border: 1px solid var(--borderColor);
-  border-radius: 12px;
+  border: 0;
   background: var(--contentColor);
   color: inherit;
   font: inherit;
@@ -32,12 +39,12 @@
 
   &:is(button) {
     cursor: pointer;
-    transition:
-      border-color 150ms,
-      background-color 150ms;
+    transition: background-color 150ms;
 
     &:hover {
-      border-color: color-mix(in srgb, var(--primary) 60%, var(--borderColor));
+      --status-card-text: color-mix(in srgb, var(--textColorAccent) 30%, var(--textColorPrimary));
+
+      background: color-mix(in srgb, var(--primary) 6%, var(--contentColor));
 
       .StatusCard-chevron {
         color: var(--textColorAccent);
@@ -61,11 +68,11 @@
 .StatusCard-title {
   font-size: 13px;
   font-weight: $font-weight-bold;
-  color: var(--textColorPrimary);
+  color: var(--status-card-text);
 }
 
 .StatusCard-chevron {
-  color: var(--textColorPrimary);
+  color: var(--status-card-text);
   transition:
     color 150ms,
     transform 150ms;
@@ -87,13 +94,13 @@
 
 .StatusCard-health {
   font-size: 12.5px;
-  color: var(--textColorPrimary);
+  color: var(--status-card-text);
 }
 
 .StatusCard-failing {
   padding: 1px $padding;
   border-radius: 999px;
-  background: color-mix(in srgb, var(--colorError) 10%, transparent);
+  background: color-mix(in srgb, var(--colorError) 10%, var(--contentColor));
   color: var(--status-card-error-text);
   font-size: 11.5px;
   font-weight: $font-weight-bold;
@@ -150,7 +157,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: var(--textColorPrimary);
+  color: var(--status-card-text);
 }
 
 .StatusCard-count {
@@ -161,10 +168,10 @@
 .StatusCard-percent {
   text-align: right;
   font-size: 11px;
-  color: var(--textColorPrimary);
+  color: var(--status-card-text);
 }
 
 .StatusCard-empty {
   font-size: 12.5px;
-  color: var(--textColorPrimary);
+  color: var(--status-card-text);
 }

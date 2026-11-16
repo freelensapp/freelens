@@ -516,7 +516,12 @@ which is what the extension gives: a theme variable such as `var(--colorOk)`
 keeps the card in step with the theme. Each card is a `<section>` named by its
 title, or a `<button>` when it has an `onClick`. A `data-testid` given to a
 card is the prefix of the test ids of its parts. The cards set no width:
-the host lays them out in a grid of columns at least 200px wide.
+the host lays them out in a grid of columns at least 200px wide, 16px apart.
+They are square panels without a border, drawn in `--contentColor` like the
+other panels of the overviews, so an extension that shows them among panels of
+its own spaces them the same way. A status card that is a button shows the
+hover with its background, tinted with `--primary`, and the focus with an
+outline.
 
 Every part of a card has a class that starts with the name of the card, such
 as `.CapacityCard-title`, `.CapacityCard-legendRow` or `.StatusCard-header`,
