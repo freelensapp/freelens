@@ -203,6 +203,22 @@ describe("themes preference", () => {
       expect(urlInput()).toHaveValue(url);
     });
 
+    it("drops the error of an attempt as soon as the URL changes", async () => {
+      importTheme.mockResolvedValue({
+        status: "invalid",
+        source: url,
+        error: "The theme file is larger than 100 KiB",
+      });
+
+      await user.type(urlInput(), url);
+      await user.click(screen.getByTestId("theme-import-submit"));
+      await screen.findByTestId("theme-import-error");
+
+      await user.type(urlInput(), "x");
+
+      expect(screen.queryByTestId("theme-import-error")).not.toBeInTheDocument();
+    });
+
     it("shows a failed request in the dialog", async () => {
       importTheme.mockRejectedValue(new Error("No handler"));
 

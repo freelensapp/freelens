@@ -75,6 +75,12 @@ export const ImportThemeDialog = ({ isOpen, close, importTheme }: ImportThemeDia
     }
   };
 
+  // An error is about the URL it was shown for, so it goes as soon as the URL changes.
+  const changeUrl = (value: string) => {
+    setUrl(value);
+    setError(undefined);
+  };
+
   const reset = () => {
     attempt.current++;
     setUrl("");
@@ -101,7 +107,7 @@ export const ImportThemeDialog = ({ isOpen, close, importTheme }: ImportThemeDia
             placeholder="URL of a theme file (.yaml, .yml, .json)"
             validators={url ? themeUrlValidator : undefined}
             value={url}
-            onChange={setUrl}
+            onChange={changeUrl}
             data-testid="theme-import-url"
             iconRight={
               <Icon
