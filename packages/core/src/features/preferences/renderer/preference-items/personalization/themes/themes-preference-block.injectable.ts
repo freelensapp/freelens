@@ -14,7 +14,7 @@ const themesPreferenceBlockInjectable = getInjectable({
     kind: "block" as const,
     id: "themes",
     parentId: "personalization-page",
-    orderNumber: 10,
+    orderNumber: 40,
     Component: Themes,
   }),
 
