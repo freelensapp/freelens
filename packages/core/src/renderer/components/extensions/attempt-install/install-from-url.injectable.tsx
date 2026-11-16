@@ -23,7 +23,8 @@ const sidecarSuffix = ".sha256";
  *
  * The checksum comes from a `.tgz.sha256` sidecar beside it, the convention
  * kubectl and others already use. It is optional: a missing sidecar leaves the
- * download unverified, which is a warning rather than a refusal. It proves
+ * download unverified, which installs the extension disabled rather than
+ * refusing it. It proves
  * transfer integrity and not authenticity either way, since a host which can
  * rewrite the tarball can rewrite the sidecar.
  */

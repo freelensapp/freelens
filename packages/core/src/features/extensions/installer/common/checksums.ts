@@ -111,7 +111,7 @@ function fileNameOf(path: string): string {
  * is not one.
  *
  * A sidecar with nothing in it for this file is treated as a sidecar we do not
- * have, which warns rather than refuses.
+ * have, which installs the extension disabled rather than refusing it.
  */
 export function parseChecksumSidecar(contents: string, fileName: string): string | undefined {
   const wanted = fileNameOf(fileName.trim());

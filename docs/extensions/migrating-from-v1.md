@@ -2155,9 +2155,12 @@ What a reload is, so that what you have to write is clear:
 
 Three consequences to know:
 
-- An extension installed this way is **unverified by construction** and is
-  marked as such in the UI. The absence of a version-and-digest segment in its
-  path is what identifies it; there is no separate flag.
+- An extension installed this way is **unverified by construction**, and is
+  shown as development in the UI. Unlike an unverified tarball, it is enabled
+  when you register it (see
+  [Publishing a checksum](#publishing-a-checksum)). The absence of a
+  version-and-digest segment in its path is what identifies it; there is no
+  separate flag.
 - **Each reload retains the previous module graph.** A module object cannot be
   evicted from a realm's module map, so memory grows with the reload count.
   Deinitialisation still happens properly through `onDeactivate`, but a long
@@ -2294,6 +2297,9 @@ restarted once.
   Custom Resources tree stops listing it a second time; leave out the
   models you only decorate (see
   [Registering things](#registering-things-declarative-fields)).
+- [ ] Publish your tarball with a checksum — on a registry, or with a
+  `.tgz.sha256` sidecar beside it — so that it is enabled on install (see
+  [Publishing a checksum](#publishing-a-checksum)).
 - [ ] Load your extension in a v2 build and verify its UI renders through the
   runtime global.
 
@@ -2307,6 +2313,31 @@ check rather than a smoke test:
   second React throws `invalid hook call` when a hook runs; a second mobx
   throws nothing at all — its reactions simply do not fire. Assert on an
   observable the host reacts to rather than eyeballing the UI.
+
+## Publishing a checksum
+
+An extension installed from a tarball which nothing vouches for is installed
+**unverified**, and stays **disabled** until the user enables it on the
+Extensions page. If you want yours to be enabled on install, publish a
+checksum with it:
+
+- **From a registry**, `npm publish` records `dist.integrity` in the package
+  metadata, and the host checks the download against it. There is nothing
+  more to do.
+- **From a URL**, such as a release asset, publish a sidecar at the URL of the
+  tarball with `.sha256` appended, e.g. `my-extension-2.0.0.tgz.sha256` next
+  to `my-extension-2.0.0.tgz`. It holds the SHA-256 of the tarball, either
+  bare or in the `sha256sum` format (`<hex>  my-extension-2.0.0.tgz`). A
+  combined listing of several files works too, as long as one of its lines
+  names the tarball.
+- **From a file**, the host looks for the same sidecar next to the tarball.
+
+A download which does not match its checksum is refused rather than installed
+unverified. The checksum proves that the tarball arrived as published, not who
+published it: whoever can replace the tarball can replace its sidecar as well.
+
+A directory registered for development is not affected: it is enabled when you
+register it (see [The development loop](#the-development-loop)).
 
 ## Shipping executables
 
