@@ -54,7 +54,7 @@ const hostileNames = ["../../../etc/passwd", "..", "/etc/passwd", "a/b", "a\\b",
  */
 const privateKey = "-----BEGIN OPENSSH PRIVATE KEY-----\nrZXktdjEAAAAABG5vbmUAAAAEbm9uZQ: x: y\n";
 
-const fileSystemMethods =["readFile", "writeFile", "pathExists", "rm", "rename", "readdir", "access", "stat", "lstat"];
+const fileSystemMethods = ["readFile", "writeFile", "pathExists", "rm", "rename", "readdir", "access", "stat", "lstat"];
 
 describe("theme files in the main process", () => {
   let di: DiContainer;
@@ -205,15 +205,14 @@ describe("theme files in the main process", () => {
         expect(fileSystem.writeFile).not.toHaveBeenCalled();
       });
 
-      it.each([
-        {},
-        { filePath: "/secret/id_ed25519" },
-        { filePath: "/secret/id_ed25519", replace: true },
-      ])("refuses a request without a known action, %o, reading nothing", async (unknown) => {
-        await expect(request(unknown as never)).rejects.toThrow("Unknown theme import action");
-        expect(showOpenDialog).not.toHaveBeenCalled();
-        expect(readPaths()).toEqual([]);
-      });
+      it.each([{}, { filePath: "/secret/id_ed25519" }, { filePath: "/secret/id_ed25519", replace: true }])(
+        "refuses a request without a known action, %o, reading nothing",
+        async (unknown) => {
+          await expect(request(unknown as never)).rejects.toThrow("Unknown theme import action");
+          expect(showOpenDialog).not.toHaveBeenCalled();
+          expect(readPaths()).toEqual([]);
+        },
+      );
     });
 
     describe("of a theme whose name another file holds", () => {
@@ -483,11 +482,8 @@ describe("theme files in the main process", () => {
       expect(di.inject(getThemeFilePathInjectable)("mine.yaml")).toBe("/user-data/themes/mine.yaml");
     });
 
-    it.each([...hostileNames, ".", "", "a/.", "./a", "mine.yaml/", "../themes/mine.yaml"])(
-      "refuses %j",
-      (fileName) => {
-        expect(() => di.inject(getThemeFilePathInjectable)(fileName)).toThrow("is not a file of the themes directory");
-      },
-    );
+    it.each([...hostileNames, ".", "", "a/.", "./a", "mine.yaml/", "../themes/mine.yaml"])("refuses %j", (fileName) => {
+      expect(() => di.inject(getThemeFilePathInjectable)(fileName)).toThrow("is not a file of the themes directory");
+    });
   });
 });
