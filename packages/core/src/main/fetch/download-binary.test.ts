@@ -5,7 +5,7 @@
 
 import { describe, expect, it, vi } from "vitest";
 import { getDiForUnitTesting } from "../getDiForUnitTesting";
-import downloadBinaryInjectable from "./download-binary.injectable";
+import downloadBinaryInjectable, { getDownloadTooLargeError } from "./download-binary.injectable";
 import proxyFetchInjectable from "./proxy-fetch.injectable";
 
 import type { FetchResponse } from "@freelensapp/json-api";
@@ -26,6 +26,8 @@ const content = Buffer.concat(chunks);
 class FakeBody {
   readonly stream: ReadableStream<Uint8Array>;
   destroyed = false;
+  /** whether the consumer canceled the stream, as it does to stop reading */
+  canceled = false;
 
   #controller!: ReadableStreamDefaultController<Uint8Array>;
 
@@ -33,6 +35,10 @@ class FakeBody {
     this.stream = new ReadableStream<Uint8Array>({
       start: (controller) => {
         this.#controller = controller;
+      },
+      cancel: () => {
+        this.canceled = true;
+        this.destroyed = true;
       },
     });
   }
@@ -212,5 +218,46 @@ describe("download-binary", () => {
     } finally {
       vi.useRealTimers();
     }
+  });
+
+  describe("with a size limit", () => {
+    const tooLarge = { callWasSuccessful: false, error: getDownloadTooLargeError(20) };
+
+    it("refuses a content-length over the limit without reading the body", async () => {
+      const body = streamOf(chunks, { end: false });
+
+      respondWith({ body, contentLength: String(content.length) });
+
+      expect(await downloadBinary(url, { maxSize: 20 })).toEqual(tooLarge);
+      expect(body.canceled).toBe(true);
+    });
+
+    it.each([
+      { header: "without a content-length", contentLength: undefined },
+      { header: "with a content-length that understates the body", contentLength: "10" },
+    ])("aborts as soon as the body passes the limit, $header", async ({ contentLength }) => {
+      // The stream never ends: only the limit can finish the download.
+      const body = streamOf(chunks, { end: false });
+
+      respondWith({ body, contentLength });
+
+      expect(await downloadBinary(url, { maxSize: 20 })).toEqual(tooLarge);
+      expect(body.canceled).toBe(true);
+    });
+
+    it("returns a body of exactly the limit", async () => {
+      respondWith({ body: streamOf(chunks) });
+
+      expect(await downloadBinary(url, { maxSize: content.length })).toEqual({
+        callWasSuccessful: true,
+        response: content,
+      });
+    });
+
+    it("tells the error of the size limit from a failed request", async () => {
+      respondWith({ status: 404, statusText: "Not Found" });
+
+      expect(await downloadBinary(url, { maxSize: 20 })).toEqual({ callWasSuccessful: false, error: "Not Found" });
+    });
   });
 });
