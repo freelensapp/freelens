@@ -114,7 +114,14 @@ light variant each, replaces the accent tokens of whichever theme is active:
 `helmStableRepo`, and in the light variant `sidebarSubmenuActiveColor` as
 well. `textColorOnPrimary`, `sidebarActiveColor` and `drawerTitleText`, the
 text drawn on the accent, then take white or dark text, whichever contrasts
-better. Without a choice, the theme's own colors stay.
+better.
+
+The first swatch of each row, "Theme", stands for no choice: it shows the
+`primary` of the active theme in that variant, and is selected when no accent
+is stored. Without a choice, the theme's own colors stay. Every other swatch,
+Teal included, stores its color. A stored accent equal to the `primary` of the
+active variant leaves the theme as it is too, so Teal on `freelens` looks the
+same as "Theme".
 
 ## Built-in themes
 

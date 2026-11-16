@@ -8,11 +8,7 @@ import { getInjectable } from "@ogre-tools/injectable";
 import { merge } from "es-toolkit/compat";
 import { observable } from "mobx";
 import kubeDirectoryPathInjectable from "../../../common/os/kube-directory-path.injectable";
-import {
-  defaultAccentColorPreference,
-  defaultThemePreference,
-  defaultThemeVariantPreference,
-} from "../../../common/vars";
+import { defaultThemePreference, defaultThemeVariantPreference } from "../../../common/vars";
 import currentTimezoneInjectable from "../../../common/vars/current-timezone.injectable";
 import isDevelopmentInjectable from "../../../common/vars/is-development.injectable";
 import {
@@ -108,11 +104,11 @@ const userPreferenceDescriptorsInjectable = getInjectable({
       }),
       accentColorDark: getPreferenceDescriptor<string | undefined>({
         fromStore: (val) => val,
-        toStore: (val) => (!val || val === defaultAccentColorPreference ? undefined : val),
+        toStore: (val) => val || undefined,
       }),
       accentColorLight: getPreferenceDescriptor<string | undefined>({
         fromStore: (val) => val,
-        toStore: (val) => (!val || val === defaultAccentColorPreference ? undefined : val),
+        toStore: (val) => val || undefined,
       }),
       terminalTheme: getPreferenceDescriptor<string>({
         fromStore: (val) => val || "",

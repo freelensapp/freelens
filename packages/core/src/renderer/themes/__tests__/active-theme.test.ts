@@ -14,7 +14,7 @@ import userPreferenceDescriptorsInjectable from "../../../features/user-preferen
 import userPreferencesStateInjectable from "../../../features/user-preferences/common/state.injectable";
 import themePreferenceInjectable from "../../../features/user-preferences/common/theme-preference.injectable";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
-import { accentColorOptions, DEFAULT_ACCENT_COLOR, getContrastRatio, getTextColorOnAccent } from "../accent-colors";
+import { accentColorOptions, getContrastRatio, getTextColorOnAccent } from "../accent-colors";
 import activeThemeInjectable from "../active.injectable";
 import systemThemeConfigurationInjectable from "../system-theme.injectable";
 import xtermColorThemeInjectable from "../terminal-colors.injectable";
@@ -27,6 +27,7 @@ const white = "#ffffff";
 const dark = "#1e2124";
 const cyan = "#00bcd4";
 const purple = "#9c27b0";
+const teal = "#00a7a0";
 
 describe("active theme with an accent color", () => {
   let di: DiContainer;
@@ -53,23 +54,26 @@ describe("active theme with an accent color", () => {
     expect(activeTheme).toEqual(baseTheme);
   });
 
-  it.each(["Dark", "Light"] as const)("leaves the %s theme unchanged with the default accent", (lensThemeId) => {
-    const { activeTheme, baseTheme } = getThemes(lensThemeId, {
-      dark: DEFAULT_ACCENT_COLOR,
-      light: DEFAULT_ACCENT_COLOR,
-    });
+  it.each(["Dark", "Light"] as const)("leaves the %s theme unchanged with its own accent, Teal", (lensThemeId) => {
+    const { activeTheme, baseTheme } = getThemes(lensThemeId, { dark: teal, light: teal });
+
+    expect(activeTheme).toEqual(baseTheme);
+  });
+
+  it("compares the theme's own accent regardless of case", () => {
+    const { activeTheme, baseTheme } = getThemes("Dark", { dark: teal.toUpperCase() });
 
     expect(activeTheme).toEqual(baseTheme);
   });
 
   it("applies the dark accent to the dark theme only", () => {
     expect(getThemes("Dark", { dark: purple }).activeTheme.colors.primary).toBe(purple);
-    expect(getThemes("Light", { dark: purple }).activeTheme.colors.primary).toBe(DEFAULT_ACCENT_COLOR);
+    expect(getThemes("Light", { dark: purple }).activeTheme.colors.primary).toBe(teal);
   });
 
   it("applies the light accent to the light theme only", () => {
     expect(getThemes("Light", { light: purple }).activeTheme.colors.primary).toBe(purple);
-    expect(getThemes("Dark", { light: purple }).activeTheme.colors.primary).toBe(DEFAULT_ACCENT_COLOR);
+    expect(getThemes("Dark", { light: purple }).activeTheme.colors.primary).toBe(teal);
   });
 
   it("replaces the accent keys of the dark theme", () => {
@@ -304,6 +308,29 @@ spec:
       expect(colors.buttonPrimaryBackground).toBe(purple);
       expect(colors.textColorOnPrimary).toBe(white);
     });
+
+    it.each(["dark", "light"] as const)("applies Teal chosen for the %s variant", (variant) => {
+      runInAction(() => systemType.set(variant));
+      di.inject(userPreferencesStateInjectable)[variant === "dark" ? "accentColorDark" : "accentColorLight"] = teal;
+
+      const { colors } = di.inject(activeThemeInjectable).get();
+
+      expect(colors.primary).toBe(teal);
+      expect(colors.blue).toBe(teal);
+      expect(colors.buttonPrimaryBackground).toBe(teal);
+      expect(colors.textColorOnPrimary).toBe(dark);
+    });
+
+    it("keeps Ayu's own accent again when the choice is cleared", () => {
+      const state = di.inject(userPreferencesStateInjectable);
+
+      state.accentColorLight = teal;
+      state.accentColorLight = undefined;
+
+      expect(di.inject(activeThemeInjectable).get().colors.primary).toBe(
+        findBuiltInTheme(name)?.spec.light?.colors?.primary,
+      );
+    });
   });
 
   describe("the terminal theme", () => {
@@ -329,12 +356,9 @@ spec:
 });
 
 describe("text on an accent", () => {
-  it.each(accentColorOptions.filter(({ value }) => value !== DEFAULT_ACCENT_COLOR))(
-    "reaches WCAG AA on $label",
-    ({ value }) => {
-      expect(getContrastRatio(value, getTextColorOnAccent(value))).toBeGreaterThanOrEqual(4.5);
-    },
-  );
+  it.each(accentColorOptions)("reaches WCAG AA on $label", ({ value }) => {
+    expect(getContrastRatio(value, getTextColorOnAccent(value))).toBeGreaterThanOrEqual(4.5);
+  });
 
   it("takes the text with the better contrast", () => {
     expect(getTextColorOnAccent(cyan)).toBe(dark);
@@ -353,8 +377,8 @@ describe("text on an accent", () => {
 describe("accent color preferences", () => {
   const getDescriptors = () => getDiForUnitTesting().inject(userPreferenceDescriptorsInjectable);
 
-  it.each(["accentColorDark", "accentColorLight"] as const)("%s does not store the default accent", (name) => {
-    expect(getDescriptors()[name].toStore(DEFAULT_ACCENT_COLOR)).toBeUndefined();
+  it.each(["accentColorDark", "accentColorLight"] as const)("%s stores Teal like any other color", (name) => {
+    expect(getDescriptors()[name].toStore(teal)).toBe(teal);
   });
 
   it.each(["accentColorDark", "accentColorLight"] as const)("%s stores a custom accent", (name) => {
