@@ -107,6 +107,18 @@ describe("download all logs of the pods of a combined tab", () => {
     );
   });
 
+  it("keeps what follows a carriage return, also when it starts with a digit", async () => {
+    callForLogs.mockImplementation(async ({ name }) =>
+      name === "pod-a"
+        ? "2026-01-01T00:00:01.000000000Z pulling layer\r12.5MB/40MB\n"
+        : "2026-01-01T00:00:02.000000000Z b1\n",
+    );
+
+    await downloadAllLogsForPods("super-deployment", pods, { ...query, timestamps: false });
+
+    expect(savedLines()).toEqual(["[pod-a] pulling layer", "[pod-a] 12.5MB/40MB", "[pod-b] b1"]);
+  });
+
   it("keeps the spaces at the end of the last line, and does not add an empty line after \\r\\n", async () => {
     callForLogs.mockImplementation(async ({ name }) =>
       name === "pod-a"

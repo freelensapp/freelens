@@ -299,6 +299,65 @@ describe("LogStore request lifecycle", () => {
 
     expect(store.getLogs(tabId)).toEqual([initialLog, otherLog]);
   });
+
+  it("keeps what follows a carriage return as a line of its own, also when it starts with a digit", async () => {
+    const progressLog = "2026-01-01T00:00:00.123456789Z step 1 pulling layer";
+
+    callForLogs.mockResolvedValue(`${progressLog}\r12.5MB/40MB`);
+    await store.load(tabId, computedPods, computedTabData);
+
+    expect(store.getLogs(tabId)).toEqual([progressLog, "12.5MB/40MB"]);
+  });
+
+  // "45%" reads as a date in 2045, "5.2MB/40MB" as no date at all.
+  it.each(["45% done", "5.2MB/40MB"])(
+    "keeps reading after %j, a line without a timestamp that starts with a number",
+    async (piece) => {
+      const firstLog = "2026-01-01T00:00:05.250000000Z step 1 pulling layer";
+      const secondLog = "2026-01-01T00:00:06.250000000Z step 2 pulling layer";
+
+      callForLogs.mockResolvedValue(`${firstLog}\r${piece}`);
+      await store.load(tabId, computedPods, computedTabData);
+
+      callForLogs.mockResolvedValue(`${firstLog}\r${piece}\n${secondLog}\r${piece}`);
+      await vi.advanceTimersByTimeAsync(10_000);
+
+      expect(callForLogs.mock.calls[1][1]?.sinceTime).toBe("2026-01-01T00:00:05Z");
+      expect(store.getLogs(tabId)).toEqual([firstLog, piece, secondLog, piece]);
+    },
+  );
+});
+
+describe("LogStore timestamps", () => {
+  const store = new LogStore({ callForLogs: vi.fn<CallForLogs>() });
+
+  it("splits off the timestamp that the API puts at the start of a line", () => {
+    expect(store.splitOutTimestamp("2026-01-01T00:00:00.123456789Z first line")).toEqual([
+      "2026-01-01T00:00:00.123456789Z",
+      " first line",
+    ]);
+    expect(store.splitOutTimestamp("2026-01-01T07:00:00+07:00 first line")).toEqual([
+      "2026-01-01T07:00:00+07:00",
+      " first line",
+    ]);
+    expect(store.removeTimestamps("2026-01-01T00:00:00Z first line")).toBe("first line");
+    expect(store.getTimestamps("2026-01-01T00:00:00Z first line")).toEqual(["2026-01-01T00:00:00Z"]);
+  });
+
+  it("takes a line with nothing but its timestamp, such as an empty last line, for a timestamp", () => {
+    expect(store.splitOutTimestamp("2026-01-01T00:00:00Z")).toEqual(["2026-01-01T00:00:00Z", ""]);
+    expect(store.removeTimestamps("2026-01-01T00:00:00Z")).toBe("");
+    expect(store.getTimestamps("2026-01-01T00:00:00Z")).toEqual(["2026-01-01T00:00:00Z"]);
+  });
+
+  it.each(["12.5MB/40MB", "100/100 done", "10.0.0.1 - GET /", "45% done", "1730877328 started"])(
+    "keeps %j, a line without a timestamp, whole",
+    (line) => {
+      expect(store.splitOutTimestamp(line)).toEqual(["", line]);
+      expect(store.removeTimestamps(line)).toBe(line);
+      expect(store.getTimestamps(line)).toBeNull();
+    },
+  );
 });
 
 describe("LogStore combined logs", () => {

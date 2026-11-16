@@ -58,13 +58,22 @@ export function getPodLogColor(podName: string): string {
 }
 
 /**
- * Extracts the leading RFC3339 timestamp token that the Kubernetes API prefixes
- * every log line with when `timestamps: true` is requested. Returns undefined
- * for lines that don't start with one (e.g. lines wrapped from a multi-line
- * message, which the API does not re-stamp).
+ * The timestamp that the Kubernetes API prefixes every log line with when
+ * `timestamps: true` is requested, as the source of a regular expression:
+ * RFC 3339 with up to nanoseconds, such as `2026-01-01T00:00:00.123456789Z`.
+ */
+export const logTimestampPattern = String.raw`\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})`;
+
+const leadingTimestampRegex = new RegExp(`^${logTimestampPattern}(?=\\s|$)`);
+
+/**
+ * Extracts the leading timestamp of a log line. Returns undefined for a line
+ * that does not start with one: a line wrapped from a multi-line message,
+ * which the API does not re-stamp, or what follows a carriage return, which
+ * can start with digits that are not a date, such as `12.5MB/40MB`.
  */
 export function getLeadingTimestamp(line: string): string | undefined {
-  return /^\d+\S+/.exec(line)?.[0];
+  return leadingTimestampRegex.exec(line)?.[0];
 }
 
 /**

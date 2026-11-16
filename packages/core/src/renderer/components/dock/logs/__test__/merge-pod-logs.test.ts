@@ -101,6 +101,17 @@ describe("mergePodLogs", () => {
     ]);
   });
 
+  it("tags a line without a timestamp as the continuation it is, also when it starts with a digit", () => {
+    const merged = mergePodLogs(new Map([["pod-a", ["2024-01-01T00:00:00.000000000Z pulling layer", "12.5MB/40MB"]]]), {
+      tagged: true,
+    });
+
+    expect(merged.map(stripAnsiColors)).toEqual([
+      "2024-01-01T00:00:00.000000000Z [pod-a] pulling layer",
+      "[pod-a] 12.5MB/40MB",
+    ]);
+  });
+
   it("assigns the same color to a pod name across calls", () => {
     expect(getPodLogColor("pod-a")).toBe(getPodLogColor("pod-a"));
   });
@@ -148,6 +159,27 @@ describe("mergePodLogs", () => {
     const [line] = mergePodLogs(new Map([["pod-a", ["2024-01-01T00:00:00.000000000Z hello"]]]), { tagged: true });
 
     expect(getLeadingTimestamp(line)).toBe("2024-01-01T00:00:00.000000000Z");
+  });
+});
+
+describe("getLeadingTimestamp", () => {
+  it.each(["2024-01-01T00:00:00Z", "2024-01-01T00:00:00.123456789Z", "2024-01-01T07:00:00.123456789+07:00"])(
+    "finds the timestamp %s that the API writes",
+    (timestamp) => {
+      expect(getLeadingTimestamp(`${timestamp} hello`)).toBe(timestamp);
+      expect(getLeadingTimestamp(timestamp)).toBe(timestamp);
+    },
+  );
+
+  it.each([
+    "12.5MB/40MB",
+    "100/100 done",
+    "10.0.0.1 - GET /",
+    "45% done",
+    "1730877328 started",
+    "2024-01-01 is only a date",
+  ])("finds none in %j, which only starts with digits", (line) => {
+    expect(getLeadingTimestamp(line)).toBeUndefined();
   });
 });
 
@@ -239,6 +271,19 @@ describe("mergeIntoLogs", () => {
       "2024-01-01T00:00:02.000000000Z [pod-b] b1",
       "2024-01-01T00:00:04.000000000Z [pod-a] a2",
       "  continued a2",
+    ]);
+  });
+
+  it("keeps a line without a timestamp that starts with a number with the line it continues", () => {
+    const merged = mergeIntoLogs(
+      ["2024-01-01T00:00:00.000000000Z pulling layer", "45% done"],
+      ["2024-01-01T00:00:01.000000000Z pulling layer"],
+    );
+
+    expect(merged).toEqual([
+      "2024-01-01T00:00:00.000000000Z pulling layer",
+      "45% done",
+      "2024-01-01T00:00:01.000000000Z pulling layer",
     ]);
   });
 });
