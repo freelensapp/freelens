@@ -18,7 +18,8 @@ const resetThemeInjectable = getInjectable({
     const preferenceDescriptors = di.inject(userPreferenceDescriptorsInjectable);
 
     return action(() => {
-      state.colorTheme = preferenceDescriptors.colorTheme.fromStore(undefined);
+      state.theme = preferenceDescriptors.theme.fromStore(undefined);
+      state.themeVariant = preferenceDescriptors.themeVariant.fromStore(undefined);
     });
   },
 });

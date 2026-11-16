@@ -8,13 +8,19 @@ import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
 import userPreferencesStateInjectable from "./state.injectable";
 
+import type { TerminalThemeVariantPreference } from "./preferences-helpers";
+
 export type TerminalThemePreference =
   | {
       matchLensTheme: true;
     }
   | {
       matchLensTheme: false;
-      themeId: string;
+      /**
+       * The `metadata.name` of the theme.
+       */
+      themeName: string;
+      variant: TerminalThemeVariantPreference;
     };
 
 const terminalThemePreferenceInjectable = getInjectable({
@@ -23,7 +29,7 @@ const terminalThemePreferenceInjectable = getInjectable({
     const state = di.inject(userPreferencesStateInjectable);
 
     return computed((): TerminalThemePreference => {
-      // NOTE: remove use of magic strings
+      // An empty terminal theme matches the theme of the application.
       if (!state.terminalTheme) {
         return {
           matchLensTheme: true,
@@ -32,7 +38,8 @@ const terminalThemePreferenceInjectable = getInjectable({
 
       return {
         matchLensTheme: false,
-        themeId: state.terminalTheme,
+        themeName: state.terminalTheme,
+        variant: state.terminalThemeVariant ?? "dark",
       };
     });
   },

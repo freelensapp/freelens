@@ -160,7 +160,6 @@
     "packages/core/src/renderer/navigation/setup-logging-for-navigation.injectable.ts",
     "packages/core/src/renderer/protocol-handler/bind-protocol-add-route-handlers/bind-protocol-add-route-handlers.tsx",
     "packages/core/src/renderer/routes/currently-in-cluster-frame.injectable.ts",
-    "packages/core/src/renderer/themes/active.injectable.ts",
     "packages/core/src/renderer/utils/storage-helper.ts",
     "packages/core/src/renderer/utils/sync-box/provide-initial-values-for-sync-boxes.injectable.ts"
   ]

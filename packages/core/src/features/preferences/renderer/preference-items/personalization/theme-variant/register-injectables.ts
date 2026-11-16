@@ -6,13 +6,13 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import cloudsMidnightThemeInjectable from "./clouds-midnight.injectable";
+import themeVariantPreferenceBlockInjectable from "./theme-variant-preference-block.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
   try {
-    di.register(cloudsMidnightThemeInjectable);
+    di.register(themeVariantPreferenceBlockInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

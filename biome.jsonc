@@ -358,7 +358,6 @@
         "**/packages/core/src/renderer/k8s/api-kube.injectable.ts",
         "**/packages/core/src/renderer/logger/browser-console-transport.ts",
         "**/packages/core/src/renderer/protocol-handler/bind-protocol-add-route-handlers/bind-protocol-add-route-handlers.tsx",
-        "**/packages/core/src/renderer/themes/active.injectable.ts",
         "**/packages/core/src/renderer/utils/storage-helper.ts",
         "**/packages/core/src/renderer/utils/sync-box/provide-initial-values-for-sync-boxes.injectable.ts"
       ],

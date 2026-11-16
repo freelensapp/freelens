@@ -14,7 +14,6 @@ import {
 import httpsProxyConfigurationInjectable from "./https-proxy.injectable";
 import isTableColumnHiddenInjectable from "./is-table-column-hidden.injectable";
 import kubeconfigSyncsInjectable from "./kubeconfig-syncs.injectable";
-import lensColorThemePreferenceInjectable from "./lens-color-theme.injectable";
 import userPreferenceDescriptorsInjectable from "./preference-descriptors.injectable";
 import resetThemeInjectable from "./reset-theme.injectable";
 import userShellSettingInjectable from "./shell-setting.injectable";
@@ -23,6 +22,7 @@ import userPreferencesPersistentStorageInjectable from "./storage.injectable";
 import terminalConfigInjectable from "./terminal-config.injectable";
 import terminalCopyOnSelectInjectable from "./terminal-copy-on-select.injectable";
 import terminalThemePreferenceInjectable from "./terminal-theme.injectable";
+import themePreferenceInjectable from "./theme-preference.injectable";
 import toggleTableColumnVisibilityInjectable from "./toggle-table-column-visibility.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
@@ -54,11 +54,6 @@ export function registerInjectables(di: DiContainerForInjection): void {
     /* Ignore duplicate registration */
   }
   try {
-    di.register(lensColorThemePreferenceInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
     di.register(resetClusterPageMenuOrderInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
@@ -80,6 +75,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(terminalThemePreferenceInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(themePreferenceInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

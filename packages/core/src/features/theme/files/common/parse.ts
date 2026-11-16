@@ -101,7 +101,7 @@ export const serializeThemeFile = (theme: ThemeFile): string => {
   const { $schema: _schema, ...rest } = theme;
   const body = yaml.dump(rest, {
     forceQuotes: true,
-    quotingType: '"',
+    quoteStyle: "double",
     lineWidth: -1,
     noRefs: true,
   });

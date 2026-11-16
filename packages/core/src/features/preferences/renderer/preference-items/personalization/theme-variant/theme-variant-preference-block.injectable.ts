@@ -5,20 +5,20 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import { preferenceItemInjectionToken } from "../../preference-item-injection-token";
-import { AccentColor } from "./accent-color";
+import { ThemeVariant } from "./theme-variant";
 
-const accentColorPreferenceBlockInjectable = getInjectable({
-  id: "accent-color-preference-item",
+const themeVariantPreferenceBlockInjectable = getInjectable({
+  id: "theme-variant-preference-item",
 
   instantiate: () => ({
     kind: "block" as const,
-    id: "accent-color",
-    parentId: "application-page",
-    orderNumber: 11,
-    Component: AccentColor,
+    id: "theme-variant",
+    parentId: "personalization-page",
+    orderNumber: 20,
+    Component: ThemeVariant,
   }),
 
   injectionToken: preferenceItemInjectionToken,
 });
 
-export default accentColorPreferenceBlockInjectable;
+export default themeVariantPreferenceBlockInjectable;

@@ -8,7 +8,11 @@ import { getInjectable } from "@ogre-tools/injectable";
 import { merge } from "es-toolkit/compat";
 import { observable } from "mobx";
 import kubeDirectoryPathInjectable from "../../../common/os/kube-directory-path.injectable";
-import { defaultAccentColorPreference, defaultColorThemePreference } from "../../../common/vars";
+import {
+  defaultAccentColorPreference,
+  defaultThemePreference,
+  defaultThemeVariantPreference,
+} from "../../../common/vars";
 import currentTimezoneInjectable from "../../../common/vars/current-timezone.injectable";
 import isDevelopmentInjectable from "../../../common/vars/is-development.injectable";
 import {
@@ -34,6 +38,8 @@ import type {
   PreferenceDescription,
   StoredExtensionRegistry,
   TerminalConfig,
+  TerminalThemeVariantPreference,
+  ThemeVariantPreference,
 } from "./preferences-helpers";
 
 // Written out rather than derived from the injectable: the user preferences
@@ -43,10 +49,12 @@ import type {
 export type PreferenceDescriptors = {
   readonly httpsProxy: PreferenceDescription<string | undefined>;
   readonly shell: PreferenceDescription<string | undefined>;
-  readonly colorTheme: PreferenceDescription<string>;
+  readonly theme: PreferenceDescription<string>;
+  readonly themeVariant: PreferenceDescription<ThemeVariantPreference>;
   readonly accentColorDark: PreferenceDescription<string | undefined>;
   readonly accentColorLight: PreferenceDescription<string | undefined>;
   readonly terminalTheme: PreferenceDescription<string>;
+  readonly terminalThemeVariant: PreferenceDescription<TerminalThemeVariantPreference>;
   readonly localeTimezone: PreferenceDescription<string>;
   readonly allowUntrustedCAs: PreferenceDescription<boolean>;
   readonly allowErrorReporting: PreferenceDescription<boolean>;
@@ -90,9 +98,13 @@ const userPreferenceDescriptorsInjectable = getInjectable({
         fromStore: (val) => val,
         toStore: (val) => val || undefined,
       }),
-      colorTheme: getPreferenceDescriptor<string>({
-        fromStore: (val) => val || defaultColorThemePreference,
-        toStore: (val) => (!val || val === defaultColorThemePreference ? undefined : val),
+      theme: getPreferenceDescriptor<string>({
+        fromStore: (val) => val || defaultThemePreference,
+        toStore: (val) => (!val || val === defaultThemePreference ? undefined : val),
+      }),
+      themeVariant: getPreferenceDescriptor<ThemeVariantPreference>({
+        fromStore: (val) => (val === "dark" || val === "light" ? val : defaultThemeVariantPreference),
+        toStore: (val) => (val === "dark" || val === "light" ? val : undefined),
       }),
       accentColorDark: getPreferenceDescriptor<string | undefined>({
         fromStore: (val) => val,
@@ -105,6 +117,10 @@ const userPreferenceDescriptorsInjectable = getInjectable({
       terminalTheme: getPreferenceDescriptor<string>({
         fromStore: (val) => val || "",
         toStore: (val) => val || undefined,
+      }),
+      terminalThemeVariant: getPreferenceDescriptor<TerminalThemeVariantPreference>({
+        fromStore: (val) => (val === "light" ? "light" : "dark"),
+        toStore: (val) => (val === "light" ? val : undefined),
       }),
       localeTimezone: getPreferenceDescriptor<string>({
         fromStore: (val) => val || currentTimezone,
