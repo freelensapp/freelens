@@ -15,6 +15,7 @@ import {
   mergeIntoLogs,
   mergePodLogs,
   podLogColors,
+  splitLogLines,
 } from "./merge-pod-logs";
 
 import type { Pod, PodLogsQuery } from "@freelensapp/kube-object";
@@ -292,7 +293,7 @@ export class LogStore {
             signal,
           );
 
-          logsOfPods.push({ pod, lines: result.trimEnd().replace(/\r/g, "\n").split("\n") });
+          logsOfPods.push({ pod, lines: splitLogLines(result) });
         } catch (error) {
           errors.push(error);
         }

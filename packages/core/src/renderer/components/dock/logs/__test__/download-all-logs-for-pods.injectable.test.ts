@@ -107,6 +107,21 @@ describe("download all logs of the pods of a combined tab", () => {
     );
   });
 
+  it("keeps the spaces at the end of the last line, and does not add an empty line after \\r\\n", async () => {
+    callForLogs.mockImplementation(async ({ name }) =>
+      name === "pod-a"
+        ? "2026-01-01T00:00:01.000000000Z a1\r\n2026-01-01T00:00:03.000000000Z a2 \r\n"
+        : "2026-01-01T00:00:02.000000000Z \n",
+    );
+    await downloadAllLogsForPods("super-deployment", pods, { ...query, timestamps: true });
+
+    expect(savedLines()).toEqual([
+      "2026-01-01T00:00:01.000000000Z [pod-a] a1",
+      "2026-01-01T00:00:02.000000000Z [pod-b] ",
+      "2026-01-01T00:00:03.000000000Z [pod-a] a2 ",
+    ]);
+  });
+
   it("saves the lines of the pods that answer when one of them fails, and tells which one failed", async () => {
     callForLogs.mockImplementation(async ({ name }) => {
       if (name === "pod-a") {
