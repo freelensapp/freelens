@@ -1,25 +1,24 @@
 /**
  * Copyright (c) Freelens Authors. All rights reserved.
- * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
 import { preferenceItemInjectionToken } from "../../preference-item-injection-token";
-import { Theme } from "./theme";
+import { Themes } from "./themes";
 
-const themePreferenceBlockInjectable = getInjectable({
-  id: "theme-preference-item",
+const themesPreferenceBlockInjectable = getInjectable({
+  id: "themes-preference-item",
 
   instantiate: () => ({
     kind: "block" as const,
-    id: "theme",
-    parentId: "application-page",
-    orderNumber: 10,
-    Component: Theme,
+    id: "themes",
+    parentId: "personalization-page",
+    orderNumber: 40,
+    Component: Themes,
   }),
 
   injectionToken: preferenceItemInjectionToken,
 });
 
-export default themePreferenceBlockInjectable;
+export default themesPreferenceBlockInjectable;

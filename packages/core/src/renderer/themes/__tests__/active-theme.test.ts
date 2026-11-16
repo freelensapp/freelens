@@ -5,14 +5,19 @@
 
 import { computed } from "mobx";
 import { beforeEach, describe, expect, it } from "vitest";
+import { builtInTheme } from "../../../features/theme/files/common/builtin-theme";
+import { parseThemeFile } from "../../../features/theme/files/common/parse";
+import { resolveThemeVariant } from "../../../features/theme/files/common/resolve";
+import importedThemesStateInjectable from "../../../features/theme/files/renderer/imported-themes-state.injectable";
 import accentColorsInjectable from "../../../features/user-preferences/common/accent-colors.injectable";
-import lensColorThemePreferenceInjectable from "../../../features/user-preferences/common/lens-color-theme.injectable";
 import userPreferenceDescriptorsInjectable from "../../../features/user-preferences/common/preference-descriptors.injectable";
+import userPreferencesStateInjectable from "../../../features/user-preferences/common/state.injectable";
+import themePreferenceInjectable from "../../../features/user-preferences/common/theme-preference.injectable";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import { accentColorOptions, DEFAULT_ACCENT_COLOR, getContrastRatio, getTextColorOnAccent } from "../accent-colors";
 import activeThemeInjectable from "../active.injectable";
 import systemThemeConfigurationInjectable from "../system-theme.injectable";
-import lensThemesInjectable from "../themes.injectable";
+import xtermColorThemeInjectable from "../terminal-colors.injectable";
 
 import type { DiContainer } from "@ogre-tools/injectable";
 
@@ -26,16 +31,14 @@ const purple = "#9c27b0";
 describe("active theme with an accent color", () => {
   let di: DiContainer;
 
-  const getThemes = (lensThemeId: string, accentColors: Partial<AccentColors>) => {
+  const getThemes = (variant: "Dark" | "Light", accentColors: Partial<AccentColors>) => {
+    const type = variant === "Dark" ? "dark" : "light";
+
     di = getDiForUnitTesting();
     di.override(accentColorsInjectable, () => computed(() => ({ dark: undefined, light: undefined, ...accentColors })));
-    di.override(lensColorThemePreferenceInjectable, () => computed(() => ({ useSystemTheme: false, lensThemeId })));
+    di.override(themePreferenceInjectable, () => computed(() => ({ name: "freelens", variant: type })));
 
-    const baseTheme = di.inject(lensThemesInjectable).get(lensThemeId);
-
-    if (!baseTheme) {
-      throw new Error(`Missing built-in theme "${lensThemeId}"`);
-    }
+    const baseTheme = resolveThemeVariant(builtInTheme, type, builtInTheme);
 
     return { activeTheme: di.inject(activeThemeInjectable).get(), baseTheme };
   };
@@ -44,19 +47,19 @@ describe("active theme with an accent color", () => {
     di = getDiForUnitTesting();
   });
 
-  it.each(["Dark", "Light"])("leaves the %s theme unchanged without an accent", (lensThemeId) => {
+  it.each(["Dark", "Light"] as const)("leaves the %s theme unchanged without an accent", (lensThemeId) => {
     const { activeTheme, baseTheme } = getThemes(lensThemeId, {});
 
-    expect(activeTheme).toBe(baseTheme);
+    expect(activeTheme).toEqual(baseTheme);
   });
 
-  it.each(["Dark", "Light"])("leaves the %s theme unchanged with the default accent", (lensThemeId) => {
+  it.each(["Dark", "Light"] as const)("leaves the %s theme unchanged with the default accent", (lensThemeId) => {
     const { activeTheme, baseTheme } = getThemes(lensThemeId, {
       dark: DEFAULT_ACCENT_COLOR,
       light: DEFAULT_ACCENT_COLOR,
     });
 
-    expect(activeTheme).toBe(baseTheme);
+    expect(activeTheme).toEqual(baseTheme);
   });
 
   it("applies the dark accent to the dark theme only", () => {
@@ -129,9 +132,7 @@ describe("active theme with an accent color", () => {
   describe("when the theme follows the computer", () => {
     beforeEach(() => {
       di.override(accentColorsInjectable, () => computed(() => ({ dark: purple, light: cyan })));
-      di.override(lensColorThemePreferenceInjectable, () =>
-        computed(() => ({ useSystemTheme: true, lensThemeId: "" })),
-      );
+      di.override(themePreferenceInjectable, () => computed(() => ({ name: "freelens", variant: "system" as const })));
     });
 
     it("applies the dark accent in dark mode", () => {
@@ -150,6 +151,131 @@ describe("active theme with an accent color", () => {
 
       expect(theme.type).toBe("light");
       expect(theme.colors.primary).toBe(cyan);
+    });
+  });
+});
+
+describe("active theme from theme files", () => {
+  let di: DiContainer;
+
+  const importTheme = (content: string) => {
+    const result = parseThemeFile(content);
+
+    if (!result.isValid) {
+      throw new Error(result.error);
+    }
+
+    di.inject(importedThemesStateInjectable).set({
+      themes: [{ theme: result.theme, fileName: `${result.theme.metadata.name}.yaml`, unknownTokens: [] }],
+      invalidFiles: [],
+    });
+  };
+
+  const darkOnlyTheme = `apiVersion: freelens.app/v1
+kind: Theme
+metadata:
+  name: midnight
+spec:
+  displayName: Midnight
+  author: Someone
+  dark:
+    colors:
+      primary: "#7c4dff"
+      mainBackground: "#000000"
+    terminalColors:
+      background: "#010101"
+`;
+
+  beforeEach(() => {
+    di = getDiForUnitTesting();
+    di.override(systemThemeConfigurationInjectable, () => computed(() => "light" as const));
+  });
+
+  it("is the built-in theme in the variant of the operating system by default", () => {
+    const theme = di.inject(activeThemeInjectable).get();
+
+    expect(theme).toMatchObject({ name: "freelens", type: "light", isDefault: true });
+    expect(theme.colors.mainBackground).toBe("#f1f1f1");
+  });
+
+  it("names the editor theme of the variant", () => {
+    expect(di.inject(activeThemeInjectable).get().monacoTheme).toBe("freelens-theme-freelens-light");
+  });
+
+  describe("with an imported theme that has only a dark variant selected", () => {
+    beforeEach(() => {
+      importTheme(darkOnlyTheme);
+      di.inject(userPreferencesStateInjectable).theme = "midnight";
+      di.inject(userPreferencesStateInjectable).themeVariant = "system";
+    });
+
+    it("stays dark whatever the operating system's mode is", () => {
+      expect(di.inject(activeThemeInjectable).get().type).toBe("dark");
+    });
+
+    it("stays dark when the light variant is chosen", () => {
+      di.inject(userPreferencesStateInjectable).themeVariant = "light";
+
+      expect(di.inject(activeThemeInjectable).get().type).toBe("dark");
+    });
+
+    it("describes the theme as extensions see it", () => {
+      expect(di.inject(activeThemeInjectable).get()).toMatchObject({
+        name: "midnight",
+        type: "dark",
+        author: "Someone",
+        description: "",
+        monacoTheme: "freelens-theme-midnight-dark",
+      });
+      expect(di.inject(activeThemeInjectable).get().isDefault).toBeUndefined();
+    });
+
+    it("takes the missing tokens from the dark variant of the built-in theme", () => {
+      const { colors } = di.inject(activeThemeInjectable).get();
+
+      expect(colors.mainBackground).toBe("#000000");
+      expect(colors.sidebarBackground).toBe(builtInTheme.spec.dark?.colors?.sidebarBackground);
+    });
+
+    it("keeps the theme's own accent without a choice", () => {
+      expect(di.inject(activeThemeInjectable).get().colors.primary).toBe("#7c4dff");
+    });
+
+    it("applies the accent the user chose to the theme", () => {
+      di.override(accentColorsInjectable, () => computed(() => ({ dark: cyan, light: undefined })));
+
+      expect(di.inject(activeThemeInjectable).get().colors.primary).toBe(cyan);
+    });
+
+    it("falls back to the built-in theme when the theme is removed", () => {
+      di.inject(importedThemesStateInjectable).set({ themes: [], invalidFiles: [] });
+
+      expect(di.inject(activeThemeInjectable).get()).toMatchObject({ name: "freelens", type: "light" });
+    });
+
+    it("gives the terminal the colors of the theme", () => {
+      expect(di.inject(xtermColorThemeInjectable).get().background).toBe("#010101");
+    });
+  });
+
+  describe("the terminal theme", () => {
+    it("can be a variant of another theme", () => {
+      importTheme(darkOnlyTheme);
+      di.inject(userPreferencesStateInjectable).terminalTheme = "freelens";
+      di.inject(userPreferencesStateInjectable).terminalThemeVariant = "dark";
+
+      expect(di.inject(xtermColorThemeInjectable).get().background).toBe(
+        builtInTheme.spec.dark?.terminalColors?.background,
+      );
+    });
+
+    it("falls back to the built-in theme when the theme is removed", () => {
+      di.inject(userPreferencesStateInjectable).terminalTheme = "midnight";
+      di.inject(userPreferencesStateInjectable).terminalThemeVariant = "dark";
+
+      expect(di.inject(xtermColorThemeInjectable).get().background).toBe(
+        builtInTheme.spec.dark?.terminalColors?.background,
+      );
     });
   });
 });

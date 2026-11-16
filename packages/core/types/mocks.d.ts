@@ -42,6 +42,11 @@ declare module "*.svg?raw" {
   export default content;
 }
 
+declare module "*.yaml?raw" {
+  const content: string;
+  export default content;
+}
+
 declare module "*?worker" {
   const workerConstructor: {
     new (options?: { name?: string }): Worker;

@@ -6,7 +6,6 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import { registerInjectables as registerAccentColorInjectables } from "./accent-color/register-injectables";
 import applicationPreferencePageInjectable from "./application-preference-page.injectable";
 import applicationPreferenceTabInjectable from "./application-preference-tab.injectable";
 import { registerInjectables as registerExtensionInstallRegistryInjectables } from "./extension-install-registry/register-injectables";
@@ -14,7 +13,6 @@ import { registerInjectables as registerHotbarAutoHideInjectables } from "./hotb
 import { registerInjectables as registerMenuBarInjectables } from "./menu-bar/register-injectables";
 import { registerInjectables as registerSidebarMenuInjectables } from "./sidebar-menu/register-injectables";
 import { registerInjectables as registerStartUpInjectables } from "./start-up/register-injectables";
-import { registerInjectables as registerThemeInjectables } from "./theme/register-injectables";
 import { registerInjectables as registerTimezoneInjectables } from "./timezone/register-injectables";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
@@ -27,11 +25,6 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(applicationPreferenceTabInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerAccentColorInjectables(di);
   } catch (e) {
     /* Ignore duplicate registration */
   }
@@ -57,11 +50,6 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     registerStartUpInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerThemeInjectables(di);
   } catch (e) {
     /* Ignore duplicate registration */
   }

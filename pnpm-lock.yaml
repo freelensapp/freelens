@@ -293,6 +293,9 @@ catalogs:
     '@xterm/xterm':
       specifier: 6.0.0
       version: 6.0.0
+    ajv:
+      specifier: 8.20.0
+      version: 8.20.0
     ansi_up:
       specifier: 6.0.6
       version: 6.0.6
@@ -1262,6 +1265,9 @@ importers:
       '@types/ws':
         specifier: 'catalog:'
         version: 8.18.2
+      ajv:
+        specifier: 'catalog:'
+        version: 8.20.0
       electron:
         specifier: 'catalog:'
         version: 44.10.1(supports-color@8.1.1)

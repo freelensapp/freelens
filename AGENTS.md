@@ -626,8 +626,9 @@ plain SCSS, CSS Modules, and Tailwind v4). Which one to use is not a matter of
 taste — each has a defined role. Before adding or changing any stylesheet or
 `className`, read [`docs/styling.md`](./docs/styling.md). In short:
 
-- **Theme values** (colors, fonts): CSS custom properties from the TS theme
-  system (`var(--…)`) — the single contract every other system reads.
+- **Theme values** (colors, fonts): CSS custom properties from the theme
+  files (`var(--…)`) — the single contract every other system reads. The
+  format of theme files is in [`docs/themes.md`](./docs/themes.md).
 - **Shared components** (`packages/ui-components`) and anything an extension
   may restyle: global PascalCase class + plain SCSS + `var(--…)`. No Tailwind
   (its JIT only scans core TSX), no CSS Modules (the class names are public
