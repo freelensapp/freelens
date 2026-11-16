@@ -95,10 +95,16 @@ describe("themes preference", () => {
   it("lists the built-in themes first, the default leading, then the imported ones", () => {
     const cards = screen.getAllByRole("listitem").map((card) => card.getAttribute("data-testid"));
 
-    expect(cards).toEqual(["theme-card-freelens", "theme-card-ayu", "theme-card-ayu-mirage", "theme-card-midnight"]);
+    expect(cards).toEqual([
+      "theme-card-freelens",
+      "theme-card-ayu",
+      "theme-card-ayu-mirage",
+      "theme-card-dracula",
+      "theme-card-midnight",
+    ]);
   });
 
-  it.each(["ayu", "ayu-mirage"])(
+  it.each(["ayu", "ayu-mirage", "dracula"])(
     "shows the built-in theme %s in both variants, without Remove or the marker",
     (name) => {
       expect(screen.getByTestId(`theme-preview-${name}-dark`)).toBeInTheDocument();

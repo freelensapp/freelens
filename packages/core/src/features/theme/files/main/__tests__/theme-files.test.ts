@@ -160,7 +160,7 @@ describe("theme files in the main process", () => {
       expect(themeNames()).toEqual([]);
     });
 
-    it.each(["freelens", "ayu", "ayu-mirage"])("refuses the name of the built-in theme %s", async (name) => {
+    it.each(["freelens", "ayu", "ayu-mirage", "dracula"])("refuses the name of the built-in theme %s", async (name) => {
       await writeFile(`/downloads/${name}.yaml`, theme(name));
 
       expect(await chooseAndImport(`/downloads/${name}.yaml`)).toMatchObject({
@@ -426,7 +426,7 @@ describe("theme files in the main process", () => {
       expect(await pathExists("/user-data/themes/mine.yaml")).toBe(false);
     });
 
-    it.each(["freelens", "ayu", "ayu-mirage"])("does not remove the built-in theme %s", async (name) => {
+    it.each(["freelens", "ayu", "ayu-mirage", "dracula"])("does not remove the built-in theme %s", async (name) => {
       resetSpies();
 
       expect(await di.inject(removeThemeListenerInjectable).handler(name)).toEqual({ status: "not-found" });
@@ -465,23 +465,26 @@ describe("theme files in the main process", () => {
       expect(await chooseAndImport("/exports/copy.yaml")).toMatchObject({ status: "imported", name: "freelens-copy" });
     });
 
-    it.each(["ayu", "ayu-mirage"])("writes the built-in theme %s as a file that imports back", async (name) => {
-      savePath = `/exports/${name}.yaml`;
+    it.each(["ayu", "ayu-mirage", "dracula"])(
+      "writes the built-in theme %s as a file that imports back",
+      async (name) => {
+        savePath = `/exports/${name}.yaml`;
 
-      expect(await di.inject(exportThemeListenerInjectable).handler(name)).toEqual({
-        status: "exported",
-        filePath: `/exports/${name}.yaml`,
-      });
+        expect(await di.inject(exportThemeListenerInjectable).handler(name)).toEqual({
+          status: "exported",
+          filePath: `/exports/${name}.yaml`,
+        });
 
-      const exported = await readFile(`/exports/${name}.yaml`);
-      const parsed = parseThemeFile(exported);
+        const exported = await readFile(`/exports/${name}.yaml`);
+        const parsed = parseThemeFile(exported);
 
-      expect(parsed.isValid && parsed.theme.metadata.name).toBe(name);
+        expect(parsed.isValid && parsed.theme.metadata.name).toBe(name);
 
-      await writeFile("/exports/copy.yaml", exported.replace(`name: "${name}"`, 'name: "my-ayu"'));
+        await writeFile("/exports/copy.yaml", exported.replace(`name: "${name}"`, `name: "my-${name}"`));
 
-      expect(await chooseAndImport("/exports/copy.yaml")).toMatchObject({ status: "imported", name: "my-ayu" });
-    });
+        expect(await chooseAndImport("/exports/copy.yaml")).toMatchObject({ status: "imported", name: `my-${name}` });
+      },
+    );
 
     it("does nothing when the dialog is canceled", async () => {
       expect(await di.inject(exportThemeListenerInjectable).handler("freelens")).toEqual({ status: "canceled" });

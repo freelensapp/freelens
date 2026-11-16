@@ -5,6 +5,7 @@
 
 import ayuSource from "./ayu.theme.yaml?raw";
 import ayuMirageSource from "./ayu-mirage.theme.yaml?raw";
+import draculaSource from "./dracula.theme.yaml?raw";
 import freelensSource from "./freelens.theme.yaml?raw";
 import { parseThemeFile } from "./parse";
 
@@ -32,7 +33,7 @@ const parseBuiltInTheme = (source: string): BuiltInTheme => {
  * The themes bundled with the application, in the order the preferences list them: the default
  * theme first.
  */
-export const builtInThemes: readonly BuiltInTheme[] = [freelensSource, ayuSource, ayuMirageSource].map(
+export const builtInThemes: readonly BuiltInTheme[] = [freelensSource, ayuSource, ayuMirageSource, draculaSource].map(
   parseBuiltInTheme,
 );
 
