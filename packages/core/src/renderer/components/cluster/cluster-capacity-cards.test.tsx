@@ -86,7 +86,7 @@ describe("ClusterCapacityCards", () => {
     render(<ClusterCapacityCards lastPoints={fullPoints} />);
 
     expect(within(screen.getByTestId("capacity-card-cpu")).getByRole("img")).toHaveAccessibleName(
-      "CPU: 0.79 cores used of 4.00 cores allocatable",
+      "CPU: Usage 0.79 cores, Allocatable 4.00 cores",
     );
   });
 
@@ -101,7 +101,7 @@ describe("ClusterCapacityCards", () => {
   it("warns when the limits overcommit what is allocatable", () => {
     render(<ClusterCapacityCards lastPoints={{ ...fullPoints, cpuLimits: 5.6 }} />);
 
-    expect(screen.getByTestId("capacity-card-cpu-overcommit")).toHaveTextContent("Limits 1.4× allocatable");
+    expect(screen.getByTestId("capacity-card-cpu-overcommit")).toHaveTextContent("Limits 1.4× Allocatable");
     expect(screen.getByTestId("capacity-card-cpu-overflow")).toBeInTheDocument();
     expect(legendRow(screen.getByTestId("capacity-card-cpu"), "Limits")).toHaveAttribute("data-warning", "true");
     expect(screen.queryByTestId("capacity-card-memory-overcommit")).not.toBeInTheDocument();

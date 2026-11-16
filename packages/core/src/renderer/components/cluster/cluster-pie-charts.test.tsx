@@ -224,7 +224,7 @@ describe("ClusterPieCharts", () => {
       render(<ClusterPieCharts />);
 
       expect(screen.getByTestId("cluster-capacity-cards")).toBeInTheDocument();
-      expect(screen.getByTestId("capacity-card-cpu-overcommit")).toHaveTextContent("Limits 2.0× allocatable");
+      expect(screen.getByTestId("capacity-card-cpu-overcommit")).toHaveTextContent("Limits 2.0× Allocatable");
       expect(screen.queryByTestId("cluster-pie-chart")).not.toBeInTheDocument();
     });
 

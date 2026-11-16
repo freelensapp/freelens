@@ -23,8 +23,8 @@ import type { LensTheme } from "../../themes/lens-theme";
 const componentsDirectory = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 // Each stylesheet with the class of its badge, the warning or error label drawn on a tint of its color.
 const stylesheets = [
-  { file: "cluster/cluster-capacity-cards.module.scss", badge: "overcommit" },
-  { file: "workloads-overview/workload-status-cards.module.scss", badge: "failing" },
+  { file: "overview-cards/capacity-card.scss", badge: "overcommit" },
+  { file: "overview-cards/status-card.scss", badge: "failing" },
 ];
 
 // The cards are drawn in contentColor.

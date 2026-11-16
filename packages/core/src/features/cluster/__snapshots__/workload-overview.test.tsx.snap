@@ -554,7 +554,7 @@ exports[`workload overview > when navigating to workload overview > renders 1`] 
                 data-testid="workload-status-cards"
               >
                 <button
-                  class="card"
+                  class="StatusCard"
                   data-testid="workload-status-card-pods"
                   type="button"
                 >
