@@ -15,6 +15,7 @@ import {
   mergeIntoLogs,
   mergePodLogs,
   podLogColors,
+  splitLogLines,
 } from "./merge-pod-logs";
 
 import type { Pod, PodLogsQuery } from "@freelensapp/kube-object";
@@ -292,15 +293,7 @@ export class LogStore {
             signal,
           );
 
-          // Only the line break that ends the logs is removed. The last line
-          // keeps the spaces it ends with, so that it is the same line when
-          // the next request returns it again.
-          const lines = result
-            .replace(/\r?\n$/, "")
-            .replace(/\r/g, "\n")
-            .split("\n");
-
-          logsOfPods.push({ pod, lines });
+          logsOfPods.push({ pod, lines: splitLogLines(result) });
         } catch (error) {
           errors.push(error);
         }

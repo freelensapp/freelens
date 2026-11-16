@@ -276,6 +276,20 @@ describe("LogStore request lifecycle", () => {
     expect(store.getLogs(tabId)).toEqual([shown, nextLog]);
   });
 
+  it("does not add an empty line after a line that ends with \\r\\n", async () => {
+    callForLogs.mockResolvedValue(
+      "2026-01-01T00:00:01Z first line\r\n2026-01-01T00:00:02Z second line\r\n2026-01-01T00:00:03Z progress 50%\rprogress 100%\r\n",
+    );
+    await store.load(tabId, computedPods, computedTabData);
+
+    expect(store.getLogs(tabId)).toEqual([
+      "2026-01-01T00:00:01Z first line",
+      "2026-01-01T00:00:02Z second line",
+      "2026-01-01T00:00:03Z progress 50%",
+      "progress 100%",
+    ]);
+  });
+
   it("keeps two different lines that carry the same timestamp", async () => {
     const otherLog = "2026-01-01T00:00:00Z second line of that instant";
 
