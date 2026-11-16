@@ -5,6 +5,7 @@
  */
 
 import os from "node:os";
+import path from "node:path";
 import { getOrInsertWith } from "@freelensapp/utilities";
 import { TerminalChannels, type TerminalMessage } from "../../common/terminal/channels";
 import { freelensProxyTokenEnvVar } from "../freelens-proxy/freelens-proxy-token";
@@ -299,8 +300,62 @@ export abstract class ShellSession {
     return "."; // Always valid
   }
 
+  /**
+   * The full path of a Windows shell given by name only, such as `wsl.exe`,
+   * looked up on the `PATH` of its environment with the extensions of
+   * `PATHEXT` when it has none; the name as it is when no directory has it.
+   *
+   * node-pty looks such a name up itself, but in the current folder of
+   * Freelens first, and when the file is there it starts nothing and reports
+   * `File not found: ` with an empty path (microsoft/node-pty#1005). That is
+   * the case of `wsl.exe` and `cmd.exe` when Freelens starts in
+   * `C:\Windows\System32`.
+   *
+   * Keep it when node-pty fixes that (microsoft/node-pty#1006): the lookup of
+   * node-pty still differs. It reads the `Path` of the Freelens process rather
+   * than of the shell's environment, adds no `PATHEXT` extension, skips the
+   * last directory of `Path`, and prefers a file of that name in the current
+   * folder of Freelens. node-pty takes a full path as it is, so this lookup
+   * does not get in the way of its fix.
+   */
+  protected async findWindowsShell(shell: string, env: Record<string, string | undefined>): Promise<string> {
+    if (!shell || /[\\/:]/.test(shell)) {
+      return shell;
+    }
+
+    const valueOf = (name: string) => Object.entries(env).find(([key]) => key.toUpperCase() === name)?.[1] ?? "";
+    // `PATHEXT` spells the extensions in upper case, the files have them in lower case
+    const extensions = path.win32.extname(shell)
+      ? [""]
+      : (valueOf("PATHEXT") || ".COM;.EXE;.BAT;.CMD")
+          .split(";")
+          .filter(Boolean)
+          .map((extension) => extension.toLowerCase());
+    const directories = valueOf("PATH")
+      .split(";")
+      .map((directory) => directory.trim().replace(/^"(.*)"$/, "$1"))
+      .filter(Boolean);
+
+    for (const directory of directories) {
+      for (const extension of extensions) {
+        const candidate = path.win32.join(directory, `${shell}${extension}`);
+
+        try {
+          if ((await this.dependencies.stat(candidate)).isFile()) {
+            return candidate;
+          }
+        } catch {
+          // not in this directory
+        }
+      }
+    }
+
+    return shell;
+  }
+
   protected async openShellProcess(shell: string, args: string[], env: Record<string, string | undefined>) {
     const cwd = await this.getCwd(env);
+    const file = this.dependencies.isWindows ? await this.findWindowsShell(shell, env) : shell;
 
     // The `close` handler below would be attached to a socket that has already
     // closed, and nothing else would ever kill the PTY.
@@ -310,7 +365,7 @@ export abstract class ShellSession {
 
     this.status.info("Starting shell ...");
 
-    const { shellProcess, resume } = this.ensureShellProcess(shell, args, env, cwd);
+    const { shellProcess, resume } = this.ensureShellProcess(file, args, env, cwd);
 
     if (resume) {
       this.send({ type: TerminalChannels.CONNECTED });

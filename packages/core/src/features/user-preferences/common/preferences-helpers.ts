@@ -23,11 +23,37 @@ export interface TerminalConfig {
 export interface LogViewerPreferences {
   showTimestamps: boolean;
   showWordWrap: boolean;
+  /**
+   * A combined logs tab reads at most this many pods of its workload, the
+   * first ones by name. Every refresh sends one request per pod, so a
+   * DaemonSet on a large cluster would otherwise turn into a burst of requests
+   * every few seconds.
+   */
+  maxCombinedLogsPods: number;
+}
+
+export const defaultMaxCombinedLogsPods = 20;
+export const minMaxCombinedLogsPods = 1;
+export const maxMaxCombinedLogsPods = 100;
+
+/**
+ * Brings a value of `maxCombinedLogsPods` into its range. It is applied both
+ * when the preference is stored and when it is read, so that a hand-edited
+ * store cannot take it outside the range. A value that is not a number gives
+ * the default.
+ */
+export function clampMaxCombinedLogsPods(value: unknown): number {
+  if (typeof value !== "number" || !Number.isFinite(value)) {
+    return defaultMaxCombinedLogsPods;
+  }
+
+  return Math.min(maxMaxCombinedLogsPods, Math.max(minMaxCombinedLogsPods, Math.round(value)));
 }
 
 export const defaultLogViewerPreferences: LogViewerPreferences = {
   showTimestamps: false,
   showWordWrap: true,
+  maxCombinedLogsPods: defaultMaxCombinedLogsPods,
 };
 
 export const defaultTerminalConfig: TerminalConfig = {

@@ -8,6 +8,7 @@ import { runInAction } from "mobx";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import directoryForUserDataInjectable from "../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import ensureDirInjectable from "../../common/fs/ensure-dir.injectable";
+import fsInjectable from "../../common/fs/fs.injectable";
 import pathExistsInjectable from "../../common/fs/path-exists.injectable";
 import pathExistsSyncInjectable from "../../common/fs/path-exists-sync.injectable";
 import readDirectoryInjectable from "../../common/fs/read-directory.injectable";
@@ -17,6 +18,7 @@ import removePathInjectable from "../../common/fs/remove.injectable";
 import watchInjectable from "../../common/fs/watch/watch.injectable";
 import writeJsonSyncInjectable from "../../common/fs/write-json-sync.injectable";
 import extensionApiVersionInjectable from "../../common/vars/extension-api-version.injectable";
+import extensionCredentialsStoreInjectable from "../../features/extension-credentials/main/extension-credentials-store.injectable";
 import installedExtensionsStateInjectable from "../../features/extensions/installer/common/installed-extensions-state.injectable";
 import { getDiForUnitTesting } from "../../main/getDiForUnitTesting";
 import extensionDiscoveryInjectable from "./extension-discovery.injectable";
@@ -24,6 +26,7 @@ import type { Dirent } from "node:fs";
 
 import type { Mock } from "vitest";
 
+import type { ExtensionCredentialsStore } from "../../features/extension-credentials/main/extension-credentials-store";
 import type { InstalledExtensionEntry } from "../../features/extensions/installer/common/installed-extensions";
 import type { ExtensionDiscovery } from "./extension-discovery";
 
@@ -51,9 +54,12 @@ describe("ExtensionDiscovery", () => {
   let readJsonFileMock: Mock;
   let pathExistsMock: Mock;
   let removePathMock: Mock;
+  let credentialsFileExists: (name: string) => Promise<boolean>;
+  let storeCredentialsFile: (name: string) => Promise<void>;
+  let di: ReturnType<typeof getDiForUnitTesting>;
 
   beforeEach(() => {
-    const di = getDiForUnitTesting();
+    di = getDiForUnitTesting();
 
     di.override(directoryForUserDataInjectable, () => "/some-directory-for-user-data");
     di.override(extensionApiVersionInjectable, () => "0.1.0");
@@ -88,6 +94,16 @@ describe("ExtensionDiscovery", () => {
 
     installedExtensions = di.inject(installedExtensionsStateInjectable);
     extensionDiscovery = di.inject(extensionDiscoveryInjectable);
+
+    // The real store, on the fake file system: removing needs no secret store.
+    const fs = di.inject(fsInjectable);
+    const credentialsDirectory = "/some-directory-for-user-data/extension-credentials";
+
+    credentialsFileExists = (name) => fs.pathExists(`${credentialsDirectory}/${name}.json`);
+    storeCredentialsFile = async (name) => {
+      await fs.ensureDir(credentialsDirectory);
+      await fs.writeFile(`${credentialsDirectory}/${name}.json`, '{"version":1,"credentials":{}}');
+    };
   });
 
   it("discovers a managed build below the extensions root", async () => {
@@ -264,6 +280,80 @@ describe("ExtensionDiscovery", () => {
 
     expect(installedExtensions.has("my-extension")).toBe(false);
     expect(removePathMock).toHaveBeenCalledWith(`${extensionsRoot}/my-extension`);
+  });
+
+  describe("given an extension has stored credentials", () => {
+    beforeEach(async () => {
+      await storeCredentialsFile("my-extension");
+      await storeCredentialsFile("other-extension");
+    });
+
+    it("removes them when uninstalling it as a managed extension", async () => {
+      readDirectoryMock.mockImplementation(async (directory: string) =>
+        directory === extensionsRoot
+          ? [directoryEntry("my-extension")]
+          : directory === `${extensionsRoot}/my-extension`
+            ? [directoryEntry("1.0.0-0f1e2d3c")]
+            : [],
+      );
+      readJsonFileMock.mockImplementation(async () => manifestOf("my-extension", "1.0.0"));
+
+      await extensionDiscovery.load();
+      await extensionDiscovery.uninstallExtension("my-extension");
+
+      expect(await credentialsFileExists("my-extension")).toBe(false);
+      expect(await credentialsFileExists("other-extension")).toBe(true);
+    });
+
+    it("removes them when uninstalling it as a development extension", async () => {
+      runInAction(() => {
+        installedExtensions.set("my-extension", {
+          name: "my-extension",
+          path: "/home/someone/src/my-extension",
+          source: { kind: "directory", path: "/home/someone/src/my-extension" },
+          verified: false,
+        });
+      });
+      readJsonFileMock.mockImplementation(async () => manifestOf("my-extension", "0.1.0"));
+
+      await extensionDiscovery.load();
+      await extensionDiscovery.uninstallExtension("my-extension");
+
+      expect(removePathMock).not.toHaveBeenCalledWith("/home/someone/src/my-extension");
+      expect(await credentialsFileExists("my-extension")).toBe(false);
+      expect(await credentialsFileExists("other-extension")).toBe(true);
+    });
+
+    it("uninstalls the extension even when they cannot be removed", async () => {
+      di.override(
+        extensionCredentialsStoreInjectable,
+        () =>
+          ({
+            isAvailable: async () => false,
+            get: vi.fn(),
+            set: vi.fn(),
+            delete: vi.fn(),
+            keys: vi.fn(),
+            remove: async () => {
+              throw new Error("no removing today");
+            },
+          }) as unknown as ExtensionCredentialsStore,
+      );
+      runInAction(() => {
+        installedExtensions.set("my-extension", {
+          name: "my-extension",
+          path: "/home/someone/src/my-extension",
+          source: { kind: "directory", path: "/home/someone/src/my-extension" },
+          verified: false,
+        });
+      });
+      readJsonFileMock.mockImplementation(async () => manifestOf("my-extension", "0.1.0"));
+
+      await extensionDiscovery.load();
+      await expect(extensionDiscovery.uninstallExtension("my-extension")).resolves.toBeUndefined();
+
+      expect(installedExtensions.has("my-extension")).toBe(false);
+    });
   });
 
   it("forgets a development extension without deleting the directory it was registered from", async () => {
