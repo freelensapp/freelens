@@ -193,6 +193,97 @@ describe("ExtensionDiscovery", () => {
     expect(removePathMock).not.toHaveBeenCalledWith(`${extensionsRoot}/my-extension/2.0.0-abcdef01`);
   });
 
+  describe("given the live build is recorded again at the same path with a different verified flag", () => {
+    const buildPath = `${extensionsRoot}/my-extension/1.0.0-0f1e2d3c`;
+
+    const record = (verified: boolean) =>
+      runInAction(() => {
+        installedExtensions.set("my-extension", {
+          name: "my-extension",
+          path: buildPath,
+          version: "1.0.0",
+          digest: "0f1e2d3c",
+          source: { kind: "url", url: "https://example.com/my-extension-1.0.0.tgz" },
+          verified,
+        });
+      });
+
+    let events: string[];
+
+    const registryFingerprint = () => extensionDiscovery["registryFingerprint"]();
+
+    const rescan = async () => {
+      vi.useFakeTimers();
+
+      try {
+        extensionDiscovery.handleWatchDirectoryEvent();
+        await vi.runAllTimersAsync();
+      } finally {
+        vi.useRealTimers();
+      }
+    };
+
+    beforeEach(async () => {
+      readDirectoryMock.mockImplementation(async (directory: string) =>
+        directory === extensionsRoot
+          ? [directoryEntry("my-extension")]
+          : directory === `${extensionsRoot}/my-extension`
+            ? [directoryEntry("1.0.0-0f1e2d3c")]
+            : [],
+      );
+      readJsonFileMock.mockImplementation(async () => manifestOf("my-extension", "1.0.0"));
+
+      record(false);
+
+      events = [];
+      extensionDiscovery.events
+        .on("add", (extension) => events.push(`add ${extension.isVerified}`))
+        .on("remove", () => events.push("remove"))
+        .on("verify", (extension) => events.push(`verify ${extension.isVerified}`));
+
+      const extensions = await extensionDiscovery.load();
+
+      expect(extensions.get("my-extension")?.isVerified).toBe(false);
+    });
+
+    it("rescans, because the registry fingerprint changes", () => {
+      const before = registryFingerprint();
+
+      record(true);
+
+      expect(registryFingerprint()).not.toBe(before);
+    });
+
+    it("emits the build as verified, without removing or adding it", async () => {
+      record(true);
+      await rescan();
+
+      expect(events).toEqual(["verify true"]);
+    });
+
+    it("emits the build as unverified when it is recorded so", async () => {
+      record(true);
+      await rescan();
+      record(false);
+      await rescan();
+
+      expect(events).toEqual(["verify true", "verify false"]);
+    });
+
+    it("emits nothing when the flag did not change", async () => {
+      await rescan();
+
+      expect(events).toEqual([]);
+    });
+
+    it("does not delete the build it still serves", async () => {
+      record(true);
+      await rescan();
+
+      expect(removePathMock).not.toHaveBeenCalledWith(buildPath);
+    });
+  });
+
   it("adopts the newest build and keeps the others when the record was lost", async () => {
     readDirectoryMock.mockImplementation(async (directory: string) =>
       directory === extensionsRoot
