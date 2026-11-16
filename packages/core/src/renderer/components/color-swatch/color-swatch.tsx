@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { withTooltip } from "@freelensapp/tooltip";
+import { TooltipPosition, withTooltip } from "@freelensapp/tooltip";
 import { cssNames } from "@freelensapp/utilities";
 import { useEffect, useRef, useState } from "react";
 import { HexColorInput, HexColorPicker } from "react-colorful";
@@ -24,7 +24,7 @@ export interface ColorSwatchProps extends Omit<ButtonHTMLAttributes<HTMLButtonEl
   children?: StrictReactNode;
 }
 
-export const ColorSwatch = withTooltip(
+const SwatchButton = withTooltip(
   ({ color, selected, className, style, children, ...buttonProps }: ColorSwatchProps) => (
     <button
       type="button"
@@ -36,6 +36,14 @@ export const ColorSwatch = withTooltip(
       {children}
     </button>
   ),
+);
+
+// Above the swatch, as a tooltip beside it covers the swatches next to it. A single position,
+// because computeNextPosition of @freelensapp/tooltip ignores a list.
+const tooltipPosition = TooltipPosition.TOP;
+
+export const ColorSwatch = ({ tooltip, ...props }: ColorSwatchProps & { tooltip?: string }) => (
+  <SwatchButton {...props} tooltip={tooltip ? { children: tooltip, preferredPositions: tooltipPosition } : undefined} />
 );
 
 export const ColorSwatchGroup = ({ label, children }: { label: string; children: StrictReactNode }) => (
