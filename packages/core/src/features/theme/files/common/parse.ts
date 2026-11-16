@@ -6,6 +6,8 @@
 import * as yaml from "js-yaml";
 import { getUnknownTokens, themeApiVersion, themeFileSchema, themeKind, themeSchemaUrl } from "./schema";
 
+import type { z } from "zod";
+
 import type { ThemeFile } from "./schema";
 
 export type ParseThemeFileResult =
@@ -24,6 +26,35 @@ export type ParseThemeFileResult =
 
 const formatPath = (path: readonly PropertyKey[]) =>
   path.map((segment) => (typeof segment === "number" ? `[${segment}]` : String(segment))).join(".");
+
+interface ThemeFileIssue {
+  path: PropertyKey[];
+  message: string;
+}
+
+const isTypeMismatch = (issues: readonly z.core.$ZodIssue[]) =>
+  issues.length === 1 && issues[0].code === "invalid_type" && issues[0].path.length === 0;
+
+/**
+ * The issues of a parse, with a union, such as the style of an editor token, replaced by the issues
+ * of the one option whose type the value has: a style with an unquoted, so empty, `foreground` is
+ * reported at `keyword.foreground`, not as a value that is neither a color nor a style.
+ */
+const flattenIssues = (issues: readonly z.core.$ZodIssue[], prefix: readonly PropertyKey[] = []): ThemeFileIssue[] =>
+  issues.flatMap((issue) => {
+    const path = [...prefix, ...issue.path];
+
+    if (issue.code === "invalid_union") {
+      const options: readonly (readonly z.core.$ZodIssue[])[] = issue.errors;
+      const matching = options.filter((optionIssues) => !isTypeMismatch(optionIssues));
+
+      if (matching.length === 1) {
+        return flattenIssues(matching[0], path);
+      }
+    }
+
+    return [{ path, message: issue.message }];
+  });
 
 /**
  * Parses a theme file, YAML or JSON, and validates it. Never throws: an invalid file gives the
@@ -80,7 +111,7 @@ export const parseThemeFile = (content: string): ParseThemeFileResult => {
   if (!result.success) {
     return {
       isValid: false,
-      error: result.error.issues
+      error: flattenIssues(result.error.issues)
         .map((issue) => (issue.path.length > 0 ? `${formatPath(issue.path)}: ${issue.message}` : issue.message))
         .join("\n"),
     };

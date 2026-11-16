@@ -8,7 +8,13 @@ import * as yaml from "js-yaml";
 import { describe, expect, it } from "vitest";
 import { builtInTheme, builtInThemeName, builtInThemeSource } from "../builtin-theme";
 import { parseThemeFile, serializeThemeFile } from "../parse";
-import { getAvailableVariants, getEffectiveVariant, resolveEditorTheme, resolveThemeVariant } from "../resolve";
+import {
+  getAvailableVariants,
+  getEffectiveVariant,
+  getMonacoTokenRules,
+  resolveEditorTheme,
+  resolveThemeVariant,
+} from "../resolve";
 import { getThemeFileJsonSchema, themeSchemaUrl } from "../schema";
 import { lensColorNames, terminalColorNames } from "../token-descriptions";
 
@@ -213,6 +219,82 @@ describe("theme files", () => {
         ),
       ).toContain("spec.dark.editor.base");
     });
+
+    it("accepts editor tokens as a color or as a style", () => {
+      const theme = parseValid(
+        minimal(`  dark:
+    editor:
+      tokens:
+        "": { background: "#191919" }
+        comment: "#3c403b"
+        keyword: { foreground: "#927c5dcc", fontStyle: bold underline }
+`),
+      );
+
+      expect(theme.spec.dark?.editor?.tokens).toEqual({
+        "": { background: "#191919" },
+        comment: "#3c403b",
+        keyword: { foreground: "#927c5dcc", fontStyle: "bold underline" },
+      });
+    });
+
+    it("explains an unquoted color of an editor token", () => {
+      const error = getError(
+        minimal(`  dark:
+    editor:
+      tokens:
+        comment: #3c403b
+`),
+      );
+
+      expect(error).toContain("spec.dark.editor.tokens.comment: empty color");
+      expect(error).toContain("has to be quoted");
+    });
+
+    it("explains an unquoted color in the style of an editor token", () => {
+      const error = getError(
+        minimal(`  dark:
+    editor:
+      tokens:
+        keyword:
+          foreground: #927c5d
+          fontStyle: bold
+`),
+      );
+
+      expect(error).toContain("spec.dark.editor.tokens.keyword.foreground: empty color");
+      expect(error).toContain("has to be quoted");
+    });
+
+    it.each(["3c403b", "#abc", "red", "#3c403b8"])("refuses the token color %s", (color) => {
+      expect(
+        getError(
+          minimal(`  dark:
+    editor:
+      tokens:
+        comment: "${color}"
+        keyword: { foreground: "${color}" }
+`),
+        ),
+      ).toBe(
+        "spec.dark.editor.tokens.comment: expected a hex color: #rrggbb or #rrggbbaa\n" +
+          "spec.dark.editor.tokens.keyword.foreground: expected a hex color: #rrggbb or #rrggbbaa",
+      );
+    });
+
+    it("refuses an editor token that is neither a color nor a style", () => {
+      expect(
+        getError(
+          minimal(`  dark:
+    editor:
+      tokens:
+        comment: 42
+`),
+        ),
+      ).toBe(
+        "spec.dark.editor.tokens.comment: expected a hex color, or an object with foreground, background and fontStyle",
+      );
+    });
   });
 
   describe("resolving a variant", () => {
@@ -273,8 +355,82 @@ describe("theme files", () => {
 
     it("takes the editor theme from the built-in theme when the variant has none", () => {
       const theme = parseValid(darkOnly);
+      const builtInEditor = builtInTheme.spec.dark?.editor;
 
-      expect(resolveEditorTheme(theme, "dark", builtInTheme)).toBe(builtInTheme.spec.dark?.editor);
+      expect(resolveEditorTheme(theme, "dark", builtInTheme)).toEqual({
+        base: builtInEditor?.base,
+        inherit: builtInEditor?.inherit,
+        colors: builtInEditor?.colors,
+        tokens: builtInEditor?.tokens,
+      });
+    });
+
+    it("takes the editor colors and tokens a variant leaves out from the built-in theme", () => {
+      const theme = parseValid(
+        minimal(`  dark:
+    editor:
+      colors:
+        editor.background: "#000000"
+      tokens:
+        comment: { foreground: "#ff0000", fontStyle: italic }
+        my.token: "#00ff00"
+`),
+      );
+      const builtInEditor = builtInTheme.spec.dark?.editor;
+      const editor = resolveEditorTheme(theme, "dark", builtInTheme);
+
+      expect(editor.base).toBe("vs-dark");
+      expect(editor.inherit).toBe(true);
+      expect(editor.colors).toEqual({ ...builtInEditor?.colors, "editor.background": "#000000" });
+      expect(editor.tokens).toEqual({
+        ...builtInEditor?.tokens,
+        comment: { foreground: "#ff0000", fontStyle: "italic" },
+        "my.token": "#00ff00",
+      });
+      expect(editor.tokens.string).toBe("#5d90cd");
+    });
+
+    it("takes the editor base and inherit from the variant when it has them", () => {
+      const theme = parseValid(
+        minimal(`  light:
+    editor:
+      base: hc-black
+      inherit: false
+`),
+      );
+
+      expect(resolveEditorTheme(theme, "light", builtInTheme)).toMatchObject({ base: "hc-black", inherit: false });
+      expect(resolveEditorTheme(builtInTheme, "light", builtInTheme)).toMatchObject({ base: "vs", inherit: true });
+    });
+  });
+
+  describe("the rules of an editor theme", () => {
+    it("are the tokens in order, a color as the foreground, without #", () => {
+      expect(
+        getMonacoTokenRules({
+          "": { background: "#191919" },
+          comment: "#3c403b",
+          keyword: { foreground: "#927C5DCC", background: "#000000", fontStyle: "bold" },
+        }),
+      ).toEqual([
+        { token: "", background: "191919" },
+        { token: "comment", foreground: "3c403b" },
+        { token: "keyword", foreground: "927C5DCC", background: "000000", fontStyle: "bold" },
+      ]);
+    });
+
+    it("are the rules of the built-in dark editor theme", () => {
+      const rules = getMonacoTokenRules(resolveEditorTheme(builtInTheme, "dark", builtInTheme).tokens);
+
+      expect(rules).toHaveLength(28);
+      expect(rules[0]).toEqual({ token: "", background: "191919" });
+      expect(rules).toContainEqual({ token: "comment", foreground: "3c403b" });
+      expect(rules).toContainEqual({ token: "invalid", foreground: "ffffff", background: "e92e2e" });
+      expect(rules[rules.length - 1]).toEqual({ token: "support.constant.property-value.css", foreground: "a165ac" });
+    });
+
+    it("are empty for the built-in light editor theme, which keeps the rules of its base", () => {
+      expect(getMonacoTokenRules(resolveEditorTheme(builtInTheme, "light", builtInTheme).tokens)).toEqual([]);
     });
   });
 
@@ -352,6 +508,38 @@ describe("theme files", () => {
     it("accepts a JSON theme with a $schema field", () => {
       expect(createValidator()({ $schema: themeSchemaUrl, ...(yaml.load(darkOnly) as object) })).toBe(true);
     });
+
+    it("accepts editor tokens as a color or as a style, and an editor without a base", () => {
+      const theme = yaml.load(
+        minimal(`  dark:
+    editor:
+      tokens:
+        "": { background: "#191919" }
+        comment: "#3c403b"
+        keyword: { foreground: "#927c5d", fontStyle: bold }
+`),
+      );
+
+      expect(createValidator()(theme)).toBe(true);
+    });
+
+    it.each([
+      ["an unquoted color", "comment: #3c403b"],
+      ["a color without #", 'comment: "3c403b"'],
+      ["a short color", 'comment: "#abc"'],
+      ["an unknown field of a style", 'keyword: { foregroud: "#927c5d" }'],
+      ["a list of rules", '- { token: comment, foreground: "#3c403b" }'],
+    ])("rejects an editor token with %s", (_, token) => {
+      const theme = yaml.load(
+        minimal(`  dark:
+    editor:
+      tokens:
+        ${token}
+`),
+      );
+
+      expect(createValidator()(theme)).toBe(false);
+    });
   });
 
   describe("export", () => {
@@ -367,6 +555,18 @@ describe("theme files", () => {
       expect(exported.split("\n")[0]).toBe(`# yaml-language-server: $schema=${themeSchemaUrl}`);
       expect(exported).not.toMatch(/: #/);
       expect(createValidator()(yaml.load(exported))).toBe(true);
+    });
+
+    it("writes the editor tokens as a map of colors and styles", () => {
+      const exported = serializeThemeFile(builtInTheme);
+
+      expect(exported).toContain(
+        '      tokens:\n        "":\n          background: "#191919"\n        comment: "#3c403b"\n',
+      );
+      expect(exported).toContain(
+        '        invalid:\n          foreground: "#ffffff"\n          background: "#e92e2e"\n',
+      );
+      expect(exported).not.toContain("rules");
     });
   });
 });

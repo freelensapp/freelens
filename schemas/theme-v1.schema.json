@@ -797,16 +797,16 @@
           "type": "object",
           "properties": {
             "base": {
+              "description": "The built-in Monaco theme the editor theme extends; the built-in theme's when left out",
               "type": "string",
-              "enum": ["vs", "vs-dark", "hc-black"],
-              "description": "The built-in Monaco theme the editor theme extends"
+              "enum": ["vs", "vs-dark", "hc-black"]
             },
             "inherit": {
-              "description": "Whether the token rules of the base theme apply as well, true when left out",
+              "description": "Whether the token styles of the base apply as well; the built-in theme's when left out",
               "type": "boolean"
             },
             "colors": {
-              "description": "Monaco's editor colors, such as editor.background",
+              "description": "Monaco's editor colors, such as editor.background; missing ones come from the built-in theme",
               "type": "object",
               "propertyNames": {
                 "type": "string"
@@ -816,37 +816,42 @@
                 "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
               }
             },
-            "rules": {
-              "description": "Monaco's token rules",
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {
-                  "token": {
+            "tokens": {
+              "description": "The style of each token, by Monaco's token name (empty for every token): a color, which is the foreground, or foreground, background and fontStyle; missing ones come from the built-in theme",
+              "type": "object",
+              "propertyNames": {
+                "type": "string"
+              },
+              "additionalProperties": {
+                "anyOf": [
+                  {
                     "type": "string",
-                    "description": "The token the rule applies to, empty for every token"
+                    "pattern": "^#[0-9a-fA-F]{6}([0-9a-fA-F]{2})?$"
                   },
-                  "foreground": {
-                    "type": "string",
-                    "pattern": "^#?[0-9a-fA-F]{6}([0-9a-fA-F]{2})?$"
-                  },
-                  "background": {
-                    "type": "string",
-                    "pattern": "^#?[0-9a-fA-F]{6}([0-9a-fA-F]{2})?$"
-                  },
-                  "fontStyle": {
-                    "description": "italic, bold, underline or strikethrough",
-                    "type": "string"
+                  {
+                    "type": "object",
+                    "properties": {
+                      "foreground": {
+                        "type": "string",
+                        "pattern": "^#[0-9a-fA-F]{6}([0-9a-fA-F]{2})?$"
+                      },
+                      "background": {
+                        "type": "string",
+                        "pattern": "^#[0-9a-fA-F]{6}([0-9a-fA-F]{2})?$"
+                      },
+                      "fontStyle": {
+                        "description": "italic, bold, underline or strikethrough, several of them separated by spaces",
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": false
                   }
-                },
-                "required": ["token"],
-                "additionalProperties": false
+                ]
               }
             }
           },
-          "required": ["base"],
           "additionalProperties": false,
-          "description": "The theme of the code editor, in Monaco's own format"
+          "description": "The theme of the code editor"
         }
       },
       "additionalProperties": false

@@ -8,7 +8,7 @@ import { reaction } from "mobx";
 import { beforeFrameStartsSecondInjectionToken } from "../../../../renderer/before-frame-starts/tokens";
 import addNewMonacoThemeInjectable from "../../../../renderer/monaco/add-new-theme.injectable";
 import { builtInTheme } from "../common/builtin-theme";
-import { getAvailableVariants, getMonacoThemeName, resolveEditorTheme } from "../common/resolve";
+import { getAvailableVariants, getMonacoThemeName, getMonacoTokenRules, resolveEditorTheme } from "../common/resolve";
 import availableThemesInjectable from "./available-themes.injectable";
 import initializeImportedThemesInjectable from "./initialize.injectable";
 
@@ -16,12 +16,12 @@ import type { MonacoThemeData } from "../../../../renderer/components/monaco-edi
 import type { ThemeFile, ThemeVariantName } from "../common/schema";
 
 /**
- * The editor theme of a variant as Monaco takes it. Copied, as Monaco keeps what it is given.
+ * The editor theme of a variant as Monaco takes it, built anew, as Monaco keeps what it is given.
  */
 const toMonacoThemeData = (name: string, theme: ThemeFile, variant: ThemeVariantName): MonacoThemeData => {
-  const { base, inherit = true, colors = {}, rules = [] } = resolveEditorTheme(theme, variant, builtInTheme);
+  const { base, inherit, colors, tokens } = resolveEditorTheme(theme, variant, builtInTheme);
 
-  return { name, base, inherit, colors: { ...colors }, rules: rules.map((rule) => ({ ...rule })) };
+  return { name, base, inherit, colors, rules: getMonacoTokenRules(tokens) };
 };
 
 /**

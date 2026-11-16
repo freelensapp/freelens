@@ -27,9 +27,10 @@ spec:
       base: vs-dark
       colors:
         editor.background: "#101214"
-      rules:
-        - token: comment
-          foreground: "6a737d"
+      tokens:
+        "": {background: "#101214"}
+        comment: "#6a737d"
+        keyword: {foreground: "#c792ea", fontStyle: bold}
   light:
     colors:
       mainBackground: "#fafafa"
@@ -60,26 +61,48 @@ written as JSON is valid as well, since JSON is YAML.
   property of the same name, `--primary`.
 - `terminalColors` are the colors of the terminal: `foreground`,
   `background`, `cursor`, the sixteen ANSI colors and a few more.
-- `editor` is the theme of the code editor, in Monaco's own format: `base` is
-  `vs`, `vs-dark` or `hc-black`, `inherit` (true when left out) keeps the
-  token rules of the base, `colors` are Monaco's editor colors and `rules`
-  its token rules.
+- `editor` is the theme of the code editor (Monaco):
+  - `base` is the built-in Monaco theme it extends: `vs`, `vs-dark` or
+    `hc-black`.
+  - `inherit` keeps the token styles of the base under the ones of the theme.
+  - `colors` are Monaco's editor colors, such as `editor.background`.
+  - `tokens` map a Monaco token name, such as `comment`, `string` or
+    `keyword.operator`, to its style. The empty name, `""`, is the style of
+    every token. A style is a color, which is the foreground, or a mapping
+    of `foreground`, `background` and `fontStyle` (`italic`, `bold`,
+    `underline` or `strikethrough`, several of them separated by spaces)
+    when more is needed.
 
 A variant may leave out any token, and the `editor` as a whole. What it
 leaves out comes from the built-in theme, in the same variant, so a theme of
 a few lines is complete. The built-in theme defines every token: exporting
 it from the preferences gives a full starting point.
 
-Freelens ignores a token it does not know, and lists it when the file is
-imported, so a theme written for a newer Freelens still loads in an older
-one.
+In the `editor`, the same holds for each field, each editor color and each
+token, so a theme can change a single token:
+
+```yaml
+editor:
+  tokens:
+    comment: "#6a737d"
+```
+
+A token the theme sets replaces the built-in style of that token as a whole:
+`comment: "#6a737d"` sets the foreground and drops any background or font
+style the built-in theme gives `comment`.
+
+Freelens ignores a color token of `colors` or `terminalColors` it does not
+know, and lists it when the file is imported, so a theme written for a newer
+Freelens still loads in an older one. The names in `editor.colors` and
+`editor.tokens` are Monaco's, which Freelens passes on without checking.
 
 ### Colors
 
 A color is a hex value: `#rgb`, `#rrggbb` or `#rrggbbaa`. **Quote it**: in
 YAML an unquoted `#` starts a comment, so `primary: #00a7a0` leaves
-`primary` empty and the file is refused. The colors of the editor's token
-rules are Monaco's format, `rrggbb` or `rrggbbaa`, with or without `#`.
+`primary` empty and the file is refused. The colors of the editor's tokens
+take six or eight digits only, `#rrggbb` or `#rrggbbaa`, and are quoted the
+same way.
 
 Fonts, sizes and spacing are not part of a theme.
 

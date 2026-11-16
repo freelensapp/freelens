@@ -156,64 +156,35 @@ spec:
         editor.lineHighlightBackground: "#D7D7D708"
         editorCursor.foreground: "#7DA5DC"
         editorWhitespace.foreground: "#BFBFBF"
-      rules:
-        - token: ""
-          background: "191919"
-        - token: comment
-          foreground: 3c403b
-        - token: string
-          foreground: 5d90cd
-        - token: constant.numeric
-          foreground: 46a609
-        - token: constant.language
-          foreground: 39946a
-        - token: keyword
-          foreground: 927c5d
-        - token: support.constant.property-value
-          foreground: 927c5d
-        - token: constant.other.color
-          foreground: 927c5d
-        - token: keyword.other.unit
-          foreground: 366f1a
-        - token: entity.other.attribute-name.html
-          foreground: a46763
-        - token: keyword.operator
-          foreground: 4b4b4b
-        - token: storage
-          foreground: e92e2e
-        - token: entity.other.inherited-class
-          foreground: "858585"
-        - token: entity.name.tag
-          foreground: "606060"
-        - token: constant.character.entity
-          foreground: a165ac
-        - token: support.class.js
-          foreground: a165ac
-        - token: entity.other.attribute-name
-          foreground: "606060"
-        - token: meta.selector.css
-          foreground: e92e2e
-        - token: entity.name.tag.css
-          foreground: e92e2e
-        - token: entity.other.attribute-name.id.css
-          foreground: e92e2e
-        - token: entity.other.attribute-name.class.css
-          foreground: e92e2e
-        - token: meta.property-name.css
-          foreground: "616161"
-        - token: support.function
-          foreground: e92e2e
-        - token: invalid
-          foreground: ffffff
-          background: e92e2e
-        - token: punctuation.section.embedded
-          foreground: e92e2e
-        - token: punctuation.definition.tag
-          foreground: "606060"
-        - token: constant.other.color.rgb-value.css
-          foreground: a165ac
-        - token: support.constant.property-value.css
-          foreground: a165ac
+      tokens:
+        "": {background: "#191919"}
+        comment: "#3c403b"
+        string: "#5d90cd"
+        constant.numeric: "#46a609"
+        constant.language: "#39946a"
+        keyword: "#927c5d"
+        support.constant.property-value: "#927c5d"
+        constant.other.color: "#927c5d"
+        keyword.other.unit: "#366f1a"
+        entity.other.attribute-name.html: "#a46763"
+        keyword.operator: "#4b4b4b"
+        storage: "#e92e2e"
+        entity.other.inherited-class: "#858585"
+        entity.name.tag: "#606060"
+        constant.character.entity: "#a165ac"
+        support.class.js: "#a165ac"
+        entity.other.attribute-name: "#606060"
+        meta.selector.css: "#e92e2e"
+        entity.name.tag.css: "#e92e2e"
+        entity.other.attribute-name.id.css: "#e92e2e"
+        entity.other.attribute-name.class.css: "#e92e2e"
+        meta.property-name.css: "#616161"
+        support.function: "#e92e2e"
+        invalid: {foreground: "#ffffff", background: "#e92e2e"}
+        punctuation.section.embedded: "#e92e2e"
+        punctuation.definition.tag: "#606060"
+        constant.other.color.rgb-value.css: "#a165ac"
+        support.constant.property-value.css: "#a165ac"
   light:
     colors:
       blue: "#00a7a0"
@@ -354,4 +325,4 @@ spec:
       base: vs
       inherit: true
       colors: {}
-      rules: []
+      tokens: {}

@@ -53,27 +53,29 @@ export const getThemeNameError = (name: unknown): string | undefined => {
 const hexColorPattern = /^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/;
 
 /**
- * The color format of Monaco's token rules, which is stricter than the editor colors: six or eight
- * digits, the `#` optional.
+ * The colors of the editor's tokens take six or eight digits, as Monaco's token rules do.
  */
-const tokenColorPattern = /^#?[0-9a-fA-F]{6}([0-9a-fA-F]{2})?$/;
+const tokenColorPattern = /^#[0-9a-fA-F]{6}([0-9a-fA-F]{2})?$/;
 
 const unquotedColorHint =
   "a hex color has to be quoted in YAML: an unquoted # starts a comment and leaves the value empty";
 
-const hexColor = z
-  .string({
-    error: (issue) =>
-      issue.input === null || issue.input === undefined ? `empty color: ${unquotedColorHint}` : "expected a hex color",
-  })
-  .regex(hexColorPattern, {
-    error: (issue) =>
-      issue.input === "" ? `empty color: ${unquotedColorHint}` : "expected a hex color: #rgb, #rrggbb or #rrggbbaa",
-  });
+const emptyColorMessage = `empty color: ${unquotedColorHint}`;
 
-const tokenColor = z.string().regex(tokenColorPattern, {
-  error: "expected a hex color of a token rule: rrggbb or rrggbbaa, with or without #",
-});
+const isEmpty = (input: unknown) => input === null || input === undefined;
+
+const createColorSchema = (pattern: RegExp, formats: string) =>
+  z
+    .string({
+      error: (issue) => (isEmpty(issue.input) ? emptyColorMessage : "expected a hex color"),
+    })
+    .regex(pattern, {
+      error: (issue) => (issue.input === "" ? emptyColorMessage : `expected a hex color: ${formats}`),
+    });
+
+const hexColor = createColorSchema(hexColorPattern, "#rgb, #rrggbb or #rrggbbaa");
+
+const tokenColor = createColorSchema(tokenColorPattern, "#rrggbb or #rrggbbaa");
 
 const buildColorsShape = <Name extends string>(descriptions: Record<Name, string>) =>
   Object.fromEntries(
@@ -83,31 +85,46 @@ const buildColorsShape = <Name extends string>(descriptions: Record<Name, string
     ]),
   ) as Record<Name, z.ZodOptional<typeof hexColor>>;
 
-const createEditorSchema = (object: typeof z.strictObject) =>
-  object({
+const tokenStyleMessage = "expected a hex color, or an object with foreground, background and fontStyle";
+
+const createEditorSchema = (object: typeof z.strictObject) => {
+  const tokenStyle = object({
+    foreground: tokenColor.optional(),
+    background: tokenColor.optional(),
+    fontStyle: z
+      .string()
+      .optional()
+      .meta({ description: "italic, bold, underline or strikethrough, several of them separated by spaces" }),
+  });
+
+  return object({
     base: z
       .enum(["vs", "vs-dark", "hc-black"])
-      .meta({ description: "The built-in Monaco theme the editor theme extends" }),
+      .optional()
+      .meta({ description: "The built-in Monaco theme the editor theme extends; the built-in theme's when left out" }),
     inherit: z
       .boolean()
       .optional()
-      .meta({ description: "Whether the token rules of the base theme apply as well, true when left out" }),
-    colors: z
-      .record(z.string(), hexColor)
-      .optional()
-      .meta({ description: "Monaco's editor colors, such as editor.background" }),
-    rules: z
-      .array(
-        object({
-          token: z.string().meta({ description: "The token the rule applies to, empty for every token" }),
-          foreground: tokenColor.optional(),
-          background: tokenColor.optional(),
-          fontStyle: z.string().optional().meta({ description: "italic, bold, underline or strikethrough" }),
+      .meta({ description: "Whether the token styles of the base apply as well; the built-in theme's when left out" }),
+    colors: z.record(z.string(), hexColor).optional().meta({
+      description: "Monaco's editor colors, such as editor.background; missing ones come from the built-in theme",
+    }),
+    tokens: z
+      .record(
+        z.string(),
+        // A null value is an unquoted color: neither option takes it, so the union explains it.
+        z.union([tokenColor, tokenStyle], {
+          error: (issue) => (isEmpty(issue.input) ? emptyColorMessage : tokenStyleMessage),
         }),
       )
       .optional()
-      .meta({ description: "Monaco's token rules" }),
-  }).meta({ description: "The theme of the code editor, in Monaco's own format" });
+      .meta({
+        description:
+          "The style of each token, by Monaco's token name (empty for every token): a color, which is the " +
+          "foreground, or foreground, background and fontStyle; missing ones come from the built-in theme",
+      }),
+  }).meta({ description: "The theme of the code editor" });
+};
 
 const createThemeFileSchema = (strict: boolean) => {
   // Outside the tokens, the application drops the fields it does not know rather than refusing
@@ -181,6 +198,7 @@ export const themeFileJsonSchemaSource = createThemeFileSchema(true);
 export type ThemeFile = z.infer<typeof themeFileSchema>;
 export type ThemeVariantSpec = NonNullable<ThemeFile["spec"]["dark"]>;
 export type ThemeEditorSpec = NonNullable<ThemeVariantSpec["editor"]>;
+export type ThemeEditorTokens = NonNullable<ThemeEditorSpec["tokens"]>;
 
 /**
  * The JSON Schema of theme files, generated from the strict zod schema, so that the two cannot

@@ -6,7 +6,7 @@
 import { lensColorNames, terminalColorNames } from "./token-descriptions";
 
 import type { LensColorName, LensTheme, TerminalColorName } from "../../../../renderer/themes/lens-theme";
-import type { ThemeEditorSpec, ThemeFile, ThemeVariantName } from "./schema";
+import type { ThemeEditorSpec, ThemeEditorTokens, ThemeFile, ThemeVariantName } from "./schema";
 
 /**
  * The variant of a theme that applies when `requested` is wanted: the requested one when the theme
@@ -46,22 +46,62 @@ const pickKnown = <Name extends string>(
   return result;
 };
 
+export interface ResolvedEditorTheme {
+  base: NonNullable<ThemeEditorSpec["base"]>;
+  inherit: boolean;
+  colors: Record<string, string>;
+  tokens: ThemeEditorTokens;
+}
+
 /**
- * The editor theme of a variant, the built-in one when the theme has none.
+ * The editor theme of a variant: every field, editor color and token the variant leaves out comes
+ * from the built-in theme in the same variant, so that a theme can change a single token. A token
+ * the variant sets replaces the built-in one as a whole.
  */
 export const resolveEditorTheme = (
   theme: ThemeFile,
   variant: ThemeVariantName,
   builtInTheme: ThemeFile,
-): ThemeEditorSpec => {
-  const editor = theme.spec[variant]?.editor ?? builtInTheme.spec[variant]?.editor;
+): ResolvedEditorTheme => {
+  const builtInEditor = builtInTheme.spec[variant]?.editor;
+  const editor = theme.spec[variant]?.editor;
+  const base = editor?.base ?? builtInEditor?.base;
 
-  if (!editor) {
-    throw new Error(`The built-in theme has no editor theme for the ${variant} variant`);
+  if (!base) {
+    throw new Error(`The built-in theme has no editor base for the ${variant} variant`);
   }
 
-  return editor;
+  return {
+    base,
+    inherit: editor?.inherit ?? builtInEditor?.inherit ?? true,
+    colors: { ...builtInEditor?.colors, ...editor?.colors },
+    tokens: { ...builtInEditor?.tokens, ...editor?.tokens },
+  };
 };
+
+export interface MonacoTokenRule {
+  token: string;
+  foreground?: string;
+  background?: string;
+  fontStyle?: string;
+}
+
+const toMonacoColor = (color: string) => color.replace(/^#/, "");
+
+/**
+ * The token styles of an editor theme as the list of rules Monaco takes, its colors without `#`.
+ */
+export const getMonacoTokenRules = (tokens: ThemeEditorTokens): MonacoTokenRule[] =>
+  Object.entries(tokens).map(([token, value]) => {
+    const { foreground, background, fontStyle } = typeof value === "string" ? { foreground: value } : value;
+
+    return {
+      token,
+      ...(foreground === undefined ? {} : { foreground: toMonacoColor(foreground) }),
+      ...(background === undefined ? {} : { background: toMonacoColor(background) }),
+      ...(fontStyle === undefined ? {} : { fontStyle }),
+    };
+  });
 
 /**
  * A variant of a theme as the application applies it: every token, the missing ones taken from
