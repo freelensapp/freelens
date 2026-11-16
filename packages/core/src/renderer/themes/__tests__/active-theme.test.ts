@@ -263,9 +263,10 @@ spec:
   });
 
   describe.each([
-    ["ayu", "#0d1017"],
-    ["ayu-mirage", "#1f2430"],
-  ])("with the built-in theme %s selected", (name, darkMainBackground) => {
+    ["ayu", "#0d1017", "#f8f9fa"],
+    ["ayu-mirage", "#1f2430", "#f8f9fa"],
+    ["dracula", "#282a36", "#fffbeb"],
+  ])("with the built-in theme %s selected", (name, darkMainBackground, lightMainBackground) => {
     const systemType = observable.box<"dark" | "light">("light");
 
     beforeEach(() => {
@@ -275,11 +276,11 @@ spec:
       di.inject(userPreferencesStateInjectable).themeVariant = "system";
     });
 
-    it("follows the operating system between its variants, the light one being Ayu Light", () => {
+    it("follows the operating system between its variants", () => {
       const activeTheme = di.inject(activeThemeInjectable);
 
       expect(activeTheme.get()).toMatchObject({ name, type: "light", monacoTheme: `freelens-theme-${name}-light` });
-      expect(activeTheme.get().colors.mainBackground).toBe("#f8f9fa");
+      expect(activeTheme.get().colors.mainBackground).toBe(lightMainBackground);
 
       runInAction(() => systemType.set("dark"));
 
@@ -293,7 +294,7 @@ spec:
       );
     });
 
-    it("keeps Ayu's own accent without a choice", () => {
+    it("keeps the theme's own accent without a choice", () => {
       expect(di.inject(activeThemeInjectable).get().colors.primary).toBe(
         findBuiltInTheme(name)?.spec.light?.colors?.primary,
       );
@@ -321,7 +322,7 @@ spec:
       expect(colors.textColorOnPrimary).toBe(dark);
     });
 
-    it("keeps Ayu's own accent again when the choice is cleared", () => {
+    it("keeps the theme's own accent again when the choice is cleared", () => {
       const state = di.inject(userPreferencesStateInjectable);
 
       state.accentColorLight = teal;

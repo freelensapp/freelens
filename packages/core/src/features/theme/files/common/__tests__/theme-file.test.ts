@@ -477,10 +477,11 @@ describe("theme files", () => {
 
   describe("the built-in themes", () => {
     const builtInThemeNames = builtInThemes.map(({ theme }) => theme.metadata.name);
-    const ayuThemes = builtInThemes.filter(({ theme }) => theme.metadata.name !== defaultThemeName);
+    const otherThemes = builtInThemes.filter(({ theme }) => theme.metadata.name !== defaultThemeName);
+    const sourceOf = (name: string) => builtInThemes.find(({ theme }) => theme.metadata.name === name)?.source ?? "";
 
-    it("are freelens, the default, then Ayu and Ayu Mirage", () => {
-      expect(builtInThemeNames).toEqual(["freelens", "ayu", "ayu-mirage"]);
+    it("are freelens, the default, then Ayu, Ayu Mirage and Dracula", () => {
+      expect(builtInThemeNames).toEqual(["freelens", "ayu", "ayu-mirage", "dracula"]);
       expect(builtInThemes[0].theme).toBe(defaultTheme);
     });
 
@@ -515,61 +516,76 @@ describe("theme files", () => {
       },
     );
 
-    describe.each(ayuThemes.map(({ theme, source }) => [theme.metadata.name, theme, source] as const))(
-      "%s",
-      (_name, theme, source) => {
-        it.each(["dark", "light"] as const)("sets every token the default theme sets in the %s variant", (variant) => {
-          const spec = theme.spec[variant];
+    describe.each(otherThemes.map(({ theme }) => [theme.metadata.name, theme] as const))("%s", (_name, theme) => {
+      it.each(["dark", "light"] as const)("sets every token the default theme sets in the %s variant", (variant) => {
+        const spec = theme.spec[variant];
 
-          expect(Object.keys(spec?.colors ?? {}).sort()).toEqual([...lensColorNames].sort());
-          expect(Object.keys(spec?.terminalColors ?? {}).sort()).toEqual(
-            Object.keys(defaultTheme.spec[variant]?.terminalColors ?? {}).sort(),
-          );
-          expect(spec?.editor?.base).toBeDefined();
-          expect(Object.keys(spec?.editor?.tokens ?? {})).not.toEqual([]);
-        });
-
-        it.each(["dark", "light"] as const)("resolves the %s variant to its own colors", (variant) => {
-          const resolved = resolveThemeVariant(theme, variant, defaultTheme);
-
-          expect(resolved).toMatchObject({ name: theme.metadata.name, type: variant });
-          expect(resolved.isDefault).toBeUndefined();
-          expect(resolved.colors).toEqual(theme.spec[variant]?.colors);
-          expect(resolved.terminalColors).toEqual(theme.spec[variant]?.terminalColors);
-        });
-
-        it.each(["dark", "light"] as const)(
-          "keeps the text on its accent at the WCAG AA contrast in the %s variant",
-          (variant) => {
-            const colors = resolveThemeVariant(theme, variant, defaultTheme).colors;
-            const textOnAccent = [colors.textColorOnPrimary, colors.sidebarActiveColor, colors.drawerTitleText];
-            const accentBackgrounds = [
-              colors.primary,
-              colors.blue,
-              colors.buttonPrimaryBackground,
-              colors.menuActiveBackground,
-            ];
-
-            const belowAA = textOnAccent.flatMap((text) =>
-              accentBackgrounds
-                .map((background) => ({ text, background, ratio: getContrastRatio(text, background) ?? 0 }))
-                .filter(({ ratio }) => ratio < 4.5),
-            );
-
-            expect(belowAA).toEqual([]);
-          },
+        expect(Object.keys(spec?.colors ?? {}).sort()).toEqual([...lensColorNames].sort());
+        expect(Object.keys(spec?.terminalColors ?? {}).sort()).toEqual(
+          Object.keys(defaultTheme.spec[variant]?.terminalColors ?? {}).sort(),
         );
+        expect(spec?.editor?.base).toBeDefined();
+        expect(Object.keys(spec?.editor?.tokens ?? {})).not.toEqual([]);
+      });
 
-        it("credits Ayu and keeps its MIT notice", () => {
-          expect(theme.spec.description).toContain("Ayu");
-          expect(source).toContain("https://github.com/ayu-theme/ayu-colors");
-          expect(source).toContain("https://github.com/ayu-theme/vscode-ayu");
-          expect(source).toContain("Copyright (c) Konstantin Pschera");
-          expect(source).toContain("Copyright (c) 2016 Ike Kurghinyan");
-          expect(source).toContain("Permission is hereby granted, free of charge");
-        });
-      },
-    );
+      it.each(["dark", "light"] as const)("resolves the %s variant to its own colors", (variant) => {
+        const resolved = resolveThemeVariant(theme, variant, defaultTheme);
+
+        expect(resolved).toMatchObject({ name: theme.metadata.name, type: variant });
+        expect(resolved.isDefault).toBeUndefined();
+        expect(resolved.colors).toEqual(theme.spec[variant]?.colors);
+        expect(resolved.terminalColors).toEqual(theme.spec[variant]?.terminalColors);
+      });
+
+      it.each(["dark", "light"] as const)(
+        "keeps the text on its accent at the WCAG AA contrast in the %s variant",
+        (variant) => {
+          const colors = resolveThemeVariant(theme, variant, defaultTheme).colors;
+          const textOnAccent = [colors.textColorOnPrimary, colors.sidebarActiveColor, colors.drawerTitleText];
+          const accentBackgrounds = [
+            colors.primary,
+            colors.blue,
+            colors.buttonPrimaryBackground,
+            colors.menuActiveBackground,
+          ];
+
+          const belowAA = textOnAccent.flatMap((text) =>
+            accentBackgrounds
+              .map((background) => ({ text, background, ratio: getContrastRatio(text, background) ?? 0 }))
+              .filter(({ ratio }) => ratio < 4.5),
+          );
+
+          expect(belowAA).toEqual([]);
+        },
+      );
+    });
+
+    it.each(["ayu", "ayu-mirage"])("%s credits Ayu and keeps its MIT notice", (name) => {
+      const source = sourceOf(name);
+
+      expect(findBuiltInTheme(name)?.spec.description).toContain("Ayu");
+      expect(source).toContain("https://github.com/ayu-theme/ayu-colors");
+      expect(source).toContain("https://github.com/ayu-theme/vscode-ayu");
+      expect(source).toContain("Copyright (c) Konstantin Pschera");
+      expect(source).toContain("Copyright (c) 2016 Ike Kurghinyan");
+      expect(source).toContain("Permission is hereby granted, free of charge");
+    });
+
+    it("dracula credits Dracula and keeps its MIT notice", () => {
+      const source = sourceOf("dracula");
+
+      expect(findBuiltInTheme("dracula")?.spec.description).toContain("Dracula");
+      expect(source).toContain("https://draculatheme.com");
+      expect(source).toContain("Copyright (c) 2023 Dracula Theme");
+      expect(source).toContain("Permission is hereby granted, free of charge");
+    });
+
+    it("dracula takes Dracula's own purple as the accent in both variants", () => {
+      const dracula = findBuiltInTheme("dracula");
+
+      expect(dracula?.spec.dark?.colors).toMatchObject({ primary: "#bd93f9", textColorOnPrimary: "#282a36" });
+      expect(dracula?.spec.light?.colors).toMatchObject({ primary: "#644ac9", textColorOnPrimary: "#ffffff" });
+    });
 
     it("share the same Ayu Light variant", () => {
       expect(findBuiltInTheme("ayu-mirage")?.spec.light).toEqual(findBuiltInTheme("ayu")?.spec.light);

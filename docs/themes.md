@@ -127,15 +127,16 @@ same as "Theme".
 
 Freelens comes with these themes, each with a dark and a light variant:
 
-| `metadata.name` | Name       | Dark       | Light     |
-| --------------- | ---------- | ---------- | --------- |
-| `freelens`      | Freelens   | Freelens   | Freelens  |
-| `ayu`           | Ayu        | Ayu Dark   | Ayu Light |
-| `ayu-mirage`    | Ayu Mirage | Ayu Mirage | Ayu Light |
+| `metadata.name` | Name       | Dark            | Light           |
+| --------------- | ---------- | --------------- | --------------- |
+| `freelens`      | Freelens   | Freelens        | Freelens        |
+| `ayu`           | Ayu        | Ayu Dark        | Ayu Light       |
+| `ayu-mirage`    | Ayu Mirage | Ayu Mirage      | Ayu Light       |
+| `dracula`       | Dracula    | Dracula Classic | Alucard Classic |
 
 `freelens` is the default theme, and the theme every other one, built-in or
-imported, takes the tokens it leaves out from. The Ayu themes set every
-token, and share the same Ayu Light variant.
+imported, takes the tokens it leaves out from. The other built-in themes set
+every token. The Ayu themes share the same Ayu Light variant.
 
 The preferences list the built-in themes first, in this order, then the
 imported ones. A built-in theme cannot be removed, but can be exported as
@@ -148,6 +149,14 @@ in [vscode-ayu](https://github.com/ayu-theme/vscode-ayu), both under the MIT
 License, whose notice each Ayu file carries in its header. Their text on the
 accent is darker than Ayu's own, so that it reaches the WCAG AA contrast on
 every accent background.
+
+The Dracula theme takes its colors from the
+[Dracula specification](https://draculatheme.com/spec): the color, UI and
+ANSI palettes of Dracula Classic and Alucard Classic, and its syntax
+highlighting rules for the editor. Its accent is Dracula's own purple, with
+dark text on it in Dracula Classic and white text in Alucard Classic, both at
+the WCAG AA contrast. The file carries the MIT notice of
+[dracula-theme](https://github.com/dracula/dracula-theme) in its header.
 
 ## The JSON Schema
 
