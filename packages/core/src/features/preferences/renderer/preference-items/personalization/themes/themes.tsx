@@ -27,7 +27,11 @@ import type { IComputedValue, IObservableValue } from "mobx";
 
 import type { OpenConfirmDialog } from "../../../../../../renderer/components/confirm-dialog/open.injectable";
 import type { LensTheme } from "../../../../../../renderer/themes/lens-theme";
-import type { ImportedThemesState, ImportThemeRequest } from "../../../../../theme/files/common/channels";
+import type {
+  ImportedThemesState,
+  ImportThemeRequest,
+  ThemeImportConflict,
+} from "../../../../../theme/files/common/channels";
 import type { AvailableTheme } from "../../../../../theme/files/renderer/available-themes.injectable";
 import type { FindTheme } from "../../../../../theme/files/renderer/find-theme.injectable";
 import type { ThemeActions } from "../../../../../theme/files/renderer/request-theme-actions.injectable";
@@ -75,6 +79,33 @@ const ThemePreview = ({ theme }: { theme: LensTheme }) => {
 
 const describeError = (error: unknown) => (error instanceof Error ? error.message : String(error));
 
+/**
+ * One thing an import replaces, as the question before the import names it.
+ */
+const ImportConflictDescription = ({ conflict }: { conflict: ThemeImportConflict }) => {
+  switch (conflict.kind) {
+    case "same-name":
+      return (
+        <>
+          the imported theme of the same name, <b>{conflict.displayName}</b>, in <code>{conflict.fileName}</code>
+        </>
+      );
+    case "other-theme":
+      return (
+        <>
+          <code>{conflict.fileName}</code>, which holds another theme, <b>{conflict.displayName}</b> (
+          <code>{conflict.name}</code>)
+        </>
+      );
+    case "invalid-file":
+      return (
+        <>
+          <code>{conflict.fileName}</code>, which is not a valid theme: {conflict.error}
+        </>
+      );
+  }
+};
+
 const NonInjectedThemes = observer(
   ({
     state,
@@ -106,17 +137,34 @@ const NonInjectedThemes = observer(
             );
 
             return;
-          case "conflict":
+          case "conflict": {
+            const { importId } = response;
+
             openConfirmDialog({
               labelOk: "Replace",
               message: (
-                <p>
-                  A theme named <b>{response.name}</b> is imported already. Replace it with{" "}
-                  <b>{response.displayName}</b>?
-                </p>
+                <div data-testid="theme-import-conflict">
+                  <p>
+                    Importing <b>{response.displayName}</b> replaces:
+                  </p>
+                  <ul>
+                    {response.conflicts.map((conflict) => (
+                      <li key={`${conflict.kind}-${conflict.fileName}`}>
+                        <ImportConflictDescription conflict={conflict} />
+                      </li>
+                    ))}
+                  </ul>
+                  <p>Replace?</p>
+                </div>
               ),
-              ok: () => importTheme({ filePath: response.filePath, replace: true }),
+              ok: () => importTheme({ action: "replace", importId }),
+              cancel: () => themeActions.importTheme({ action: "cancel", importId }).catch(() => undefined),
             });
+
+            return;
+          }
+          case "expired":
+            showErrorNotification("The import is no longer pending: import the theme again");
 
             return;
           case "imported":
@@ -144,6 +192,8 @@ const NonInjectedThemes = observer(
 
         if (response.status === "exported") {
           showSuccessNotification(`Exported the theme to ${response.filePath}`);
+        } else if (response.status === "invalid") {
+          showErrorNotification(`Failed to export the theme: ${response.error}`);
         }
       } catch (error) {
         showErrorNotification(`Failed to export the theme: ${describeError(error)}`);
@@ -162,7 +212,13 @@ const NonInjectedThemes = observer(
           const { name } = theme.metadata;
 
           try {
-            await themeActions.removeTheme(name);
+            const response = await themeActions.removeTheme(name);
+
+            if (response.status === "invalid") {
+              showErrorNotification(`Failed to remove the theme: ${response.error}`);
+
+              return;
+            }
           } catch (error) {
             showErrorNotification(`Failed to remove the theme: ${describeError(error)}`);
 

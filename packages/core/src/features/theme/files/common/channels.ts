@@ -43,34 +43,88 @@ export const importedThemesUpdateChannel: MessageChannel<ImportedThemesState> = 
   id: "imported-themes-update",
 };
 
-export interface ImportThemeRequest {
+/**
+ * A request to import a theme. It never names a file: the main process asks for one with its own
+ * file dialog, and keeps the file it chose while it waits for the answer to a `conflict`.
+ */
+export type ImportThemeRequest =
   /**
-   * The file to import. Without it, the main process asks for one with a file dialog.
+   * Asks for a file and imports it, unless it would replace a file of the themes directory.
    */
-  filePath?: string;
+  | { action: "choose" }
   /**
-   * Replaces an imported theme of the same name.
+   * Imports the pending file of a `conflict`, replacing what the conflict lists.
    */
-  replace?: boolean;
-}
+  | { action: "replace"; importId: string }
+  /**
+   * Drops the pending file of a `conflict`.
+   */
+  | { action: "cancel"; importId: string };
+
+/**
+ * What an import would replace in the themes directory.
+ */
+export type ThemeImportConflict =
+  /**
+   * The file holds an imported theme of the same name.
+   */
+  | { kind: "same-name"; fileName: string; displayName: string }
+  /**
+   * The file the import is written to holds a theme of another name.
+   */
+  | { kind: "other-theme"; fileName: string; name: string; displayName: string }
+  /**
+   * The file the import is written to is not a valid theme.
+   */
+  | { kind: "invalid-file"; fileName: string; error: string };
 
 export type ImportThemeResponse =
   | { status: "canceled" }
   | { status: "invalid"; filePath: string; error: string }
-  | { status: "conflict"; filePath: string; name: string; displayName: string }
+  | {
+      status: "conflict";
+      /**
+       * Identifies the pending import in the `replace` or `cancel` request that answers it.
+       */
+      importId: string;
+      name: string;
+      displayName: string;
+      /**
+       * The file the theme is written to, `<name>.yaml`.
+       */
+      fileName: string;
+      conflicts: ThemeImportConflict[];
+    }
+  /**
+   * A `replace` or `cancel` for an import that is not pending, because it was answered already
+   * or another import replaced it.
+   */
+  | { status: "expired" }
   | { status: "imported"; name: string; displayName: string; unknownTokens: string[] };
 
 export const importThemeChannel: RequestChannel<ImportThemeRequest, ImportThemeResponse> = {
   id: "import-theme",
 };
 
-export type ExportThemeResponse = { status: "canceled" } | { status: "exported"; filePath: string };
+/**
+ * `invalid` refuses a name that cannot be the name of a theme, before anything is read or written.
+ */
+export type ExportThemeResponse =
+  | { status: "canceled" }
+  | { status: "exported"; filePath: string }
+  | { status: "invalid"; error: string };
 
 export const exportThemeChannel: RequestChannel<string, ExportThemeResponse> = {
   id: "export-theme",
 };
 
-export type RemoveThemeResponse = { status: "removed" } | { status: "not-found" };
+/**
+ * `invalid` refuses a name that cannot be the name of a theme, before anything is read or removed.
+ */
+export type RemoveThemeResponse =
+  | { status: "removed" }
+  | { status: "not-found" }
+  | { status: "invalid"; error: string };
 
 export const removeThemeChannel: RequestChannel<string, RemoveThemeResponse> = {
   id: "remove-theme",

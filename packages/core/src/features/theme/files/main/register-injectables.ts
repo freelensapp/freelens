@@ -6,6 +6,7 @@
  * This replaces the webpack-based auto-registration system.
  */
 
+import getThemeFilePathInjectable from "./get-theme-file-path.injectable";
 import exportThemeListenerInjectable from "./handle-export.injectable";
 import importThemeListenerInjectable from "./handle-import.injectable";
 import initialImportedThemesListenerInjectable from "./handle-initial.injectable";
@@ -21,6 +22,11 @@ import type { DiContainerForInjection } from "@ogre-tools/injectable";
 export function registerInjectables(di: DiContainerForInjection): void {
   try {
     di.register(exportThemeListenerInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(getThemeFilePathInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

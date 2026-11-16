@@ -120,7 +120,10 @@ schema or a token, update the file with `pnpm test:unit:updatesnapshot`.
 
 Imported themes are files in the `themes` directory of the user data
 directory of Freelens. Import copies a file there as `<metadata.name>.yaml`,
-and Remove deletes it. A file put there by hand is picked up as well, while
+and Remove deletes it. When that would replace a file, because
+`<metadata.name>.yaml` exists already (whatever it holds) or another file holds
+a theme of the same name, Freelens says which and asks first. A file put there
+by hand is picked up as well, while
 Freelens runs. A file that is invalid, or whose name is taken by another
 file, is listed in Preferences → Personalization with the reason and is not
 applied. When the selected theme goes away, Freelens falls back to the

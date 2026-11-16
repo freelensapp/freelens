@@ -30,7 +30,7 @@ const themeActionsInjectable = getInjectable({
     const requestFromChannel = di.inject(requestFromChannelInjectionToken);
 
     return {
-      importTheme: (request = {}) => requestFromChannel(importThemeChannel, request),
+      importTheme: (request = { action: "choose" }) => requestFromChannel(importThemeChannel, request),
       exportTheme: (name) => requestFromChannel(exportThemeChannel, name),
       removeTheme: (name) => requestFromChannel(removeThemeChannel, name),
     };

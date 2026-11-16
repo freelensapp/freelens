@@ -29,6 +29,27 @@ export const themeVariantNames: readonly ThemeVariantName[] = ["dark", "light"];
 
 export const themeNamePattern = /^[a-z0-9]([-a-z0-9]*[a-z0-9])?$/;
 
+export const themeNameMaxLength = 63;
+
+const themeNameRule = "expected lowercase letters, digits and -, starting and ending with a letter or a digit";
+
+/**
+ * Why a value cannot be the name of a theme, or `undefined` when it can. An imported theme is
+ * stored as `<name>.yaml`, so the main process checks every name that comes from outside it before
+ * it touches the file system.
+ */
+export const getThemeNameError = (name: unknown): string | undefined => {
+  if (typeof name !== "string") {
+    return "The name of a theme must be a string";
+  }
+
+  if (name.length > themeNameMaxLength || !themeNamePattern.test(name)) {
+    return `${JSON.stringify(name)} is not a theme name: ${themeNameRule}, at most ${themeNameMaxLength} characters`;
+  }
+
+  return undefined;
+};
+
 const hexColorPattern = /^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/;
 
 /**
@@ -132,10 +153,8 @@ const createThemeFileSchema = (strict: boolean) => {
       metadata: object({
         name: z
           .string()
-          .max(63)
-          .regex(themeNamePattern, {
-            error: "expected lowercase letters, digits and -, starting and ending with a letter or a digit",
-          })
+          .max(themeNameMaxLength)
+          .regex(themeNamePattern, { error: themeNameRule })
           .meta({ description: "The identifier of the theme, which the preferences store" }),
         labels: z.record(z.string(), z.string()).optional(),
         annotations: z.record(z.string(), z.string()).optional(),

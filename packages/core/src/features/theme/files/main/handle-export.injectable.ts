@@ -9,6 +9,7 @@ import electronDialogInjectable from "../../../../main/electron-app/features/ele
 import { builtInTheme, builtInThemeName } from "../common/builtin-theme";
 import { exportThemeChannel } from "../common/channels";
 import { serializeThemeFile } from "../common/parse";
+import { getThemeNameError } from "../common/schema";
 import importedThemesStateInjectable from "./imported-themes-state.injectable";
 
 import type { ExportThemeResponse } from "../common/channels";
@@ -22,6 +23,12 @@ const exportThemeListenerInjectable = getRequestChannelListenerInjectable({
     const state = di.inject(importedThemesStateInjectable);
 
     return async (name): Promise<ExportThemeResponse> => {
+      const nameError = getThemeNameError(name);
+
+      if (nameError) {
+        return { status: "invalid", error: nameError };
+      }
+
       const theme =
         name === builtInThemeName
           ? builtInTheme
