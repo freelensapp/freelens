@@ -17,6 +17,7 @@ import downloadJsonViaChannelInjectable from "../../../renderer/fetch/download-j
 import confirmInjectable from "../confirm-dialog/confirm.injectable";
 import attemptInstallInjectable from "./attempt-install/attempt-install.injectable";
 import getBaseRegistryUrlInjectable from "./get-base-registry-url/get-base-registry-url.injectable";
+import { getTarballDownloadUrl } from "./get-tarball-download-url";
 
 import type { ExtendableDisposer } from "@freelensapp/utilities";
 
@@ -194,10 +195,19 @@ const attemptInstallByInfoInjectable = getInjectable({
       }
 
       const fileName = getBasenameOfPath(tarballUrl);
-      const request = await downloadBinary(tarballUrl, { timeout: 30_000 });
+      // a registry that lists the tarball of the default one is asked for it instead
+      const downloadUrl = getTarballDownloadUrl(tarballUrl, baseUrl);
+
+      if (downloadUrl !== tarballUrl) {
+        logger.info(
+          `[ATTEMPT-INSTALL-BY-INFO]: downloading ${tarballUrl} from the configured registry: ${downloadUrl}`,
+        );
+      }
+
+      const request = await downloadBinary(downloadUrl, { timeout: 30_000 });
 
       if (!request.callWasSuccessful) {
-        showErrorNotification(`Failed to download extension: ${request.error}`);
+        showErrorNotification(`Failed to download extension from ${downloadUrl}: ${request.error}`);
 
         return disposer();
       }
