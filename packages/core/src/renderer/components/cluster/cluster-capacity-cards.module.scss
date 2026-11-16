@@ -6,9 +6,11 @@
 @use "../vars" as *;
 
 // Every color comes from the active theme. Text uses only textColorPrimary and textColorAccent,
-// which reach WCAG AA on contentColor in every built-in theme; the warning text is the warning
-// color mixed half with textColorAccent for the same reason. The overview gives these cards about
-// half of the page, so each card stays readable at 200px.
+// which reach WCAG AA on contentColor in every built-in theme; the warning text is mostly
+// textColorAccent with 30% of the warning color for the same reason. Its badge keeps the tint
+// light, 10% of the warning color, so the text also reaches AA on it in the dark themes whose
+// textColorAccent is not far from the card, such as Solarized. The overview gives these cards
+// about half of the page, so each card stays readable at 200px.
 
 .cards {
   display: grid;
@@ -19,7 +21,7 @@
 }
 
 .card {
-  --capacity-card-warning-text: color-mix(in srgb, var(--colorWarning) 50%, var(--textColorAccent));
+  --capacity-card-warning-text: color-mix(in srgb, var(--colorWarning) 30%, var(--textColorAccent));
   --capacity-card-track: color-mix(in srgb, var(--textColorPrimary) 22%, transparent);
   --capacity-card-requests: color-mix(in srgb, var(--primary) 38%, transparent);
 
@@ -134,7 +136,7 @@
   margin-bottom: $margin;
   padding: 2px $padding;
   border-radius: 999px;
-  background: color-mix(in srgb, var(--colorWarning) 15%, transparent);
+  background: color-mix(in srgb, var(--colorWarning) 10%, transparent);
   color: var(--capacity-card-warning-text);
   font-size: 11.5px;
   font-weight: $font-weight-bold;

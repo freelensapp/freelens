@@ -6,8 +6,10 @@
 @use "../vars" as *;
 
 // Every color comes from the active theme. Text uses only textColorPrimary and textColorAccent,
-// which reach WCAG AA on contentColor in every built-in theme; the error text is the error color
-// mixed half with textColorAccent for the same reason.
+// which reach WCAG AA on contentColor in every built-in theme; the error text is mostly
+// textColorAccent with 30% of the error color for the same reason. Its badge keeps the tint
+// light, 10% of the error color, so the text also reaches AA on it in the dark themes whose
+// textColorAccent is not far from the card, such as Solarized.
 
 .cards {
   display: grid;
@@ -16,7 +18,7 @@
 }
 
 .card {
-  --workload-card-error-text: color-mix(in srgb, var(--colorError) 50%, var(--textColorAccent));
+  --workload-card-error-text: color-mix(in srgb, var(--colorError) 30%, var(--textColorAccent));
 
   display: flex;
   flex-direction: column;
@@ -90,7 +92,7 @@
 .failing {
   padding: 1px $padding;
   border-radius: 999px;
-  background: color-mix(in srgb, var(--colorError) 15%, transparent);
+  background: color-mix(in srgb, var(--colorError) 10%, transparent);
   color: var(--workload-card-error-text);
   font-size: 11.5px;
   font-weight: $font-weight-bold;
