@@ -63,6 +63,31 @@ describe("getTarballDownloadUrl", () => {
     expect(getTarballDownloadUrl(elsewhere, "https://npm.example.com/")).toBe(elsewhere);
   });
 
+  it.each([["registry.npmjs.com"], ["registry.yarnpkg.com"], ["registry.npmmirror.com"], ["registry.npm.taobao.org"]])(
+    "requests the tarball that the public registry %s lists from the configured registry",
+    (host) => {
+      expect(
+        getTarballDownloadUrl(
+          `https://${host}/@freelensapp/some-extension/-/some-extension-1.2.3.tgz`,
+          "https://example.com/artifactory/api/npm/all-npm/",
+        ),
+      ).toBe("https://example.com/artifactory/api/npm/all-npm/@freelensapp/some-extension/-/some-extension-1.2.3.tgz");
+    },
+  );
+
+  it.each([["https://registry.yarnpkg.com/"], ["https://registry.npmmirror.com"]])(
+    "leaves the tarball of a public registry as it is when the registry is the public %s",
+    (registry) => {
+      expect(getTarballDownloadUrl(tarball, registry)).toBe(tarball);
+    },
+  );
+
+  it("keeps the query of the registry and of the tarball, and the fragment of the tarball", () => {
+    expect(getTarballDownloadUrl(`${tarball}?cache=1#sha`, "https://npm.example.com/npm/?repo=all#ignored")).toBe(
+      "https://npm.example.com/npm/@freelensapp/some-extension/-/some-extension-1.2.3.tgz?repo=all&cache=1#sha",
+    );
+  });
+
   it("leaves a tarball that is not a URL as it is", () => {
     expect(getTarballDownloadUrl("some-extension-1.2.3.tgz", "https://npm.example.com/")).toBe(
       "some-extension-1.2.3.tgz",
