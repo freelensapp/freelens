@@ -110,6 +110,18 @@ exports[`listing active helm repositories in preferences > when navigating to pr
                   </div>
                   <div
                     class="Tab flex gap-2 items-center"
+                    data-preference-tab-link-test="personalization"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      Personalization
+                    </div>
+                  </div>
+                  <div
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="proxy"
                     role="tab"
                     tabindex="0"
@@ -990,6 +1002,18 @@ exports[`listing active helm repositories in preferences > when navigating to pr
                       class="label"
                     >
                       App
+                    </div>
+                  </div>
+                  <div
+                    class="Tab flex gap-2 items-center"
+                    data-preference-tab-link-test="personalization"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      Personalization
                     </div>
                   </div>
                   <div
@@ -1906,6 +1930,18 @@ exports[`listing active helm repositories in preferences > when navigating to pr
                   </div>
                   <div
                     class="Tab flex gap-2 items-center"
+                    data-preference-tab-link-test="personalization"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      Personalization
+                    </div>
+                  </div>
+                  <div
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="proxy"
                     role="tab"
                     tabindex="0"
@@ -2703,6 +2739,18 @@ exports[`listing active helm repositories in preferences > when navigating to pr
                       class="label"
                     >
                       App
+                    </div>
+                  </div>
+                  <div
+                    class="Tab flex gap-2 items-center"
+                    data-preference-tab-link-test="personalization"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      Personalization
                     </div>
                   </div>
                   <div
@@ -3590,6 +3638,18 @@ exports[`listing active helm repositories in preferences > when navigating to pr
                       class="label"
                     >
                       App
+                    </div>
+                  </div>
+                  <div
+                    class="Tab flex gap-2 items-center"
+                    data-preference-tab-link-test="personalization"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      Personalization
                     </div>
                   </div>
                   <div
@@ -4550,6 +4610,18 @@ exports[`listing active helm repositories in preferences > when navigating to pr
                   </div>
                   <div
                     class="Tab flex gap-2 items-center"
+                    data-preference-tab-link-test="personalization"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      Personalization
+                    </div>
+                  </div>
+                  <div
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="proxy"
                     role="tab"
                     tabindex="0"
@@ -5351,6 +5423,18 @@ exports[`listing active helm repositories in preferences > when navigating to pr
                   </div>
                   <div
                     class="Tab flex gap-2 items-center"
+                    data-preference-tab-link-test="personalization"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      Personalization
+                    </div>
+                  </div>
+                  <div
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="proxy"
                     role="tab"
                     tabindex="0"
@@ -6148,6 +6232,18 @@ exports[`listing active helm repositories in preferences > when navigating to pr
                       class="label"
                     >
                       App
+                    </div>
+                  </div>
+                  <div
+                    class="Tab flex gap-2 items-center"
+                    data-preference-tab-link-test="personalization"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      Personalization
                     </div>
                   </div>
                   <div

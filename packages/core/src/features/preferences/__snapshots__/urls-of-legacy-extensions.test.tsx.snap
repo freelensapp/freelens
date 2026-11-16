@@ -134,6 +134,18 @@ exports[`preferences: URLs of legacy extensions > given extension with both cust
                   </div>
                   <div
                     class="Tab flex gap-2 items-center"
+                    data-preference-tab-link-test="personalization"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      Personalization
+                    </div>
+                  </div>
+                  <div
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="proxy"
                     role="tab"
                     tabindex="0"
@@ -603,6 +615,18 @@ exports[`preferences: URLs of legacy extensions > given extension with both cust
                       class="label"
                     >
                       App
+                    </div>
+                  </div>
+                  <div
+                    class="Tab flex gap-2 items-center"
+                    data-preference-tab-link-test="personalization"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      Personalization
                     </div>
                   </div>
                   <div
@@ -1080,6 +1104,18 @@ exports[`preferences: URLs of legacy extensions > given extension with custom pr
                   </div>
                   <div
                     class="Tab flex gap-2 items-center"
+                    data-preference-tab-link-test="personalization"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      Personalization
+                    </div>
+                  </div>
+                  <div
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="proxy"
                     role="tab"
                     tabindex="0"
@@ -1515,6 +1551,18 @@ exports[`preferences: URLs of legacy extensions > given extension with custom pr
                   </div>
                   <div
                     class="Tab flex gap-2 items-center"
+                    data-preference-tab-link-test="personalization"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      Personalization
+                    </div>
+                  </div>
+                  <div
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="proxy"
                     role="tab"
                     tabindex="0"
@@ -1896,6 +1944,18 @@ exports[`preferences: URLs of legacy extensions > given extension with custom pr
                       class="label"
                     >
                       App
+                    </div>
+                  </div>
+                  <div
+                    class="Tab flex gap-2 items-center"
+                    data-preference-tab-link-test="personalization"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      Personalization
                     </div>
                   </div>
                   <div
