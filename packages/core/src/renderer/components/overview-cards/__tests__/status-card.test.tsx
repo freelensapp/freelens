@@ -34,6 +34,23 @@ describe("StatusCard", () => {
     expect(screen.getByTestId("card")).toHaveClass("StatusCard", "Custom");
   });
 
+  it.each([
+    { name: "a region", onClick: undefined },
+    { name: "a button", onClick: () => {} },
+  ])("gives every part of $name a class that starts with the name of the card", ({ onClick }) => {
+    // Generic classes such as `.header` or `.title` would pick up the styles of the page the card is on, as
+    // `.WorkloadsOverview .header` does. The parts of the chevron's `Icon` are the Icon's own.
+    const { container } = render(<StatusCard title="Releases" statuses={statuses} onClick={onClick} />);
+    const parts = Array.from(container.querySelectorAll(".StatusCard *")).filter(
+      (part) => !part.parentElement?.closest(".Icon"),
+    );
+
+    expect(parts.length).toBeGreaterThan(0);
+    expect(parts.filter((part) => !Array.from(part.classList).some((name) => name.startsWith("StatusCard-")))).toEqual(
+      [],
+    );
+  });
+
   it("counts the total from the statuses when it is not given", () => {
     render(<StatusCard title="Releases" statuses={statuses} data-testid="card" />);
 

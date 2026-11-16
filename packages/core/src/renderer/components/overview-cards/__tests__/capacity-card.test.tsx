@@ -8,7 +8,7 @@ import "@testing-library/jest-dom/vitest";
 import { render, screen, within } from "@testing-library/react";
 import { CapacityCard } from "../capacity-card";
 
-const headline = () => screen.getByTestId("card").querySelector(".value");
+const headline = () => screen.getByTestId("card").querySelector(".CapacityCard-value");
 
 const legendRow = (label: string) =>
   within(screen.getByTestId("card")).getByText(label, { selector: "dt" }).parentElement;
@@ -81,6 +81,17 @@ describe("CapacityCard", () => {
     expect(legendRow("Capacity")).toBeInTheDocument();
     expect(screen.getByTestId("card-overcommit")).toHaveTextContent("Quota 1.5× Allocatable");
     expect(within(screen.getByTestId("card")).getByRole("img")).toHaveAccessibleName("Disk: Used 2, Allocatable 8");
+  });
+
+  it("gives every part a class that starts with the name of the card", () => {
+    // Generic classes such as `.header` or `.title` would pick up the styles of the page the card is on.
+    const { container } = render(
+      <CapacityCard title="Disk" usage={3} requests={2} limits={6} allocatable={4} capacity={5} />,
+    );
+    const parts = Array.from(container.querySelectorAll(".CapacityCard *"));
+
+    expect(parts.length).toBeGreaterThan(0);
+    expect(parts.filter((part) => !part.className.startsWith("CapacityCard-"))).toEqual([]);
   });
 
   it("has no test ids without one of its own", () => {

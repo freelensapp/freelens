@@ -71,12 +71,14 @@ interface LegendRowProps {
 }
 
 const LegendRow = ({ swatch, label, value, percent, warning }: LegendRowProps) => (
-  <div className="legendRow" data-warning={warning || undefined}>
-    <span className={cssNames("swatch", swatch)} aria-hidden="true" />
-    <dt title={label}>{label}</dt>
-    <dd>
-      <span className="legendValue">{value}</span>
-      <span className="legendPercent">{percent}</span>
+  <div className="CapacityCard-legendRow" data-warning={warning || undefined}>
+    <span className="CapacityCard-swatch" data-swatch={swatch} aria-hidden="true" />
+    <dt className="CapacityCard-legendLabel" title={label}>
+      {label}
+    </dt>
+    <dd className="CapacityCard-legendValues">
+      <span className="CapacityCard-legendValue">{value}</span>
+      <span className="CapacityCard-legendPercent">{percent}</span>
     </dd>
   </div>
 );
@@ -115,10 +117,10 @@ export const CapacityCard = ({
 
   return (
     <section className={cssNames("CapacityCard", className)} aria-label={title} data-testid={testId}>
-      <header className="header">
-        <h3 className="title">{title}</h3>
+      <header className="CapacityCard-header">
+        <h3 className="CapacityCard-title">{title}</h3>
         <span
-          className="percent"
+          className="CapacityCard-percent"
           title={`${labels.usage} / ${labels.allocatable}`}
           data-testid={partTestId(testId, "percent")}
         >
@@ -126,29 +128,29 @@ export const CapacityCard = ({
         </span>
       </header>
 
-      <div className="summary">
-        <span className="value">{formatUsage(usage)}</span>
-        <span className="of">{`/ ${formatValue(allocatable)}`}</span>
+      <div className="CapacityCard-summary">
+        <span className="CapacityCard-value">{formatUsage(usage)}</span>
+        <span className="CapacityCard-of">{`/ ${formatValue(allocatable)}`}</span>
       </div>
 
       <div
-        className="bar"
+        className="CapacityCard-bar"
         role="img"
         aria-label={`${title}: ${labels.usage} ${formatValue(usage)}, ${labels.allocatable} ${formatValue(allocatable)}`}
       >
-        <div className="track" style={{ width: allocatableWidth }} />
+        <div className="CapacityCard-track" style={{ width: allocatableWidth }} />
         {isOvercommitted && (
           <div
-            className="overflow"
+            className="CapacityCard-overflow"
             style={{ left: allocatableWidth, width: widthOf(overflow, scale) }}
             data-testid={partTestId(testId, "overflow")}
           />
         )}
-        {isNumber(requests) && <div className="requests" style={{ width: widthOf(requests, scale) }} />}
-        <div className="usage" style={{ width: widthOf(usage, scale) }} />
-        <div className="marker" style={{ left: allocatableWidth }} />
+        {isNumber(requests) && <div className="CapacityCard-requests" style={{ width: widthOf(requests, scale) }} />}
+        <div className="CapacityCard-usage" style={{ width: widthOf(usage, scale) }} />
+        <div className="CapacityCard-marker" style={{ left: allocatableWidth }} />
         <span
-          className="markerLabel"
+          className="CapacityCard-markerLabel"
           style={{ left: allocatableWidth, transform: isMarkerAtEnd ? "translateX(-100%)" : "translateX(-50%)" }}
           aria-hidden="true"
         >
@@ -157,12 +159,12 @@ export const CapacityCard = ({
       </div>
 
       {isOvercommitted && (
-        <div className="overcommit" data-testid={partTestId(testId, "overcommit")}>
+        <div className="CapacityCard-overcommit" data-testid={partTestId(testId, "overcommit")}>
           {`${labels.limits} ${overcommitRatio.toFixed(1)}× ${labels.allocatable}`}
         </div>
       )}
 
-      <dl className="legend">
+      <dl className="CapacityCard-legend">
         <LegendRow
           swatch="usage"
           label={labels.usage}

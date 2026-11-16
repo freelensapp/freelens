@@ -76,26 +76,26 @@ export const StatusCard = ({
 
   const content = (
     <>
-      <span className="header">
-        <span className="title">{title}</span>
-        {onClick && <Icon material="chevron_right" smallest className="chevron" />}
+      <span className="StatusCard-header">
+        <span className="StatusCard-title">{title}</span>
+        {onClick && <Icon material="chevron_right" smallest className="StatusCard-chevron" />}
       </span>
 
-      <span className="summary">
-        <span className="total" data-testid={partTestId(testId, "total")}>
+      <span className="StatusCard-summary">
+        <span className="StatusCard-total" data-testid={partTestId(testId, "total")}>
           {total}
         </span>
-        {counted > 0 && <span className="health">{`${percentOf(healthy, counted)} healthy`}</span>}
+        {counted > 0 && <span className="StatusCard-health">{`${percentOf(healthy, counted)} healthy`}</span>}
         {failing > 0 && (
-          <span className="failing" data-testid={partTestId(testId, "failing")}>{`${failing} failing`}</span>
+          <span className="StatusCard-failing" data-testid={partTestId(testId, "failing")}>{`${failing} failing`}</span>
         )}
       </span>
 
-      <span className="bar" aria-hidden="true">
+      <span className="StatusCard-bar" aria-hidden="true">
         {statuses.map((status, index) => (
           <span
             key={`${index}-${status.label}`}
-            className="segment"
+            className="StatusCard-segment"
             data-healthy={status.tone === "healthy" || undefined}
             style={{ flexGrow: status.count, backgroundColor: status.color }}
           />
@@ -103,23 +103,23 @@ export const StatusCard = ({
       </span>
 
       {statuses.length > 0 ? (
-        <span className="legend">
+        <span className="StatusCard-legend">
           {statuses.map((status, index) => (
             <span
               key={`${index}-${status.label}`}
-              className="legendRow"
+              className="StatusCard-legendRow"
               data-failing={status.tone === "failing" || undefined}
               data-testid={partTestId(testId, `status-${toTestId(status.label)}`)}
             >
-              <span className="dot" style={{ backgroundColor: status.color }} aria-hidden="true" />
-              <span className="label">{status.label}</span>
-              <span className="count">{status.count}</span>
-              <span className="percent">{percentOf(status.count, counted)}</span>
+              <span className="StatusCard-dot" style={{ backgroundColor: status.color }} aria-hidden="true" />
+              <span className="StatusCard-label">{status.label}</span>
+              <span className="StatusCard-count">{status.count}</span>
+              <span className="StatusCard-percent">{percentOf(status.count, counted)}</span>
             </span>
           ))}
         </span>
       ) : (
-        <span className="empty" data-testid={partTestId(testId, "empty")}>
+        <span className="StatusCard-empty" data-testid={partTestId(testId, "empty")}>
           {total > 0 ? noStatusText : emptyText}
         </span>
       )}

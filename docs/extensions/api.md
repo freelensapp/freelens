@@ -518,6 +518,17 @@ title, or a `<button>` when it has an `onClick`. A `data-testid` given to a
 card is the prefix of the test ids of its parts. The cards set no width:
 the host lays them out in a grid of columns at least 200px wide.
 
+Every part of a card has a class that starts with the name of the card, such
+as `.CapacityCard-title`, `.CapacityCard-legendRow` or `.StatusCard-header`,
+and none has a generic class such as `.header` or `.title`. The styles of the
+page a card is on therefore do not reach into it, and an extension may restyle
+a part by its class ([C10](#c10-styling-and-css)). The state of a part is a
+data attribute rather than a class: `data-warning` on a legend row of a
+capacity card whose limits are more than what is allocatable, `data-swatch`
+on its legend swatches, `data-healthy` on the bar segments of a healthy
+status of a status card, and `data-failing` on its legend rows of a failing
+one.
+
 `packages/core/src/extensions/__tests__/extension-api-overview-cards.test.tsx`
 covers the components and the preference as an extension reaches them.
 
@@ -839,7 +850,8 @@ does not ship leaves no error in the renderer console.
 **Surface.** One CSS asset next to the renderer entry. The host's shared
 component classes (`.Tooltip`, `.Button`, `.CapacityCard`, `.StatusCard`, …)
 are global and part of the public API and may be targeted; they must not be
-redefined. An extension's own styles
+redefined. So are the classes of the parts of the overview cards, which start
+with the name of the card (`.CapacityCard-title`, `.StatusCard-legendRow`, …). An extension's own styles
 belong in CSS Modules.
 
 **Failure mode.** A build that splits CSS per module emits assets the host does

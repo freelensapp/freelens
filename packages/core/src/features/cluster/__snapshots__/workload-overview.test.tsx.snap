@@ -559,15 +559,15 @@ exports[`workload overview > when navigating to workload overview > renders 1`] 
                   type="button"
                 >
                   <span
-                    class="header"
+                    class="StatusCard-header"
                   >
                     <span
-                      class="title"
+                      class="StatusCard-title"
                     >
                       Pods
                     </span>
                     <i
-                      class="Icon chevron material focusable smallest"
+                      class="Icon StatusCard-chevron material focusable smallest"
                     >
                       <span
                         class="icon"
@@ -578,10 +578,10 @@ exports[`workload overview > when navigating to workload overview > renders 1`] 
                     </i>
                   </span>
                   <span
-                    class="summary"
+                    class="StatusCard-summary"
                   >
                     <span
-                      class="total"
+                      class="StatusCard-total"
                       data-testid="workload-status-card-pods-total"
                     >
                       0
@@ -589,10 +589,10 @@ exports[`workload overview > when navigating to workload overview > renders 1`] 
                   </span>
                   <span
                     aria-hidden="true"
-                    class="bar"
+                    class="StatusCard-bar"
                   />
                   <span
-                    class="empty"
+                    class="StatusCard-empty"
                     data-testid="workload-status-card-pods-empty"
                   >
                     None in any namespace
