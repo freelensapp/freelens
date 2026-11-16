@@ -268,6 +268,7 @@ spec:
     ["dracula", "#282a36", "#fffbeb"],
     ["graphite", "#101215", "#eaebee"],
     ["catppuccin", "#1e1e2e", "#eff1f5"],
+    ["solarized", "#002b36", "#fdf6e3"],
   ])("with the built-in theme %s selected", (name, darkMainBackground, lightMainBackground) => {
     const systemType = observable.box<"dark" | "light">("light");
 
