@@ -17,6 +17,7 @@ import {
   defaultEditorConfig,
   defaultExtensionRegistryUrlLocation,
   defaultLogViewerPreferences,
+  defaultOverviewStylePreference,
   defaultPackageMirror,
   defaultTerminalConfig,
   getPreferenceDescriptor,
@@ -31,6 +32,7 @@ import type {
   KubeconfigSyncEntry,
   KubeconfigSyncValue,
   LogViewerPreferences,
+  OverviewStylePreference,
   PreferenceDescription,
   StoredExtensionRegistry,
   TerminalConfig,
@@ -49,6 +51,7 @@ export type PreferenceDescriptors = {
   readonly themeVariant: PreferenceDescription<ThemeVariantPreference>;
   readonly accentColorDark: PreferenceDescription<string | undefined>;
   readonly accentColorLight: PreferenceDescription<string | undefined>;
+  readonly overviewStyle: PreferenceDescription<OverviewStylePreference>;
   readonly terminalTheme: PreferenceDescription<string>;
   readonly terminalThemeVariant: PreferenceDescription<TerminalThemeVariantPreference>;
   readonly localeTimezone: PreferenceDescription<string>;
@@ -109,6 +112,10 @@ const userPreferenceDescriptorsInjectable = getInjectable({
       accentColorLight: getPreferenceDescriptor<string | undefined>({
         fromStore: (val) => val,
         toStore: (val) => val || undefined,
+      }),
+      overviewStyle: getPreferenceDescriptor<OverviewStylePreference>({
+        fromStore: (val) => (val === "charts" ? val : defaultOverviewStylePreference),
+        toStore: (val) => (val === "charts" ? val : undefined),
       }),
       terminalTheme: getPreferenceDescriptor<string>({
         fromStore: (val) => val || "",

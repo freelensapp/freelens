@@ -169,6 +169,13 @@ export type UserPreferencesModel = {
 export type ThemeVariantPreference = "system" | "dark" | "light";
 
 /**
+ * How the cluster and workloads overviews show their numbers: as cards, or as the ring and pie charts.
+ */
+export type OverviewStylePreference = "cards" | "charts";
+
+export const defaultOverviewStylePreference: OverviewStylePreference = "cards";
+
+/**
  * The variant of the terminal theme, when the terminal does not match the theme of the application.
  */
 export type TerminalThemeVariantPreference = "dark" | "light";
