@@ -853,9 +853,9 @@ Each entry is marked _value_, _type_, _class_ (a value and a type) or _member_.
   `Renderer.Component.Dependencies` (_type_) — see
   [`NamespaceSelectBadgeNonInjected` is gone with them](#namespaceselectbadgenoninjected-is-gone-with-them).
 - `Renderer.Component.SliderProps`: the members it inherited from MUI's
-  `SliderProps` — `sx`, `slots`, `slotProps`, `marks`, `track`,
-  `valueLabelFormat` and the rest, and the HTML and ARIA attributes (_member_).
-  `SliderProps` now declares only `className`, `min`, `max`, `step`, `value`,
+  `SliderProps` — `sx`, `slots`, `slotProps`, `track`, `valueLabelFormat` and
+  the rest, and the HTML and ARIA attributes (_member_). `SliderProps` now
+  declares only `className`, `min`, `max`, `step`, `marks`, `value`,
   `disabled`, `orientation`, `valueLabelDisplay`, `onChange` and
   `onChangeCommitted`.
 - `Renderer.K8sApi` store classes (_class_): `ClusterRoleBindingStore`,

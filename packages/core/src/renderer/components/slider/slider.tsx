@@ -13,7 +13,19 @@ import { cssNames } from "@freelensapp/utilities";
 import MaterialSlider from "@mui/material/Slider";
 import { Component } from "react";
 
-import type { SyntheticEvent } from "react";
+import type { ReactNode, SyntheticEvent } from "react";
+
+/**
+ * A mark on the track of a {@link Slider}.
+ */
+export interface SliderMark {
+  value: number;
+
+  /**
+   * Shown under the track, at the mark.
+   */
+  label?: ReactNode;
+}
 
 /**
  * The props of {@link Slider}.
@@ -35,8 +47,22 @@ export interface SliderProps {
   /** @default 100 */
   max?: number;
 
-  /** @default 1 */
-  step?: number;
+  /**
+   * The granularity of the value.
+   *
+   * With `null`, the thumb can only be on one of the {@link SliderProps.marks},
+   * and the arrow keys move it from one mark to the next.
+   *
+   * @default 1
+   */
+  step?: number | null;
+
+  /**
+   * Marks on the track: `true` for one at every step, or the marks to show.
+   *
+   * @default false
+   */
+  marks?: boolean | readonly SliderMark[];
 
   value?: number;
 
@@ -77,6 +103,8 @@ export class Slider extends Component<SliderProps> {
     thumb: "thumb",
     disabled: "disabled",
     vertical: "vertical",
+    mark: "mark",
+    markLabel: "markLabel",
   };
 
   render() {
