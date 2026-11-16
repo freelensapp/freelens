@@ -10,6 +10,7 @@ import draculaSource from "./dracula.theme.yaml?raw";
 import freelensSource from "./freelens.theme.yaml?raw";
 import graphiteSource from "./graphite.theme.yaml?raw";
 import { parseThemeFile } from "./parse";
+import solarizedSource from "./solarized.theme.yaml?raw";
 
 import type { ThemeFile } from "./schema";
 
@@ -42,6 +43,7 @@ export const builtInThemes: readonly BuiltInTheme[] = [
   draculaSource,
   graphiteSource,
   catppuccinSource,
+  solarizedSource,
 ].map(parseBuiltInTheme);
 
 export const defaultThemeName = "freelens";
