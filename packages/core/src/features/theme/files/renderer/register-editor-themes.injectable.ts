@@ -7,7 +7,7 @@ import { getInjectable } from "@ogre-tools/injectable";
 import { reaction } from "mobx";
 import { beforeFrameStartsSecondInjectionToken } from "../../../../renderer/before-frame-starts/tokens";
 import addNewMonacoThemeInjectable from "../../../../renderer/monaco/add-new-theme.injectable";
-import { builtInTheme } from "../common/builtin-theme";
+import { defaultTheme } from "../common/builtin-theme";
 import { getAvailableVariants, getMonacoThemeName, getMonacoTokenRules, resolveEditorTheme } from "../common/resolve";
 import availableThemesInjectable from "./available-themes.injectable";
 import initializeImportedThemesInjectable from "./initialize.injectable";
@@ -19,13 +19,13 @@ import type { ThemeFile, ThemeVariantName } from "../common/schema";
  * The editor theme of a variant as Monaco takes it, built anew, as Monaco keeps what it is given.
  */
 const toMonacoThemeData = (name: string, theme: ThemeFile, variant: ThemeVariantName): MonacoThemeData => {
-  const { base, inherit, colors, tokens } = resolveEditorTheme(theme, variant, builtInTheme);
+  const { base, inherit, colors, tokens } = resolveEditorTheme(theme, variant, defaultTheme);
 
   return { name, base, inherit, colors, rules: getMonacoTokenRules(tokens) };
 };
 
 /**
- * The name the dark editor theme of the built-in theme had when it was code, which extensions may
+ * The name the dark editor theme of the default theme had when it was code, which extensions may
  * still pass to the editor.
  */
 export const legacyDarkEditorThemeName = "clouds-midnight";
@@ -53,7 +53,7 @@ const registerEditorThemesInjectable = getInjectable({
         { fireImmediately: true },
       );
 
-      addNewMonacoTheme(toMonacoThemeData(legacyDarkEditorThemeName, builtInTheme, "dark"));
+      addNewMonacoTheme(toMonacoThemeData(legacyDarkEditorThemeName, defaultTheme, "dark"));
     },
     runAfter: initializeImportedThemesInjectable,
   }),

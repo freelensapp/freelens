@@ -55,20 +55,20 @@ export interface ResolvedEditorTheme {
 
 /**
  * The editor theme of a variant: every field, editor color and token the variant leaves out comes
- * from the built-in theme in the same variant, so that a theme can change a single token. A token
- * the variant sets replaces the built-in one as a whole.
+ * from the default theme in the same variant, so that a theme can change a single token. A token
+ * the variant sets replaces the one of the default theme as a whole.
  */
 export const resolveEditorTheme = (
   theme: ThemeFile,
   variant: ThemeVariantName,
-  builtInTheme: ThemeFile,
+  defaultTheme: ThemeFile,
 ): ResolvedEditorTheme => {
-  const builtInEditor = builtInTheme.spec[variant]?.editor;
+  const builtInEditor = defaultTheme.spec[variant]?.editor;
   const editor = theme.spec[variant]?.editor;
   const base = editor?.base ?? builtInEditor?.base;
 
   if (!base) {
-    throw new Error(`The built-in theme has no editor base for the ${variant} variant`);
+    throw new Error(`The default theme has no editor base for the ${variant} variant`);
   }
 
   return {
@@ -105,17 +105,17 @@ export const getMonacoTokenRules = (tokens: ThemeEditorTokens): MonacoTokenRule[
 
 /**
  * A variant of a theme as the application applies it: every token, the missing ones taken from
- * the built-in theme in the same variant, and the unknown ones left out. A theme without the
+ * the default theme in the same variant, and the unknown ones left out. A theme without the
  * variant gets its only one.
  */
 export const resolveThemeVariant = (
   theme: ThemeFile,
   requestedVariant: ThemeVariantName,
-  builtInTheme: ThemeFile,
+  defaultTheme: ThemeFile,
 ): LensTheme => {
   const variant = getEffectiveVariant(theme, requestedVariant);
   const spec = theme.spec[variant];
-  const builtInSpec = builtInTheme.spec[variant];
+  const builtInSpec = defaultTheme.spec[variant];
 
   return {
     name: theme.metadata.name,
@@ -131,6 +131,6 @@ export const resolveThemeVariant = (
       ...pickKnown<TerminalColorName>(terminalColorNames, builtInSpec?.terminalColors),
       ...pickKnown<TerminalColorName>(terminalColorNames, spec?.terminalColors),
     },
-    ...(theme.metadata.name === builtInTheme.metadata.name ? { isDefault: true } : {}),
+    ...(theme.metadata.name === defaultTheme.metadata.name ? { isDefault: true } : {}),
   };
 };

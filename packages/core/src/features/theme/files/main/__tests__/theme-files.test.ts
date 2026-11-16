@@ -160,13 +160,14 @@ describe("theme files in the main process", () => {
       expect(themeNames()).toEqual([]);
     });
 
-    it("refuses the name of the built-in theme", async () => {
-      await writeFile("/downloads/freelens.yaml", theme("freelens"));
+    it.each(["freelens", "ayu", "ayu-mirage"])("refuses the name of the built-in theme %s", async (name) => {
+      await writeFile(`/downloads/${name}.yaml`, theme(name));
 
-      expect(await chooseAndImport("/downloads/freelens.yaml")).toMatchObject({
+      expect(await chooseAndImport(`/downloads/${name}.yaml`)).toMatchObject({
         status: "invalid",
-        error: expect.stringContaining("built-in theme"),
+        error: expect.stringContaining("a built-in theme"),
       });
+      expect(themeNames()).toEqual([]);
     });
 
     describe("a request cannot name a file", () => {
@@ -425,6 +426,13 @@ describe("theme files in the main process", () => {
       expect(await pathExists("/user-data/themes/mine.yaml")).toBe(false);
     });
 
+    it.each(["freelens", "ayu", "ayu-mirage"])("does not remove the built-in theme %s", async (name) => {
+      resetSpies();
+
+      expect(await di.inject(removeThemeListenerInjectable).handler(name)).toEqual({ status: "not-found" });
+      expect(fileSystem.rm).not.toHaveBeenCalled();
+    });
+
     it.each(hostileNames)("refuses the name %j without touching the file system", async (name) => {
       resetSpies();
 
@@ -455,6 +463,24 @@ describe("theme files in the main process", () => {
       await writeFile("/exports/copy.yaml", exported.replace('name: "freelens"', 'name: "freelens-copy"'));
 
       expect(await chooseAndImport("/exports/copy.yaml")).toMatchObject({ status: "imported", name: "freelens-copy" });
+    });
+
+    it.each(["ayu", "ayu-mirage"])("writes the built-in theme %s as a file that imports back", async (name) => {
+      savePath = `/exports/${name}.yaml`;
+
+      expect(await di.inject(exportThemeListenerInjectable).handler(name)).toEqual({
+        status: "exported",
+        filePath: `/exports/${name}.yaml`,
+      });
+
+      const exported = await readFile(`/exports/${name}.yaml`);
+      const parsed = parseThemeFile(exported);
+
+      expect(parsed.isValid && parsed.theme.metadata.name).toBe(name);
+
+      await writeFile("/exports/copy.yaml", exported.replace(`name: "${name}"`, 'name: "my-ayu"'));
+
+      expect(await chooseAndImport("/exports/copy.yaml")).toMatchObject({ status: "imported", name: "my-ayu" });
     });
 
     it("does nothing when the dialog is canceled", async () => {

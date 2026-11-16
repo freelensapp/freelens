@@ -10,7 +10,7 @@ import findThemeInjectable from "../../features/theme/files/renderer/find-theme.
 import resolveThemeInjectable from "../../features/theme/files/renderer/resolve-theme.injectable";
 import accentColorsInjectable from "../../features/user-preferences/common/accent-colors.injectable";
 import themePreferenceInjectable from "../../features/user-preferences/common/theme-preference.injectable";
-import { DEFAULT_ACCENT_COLOR, getTextColorOnAccent } from "./accent-colors";
+import { getTextColorOnAccent } from "./accent-colors";
 import systemThemeConfigurationInjectable from "./system-theme.injectable";
 
 import type { Injectable } from "@ogre-tools/injectable";
@@ -63,7 +63,9 @@ const activeThemeInjectable: Injectable<IComputedValue<ReadonlyDeep<LensTheme>>>
       const baseTheme = resolveTheme(findTheme(name), requestedVariant);
       const accentColor = accentColors.get()[baseTheme.type];
 
-      if (!accentColor || accentColor === DEFAULT_ACCENT_COLOR) {
+      // Without a choice, the theme keeps its own accent. A choice of that same accent, such as
+      // Teal on the default theme, keeps the theme as it is too, text on the accent included.
+      if (!accentColor || accentColor.toLowerCase() === baseTheme.colors.primary.toLowerCase()) {
         return baseTheme;
       }
 

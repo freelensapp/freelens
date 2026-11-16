@@ -3,30 +3,65 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import builtInThemeSource from "./freelens.theme.yaml?raw";
+import ayuSource from "./ayu.theme.yaml?raw";
+import ayuMirageSource from "./ayu-mirage.theme.yaml?raw";
+import freelensSource from "./freelens.theme.yaml?raw";
 import { parseThemeFile } from "./parse";
 
 import type { ThemeFile } from "./schema";
 
-export const builtInThemeName = "freelens";
+export interface BuiltInTheme {
+  theme: ThemeFile;
+  /**
+   * The text of the theme file, bundled with the application.
+   */
+  source: string;
+}
 
-/**
- * The text of the built-in theme file, bundled with the application.
- */
-export { builtInThemeSource };
-
-const parseBuiltInTheme = (): ThemeFile => {
-  const result = parseThemeFile(builtInThemeSource);
+const parseBuiltInTheme = (source: string): BuiltInTheme => {
+  const result = parseThemeFile(source);
 
   if (!result.isValid) {
-    throw new Error(`The built-in theme is invalid: ${result.error}`);
+    throw new Error(`A built-in theme is invalid: ${result.error}`);
   }
 
-  return result.theme;
+  return { theme: result.theme, source };
 };
 
 /**
- * The built-in theme, which defines every token. Every other theme takes the tokens it leaves out
- * from it.
+ * The themes bundled with the application, in the order the preferences list them: the default
+ * theme first.
  */
-export const builtInTheme: ThemeFile = parseBuiltInTheme();
+export const builtInThemes: readonly BuiltInTheme[] = [freelensSource, ayuSource, ayuMirageSource].map(
+  parseBuiltInTheme,
+);
+
+export const defaultThemeName = "freelens";
+
+/**
+ * The built-in theme of a name, if there is one.
+ */
+export const findBuiltInTheme = (name: string): ThemeFile | undefined =>
+  builtInThemes.find(({ theme }) => theme.metadata.name === name)?.theme;
+
+/**
+ * Whether a name is taken by a built-in theme, so that neither an import nor a file of the themes
+ * directory can take it.
+ */
+export const isBuiltInThemeName = (name: string) => findBuiltInTheme(name) !== undefined;
+
+const getDefaultTheme = (): BuiltInTheme => {
+  const builtIn = builtInThemes.find(({ theme }) => theme.metadata.name === defaultThemeName);
+
+  if (!builtIn) {
+    throw new Error(`There is no built-in theme named "${defaultThemeName}"`);
+  }
+
+  return builtIn;
+};
+
+/**
+ * The default theme, which defines every token. Every other theme, built-in or imported, takes the
+ * tokens it leaves out from it.
+ */
+export const { theme: defaultTheme, source: defaultThemeSource } = getDefaultTheme();

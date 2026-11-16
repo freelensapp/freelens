@@ -92,6 +92,23 @@ describe("themes preference", () => {
     expect(screen.getByTestId("theme-remove-midnight")).toBeInTheDocument();
   });
 
+  it("lists the built-in themes first, the default leading, then the imported ones", () => {
+    const cards = screen.getAllByRole("listitem").map((card) => card.getAttribute("data-testid"));
+
+    expect(cards).toEqual(["theme-card-freelens", "theme-card-ayu", "theme-card-ayu-mirage", "theme-card-midnight"]);
+  });
+
+  it.each(["ayu", "ayu-mirage"])(
+    "shows the built-in theme %s in both variants, without Remove or the marker",
+    (name) => {
+      expect(screen.getByTestId(`theme-preview-${name}-dark`)).toBeInTheDocument();
+      expect(screen.getByTestId(`theme-preview-${name}-light`)).toBeInTheDocument();
+      expect(screen.getByTestId(`theme-card-${name}`)).not.toHaveTextContent("Imported");
+      expect(screen.queryByTestId(`theme-remove-${name}`)).not.toBeInTheDocument();
+      expect(screen.getByTestId(`theme-export-${name}`)).toBeInTheDocument();
+    },
+  );
+
   it("lists the files that are not applied", () => {
     expect(screen.getByTestId("invalid-theme-files")).toHaveTextContent("broken.yaml");
     expect(screen.getByTestId("invalid-theme-files")).toHaveTextContent("Unsupported kind");

@@ -11,7 +11,7 @@ import { action } from "mobx";
 import { observer } from "mobx-react";
 import openConfirmDialogInjectable from "../../../../../../renderer/components/confirm-dialog/open.injectable";
 import { SubTitle } from "../../../../../../renderer/components/layout/sub-title";
-import { builtInThemeName } from "../../../../../theme/files/common/builtin-theme";
+import { defaultThemeName } from "../../../../../theme/files/common/builtin-theme";
 import { getAvailableVariants } from "../../../../../theme/files/common/resolve";
 import availableThemesInjectable from "../../../../../theme/files/renderer/available-themes.injectable";
 import findThemeInjectable from "../../../../../theme/files/renderer/find-theme.injectable";
@@ -227,7 +227,7 @@ const NonInjectedThemes = observer(
 
           action(() => {
             if (state.theme === name) {
-              state.theme = builtInThemeName;
+              state.theme = defaultThemeName;
             }
 
             if (state.terminalTheme === name) {

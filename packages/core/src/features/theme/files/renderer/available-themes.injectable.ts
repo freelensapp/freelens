@@ -5,7 +5,7 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
-import { builtInTheme } from "../common/builtin-theme";
+import { builtInThemes } from "../common/builtin-theme";
 import importedThemesStateInjectable from "./imported-themes-state.injectable";
 
 import type { IComputedValue } from "mobx";
@@ -22,10 +22,11 @@ export interface AvailableTheme {
   unknownTokens: string[];
 }
 
-const builtIn: AvailableTheme = { theme: builtInTheme, isBuiltIn: true, unknownTokens: [] };
+const builtIn: AvailableTheme[] = builtInThemes.map(({ theme }) => ({ theme, isBuiltIn: true, unknownTokens: [] }));
 
 /**
- * Every theme the user can choose: the built-in one first, then the imported ones by name.
+ * Every theme the user can choose: the built-in ones first, the default theme leading, then the
+ * imported ones by name.
  */
 const availableThemesInjectable = getInjectable({
   id: "available-themes",
@@ -33,7 +34,7 @@ const availableThemesInjectable = getInjectable({
     const state = di.inject(importedThemesStateInjectable);
 
     return computed(() => [
-      builtIn,
+      ...builtIn,
       ...state
         .get()
         .themes.map(({ theme, fileName, unknownTokens }) => ({ theme, fileName, unknownTokens, isBuiltIn: false }))

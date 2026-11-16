@@ -4,7 +4,7 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import { builtInTheme } from "../common/builtin-theme";
+import { defaultTheme } from "../common/builtin-theme";
 import { resolveThemeVariant } from "../common/resolve";
 
 import type { LensTheme } from "../../../../renderer/themes/lens-theme";
@@ -13,7 +13,7 @@ import type { ThemeFile, ThemeVariantName } from "../common/schema";
 export type ResolveTheme = (theme: ThemeFile, variant: ThemeVariantName) => LensTheme;
 
 /**
- * {@link resolveThemeVariant} against the built-in theme, remembered per theme file, so that the
+ * {@link resolveThemeVariant} against the default theme, remembered per theme file, so that the
  * same variant of the same file is the same object every time.
  */
 const resolveThemeInjectable = getInjectable({
@@ -29,7 +29,7 @@ const resolveThemeInjectable = getInjectable({
         cache.set(theme, variants);
       }
 
-      return (variants[variant] ??= resolveThemeVariant(theme, variant, builtInTheme));
+      return (variants[variant] ??= resolveThemeVariant(theme, variant, defaultTheme));
     };
   },
 });

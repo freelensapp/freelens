@@ -1,7 +1,8 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/freelensapp/freelens/main/schemas/theme-v1.schema.json
 #
-# The built-in theme of Freelens. It defines every token, and every other theme takes the
-# tokens it leaves out from here, in the same variant.
+# The default theme of Freelens, and the reference of every other theme: it defines every token,
+# and every other theme, built-in or imported, takes the tokens it leaves out from here, in the
+# same variant.
 apiVersion: freelens.app/v1
 kind: Theme
 metadata:

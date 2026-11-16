@@ -6,7 +6,7 @@
 import { getRequestChannelListenerInjectable } from "@freelensapp/messaging";
 import writeFileInjectable from "../../../../common/fs/write-file.injectable";
 import electronDialogInjectable from "../../../../main/electron-app/features/electron-dialog.injectable";
-import { builtInTheme, builtInThemeName } from "../common/builtin-theme";
+import { findBuiltInTheme } from "../common/builtin-theme";
 import { exportThemeChannel } from "../common/channels";
 import { serializeThemeFile } from "../common/parse";
 import { getThemeNameError } from "../common/schema";
@@ -30,9 +30,7 @@ const exportThemeListenerInjectable = getRequestChannelListenerInjectable({
       }
 
       const theme =
-        name === builtInThemeName
-          ? builtInTheme
-          : state.get().themes.find((imported) => imported.theme.metadata.name === name)?.theme;
+        findBuiltInTheme(name) ?? state.get().themes.find((imported) => imported.theme.metadata.name === name)?.theme;
 
       if (!theme) {
         throw new Error(`There is no theme named "${name}"`);
