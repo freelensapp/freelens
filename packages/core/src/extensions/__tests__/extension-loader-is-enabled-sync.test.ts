@@ -408,6 +408,50 @@ describe("ExtensionLoader keeps isEnabled consistent between main and the render
     });
     expect(persistedByMain.at(-1)).toBe(true);
   });
+
+  it("records an enabled extension which is removed as disabled, so that the next install does not come up enabled", () => {
+    ipc.runAs("main", () => {
+      runInAction(() => loaders.main.addExtension(discoveredExtension(true)));
+    });
+    settle();
+
+    expect(persistedByMain.at(-1)).toBe(true);
+
+    ipc.runAs("main", () => {
+      runInAction(() => loaders.main.removeExtension(extensionId));
+    });
+    settle();
+
+    expect(persistedByMain.at(-1)).toBe(false);
+  });
+
+  it("keeps an enabled extension enabled when a rescan replaces its build", () => {
+    ipc.runAs("main", () => {
+      runInAction(() => loaders.main.addExtension(discoveredExtension(true)));
+    });
+    settle();
+
+    // A rescan reads the state of the new build before it removes the old
+    // one, and then adds the new one.
+    ipc.runAs("main", () => {
+      runInAction(() => loaders.main.removeExtension(extensionId));
+      runInAction(() =>
+        loaders.main.addExtension({
+          ...discoveredExtension(true),
+          absolutePath: "/extensions/freelensapp--example-extension/2.0.0-2-1a2b3c4d",
+          manifestPath: "/extensions/freelensapp--example-extension/2.0.0-2-1a2b3c4d/package.json",
+        }),
+      );
+    });
+    settle();
+
+    expect(persistedByMain.at(-1)).toBe(true);
+    expect(isEnabledEverywhere()).toEqual({
+      main: true,
+      "root-frame": true,
+      "cluster-frame": true,
+    });
+  });
 });
 
 describe("ExtensionLoader brings main's load failures to the renderer frames", () => {

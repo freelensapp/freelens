@@ -426,10 +426,22 @@ export class ExtensionLoader {
   }
 
   removeExtension(lensExtensionId: LensExtensionId) {
+    const extension = this.extensions.get(lensExtensionId);
+
     this.removeInstance(lensExtensionId);
 
     if (!this.extensions.delete(lensExtensionId)) {
       throw new Error(`Can't remove extension ${lensExtensionId}, doesn't exist.`);
+    }
+
+    // The enabled state is merged into, so an extension which is gone would
+    // keep its last state, and the next build installed under its name would
+    // come up enabled by discovery before the installer has any say: an
+    // unverified one, which stays disabled until the user enables it, too.
+    // A build which replaces this one is not affected: discovery read its
+    // state before removing this one, and adding it writes that state again.
+    if (ipcMain && extension) {
+      this.dependencies.updateExtensionsState([[lensExtensionId, { enabled: false, name: extension.manifest.name }]]);
     }
   }
 
