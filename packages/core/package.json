@@ -162,6 +162,7 @@
     "@types/tcp-port-used": "catalog:",
     "@types/triple-beam": "catalog:",
     "@types/ws": "catalog:",
+    "ajv": "catalog:",
     "electron": "catalog:",
     "jsdom": "catalog:",
     "logform": "catalog:",
