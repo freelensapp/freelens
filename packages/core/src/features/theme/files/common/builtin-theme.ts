@@ -9,6 +9,7 @@ import catppuccinSource from "./catppuccin.theme.yaml?raw";
 import draculaSource from "./dracula.theme.yaml?raw";
 import freelensSource from "./freelens.theme.yaml?raw";
 import graphiteSource from "./graphite.theme.yaml?raw";
+import highContrastSource from "./high-contrast.theme.yaml?raw";
 import { parseThemeFile } from "./parse";
 import solarizedSource from "./solarized.theme.yaml?raw";
 
@@ -44,6 +45,7 @@ export const builtInThemes: readonly BuiltInTheme[] = [
   graphiteSource,
   catppuccinSource,
   solarizedSource,
+  highContrastSource,
 ].map(parseBuiltInTheme);
 
 export const defaultThemeName = "freelens";

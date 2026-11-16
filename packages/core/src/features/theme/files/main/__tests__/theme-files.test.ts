@@ -160,7 +160,7 @@ describe("theme files in the main process", () => {
       expect(themeNames()).toEqual([]);
     });
 
-    it.each(["freelens", "ayu", "ayu-mirage", "dracula", "graphite", "catppuccin", "solarized"])(
+    it.each(["freelens", "ayu", "ayu-mirage", "dracula", "graphite", "catppuccin", "solarized", "high-contrast"])(
       "refuses the name of the built-in theme %s",
       async (name) => {
         await writeFile(`/downloads/${name}.yaml`, theme(name));
@@ -429,7 +429,7 @@ describe("theme files in the main process", () => {
       expect(await pathExists("/user-data/themes/mine.yaml")).toBe(false);
     });
 
-    it.each(["freelens", "ayu", "ayu-mirage", "dracula", "graphite", "catppuccin", "solarized"])(
+    it.each(["freelens", "ayu", "ayu-mirage", "dracula", "graphite", "catppuccin", "solarized", "high-contrast"])(
       "does not remove the built-in theme %s",
       async (name) => {
         resetSpies();
@@ -471,7 +471,7 @@ describe("theme files in the main process", () => {
       expect(await chooseAndImport("/exports/copy.yaml")).toMatchObject({ status: "imported", name: "freelens-copy" });
     });
 
-    it.each(["ayu", "ayu-mirage", "dracula", "graphite", "catppuccin", "solarized"])(
+    it.each(["ayu", "ayu-mirage", "dracula", "graphite", "catppuccin", "solarized", "high-contrast"])(
       "writes the built-in theme %s as a file that imports back",
       async (name) => {
         savePath = `/exports/${name}.yaml`;
