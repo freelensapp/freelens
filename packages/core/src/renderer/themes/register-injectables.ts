@@ -10,8 +10,11 @@ import activeThemeInjectable from "./active.injectable";
 import activeThemeTypeInjectable from "./active-type.injectable";
 import applyLensThemeInjectable from "./apply-lens-theme.injectable";
 import defaultLensThemeInjectable from "./default-theme.injectable";
+import lensThemeDraculaInjectable from "./dracula.injectable";
+import lensThemeGraphiteDarkInjectable from "./graphite-dark.injectable";
 import lensDarkThemeInjectable from "./lens-dark.injectable";
 import lensLightThemeInjectable from "./lens-light.injectable";
+import lensThemePaperLightInjectable from "./paper-light.injectable";
 import setupApplyActiveThemeInjectable from "./setup-apply-active-theme.injectable";
 import systemThemeConfigurationInjectable from "./system-theme.injectable";
 import xtermColorThemeInjectable from "./terminal-colors.injectable";
@@ -47,6 +50,21 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(lensLightThemeInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(lensThemeDraculaInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(lensThemeGraphiteDarkInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(lensThemePaperLightInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

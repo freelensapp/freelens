@@ -124,9 +124,11 @@
         // type:check` compiles them and nothing imports them, which is the
         // point — see the file's header
         "src/extensions/__tests__/extension-api.types.ts",
-        // app.scss loads it with `@include meta.load-css("fonts")`, which knip
+        // app.scss loads these with `@include meta.load-css(...)`, which knip
         // does not follow as it does `@use` and `@import`
-        "src/renderer/components/fonts.scss!"
+        "src/renderer/components/fonts.scss!",
+        "src/renderer/components/ui-v2.scss!",
+        "src/renderer/components/ui-v2-icons.scss!"
       ],
       "project": ["__mocks__/**/*.{ts,tsx}", "src/**/*.{css,scss,ts,tsx}!", "types/*.d.ts"],
       "ignoreDependencies": [

@@ -17,7 +17,30 @@ export interface LensTheme {
   author: string;
   monacoTheme: MonacoTheme;
   isDefault?: boolean;
+  /**
+   * Opts the theme into the v2 interface (`body.ui-v2`): restyled shell, tables, drawers,
+   * Lucide icons and the capacity cards on the cluster overview. Each value is applied as
+   * the CSS custom property `--v2-<kebab-name>`. Themes without it keep the classic interface.
+   */
+  uiV2?: Record<LensUiV2ColorName, string>;
 }
+
+export type LensUiV2ColorName =
+  | "accent"
+  | "accentText"
+  | "accentTint"
+  | "onAccent"
+  | "focusRing"
+  | "raised"
+  | "control"
+  | "selected"
+  | "rowBorder"
+  | "textStrong"
+  | "headerText"
+  | "okTint"
+  | "warnTint"
+  | "errTint"
+  | "neutralTint";
 
 export type TerminalColorName =
   | "foreground"

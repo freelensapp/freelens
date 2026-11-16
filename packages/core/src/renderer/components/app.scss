@@ -20,6 +20,10 @@
 
 @include meta.load-css("fonts");
 
+/* v2 interface for themes that declare uiV2 (inert unless body.ui-v2 is set) */
+@include meta.load-css("ui-v2");
+@include meta.load-css("ui-v2-icons");
+
 @config "../../../tailwind.config.js";
 
 /*

@@ -12,6 +12,7 @@ import { withInjectables } from "@ogre-tools/injectable-react";
 import autoBindReact from "auto-bind/react";
 import { observer } from "mobx-react";
 import React from "react";
+import activeThemeInjectable from "../../themes/active.injectable";
 import { VirtualList } from "../virtual-list";
 import orderByUrlParamInjectable from "./order-by-url-param.injectable";
 import sortByUrlParamInjectable from "./sort-by-url-param.injectable";
@@ -23,7 +24,10 @@ import { TableRow } from "./table-row";
 import type { ItemObject } from "@freelensapp/list-layout";
 import type { StrictReactNode } from "@freelensapp/utilities";
 
+import type { IComputedValue } from "mobx";
+
 import type { PageParam } from "../../navigation/page-param";
+import type { LensTheme } from "../../themes/lens-theme";
 import type { TableCellElem } from "./table-cell";
 import type { TableHeadElem } from "./table-head";
 import type { TableModel } from "./table-model/table-model";
@@ -123,14 +127,19 @@ interface Dependencies {
   model: TableModel;
   sortByUrlParam: PageParam<string>;
   orderByUrlParam: PageParam<string>;
+  activeTheme: IComputedValue<LensTheme>;
 }
+
+const defaultRowPadding = 8;
+// v2 interface (themes with `uiV2`): 40px virtual rows (17px line + 2 × 11.5px) instead of 33px.
+const v2RowPadding = 11.5;
 
 @observer
 class NonInjectedTable<Item extends ItemObject> extends React.Component<TableProps<Item> & Dependencies> {
   static defaultProps: TableProps<any> = {
     scrollable: true,
     autoSize: true,
-    rowPadding: 8,
+    rowPadding: defaultRowPadding,
     rowLineHeight: 17,
     sortSyncWithUrl: true,
     customRowHeights: (item, lineHeight, paddings) => lineHeight + paddings,
@@ -277,7 +286,8 @@ class NonInjectedTable<Item extends ItemObject> extends React.Component<TablePro
 
     if (virtual) {
       assert(customRowHeights && rowLineHeight && rowPadding);
-      const rowHeights = sortedItems.map((item) => customRowHeights(item, rowLineHeight, rowPadding * 2));
+      const padding = rowPadding === defaultRowPadding && this.props.activeTheme.get().uiV2 ? v2RowPadding : rowPadding;
+      const rowHeights = sortedItems.map((item) => customRowHeights(item, rowLineHeight, padding * 2));
 
       return (
         <VirtualList
@@ -319,5 +329,6 @@ export const Table = withInjectables<Dependencies, TableProps<ItemObject>>(NonIn
     model: di.inject(tableModelInjectable),
     orderByUrlParam: di.inject(orderByUrlParamInjectable),
     sortByUrlParam: di.inject(sortByUrlParamInjectable),
+    activeTheme: di.inject(activeThemeInjectable),
   }),
 }) as <Item>(props: TableProps<Item>) => React.ReactElement;
