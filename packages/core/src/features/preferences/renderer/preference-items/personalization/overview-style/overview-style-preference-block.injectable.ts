@@ -14,7 +14,7 @@ const overviewStylePreferenceBlockInjectable = getInjectable({
     kind: "block" as const,
     id: "overview-style",
     parentId: "personalization-page",
-    orderNumber: 35,
+    orderNumber: 37,
     Component: OverviewStyle,
   }),
 
