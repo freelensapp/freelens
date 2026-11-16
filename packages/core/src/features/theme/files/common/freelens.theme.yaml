@@ -159,61 +159,61 @@ spec:
       rules:
         - token: ""
           background: "191919"
-        - token: "comment"
-          foreground: "3c403b"
-        - token: "string"
-          foreground: "5d90cd"
-        - token: "constant.numeric"
-          foreground: "46a609"
-        - token: "constant.language"
-          foreground: "39946a"
-        - token: "keyword"
-          foreground: "927c5d"
-        - token: "support.constant.property-value"
-          foreground: "927c5d"
-        - token: "constant.other.color"
-          foreground: "927c5d"
-        - token: "keyword.other.unit"
-          foreground: "366f1a"
-        - token: "entity.other.attribute-name.html"
-          foreground: "a46763"
-        - token: "keyword.operator"
-          foreground: "4b4b4b"
-        - token: "storage"
-          foreground: "e92e2e"
-        - token: "entity.other.inherited-class"
+        - token: comment
+          foreground: 3c403b
+        - token: string
+          foreground: 5d90cd
+        - token: constant.numeric
+          foreground: 46a609
+        - token: constant.language
+          foreground: 39946a
+        - token: keyword
+          foreground: 927c5d
+        - token: support.constant.property-value
+          foreground: 927c5d
+        - token: constant.other.color
+          foreground: 927c5d
+        - token: keyword.other.unit
+          foreground: 366f1a
+        - token: entity.other.attribute-name.html
+          foreground: a46763
+        - token: keyword.operator
+          foreground: 4b4b4b
+        - token: storage
+          foreground: e92e2e
+        - token: entity.other.inherited-class
           foreground: "858585"
-        - token: "entity.name.tag"
+        - token: entity.name.tag
           foreground: "606060"
-        - token: "constant.character.entity"
-          foreground: "a165ac"
-        - token: "support.class.js"
-          foreground: "a165ac"
-        - token: "entity.other.attribute-name"
+        - token: constant.character.entity
+          foreground: a165ac
+        - token: support.class.js
+          foreground: a165ac
+        - token: entity.other.attribute-name
           foreground: "606060"
-        - token: "meta.selector.css"
-          foreground: "e92e2e"
-        - token: "entity.name.tag.css"
-          foreground: "e92e2e"
-        - token: "entity.other.attribute-name.id.css"
-          foreground: "e92e2e"
-        - token: "entity.other.attribute-name.class.css"
-          foreground: "e92e2e"
-        - token: "meta.property-name.css"
+        - token: meta.selector.css
+          foreground: e92e2e
+        - token: entity.name.tag.css
+          foreground: e92e2e
+        - token: entity.other.attribute-name.id.css
+          foreground: e92e2e
+        - token: entity.other.attribute-name.class.css
+          foreground: e92e2e
+        - token: meta.property-name.css
           foreground: "616161"
-        - token: "support.function"
-          foreground: "e92e2e"
-        - token: "invalid"
-          foreground: "ffffff"
-          background: "e92e2e"
-        - token: "punctuation.section.embedded"
-          foreground: "e92e2e"
-        - token: "punctuation.definition.tag"
+        - token: support.function
+          foreground: e92e2e
+        - token: invalid
+          foreground: ffffff
+          background: e92e2e
+        - token: punctuation.section.embedded
+          foreground: e92e2e
+        - token: punctuation.definition.tag
           foreground: "606060"
-        - token: "constant.other.color.rgb-value.css"
-          foreground: "a165ac"
-        - token: "support.constant.property-value.css"
-          foreground: "a165ac"
+        - token: constant.other.color.rgb-value.css
+          foreground: a165ac
+        - token: support.constant.property-value.css
+          foreground: a165ac
   light:
     colors:
       blue: "#00a7a0"
