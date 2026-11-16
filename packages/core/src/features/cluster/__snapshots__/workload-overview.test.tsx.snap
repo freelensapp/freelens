@@ -595,7 +595,7 @@ exports[`workload overview > when navigating to workload overview > renders 1`] 
                     class="empty"
                     data-testid="workload-status-card-pods-empty"
                   >
-                    None in this namespace
+                    None in any namespace
                   </span>
                 </button>
               </div>

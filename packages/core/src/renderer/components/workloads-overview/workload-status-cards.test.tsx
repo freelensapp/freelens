@@ -35,6 +35,7 @@ describe("WorkloadStatusCards", () => {
   it("shows one card per kind", () => {
     render(
       <WorkloadStatusCards
+        namespaceScope="one"
         workloads={[workload("Pods", "pods", 3, { running: 3 }), workload("Deployments", "deployments", 0, {})]}
       />,
     );
@@ -46,6 +47,7 @@ describe("WorkloadStatusCards", () => {
   it("states the total, the share that is healthy and the number that fail", () => {
     render(
       <WorkloadStatusCards
+        namespaceScope="one"
         workloads={[workload("Pods", "pods", 10, { Running: 6, Succeeded: 1, Pending: 1, Failed: 1, Evicted: 1 })]}
       />,
     );
@@ -60,6 +62,7 @@ describe("WorkloadStatusCards", () => {
   it("lists the statuses from healthy to failing with their counts and shares", () => {
     render(
       <WorkloadStatusCards
+        namespaceScope="one"
         workloads={[workload("Pods", "pods", 10, { Failed: 1, Pending: 1, Running: 6, Evicted: 1, Succeeded: 1 })]}
       />,
     );
@@ -72,14 +75,18 @@ describe("WorkloadStatusCards", () => {
   });
 
   it("marks only the failing statuses as failing", () => {
-    render(<WorkloadStatusCards workloads={[workload("Pods", "pods", 2, { running: 1, failed: 1 })]} />);
+    render(
+      <WorkloadStatusCards namespaceScope="one" workloads={[workload("Pods", "pods", 2, { running: 1, failed: 1 })]} />,
+    );
 
     expect(screen.getByTestId("workload-status-card-pods-status-failed")).toHaveAttribute("data-failing", "true");
     expect(screen.getByTestId("workload-status-card-pods-status-running")).not.toHaveAttribute("data-failing");
   });
 
   it("colors every status with the status color of the theme", () => {
-    render(<WorkloadStatusCards workloads={[workload("Pods", "pods", 2, { running: 1, failed: 1 })]} />);
+    render(
+      <WorkloadStatusCards namespaceScope="one" workloads={[workload("Pods", "pods", 2, { running: 1, failed: 1 })]} />,
+    );
 
     const dot = (status: string) =>
       screen.getByTestId(`workload-status-card-pods-status-${status}`).querySelector("[aria-hidden]");
@@ -89,22 +96,36 @@ describe("WorkloadStatusCards", () => {
   });
 
   it("does not report failures when nothing fails", () => {
-    render(<WorkloadStatusCards workloads={[workload("Pods", "pods", 2, { running: 2 })]} />);
+    render(<WorkloadStatusCards namespaceScope="one" workloads={[workload("Pods", "pods", 2, { running: 2 })]} />);
 
     expect(screen.queryByTestId("workload-status-card-pods-failing")).not.toBeInTheDocument();
     expect(within(screen.getByTestId("workload-status-card-pods")).getByText("100% healthy")).toBeInTheDocument();
   });
 
   it("says when there is none of a kind in the namespace", () => {
-    render(<WorkloadStatusCards workloads={[workload("Jobs", "jobs", 0, {})]} />);
+    render(<WorkloadStatusCards namespaceScope="one" workloads={[workload("Jobs", "jobs", 0, {})]} />);
 
     expect(screen.getByTestId("workload-status-card-jobs-total")).toHaveTextContent("0");
     expect(screen.getByTestId("workload-status-card-jobs-empty")).toHaveTextContent("None in this namespace");
     expect(within(screen.getByTestId("workload-status-card-jobs")).queryByText(/healthy/)).not.toBeInTheDocument();
   });
 
+  it.each([
+    { namespaceScope: "all" as const, text: "None in any namespace" },
+    { namespaceScope: "several" as const, text: "None in these namespaces" },
+  ])("says $text with $namespaceScope namespaces", ({ namespaceScope, text }) => {
+    render(<WorkloadStatusCards namespaceScope={namespaceScope} workloads={[workload("Jobs", "jobs", 0, {})]} />);
+
+    expect(screen.getByTestId("workload-status-card-jobs-empty")).toHaveTextContent(text);
+  });
+
   it("says when the items of a kind report no status", () => {
-    render(<WorkloadStatusCards workloads={[workload("Replica Sets", "replicasets", 2, { running: 0 })]} />);
+    render(
+      <WorkloadStatusCards
+        namespaceScope="one"
+        workloads={[workload("Replica Sets", "replicasets", 2, { running: 0 })]}
+      />,
+    );
 
     expect(screen.getByTestId("workload-status-card-replica-sets-empty")).toHaveTextContent("No status reported");
   });
@@ -112,7 +133,7 @@ describe("WorkloadStatusCards", () => {
   it("opens the list of the kind when the card is clicked", async () => {
     const pods = workload("Pods", "pods", 1, { running: 1 });
 
-    render(<WorkloadStatusCards workloads={[pods]} />);
+    render(<WorkloadStatusCards namespaceScope="one" workloads={[pods]} />);
     await userEvent.click(screen.getByTestId("workload-status-card-pods"));
 
     expect(pods.open).toHaveBeenCalledTimes(1);
@@ -123,7 +144,7 @@ describe("WorkloadStatusCards", () => {
     const pods = workload("Pods", "pods", 1, { running: 1 });
     const jobs = workload("Jobs", "jobs", 1, { succeeded: 1 });
 
-    render(<WorkloadStatusCards workloads={[pods, jobs]} />);
+    render(<WorkloadStatusCards namespaceScope="one" workloads={[pods, jobs]} />);
 
     expect(screen.getByRole("button", { name: /^Jobs/ })).toBe(screen.getByTestId("workload-status-card-jobs"));
 

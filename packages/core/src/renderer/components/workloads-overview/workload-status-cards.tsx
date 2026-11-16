@@ -67,9 +67,23 @@ const sumOf = (slices: StatusSlice[], statuses: Set<StatusName>) =>
 
 const percentOf = (value: number, total: number) => (total > 0 ? `${Math.round((value / total) * 100)}%` : "—");
 
+/** The namespaces the overview counts in: all of them, a single one, or several. */
+export type NamespaceScope = "all" | "one" | "several";
+
+const noneText: Record<NamespaceScope, string> = {
+  all: "None in any namespace",
+  one: "None in this namespace",
+  several: "None in these namespaces",
+};
+
 const toTestId = (title: string) => title.toLowerCase().replace(/\s+/g, "-");
 
-const WorkloadStatusCard = observer(({ workload }: { workload: Workload }) => {
+interface WorkloadStatusCardProps {
+  workload: Workload;
+  namespaceScope: NamespaceScope;
+}
+
+const WorkloadStatusCard = observer(({ workload, namespaceScope }: WorkloadStatusCardProps) => {
   const total = workload.amountOfItems.get();
   const slices = getSlices(workload);
   const counted = slices.reduce((sum, slice) => sum + slice.count, 0);
@@ -123,7 +137,7 @@ const WorkloadStatusCard = observer(({ workload }: { workload: Workload }) => {
         </span>
       ) : (
         <span className={styles.empty} data-testid={`${testId}-empty`}>
-          {total > 0 ? "No status reported" : "None in this namespace"}
+          {total > 0 ? "No status reported" : noneText[namespaceScope]}
         </span>
       )}
     </button>
@@ -132,16 +146,22 @@ const WorkloadStatusCard = observer(({ workload }: { workload: Workload }) => {
 
 export interface WorkloadStatusCardsProps {
   workloads: Workload[];
+  /** Which namespaces the workloads are counted in, for the text of a kind with no items. */
+  namespaceScope: NamespaceScope;
 }
 
 /**
  * One card per kind of workload, with its total, the share that is healthy and the number that fail,
  * and a bar and a legend of its statuses. The whole card opens the list of that kind.
  */
-export const WorkloadStatusCards = observer(({ workloads }: WorkloadStatusCardsProps) => (
+export const WorkloadStatusCards = observer(({ workloads, namespaceScope }: WorkloadStatusCardsProps) => (
   <div className={styles.cards} data-testid="workload-status-cards">
     {workloads.map((workload) => (
-      <WorkloadStatusCard key={formatKubeApiResource(workload.resource)} workload={workload} />
+      <WorkloadStatusCard
+        key={formatKubeApiResource(workload.resource)}
+        workload={workload}
+        namespaceScope={namespaceScope}
+      />
     ))}
   </div>
 ));

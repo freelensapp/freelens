@@ -56,8 +56,8 @@ describe("workload overview", () => {
       expect(rendered.queryByTestId("workload-overview-status-chart-pods")).not.toBeInTheDocument();
     });
 
-    it("says there are no pods in the namespace", () => {
-      expect(rendered.getByTestId("workload-status-card-pods-empty")).toHaveTextContent("None in this namespace");
+    it("says there are no pods in any namespace while all namespaces are selected", () => {
+      expect(rendered.getByTestId("workload-status-card-pods-empty")).toHaveTextContent("None in any namespace");
     });
 
     it("opens the list of pods from the card", () => {
@@ -92,6 +92,30 @@ describe("workload overview", () => {
 
         expect(rendered.queryByTestId("workload-status-card-pods")).toBeInTheDocument();
         expect(rendered.queryByTestId("workload-overview-status-chart-pods")).not.toBeInTheDocument();
+      });
+    });
+
+    describe("when one namespace is selected", () => {
+      beforeEach(() => {
+        builder.namespaces.add("default");
+        builder.namespaces.select("default");
+      });
+
+      it("says there are no pods in the namespace", () => {
+        expect(rendered.getByTestId("workload-status-card-pods-empty")).toHaveTextContent("None in this namespace");
+      });
+    });
+
+    describe("when several namespaces are selected", () => {
+      beforeEach(() => {
+        builder.namespaces.add("default");
+        builder.namespaces.add("kube-system");
+        builder.namespaces.select("default");
+        builder.namespaces.select("kube-system");
+      });
+
+      it("says there are no pods in the namespaces", () => {
+        expect(rendered.getByTestId("workload-status-card-pods-empty")).toHaveTextContent("None in these namespaces");
       });
     });
   });
