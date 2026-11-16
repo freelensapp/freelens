@@ -38,12 +38,14 @@ const SwatchButton = withTooltip(
   ),
 );
 
-// Above the swatch, as a tooltip beside it covers the swatches next to it. A single position,
-// because computeNextPosition of @freelensapp/tooltip ignores a list.
-const tooltipPosition = TooltipPosition.TOP;
+// Above or below the swatch, as a tooltip beside it covers the swatches next to it.
+const tooltipPositions = [TooltipPosition.TOP, TooltipPosition.BOTTOM];
 
 export const ColorSwatch = ({ tooltip, ...props }: ColorSwatchProps & { tooltip?: string }) => (
-  <SwatchButton {...props} tooltip={tooltip ? { children: tooltip, preferredPositions: tooltipPosition } : undefined} />
+  <SwatchButton
+    {...props}
+    tooltip={tooltip ? { children: tooltip, preferredPositions: tooltipPositions } : undefined}
+  />
 );
 
 export const ColorSwatchGroup = ({ label, children }: { label: string; children: StrictReactNode }) => (
