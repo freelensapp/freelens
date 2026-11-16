@@ -6,6 +6,7 @@
 import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import extensionInstallationStateStoreInjectable from "../../../extensions/extension-installation-state-store/extension-installation-state-store.injectable";
+import downloadBinaryViaChannelInjectable from "../../fetch/download-binary-via-channel.injectable";
 import downloadJsonViaChannelInjectable from "../../fetch/download-json-via-channel-copy.injectable";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import attemptInstallInjectable from "./attempt-install/attempt-install.injectable";
@@ -24,17 +25,20 @@ describe("attemptInstallByInfo, the URL of the registry", () => {
   let attemptInstallByInfo: AttemptInstallByInfo;
   let installationStateStore: ExtensionInstallationStateStore;
   let downloadJsonMock: Mock;
+  let downloadBinaryMock: Mock;
   let showErrorNotificationMock: Mock;
 
   beforeEach(() => {
     const di = getDiForUnitTesting();
 
     downloadJsonMock = vi.fn(async () => ({ callWasSuccessful: false, error: "404" }));
+    downloadBinaryMock = vi.fn(async () => ({ callWasSuccessful: false, error: "404" }));
     showErrorNotificationMock = vi.fn();
 
     di.override(attemptInstallInjectable, () => vi.fn());
     di.override(getBaseRegistryUrlInjectable, () => async () => baseRegistryUrl);
     di.override(downloadJsonViaChannelInjectable, () => downloadJsonMock);
+    di.override(downloadBinaryViaChannelInjectable, () => downloadBinaryMock);
     di.override(showErrorNotificationInjectable, () => showErrorNotificationMock);
 
     attemptInstallByInfo = di.inject(attemptInstallByInfoInjectable);
@@ -72,6 +76,25 @@ describe("attemptInstallByInfo, the URL of the registry", () => {
     await attemptInstallByInfo({ name });
 
     expect(downloadJsonMock).toHaveBeenCalledTimes(1);
+    expect(installationStateStore.anyPreInstallingOrInstalling).toBe(false);
+  });
+
+  it("passes on what throws during the install, and leaves no installation in progress", async () => {
+    baseRegistryUrl = "https://npm.example.com/";
+    downloadJsonMock.mockImplementation(async () => ({
+      callWasSuccessful: true,
+      response: {
+        versions: {
+          "1.0.0": { name, version: "1.0.0", dist: { tarball: "https://npm.example.com/some-extension-1.0.0.tgz" } },
+        },
+      },
+    }));
+    downloadBinaryMock.mockImplementation(async () => {
+      throw new Error("the channel is gone");
+    });
+
+    await expect(attemptInstallByInfo({ name })).rejects.toThrow("the channel is gone");
+
     expect(installationStateStore.anyPreInstallingOrInstalling).toBe(false);
   });
 });
