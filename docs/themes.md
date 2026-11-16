@@ -134,6 +134,7 @@ Freelens comes with these themes, each with a dark and a light variant:
 | `ayu-mirage`    | Ayu Mirage | Ayu Mirage      | Ayu Light       |
 | `dracula`       | Dracula    | Dracula Classic | Alucard Classic |
 | `graphite`      | Graphite   | Graphite        | Graphite Light  |
+| `catppuccin`    | Catppuccin | Mocha           | Latte           |
 
 `freelens` is the default theme, and the theme every other one, built-in or
 imported, takes the tokens it leaves out from. The other built-in themes set
@@ -169,6 +170,16 @@ on the backgrounds of its variant is the closest color of the same hue that
 does, which darkens most of them in Graphite Light. Its accent is Graphite's
 own orange, with dark text on it in both variants. The file carries the MIT
 notice of Graphite in its header.
+
+The Catppuccin theme takes its colors from
+[Catppuccin](https://catppuccin.com): the colors and the ANSI colors of Mocha
+and Latte in the [palette](https://github.com/catppuccin/palette), and the
+editor colors and syntax highlighting of its
+[VS Code port](https://github.com/catppuccin/vscode). A status or named color
+that does not reach the WCAG AA contrast as text on Base is the closest color
+of the same hue that does, which darkens most of them in Latte. Its accent is
+Catppuccin's own Mauve, with Crust on it in Mocha and Base in Latte. The file
+carries the MIT notice of Catppuccin in its header.
 
 ## The JSON Schema
 

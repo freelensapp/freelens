@@ -480,8 +480,8 @@ describe("theme files", () => {
     const otherThemes = builtInThemes.filter(({ theme }) => theme.metadata.name !== defaultThemeName);
     const sourceOf = (name: string) => builtInThemes.find(({ theme }) => theme.metadata.name === name)?.source ?? "";
 
-    it("are freelens, the default, then Ayu, Ayu Mirage, Dracula and Graphite", () => {
-      expect(builtInThemeNames).toEqual(["freelens", "ayu", "ayu-mirage", "dracula", "graphite"]);
+    it("are freelens, the default, then Ayu, Ayu Mirage, Dracula, Graphite and Catppuccin", () => {
+      expect(builtInThemeNames).toEqual(["freelens", "ayu", "ayu-mirage", "dracula", "graphite", "catppuccin"]);
       expect(builtInThemes[0].theme).toBe(defaultTheme);
     });
 
@@ -614,6 +614,52 @@ describe("theme files", () => {
         expect(graphite).toBeDefined();
 
         const colors = resolveThemeVariant(graphite ?? defaultTheme, variant, defaultTheme).colors;
+        const statusColors = [
+          colors.colorSuccess,
+          colors.colorOk,
+          colors.colorInfo,
+          colors.colorError,
+          colors.colorSoftError,
+          colors.colorWarning,
+        ];
+        const surfaces = [colors.mainBackground, colors.contentColor, colors.dialogBackground];
+
+        const belowAA = statusColors.flatMap((text) =>
+          surfaces
+            .map((background) => ({ text, background, ratio: getContrastRatio(text, background) ?? 0 }))
+            .filter(({ ratio }) => ratio < 4.5),
+        );
+
+        expect(belowAA).toEqual([]);
+      },
+    );
+
+    it("catppuccin credits Catppuccin and keeps its MIT notice", () => {
+      const source = sourceOf("catppuccin");
+
+      expect(findBuiltInTheme("catppuccin")?.spec.description).toContain("Catppuccin");
+      expect(source).toContain("https://catppuccin.com");
+      expect(source).toContain("https://github.com/catppuccin/palette");
+      expect(source).toContain("https://github.com/catppuccin/vscode");
+      expect(source).toContain("Copyright (c) 2021 Catppuccin");
+      expect(source).toContain("Permission is hereby granted, free of charge");
+    });
+
+    it("catppuccin takes Catppuccin's own Mauve as the accent in both variants", () => {
+      const catppuccin = findBuiltInTheme("catppuccin");
+
+      expect(catppuccin?.spec.dark?.colors).toMatchObject({ primary: "#cba6f7", textColorOnPrimary: "#11111b" });
+      expect(catppuccin?.spec.light?.colors).toMatchObject({ primary: "#8839ef", textColorOnPrimary: "#eff1f5" });
+    });
+
+    it.each(["dark", "light"] as const)(
+      "catppuccin keeps its status colors at the WCAG AA contrast on its surfaces in the %s variant",
+      (variant) => {
+        const catppuccin = findBuiltInTheme("catppuccin");
+
+        expect(catppuccin).toBeDefined();
+
+        const colors = resolveThemeVariant(catppuccin ?? defaultTheme, variant, defaultTheme).colors;
         const statusColors = [
           colors.colorSuccess,
           colors.colorOk,
