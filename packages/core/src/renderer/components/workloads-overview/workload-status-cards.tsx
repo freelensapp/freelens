@@ -12,6 +12,7 @@ import { statusBackgroundColorMapping } from "./overview-workload-status";
 import styles from "./workload-status-cards.module.scss";
 
 import type { StatusCardStatus, StatusCardTone } from "../overview-cards";
+import type { WorkloadStatus } from "./overview-workload-status";
 import type { Workload } from "./workloads/workload-injection-token";
 
 type StatusName = keyof typeof statusBackgroundColorMapping;
@@ -44,10 +45,14 @@ const toneOf = (name: StatusName): StatusCardTone => {
   return failingStatuses.has(name) ? "failing" : "neutral";
 };
 
-const getStatuses = (workload: Workload): StatusCardStatus[] => {
+/**
+ * The statuses of one kind of workload as the status card shows them: in the order of the bar, from healthy to
+ * failing, without the empty ones, in the status colors of the theme.
+ */
+export const toStatusCardStatuses = (workloadStatus: WorkloadStatus): StatusCardStatus[] => {
   const counts = new Map<StatusName, number>();
 
-  for (const [status, value] of object.entries(workload.status.get())) {
+  for (const [status, value] of object.entries(workloadStatus)) {
     const name = status.toLowerCase();
 
     if (isStatusName(name) && typeof value === "number" && value > 0) {
@@ -85,7 +90,7 @@ const WorkloadStatusCard = observer(({ workload, namespaceScope }: WorkloadStatu
   <StatusCard
     title={workload.title}
     total={workload.amountOfItems.get()}
-    statuses={getStatuses(workload)}
+    statuses={toStatusCardStatuses(workload.status.get())}
     emptyText={noneText[namespaceScope]}
     onClick={workload.open}
     data-testid={`workload-status-card-${toTestId(workload.title)}`}
