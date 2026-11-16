@@ -5,54 +5,63 @@
 
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
+import {
+  ColorSwatch,
+  ColorSwatchGroup,
+  CustomColorSwatch,
+} from "../../../../../../renderer/components/color-swatch/color-swatch";
 import { SubTitle } from "../../../../../../renderer/components/layout/sub-title";
-import { Select } from "../../../../../../renderer/components/select";
 import { accentColorOptions, DEFAULT_ACCENT_COLOR } from "../../../../../../renderer/themes/accent-colors";
 import userPreferencesStateInjectable from "../../../../../user-preferences/common/state.injectable";
-import styles from "./accent-color.module.scss";
 
-import type { AccentColorOption } from "../../../../../../renderer/themes/accent-colors";
+import type { LensThemeType } from "../../../../../../renderer/themes/lens-theme";
 import type { UserPreferencesState } from "../../../../../user-preferences/common/state.injectable";
 
 interface Dependencies {
   state: UserPreferencesState;
 }
 
-const ColorOption = ({ option }: { option: AccentColorOption }) => (
-  <div className={styles.colorOption}>
-    <div className={styles.colorSwatch} style={{ backgroundColor: option.value }} />
-    <span>{option.label}</span>
-  </div>
-);
+const variants = [
+  { type: "dark", name: "Dark", preference: "accentColorDark" },
+  { type: "light", name: "Light", preference: "accentColorLight" },
+] as const satisfies readonly {
+  type: LensThemeType;
+  name: string;
+  preference: keyof UserPreferencesState;
+}[];
 
 const NonInjectedAccentColor = observer(({ state }: Dependencies) => (
   <section id="accent-color">
     <SubTitle title="Accent color" />
-    <div className={styles.accentRow}>
-      <div className={styles.accentColumn}>
-        <span>Dark</span>
-        <Select
-          id="accent-color-dark-input"
-          aria-label="Accent color of the dark theme"
-          options={accentColorOptions}
-          value={state.accentColorDark || DEFAULT_ACCENT_COLOR}
-          onChange={(value) => (state.accentColorDark = value?.value)}
-          formatOptionLabel={(option) => <ColorOption option={option} />}
-          themeName="lens"
-        />
-      </div>
-      <div className={styles.accentColumn}>
-        <span>Light</span>
-        <Select
-          id="accent-color-light-input"
-          aria-label="Accent color of the light theme"
-          options={accentColorOptions}
-          value={state.accentColorLight || DEFAULT_ACCENT_COLOR}
-          onChange={(value) => (state.accentColorLight = value?.value)}
-          formatOptionLabel={(option) => <ColorOption option={option} />}
-          themeName="lens"
-        />
-      </div>
+    <div className="flex flex-col gap-3">
+      {variants.map(({ type, name, preference }) => {
+        const current = state[preference] || DEFAULT_ACCENT_COLOR;
+        const isCustom = !accentColorOptions.some((option) => option.value === current);
+
+        return (
+          <div key={type} className="flex items-center gap-4">
+            <span className="w-10">{name}</span>
+            <ColorSwatchGroup label={`Accent color of the ${type} theme`}>
+              {accentColorOptions.map((option) => (
+                <ColorSwatch
+                  key={option.value}
+                  color={option.value}
+                  tooltip={option.label}
+                  aria-label={option.label}
+                  selected={current === option.value}
+                  onClick={() => (state[preference] = option.value)}
+                  data-testid={`accent-color-${type}-${option.label.toLowerCase()}`}
+                />
+              ))}
+              <CustomColorSwatch
+                value={isCustom ? current : undefined}
+                onChange={(color) => (state[preference] = color)}
+                data-testid={`accent-color-${type}-custom`}
+              />
+            </ColorSwatchGroup>
+          </div>
+        );
+      })}
     </div>
   </section>
 ));
