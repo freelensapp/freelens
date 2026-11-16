@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { screen, waitFor } from "@testing-library/react";
+import { fireEvent, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { runInAction } from "mobx";
 import { beforeEach, describe, expect, it } from "vitest";
@@ -140,6 +140,23 @@ describe("cluster icon appearance settings", () => {
       await user.click(screen.getByTestId("cluster-icon-color-green"));
 
       expect(cluster.preferences.icon).toBe("hsl(125, 60%, 27%)");
+    });
+
+    it("stores any color picked with Custom", () => {
+      renderSettings();
+
+      fireEvent.change(screen.getByTestId("cluster-icon-color-custom-input"), { target: { value: "#123456" } });
+
+      expect(cluster.preferences.icon).toBe("#123456");
+      expect(screen.getByTestId("cluster-icon-color-custom")).toHaveAttribute("aria-pressed", "true");
+      expect(screen.getByTestId("cluster-icon-color-default")).toHaveAttribute("aria-pressed", "false");
+    });
+
+    it("does not mark Custom for a listed color or an image", () => {
+      cluster.preferences.icon = image;
+      renderSettings();
+
+      expect(screen.getByTestId("cluster-icon-color-custom")).toHaveAttribute("aria-pressed", "false");
     });
 
     it("replaces an image with the generated color with Auto", async () => {

@@ -4,15 +4,14 @@
  */
 
 import { showErrorNotificationInjectable } from "@freelensapp/notifications";
-import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import { useEffect, useRef, useState } from "react";
 import { computeDefaultShortName, limitGraphemeLengthOf } from "../../../common/catalog/helpers";
 import { iconColors } from "../avatar/icon-colors";
+import { ColorSwatch, ColorSwatchGroup, CustomColorSwatch } from "../color-swatch/color-swatch";
 import { Input } from "../input";
 import { SubTitle } from "../layout/sub-title";
-import styles from "./icon-appearance-setting.module.scss";
 import { readIconFile } from "./read-icon-file";
 
 import type { ShowNotification } from "@freelensapp/notifications";
@@ -72,6 +71,8 @@ const NonInjectedClusterIconColorSetting = observer(
     const fileInput = useRef<HTMLInputElement>(null);
     const currentIcon = cluster.preferences.icon;
     const hasImage = Boolean(currentIcon?.startsWith("data:"));
+    const customColor =
+      currentIcon && !hasImage && !iconColors.some((color) => color.value === currentIcon) ? currentIcon : undefined;
 
     const pickColor = (color: string | null) => {
       cluster.preferences.icon = color;
@@ -97,43 +98,34 @@ const NonInjectedClusterIconColorSetting = observer(
     return (
       <>
         <SubTitle title="Icon Color" />
-        <div className="flex flex-wrap items-center gap-2" role="group" aria-label="Icon color">
-          <button
-            type="button"
-            className={cssNames(styles.swatch, styles.textSwatch, { [styles.selected]: !currentIcon })}
-            aria-pressed={!currentIcon}
+        <ColorSwatchGroup label="Icon color">
+          <ColorSwatch
+            selected={!currentIcon}
             onClick={() => currentIcon && pickColor(null)}
             data-testid="cluster-icon-color-default"
           >
             Auto
-          </button>
-          {iconColors.map((color) => {
-            const selected = !hasImage && currentIcon === color.value;
-
-            return (
-              <button
-                key={color.value}
-                type="button"
-                title={color.name}
-                aria-label={color.name}
-                aria-pressed={selected}
-                className={cssNames(styles.swatch, { [styles.selected]: selected })}
-                style={{ background: color.value }}
-                onClick={() => pickColor(color.value)}
-                data-testid={`cluster-icon-color-${color.name.toLowerCase()}`}
-              />
-            );
-          })}
-          <button
-            type="button"
-            title="Upload an image as the icon"
-            className={cssNames(styles.swatch, styles.textSwatch, { [styles.selected]: hasImage })}
-            aria-pressed={hasImage}
+          </ColorSwatch>
+          {iconColors.map((color) => (
+            <ColorSwatch
+              key={color.value}
+              color={color.value}
+              tooltip={color.name}
+              aria-label={color.name}
+              selected={!hasImage && currentIcon === color.value}
+              onClick={() => pickColor(color.value)}
+              data-testid={`cluster-icon-color-${color.name.toLowerCase()}`}
+            />
+          ))}
+          <CustomColorSwatch value={customColor} onChange={pickColor} data-testid="cluster-icon-color-custom" />
+          <ColorSwatch
+            tooltip="Upload an image as the icon"
+            selected={hasImage}
             onClick={() => fileInput.current?.click()}
             data-testid="cluster-icon-image"
           >
             Icon
-          </button>
+          </ColorSwatch>
           <input
             ref={fileInput}
             type="file"
@@ -142,7 +134,7 @@ const NonInjectedClusterIconColorSetting = observer(
             onChange={pickImage}
             data-testid="cluster-icon-image-input"
           />
-        </div>
+        </ColorSwatchGroup>
       </>
     );
   },

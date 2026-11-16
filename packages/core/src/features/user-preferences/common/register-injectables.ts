@@ -6,6 +6,7 @@
  * This replaces the webpack-based auto-registration system.
  */
 
+import accentColorsInjectable from "./accent-colors.injectable";
 import {
   getClusterPageMenuOrderInjectable,
   resetClusterPageMenuOrderInjectable,
@@ -27,6 +28,11 @@ import toggleTableColumnVisibilityInjectable from "./toggle-table-column-visibil
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
+  try {
+    di.register(accentColorsInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
   try {
     di.register(getClusterPageMenuOrderInjectable);
   } catch (e) {
