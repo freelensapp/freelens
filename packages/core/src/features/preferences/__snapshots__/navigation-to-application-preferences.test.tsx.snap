@@ -465,6 +465,33 @@ exports[`preferences - navigation to application preferences > given in preferen
                 class="HorizontalLine size-xl"
               />
               <div
+                data-preference-item-test="custom-resource-domain-grouping"
+              >
+                <section
+                  id="customResourceDomainGrouping"
+                >
+                  <div
+                    class="SubTitle"
+                  >
+                    Custom Resource Groups
+                     
+                  </div>
+                  <label
+                    class="Switch"
+                    data-testid="switch"
+                  >
+                    Group by API domain
+                    <input
+                      role="switch"
+                      type="checkbox"
+                    />
+                  </label>
+                </section>
+              </div>
+              <div
+                class="HorizontalLine size-xl"
+              />
+              <div
                 data-preference-item-test="sidebar-menu"
               >
                 <section
@@ -1245,6 +1272,33 @@ exports[`preferences - navigation to application preferences > given in preferen
                     Show tray icon in the menu bar
                     <input
                       checked=""
+                      role="switch"
+                      type="checkbox"
+                    />
+                  </label>
+                </section>
+              </div>
+              <div
+                class="HorizontalLine size-xl"
+              />
+              <div
+                data-preference-item-test="custom-resource-domain-grouping"
+              >
+                <section
+                  id="customResourceDomainGrouping"
+                >
+                  <div
+                    class="SubTitle"
+                  >
+                    Custom Resource Groups
+                     
+                  </div>
+                  <label
+                    class="Switch"
+                    data-testid="switch"
+                  >
+                    Group by API domain
+                    <input
                       role="switch"
                       type="checkbox"
                     />
@@ -2526,6 +2580,33 @@ exports[`preferences - navigation to application preferences > given in some chi
                 class="HorizontalLine size-xl"
               />
               <div
+                data-preference-item-test="custom-resource-domain-grouping"
+              >
+                <section
+                  id="customResourceDomainGrouping"
+                >
+                  <div
+                    class="SubTitle"
+                  >
+                    Custom Resource Groups
+                     
+                  </div>
+                  <label
+                    class="Switch"
+                    data-testid="switch"
+                  >
+                    Group by API domain
+                    <input
+                      role="switch"
+                      type="checkbox"
+                    />
+                  </label>
+                </section>
+              </div>
+              <div
+                class="HorizontalLine size-xl"
+              />
+              <div
                 data-preference-item-test="sidebar-menu"
               >
                 <section
@@ -3307,6 +3388,33 @@ exports[`preferences - navigation to application preferences > given in some chi
                       Show tray icon in the menu bar
                       <input
                         checked=""
+                        role="switch"
+                        type="checkbox"
+                      />
+                    </label>
+                  </section>
+                </div>
+                <div
+                  class="HorizontalLine size-xl"
+                />
+                <div
+                  data-preference-item-test="custom-resource-domain-grouping"
+                >
+                  <section
+                    id="customResourceDomainGrouping"
+                  >
+                    <div
+                      class="SubTitle"
+                    >
+                      Custom Resource Groups
+                       
+                    </div>
+                    <label
+                      class="Switch"
+                      data-testid="switch"
+                    >
+                      Group by API domain
+                      <input
                         role="switch"
                         type="checkbox"
                       />

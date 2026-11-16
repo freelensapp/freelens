@@ -898,6 +898,33 @@ exports[`welcome - navigation using application menu > when navigated somewhere 
                   class="HorizontalLine size-xl"
                 />
                 <div
+                  data-preference-item-test="custom-resource-domain-grouping"
+                >
+                  <section
+                    id="customResourceDomainGrouping"
+                  >
+                    <div
+                      class="SubTitle"
+                    >
+                      Custom Resource Groups
+                       
+                    </div>
+                    <label
+                      class="Switch"
+                      data-testid="switch"
+                    >
+                      Group by API domain
+                      <input
+                        role="switch"
+                        type="checkbox"
+                      />
+                    </label>
+                  </section>
+                </div>
+                <div
+                  class="HorizontalLine size-xl"
+                />
+                <div
                   data-preference-item-test="sidebar-menu"
                 >
                   <section

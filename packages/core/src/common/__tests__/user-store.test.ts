@@ -53,6 +53,8 @@ describe("user store tests", () => {
 
       expect(state.httpsProxy).toBe("abcd://defg");
       expect(state.colorTheme).toBe(defaultColorThemePreference);
+      expect(state.groupCustomResourcesByDomain).toBe(false);
+      expect(state.customResourceGroupRootDepth).toBe(1);
 
       state.colorTheme = "light";
       expect(state.colorTheme).toBe("light");
@@ -91,6 +93,62 @@ describe("user store tests", () => {
       expect(readJsonSync("/some-directory-for-user-data/lens-user-store.json")).toMatchObject({
         preferences: {
           persistentSearch: true,
+        },
+      });
+    });
+
+    it("loads and stores groupCustomResourcesByDomain as a global preference", async () => {
+      const writeJsonSync = di.inject(writeJsonSyncInjectable);
+      const readJsonSync = di.inject(readJsonSyncInjectable);
+
+      writeJsonSync("/some-directory-for-user-data/lens-user-store.json", {
+        preferences: {
+          groupCustomResourcesByDomain: true,
+        },
+      });
+      writeJsonSync("/some-directory-for-user-data/kube_config", {});
+
+      di.inject(userPreferencesPersistentStorageInjectable).loadAndStartSyncing();
+
+      expect(state.groupCustomResourcesByDomain).toBe(true);
+
+      state.groupCustomResourcesByDomain = false;
+      expect(readJsonSync("/some-directory-for-user-data/lens-user-store.json")).toMatchObject({
+        preferences: {},
+      });
+
+      state.groupCustomResourcesByDomain = true;
+      expect(readJsonSync("/some-directory-for-user-data/lens-user-store.json")).toMatchObject({
+        preferences: {
+          groupCustomResourcesByDomain: true,
+        },
+      });
+    });
+
+    it("loads and stores customResourceGroupRootDepth as a global preference", async () => {
+      const writeJsonSync = di.inject(writeJsonSyncInjectable);
+      const readJsonSync = di.inject(readJsonSyncInjectable);
+
+      writeJsonSync("/some-directory-for-user-data/lens-user-store.json", {
+        preferences: {
+          customResourceGroupRootDepth: 2,
+        },
+      });
+      writeJsonSync("/some-directory-for-user-data/kube_config", {});
+
+      di.inject(userPreferencesPersistentStorageInjectable).loadAndStartSyncing();
+
+      expect(state.customResourceGroupRootDepth).toBe(2);
+
+      state.customResourceGroupRootDepth = 1;
+      expect(readJsonSync("/some-directory-for-user-data/lens-user-store.json")).toMatchObject({
+        preferences: {},
+      });
+
+      state.customResourceGroupRootDepth = 37;
+      expect(readJsonSync("/some-directory-for-user-data/lens-user-store.json")).toMatchObject({
+        preferences: {
+          customResourceGroupRootDepth: 37,
         },
       });
     });

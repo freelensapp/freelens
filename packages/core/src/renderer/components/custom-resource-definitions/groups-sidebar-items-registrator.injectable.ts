@@ -22,7 +22,16 @@ const customResourceDefinitionGroupsSidebarItemsRegistratorInjectable = getInjec
         di.inject(dependencyInjectionContainerInjectable),
       );
 
-      reaction(() => sidebarItems.get(), injectableDifferencingRegistrator, { fireImmediately: true });
+      reaction(
+        () => sidebarItems.get(),
+        (items) => {
+          // IDs stay stable across updates, but parent IDs and order numbers may change
+          // as definitions arrive or the grouping preference changes.
+          injectableDifferencingRegistrator([]);
+          injectableDifferencingRegistrator(items);
+        },
+        { fireImmediately: true },
+      );
     },
   }),
   injectionToken: beforeClusterFrameStartsSecondInjectionToken,
