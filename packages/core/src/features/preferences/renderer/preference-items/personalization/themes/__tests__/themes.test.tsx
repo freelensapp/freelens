@@ -103,11 +103,12 @@ describe("themes preference", () => {
       "theme-card-graphite",
       "theme-card-catppuccin",
       "theme-card-solarized",
+      "theme-card-high-contrast",
       "theme-card-midnight",
     ]);
   });
 
-  it.each(["ayu", "ayu-mirage", "dracula", "graphite", "catppuccin", "solarized"])(
+  it.each(["ayu", "ayu-mirage", "dracula", "graphite", "catppuccin", "solarized", "high-contrast"])(
     "shows the built-in theme %s in both variants, without Remove or the marker",
     (name) => {
       expect(screen.getByTestId(`theme-preview-${name}-dark`)).toBeInTheDocument();

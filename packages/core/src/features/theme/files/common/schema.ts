@@ -99,7 +99,7 @@ const createEditorSchema = (object: typeof z.strictObject) => {
 
   return object({
     base: z
-      .enum(["vs", "vs-dark", "hc-black"])
+      .enum(["vs", "vs-dark", "hc-black", "hc-light"])
       .optional()
       .meta({ description: "The built-in Monaco theme the editor theme extends; the built-in theme's when left out" }),
     inherit: z

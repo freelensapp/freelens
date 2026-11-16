@@ -799,7 +799,7 @@
             "base": {
               "description": "The built-in Monaco theme the editor theme extends; the built-in theme's when left out",
               "type": "string",
-              "enum": ["vs", "vs-dark", "hc-black"]
+              "enum": ["vs", "vs-dark", "hc-black", "hc-light"]
             },
             "inherit": {
               "description": "Whether the token styles of the base apply as well; the built-in theme's when left out",
