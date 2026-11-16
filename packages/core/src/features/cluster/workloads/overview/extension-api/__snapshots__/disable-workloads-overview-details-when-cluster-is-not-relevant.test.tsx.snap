@@ -537,12 +537,9 @@ exports[`disable workloads overview details when cluster is not relevant > given
                 </div>
               </div>
               <div
-                class="OverviewStatuses"
-              >
-                <div
-                  class="workloads"
-                />
-              </div>
+                class="cards"
+                data-testid="workload-status-cards"
+              />
               <div
                 data-testid="some-detail-component"
               >
@@ -1222,12 +1219,9 @@ exports[`disable workloads overview details when cluster is not relevant > given
                 </div>
               </div>
               <div
-                class="OverviewStatuses"
-              >
-                <div
-                  class="workloads"
-                />
-              </div>
+                class="cards"
+                data-testid="workload-status-cards"
+              />
             </div>
           </main>
         </div>
@@ -1902,12 +1896,9 @@ exports[`disable workloads overview details when cluster is not relevant > given
                 </div>
               </div>
               <div
-                class="OverviewStatuses"
-              >
-                <div
-                  class="workloads"
-                />
-              </div>
+                class="cards"
+                data-testid="workload-status-cards"
+              />
             </div>
           </main>
         </div>

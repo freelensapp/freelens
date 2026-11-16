@@ -1093,12 +1093,9 @@ exports[`disable-cluster-pages-when-cluster-is-not-relevant > given extension sh
                 </div>
               </div>
               <div
-                class="OverviewStatuses"
-              >
-                <div
-                  class="workloads"
-                />
-              </div>
+                class="cards"
+                data-testid="workload-status-cards"
+              />
             </div>
           </main>
         </div>
@@ -1773,12 +1770,9 @@ exports[`disable-cluster-pages-when-cluster-is-not-relevant > given not yet know
                 </div>
               </div>
               <div
-                class="OverviewStatuses"
-              >
-                <div
-                  class="workloads"
-                />
-              </div>
+                class="cards"
+                data-testid="workload-status-cards"
+              />
             </div>
           </main>
         </div>

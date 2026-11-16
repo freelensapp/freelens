@@ -574,12 +574,9 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
               </div>
             </div>
             <div
-              class="OverviewStatuses"
-            >
-              <div
-                class="workloads"
-              />
-            </div>
+              class="cards"
+              data-testid="workload-status-cards"
+            />
           </div>
         </main>
       </div>
@@ -1290,12 +1287,9 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
               </div>
             </div>
             <div
-              class="OverviewStatuses"
-            >
-              <div
-                class="workloads"
-              />
-            </div>
+              class="cards"
+              data-testid="workload-status-cards"
+            />
           </div>
         </main>
       </div>
@@ -2052,12 +2046,9 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
               </div>
             </div>
             <div
-              class="OverviewStatuses"
-            >
-              <div
-                class="workloads"
-              />
-            </div>
+              class="cards"
+              data-testid="workload-status-cards"
+            />
           </div>
         </main>
       </div>
@@ -4043,12 +4034,9 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
               </div>
             </div>
             <div
-              class="OverviewStatuses"
-            >
-              <div
-                class="workloads"
-              />
-            </div>
+              class="cards"
+              data-testid="workload-status-cards"
+            />
           </div>
         </main>
       </div>
@@ -4759,12 +4747,9 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
               </div>
             </div>
             <div
-              class="OverviewStatuses"
-            >
-              <div
-                class="workloads"
-              />
-            </div>
+              class="cards"
+              data-testid="workload-status-cards"
+            />
           </div>
         </main>
       </div>

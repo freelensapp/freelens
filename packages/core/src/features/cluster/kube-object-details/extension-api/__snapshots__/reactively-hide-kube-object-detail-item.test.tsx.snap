@@ -649,12 +649,9 @@ exports[`reactively hide kube object detail item > renders 1`] = `
                 </div>
               </div>
               <div
-                class="OverviewStatuses"
-              >
-                <div
-                  class="workloads"
-                />
-              </div>
+                class="cards"
+                data-testid="workload-status-cards"
+              />
             </div>
           </main>
         </div>
@@ -1446,12 +1443,9 @@ exports[`reactively hide kube object detail item > when the item is shown > rend
                 </div>
               </div>
               <div
-                class="OverviewStatuses"
-              >
-                <div
-                  class="workloads"
-                />
-              </div>
+                class="cards"
+                data-testid="workload-status-cards"
+              />
             </div>
           </main>
         </div>

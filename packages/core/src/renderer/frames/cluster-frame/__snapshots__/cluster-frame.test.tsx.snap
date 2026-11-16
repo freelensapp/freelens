@@ -1915,12 +1915,9 @@ exports[`<ClusterFrame /> > given cluster without list nodes, but with namespace
               </div>
             </div>
             <div
-              class="OverviewStatuses"
-            >
-              <div
-                class="workloads"
-              />
-            </div>
+              class="cards"
+              data-testid="workload-status-cards"
+            />
           </div>
         </main>
       </div>
