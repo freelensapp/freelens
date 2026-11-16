@@ -247,6 +247,23 @@ The schema is generated from the one the application validates with, and a
 test fails when the committed file differs from it. After changing the
 schema or a token, update the file with `pnpm test:unit:updatesnapshot`.
 
+## Importing a theme
+
+"Import theme..." in Preferences → Personalization opens a dialog that takes
+the URL of a theme file. The URL is `https:` or `http:`; any other scheme,
+`file:` included, is refused. The folder icon next to the input, "Browse",
+picks a local file instead, with the file dialog of the operating system, and
+imports it as soon as it is chosen.
+
+A theme file, from a URL or a local file, is at most 100 KiB. A larger local
+file is refused without being read, and a download stops as soon as it passes
+the limit, whatever size the server declares. A file or a download that is
+refused leaves the dialog open with the reason, so the URL can be corrected.
+
+The file is imported as it is, comments included, in the same way from both
+sources. The URL is not recorded: a theme imported from a URL is not updated
+from it later. Import it again to update it.
+
 ## Where themes live
 
 Imported themes are files in the `themes` directory of the user data

@@ -11,7 +11,9 @@ import readFileInjectable from "../../../../../common/fs/read-file.injectable";
 import writeFileInjectable from "../../../../../common/fs/write-file.injectable";
 import randomUUIDInjectable from "../../../../../main/crypto/random-uuid.injectable";
 import electronDialogInjectable from "../../../../../main/electron-app/features/electron-dialog.injectable";
+import proxyFetchInjectable from "../../../../../main/fetch/proxy-fetch.injectable";
 import { getDiForUnitTesting } from "../../../../../main/getDiForUnitTesting";
+import { maxThemeFileSize, themeFileTooLargeError } from "../../common/import-source";
 import { parseThemeFile } from "../../common/parse";
 import getThemeFilePathInjectable from "../get-theme-file-path.injectable";
 import exportThemeListenerInjectable from "../handle-export.injectable";
@@ -63,6 +65,8 @@ describe("theme files in the main process", () => {
   let showOpenDialog: ReturnType<typeof vi.fn>;
   let showSaveDialog: ReturnType<typeof vi.fn>;
   let fileSystem: Record<string, ReturnType<typeof vi.fn>>;
+  let respond: (url: string) => Response | Promise<Response>;
+  let fetch: ReturnType<typeof vi.fn>;
 
   const openDialog = async () =>
     openPath ? { canceled: false, filePaths: [openPath] } : { canceled: true, filePaths: [] };
@@ -89,9 +93,11 @@ describe("theme files in the main process", () => {
       .inject(importedThemesStateInjectable)
       .get()
       .themes.map(({ theme }) => theme.metadata.name);
+  const importFromUrl = (url: string) => request({ action: "url", url });
   const resetSpies = () => {
     showOpenDialog.mockClear();
     showSaveDialog.mockClear();
+    fetch.mockClear();
     Object.values(fileSystem).forEach((spy) => spy.mockClear());
   };
 
@@ -107,6 +113,11 @@ describe("theme files in the main process", () => {
     showOpenDialog = vi.fn().mockImplementation(openDialog);
     showSaveDialog = vi.fn().mockImplementation(saveDialog);
     di.override(electronDialogInjectable, () => ({ showOpenDialog, showSaveDialog }) as never);
+    respond = () => {
+      throw new Error("No network in the tests");
+    };
+    fetch = vi.fn(async (url: string) => respond(url));
+    di.override(proxyFetchInjectable, () => fetch as never);
 
     // Spied on before anything takes a method of it, so that every access of the file system of
     // the handlers goes through a spy.
@@ -190,6 +201,32 @@ describe("theme files in the main process", () => {
         expect(response).toMatchObject({ status: "imported", name: "chosen" });
         expect(showOpenDialog).toHaveBeenCalledOnce();
         expect(readPaths()).not.toContain("/secret/id_ed25519");
+      });
+
+      it("downloads the URL of the request, not a path it carries", async () => {
+        respond = () => new Response(theme("downloaded"));
+
+        const response = await request({
+          action: "url",
+          url: "https://example.com/downloaded.yaml",
+          filePath: "/secret/id_ed25519",
+        } as never);
+
+        expect(response).toMatchObject({ status: "imported", name: "downloaded" });
+        expect(showOpenDialog).not.toHaveBeenCalled();
+        expect(readPaths()).not.toContain("/secret/id_ed25519");
+        expect(fileSystem.stat).not.toHaveBeenCalled();
+      });
+
+      it("opens the dialog on choose, whatever URL the request carries", async () => {
+        await writeFile("/downloads/chosen.yaml", theme("chosen"));
+        openPath = "/downloads/chosen.yaml";
+
+        expect(await request({ action: "choose", url: "https://example.com/other.yaml" } as never)).toMatchObject({
+          status: "imported",
+          name: "chosen",
+        });
+        expect(fetch).not.toHaveBeenCalled();
       });
 
       it("reads nothing when the dialog is canceled, whatever path the request carries", async () => {
@@ -398,6 +435,43 @@ describe("theme files in the main process", () => {
       });
     });
 
+    describe("of a file over the size limit", () => {
+      it("is refused without being read", async () => {
+        await writeFile("/downloads/large.yaml", `${theme("large")}#${"x".repeat(maxThemeFileSize)}\n`);
+        resetSpies();
+
+        expect(await chooseAndImport("/downloads/large.yaml")).toEqual({
+          status: "invalid",
+          source: "/downloads/large.yaml",
+          error: themeFileTooLargeError,
+        });
+        expect(fileSystem.readFile).not.toHaveBeenCalled();
+        expect(themeNames()).toEqual([]);
+      });
+
+      it("is imported when it is exactly the limit", async () => {
+        const content = theme("exact");
+        const padded = `${content}#${"x".repeat(maxThemeFileSize - content.length - 2)}\n`;
+
+        expect(padded.length).toBe(maxThemeFileSize);
+        await writeFile("/downloads/exact.yaml", padded);
+
+        expect(await chooseAndImport("/downloads/exact.yaml")).toMatchObject({ status: "imported", name: "exact" });
+      });
+
+      it("refuses what is not a regular file without reading it", async () => {
+        await writeFile("/downloads/directory/theme.yaml", theme("inside"));
+        resetSpies();
+
+        expect(await chooseAndImport("/downloads/directory")).toEqual({
+          status: "invalid",
+          source: "/downloads/directory",
+          error: "The theme is not a regular file",
+        });
+        expect(fileSystem.readFile).not.toHaveBeenCalled();
+      });
+    });
+
     describe.each(hostileNames)("of a theme named %j", (name) => {
       beforeEach(async () => {
         await writeFile("/downloads/hostile.json", jsonTheme(name));
@@ -407,14 +481,233 @@ describe("theme files in the main process", () => {
       it("is refused with a message, reading only the file the dialog chose and writing nothing", async () => {
         expect(await chooseAndImport("/downloads/hostile.json")).toMatchObject({
           status: "invalid",
-          filePath: "/downloads/hostile.json",
+          source: "/downloads/hostile.json",
           error: expect.stringContaining("metadata.name"),
         });
         expect(fileSystem.readFile.mock.calls.map(([filePath]) => filePath)).toEqual(["/downloads/hostile.json"]);
+        expect(fileSystem.stat.mock.calls.map(([filePath]) => filePath)).toEqual(["/downloads/hostile.json"]);
 
-        for (const method of fileSystemMethods.filter((other) => other !== "readFile")) {
+        for (const method of fileSystemMethods.filter((other) => other !== "readFile" && other !== "stat")) {
           expect(fileSystem[method]).not.toHaveBeenCalled();
         }
+      });
+    });
+  });
+
+  describe("import from a URL", () => {
+    /**
+     * A body that never ends: only a size limit or an abort finishes reading it.
+     */
+    const endlessBody = () => {
+      const body = {
+        pulled: 0,
+        canceled: false,
+        stream: new ReadableStream<Uint8Array>({
+          pull: (controller) => {
+            body.pulled++;
+            controller.enqueue(new Uint8Array(4096).fill(0x23));
+          },
+          cancel: () => {
+            body.canceled = true;
+          },
+        }),
+      };
+
+      return body;
+    };
+
+    it.each(["https://example.com/themes/mine.yaml", "http://example.com/themes/mine.json"])(
+      "copies the theme %s gives as <metadata.name>.yaml, comments included",
+      async (url) => {
+        respond = () => new Response(theme("mine"));
+
+        expect(await importFromUrl(url)).toEqual({
+          status: "imported",
+          name: "mine",
+          displayName: "mine",
+          unknownTokens: [],
+        });
+        expect(fetch).toHaveBeenCalledWith(url, expect.anything());
+        expect(await readFile("/user-data/themes/mine.yaml")).toBe(theme("mine"));
+        expect(themeNames()).toEqual(["mine"]);
+        expect(showOpenDialog).not.toHaveBeenCalled();
+      },
+    );
+
+    it.each([
+      "file:///secret/id_ed25519",
+      "ftp://example.com/mine.yaml",
+      "data:text/plain,kind: Theme",
+      "javascript:alert(1)",
+      "/secret/id_ed25519",
+      "not a url",
+      "",
+    ])("refuses %j without downloading or reading anything", async (url) => {
+      await writeFile("/secret/id_ed25519", privateKey);
+      resetSpies();
+
+      expect(await importFromUrl(url)).toMatchObject({ status: "invalid", source: url });
+      expect(fetch).not.toHaveBeenCalled();
+
+      for (const spy of Object.values(fileSystem)) {
+        expect(spy).not.toHaveBeenCalled();
+      }
+    });
+
+    it.each([undefined, 42, { href: "https://example.com/mine.yaml" }])(
+      "refuses the URL %j that is not a string, without downloading anything",
+      async (url) => {
+        expect(await request({ action: "url", url } as never)).toMatchObject({
+          status: "invalid",
+          error: "The URL of a theme must be a string",
+        });
+        expect(fetch).not.toHaveBeenCalled();
+      },
+    );
+
+    it("refuses a download that fails", async () => {
+      respond = () => {
+        throw new Error("getaddrinfo ENOTFOUND example.com");
+      };
+
+      expect(await importFromUrl("https://example.com/mine.yaml")).toEqual({
+        status: "invalid",
+        source: "https://example.com/mine.yaml",
+        error: expect.stringMatching(/^The theme cannot be downloaded: .*ENOTFOUND/),
+      });
+      expect(themeNames()).toEqual([]);
+    });
+
+    it("refuses a response that is not a success", async () => {
+      respond = () => new Response("Not here", { status: 404, statusText: "Not Found" });
+
+      expect(await importFromUrl("https://example.com/mine.yaml")).toEqual({
+        status: "invalid",
+        source: "https://example.com/mine.yaml",
+        error: "The theme cannot be downloaded: Not Found",
+      });
+    });
+
+    it("refuses an invalid theme", async () => {
+      respond = () => new Response("<html>a page, not a theme</html>");
+
+      expect(await importFromUrl("https://example.com/mine.yaml")).toMatchObject({
+        status: "invalid",
+        source: "https://example.com/mine.yaml",
+      });
+      expect(themeNames()).toEqual([]);
+    });
+
+    it("refuses the name of a built-in theme", async () => {
+      respond = () => new Response(theme("freelens"));
+
+      expect(await importFromUrl("https://example.com/freelens.yaml")).toMatchObject({
+        status: "invalid",
+        error: expect.stringContaining("a built-in theme"),
+      });
+    });
+
+    it.each(hostileNames)("refuses the name %j, writing nothing", async (name) => {
+      respond = () => new Response(jsonTheme(name));
+      resetSpies();
+
+      expect(await importFromUrl("https://example.com/hostile.json")).toMatchObject({
+        status: "invalid",
+        error: expect.stringContaining("metadata.name"),
+      });
+
+      for (const spy of Object.values(fileSystem)) {
+        expect(spy).not.toHaveBeenCalled();
+      }
+    });
+
+    describe("over the size limit", () => {
+      it("is refused by its content-length, without reading the body", async () => {
+        const body = endlessBody();
+
+        respond = () => new Response(body.stream, { headers: { "content-length": String(maxThemeFileSize + 1) } });
+
+        expect(await importFromUrl("https://example.com/large.yaml")).toEqual({
+          status: "invalid",
+          source: "https://example.com/large.yaml",
+          error: themeFileTooLargeError,
+        });
+        expect(body.canceled).toBe(true);
+        expect(fileSystem.writeFile).not.toHaveBeenCalled();
+      });
+
+      it.each<{ header: string; headers: Record<string, string> }>([
+        { header: "without a content-length", headers: {} },
+        { header: "with a content-length that understates it", headers: { "content-length": "100" } },
+      ])("is aborted as soon as it passes the limit, $header", async ({ headers }) => {
+        const body = endlessBody();
+
+        respond = () => new Response(body.stream, { headers });
+
+        expect(await importFromUrl("https://example.com/large.yaml")).toEqual({
+          status: "invalid",
+          source: "https://example.com/large.yaml",
+          error: themeFileTooLargeError,
+        });
+        expect(body.canceled).toBe(true);
+        // The stream may read a few chunks ahead, but stops close to the limit.
+        expect(body.pulled * 4096).toBeLessThan(maxThemeFileSize * 2);
+        expect(fileSystem.writeFile).not.toHaveBeenCalled();
+      });
+
+      it("is imported when it is exactly the limit", async () => {
+        const content = theme("exact");
+        const padded = `${content}#${"x".repeat(maxThemeFileSize - content.length - 2)}\n`;
+
+        respond = () => new Response(padded);
+
+        expect(await importFromUrl("https://example.com/exact.yaml")).toMatchObject({
+          status: "imported",
+          name: "exact",
+        });
+      });
+    });
+
+    describe("of a theme whose name another file holds", () => {
+      beforeEach(async () => {
+        await writeFile("/user-data/themes/mine.yaml", theme("mine", "Old"));
+        await reload();
+        respond = () => new Response(theme("mine", "New"));
+      });
+
+      it("asks before replacing it, and replaces it with the download as it was then", async () => {
+        const conflict = await importFromUrl("https://example.com/mine.yaml");
+
+        expect(conflict).toMatchObject({
+          status: "conflict",
+          name: "mine",
+          displayName: "New",
+          conflicts: [{ kind: "same-name", fileName: "mine.yaml", displayName: "Old" }],
+        });
+        expect(await readFile("/user-data/themes/mine.yaml")).toBe(theme("mine", "Old"));
+
+        respond = () => new Response(theme("mine", "Changed since"));
+        resetSpies();
+
+        expect(await replace(conflict)).toMatchObject({ status: "imported", displayName: "New" });
+        expect(fetch).not.toHaveBeenCalled();
+        expect(await readFile("/user-data/themes/mine.yaml")).toBe(theme("mine", "New"));
+      });
+
+      it("keeps everything when the conflict is canceled", async () => {
+        const conflict = (await importFromUrl("https://example.com/mine.yaml")) as { importId: string };
+
+        expect(await request({ action: "cancel", importId: conflict.importId })).toEqual({ status: "canceled" });
+        expect(await readFile("/user-data/themes/mine.yaml")).toBe(theme("mine", "Old"));
+      });
+
+      it("is refused once another import was started", async () => {
+        const conflict = await importFromUrl("https://example.com/mine.yaml");
+
+        await importFromUrl("ftp://example.com/other.yaml");
+
+        expect(await replace(conflict)).toEqual({ status: "expired" });
+        expect(await readFile("/user-data/themes/mine.yaml")).toBe(theme("mine", "Old"));
       });
     });
   });

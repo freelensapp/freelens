@@ -9,6 +9,7 @@ import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { action } from "mobx";
 import { observer } from "mobx-react";
+import { useState } from "react";
 import openConfirmDialogInjectable from "../../../../../../renderer/components/confirm-dialog/open.injectable";
 import { SubTitle } from "../../../../../../renderer/components/layout/sub-title";
 import { defaultThemeName } from "../../../../../theme/files/common/builtin-theme";
@@ -19,6 +20,7 @@ import importedThemesStateInjectable from "../../../../../theme/files/renderer/i
 import themeActionsInjectable from "../../../../../theme/files/renderer/request-theme-actions.injectable";
 import resolveThemeInjectable from "../../../../../theme/files/renderer/resolve-theme.injectable";
 import userPreferencesStateInjectable from "../../../../../user-preferences/common/state.injectable";
+import { ImportThemeDialog } from "./import-theme-dialog";
 import styles from "./themes.module.scss";
 
 import type { ShowNotification } from "@freelensapp/notifications";
@@ -37,6 +39,7 @@ import type { FindTheme } from "../../../../../theme/files/renderer/find-theme.i
 import type { ThemeActions } from "../../../../../theme/files/renderer/request-theme-actions.injectable";
 import type { ResolveTheme } from "../../../../../theme/files/renderer/resolve-theme.injectable";
 import type { UserPreferencesState } from "../../../../../user-preferences/common/state.injectable";
+import type { ImportThemeOutcome } from "./import-theme-dialog";
 
 interface Dependencies {
   state: UserPreferencesState;
@@ -121,22 +124,30 @@ const NonInjectedThemes = observer(
     const selectedName = findTheme(state.theme).metadata.name;
     const { invalidFiles } = importedThemes.get();
 
-    const importTheme = async (request?: ImportThemeRequest): Promise<void> => {
+    const [isImportDialogOpen, setImportDialogOpen] = useState(false);
+
+    /**
+     * Carries out an import request. An error that keeps the theme out is left to the import
+     * dialog to show, which stays open so that the URL can be corrected; the dialog closes once
+     * the theme is imported, or a question about it is asked.
+     */
+    const importTheme = async (request: ImportThemeRequest): Promise<ImportThemeOutcome> => {
       try {
         const response = await themeActions.importTheme(request);
 
         switch (response.status) {
           case "canceled":
-            return;
+            return { close: false };
           case "invalid":
-            showErrorNotification(
-              <div>
-                <b>The theme cannot be imported from {response.filePath}</b>
-                <pre className="whitespace-pre-wrap">{response.error}</pre>
-              </div>,
-            );
-
-            return;
+            return {
+              close: false,
+              error: (
+                <>
+                  <b>The theme cannot be imported from {response.source}</b>
+                  <pre className="whitespace-pre-wrap">{response.error}</pre>
+                </>
+              ),
+            };
           case "conflict": {
             const { importId } = response;
 
@@ -157,16 +168,16 @@ const NonInjectedThemes = observer(
                   <p>Replace?</p>
                 </div>
               ),
-              ok: () => importTheme({ action: "replace", importId }),
+              ok: () => answerConflict({ action: "replace", importId }),
               cancel: () => themeActions.importTheme({ action: "cancel", importId }).catch(() => undefined),
             });
 
-            return;
+            return { close: true };
           }
           case "expired":
             showErrorNotification("The import is no longer pending: import the theme again");
 
-            return;
+            return { close: true };
           case "imported":
             showSuccessNotification(
               <div>
@@ -179,10 +190,22 @@ const NonInjectedThemes = observer(
               </div>,
             );
 
-            return;
+            return { close: true };
         }
       } catch (error) {
-        showErrorNotification(`Failed to import the theme: ${describeError(error)}`);
+        return { close: false, error: `Failed to import the theme: ${describeError(error)}` };
+      }
+    };
+
+    /**
+     * Answers the question about a conflict, once the import dialog has closed: an error is
+     * shown as a notification instead.
+     */
+    const answerConflict = async (request: ImportThemeRequest) => {
+      const outcome = await importTheme(request);
+
+      if (!outcome.close && outcome.error) {
+        showErrorNotification(<div>{outcome.error}</div>);
       }
     };
 
@@ -298,8 +321,18 @@ const NonInjectedThemes = observer(
           })}
         </div>
         <div className="mt-3">
-          <Button primary label="Import theme..." onClick={() => void importTheme()} data-testid="theme-import" />
+          <Button
+            primary
+            label="Import theme..."
+            onClick={() => setImportDialogOpen(true)}
+            data-testid="theme-import"
+          />
         </div>
+        <ImportThemeDialog
+          isOpen={isImportDialogOpen}
+          close={() => setImportDialogOpen(false)}
+          importTheme={importTheme}
+        />
         {invalidFiles.length > 0 && (
           <div className="mt-3" data-testid="invalid-theme-files">
             <SubTitle title="Files not applied" />

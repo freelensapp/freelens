@@ -45,13 +45,19 @@ export const importedThemesUpdateChannel: MessageChannel<ImportedThemesState> = 
 
 /**
  * A request to import a theme. It never names a file: the main process asks for one with its own
- * file dialog, and keeps the file it chose while it waits for the answer to a `conflict`.
+ * file dialog, and keeps the file it chose, or downloaded, while it waits for the answer to a
+ * `conflict`.
  */
 export type ImportThemeRequest =
   /**
    * Asks for a file and imports it, unless it would replace a file of the themes directory.
    */
   | { action: "choose" }
+  /**
+   * Downloads a theme file from an `https:` or `http:` URL and imports it as `choose` imports a
+   * file. The main process checks the URL itself.
+   */
+  | { action: "url"; url: string }
   /**
    * Imports the pending file of a `conflict`, replacing what the conflict lists.
    */
@@ -80,7 +86,10 @@ export type ThemeImportConflict =
 
 export type ImportThemeResponse =
   | { status: "canceled" }
-  | { status: "invalid"; filePath: string; error: string }
+  /**
+   * The theme cannot be imported. `source` is the path of the file or the URL it came from.
+   */
+  | { status: "invalid"; source: string; error: string }
   | {
       status: "conflict";
       /**
