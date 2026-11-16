@@ -7,7 +7,7 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import getClusterByIdInjectable from "../../../../features/cluster/storage/common/get-by-id.injectable";
-import { ClusterIconAppearanceSetting } from "../../cluster-settings/icon-appearance-setting";
+import { ClusterIconColorSetting, ClusterIconLabelSetting } from "../../cluster-settings/icon-appearance-setting";
 import { ClusterIconSetting } from "../../cluster-settings/icon-settings";
 import { ClusterKubeconfig } from "../../cluster-settings/kubeconfig";
 import { ClusterNameSetting } from "../../cluster-settings/name-setting";
@@ -35,8 +35,11 @@ function NonInjectedGeneralKubernetesClusterSettings({
     <section>
       <section>
         <div className="flex">
-          <div className="flex-grow pr-8">
+          <div className="flex-grow pr-4">
             <ClusterNameSetting cluster={cluster} entity={entity as KubernetesCluster} />
+          </div>
+          <div className="w-16 shrink-0 mr-8">
+            <ClusterIconLabelSetting cluster={cluster} entity={entity as KubernetesCluster} />
           </div>
           <div>
             <ClusterIconSetting cluster={cluster} entity={entity as KubernetesCluster} />
@@ -44,7 +47,7 @@ function NonInjectedGeneralKubernetesClusterSettings({
         </div>
       </section>
       <section>
-        <ClusterIconAppearanceSetting cluster={cluster} entity={entity as KubernetesCluster} />
+        <ClusterIconColorSetting cluster={cluster} entity={entity as KubernetesCluster} />
       </section>
       <section className="small">
         <ClusterKubeconfig cluster={cluster} />

@@ -3,22 +3,25 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { screen } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { runInAction } from "mobx";
 import { beforeEach, describe, expect, it } from "vitest";
 import { KubernetesCluster } from "../../../../common/catalog-entities";
 import { Cluster } from "../../../../common/cluster/cluster";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import { renderFor } from "../../test-utils/renderFor";
-import { ClusterIconAppearanceSetting } from "../icon-appearance-setting";
+import { ClusterIconColorSetting, ClusterIconLabelSetting } from "../icon-appearance-setting";
 
 import type { UserEvent } from "@testing-library/user-event";
 
-describe("<ClusterIconAppearanceSetting />", () => {
+const image = "data:image/png;base64,aWNvbg==";
+
+describe("cluster icon appearance settings", () => {
   let cluster: Cluster;
   let user: UserEvent;
 
-  const renderSetting = () => {
+  const renderSettings = () => {
     const render = renderFor(getDiForUnitTesting());
     const entity = new KubernetesCluster({
       metadata: {
@@ -35,7 +38,12 @@ describe("<ClusterIconAppearanceSetting />", () => {
       },
     });
 
-    render(<ClusterIconAppearanceSetting cluster={cluster} entity={entity} />);
+    render(
+      <>
+        <ClusterIconLabelSetting cluster={cluster} entity={entity} />
+        <ClusterIconColorSetting cluster={cluster} entity={entity} />
+      </>,
+    );
   };
 
   beforeEach(() => {
@@ -47,55 +55,100 @@ describe("<ClusterIconAppearanceSetting />", () => {
     user = userEvent.setup();
   });
 
-  it("shows the generated initials as the placeholder of the label", () => {
-    renderSetting();
+  describe("label", () => {
+    it("shows the generated initials as the placeholder", () => {
+      renderSettings();
 
-    expect(screen.getByTestId("cluster-icon-short-name-input")).toHaveAttribute("placeholder", "UW2");
+      expect(screen.getByTestId("cluster-icon-short-name-input")).toHaveAttribute("placeholder", "UW2");
+    });
+
+    it("is saved when the input loses focus", async () => {
+      renderSettings();
+
+      await user.type(screen.getByTestId("cluster-icon-short-name-input"), "W2N");
+      await user.tab();
+
+      expect(cluster.preferences.iconShortName).toBe("W2N");
+    });
+
+    it("is limited to three characters", async () => {
+      renderSettings();
+
+      await user.type(screen.getByTestId("cluster-icon-short-name-input"), "W2NP");
+      await user.tab();
+
+      expect(cluster.preferences.iconShortName).toBe("W2N");
+    });
+
+    it("is cleared when the input is emptied", async () => {
+      cluster.preferences.iconShortName = "W2N";
+      renderSettings();
+
+      await user.clear(screen.getByTestId("cluster-icon-short-name-input"));
+      await user.tab();
+
+      expect(cluster.preferences.iconShortName).toBeNull();
+    });
+
+    it("follows a label saved elsewhere", async () => {
+      renderSettings();
+
+      runInAction(() => {
+        cluster.preferences.iconShortName = "E1P";
+      });
+
+      await waitFor(() => expect(screen.getByTestId("cluster-icon-short-name-input")).toHaveValue("E1P"));
+    });
   });
 
-  it("saves the label when the input loses focus", async () => {
-    renderSetting();
+  describe("color", () => {
+    it("stores the picked color as the icon", async () => {
+      renderSettings();
 
-    await user.type(screen.getByTestId("cluster-icon-short-name-input"), "W2NP");
-    await user.tab();
+      await user.click(screen.getByTestId("cluster-icon-color-blue"));
 
-    expect(cluster.preferences.iconShortName).toBe("W2NP");
-  });
+      expect(cluster.preferences.icon).toBe("hsl(215, 60%, 27%)");
+      expect(screen.getByTestId("cluster-icon-color-blue")).toHaveAttribute("aria-pressed", "true");
+    });
 
-  it("limits the label to four characters", async () => {
-    renderSetting();
+    it("goes back to the generated color with Auto", async () => {
+      cluster.preferences.icon = "hsl(215, 60%, 27%)";
+      renderSettings();
 
-    await user.type(screen.getByTestId("cluster-icon-short-name-input"), "W2NPX");
-    await user.tab();
+      await user.click(screen.getByTestId("cluster-icon-color-default"));
 
-    expect(cluster.preferences.iconShortName).toBe("W2NP");
-  });
+      expect(cluster.preferences.icon).toBeNull();
+    });
 
-  it("clears a saved label when the input is emptied", async () => {
-    cluster.preferences.iconShortName = "W2NP";
-    renderSetting();
+    it("stores a picked image as the icon with Icon", async () => {
+      renderSettings();
 
-    await user.clear(screen.getByTestId("cluster-icon-short-name-input"));
-    await user.tab();
+      await user.upload(
+        screen.getByTestId("cluster-icon-image-input"),
+        new File(["icon"], "icon.png", { type: "image/png" }),
+      );
 
-    expect(cluster.preferences.iconShortName).toBeNull();
-  });
+      await waitFor(() => expect(cluster.preferences.icon).toBe(image));
+      expect(screen.getByTestId("cluster-icon-image")).toHaveAttribute("aria-pressed", "true");
+      expect(screen.getByTestId("cluster-icon-color-default")).toHaveAttribute("aria-pressed", "false");
+    });
 
-  it("stores the picked color as the icon", async () => {
-    renderSetting();
+    it("replaces an image with a picked color", async () => {
+      cluster.preferences.icon = image;
+      renderSettings();
 
-    await user.click(screen.getByTestId("cluster-icon-color-blue"));
+      await user.click(screen.getByTestId("cluster-icon-color-green"));
 
-    expect(cluster.preferences.icon).toBe("hsl(215, 60%, 27%)");
-    expect(screen.getByTestId("cluster-icon-color-blue")).toHaveAttribute("aria-pressed", "true");
-  });
+      expect(cluster.preferences.icon).toBe("hsl(125, 60%, 27%)");
+    });
 
-  it("goes back to the generated color with Auto", async () => {
-    cluster.preferences.icon = "hsl(215, 60%, 27%)";
-    renderSetting();
+    it("replaces an image with the generated color with Auto", async () => {
+      cluster.preferences.icon = image;
+      renderSettings();
 
-    await user.click(screen.getByTestId("cluster-icon-color-default"));
+      await user.click(screen.getByTestId("cluster-icon-color-default"));
 
-    expect(cluster.preferences.icon).toBeNull();
+      expect(cluster.preferences.icon).toBeNull();
+    });
   });
 });

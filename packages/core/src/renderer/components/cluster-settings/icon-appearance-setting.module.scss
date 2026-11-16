@@ -17,18 +17,14 @@
   }
 }
 
-.selected {
-  border-color: var(--textColorAccent);
-}
-
-.defaultSwatch {
+.textSwatch {
   width: auto;
   padding: 0 8px;
   background: transparent;
   border-color: var(--borderColor);
   color: var(--textColorPrimary);
+}
 
-  &.selected {
-    border-color: var(--textColorAccent);
-  }
+.selected {
+  border-color: var(--textColorAccent);
 }
