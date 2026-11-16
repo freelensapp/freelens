@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { fireEvent, screen, waitFor } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { runInAction } from "mobx";
 import { beforeEach, describe, expect, it } from "vitest";
@@ -142,14 +142,27 @@ describe("cluster icon appearance settings", () => {
       expect(cluster.preferences.icon).toBe("hsl(125, 60%, 27%)");
     });
 
-    it("stores any color picked with Custom", () => {
+    it("stores a hex code entered under Custom", async () => {
       renderSettings();
 
-      fireEvent.change(screen.getByTestId("cluster-icon-color-custom-input"), { target: { value: "#123456" } });
+      await user.click(screen.getByTestId("cluster-icon-color-custom"));
+      await user.clear(screen.getByTestId("cluster-icon-color-custom-hex"));
+      await user.type(screen.getByTestId("cluster-icon-color-custom-hex"), "123456{Enter}");
 
       expect(cluster.preferences.icon).toBe("#123456");
       expect(screen.getByTestId("cluster-icon-color-custom")).toHaveAttribute("aria-pressed", "true");
       expect(screen.getByTestId("cluster-icon-color-default")).toHaveAttribute("aria-pressed", "false");
+    });
+
+    it.each([
+      ["cluster-icon-color-blue", "Blue"],
+      ["cluster-icon-color-default", "name of the cluster"],
+      ["cluster-icon-color-custom", "hex code"],
+      ["cluster-icon-image", "image instead of a solid color"],
+    ])("describes %s in a tooltip", (testId, text) => {
+      renderSettings();
+
+      expect(screen.getByTestId(`tooltip-content-for-${testId}`)).toHaveTextContent(text);
     });
 
     it("does not mark Custom for a listed color or an image", () => {

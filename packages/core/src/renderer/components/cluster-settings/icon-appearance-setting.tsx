@@ -100,6 +100,7 @@ const NonInjectedClusterIconColorSetting = observer(
         <SubTitle title="Icon Color" />
         <ColorSwatchGroup label="Icon color">
           <ColorSwatch
+            tooltip="Pick a color automatically from the name of the cluster"
             selected={!currentIcon}
             onClick={() => currentIcon && pickColor(null)}
             data-testid="cluster-icon-color-default"
@@ -119,7 +120,7 @@ const NonInjectedClusterIconColorSetting = observer(
           ))}
           <CustomColorSwatch value={customColor} onChange={pickColor} data-testid="cluster-icon-color-custom" />
           <ColorSwatch
-            tooltip="Upload an image as the icon"
+            tooltip="Use an image instead of a solid color"
             selected={hasImage}
             onClick={() => fileInput.current?.click()}
             data-testid="cluster-icon-image"

@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { fireEvent, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it } from "vitest";
 import { renderFor } from "../../../../../../../renderer/components/test-utils/renderFor";
@@ -53,12 +53,36 @@ describe("accent color preference", () => {
     expect(state.accentColorDark).toBeUndefined();
   });
 
-  it("sets any color picked with Custom and marks Custom as selected", () => {
-    fireEvent.change(screen.getByTestId("accent-color-dark-custom-input"), { target: { value: "#123456" } });
+  it("sets a hex code entered under Custom and marks Custom as selected", async () => {
+    await user.click(screen.getByTestId("accent-color-dark-custom"));
+    await user.clear(screen.getByTestId("accent-color-dark-custom-hex"));
+    await user.type(screen.getByTestId("accent-color-dark-custom-hex"), "123456");
+    await user.tab();
 
     expect(state.accentColorDark).toBe("#123456");
     expect(screen.getByTestId("accent-color-dark-custom")).toHaveAttribute("aria-pressed", "true");
     expect(screen.getByTestId("accent-color-dark-teal")).toHaveAttribute("aria-pressed", "false");
     expect(screen.getByTestId("accent-color-light-custom")).toHaveAttribute("aria-pressed", "false");
+  });
+
+  it("starts the Custom picker from the selected color", async () => {
+    await user.click(screen.getByTestId("accent-color-light-purple"));
+    await user.click(screen.getByTestId("accent-color-light-custom"));
+
+    expect(screen.getByTestId("accent-color-light-custom-hex")).toHaveValue("#9c27b0");
+  });
+
+  it("closes the Custom picker with Escape and keeps the entered color", async () => {
+    await user.click(screen.getByTestId("accent-color-dark-custom"));
+    await user.clear(screen.getByTestId("accent-color-dark-custom-hex"));
+    await user.type(screen.getByTestId("accent-color-dark-custom-hex"), "abcdef");
+    await user.keyboard("{Escape}");
+
+    expect(screen.queryByTestId("accent-color-dark-custom-panel")).not.toBeInTheDocument();
+    expect(state.accentColorDark).toBe("#abcdef");
+  });
+
+  it("describes Custom in a tooltip", () => {
+    expect(screen.getByTestId("tooltip-content-for-accent-color-dark-custom")).toHaveTextContent("hex code");
   });
 });

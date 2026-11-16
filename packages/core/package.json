@@ -123,6 +123,7 @@
     "node-pty": "catalog:",
     "proper-lockfile": "catalog:",
     "react": "catalog:",
+    "react-colorful": "catalog:",
     "react-dom": "catalog:",
     "react-select": "catalog:",
     "react-window": "catalog:",

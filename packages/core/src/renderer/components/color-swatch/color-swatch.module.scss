@@ -28,3 +28,29 @@
 .selected {
   border-color: var(--textColorAccent);
 }
+
+.customPanel {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 101;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px;
+  background: var(--layoutBackground);
+  border: 1px solid var(--borderColor);
+  border-radius: 4px;
+  box-shadow: rgb(0 0 0 / 17%) 0 6px 9px 0;
+}
+
+.hexInput {
+  width: 100%;
+  padding: 4px 8px;
+  border: 1px solid var(--inputControlBorder);
+  border-radius: 4px;
+  background: var(--inputControlBackground);
+  color: var(--textColorPrimary);
+  font-family: var(--font-monospace);
+  text-transform: lowercase;
+}

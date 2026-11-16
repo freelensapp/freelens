@@ -3,9 +3,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { withTooltip } from "@freelensapp/tooltip";
+import { TooltipPosition, withTooltip } from "@freelensapp/tooltip";
 import { cssNames } from "@freelensapp/utilities";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { HexColorInput, HexColorPicker } from "react-colorful";
 import { getTextColorOnAccent } from "../../themes/accent-colors";
 import styles from "./color-swatch.module.scss";
 
@@ -23,7 +24,7 @@ export interface ColorSwatchProps extends Omit<ButtonHTMLAttributes<HTMLButtonEl
   children?: StrictReactNode;
 }
 
-export const ColorSwatch = withTooltip(
+const SwatchButton = withTooltip(
   ({ color, selected, className, style, children, ...buttonProps }: ColorSwatchProps) => (
     <button
       type="button"
@@ -37,6 +38,14 @@ export const ColorSwatch = withTooltip(
   ),
 );
 
+// Above the swatch, as a tooltip beside it covers the swatches next to it. A single position,
+// because computeNextPosition of @freelensapp/tooltip ignores a list.
+const tooltipPosition = TooltipPosition.TOP;
+
+export const ColorSwatch = ({ tooltip, ...props }: ColorSwatchProps & { tooltip?: string }) => (
+  <SwatchButton {...props} tooltip={tooltip ? { children: tooltip, preferredPositions: tooltipPosition } : undefined} />
+);
+
 export const ColorSwatchGroup = ({ label, children }: { label: string; children: StrictReactNode }) => (
   <div className="flex flex-wrap items-center gap-2" role="group" aria-label={label}>
     {children}
@@ -48,68 +57,123 @@ export interface CustomColorSwatchProps {
    * The custom color in use, or `undefined` when the value is one of the listed colors or none.
    */
   value: string | undefined;
+  /**
+   * The color the picker starts from when no custom color is in use, such as the listed color
+   * that is selected. It has to be a hex color to be used.
+   */
+  initialColor?: string;
   onChange: (color: string) => void;
   "data-testid"?: string;
 }
 
 const hexColor = /^#[0-9a-f]{6}$/i;
+const fallbackColor = "#808080";
 
 /**
- * A swatch that opens the color picker of the system for any color. It commits on the `change`
- * event of the input, when the picker closes, rather than on every `input` event while the
- * color is dragged, which is when React's `onChange` fires.
+ * A swatch that opens a picker for any color, with a field for its hex code. The color is
+ * committed when the picker is released, when the field is left or confirmed, and when the
+ * panel closes, rather than on every movement while the color is dragged.
  */
-export const CustomColorSwatch = ({ value, onChange, "data-testid": testId }: CustomColorSwatchProps) => {
-  const input = useRef<HTMLInputElement>(null);
+export const CustomColorSwatch = ({ value, initialColor, onChange, "data-testid": testId }: CustomColorSwatchProps) => {
+  const startColor = () => [value, initialColor].find((color) => color && hexColor.test(color)) ?? fallbackColor;
+  const [open, setOpen] = useState(false);
+  const [draft, setDraft] = useState(startColor);
+  const wrapper = useRef<HTMLSpanElement>(null);
+  const uncommitted = useRef<string | undefined>(undefined);
   const onChangeRef = useRef(onChange);
 
   onChangeRef.current = onChange;
 
+  const edit = (color: string) => {
+    uncommitted.current = color;
+    setDraft(color);
+  };
+
+  const commit = () => {
+    const color = uncommitted.current;
+
+    uncommitted.current = undefined;
+
+    if (color) {
+      onChangeRef.current(color);
+    }
+  };
+
+  const close = () => {
+    commit();
+    setOpen(false);
+  };
+
   useEffect(() => {
-    const element = input.current;
-    const commit = () => element && onChangeRef.current(element.value);
-
-    element?.addEventListener("change", commit);
-
-    return () => element?.removeEventListener("change", commit);
-  }, []);
-
-  const openPicker = () => {
-    const element = input.current;
-
-    if (!element) {
+    if (!open) {
       return;
     }
 
-    element.value = value && hexColor.test(value) ? value : "#000000";
+    const closeOnPointerOutside = (event: PointerEvent) => {
+      if (!wrapper.current?.contains(event.target as Node)) {
+        close();
+      }
+    };
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        close();
+      }
+    };
 
-    // jsdom has no showPicker; a click opens the picker there as well as in older engines.
-    if (typeof element.showPicker === "function") {
-      element.showPicker();
+    document.addEventListener("pointerdown", closeOnPointerOutside);
+    document.addEventListener("keydown", closeOnEscape);
+
+    return () => {
+      document.removeEventListener("pointerdown", closeOnPointerOutside);
+      document.removeEventListener("keydown", closeOnEscape);
+    };
+  }, [open]);
+
+  useEffect(() => commit, []);
+
+  const toggle = () => {
+    if (open) {
+      close();
     } else {
-      element.click();
+      setDraft(startColor());
+      setOpen(true);
     }
   };
 
   return (
-    <span className="relative inline-flex">
+    <span ref={wrapper} className="relative inline-flex">
       <ColorSwatch
-        tooltip="Pick any color"
+        tooltip="Pick any color from the RGB palette, or enter its hex code"
         selected={value !== undefined}
+        aria-expanded={open}
         style={value ? { background: value, color: getTextColorOnAccent(value) } : undefined}
-        onClick={openPicker}
+        onClick={toggle}
         data-testid={testId}
       >
         Custom
       </ColorSwatch>
-      <input
-        ref={input}
-        type="color"
-        className="sr-only"
-        tabIndex={-1}
-        aria-hidden
-        data-testid={testId && `${testId}-input`}
-      />
+      {open && (
+        <div className={styles.customPanel} data-testid={testId && `${testId}-panel`}>
+          <HexColorPicker
+            color={draft}
+            onChange={edit}
+            onChangeEnd={(color) => {
+              edit(color);
+              commit();
+            }}
+          />
+          <HexColorInput
+            className={styles.hexInput}
+            color={draft}
+            onChange={edit}
+            onBlur={commit}
+            onKeyDown={(event) => event.key === "Enter" && commit()}
+            prefixed
+            aria-label="Hex code of the color"
+            data-testid={testId && `${testId}-hex`}
+          />
+        </div>
+      )}
     </span>
   );
 };

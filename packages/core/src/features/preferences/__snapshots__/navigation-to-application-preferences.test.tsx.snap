@@ -428,6 +428,7 @@ exports[`preferences - navigation to application preferences > given in preferen
                           class="relative inline-flex"
                         >
                           <button
+                            aria-expanded="false"
                             aria-pressed="false"
                             class="swatch textSwatch"
                             data-testid="accent-color-dark-custom"
@@ -438,15 +439,8 @@ exports[`preferences - navigation to application preferences > given in preferen
                           <div
                             data-testid="tooltip-content-for-accent-color-dark-custom"
                           >
-                            Pick any color
+                            Pick any color from the RGB palette, or enter its hex code
                           </div>
-                          <input
-                            aria-hidden="true"
-                            class="sr-only"
-                            data-testid="accent-color-dark-custom-input"
-                            tabindex="-1"
-                            type="color"
-                          />
                         </span>
                       </div>
                     </div>
@@ -597,6 +591,7 @@ exports[`preferences - navigation to application preferences > given in preferen
                           class="relative inline-flex"
                         >
                           <button
+                            aria-expanded="false"
                             aria-pressed="false"
                             class="swatch textSwatch"
                             data-testid="accent-color-light-custom"
@@ -607,15 +602,8 @@ exports[`preferences - navigation to application preferences > given in preferen
                           <div
                             data-testid="tooltip-content-for-accent-color-light-custom"
                           >
-                            Pick any color
+                            Pick any color from the RGB palette, or enter its hex code
                           </div>
-                          <input
-                            aria-hidden="true"
-                            class="sr-only"
-                            data-testid="accent-color-light-custom-input"
-                            tabindex="-1"
-                            type="color"
-                          />
                         </span>
                       </div>
                     </div>
@@ -1577,6 +1565,7 @@ exports[`preferences - navigation to application preferences > given in preferen
                           class="relative inline-flex"
                         >
                           <button
+                            aria-expanded="false"
                             aria-pressed="false"
                             class="swatch textSwatch"
                             data-testid="accent-color-dark-custom"
@@ -1587,15 +1576,8 @@ exports[`preferences - navigation to application preferences > given in preferen
                           <div
                             data-testid="tooltip-content-for-accent-color-dark-custom"
                           >
-                            Pick any color
+                            Pick any color from the RGB palette, or enter its hex code
                           </div>
-                          <input
-                            aria-hidden="true"
-                            class="sr-only"
-                            data-testid="accent-color-dark-custom-input"
-                            tabindex="-1"
-                            type="color"
-                          />
                         </span>
                       </div>
                     </div>
@@ -1746,6 +1728,7 @@ exports[`preferences - navigation to application preferences > given in preferen
                           class="relative inline-flex"
                         >
                           <button
+                            aria-expanded="false"
                             aria-pressed="false"
                             class="swatch textSwatch"
                             data-testid="accent-color-light-custom"
@@ -1756,15 +1739,8 @@ exports[`preferences - navigation to application preferences > given in preferen
                           <div
                             data-testid="tooltip-content-for-accent-color-light-custom"
                           >
-                            Pick any color
+                            Pick any color from the RGB palette, or enter its hex code
                           </div>
-                          <input
-                            aria-hidden="true"
-                            class="sr-only"
-                            data-testid="accent-color-light-custom-input"
-                            tabindex="-1"
-                            type="color"
-                          />
                         </span>
                       </div>
                     </div>
@@ -3207,6 +3183,7 @@ exports[`preferences - navigation to application preferences > given in some chi
                           class="relative inline-flex"
                         >
                           <button
+                            aria-expanded="false"
                             aria-pressed="false"
                             class="swatch textSwatch"
                             data-testid="accent-color-dark-custom"
@@ -3217,15 +3194,8 @@ exports[`preferences - navigation to application preferences > given in some chi
                           <div
                             data-testid="tooltip-content-for-accent-color-dark-custom"
                           >
-                            Pick any color
+                            Pick any color from the RGB palette, or enter its hex code
                           </div>
-                          <input
-                            aria-hidden="true"
-                            class="sr-only"
-                            data-testid="accent-color-dark-custom-input"
-                            tabindex="-1"
-                            type="color"
-                          />
                         </span>
                       </div>
                     </div>
@@ -3376,6 +3346,7 @@ exports[`preferences - navigation to application preferences > given in some chi
                           class="relative inline-flex"
                         >
                           <button
+                            aria-expanded="false"
                             aria-pressed="false"
                             class="swatch textSwatch"
                             data-testid="accent-color-light-custom"
@@ -3386,15 +3357,8 @@ exports[`preferences - navigation to application preferences > given in some chi
                           <div
                             data-testid="tooltip-content-for-accent-color-light-custom"
                           >
-                            Pick any color
+                            Pick any color from the RGB palette, or enter its hex code
                           </div>
-                          <input
-                            aria-hidden="true"
-                            class="sr-only"
-                            data-testid="accent-color-light-custom-input"
-                            tabindex="-1"
-                            type="color"
-                          />
                         </span>
                       </div>
                     </div>
@@ -4357,6 +4321,7 @@ exports[`preferences - navigation to application preferences > given in some chi
                             class="relative inline-flex"
                           >
                             <button
+                              aria-expanded="false"
                               aria-pressed="false"
                               class="swatch textSwatch"
                               data-testid="accent-color-dark-custom"
@@ -4367,15 +4332,8 @@ exports[`preferences - navigation to application preferences > given in some chi
                             <div
                               data-testid="tooltip-content-for-accent-color-dark-custom"
                             >
-                              Pick any color
+                              Pick any color from the RGB palette, or enter its hex code
                             </div>
-                            <input
-                              aria-hidden="true"
-                              class="sr-only"
-                              data-testid="accent-color-dark-custom-input"
-                              tabindex="-1"
-                              type="color"
-                            />
                           </span>
                         </div>
                       </div>
@@ -4526,6 +4484,7 @@ exports[`preferences - navigation to application preferences > given in some chi
                             class="relative inline-flex"
                           >
                             <button
+                              aria-expanded="false"
                               aria-pressed="false"
                               class="swatch textSwatch"
                               data-testid="accent-color-light-custom"
@@ -4536,15 +4495,8 @@ exports[`preferences - navigation to application preferences > given in some chi
                             <div
                               data-testid="tooltip-content-for-accent-color-light-custom"
                             >
-                              Pick any color
+                              Pick any color from the RGB palette, or enter its hex code
                             </div>
-                            <input
-                              aria-hidden="true"
-                              class="sr-only"
-                              data-testid="accent-color-light-custom-input"
-                              tabindex="-1"
-                              type="color"
-                            />
                           </span>
                         </div>
                       </div>
