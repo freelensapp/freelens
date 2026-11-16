@@ -55,6 +55,7 @@ const NonInjectedAccentColor = observer(({ state }: Dependencies) => (
               ))}
               <CustomColorSwatch
                 value={isCustom ? current : undefined}
+                initialColor={current}
                 onChange={(color) => (state[preference] = color)}
                 data-testid={`accent-color-${type}-custom`}
               />
