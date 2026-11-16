@@ -46,44 +46,44 @@ const NonInjectedTheme = observer(({ state, themes }: Dependencies) => {
     })),
   ];
 
-  const currentColor = state.customAccentColor || DEFAULT_ACCENT_COLOR;
-
   return (
     <section id="appearance">
       <SubTitle title="Theme" />
-      <div className={styles.selectRow}>
-        <Select
-          className={styles.themeSelect}
-          id="theme-input"
-          aria-label="Theme"
-          options={themeOptions}
-          value={state.colorTheme}
-          onChange={(value) => (state.colorTheme = value?.value ?? defaultColorThemePreference)}
-          themeName="lens"
-        />
+      <Select
+        id="theme-input"
+        aria-label="Theme"
+        options={themeOptions}
+        value={state.colorTheme}
+        onChange={(value) => (state.colorTheme = value?.value ?? defaultColorThemePreference)}
+        themeName="lens"
+      />
 
-        <Select
-          className={styles.accentSelect}
-          id="accent-color-select"
-          aria-label="Accent color"
-          options={accentColorOptions}
-          value={currentColor}
-          onChange={(value) => (state.customAccentColor = value?.value)}
-          formatOptionLabel={(option) => <ColorOption option={option} />}
-          themeName="lens"
-        />
-      </div>
-
-      <div className={styles.colorPreview}>
-        {currentColor !== DEFAULT_ACCENT_COLOR && (
-          <button
-            onClick={() => (state.customAccentColor = undefined)}
-            className={styles.resetButton}
-            title="Reset to default color"
-          >
-            Reset to Default
-          </button>
-        )}
+      <SubTitle title="Accent color" />
+      <div className={styles.accentRow}>
+        <div className={styles.accentColumn}>
+          <span>Dark</span>
+          <Select
+            id="accent-color-dark-input"
+            aria-label="Accent color of the dark theme"
+            options={accentColorOptions}
+            value={state.accentColorDark || DEFAULT_ACCENT_COLOR}
+            onChange={(value) => (state.accentColorDark = value?.value)}
+            formatOptionLabel={(option) => <ColorOption option={option} />}
+            themeName="lens"
+          />
+        </div>
+        <div className={styles.accentColumn}>
+          <span>Light</span>
+          <Select
+            id="accent-color-light-input"
+            aria-label="Accent color of the light theme"
+            options={accentColorOptions}
+            value={state.accentColorLight || DEFAULT_ACCENT_COLOR}
+            onChange={(value) => (state.accentColorLight = value?.value)}
+            formatOptionLabel={(option) => <ColorOption option={option} />}
+            themeName="lens"
+          />
+        </div>
       </div>
     </section>
   );

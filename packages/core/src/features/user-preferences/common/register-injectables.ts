@@ -6,11 +6,11 @@
  * This replaces the webpack-based auto-registration system.
  */
 
+import accentColorsInjectable from "./accent-colors.injectable";
 import {
   getClusterPageMenuOrderInjectable,
   resetClusterPageMenuOrderInjectable,
 } from "./cluster-page-menu-order.injectable";
-import customAccentColorInjectable from "./custom-accent-color.injectable";
 import httpsProxyConfigurationInjectable from "./https-proxy.injectable";
 import isTableColumnHiddenInjectable from "./is-table-column-hidden.injectable";
 import kubeconfigSyncsInjectable from "./kubeconfig-syncs.injectable";
@@ -29,7 +29,7 @@ import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
   try {
-    di.register(customAccentColorInjectable);
+    di.register(accentColorsInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

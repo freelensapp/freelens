@@ -5,45 +5,16 @@
 
 @use "../../../../../../renderer/components/vars" as *;
 
-.selectRow {
+.accentRow {
   display: flex;
-  gap: $unit;
+  gap: $unit * 2;
 }
 
-.themeSelect {
-  flex: 9;
-}
-
-.accentSelect {
+.accentColumn {
+  display: flex;
   flex: 1;
-}
-
-.colorPreview {
-  display: flex;
-  align-items: center;
+  flex-direction: column;
   gap: $unit;
-  margin-top: $unit;
-}
-
-.resetButton {
-  padding: 6px 12px;
-  font-size: 12px;
-  border: 1px solid var(--borderColor);
-  border-radius: $radius;
-  background-color: var(--secondaryBackground);
-  color: var(--textColorPrimary);
-  cursor: pointer;
-  transition: all 0.2s;
-
-  &:hover {
-    background-color: var(--layoutTabsBackground);
-    border-color: var(--primary);
-    color: var(--textColorPrimary);
-  }
-
-  &:active {
-    transform: translateY(1px);
-  }
 }
 
 .colorSwatch {

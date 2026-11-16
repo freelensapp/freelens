@@ -44,7 +44,8 @@ export type PreferenceDescriptors = {
   readonly httpsProxy: PreferenceDescription<string | undefined>;
   readonly shell: PreferenceDescription<string | undefined>;
   readonly colorTheme: PreferenceDescription<string>;
-  readonly customAccentColor: PreferenceDescription<string | undefined>;
+  readonly accentColorDark: PreferenceDescription<string | undefined>;
+  readonly accentColorLight: PreferenceDescription<string | undefined>;
   readonly terminalTheme: PreferenceDescription<string>;
   readonly localeTimezone: PreferenceDescription<string>;
   readonly allowUntrustedCAs: PreferenceDescription<boolean>;
@@ -93,7 +94,11 @@ const userPreferenceDescriptorsInjectable = getInjectable({
         fromStore: (val) => val || defaultColorThemePreference,
         toStore: (val) => (!val || val === defaultColorThemePreference ? undefined : val),
       }),
-      customAccentColor: getPreferenceDescriptor<string | undefined>({
+      accentColorDark: getPreferenceDescriptor<string | undefined>({
+        fromStore: (val) => val,
+        toStore: (val) => (!val || val === defaultAccentColorPreference ? undefined : val),
+      }),
+      accentColorLight: getPreferenceDescriptor<string | undefined>({
         fromStore: (val) => val,
         toStore: (val) => (!val || val === defaultAccentColorPreference ? undefined : val),
       }),

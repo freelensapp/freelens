@@ -5,309 +5,30 @@
 
 import { computed } from "mobx";
 import { beforeEach, describe, expect, it } from "vitest";
-import customAccentColorInjectable from "../../../features/user-preferences/common/custom-accent-color.injectable";
+import accentColorsInjectable from "../../../features/user-preferences/common/accent-colors.injectable";
 import lensColorThemePreferenceInjectable from "../../../features/user-preferences/common/lens-color-theme.injectable";
 import userPreferenceDescriptorsInjectable from "../../../features/user-preferences/common/preference-descriptors.injectable";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
-import { DEFAULT_ACCENT_COLOR } from "../accent-colors";
+import { accentColorOptions, DEFAULT_ACCENT_COLOR, getContrastRatio, getTextColorOnAccent } from "../accent-colors";
 import activeThemeInjectable from "../active.injectable";
-import defaultLensThemeInjectable from "../default-theme.injectable";
 import systemThemeConfigurationInjectable from "../system-theme.injectable";
 import lensThemesInjectable from "../themes.injectable";
 
 import type { DiContainer } from "@ogre-tools/injectable";
-import type { IComputedValue } from "mobx";
 
-import type { LensTheme } from "../lens-theme";
+import type { AccentColors } from "../../../features/user-preferences/common/accent-colors.injectable";
 
-const createMockTheme = (overrides: Partial<LensTheme> = {}): LensTheme => ({
-  name: "Test Theme",
-  type: "dark",
-  description: "Test theme",
-  author: "Test",
-  monacoTheme: "vs-dark",
-  colors: {
-    blue: DEFAULT_ACCENT_COLOR,
-    magenta: "#c93dce",
-    golden: "#ffc63d",
-    halfGray: "#87909c80",
-    primary: DEFAULT_ACCENT_COLOR,
-    textColorPrimary: "#8e9297",
-    textColorSecondary: "#a0a0a0",
-    textColorTertiary: "#909ba6",
-    textColorAccent: "#ffffff",
-    textColorDimmed: "#8e92978c",
-    borderColor: "#4c5053",
-    borderFaintColor: "#373a3e",
-    mainBackground: "#1e2124",
-    secondaryBackground: "#1e2125",
-    contentColor: "#262b2f",
-    layoutBackground: "#2e3136",
-    layoutTabsBackground: "#252729",
-    layoutTabsActiveColor: "#ffffff",
-    layoutTabsLineColor: "#87909c80",
-    sidebarBackground: "#36393e",
-    sidebarLogoBackground: "#414448",
-    sidebarActiveColor: "#ffffff",
-    sidebarSubmenuActiveColor: DEFAULT_ACCENT_COLOR,
-    sidebarItemHoverBackground: "#3a3e44",
-    badgeBackgroundColor: "#ffba44",
-    buttonPrimaryBackground: DEFAULT_ACCENT_COLOR,
-    buttonDefaultBackground: "#414448",
-    buttonLightBackground: "#f1f1f1",
-    buttonAccentBackground: "#e85555",
-    buttonDisabledBackground: "#808080",
-    tableBgcStripe: "#2a2d33",
-    tableBgcSelected: "#383c42",
-    tableHeaderBackground: "#262b2f",
-    tableHeaderColor: "#ffffff",
-    tableSelectedRowColor: "#ffffff",
-    helmLogoBackground: "#ffffff",
-    helmStableRepo: DEFAULT_ACCENT_COLOR,
-    helmIncubatorRepo: "#ff7043",
-    helmDescriptionHr: "#41474a",
-    helmDescriptionBlockquoteColor: "#bbb",
-    helmDescriptionBlockquoteBorder: "#8a8f93",
-    helmDescriptionBlockquoteBackground: "#3b4348",
-    helmDescriptionHeaders: "#3e4147",
-    helmDescriptionH6: "#6a737d",
-    helmDescriptionTdBorder: "#47494a",
-    helmDescriptionTrBackground: "#1c2125",
-    helmDescriptionCodeBackground: "#ffffff1a",
-    helmDescriptionPreBackground: "#1b1f21",
-    helmDescriptionPreColor: "#b4b5b4",
-    colorSuccess: "#43a047",
-    colorOk: "#4caf50",
-    colorInfo: DEFAULT_ACCENT_COLOR,
-    colorError: "#ce3933",
-    colorSoftError: "#e85555",
-    colorWarning: "#ff9800",
-    colorVague: "#36393e",
-    colorTerminated: "#4c5053",
-    dockHeadBackground: "#2e3136",
-    dockInfoBackground: "#1e2125",
-    dockInfoBorderColor: "#303136",
-    dockEditorBackground: "#000000",
-    dockEditorTag: "#8e97a3",
-    dockEditorKeyword: "#ffffff",
-    dockEditorComment: "#808080",
-    dockEditorActiveLineBackground: "#3a3d41",
-    dockBadgeBackground: "#36393e",
-    dockTabBorderColor: "#43424d",
-    dockTabActiveBackground: "#3a3e45",
-    logsBackground: "#000000",
-    logsForeground: "#ffffff",
-    logRowHoverBackground: "#35373a",
-    dialogTextColor: "#87909c",
-    dialogBackground: "#ffffff",
-    dialogHeaderBackground: "#36393e",
-    dialogFooterBackground: "#f4f4f4",
-    drawerTogglerBackground: "#2f343a",
-    drawerTitleText: "#ffffff",
-    drawerSubtitleBackground: "#373a3e",
-    drawerItemNameColor: "#87909c",
-    drawerItemValueColor: "#a0a0a0",
-    clusterMenuBackground: "#252729",
-    clusterMenuBorderColor: "#252729",
-    clusterMenuCellBackground: "#2e3136",
-    clusterMenuCellOutline: "#ffffff66",
-    clusterSettingsBackground: "#1e2124",
-    addClusterIconColor: "#252729",
-    boxShadow: "#0000003a",
-    iconActiveColor: "#ffffff",
-    iconActiveBackground: "#ffffff18",
-    filterAreaBackground: "#23272b",
-    chartLiveBarBackground: "#00000033",
-    chartStripesColor: "#ffffff08",
-    chartCapacityColor: "#4c545f",
-    pieChartDefaultColor: "#30353a",
-    inputOptionHoverColor: "#87909c",
-    inputControlBackground: "#1e2125",
-    inputControlBorder: "#414448",
-    inputControlHoverBorder: "#474a4f",
-    lineProgressBackground: "#414448",
-    radioActiveBackground: "#36393e",
-    menuActiveBackground: DEFAULT_ACCENT_COLOR,
-    menuSelectedOptionBgc: "#36393e",
-    canvasBackground: "#24292e",
-    scrollBarColor: "#5f6064",
-    settingsBackground: "#262b2e",
-    settingsColor: "#909ba6",
-    navSelectedBackground: "#262b2e",
-    navHoverColor: "#dcddde",
-    hrColor: "#ffffff0f",
-    tooltipBackground: "#18191c",
-  },
-  terminalColors: {},
-  ...overrides,
-});
+const white = "#ffffff";
+const dark = "#1e2124";
+const cyan = "#00bcd4";
+const purple = "#9c27b0";
 
-describe("active theme with custom accent color", () => {
+describe("active theme with an accent color", () => {
   let di: DiContainer;
-  let activeTheme: IComputedValue<LensTheme>;
-  let mockCustomAccentColor: string | undefined;
-  let mockSystemThemeType: "dark" | "light";
-  let mockColorThemePreference: { useSystemTheme: boolean; lensThemeId: string };
-  let mockBaseTheme: LensTheme;
 
-  beforeEach(() => {
+  const getThemes = (lensThemeId: string, accentColors: Partial<AccentColors>) => {
     di = getDiForUnitTesting();
-
-    mockCustomAccentColor = undefined;
-    mockSystemThemeType = "dark";
-    mockColorThemePreference = { useSystemTheme: false, lensThemeId: "lens-dark" };
-    mockBaseTheme = createMockTheme({ name: "Dark", type: "dark" });
-
-    di.override(customAccentColorInjectable, () => computed(() => mockCustomAccentColor));
-    di.override(lensColorThemePreferenceInjectable, () => computed(() => mockColorThemePreference));
-    di.override(defaultLensThemeInjectable, () => mockBaseTheme);
-    di.override(systemThemeConfigurationInjectable, () => computed(() => mockSystemThemeType));
-  });
-
-  describe("when no custom accent color is set", () => {
-    it("returns the base theme unchanged", () => {
-      activeTheme = di.inject(activeThemeInjectable);
-      const theme = activeTheme.get();
-
-      expect(theme.colors.primary).toBe(DEFAULT_ACCENT_COLOR);
-      expect(theme.colors.blue).toBe(DEFAULT_ACCENT_COLOR);
-      expect(theme.colors.buttonPrimaryBackground).toBe(DEFAULT_ACCENT_COLOR);
-    });
-  });
-
-  describe("when custom accent color is set", () => {
-    const customColor = "#4caf50";
-
-    beforeEach(() => {
-      mockCustomAccentColor = customColor;
-    });
-
-    it("overrides accent color keys that use default accent", () => {
-      activeTheme = di.inject(activeThemeInjectable);
-      const theme = activeTheme.get();
-
-      expect(theme.colors.blue).toBe(customColor);
-      expect(theme.colors.primary).toBe(customColor);
-      expect(theme.colors.buttonPrimaryBackground).toBe(customColor);
-      expect(theme.colors.menuActiveBackground).toBe(customColor);
-      expect(theme.colors.helmStableRepo).toBe(customColor);
-      expect(theme.colors.colorInfo).toBe(customColor);
-      expect(theme.colors.sidebarSubmenuActiveColor).toBe(customColor);
-    });
-
-    it("does not override colors that do not use default accent", () => {
-      activeTheme = di.inject(activeThemeInjectable);
-      const theme = activeTheme.get();
-
-      expect(theme.colors.magenta).toBe("#c93dce");
-      expect(theme.colors.golden).toBe("#ffc63d");
-      expect(theme.colors.colorError).toBe("#ce3933");
-      expect(theme.colors.colorWarning).toBe("#ff9800");
-    });
-
-    it("sets sidebar active color to white for dark themes", () => {
-      activeTheme = di.inject(activeThemeInjectable);
-      const theme = activeTheme.get();
-
-      expect(theme.colors.sidebarActiveColor).toBe("#ffffff");
-    });
-
-    it("sets sidebar active color to dark for light themes", () => {
-      mockBaseTheme = createMockTheme({ name: "Light", type: "light" });
-      di.override(defaultLensThemeInjectable, () => mockBaseTheme);
-      activeTheme = di.inject(activeThemeInjectable);
-
-      const theme = activeTheme.get();
-
-      expect(theme.colors.sidebarActiveColor).toBe("#1e2124");
-    });
-
-    it("preserves other theme properties", () => {
-      activeTheme = di.inject(activeThemeInjectable);
-      const theme = activeTheme.get();
-
-      expect(theme.name).toBe("Dark");
-      expect(theme.type).toBe("dark");
-      expect(theme.description).toBe("Test theme");
-    });
-  });
-
-  describe("when theme colors do not use default accent", () => {
-    beforeEach(() => {
-      mockCustomAccentColor = "#ff0000";
-      mockBaseTheme = createMockTheme({
-        colors: {
-          ...createMockTheme().colors,
-          blue: "#custom-blue",
-          primary: "#custom-primary",
-        },
-      });
-      di.override(defaultLensThemeInjectable, () => mockBaseTheme);
-      activeTheme = di.inject(activeThemeInjectable);
-    });
-
-    it("does not override colors that differ from default accent", () => {
-      const theme = activeTheme.get();
-
-      expect(theme.colors.blue).toBe("#custom-blue");
-      expect(theme.colors.primary).toBe("#custom-primary");
-    });
-  });
-
-  describe("when a third-party theme uses no default accent keys", () => {
-    const customSidebarActiveColor = "#abcdef";
-
-    beforeEach(() => {
-      mockCustomAccentColor = "#ff0000";
-      mockBaseTheme = createMockTheme({
-        colors: {
-          ...createMockTheme().colors,
-          blue: "#custom-blue",
-          primary: "#custom-primary",
-          buttonPrimaryBackground: "#custom-btn",
-          menuActiveBackground: "#custom-menu",
-          helmStableRepo: "#custom-helm",
-          colorInfo: "#custom-info",
-          sidebarSubmenuActiveColor: "#custom-submenu",
-          sidebarActiveColor: customSidebarActiveColor,
-        },
-      });
-      di.override(defaultLensThemeInjectable, () => mockBaseTheme);
-      activeTheme = di.inject(activeThemeInjectable);
-    });
-
-    it("does not override sidebarActiveColor when no accent keys matched", () => {
-      const theme = activeTheme.get();
-
-      expect(theme.colors.sidebarActiveColor).toBe(customSidebarActiveColor);
-    });
-  });
-
-  describe("with system theme preference", () => {
-    beforeEach(() => {
-      mockColorThemePreference = { useSystemTheme: true, lensThemeId: "" };
-      mockCustomAccentColor = "#2196f3";
-    });
-
-    it("applies accent color to system-matched dark theme", () => {
-      mockSystemThemeType = "dark";
-      activeTheme = di.inject(activeThemeInjectable);
-
-      const theme = activeTheme.get();
-
-      expect(theme.colors.primary).toBe("#2196f3");
-      expect(theme.type).toBe("dark");
-    });
-  });
-});
-
-describe("active theme with the built-in themes", () => {
-  const customColor = "#2196f3";
-
-  let di: DiContainer;
-
-  const getThemes = (lensThemeId: string, accentColor: string | undefined) => {
-    di.override(customAccentColorInjectable, () => computed(() => accentColor));
+    di.override(accentColorsInjectable, () => computed(() => ({ dark: undefined, light: undefined, ...accentColors })));
     di.override(lensColorThemePreferenceInjectable, () => computed(() => ({ useSystemTheme: false, lensThemeId })));
 
     const baseTheme = di.inject(lensThemesInjectable).get(lensThemeId);
@@ -323,55 +44,150 @@ describe("active theme with the built-in themes", () => {
     di = getDiForUnitTesting();
   });
 
-  describe("when a custom accent color is selected", () => {
-    it("keeps the white sidebarSubmenuActiveColor of the dark theme", () => {
-      const { activeTheme } = getThemes("Dark", customColor);
+  it.each(["Dark", "Light"])("leaves the %s theme unchanged without an accent", (lensThemeId) => {
+    const { activeTheme, baseTheme } = getThemes(lensThemeId, {});
 
-      expect(activeTheme.colors.sidebarSubmenuActiveColor).toBe("#ffffff");
-    });
-
-    it("replaces the keys of the dark theme that use the default accent", () => {
-      const { activeTheme } = getThemes("Dark", customColor);
-
-      expect(activeTheme.colors.primary).toBe(customColor);
-      expect(activeTheme.colors.colorInfo).toBe(customColor);
-    });
-
-    it("replaces the teal sidebarSubmenuActiveColor of the light theme", () => {
-      const { activeTheme } = getThemes("Light", customColor);
-
-      expect(activeTheme.colors.sidebarSubmenuActiveColor).toBe(customColor);
-    });
-
-    it("keeps the colorInfo of the light theme, which is not the default accent", () => {
-      const { activeTheme, baseTheme } = getThemes("Light", customColor);
-
-      expect(activeTheme.colors.colorInfo).toBe(baseTheme.colors.colorInfo);
-      expect(activeTheme.colors.colorInfo).not.toBe(DEFAULT_ACCENT_COLOR);
-    });
+    expect(activeTheme).toBe(baseTheme);
   });
 
-  describe("when the default accent color is selected", () => {
-    it.each(["Dark", "Light"])("leaves the %s theme unchanged", (lensThemeId) => {
-      const { activeTheme, baseTheme } = getThemes(lensThemeId, DEFAULT_ACCENT_COLOR);
+  it.each(["Dark", "Light"])("leaves the %s theme unchanged with the default accent", (lensThemeId) => {
+    const { activeTheme, baseTheme } = getThemes(lensThemeId, {
+      dark: DEFAULT_ACCENT_COLOR,
+      light: DEFAULT_ACCENT_COLOR,
+    });
 
-      expect(activeTheme).toBe(baseTheme);
+    expect(activeTheme).toBe(baseTheme);
+  });
+
+  it("applies the dark accent to the dark theme only", () => {
+    expect(getThemes("Dark", { dark: purple }).activeTheme.colors.primary).toBe(purple);
+    expect(getThemes("Light", { dark: purple }).activeTheme.colors.primary).toBe(DEFAULT_ACCENT_COLOR);
+  });
+
+  it("applies the light accent to the light theme only", () => {
+    expect(getThemes("Light", { light: purple }).activeTheme.colors.primary).toBe(purple);
+    expect(getThemes("Dark", { light: purple }).activeTheme.colors.primary).toBe(DEFAULT_ACCENT_COLOR);
+  });
+
+  it("replaces the accent keys of the dark theme", () => {
+    const { colors } = getThemes("Dark", { dark: purple }).activeTheme;
+
+    expect(colors.blue).toBe(purple);
+    expect(colors.primary).toBe(purple);
+    expect(colors.buttonPrimaryBackground).toBe(purple);
+    expect(colors.menuActiveBackground).toBe(purple);
+    expect(colors.helmStableRepo).toBe(purple);
+  });
+
+  it("keeps the white sidebarSubmenuActiveColor of the dark theme", () => {
+    const { colors } = getThemes("Dark", { dark: purple }).activeTheme;
+
+    expect(colors.sidebarSubmenuActiveColor).toBe(white);
+  });
+
+  it("replaces the teal sidebarSubmenuActiveColor of the light theme", () => {
+    const { colors } = getThemes("Light", { light: purple }).activeTheme;
+
+    expect(colors.sidebarSubmenuActiveColor).toBe(purple);
+  });
+
+  it.each([
+    ["Dark", "dark"],
+    ["Light", "light"],
+  ] as const)("keeps the colorInfo status color of the %s theme", (lensThemeId, variant) => {
+    const { activeTheme, baseTheme } = getThemes(lensThemeId, { [variant]: purple });
+
+    expect(activeTheme.colors.colorInfo).toBe(baseTheme.colors.colorInfo);
+  });
+
+  it.each([
+    ["Dark", "dark"],
+    ["Light", "light"],
+  ] as const)("keeps the other colors of the %s theme", (lensThemeId, variant) => {
+    const { activeTheme, baseTheme } = getThemes(lensThemeId, { [variant]: purple });
+
+    expect(activeTheme.colors.colorError).toBe(baseTheme.colors.colorError);
+    expect(activeTheme.colors.colorWarning).toBe(baseTheme.colors.colorWarning);
+    expect(activeTheme.colors.mainBackground).toBe(baseTheme.colors.mainBackground);
+    expect(activeTheme.name).toBe(baseTheme.name);
+    expect(activeTheme.type).toBe(baseTheme.type);
+  });
+
+  it.each([
+    ["Dark", "dark", cyan, dark],
+    ["Light", "light", cyan, dark],
+    ["Dark", "dark", purple, white],
+    ["Light", "light", purple, white],
+  ] as const)("on %s with the accent %s, draws the text on the accent in %s", (lensThemeId, variant, accent, text) => {
+    const { colors } = getThemes(lensThemeId, { [variant]: accent }).activeTheme;
+
+    expect(colors.textColorOnPrimary).toBe(text);
+    expect(colors.sidebarActiveColor).toBe(text);
+    expect(colors.drawerTitleText).toBe(text);
+  });
+
+  describe("when the theme follows the computer", () => {
+    beforeEach(() => {
+      di.override(accentColorsInjectable, () => computed(() => ({ dark: purple, light: cyan })));
+      di.override(lensColorThemePreferenceInjectable, () =>
+        computed(() => ({ useSystemTheme: true, lensThemeId: "" })),
+      );
+    });
+
+    it("applies the dark accent in dark mode", () => {
+      di.override(systemThemeConfigurationInjectable, () => computed(() => "dark" as const));
+
+      const theme = di.inject(activeThemeInjectable).get();
+
+      expect(theme.type).toBe("dark");
+      expect(theme.colors.primary).toBe(purple);
+    });
+
+    it("applies the light accent in light mode", () => {
+      di.override(systemThemeConfigurationInjectable, () => computed(() => "light" as const));
+
+      const theme = di.inject(activeThemeInjectable).get();
+
+      expect(theme.type).toBe("light");
+      expect(theme.colors.primary).toBe(cyan);
     });
   });
 });
 
-describe("customAccentColor preference", () => {
-  const getDescriptor = () => getDiForUnitTesting().inject(userPreferenceDescriptorsInjectable).customAccentColor;
+describe("text on an accent", () => {
+  it.each(accentColorOptions.filter(({ value }) => value !== DEFAULT_ACCENT_COLOR))(
+    "reaches WCAG AA on $label",
+    ({ value }) => {
+      expect(getContrastRatio(value, getTextColorOnAccent(value))).toBeGreaterThanOrEqual(4.5);
+    },
+  );
 
-  it("does not store the default accent color", () => {
-    expect(getDescriptor().toStore(DEFAULT_ACCENT_COLOR)).toBeUndefined();
+  it("takes the text with the better contrast", () => {
+    expect(getTextColorOnAccent(cyan)).toBe(dark);
+    expect(getTextColorOnAccent(purple)).toBe(white);
   });
 
-  it("stores a custom accent color", () => {
-    expect(getDescriptor().toStore("#2196f3")).toBe("#2196f3");
+  it("accepts the short hex form", () => {
+    expect(getTextColorOnAccent("#fff")).toBe(dark);
   });
 
-  it("stores nothing when no accent color is set", () => {
-    expect(getDescriptor().toStore(undefined)).toBeUndefined();
+  it("falls back to white for a value that is not a hex color", () => {
+    expect(getTextColorOnAccent("teal")).toBe(white);
+  });
+});
+
+describe("accent color preferences", () => {
+  const getDescriptors = () => getDiForUnitTesting().inject(userPreferenceDescriptorsInjectable);
+
+  it.each(["accentColorDark", "accentColorLight"] as const)("%s does not store the default accent", (name) => {
+    expect(getDescriptors()[name].toStore(DEFAULT_ACCENT_COLOR)).toBeUndefined();
+  });
+
+  it.each(["accentColorDark", "accentColorLight"] as const)("%s stores a custom accent", (name) => {
+    expect(getDescriptors()[name].toStore(purple)).toBe(purple);
+  });
+
+  it.each(["accentColorDark", "accentColorLight"] as const)("%s stores nothing when unset", (name) => {
+    expect(getDescriptors()[name].toStore(undefined)).toBeUndefined();
   });
 });

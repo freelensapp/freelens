@@ -7,9 +7,9 @@
 import assert from "node:assert";
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
-import customAccentColorInjectable from "../../features/user-preferences/common/custom-accent-color.injectable";
+import accentColorsInjectable from "../../features/user-preferences/common/accent-colors.injectable";
 import lensColorThemePreferenceInjectable from "../../features/user-preferences/common/lens-color-theme.injectable";
-import { DEFAULT_ACCENT_COLOR } from "./accent-colors";
+import { DEFAULT_ACCENT_COLOR, getTextColorOnAccent } from "./accent-colors";
 import { lensThemeDeclarationInjectionToken } from "./declaration";
 import defaultLensThemeInjectable from "./default-theme.injectable";
 import systemThemeConfigurationInjectable from "./system-theme.injectable";
@@ -19,25 +19,30 @@ import type { Injectable } from "@ogre-tools/injectable";
 import type { IComputedValue } from "mobx";
 import type { ReadonlyDeep } from "type-fest";
 
-import type { LensColorName, LensTheme } from "./lens-theme";
+import type { LensColorName, LensTheme, LensThemeType } from "./lens-theme";
 
 /**
- * Color keys where a theme may use the default accent color.
- * A custom accent replaces one of these keys only when the base theme sets it to
- * `DEFAULT_ACCENT_COLOR`; a key with any other value keeps it. The dark theme therefore
- * keeps its white `sidebarSubmenuActiveColor`, while the light theme, which uses the
- * default accent there, changes. Keeping to this list, rather than scanning the whole
- * theme for the color, leaves unrelated colors of other themes alone.
+ * The keys a custom accent replaces, per variant. The two built-in themes use the default
+ * accent in different keys: the dark one keeps a white `sidebarSubmenuActiveColor`. Neither
+ * list has `colorInfo`, the color of the info statuses, which an accent must not recolor.
  */
-const DEFAULT_ACCENT_CANDIDATE_KEYS: readonly LensColorName[] = [
-  "blue",
-  "primary",
-  "buttonPrimaryBackground",
-  "menuActiveBackground",
-  "helmStableRepo",
-  "colorInfo",
-  "sidebarSubmenuActiveColor",
-];
+const accentKeys: Record<LensThemeType, readonly LensColorName[]> = {
+  dark: ["blue", "primary", "buttonPrimaryBackground", "menuActiveBackground", "helmStableRepo"],
+  light: [
+    "blue",
+    "primary",
+    "buttonPrimaryBackground",
+    "menuActiveBackground",
+    "helmStableRepo",
+    "sidebarSubmenuActiveColor",
+  ],
+};
+
+/**
+ * The keys of the text drawn on an accent background, which take white or dark text,
+ * whichever contrasts better with a custom accent.
+ */
+const textOnAccentKeys: readonly LensColorName[] = ["textColorOnPrimary", "sidebarActiveColor", "drawerTitleText"];
 
 // Annotated for declaration emit; see ./declaration.ts.
 const activeThemeInjectable: Injectable<IComputedValue<ReadonlyDeep<LensTheme>>> = getInjectable({
@@ -48,7 +53,7 @@ const activeThemeInjectable: Injectable<IComputedValue<ReadonlyDeep<LensTheme>>>
     const lensColorThemePreference = di.inject(lensColorThemePreferenceInjectable);
     const systemThemeConfiguration = di.inject(systemThemeConfigurationInjectable);
     const defaultLensTheme = di.inject(defaultLensThemeInjectable);
-    const customAccentColor = di.inject(customAccentColorInjectable);
+    const accentColors = di.inject(accentColorsInjectable);
 
     return computed(() => {
       const pref = lensColorThemePreference.get();
@@ -65,24 +70,21 @@ const activeThemeInjectable: Injectable<IComputedValue<ReadonlyDeep<LensTheme>>>
         baseTheme = lensThemes.get(pref.lensThemeId) ?? defaultLensTheme;
       }
 
-      const accentColor = customAccentColor.get();
+      const accentColor = accentColors.get()[baseTheme.type];
 
       if (!accentColor || accentColor === DEFAULT_ACCENT_COLOR) {
         return baseTheme;
       }
 
+      const textColor = getTextColorOnAccent(accentColor);
       const colorOverrides: Partial<Record<LensColorName, string>> = {};
 
-      for (const key of DEFAULT_ACCENT_CANDIDATE_KEYS) {
-        if (baseTheme.colors[key] === DEFAULT_ACCENT_COLOR) {
-          colorOverrides[key] = accentColor;
-        }
+      for (const key of accentKeys[baseTheme.type]) {
+        colorOverrides[key] = accentColor;
       }
 
-      // Only adjust sidebar active text contrast when the accent background was actually changed.
-      // Skipping this for themes that don't use the default accent preserves their custom sidebarActiveColor.
-      if (Object.keys(colorOverrides).length > 0) {
-        colorOverrides.sidebarActiveColor = baseTheme.type === "dark" ? "#ffffff" : "#1e2124";
+      for (const key of textOnAccentKeys) {
+        colorOverrides[key] = textColor;
       }
 
       return {

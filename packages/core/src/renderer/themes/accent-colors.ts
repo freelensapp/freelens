@@ -39,6 +39,11 @@ import { defaultAccentColorPreference } from "../../common/vars";
 // Safe hue zone for accents (cool half of the color wheel):
 //   cyan -> sky -> blue -> indigo -> violet -> purple -> pink
 //
+// Every option must reach the WCAG AA contrast of 4.5:1 with white or with
+// dark text (#1e2124), because the text on an accent background takes
+// whichever of the two reads better (see getTextColorOnAccent). A test checks
+// it for every option.
+//
 // Rule of thumb: pick saturated tones that read clearly against both the dark
 // theme backgrounds (mainBackground #1e2124, layoutBackground #2e3136,
 // sidebarBackground #36393e) and the light theme backgrounds. Avoid shades
@@ -63,6 +68,63 @@ export const accentColorOptions: AccentColorOption[] = [
   { value: "#7c4dff", label: "Violet" },
   { value: "#9c27b0", label: "Purple" },
   { value: "#b39ddb", label: "Lavender" },
-  { value: "#e91e63", label: "Pink" },
+  { value: "#d81b60", label: "Pink" },
   { value: "#f06292", label: "Rose" },
 ];
+
+const textColorsOnAccent = ["#ffffff", "#1e2124"] as const;
+
+const parseHexColor = (color: string): [number, number, number] | undefined => {
+  const match = /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(color);
+
+  if (!match) {
+    return undefined;
+  }
+
+  const digits = match[1].length === 3 ? [...match[1]].map((digit) => digit + digit).join("") : match[1];
+
+  return [0, 2, 4].map((offset) => Number.parseInt(digits.slice(offset, offset + 2), 16)) as [number, number, number];
+};
+
+const getRelativeLuminance = ([red, green, blue]: [number, number, number]) => {
+  const [r, g, b] = [red, green, blue].map((channel) => {
+    const value = channel / 255;
+
+    return value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
+  });
+
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+};
+
+/**
+ * The contrast ratio of two hex colors, as WCAG defines it, or `undefined` when either is not a
+ * `#rgb` or `#rrggbb` color.
+ */
+export const getContrastRatio = (first: string, second: string): number | undefined => {
+  const firstRgb = parseHexColor(first);
+  const secondRgb = parseHexColor(second);
+
+  if (!firstRgb || !secondRgb) {
+    return undefined;
+  }
+
+  const [lighter, darker] = [getRelativeLuminance(firstRgb), getRelativeLuminance(secondRgb)].sort((a, b) => b - a);
+
+  return (lighter + 0.05) / (darker + 0.05);
+};
+
+/**
+ * White or dark text, whichever contrasts better with the accent. Falls back to white for a value
+ * that is not a hex color, such as one edited by hand in the preferences file.
+ */
+export const getTextColorOnAccent = (accentColor: string): string => {
+  const [white, dark] = textColorsOnAccent;
+  const onWhite = getContrastRatio(accentColor, white);
+  const onDark = getContrastRatio(accentColor, dark);
+
+  if (onWhite === undefined || onDark === undefined) {
+    return white;
+  }
+
+  return onDark > onWhite ? dark : white;
+};
