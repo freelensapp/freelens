@@ -12,6 +12,7 @@ import personalizationPreferencePageInjectable from "./personalization-preferenc
 import personalizationPreferenceTabInjectable from "./personalization-preference-tab.injectable";
 import { registerInjectables as registerThemeVariantInjectables } from "./theme-variant/register-injectables";
 import { registerInjectables as registerThemesInjectables } from "./themes/register-injectables";
+import { registerInjectables as registerZoomInjectables } from "./zoom/register-injectables";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
@@ -43,6 +44,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     registerThemesInjectables(di);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    registerZoomInjectables(di);
   } catch (e) {
     /* Ignore duplicate registration */
   }

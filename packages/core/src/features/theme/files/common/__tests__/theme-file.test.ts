@@ -480,8 +480,16 @@ describe("theme files", () => {
     const otherThemes = builtInThemes.filter(({ theme }) => theme.metadata.name !== defaultThemeName);
     const sourceOf = (name: string) => builtInThemes.find(({ theme }) => theme.metadata.name === name)?.source ?? "";
 
-    it("are freelens, the default, then Ayu, Ayu Mirage and Dracula", () => {
-      expect(builtInThemeNames).toEqual(["freelens", "ayu", "ayu-mirage", "dracula"]);
+    it("are freelens, the default, then Ayu, Ayu Mirage, Dracula, Graphite, Catppuccin and Solarized", () => {
+      expect(builtInThemeNames).toEqual([
+        "freelens",
+        "ayu",
+        "ayu-mirage",
+        "dracula",
+        "graphite",
+        "catppuccin",
+        "solarized",
+      ]);
       expect(builtInThemes[0].theme).toBe(defaultTheme);
     });
 
@@ -586,6 +594,164 @@ describe("theme files", () => {
       expect(dracula?.spec.dark?.colors).toMatchObject({ primary: "#bd93f9", textColorOnPrimary: "#282a36" });
       expect(dracula?.spec.light?.colors).toMatchObject({ primary: "#644ac9", textColorOnPrimary: "#ffffff" });
     });
+
+    it("graphite credits Graphite and Tilman Griesel and keeps its MIT notice", () => {
+      const source = sourceOf("graphite");
+      const description = findBuiltInTheme("graphite")?.spec.description;
+
+      expect(description).toContain("Graphite");
+      expect(description).toContain("Tilman Griesel");
+      expect(source).toContain("https://graphite.rocketengine.io/");
+      expect(source).toContain("https://github.com/TilmanGriesel/graphite");
+      expect(source).toContain("Copyright (c) 2022 Tilman Griesel");
+      expect(source).toContain("Permission is hereby granted, free of charge");
+    });
+
+    it("graphite takes Graphite's own orange as the accent in both variants", () => {
+      const graphite = findBuiltInTheme("graphite");
+
+      expect(graphite?.spec.dark?.colors).toMatchObject({ primary: "#e08a00", textColorOnPrimary: "#101215" });
+      expect(graphite?.spec.light?.colors).toMatchObject({ primary: "#ee9300", textColorOnPrimary: "#131536" });
+    });
+
+    it.each(["dark", "light"] as const)(
+      "graphite keeps its status colors at the WCAG AA contrast on its surfaces in the %s variant",
+      (variant) => {
+        const graphite = findBuiltInTheme("graphite");
+
+        expect(graphite).toBeDefined();
+
+        const colors = resolveThemeVariant(graphite ?? defaultTheme, variant, defaultTheme).colors;
+        const statusColors = [
+          colors.colorSuccess,
+          colors.colorOk,
+          colors.colorInfo,
+          colors.colorError,
+          colors.colorSoftError,
+          colors.colorWarning,
+        ];
+        const surfaces = [colors.mainBackground, colors.contentColor, colors.dialogBackground];
+
+        const belowAA = statusColors.flatMap((text) =>
+          surfaces
+            .map((background) => ({ text, background, ratio: getContrastRatio(text, background) ?? 0 }))
+            .filter(({ ratio }) => ratio < 4.5),
+        );
+
+        expect(belowAA).toEqual([]);
+      },
+    );
+
+    it("catppuccin credits Catppuccin and keeps its MIT notice", () => {
+      const source = sourceOf("catppuccin");
+
+      expect(findBuiltInTheme("catppuccin")?.spec.description).toContain("Catppuccin");
+      expect(source).toContain("https://catppuccin.com");
+      expect(source).toContain("https://github.com/catppuccin/palette");
+      expect(source).toContain("https://github.com/catppuccin/vscode");
+      expect(source).toContain("Copyright (c) 2021 Catppuccin");
+      expect(source).toContain("Permission is hereby granted, free of charge");
+    });
+
+    it("catppuccin takes Catppuccin's own Mauve as the accent in both variants", () => {
+      const catppuccin = findBuiltInTheme("catppuccin");
+
+      expect(catppuccin?.spec.dark?.colors).toMatchObject({ primary: "#cba6f7", textColorOnPrimary: "#11111b" });
+      expect(catppuccin?.spec.light?.colors).toMatchObject({ primary: "#8839ef", textColorOnPrimary: "#eff1f5" });
+    });
+
+    it.each(["dark", "light"] as const)(
+      "catppuccin keeps its status colors at the WCAG AA contrast on its surfaces in the %s variant",
+      (variant) => {
+        const catppuccin = findBuiltInTheme("catppuccin");
+
+        expect(catppuccin).toBeDefined();
+
+        const colors = resolveThemeVariant(catppuccin ?? defaultTheme, variant, defaultTheme).colors;
+        const statusColors = [
+          colors.colorSuccess,
+          colors.colorOk,
+          colors.colorInfo,
+          colors.colorError,
+          colors.colorSoftError,
+          colors.colorWarning,
+        ];
+        const surfaces = [colors.mainBackground, colors.contentColor, colors.dialogBackground];
+
+        const belowAA = statusColors.flatMap((text) =>
+          surfaces
+            .map((background) => ({ text, background, ratio: getContrastRatio(text, background) ?? 0 }))
+            .filter(({ ratio }) => ratio < 4.5),
+        );
+
+        expect(belowAA).toEqual([]);
+      },
+    );
+
+    it("solarized credits Solarized and Ethan Schoonover and keeps its MIT notice", () => {
+      const source = sourceOf("solarized");
+      const description = findBuiltInTheme("solarized")?.spec.description;
+
+      expect(description).toContain("Solarized");
+      expect(description).toContain("Ethan Schoonover");
+      expect(source).toContain("https://ethanschoonover.com/solarized/");
+      expect(source).toContain("https://github.com/altercation/solarized");
+      expect(source).toContain("Copyright (c) 2011 Ethan Schoonover");
+      expect(source).toContain("Permission is hereby granted, free of charge");
+    });
+
+    it("solarized takes Solarized blue as the accent in both variants", () => {
+      const solarized = findBuiltInTheme("solarized");
+
+      expect(solarized?.spec.dark?.colors).toMatchObject({ primary: "#268bd2", textColorOnPrimary: "#00222b" });
+      expect(solarized?.spec.light?.colors).toMatchObject({ primary: "#268bd2", textColorOnPrimary: "#00222b" });
+    });
+
+    it("solarized swaps the base colors between its variants", () => {
+      const solarized = findBuiltInTheme("solarized");
+
+      expect(solarized?.spec.dark?.colors).toMatchObject({ mainBackground: "#002b36", textColorPrimary: "#839496" });
+      expect(solarized?.spec.light?.colors).toMatchObject({ mainBackground: "#fdf6e3" });
+      expect(solarized?.spec.dark?.terminalColors).toMatchObject({ background: "#002b36", black: "#073642" });
+      expect(solarized?.spec.light?.terminalColors).toMatchObject({ background: "#fdf6e3", black: "#073642" });
+    });
+
+    it.each(["dark", "light"] as const)(
+      "solarized keeps its text and status colors at the WCAG AA contrast on its background in the %s variant",
+      (variant) => {
+        const solarized = findBuiltInTheme("solarized");
+
+        expect(solarized).toBeDefined();
+
+        const colors = resolveThemeVariant(solarized ?? defaultTheme, variant, defaultTheme).colors;
+        const textColors = [
+          colors.textColorPrimary,
+          colors.textColorSecondary,
+          colors.textColorTertiary,
+          colors.textColorAccent,
+          colors.dialogTextColor,
+          colors.settingsColor,
+          colors.logsForeground,
+          colors.drawerItemNameColor,
+          colors.drawerItemValueColor,
+          colors.colorSuccess,
+          colors.colorOk,
+          colors.colorInfo,
+          colors.colorError,
+          colors.colorSoftError,
+          colors.colorWarning,
+        ];
+        const surfaces = [colors.mainBackground, colors.contentColor, colors.dialogBackground];
+
+        const belowAA = textColors.flatMap((text) =>
+          surfaces
+            .map((background) => ({ text, background, ratio: getContrastRatio(text, background) ?? 0 }))
+            .filter(({ ratio }) => ratio < 4.5),
+        );
+
+        expect(belowAA).toEqual([]);
+      },
+    );
 
     it("share the same Ayu Light variant", () => {
       expect(findBuiltInTheme("ayu-mirage")?.spec.light).toEqual(findBuiltInTheme("ayu")?.spec.light);

@@ -48,6 +48,7 @@ import { registerInjectables as registerFeaturesFeaturesVarsBuildVersionMainInje
 import { registerInjectables as registerFeaturesFeaturesVarsInjectables } from "./features/vars/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesWeblinksMainInjectables } from "./features/weblinks/main/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesWeblinksInjectables } from "./features/weblinks/register-injectables";
+import { registerInjectables as registerFeaturesFeaturesZoomMainInjectables } from "./features/zoom/main/register-injectables";
 import { registerInjectables as registerMainInjectables } from "./main/register-injectables";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
@@ -96,5 +97,6 @@ export function registerInjectables(di: DiContainerForInjection): void {
   registerFeaturesFeaturesVarsBuildVersionMainInjectables(di);
   registerFeaturesFeaturesWeblinksMainInjectables(di);
   registerFeaturesFeaturesWeblinksInjectables(di);
+  registerFeaturesFeaturesZoomMainInjectables(di);
   registerMainInjectables(di);
 }

@@ -11,6 +11,7 @@ import kubeDirectoryPathInjectable from "../../../common/os/kube-directory-path.
 import { defaultThemePreference, defaultThemeVariantPreference } from "../../../common/vars";
 import currentTimezoneInjectable from "../../../common/vars/current-timezone.injectable";
 import isDevelopmentInjectable from "../../../common/vars/is-development.injectable";
+import { defaultZoom, isZoomStep } from "../../zoom/common/zoom-steps";
 import {
   ClusterPageMenuOrder,
   clampMaxCombinedLogsPods,
@@ -52,6 +53,7 @@ export type PreferenceDescriptors = {
   readonly accentColorDark: PreferenceDescription<string | undefined>;
   readonly accentColorLight: PreferenceDescription<string | undefined>;
   readonly overviewStyle: PreferenceDescription<OverviewStylePreference>;
+  readonly zoom: PreferenceDescription<number>;
   readonly terminalTheme: PreferenceDescription<string>;
   readonly terminalThemeVariant: PreferenceDescription<TerminalThemeVariantPreference>;
   readonly localeTimezone: PreferenceDescription<string>;
@@ -116,6 +118,10 @@ const userPreferenceDescriptorsInjectable = getInjectable({
       overviewStyle: getPreferenceDescriptor<OverviewStylePreference>({
         fromStore: (val) => (val === "charts" ? val : defaultOverviewStylePreference),
         toStore: (val) => (val === "charts" ? val : undefined),
+      }),
+      zoom: getPreferenceDescriptor<number>({
+        fromStore: (val) => (isZoomStep(val) ? val : defaultZoom),
+        toStore: (val) => (isZoomStep(val) && val !== defaultZoom ? val : undefined),
       }),
       terminalTheme: getPreferenceDescriptor<string>({
         fromStore: (val) => val || "",

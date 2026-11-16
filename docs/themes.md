@@ -133,6 +133,9 @@ Freelens comes with these themes, each with a dark and a light variant:
 | `ayu`           | Ayu        | Ayu Dark        | Ayu Light       |
 | `ayu-mirage`    | Ayu Mirage | Ayu Mirage      | Ayu Light       |
 | `dracula`       | Dracula    | Dracula Classic | Alucard Classic |
+| `graphite`      | Graphite   | Graphite        | Graphite Light  |
+| `catppuccin`    | Catppuccin | Mocha           | Latte           |
+| `solarized`     | Solarized  | Solarized Dark  | Solarized Light |
 
 `freelens` is the default theme, and the theme every other one, built-in or
 imported, takes the tokens it leaves out from. The other built-in themes set
@@ -157,6 +160,41 @@ highlighting rules for the editor. Its accent is Dracula's own purple, with
 dark text on it in Dracula Classic and white text in Alucard Classic, both at
 the WCAG AA contrast. The file carries the MIT notice of
 [dracula-theme](https://github.com/dracula/dracula-theme) in its header.
+
+The Graphite theme takes its colors from
+[Graphite](https://graphite.rocketengine.io/), the theme for Home Assistant
+by Tilman Griesel: the color tokens and the code editor colors of
+[TilmanGriesel/graphite](https://github.com/TilmanGriesel/graphite).
+Graphite has no terminal palette, so the ANSI colors are its named colors.
+A feedback or named color that does not reach the WCAG AA contrast as text
+on the backgrounds of its variant is the closest color of the same hue that
+does, which darkens most of them in Graphite Light. Its accent is Graphite's
+own orange, with dark text on it in both variants. The file carries the MIT
+notice of Graphite in its header.
+
+The Catppuccin theme takes its colors from
+[Catppuccin](https://catppuccin.com): the colors and the ANSI colors of Mocha
+and Latte in the [palette](https://github.com/catppuccin/palette), and the
+editor colors and syntax highlighting of its
+[VS Code port](https://github.com/catppuccin/vscode). A status or named color
+that does not reach the WCAG AA contrast as text on Base is the closest color
+of the same hue that does, which darkens most of them in Latte. Its accent is
+Catppuccin's own Mauve, with Crust on it in Mocha and Base in Latte. The file
+carries the MIT notice of Catppuccin in its header.
+
+The Solarized theme takes its colors from
+[Solarized](https://ethanschoonover.com/solarized/) by Ethan Schoonover: the
+base and accent colors of
+[altercation/solarized](https://github.com/altercation/solarized), with the
+light variant swapping the base colors of the dark one as Solarized defines.
+The terminal takes Solarized's own ANSI mapping, and the editor the syntax
+groups of its Vim theme. A base color drawn as text that does not reach the
+WCAG AA contrast on its background is the next base color that does, so the
+secondary text is brighter in Solarized Dark, and the body text darker in
+Solarized Light. A status or named color that does not reach it as text on
+the background is the closest color of the same hue that does. Its accent is
+Solarized blue, with base03 darkened to the WCAG AA contrast on it in both
+variants. The file carries the MIT notice of Solarized in its header.
 
 ## The JSON Schema
 

@@ -24,4 +24,8 @@
       box-shadow: 0 0 0 $unit var(--blue);
     }
   }
+
+  .markLabel {
+    color: var(--textColorSecondary);
+  }
 }
