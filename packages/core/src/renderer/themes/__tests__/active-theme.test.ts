@@ -266,6 +266,7 @@ spec:
     ["ayu", "#0d1017", "#f8f9fa"],
     ["ayu-mirage", "#1f2430", "#f8f9fa"],
     ["dracula", "#282a36", "#fffbeb"],
+    ["graphite", "#101215", "#eaebee"],
   ])("with the built-in theme %s selected", (name, darkMainBackground, lightMainBackground) => {
     const systemType = observable.box<"dark" | "light">("light");
 

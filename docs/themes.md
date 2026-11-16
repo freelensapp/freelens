@@ -133,6 +133,7 @@ Freelens comes with these themes, each with a dark and a light variant:
 | `ayu`           | Ayu        | Ayu Dark        | Ayu Light       |
 | `ayu-mirage`    | Ayu Mirage | Ayu Mirage      | Ayu Light       |
 | `dracula`       | Dracula    | Dracula Classic | Alucard Classic |
+| `graphite`      | Graphite   | Graphite        | Graphite Light  |
 
 `freelens` is the default theme, and the theme every other one, built-in or
 imported, takes the tokens it leaves out from. The other built-in themes set
@@ -157,6 +158,17 @@ highlighting rules for the editor. Its accent is Dracula's own purple, with
 dark text on it in Dracula Classic and white text in Alucard Classic, both at
 the WCAG AA contrast. The file carries the MIT notice of
 [dracula-theme](https://github.com/dracula/dracula-theme) in its header.
+
+The Graphite theme takes its colors from
+[Graphite](https://graphite.rocketengine.io/), the theme for Home Assistant
+by Tilman Griesel: the color tokens and the code editor colors of
+[TilmanGriesel/graphite](https://github.com/TilmanGriesel/graphite).
+Graphite has no terminal palette, so the ANSI colors are its named colors.
+A feedback or named color that does not reach the WCAG AA contrast as text
+on the backgrounds of its variant is the closest color of the same hue that
+does, which darkens most of them in Graphite Light. Its accent is Graphite's
+own orange, with dark text on it in both variants. The file carries the MIT
+notice of Graphite in its header.
 
 ## The JSON Schema
 
