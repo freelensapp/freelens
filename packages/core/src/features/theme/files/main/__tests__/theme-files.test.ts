@@ -636,7 +636,7 @@ describe("theme files in the main process", () => {
         expect(fileSystem.writeFile).not.toHaveBeenCalled();
       });
 
-      it.each([
+      it.each<{ header: string; headers: Record<string, string> }>([
         { header: "without a content-length", headers: {} },
         { header: "with a content-length that understates it", headers: { "content-length": "100" } },
       ])("is aborted as soon as it passes the limit, $header", async ({ headers }) => {
