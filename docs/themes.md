@@ -1,7 +1,7 @@
 # Themes
 
-A Freelens theme is a YAML file. Every theme, the built-in one included, has
-the same format: Freelens reads the files, lets the user pick one in
+A Freelens theme is a YAML file. Every theme, the built-in ones included,
+has the same format: Freelens reads the files, lets the user pick one in
 Preferences → Personalization, import more and export any of them.
 
 ## A theme file
@@ -42,8 +42,8 @@ The file has the shape of a Kubernetes object:
   `apiVersion` or `kind` is refused.
 - `metadata.name` identifies the theme, and is what the preferences store. It
   takes lowercase letters, digits and `-`, starts and ends with a letter or a
-  digit, and is at most 63 characters long. `freelens` is the name of the
-  built-in theme and cannot be taken. `metadata` may also have `labels` and
+  digit, and is at most 63 characters long. The names of the
+  [built-in themes](#built-in-themes) cannot be taken. `metadata` may also have `labels` and
   `annotations`, which Freelens keeps but does not interpret.
 - `spec.displayName` is the name shown in the preferences. `description` and
   `author` are optional.
@@ -74,9 +74,9 @@ written as JSON is valid as well, since JSON is YAML.
     when more is needed.
 
 A variant may leave out any token, and the `editor` as a whole. What it
-leaves out comes from the built-in theme, in the same variant, so a theme of
-a few lines is complete. The built-in theme defines every token: exporting
-it from the preferences gives a full starting point.
+leaves out comes from the default theme, `freelens`, in the same variant, so
+a theme of a few lines is complete. The default theme defines every token:
+exporting it from the preferences gives a full starting point.
 
 In the `editor`, the same holds for each field, each editor color and each
 token, so a theme can change a single token:
@@ -87,9 +87,9 @@ editor:
     comment: "#6a737d"
 ```
 
-A token the theme sets replaces the built-in style of that token as a whole:
-`comment: "#6a737d"` sets the foreground and drops any background or font
-style the built-in theme gives `comment`.
+A token the theme sets replaces the default theme's style of that token as a
+whole: `comment: "#6a737d"` sets the foreground and drops any background or
+font style the default theme gives `comment`.
 
 Freelens ignores a color token of `colors` or `terminalColors` it does not
 know, and lists it when the file is imported, so a theme written for a newer
@@ -115,6 +115,32 @@ light variant each, replaces the accent tokens of whichever theme is active:
 well. `textColorOnPrimary`, `sidebarActiveColor` and `drawerTitleText`, the
 text drawn on the accent, then take white or dark text, whichever contrasts
 better. Without a choice, the theme's own colors stay.
+
+## Built-in themes
+
+Freelens comes with these themes, each with a dark and a light variant:
+
+| `metadata.name` | Name       | Dark       | Light     |
+| --------------- | ---------- | ---------- | --------- |
+| `freelens`      | Freelens   | Freelens   | Freelens  |
+| `ayu`           | Ayu        | Ayu Dark   | Ayu Light |
+| `ayu-mirage`    | Ayu Mirage | Ayu Mirage | Ayu Light |
+
+`freelens` is the default theme, and the theme every other one, built-in or
+imported, takes the tokens it leaves out from. The Ayu themes set every
+token, and share the same Ayu Light variant.
+
+The preferences list the built-in themes first, in this order, then the
+imported ones. A built-in theme cannot be removed, but can be exported as
+the starting point of a theme of one's own, under another `metadata.name`.
+
+The files are in `packages/core/src/features/theme/files/common/`. The Ayu
+themes take their colors from [Ayu](https://ayutheme.com/), its palettes in
+[ayu-colors](https://github.com/ayu-theme/ayu-colors) and its editor themes
+in [vscode-ayu](https://github.com/ayu-theme/vscode-ayu), both under the MIT
+License, whose notice each Ayu file carries in its header. Their text on the
+accent is darker than Ayu's own, so that it reaches the WCAG AA contrast on
+every accent background.
 
 ## The JSON Schema
 
@@ -147,17 +173,18 @@ and Remove deletes it. When that would replace a file, because
 `<metadata.name>.yaml` exists already (whatever it holds) or another file holds
 a theme of the same name, Freelens says which and asks first. A file put there
 by hand is picked up as well, while
-Freelens runs. A file that is invalid, or whose name is taken by another
-file, is listed in Preferences → Personalization with the reason and is not
-applied. When the selected theme goes away, Freelens falls back to the
-built-in theme.
+Freelens runs. A file that is invalid, whose name is taken by another file,
+or whose name is that of a built-in theme, is listed in Preferences →
+Personalization with the reason and is not applied. When the selected theme
+goes away, Freelens falls back to the default theme.
 
 ## Extensions
 
 `Renderer.Theme.activeTheme` describes the active theme in the variant in
-use: `name` is the theme's `metadata.name`, `freelens` for the built-in theme
-in both variants, so `type` is what tells dark from light. `colors` and
+use: `name` is the theme's `metadata.name`, such as `freelens` or `ayu`, the
+same in both variants, so `type` is what tells dark from light. `isDefault`
+is set for the default theme only. `colors` and
 `terminalColors` are complete, with the accent color applied, and
 `monacoTheme` is the name the variant's editor theme is registered under in
 Monaco. `clouds-midnight` stays registered as the dark editor theme of the
-built-in theme.
+default theme.

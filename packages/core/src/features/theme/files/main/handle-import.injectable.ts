@@ -11,7 +11,7 @@ import removePathInjectable from "../../../../common/fs/remove.injectable";
 import writeFileInjectable from "../../../../common/fs/write-file.injectable";
 import randomUUIDInjectable from "../../../../main/crypto/random-uuid.injectable";
 import electronDialogInjectable from "../../../../main/electron-app/features/electron-dialog.injectable";
-import { builtInThemeName } from "../common/builtin-theme";
+import { isBuiltInThemeName } from "../common/builtin-theme";
 import { importThemeChannel } from "../common/channels";
 import { parseThemeFile } from "../common/parse";
 import { getThemeNameError } from "../common/schema";
@@ -185,11 +185,11 @@ const importThemeListenerInjectable = getRequestChannelListenerInjectable({
         return { status: "invalid", filePath, error: nameError };
       }
 
-      if (name === builtInThemeName) {
+      if (isBuiltInThemeName(name)) {
         return {
           status: "invalid",
           filePath,
-          error: `The name "${name}" is the name of the built-in theme: change metadata.name to import it`,
+          error: `The name "${name}" is the name of a built-in theme: change metadata.name to import it`,
         };
       }
 

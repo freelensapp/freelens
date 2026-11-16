@@ -6,7 +6,15 @@
 import Ajv2020 from "ajv/dist/2020";
 import * as yaml from "js-yaml";
 import { describe, expect, it } from "vitest";
-import { builtInTheme, builtInThemeName, builtInThemeSource } from "../builtin-theme";
+import { getContrastRatio } from "../../../../../renderer/themes/accent-colors";
+import {
+  builtInThemes,
+  defaultTheme,
+  defaultThemeName,
+  defaultThemeSource,
+  findBuiltInTheme,
+  isBuiltInThemeName,
+} from "../builtin-theme";
 import { parseThemeFile, serializeThemeFile } from "../parse";
 import {
   getAvailableVariants,
@@ -308,13 +316,13 @@ describe("theme files", () => {
       primary: "#00ff00"
 `),
       );
-      const dark = resolveThemeVariant(theme, "dark", builtInTheme);
-      const light = resolveThemeVariant(theme, "light", builtInTheme);
+      const dark = resolveThemeVariant(theme, "dark", defaultTheme);
+      const light = resolveThemeVariant(theme, "light", defaultTheme);
 
       expect(dark.colors.primary).toBe("#ff0000");
-      expect(dark.colors.mainBackground).toBe(builtInTheme.spec.dark?.colors?.mainBackground);
+      expect(dark.colors.mainBackground).toBe(defaultTheme.spec.dark?.colors?.mainBackground);
       expect(light.colors.primary).toBe("#00ff00");
-      expect(light.colors.mainBackground).toBe(builtInTheme.spec.light?.colors?.mainBackground);
+      expect(light.colors.mainBackground).toBe(defaultTheme.spec.light?.colors?.mainBackground);
       expect(Object.keys(dark.colors).sort()).toEqual([...lensColorNames].sort());
     });
 
@@ -326,7 +334,7 @@ describe("theme files", () => {
 `),
       );
 
-      expect(resolveThemeVariant(theme, "dark", builtInTheme).colors).not.toHaveProperty("primaryy");
+      expect(resolveThemeVariant(theme, "dark", defaultTheme).colors).not.toHaveProperty("primaryy");
     });
 
     it("gives a theme with a single variant that variant whatever is requested", () => {
@@ -334,30 +342,30 @@ describe("theme files", () => {
 
       expect(getAvailableVariants(theme)).toEqual(["dark"]);
       expect(getEffectiveVariant(theme, "light")).toBe("dark");
-      expect(resolveThemeVariant(theme, "light", builtInTheme)).toMatchObject({
+      expect(resolveThemeVariant(theme, "light", defaultTheme)).toMatchObject({
         type: "dark",
-        colors: { primary: "#ff0000", mainBackground: builtInTheme.spec.dark?.colors?.mainBackground },
+        colors: { primary: "#ff0000", mainBackground: defaultTheme.spec.dark?.colors?.mainBackground },
       });
     });
 
     it("describes the theme as the extension API shows it", () => {
       const theme = parseValid(darkOnly);
 
-      expect(resolveThemeVariant(theme, "dark", builtInTheme)).toMatchObject({
+      expect(resolveThemeVariant(theme, "dark", defaultTheme)).toMatchObject({
         name: "my-theme",
         type: "dark",
         description: "",
         author: "",
         monacoTheme: "freelens-theme-my-theme-dark",
       });
-      expect(resolveThemeVariant(theme, "dark", builtInTheme).isDefault).toBeUndefined();
+      expect(resolveThemeVariant(theme, "dark", defaultTheme).isDefault).toBeUndefined();
     });
 
     it("takes the editor theme from the built-in theme when the variant has none", () => {
       const theme = parseValid(darkOnly);
-      const builtInEditor = builtInTheme.spec.dark?.editor;
+      const builtInEditor = defaultTheme.spec.dark?.editor;
 
-      expect(resolveEditorTheme(theme, "dark", builtInTheme)).toEqual({
+      expect(resolveEditorTheme(theme, "dark", defaultTheme)).toEqual({
         base: builtInEditor?.base,
         inherit: builtInEditor?.inherit,
         colors: builtInEditor?.colors,
@@ -376,8 +384,8 @@ describe("theme files", () => {
         my.token: "#00ff00"
 `),
       );
-      const builtInEditor = builtInTheme.spec.dark?.editor;
-      const editor = resolveEditorTheme(theme, "dark", builtInTheme);
+      const builtInEditor = defaultTheme.spec.dark?.editor;
+      const editor = resolveEditorTheme(theme, "dark", defaultTheme);
 
       expect(editor.base).toBe("vs-dark");
       expect(editor.inherit).toBe(true);
@@ -399,8 +407,8 @@ describe("theme files", () => {
 `),
       );
 
-      expect(resolveEditorTheme(theme, "light", builtInTheme)).toMatchObject({ base: "hc-black", inherit: false });
-      expect(resolveEditorTheme(builtInTheme, "light", builtInTheme)).toMatchObject({ base: "vs", inherit: true });
+      expect(resolveEditorTheme(theme, "light", defaultTheme)).toMatchObject({ base: "hc-black", inherit: false });
+      expect(resolveEditorTheme(defaultTheme, "light", defaultTheme)).toMatchObject({ base: "vs", inherit: true });
     });
   });
 
@@ -420,7 +428,7 @@ describe("theme files", () => {
     });
 
     it("are the rules of the built-in dark editor theme", () => {
-      const rules = getMonacoTokenRules(resolveEditorTheme(builtInTheme, "dark", builtInTheme).tokens);
+      const rules = getMonacoTokenRules(resolveEditorTheme(defaultTheme, "dark", defaultTheme).tokens);
 
       expect(rules).toHaveLength(28);
       expect(rules[0]).toEqual({ token: "", background: "191919" });
@@ -430,40 +438,141 @@ describe("theme files", () => {
     });
 
     it("are empty for the built-in light editor theme, which keeps the rules of its base", () => {
-      expect(getMonacoTokenRules(resolveEditorTheme(builtInTheme, "light", builtInTheme).tokens)).toEqual([]);
+      expect(getMonacoTokenRules(resolveEditorTheme(defaultTheme, "light", defaultTheme).tokens)).toEqual([]);
     });
   });
 
-  describe("the built-in theme", () => {
+  describe("the default theme", () => {
     it("is named freelens", () => {
-      expect(builtInTheme.metadata.name).toBe(builtInThemeName);
+      expect(defaultTheme.metadata.name).toBe(defaultThemeName);
     });
 
     it.each(["dark", "light"] as const)("defines every token in the %s variant", (variant) => {
-      expect(Object.keys(builtInTheme.spec[variant]?.colors ?? {}).sort()).toEqual([...lensColorNames].sort());
-      expect(builtInTheme.spec[variant]?.editor).toBeDefined();
+      expect(Object.keys(defaultTheme.spec[variant]?.colors ?? {}).sort()).toEqual([...lensColorNames].sort());
+      expect(defaultTheme.spec[variant]?.editor).toBeDefined();
     });
 
     it.each(["dark", "light"] as const)("knows every terminal token it sets in the %s variant", (variant) => {
-      for (const token of Object.keys(builtInTheme.spec[variant]?.terminalColors ?? {})) {
+      for (const token of Object.keys(defaultTheme.spec[variant]?.terminalColors ?? {})) {
         expect(terminalColorNames).toContain(token);
       }
     });
 
     it("is marked as the default in both variants", () => {
-      expect(resolveThemeVariant(builtInTheme, "dark", builtInTheme).isDefault).toBe(true);
-      expect(resolveThemeVariant(builtInTheme, "light", builtInTheme).isDefault).toBe(true);
+      expect(resolveThemeVariant(defaultTheme, "dark", defaultTheme).isDefault).toBe(true);
+      expect(resolveThemeVariant(defaultTheme, "light", defaultTheme).isDefault).toBe(true);
     });
 
     it("passes the JSON Schema", () => {
       const validate = createValidator();
 
-      expect(validate(yaml.load(builtInThemeSource))).toBe(true);
+      expect(validate(yaml.load(defaultThemeSource))).toBe(true);
       expect(validate.errors ?? []).toEqual([]);
     });
 
     it("points at the JSON Schema", () => {
-      expect(builtInThemeSource.split("\n")[0]).toBe(`# yaml-language-server: $schema=${themeSchemaUrl}`);
+      expect(defaultThemeSource.split("\n")[0]).toBe(`# yaml-language-server: $schema=${themeSchemaUrl}`);
+    });
+  });
+
+  describe("the built-in themes", () => {
+    const builtInThemeNames = builtInThemes.map(({ theme }) => theme.metadata.name);
+    const ayuThemes = builtInThemes.filter(({ theme }) => theme.metadata.name !== defaultThemeName);
+
+    it("are freelens, the default, then Ayu and Ayu Mirage", () => {
+      expect(builtInThemeNames).toEqual(["freelens", "ayu", "ayu-mirage"]);
+      expect(builtInThemes[0].theme).toBe(defaultTheme);
+    });
+
+    it("are found by name, and reserve their names", () => {
+      for (const name of builtInThemeNames) {
+        expect(findBuiltInTheme(name)?.metadata.name).toBe(name);
+        expect(isBuiltInThemeName(name)).toBe(true);
+      }
+
+      expect(findBuiltInTheme("my-theme")).toBeUndefined();
+      expect(isBuiltInThemeName("my-theme")).toBe(false);
+    });
+
+    describe.each(builtInThemes.map(({ theme, source }) => [theme.metadata.name, theme, source] as const))(
+      "%s",
+      (_name, theme, source) => {
+        it("passes the JSON Schema", () => {
+          const validate = createValidator();
+
+          expect(validate(yaml.load(source))).toBe(true);
+          expect(validate.errors ?? []).toEqual([]);
+        });
+
+        it("points at the JSON Schema", () => {
+          expect(source.split("\n")[0]).toBe(`# yaml-language-server: $schema=${themeSchemaUrl}`);
+        });
+
+        it("has both variants, without unknown tokens", () => {
+          expect(getAvailableVariants(theme)).toEqual(["dark", "light"]);
+          expect(parseThemeFile(source)).toMatchObject({ isValid: true, unknownTokens: [] });
+        });
+      },
+    );
+
+    describe.each(ayuThemes.map(({ theme, source }) => [theme.metadata.name, theme, source] as const))(
+      "%s",
+      (_name, theme, source) => {
+        it.each(["dark", "light"] as const)("sets every token the default theme sets in the %s variant", (variant) => {
+          const spec = theme.spec[variant];
+
+          expect(Object.keys(spec?.colors ?? {}).sort()).toEqual([...lensColorNames].sort());
+          expect(Object.keys(spec?.terminalColors ?? {}).sort()).toEqual(
+            Object.keys(defaultTheme.spec[variant]?.terminalColors ?? {}).sort(),
+          );
+          expect(spec?.editor?.base).toBeDefined();
+          expect(Object.keys(spec?.editor?.tokens ?? {})).not.toEqual([]);
+        });
+
+        it.each(["dark", "light"] as const)("resolves the %s variant to its own colors", (variant) => {
+          const resolved = resolveThemeVariant(theme, variant, defaultTheme);
+
+          expect(resolved).toMatchObject({ name: theme.metadata.name, type: variant });
+          expect(resolved.isDefault).toBeUndefined();
+          expect(resolved.colors).toEqual(theme.spec[variant]?.colors);
+          expect(resolved.terminalColors).toEqual(theme.spec[variant]?.terminalColors);
+        });
+
+        it.each(["dark", "light"] as const)(
+          "keeps the text on its accent at the WCAG AA contrast in the %s variant",
+          (variant) => {
+            const colors = resolveThemeVariant(theme, variant, defaultTheme).colors;
+            const textOnAccent = [colors.textColorOnPrimary, colors.sidebarActiveColor, colors.drawerTitleText];
+            const accentBackgrounds = [
+              colors.primary,
+              colors.blue,
+              colors.buttonPrimaryBackground,
+              colors.menuActiveBackground,
+            ];
+
+            const belowAA = textOnAccent.flatMap((text) =>
+              accentBackgrounds
+                .map((background) => ({ text, background, ratio: getContrastRatio(text, background) ?? 0 }))
+                .filter(({ ratio }) => ratio < 4.5),
+            );
+
+            expect(belowAA).toEqual([]);
+          },
+        );
+
+        it("credits Ayu and keeps its MIT notice", () => {
+          expect(theme.spec.description).toContain("Ayu");
+          expect(source).toContain("https://github.com/ayu-theme/ayu-colors");
+          expect(source).toContain("https://github.com/ayu-theme/vscode-ayu");
+          expect(source).toContain("Copyright (c) Konstantin Pschera");
+          expect(source).toContain("Copyright (c) 2016 Ike Kurghinyan");
+          expect(source).toContain("Permission is hereby granted, free of charge");
+        });
+      },
+    );
+
+    it("share the same Ayu Light variant", () => {
+      expect(findBuiltInTheme("ayu-mirage")?.spec.light).toEqual(findBuiltInTheme("ayu")?.spec.light);
     });
   });
 
@@ -544,13 +653,13 @@ describe("theme files", () => {
 
   describe("export", () => {
     it("gives a file that imports back unchanged", () => {
-      const exported = serializeThemeFile(builtInTheme);
+      const exported = serializeThemeFile(defaultTheme);
 
-      expect(parseValid(exported)).toEqual(builtInTheme);
+      expect(parseValid(exported)).toEqual(defaultTheme);
     });
 
     it("carries the modeline and quotes every color", () => {
-      const exported = serializeThemeFile(builtInTheme);
+      const exported = serializeThemeFile(defaultTheme);
 
       expect(exported.split("\n")[0]).toBe(`# yaml-language-server: $schema=${themeSchemaUrl}`);
       expect(exported).not.toMatch(/: #/);
@@ -558,7 +667,7 @@ describe("theme files", () => {
     });
 
     it("writes the editor tokens as a map of colors and styles", () => {
-      const exported = serializeThemeFile(builtInTheme);
+      const exported = serializeThemeFile(defaultTheme);
 
       expect(exported).toContain(
         '      tokens:\n        "":\n          background: "#191919"\n        comment: "#3c403b"\n',

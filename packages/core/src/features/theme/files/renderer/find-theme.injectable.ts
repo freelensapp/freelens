@@ -4,7 +4,7 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import { builtInTheme } from "../common/builtin-theme";
+import { defaultTheme } from "../common/builtin-theme";
 import availableThemesInjectable from "./available-themes.injectable";
 
 import type { ThemeFile } from "../common/schema";
@@ -12,7 +12,7 @@ import type { ThemeFile } from "../common/schema";
 export type FindTheme = (name: string) => ThemeFile;
 
 /**
- * The theme of a name, or the built-in theme when there is none, such as a theme whose file was
+ * The theme of a name, or the default theme when there is none, such as a theme whose file was
  * removed. Reactive when called in a derivation.
  */
 const findThemeInjectable = getInjectable({
@@ -20,7 +20,7 @@ const findThemeInjectable = getInjectable({
   instantiate: (di): FindTheme => {
     const availableThemes = di.inject(availableThemesInjectable);
 
-    return (name) => availableThemes.get().find(({ theme }) => theme.metadata.name === name)?.theme ?? builtInTheme;
+    return (name) => availableThemes.get().find(({ theme }) => theme.metadata.name === name)?.theme ?? defaultTheme;
   },
 });
 

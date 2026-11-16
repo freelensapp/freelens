@@ -11,11 +11,11 @@ Four mechanisms coexist. They are not interchangeable — each has a distinct
 role (see [Roles](#roles-which-mechanism-to-use)):
 
 1. **Theme tokens (CSS custom properties).** The colors come from theme files
-   (see [`docs/themes.md`](./themes.md)): the built-in one,
-   `packages/core/src/features/theme/files/common/freelens.theme.yaml`, and
-   those the user imports. `themes/apply-lens-theme.injectable.ts` writes the
+   (see [`docs/themes.md`](./themes.md)): the built-in ones, in
+   `packages/core/src/features/theme/files/common/`, and those the user
+   imports. `themes/apply-lens-theme.injectable.ts` writes the
    colors of the active theme to `:root` as `--<name>` custom properties at
-   runtime. A new token is added to the built-in theme, in both variants, and
+   runtime. A new token is added to every built-in theme, in both variants, and
    to `token-descriptions.ts` next to it, whose description the JSON Schema
    of theme files carries. Fonts, font sizes and
    spacing units (`--font-main`, `--font-size`, `--unit`, `--padding`, …) are

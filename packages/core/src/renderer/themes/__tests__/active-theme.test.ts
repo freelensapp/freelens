@@ -3,9 +3,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { computed } from "mobx";
+import { computed, observable, runInAction } from "mobx";
 import { beforeEach, describe, expect, it } from "vitest";
-import { builtInTheme } from "../../../features/theme/files/common/builtin-theme";
+import { defaultTheme, findBuiltInTheme } from "../../../features/theme/files/common/builtin-theme";
 import { parseThemeFile } from "../../../features/theme/files/common/parse";
 import { resolveThemeVariant } from "../../../features/theme/files/common/resolve";
 import importedThemesStateInjectable from "../../../features/theme/files/renderer/imported-themes-state.injectable";
@@ -38,7 +38,7 @@ describe("active theme with an accent color", () => {
     di.override(accentColorsInjectable, () => computed(() => ({ dark: undefined, light: undefined, ...accentColors })));
     di.override(themePreferenceInjectable, () => computed(() => ({ name: "freelens", variant: type })));
 
-    const baseTheme = resolveThemeVariant(builtInTheme, type, builtInTheme);
+    const baseTheme = resolveThemeVariant(defaultTheme, type, defaultTheme);
 
     return { activeTheme: di.inject(activeThemeInjectable).get(), baseTheme };
   };
@@ -234,7 +234,7 @@ spec:
       const { colors } = di.inject(activeThemeInjectable).get();
 
       expect(colors.mainBackground).toBe("#000000");
-      expect(colors.sidebarBackground).toBe(builtInTheme.spec.dark?.colors?.sidebarBackground);
+      expect(colors.sidebarBackground).toBe(defaultTheme.spec.dark?.colors?.sidebarBackground);
     });
 
     it("keeps the theme's own accent without a choice", () => {
@@ -258,6 +258,54 @@ spec:
     });
   });
 
+  describe.each([
+    ["ayu", "#0d1017"],
+    ["ayu-mirage", "#1f2430"],
+  ])("with the built-in theme %s selected", (name, darkMainBackground) => {
+    const systemType = observable.box<"dark" | "light">("light");
+
+    beforeEach(() => {
+      runInAction(() => systemType.set("light"));
+      di.override(systemThemeConfigurationInjectable, () => computed(() => systemType.get()));
+      di.inject(userPreferencesStateInjectable).theme = name;
+      di.inject(userPreferencesStateInjectable).themeVariant = "system";
+    });
+
+    it("follows the operating system between its variants, the light one being Ayu Light", () => {
+      const activeTheme = di.inject(activeThemeInjectable);
+
+      expect(activeTheme.get()).toMatchObject({ name, type: "light", monacoTheme: `freelens-theme-${name}-light` });
+      expect(activeTheme.get().colors.mainBackground).toBe("#f8f9fa");
+
+      runInAction(() => systemType.set("dark"));
+
+      expect(activeTheme.get()).toMatchObject({ name, type: "dark", monacoTheme: `freelens-theme-${name}-dark` });
+      expect(activeTheme.get().colors.mainBackground).toBe(darkMainBackground);
+    });
+
+    it("gives the terminal the colors of the variant", () => {
+      expect(di.inject(xtermColorThemeInjectable).get().background).toBe(
+        findBuiltInTheme(name)?.spec.light?.terminalColors?.background,
+      );
+    });
+
+    it("keeps Ayu's own accent without a choice", () => {
+      expect(di.inject(activeThemeInjectable).get().colors.primary).toBe(
+        findBuiltInTheme(name)?.spec.light?.colors?.primary,
+      );
+    });
+
+    it("applies the accent the user chose, with the text on it", () => {
+      di.override(accentColorsInjectable, () => computed(() => ({ dark: undefined, light: purple })));
+
+      const { colors } = di.inject(activeThemeInjectable).get();
+
+      expect(colors.primary).toBe(purple);
+      expect(colors.buttonPrimaryBackground).toBe(purple);
+      expect(colors.textColorOnPrimary).toBe(white);
+    });
+  });
+
   describe("the terminal theme", () => {
     it("can be a variant of another theme", () => {
       importTheme(darkOnlyTheme);
@@ -265,7 +313,7 @@ spec:
       di.inject(userPreferencesStateInjectable).terminalThemeVariant = "dark";
 
       expect(di.inject(xtermColorThemeInjectable).get().background).toBe(
-        builtInTheme.spec.dark?.terminalColors?.background,
+        defaultTheme.spec.dark?.terminalColors?.background,
       );
     });
 
@@ -274,7 +322,7 @@ spec:
       di.inject(userPreferencesStateInjectable).terminalThemeVariant = "dark";
 
       expect(di.inject(xtermColorThemeInjectable).get().background).toBe(
-        builtInTheme.spec.dark?.terminalColors?.background,
+        defaultTheme.spec.dark?.terminalColors?.background,
       );
     });
   });
