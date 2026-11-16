@@ -103,6 +103,29 @@ export type FixtureRendererNavigate = typeof Renderer.Navigation.navigate;
 export type FixtureIconProps = Renderer.Component.IconProps;
 export type FixtureSecretCertificatesProps = Renderer.Component.SecretCertificatesProps;
 
+// The overview cards are function components, a value only, and their props
+// are types only, so no name is a pair. The props type an extension's own data
+// and have to be what the component takes.
+export type FixtureCapacityCardProps = Renderer.Component.CapacityCardProps;
+export type FixtureCapacityCardLabels = Renderer.Component.CapacityCardLabels;
+export type FixtureStatusCardProps = Renderer.Component.StatusCardProps;
+export type FixtureStatusCardStatus = Renderer.Component.StatusCardStatus;
+export type FixtureStatusCardTone = Renderer.Component.StatusCardTone;
+export type CapacityCardTakesItsProps = Holds<
+  Parameters<typeof Renderer.Component.CapacityCard>[0] extends FixtureCapacityCardProps ? true : false
+>;
+export type StatusCardTakesItsProps = Holds<
+  Parameters<typeof Renderer.Component.StatusCard>[0] extends FixtureStatusCardProps ? true : false
+>;
+export type FixtureOverviewStyle = ReturnType<typeof Common.App.Preferences.getOverviewStyle>;
+export type OverviewStyleIsCardsOrCharts = Holds<
+  FixtureOverviewStyle extends "cards" | "charts"
+    ? "cards" | "charts" extends FixtureOverviewStyle
+      ? true
+      : false
+    : false
+>;
+
 // The same pairs in `Renderer.K8sApi`.
 export type FixtureRendererKubeApi = Renderer.K8sApi.KubeApi<Renderer.K8sApi.Pod>;
 export type FixtureRendererKubeJsonApi = Renderer.K8sApi.KubeJsonApi;

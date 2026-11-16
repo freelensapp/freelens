@@ -13,20 +13,30 @@ import isMacInjectable from "../../common/vars/is-mac.injectable";
 import isSnapPackageInjectable from "../../common/vars/is-snap-package.injectable";
 import isWindowsInjectable from "../../common/vars/is-windows.injectable";
 import enabledExtensionsInjectable from "../../features/extensions/enabled/common/enabled-extensions.injectable";
+import overviewStyleInjectable from "../../features/user-preferences/common/overview-style.injectable";
 import userPreferencesStateInjectable, {
   type UserPreferencesState,
 } from "../../features/user-preferences/common/state.injectable";
 import { buildVersionInitializable } from "../../features/vars/build-version/common/token";
 import { asLazyInjectedForExtensionApi, getDiForExtensionApi } from "../extension-api-di";
 
+import type { OverviewStylePreference } from "../../features/user-preferences/common/preferences-helpers";
+
 export type { UserPreferencesState };
 
 const userStore = asLazyInjectedForExtensionApi(userPreferencesStateInjectable);
 const enabledExtensions = asLazyInjectedForExtensionApi(enabledExtensionsInjectable);
+const overviewStyle = asLazyInjectedForExtensionApi(overviewStyleInjectable);
 
 export const App = {
   Preferences: {
     getKubectlPath: () => userStore.kubectlBinariesPath,
+    /**
+     * How the user chose to see the cluster and workloads overviews: `"cards"`, the default, or
+     * `"charts"`. Observable: an `observer` component that calls it renders again when the user
+     * switches.
+     */
+    getOverviewStyle: (): OverviewStylePreference => overviewStyle.get(),
   },
   getEnabledExtensions: () => enabledExtensions.get(),
   get version() {

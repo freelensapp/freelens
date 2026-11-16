@@ -481,6 +481,46 @@ covers the store, and
 `packages/core/src/extensions/__tests__/extension-api-credentials.test.ts` the
 binding to the instance through the API.
 
+### The overview cards follow the user's choice of Cards or Charts
+
+The cluster overview and the workloads overview show their numbers either as
+cards or as the ring and pie charts, by the user's choice in Preferences →
+Personalization → Overview style. An extension shows its own numbers the same
+way with the components the overviews render:
+
+- **`Renderer.Component.CapacityCard`** shows the usage of one resource on the
+  scale of what is allocatable. Its props, `CapacityCardProps`, are a
+  `title`, the `usage` and `allocatable` values, the optional `requests`,
+  `limits` and `capacity`, a `unit` or a `format` for the values and a
+  `formatHeadline` for the headline number, and `labels`
+  (`CapacityCardLabels`) for the names of the values, each of which keeps its
+  English default when it is not given. The card warns when the limits are
+  more than what is allocatable, and lists the capacity only when it differs
+  from it.
+- **`Renderer.Component.StatusCard`** shows the number of items of one kind and
+  their statuses. Its props, `StatusCardProps`, are a `title`, the `statuses`
+  in the order of the bar, an optional `total` that defaults to the sum of
+  their counts, an `emptyText` for no items and a `noStatusText` for items
+  without a status, and an `onClick` that makes the whole card a button. Each
+  `StatusCardStatus` has a `label`, a `count`, a CSS `color` and a `tone`
+  (`StatusCardTone`): `healthy` statuses make the healthy share, `failing` ones
+  the number that fail.
+- **`Common.App.Preferences.getOverviewStyle()`** returns `"cards"`, the
+  default, or `"charts"`. It is observable: an `observer` component that calls
+  it renders again when the user switches.
+
+The props are the contract, not the shape of the host's metrics or stores, and
+both are plain data with no host type in them. The cards take every color from
+the theme ([C10](#c10-styling-and-css)) apart from the `color` of a status,
+which is what the extension gives: a theme variable such as `var(--colorOk)`
+keeps the card in step with the theme. Each card is a `<section>` named by its
+title, or a `<button>` when it has an `onClick`. A `data-testid` given to a
+card is the prefix of the test ids of its parts. The cards set no width:
+the host lays them out in a grid of columns at least 200px wide.
+
+`packages/core/src/extensions/__tests__/extension-api-overview-cards.test.tsx`
+covers the components and the preference as an extension reaches them.
+
 ---
 
 ## C6. Registration and the extension instance
@@ -797,8 +837,9 @@ when it exists, `style.css` otherwise. Looking for a stylesheet the extension
 does not ship leaves no error in the renderer console.
 
 **Surface.** One CSS asset next to the renderer entry. The host's shared
-component classes (`.Tooltip`, `.Button`, …) are global and part of the public
-API and may be targeted; they must not be redefined. An extension's own styles
+component classes (`.Tooltip`, `.Button`, `.CapacityCard`, `.StatusCard`, …)
+are global and part of the public API and may be targeted; they must not be
+redefined. An extension's own styles
 belong in CSS Modules.
 
 **Failure mode.** A build that splits CSS per module emits assets the host does

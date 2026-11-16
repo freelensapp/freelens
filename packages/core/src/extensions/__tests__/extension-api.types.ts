@@ -106,6 +106,28 @@ export type RendererTableOrderBy = Renderer.Component.TableOrderBy;
 export type RendererPieChartData = Renderer.Component.PieChartData;
 export type RendererSecretCertificatesProps = Renderer.Component.SecretCertificatesProps;
 
+// The overview cards and their props, the contract of their own that both
+// overviews of the host render with, and the preference that chooses between
+// them and the charts.
+export type RendererCapacityCardProps = Renderer.Component.CapacityCardProps;
+export type RendererCapacityCardLabels = Renderer.Component.CapacityCardLabels;
+export type RendererStatusCardProps = Renderer.Component.StatusCardProps;
+export type RendererStatusCardStatus = Renderer.Component.StatusCardStatus;
+export type RendererStatusCardTone = Renderer.Component.StatusCardTone;
+export type RendererCapacityCardTakesItsProps = Holds<
+  Parameters<typeof Renderer.Component.CapacityCard>[0] extends RendererCapacityCardProps ? true : false
+>;
+export type RendererStatusCardTakesItsProps = Holds<
+  Parameters<typeof Renderer.Component.StatusCard>[0] extends RendererStatusCardProps ? true : false
+>;
+export type CommonOverviewStyleIsCardsOrCharts = Holds<
+  ReturnType<typeof Common.App.Preferences.getOverviewStyle> extends "cards" | "charts"
+    ? "cards" | "charts" extends ReturnType<typeof Common.App.Preferences.getOverviewStyle>
+      ? true
+      : false
+    : false
+>;
+
 // The custom-resource vocabulary: both published extensions declare their CRDs
 // with these four and register the result with `apiManager`.
 export type RendererKubeObjectMetadata = Renderer.K8sApi.KubeObjectMetadata;
