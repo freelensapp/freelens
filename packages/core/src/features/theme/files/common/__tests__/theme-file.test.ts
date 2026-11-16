@@ -480,8 +480,8 @@ describe("theme files", () => {
     const otherThemes = builtInThemes.filter(({ theme }) => theme.metadata.name !== defaultThemeName);
     const sourceOf = (name: string) => builtInThemes.find(({ theme }) => theme.metadata.name === name)?.source ?? "";
 
-    it("are freelens, the default, then Ayu, Ayu Mirage and Dracula", () => {
-      expect(builtInThemeNames).toEqual(["freelens", "ayu", "ayu-mirage", "dracula"]);
+    it("are freelens, the default, then Ayu, Ayu Mirage, Dracula and Graphite", () => {
+      expect(builtInThemeNames).toEqual(["freelens", "ayu", "ayu-mirage", "dracula", "graphite"]);
       expect(builtInThemes[0].theme).toBe(defaultTheme);
     });
 
@@ -586,6 +586,53 @@ describe("theme files", () => {
       expect(dracula?.spec.dark?.colors).toMatchObject({ primary: "#bd93f9", textColorOnPrimary: "#282a36" });
       expect(dracula?.spec.light?.colors).toMatchObject({ primary: "#644ac9", textColorOnPrimary: "#ffffff" });
     });
+
+    it("graphite credits Graphite and Tilman Griesel and keeps its MIT notice", () => {
+      const source = sourceOf("graphite");
+      const description = findBuiltInTheme("graphite")?.spec.description;
+
+      expect(description).toContain("Graphite");
+      expect(description).toContain("Tilman Griesel");
+      expect(source).toContain("https://graphite.rocketengine.io/");
+      expect(source).toContain("https://github.com/TilmanGriesel/graphite");
+      expect(source).toContain("Copyright (c) 2022 Tilman Griesel");
+      expect(source).toContain("Permission is hereby granted, free of charge");
+    });
+
+    it("graphite takes Graphite's own orange as the accent in both variants", () => {
+      const graphite = findBuiltInTheme("graphite");
+
+      expect(graphite?.spec.dark?.colors).toMatchObject({ primary: "#e08a00", textColorOnPrimary: "#101215" });
+      expect(graphite?.spec.light?.colors).toMatchObject({ primary: "#ee9300", textColorOnPrimary: "#131536" });
+    });
+
+    it.each(["dark", "light"] as const)(
+      "graphite keeps its status colors at the WCAG AA contrast on its surfaces in the %s variant",
+      (variant) => {
+        const graphite = findBuiltInTheme("graphite");
+
+        expect(graphite).toBeDefined();
+
+        const colors = resolveThemeVariant(graphite ?? defaultTheme, variant, defaultTheme).colors;
+        const statusColors = [
+          colors.colorSuccess,
+          colors.colorOk,
+          colors.colorInfo,
+          colors.colorError,
+          colors.colorSoftError,
+          colors.colorWarning,
+        ];
+        const surfaces = [colors.mainBackground, colors.contentColor, colors.dialogBackground];
+
+        const belowAA = statusColors.flatMap((text) =>
+          surfaces
+            .map((background) => ({ text, background, ratio: getContrastRatio(text, background) ?? 0 }))
+            .filter(({ ratio }) => ratio < 4.5),
+        );
+
+        expect(belowAA).toEqual([]);
+      },
+    );
 
     it("share the same Ayu Light variant", () => {
       expect(findBuiltInTheme("ayu-mirage")?.spec.light).toEqual(findBuiltInTheme("ayu")?.spec.light);
