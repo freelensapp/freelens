@@ -5,6 +5,7 @@
 
 import ayuSource from "./ayu.theme.yaml?raw";
 import ayuMirageSource from "./ayu-mirage.theme.yaml?raw";
+import catppuccinSource from "./catppuccin.theme.yaml?raw";
 import draculaSource from "./dracula.theme.yaml?raw";
 import freelensSource from "./freelens.theme.yaml?raw";
 import graphiteSource from "./graphite.theme.yaml?raw";
@@ -40,6 +41,7 @@ export const builtInThemes: readonly BuiltInTheme[] = [
   ayuMirageSource,
   draculaSource,
   graphiteSource,
+  catppuccinSource,
 ].map(parseBuiltInTheme);
 
 export const defaultThemeName = "freelens";
