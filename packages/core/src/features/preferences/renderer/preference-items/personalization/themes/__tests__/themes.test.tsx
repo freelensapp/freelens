@@ -3,9 +3,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { screen } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { ConfirmDialog } from "../../../../../../../renderer/components/confirm-dialog";
 import { renderFor } from "../../../../../../../renderer/components/test-utils/renderFor";
 import { getDiForUnitTesting } from "../../../../../../../renderer/getDiForUnitTesting";
 import { parseThemeFile } from "../../../../../../theme/files/common/parse";
@@ -18,6 +19,7 @@ import { Themes } from "../themes";
 import type { DiContainer } from "@ogre-tools/injectable";
 import type { UserEvent } from "@testing-library/user-event";
 
+import type { ImportThemeRequest, ImportThemeResponse } from "../../../../../../theme/files/common/channels";
 import type { ThemeActions } from "../../../../../../theme/files/renderer/request-theme-actions.injectable";
 import type { UserPreferencesState } from "../../../../../../user-preferences/common/state.injectable";
 
@@ -37,13 +39,16 @@ describe("themes preference", () => {
   let state: UserPreferencesState;
   let user: UserEvent;
   let exportTheme: ThemeActions["exportTheme"] & ReturnType<typeof vi.fn>;
+  let importTheme: ReturnType<typeof vi.fn<(request: ImportThemeRequest) => Promise<ImportThemeResponse>>>;
 
   beforeEach(() => {
     di = getDiForUnitTesting();
     exportTheme = vi.fn(async () => ({ status: "canceled" as const }));
 
+    importTheme = vi.fn(async (): Promise<ImportThemeResponse> => ({ status: "canceled" }));
+
     const themeActions: ThemeActions = {
-      importTheme: async () => ({ status: "canceled" }),
+      importTheme: importTheme as ThemeActions["importTheme"],
       exportTheme,
       removeTheme: async () => ({ status: "removed" }),
     };
@@ -69,6 +74,7 @@ describe("themes preference", () => {
       <>
         <Themes />
         <ThemeVariant />
+        <ConfirmDialog />
       </>,
     );
   });
@@ -144,5 +150,134 @@ describe("themes preference", () => {
     expect(screen.getByRole("radio", { name: "Light" })).toBeDisabled();
     expect(screen.getByRole("radio", { name: "Dark" })).toBeChecked();
     expect(screen.getByText("Midnight has only a dark variant.")).toBeInTheDocument();
+  });
+
+  describe("the import dialog", () => {
+    const url = "https://example.com/themes/midnight-blue.yaml";
+    const imported: ImportThemeResponse = {
+      status: "imported",
+      name: "midnight-blue",
+      displayName: "Midnight Blue",
+      unknownTokens: [],
+    };
+
+    const urlInput = () => screen.getByTestId("theme-import-url");
+    const isOpen = () => screen.queryByTestId("theme-import-dialog") !== null;
+
+    beforeEach(async () => {
+      await user.click(screen.getByTestId("theme-import"));
+    });
+
+    it("opens with an input for the URL, Browse, Import and Cancel", () => {
+      expect(urlInput()).toHaveAttribute("placeholder", "URL of a theme file (.yaml, .yml, .json)");
+      expect(screen.getByTestId("theme-import-browse")).toBeInTheDocument();
+      expect(screen.getByTestId("theme-import-submit")).toHaveTextContent("Import");
+      expect(screen.getByTestId("theme-import-cancel")).toHaveTextContent("Cancel");
+      expect(importTheme).not.toHaveBeenCalled();
+    });
+
+    it("imports from the URL and closes", async () => {
+      importTheme.mockResolvedValue(imported);
+
+      await user.type(urlInput(), url);
+      await user.click(screen.getByTestId("theme-import-submit"));
+
+      await waitFor(() => expect(importTheme).toHaveBeenCalledWith({ action: "url", url }));
+      await waitFor(() => expect(isOpen()).toBe(false));
+    });
+
+    it("shows why the theme was refused, and stays open with the URL", async () => {
+      importTheme.mockResolvedValue({
+        status: "invalid",
+        source: url,
+        error: "The theme file is larger than 100 KiB",
+      });
+
+      await user.type(urlInput(), url);
+      await user.click(screen.getByTestId("theme-import-submit"));
+
+      expect(await screen.findByTestId("theme-import-error")).toHaveTextContent(
+        "The theme file is larger than 100 KiB",
+      );
+      expect(isOpen()).toBe(true);
+      expect(urlInput()).toHaveValue(url);
+    });
+
+    it("shows a failed request in the dialog", async () => {
+      importTheme.mockRejectedValue(new Error("No handler"));
+
+      await user.type(urlInput(), url);
+      await user.click(screen.getByTestId("theme-import-submit"));
+
+      expect(await screen.findByTestId("theme-import-error")).toHaveTextContent("No handler");
+      expect(isOpen()).toBe(true);
+    });
+
+    it.each(["file:///etc/passwd", "ftp://example.com/theme.yaml", "not a url"])(
+      "refuses %j before sending it",
+      async (value) => {
+        await user.type(urlInput(), value);
+        await user.click(screen.getByTestId("theme-import-submit"));
+
+        // The input shows its errors a moment after the last change.
+        expect(
+          await screen.findByText("Enter an https: or http: URL", undefined, { timeout: 2000 }),
+        ).toBeInTheDocument();
+        expect(importTheme).not.toHaveBeenCalled();
+      },
+    );
+
+    it("lets Browse ask the main process for a file, sending no path and no URL", async () => {
+      importTheme.mockResolvedValue(imported);
+
+      await user.type(urlInput(), url);
+      await user.click(screen.getByTestId("theme-import-browse"));
+
+      await waitFor(() => expect(importTheme).toHaveBeenCalledWith({ action: "choose" }));
+      expect(importTheme).toHaveBeenCalledOnce();
+      await waitFor(() => expect(isOpen()).toBe(false));
+    });
+
+    it("stays open when Browse is canceled", async () => {
+      await user.click(screen.getByTestId("theme-import-browse"));
+
+      await waitFor(() => expect(importTheme).toHaveBeenCalledWith({ action: "choose" }));
+      expect(isOpen()).toBe(true);
+      expect(screen.queryByTestId("theme-import-error")).not.toBeInTheDocument();
+    });
+
+    it("closes and asks about a conflict, then replaces when asked to", async () => {
+      importTheme.mockResolvedValueOnce({
+        status: "conflict",
+        importId: "import-1",
+        name: "midnight",
+        displayName: "Midnight Blue",
+        fileName: "midnight.yaml",
+        conflicts: [{ kind: "same-name", fileName: "midnight.yaml", displayName: "Midnight" }],
+      });
+      importTheme.mockResolvedValueOnce(imported);
+
+      await user.type(urlInput(), url);
+      await user.click(screen.getByTestId("theme-import-submit"));
+
+      expect(await screen.findByTestId("theme-import-conflict")).toHaveTextContent("Midnight Blue");
+      await waitFor(() => expect(isOpen()).toBe(false));
+
+      await user.click(screen.getByTestId("confirm"));
+
+      await waitFor(() => expect(importTheme).toHaveBeenLastCalledWith({ action: "replace", importId: "import-1" }));
+    });
+
+    it("closes on Cancel, and opens empty again", async () => {
+      await user.type(urlInput(), url);
+      await user.click(screen.getByTestId("theme-import-cancel"));
+
+      await waitFor(() => expect(isOpen()).toBe(false));
+
+      await user.click(screen.getByTestId("theme-import"));
+
+      expect(urlInput()).toHaveValue("");
+      expect(importTheme).not.toHaveBeenCalled();
+    });
   });
 });
