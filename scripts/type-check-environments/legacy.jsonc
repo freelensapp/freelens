@@ -87,7 +87,6 @@
     "packages/core/src/renderer/cluster-frame-context/for-namespaced-resources.injectable.ts",
     "packages/core/src/renderer/components/chart/bar-chart.tsx",
     "packages/core/src/renderer/components/cluster-manager/cluster-frame-handler.ts",
-    "packages/core/src/renderer/components/cluster-settings/icon-settings.tsx",
     "packages/core/src/renderer/components/cluster/store.injectable.ts",
     "packages/core/src/renderer/components/config-horizontal-pod-autoscalers/store.injectable.ts",
     "packages/core/src/renderer/components/config-leases/store.injectable.ts",

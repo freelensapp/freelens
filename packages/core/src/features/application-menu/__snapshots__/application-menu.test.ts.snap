@@ -47,6 +47,7 @@ exports[`application-menu, given platform is 'darwin' > given enough time passes
   'root -> help',
   'root -> help -> navigate-to-welcome',
   'root -> help -> open-documentation',
+  'root -> help -> open-whats-new',
   'root -> help -> open-licenses',
   'root -> help -> open-support'
 ]"
@@ -87,6 +88,7 @@ exports[`application-menu, given platform is 'linux' > given enough time passes 
   'root -> help',
   'root -> help -> navigate-to-welcome',
   'root -> help -> open-documentation',
+  'root -> help -> open-whats-new',
   'root -> help -> open-licenses',
   'root -> help -> open-support',
   'root -> help -> about'
@@ -128,6 +130,7 @@ exports[`application-menu, given platform is 'win32' > given enough time passes 
   'root -> help',
   'root -> help -> navigate-to-welcome',
   'root -> help -> open-documentation',
+  'root -> help -> open-whats-new',
   'root -> help -> open-licenses',
   'root -> help -> open-support',
   'root -> help -> about'

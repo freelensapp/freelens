@@ -76,7 +76,7 @@ exports[`preferences - navigation to kubernetes preferences > given in preferenc
         id="lens-views"
       />
       <div
-        class="SettingLayout showNavigation Preferences"
+        class="SettingLayout showNavigation withCloseButton Preferences"
       >
         <nav
           class="sidebarRegion"
@@ -258,6 +258,353 @@ exports[`preferences - navigation to kubernetes preferences > given in preferenc
                             />
                           </svg>
                         </div>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              </div>
+              <div
+                class="HorizontalLine size-xl"
+              />
+              <div
+                data-preference-item-test="accent-color"
+              >
+                <section
+                  id="accent-color"
+                >
+                  <div
+                    class="SubTitle"
+                  >
+                    Accent color
+                     
+                  </div>
+                  <div
+                    class="flex flex-col gap-3"
+                  >
+                    <div
+                      class="flex items-center gap-4"
+                    >
+                      <span
+                        class="w-10"
+                      >
+                        Dark
+                      </span>
+                      <div
+                        aria-label="Accent color of the dark theme"
+                        class="flex flex-wrap items-center gap-2"
+                        role="group"
+                      >
+                        <button
+                          aria-label="Teal"
+                          aria-pressed="true"
+                          class="swatch selected"
+                          data-testid="accent-color-dark-teal"
+                          style="background: rgb(0, 167, 160);"
+                          type="button"
+                        />
+                        <div
+                          data-testid="tooltip-content-for-accent-color-dark-teal"
+                        >
+                          Teal
+                        </div>
+                        <button
+                          aria-label="Cyan"
+                          aria-pressed="false"
+                          class="swatch"
+                          data-testid="accent-color-dark-cyan"
+                          style="background: rgb(0, 188, 212);"
+                          type="button"
+                        />
+                        <div
+                          data-testid="tooltip-content-for-accent-color-dark-cyan"
+                        >
+                          Cyan
+                        </div>
+                        <button
+                          aria-label="Sky"
+                          aria-pressed="false"
+                          class="swatch"
+                          data-testid="accent-color-dark-sky"
+                          style="background: rgb(41, 182, 246);"
+                          type="button"
+                        />
+                        <div
+                          data-testid="tooltip-content-for-accent-color-dark-sky"
+                        >
+                          Sky
+                        </div>
+                        <button
+                          aria-label="Blue"
+                          aria-pressed="false"
+                          class="swatch"
+                          data-testid="accent-color-dark-blue"
+                          style="background: rgb(33, 150, 243);"
+                          type="button"
+                        />
+                        <div
+                          data-testid="tooltip-content-for-accent-color-dark-blue"
+                        >
+                          Blue
+                        </div>
+                        <button
+                          aria-label="Indigo"
+                          aria-pressed="false"
+                          class="swatch"
+                          data-testid="accent-color-dark-indigo"
+                          style="background: rgb(92, 107, 192);"
+                          type="button"
+                        />
+                        <div
+                          data-testid="tooltip-content-for-accent-color-dark-indigo"
+                        >
+                          Indigo
+                        </div>
+                        <button
+                          aria-label="Violet"
+                          aria-pressed="false"
+                          class="swatch"
+                          data-testid="accent-color-dark-violet"
+                          style="background: rgb(124, 77, 255);"
+                          type="button"
+                        />
+                        <div
+                          data-testid="tooltip-content-for-accent-color-dark-violet"
+                        >
+                          Violet
+                        </div>
+                        <button
+                          aria-label="Purple"
+                          aria-pressed="false"
+                          class="swatch"
+                          data-testid="accent-color-dark-purple"
+                          style="background: rgb(156, 39, 176);"
+                          type="button"
+                        />
+                        <div
+                          data-testid="tooltip-content-for-accent-color-dark-purple"
+                        >
+                          Purple
+                        </div>
+                        <button
+                          aria-label="Lavender"
+                          aria-pressed="false"
+                          class="swatch"
+                          data-testid="accent-color-dark-lavender"
+                          style="background: rgb(179, 157, 219);"
+                          type="button"
+                        />
+                        <div
+                          data-testid="tooltip-content-for-accent-color-dark-lavender"
+                        >
+                          Lavender
+                        </div>
+                        <button
+                          aria-label="Pink"
+                          aria-pressed="false"
+                          class="swatch"
+                          data-testid="accent-color-dark-pink"
+                          style="background: rgb(216, 27, 96);"
+                          type="button"
+                        />
+                        <div
+                          data-testid="tooltip-content-for-accent-color-dark-pink"
+                        >
+                          Pink
+                        </div>
+                        <button
+                          aria-label="Rose"
+                          aria-pressed="false"
+                          class="swatch"
+                          data-testid="accent-color-dark-rose"
+                          style="background: rgb(240, 98, 146);"
+                          type="button"
+                        />
+                        <div
+                          data-testid="tooltip-content-for-accent-color-dark-rose"
+                        >
+                          Rose
+                        </div>
+                        <span
+                          class="relative inline-flex"
+                        >
+                          <button
+                            aria-expanded="false"
+                            aria-pressed="false"
+                            class="swatch textSwatch"
+                            data-testid="accent-color-dark-custom"
+                            type="button"
+                          >
+                            Custom
+                          </button>
+                          <div
+                            data-testid="tooltip-content-for-accent-color-dark-custom"
+                          >
+                            Pick any color from the RGB palette, or enter its hex code
+                          </div>
+                        </span>
+                      </div>
+                    </div>
+                    <div
+                      class="flex items-center gap-4"
+                    >
+                      <span
+                        class="w-10"
+                      >
+                        Light
+                      </span>
+                      <div
+                        aria-label="Accent color of the light theme"
+                        class="flex flex-wrap items-center gap-2"
+                        role="group"
+                      >
+                        <button
+                          aria-label="Teal"
+                          aria-pressed="true"
+                          class="swatch selected"
+                          data-testid="accent-color-light-teal"
+                          style="background: rgb(0, 167, 160);"
+                          type="button"
+                        />
+                        <div
+                          data-testid="tooltip-content-for-accent-color-light-teal"
+                        >
+                          Teal
+                        </div>
+                        <button
+                          aria-label="Cyan"
+                          aria-pressed="false"
+                          class="swatch"
+                          data-testid="accent-color-light-cyan"
+                          style="background: rgb(0, 188, 212);"
+                          type="button"
+                        />
+                        <div
+                          data-testid="tooltip-content-for-accent-color-light-cyan"
+                        >
+                          Cyan
+                        </div>
+                        <button
+                          aria-label="Sky"
+                          aria-pressed="false"
+                          class="swatch"
+                          data-testid="accent-color-light-sky"
+                          style="background: rgb(41, 182, 246);"
+                          type="button"
+                        />
+                        <div
+                          data-testid="tooltip-content-for-accent-color-light-sky"
+                        >
+                          Sky
+                        </div>
+                        <button
+                          aria-label="Blue"
+                          aria-pressed="false"
+                          class="swatch"
+                          data-testid="accent-color-light-blue"
+                          style="background: rgb(33, 150, 243);"
+                          type="button"
+                        />
+                        <div
+                          data-testid="tooltip-content-for-accent-color-light-blue"
+                        >
+                          Blue
+                        </div>
+                        <button
+                          aria-label="Indigo"
+                          aria-pressed="false"
+                          class="swatch"
+                          data-testid="accent-color-light-indigo"
+                          style="background: rgb(92, 107, 192);"
+                          type="button"
+                        />
+                        <div
+                          data-testid="tooltip-content-for-accent-color-light-indigo"
+                        >
+                          Indigo
+                        </div>
+                        <button
+                          aria-label="Violet"
+                          aria-pressed="false"
+                          class="swatch"
+                          data-testid="accent-color-light-violet"
+                          style="background: rgb(124, 77, 255);"
+                          type="button"
+                        />
+                        <div
+                          data-testid="tooltip-content-for-accent-color-light-violet"
+                        >
+                          Violet
+                        </div>
+                        <button
+                          aria-label="Purple"
+                          aria-pressed="false"
+                          class="swatch"
+                          data-testid="accent-color-light-purple"
+                          style="background: rgb(156, 39, 176);"
+                          type="button"
+                        />
+                        <div
+                          data-testid="tooltip-content-for-accent-color-light-purple"
+                        >
+                          Purple
+                        </div>
+                        <button
+                          aria-label="Lavender"
+                          aria-pressed="false"
+                          class="swatch"
+                          data-testid="accent-color-light-lavender"
+                          style="background: rgb(179, 157, 219);"
+                          type="button"
+                        />
+                        <div
+                          data-testid="tooltip-content-for-accent-color-light-lavender"
+                        >
+                          Lavender
+                        </div>
+                        <button
+                          aria-label="Pink"
+                          aria-pressed="false"
+                          class="swatch"
+                          data-testid="accent-color-light-pink"
+                          style="background: rgb(216, 27, 96);"
+                          type="button"
+                        />
+                        <div
+                          data-testid="tooltip-content-for-accent-color-light-pink"
+                        >
+                          Pink
+                        </div>
+                        <button
+                          aria-label="Rose"
+                          aria-pressed="false"
+                          class="swatch"
+                          data-testid="accent-color-light-rose"
+                          style="background: rgb(240, 98, 146);"
+                          type="button"
+                        />
+                        <div
+                          data-testid="tooltip-content-for-accent-color-light-rose"
+                        >
+                          Rose
+                        </div>
+                        <span
+                          class="relative inline-flex"
+                        >
+                          <button
+                            aria-expanded="false"
+                            aria-pressed="false"
+                            class="swatch textSwatch"
+                            data-testid="accent-color-light-custom"
+                            type="button"
+                          >
+                            Custom
+                          </button>
+                          <div
+                            data-testid="tooltip-content-for-accent-color-light-custom"
+                          >
+                            Pick any color from the RGB palette, or enter its hex code
+                          </div>
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -866,7 +1213,7 @@ exports[`preferences - navigation to kubernetes preferences > given in preferenc
         id="lens-views"
       />
       <div
-        class="SettingLayout showNavigation Preferences"
+        class="SettingLayout showNavigation withCloseButton Preferences"
       >
         <nav
           class="sidebarRegion"
@@ -1417,6 +1764,53 @@ exports[`preferences - navigation to kubernetes preferences > given in preferenc
                         Remove
                       </div>
                     </div>
+                  </div>
+                </section>
+              </div>
+              <div
+                class="HorizontalLine size-xl"
+              />
+              <div
+                data-preference-item-test="combined-logs-pods"
+              >
+                <section
+                  id="logs"
+                >
+                  <h2>
+                    Logs
+                  </h2>
+                  <div
+                    class="SubTitle"
+                  >
+                    Pods in a combined logs tab
+                     
+                  </div>
+                  <div
+                    class="Input theme round black"
+                  >
+                    <label
+                      class="input-area flex items-center gap-2"
+                      id=""
+                    >
+                      <input
+                        class="input grow"
+                        data-testid="max-combined-logs-pods-input"
+                        max="100"
+                        min="1"
+                        spellcheck="false"
+                        step="1"
+                        type="number"
+                        value="20"
+                      />
+                    </label>
+                    <div
+                      class="input-info flex gap-2"
+                    />
+                  </div>
+                  <div
+                    class="hint"
+                  >
+                    The Logs of a Deployment, DaemonSet, StatefulSet, ReplicaSet or Job read at most this many of its pods, the first ones by name, from 1 to 100. Every refresh of the tab, every 10 seconds, asks each of these pods for its lines, at most 5 at a time.
                   </div>
                 </section>
               </div>

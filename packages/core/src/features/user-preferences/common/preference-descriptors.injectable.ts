@@ -8,10 +8,12 @@ import { getInjectable } from "@ogre-tools/injectable";
 import { merge } from "es-toolkit/compat";
 import { observable } from "mobx";
 import kubeDirectoryPathInjectable from "../../../common/os/kube-directory-path.injectable";
-import { defaultColorThemePreference } from "../../../common/vars";
+import { defaultAccentColorPreference, defaultColorThemePreference } from "../../../common/vars";
 import currentTimezoneInjectable from "../../../common/vars/current-timezone.injectable";
+import isDevelopmentInjectable from "../../../common/vars/is-development.injectable";
 import {
   ClusterPageMenuOrder,
+  clampMaxCombinedLogsPods,
   defaultEditorConfig,
   defaultExtensionRegistryUrlLocation,
   defaultLogViewerPreferences,
@@ -42,6 +44,8 @@ export type PreferenceDescriptors = {
   readonly httpsProxy: PreferenceDescription<string | undefined>;
   readonly shell: PreferenceDescription<string | undefined>;
   readonly colorTheme: PreferenceDescription<string>;
+  readonly accentColorDark: PreferenceDescription<string | undefined>;
+  readonly accentColorLight: PreferenceDescription<string | undefined>;
   readonly terminalTheme: PreferenceDescription<string>;
   readonly localeTimezone: PreferenceDescription<string>;
   readonly allowUntrustedCAs: PreferenceDescription<boolean>;
@@ -75,6 +79,7 @@ const userPreferenceDescriptorsInjectable = getInjectable({
   instantiate: (di): PreferenceDescriptors => {
     const currentTimezone = di.inject(currentTimezoneInjectable);
     const mainKubeFolderPath = di.inject(kubeDirectoryPathInjectable);
+    const isDevelopment = di.inject(isDevelopmentInjectable);
 
     return {
       httpsProxy: getPreferenceDescriptor<string | undefined>({
@@ -88,6 +93,14 @@ const userPreferenceDescriptorsInjectable = getInjectable({
       colorTheme: getPreferenceDescriptor<string>({
         fromStore: (val) => val || defaultColorThemePreference,
         toStore: (val) => (!val || val === defaultColorThemePreference ? undefined : val),
+      }),
+      accentColorDark: getPreferenceDescriptor<string | undefined>({
+        fromStore: (val) => val,
+        toStore: (val) => (!val || val === defaultAccentColorPreference ? undefined : val),
+      }),
+      accentColorLight: getPreferenceDescriptor<string | undefined>({
+        fromStore: (val) => val,
+        toStore: (val) => (!val || val === defaultAccentColorPreference ? undefined : val),
       }),
       terminalTheme: getPreferenceDescriptor<string>({
         fromStore: (val) => val || "",
@@ -153,13 +166,18 @@ const userPreferenceDescriptorsInjectable = getInjectable({
         fromStore: (val) => ({
           ...defaultLogViewerPreferences,
           ...val,
+          maxCombinedLogsPods: clampMaxCombinedLogsPods(val?.maxCombinedLogsPods),
         }),
         toStore: (val) => {
+          const clampedValue: LogViewerPreferences = {
+            ...val,
+            maxCombinedLogsPods: clampMaxCombinedLogsPods(val.maxCombinedLogsPods),
+          };
           const storedValue: Partial<LogViewerPreferences> = {};
 
           for (const key of Object.keys(defaultLogViewerPreferences) as (keyof LogViewerPreferences)[]) {
-            if (val[key] !== defaultLogViewerPreferences[key]) {
-              storedValue[key] = val[key];
+            if (clampedValue[key] !== defaultLogViewerPreferences[key]) {
+              (storedValue as Record<string, unknown>)[key] = clampedValue[key];
             }
           }
 
@@ -186,12 +204,16 @@ const userPreferenceDescriptorsInjectable = getInjectable({
       }),
       syncKubeconfigEntries: (() => {
         const map = observable.map<string, KubeconfigSyncValue>();
+        // A development profile does not sync the developer's own ~/.kube
+        // unless it is added explicitly, so a dev or test session stays
+        // isolated from their real clusters.
+        const defaultFilePaths = isDevelopment ? [] : [mainKubeFolderPath];
 
         return getPreferenceDescriptor<KubeconfigSyncEntry[], ObservableMap<string, KubeconfigSyncValue>>({
           fromStore: (val) => {
-            const entries = val?.map(({ filePath, ...rest }) => [filePath, rest] as const) ?? [
-              [mainKubeFolderPath, {} as KubeconfigSyncValue] as const,
-            ];
+            const entries =
+              val?.map(({ filePath, ...rest }) => [filePath, rest] as const) ??
+              defaultFilePaths.map((filePath) => [filePath, {} as KubeconfigSyncValue] as const);
             const desired = new Map(entries);
 
             for (const key of Array.from(map.keys())) {
@@ -206,7 +228,7 @@ const userPreferenceDescriptorsInjectable = getInjectable({
             return map;
           },
           toStore: (val) =>
-            val.size === 1 && val.has(mainKubeFolderPath)
+            val.size === defaultFilePaths.length && defaultFilePaths.every((filePath) => val.has(filePath))
               ? undefined
               : Array.from(val, ([filePath, rest]) => ({ filePath, ...rest })),
         });

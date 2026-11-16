@@ -265,6 +265,19 @@ describe("Extensions", () => {
       expect(await screen.findByText("Uninstall")).toHaveAttribute("aria-disabled", "false");
     });
 
+    it("offers Enable in the menu of a disabled extension", async () => {
+      extensionLoader.addExtension({ ...testExtension, isEnabled: false });
+      render(<Extensions />);
+
+      const table = await screen.findByTestId("extensions-table");
+      const menuTrigger = table.querySelector("tbody tr td:last-child .Icon");
+
+      assert(menuTrigger);
+      fireEvent.click(menuTrigger);
+
+      expect(await screen.findByText("Enable")).toHaveAttribute("aria-disabled", "false");
+    });
+
     it("shows Disabled, not Failed to load, once a failed extension is disabled", async () => {
       vi.spyOn(extensionLoader, "getLoadFailures").mockReturnValue([
         { process: "main", stage: "import", message: "missing" },

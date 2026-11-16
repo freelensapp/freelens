@@ -20,7 +20,7 @@ const getLatestVersionInjectable = getInjectable({
         timeout: 5000,
       });
       if (!result.callWasSuccessful) {
-        throw new Error(`Failed to fetch latest version: ${result}`);
+        throw new Error(`Failed to fetch latest version: ${result.error}`);
       }
       const data = (await result.response) as NpmRegistryPackageMetadata;
       if (typeof data !== "object" || typeof data.version !== "string") {

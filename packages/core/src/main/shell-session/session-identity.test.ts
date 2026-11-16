@@ -13,6 +13,7 @@ import pathExistsSyncInjectable from "../../common/fs/path-exists-sync.injectabl
 import readJsonSyncInjectable from "../../common/fs/read-json-sync.injectable";
 import statInjectable from "../../common/fs/stat.injectable";
 import writeJsonSyncInjectable from "../../common/fs/write-json-sync.injectable";
+import { TerminalChannels } from "../../common/terminal/channels";
 import platformInjectable from "../../common/vars/platform.injectable";
 import computeShellEnvironmentInjectable from "../../features/shell-sync/main/compute-shell-environment.injectable";
 import userShellSettingInjectable from "../../features/user-preferences/common/shell-setting.injectable";
@@ -168,5 +169,49 @@ describe("the identity of a shell session's PTY", () => {
 
     expect(spawnPtyMock).toHaveBeenCalledTimes(2);
     expect(runningProcesses().size).toBe(2);
+  });
+
+  describe("when a renderer reconnects to a running shell", () => {
+    const sentMessages = (socket: WebSocket) =>
+      vi.mocked(socket.send).mock.calls.map(([message]) => JSON.parse(message as string));
+
+    const emitOutput = (data: string) => {
+      const shellProcess = spawnPtyMock.mock.results[0].value as IPty;
+
+      for (const [listener] of vi.mocked(shellProcess.onData).mock.calls) {
+        listener(data);
+      }
+    };
+
+    it("sends the last output of the shell again, right after it is connected", async () => {
+      await openStandaloneSession();
+      emitOutput("some-earlier-output");
+      emitOutput("some-last-output");
+
+      const socket = websocket();
+
+      await di.inject(openStandaloneShellSessionInjectable)({ tabId, websocket: socket });
+
+      expect(sentMessages(socket)).toEqual(
+        expect.arrayContaining([
+          { type: TerminalChannels.CONNECTED },
+          { type: TerminalChannels.STDOUT, data: "some-last-output" },
+        ]),
+      );
+
+      const types = sentMessages(socket).map(({ type }) => type);
+
+      expect(types.indexOf(TerminalChannels.STDOUT)).toBe(types.indexOf(TerminalChannels.CONNECTED) + 1);
+    });
+
+    it("sends no output of a shell that has not written any", async () => {
+      await openStandaloneSession();
+
+      const socket = websocket();
+
+      await di.inject(openStandaloneShellSessionInjectable)({ tabId, websocket: socket });
+
+      expect(sentMessages(socket).map(({ type }) => type)).not.toContain(TerminalChannels.STDOUT);
+    });
   });
 });

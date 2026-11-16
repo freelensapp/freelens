@@ -52,7 +52,7 @@
 
 .MenuItem {
   --color: var(--textColorPrimary);
-  --color-active: white;
+  --color-active: var(--textColorOnPrimary);
   --bgc-active: var(--menuActiveBackground);
 
   position: relative;

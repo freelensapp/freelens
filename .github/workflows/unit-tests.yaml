@@ -41,7 +41,7 @@ jobs:
       - name: Set up mise
         uses: jdx/mise-action@v5
         with:
-          version: 2026.10.13 # datasource=github-releases depName=jdx/mise
+          version: 2026.11.7 # datasource=github-releases depName=jdx/mise
           install_args: yq
 
       - name: Setup node
@@ -154,3 +154,18 @@ jobs:
       - name: Check untracked files
         shell: bash
         run: for f in $(git ls-files --others --exclude-standard); do git diff --no-index --stat --exit-code /dev/null $f; done
+
+  unit-tests:
+    name: unit tests
+
+    needs: test-unit
+    if: always()
+
+    runs-on: ubuntu-26.04-arm
+    timeout-minutes: 5
+
+    steps:
+      - name: Check the result of the matrix
+        run: test "${RESULT}" = success
+        env:
+          RESULT: ${{ needs.test-unit.result }}

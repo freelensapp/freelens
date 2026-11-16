@@ -3,6 +3,7 @@
 This Feature extends `@freelensapp/application` with Electron specifics.
 
 ## Usage
+
 ```sh
 npm install @freelensapp/application-for-electron-main
 ```

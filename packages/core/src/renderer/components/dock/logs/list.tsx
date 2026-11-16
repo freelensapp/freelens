@@ -204,6 +204,7 @@ class NonForwardedLogList extends React.Component<
     this.bindInnerRef({
       scrollToItem: this.scrollToItem,
     });
+    this.keepLastLineVisible();
   }
 
   componentWillUnmount() {
@@ -266,7 +267,10 @@ class NonForwardedLogList extends React.Component<
   onLogsUpdate() {
     if (this.isLastLineVisible) {
       setTimeout(() => {
-        this.scrollToBottom();
+        // The user may have scrolled up in the meantime.
+        if (this.isLastLineVisible) {
+          this.scrollToBottom();
+        }
       }, 500); // Giving some time to VirtualList to prepare its outerRef (this.virtualListDiv) element
     }
   }
@@ -381,8 +385,25 @@ class NonForwardedLogList extends React.Component<
     const el = this.virtualListDivElement;
 
     if (!el) return;
-    this.isLastLineVisible = el.clientHeight + el.scrollTop === el.scrollHeight;
+    this.isLastLineVisible = this.isScrolledToBottom(el);
   });
+
+  private isScrolledToBottom(el: HTMLDivElement) {
+    // A pixel of slack: on scaled displays the scroll position can stop a fraction of a pixel short of the bottom.
+    return el.scrollHeight - el.clientHeight - el.scrollTop <= 1;
+  }
+
+  /**
+   * While the list follows the logs, keeps its last line in view when the rows change: when new lines arrive, and when
+   * word wrap measures the rows the list just scrolled to and they turn out taller or shorter than estimated.
+   */
+  private keepLastLineVisible() {
+    const el = this.virtualListDivElement;
+
+    if (el && this.isLastLineVisible && !this.isScrolledToBottom(el)) {
+      this.scrollToBottom();
+    }
+  }
 
   /**
    * Check if user scrolled to top and new logs should be loaded
@@ -406,14 +427,15 @@ class NonForwardedLogList extends React.Component<
   };
 
   onScroll = () => {
-    this.isLastLineVisible = false;
+    // Decided at every scroll, not once the list settles: the rows measured right after the scroll to the last line
+    // would leave the list short of its new bottom and stop the following for good, while scrolling up stops it at once.
+    this.setLastLineVisibility();
     this.onScrollDebounced();
   };
 
   onScrollDebounced = debounce(() => {
     if (this.virtualListDivElement) {
       this.setButtonVisibility();
-      this.setLastLineVisibility();
       this.checkLoadIntent();
     }
   }, 700); // Increasing performance and giving some time for virtual list to settle down

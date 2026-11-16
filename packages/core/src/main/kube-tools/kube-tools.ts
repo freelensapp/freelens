@@ -48,8 +48,6 @@ export interface KubeToolsClusterAccess {
   readonly kubeconfigPath: string;
   /** The cache directory of {@link kubeconfigPath}, exported as `KUBECACHEDIR`. */
   readonly cacheDirectoryPath: string;
-  /** The cluster's proxy preference, exported as `HTTPS_PROXY` when set. */
-  readonly httpsProxy?: string;
   /**
    * The freelens-proxy token, exported as `FREELENS_PROXY_TOKEN`. The
    * `credential` plugin of the proxy kubeconfig reads it, so a tool reaches the
@@ -64,6 +62,12 @@ export interface ComposeKubeToolsEnvironmentArgs {
   readonly tools: KubeTools;
   /** Set for a cluster, absent without one. */
   readonly clusterAccess?: KubeToolsClusterAccess;
+  /**
+   * The proxy preference of the context, exported as `HTTPS_PROXY` in place of
+   * the user's own when set: the cluster's for a cluster, the application's
+   * without one.
+   */
+  readonly httpsProxy?: string;
   readonly isWindows: boolean;
 }
 
@@ -107,6 +111,7 @@ export const composeKubeToolsEnvironment = ({
   baseEnvironment,
   tools,
   clusterAccess,
+  httpsProxy,
   isWindows,
 }: ComposeKubeToolsEnvironmentArgs): EnvironmentVariables => {
   const copiedEnvironment: EnvironmentVariables = { ...baseEnvironment };
@@ -120,10 +125,10 @@ export const composeKubeToolsEnvironment = ({
     env.KUBECONFIG = clusterAccess.kubeconfigPath;
     env.KUBECACHEDIR = clusterAccess.cacheDirectoryPath;
     env[freelensProxyTokenEnvVar] = clusterAccess.token;
+  }
 
-    if (clusterAccess.httpsProxy) {
-      env.HTTPS_PROXY = clusterAccess.httpsProxy;
-    }
+  if (httpsProxy) {
+    env.HTTPS_PROXY = httpsProxy;
   }
 
   env.NO_PROXY = ["localhost", "127.0.0.1", env.NO_PROXY].filter(Boolean).join();

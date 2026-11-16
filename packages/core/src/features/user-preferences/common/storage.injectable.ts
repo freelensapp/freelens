@@ -39,6 +39,8 @@ const userPreferencesPersistentStorageInjectable = getInjectable({
         state.allowErrorReporting = descriptors.allowErrorReporting.fromStore(preferences.allowErrorReporting);
         state.allowUntrustedCAs = descriptors.allowUntrustedCAs.fromStore(preferences.allowUntrustedCAs);
         state.colorTheme = descriptors.colorTheme.fromStore(preferences.colorTheme);
+        state.accentColorDark = descriptors.accentColorDark.fromStore(preferences.accentColorDark);
+        state.accentColorLight = descriptors.accentColorLight.fromStore(preferences.accentColorLight);
         state.downloadBinariesPath = descriptors.downloadBinariesPath.fromStore(preferences.downloadBinariesPath);
         state.downloadKubectlBinaries = descriptors.downloadKubectlBinaries.fromStore(
           preferences.downloadKubectlBinaries,
@@ -71,6 +73,8 @@ const userPreferencesPersistentStorageInjectable = getInjectable({
             allowErrorReporting: descriptors.allowErrorReporting.toStore(state.allowErrorReporting),
             allowUntrustedCAs: descriptors.allowUntrustedCAs.toStore(state.allowUntrustedCAs),
             colorTheme: descriptors.colorTheme.toStore(state.colorTheme),
+            accentColorDark: descriptors.accentColorDark.toStore(state.accentColorDark),
+            accentColorLight: descriptors.accentColorLight.toStore(state.accentColorLight),
             downloadBinariesPath: descriptors.downloadBinariesPath.toStore(state.downloadBinariesPath),
             downloadKubectlBinaries: descriptors.downloadKubectlBinaries.toStore(state.downloadKubectlBinaries),
             downloadMirror: descriptors.downloadMirror.toStore(state.downloadMirror),

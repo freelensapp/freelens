@@ -48,6 +48,7 @@ describe("starting freelens-k8s-proxy", () => {
   let processes: FakeProxyProcess[];
   let behaviours: Behaviour[];
   let freelensK8sProxy: FreelensK8sProxy;
+  let di: ReturnType<typeof getDiForUnitTesting>;
 
   /**
    * Starts the proxy, and settles to what the start settled to, without
@@ -67,7 +68,7 @@ describe("starting freelens-k8s-proxy", () => {
   beforeEach(() => {
     vi.useFakeTimers();
 
-    const di = getDiForUnitTesting();
+    di = getDiForUnitTesting();
 
     processes = [];
     behaviours = [];
@@ -116,10 +117,10 @@ describe("starting freelens-k8s-proxy", () => {
     expect(spawnMock).toHaveBeenCalledTimes(1);
   });
 
-  it("starts the proxy subcommand, with the cluster and the certificate in its environment", async () => {
+  it("starts the proxy with the kubeconfig file, and the cluster and the certificate in its environment", async () => {
     await freelensK8sProxy.run();
 
-    expect(spawnMock).toHaveBeenCalledWith(expect.any(String), ["proxy"], {
+    expect(spawnMock).toHaveBeenCalledWith(expect.any(String), ["proxy", "--kubeconfig", "/some/kube-config"], {
       env: {
         KUBECONFIG: "/some/kube-config",
         FREELENS_PROXY_CONTEXT: "some-context-name",
@@ -129,6 +130,22 @@ describe("starting freelens-k8s-proxy", () => {
       },
       cwd: "/some",
     });
+  });
+
+  it("passes the kubeconfig as one file when its path has a colon", async () => {
+    const cluster = new Cluster({
+      id: "some-other-cluster-id",
+      kubeConfigPath: "/home/user/.kube/dev:app:k8s.yaml",
+      contextName: "int@dev:app:k8s",
+    });
+
+    await di.inject(createFreelensK8sProxyInjectable, cluster)({}).run();
+
+    expect(spawnMock).toHaveBeenCalledWith(
+      expect.any(String),
+      ["proxy", "--kubeconfig", "/home/user/.kube/dev:app:k8s.yaml"],
+      expect.objectContaining({ cwd: "/home/user/.kube" }),
+    );
   });
 
   describe("when the proxy exits before it prints its port", () => {

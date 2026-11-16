@@ -18,6 +18,8 @@ export * from "./job.api.injectable";
 export * from "./lease.api.injectable";
 export * from "./limit-range.api.injectable";
 export * from "./maybe-kube-api.injectable";
+export * from "./mutating-admission-policy-api.injectable";
+export * from "./mutating-admission-policy-binding-api.injectable";
 export * from "./mutating-webhook-configuration-api.injectable";
 export * from "./namespace.api.injectable";
 export * from "./network-policy.api.injectable";

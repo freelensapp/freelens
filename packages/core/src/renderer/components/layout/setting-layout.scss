@@ -177,3 +177,10 @@
     }
   }
 }
+
+// Notifications start below the close button and its "ESC" label, so one that
+// does not hide on its own never covers it. Other pages keep them at the top.
+body:has(.SettingLayout.withCloseButton) .Notifications {
+  top: 120px;
+  max-height: calc(100vh - 120px);
+}

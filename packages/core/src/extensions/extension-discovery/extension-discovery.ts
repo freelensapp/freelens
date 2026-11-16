@@ -47,6 +47,7 @@ interface Dependencies {
   isCompatibleExtension: (manifest: LensExtensionManifest) => boolean;
   recordInstalledExtension: RecordInstalledExtension;
   forgetInstalledExtension: ForgetInstalledExtension;
+  removeExtensionCredentials: (extensionId: LensExtensionId) => Promise<void>;
   sweepOrphanedExtensionBuilds: SweepOrphanedExtensionBuilds;
   readJsonFile: ReadJson;
   pathExists: PathExists;
@@ -473,7 +474,8 @@ export class ExtensionDiscovery {
    *
    * A managed install is removed from disk with every build of it; a development
    * install is only forgotten. Symmetry invites the opposite, but the directory
-   * of a development install belongs to its author.
+   * of a development install belongs to its author. The credentials of either
+   * are removed, and disabling an extension keeps them.
    */
   async uninstallExtension(extensionId: LensExtensionId): Promise<void> {
     const extension =
@@ -500,6 +502,17 @@ export class ExtensionDiscovery {
       this.dependencies.logger.info(
         `${logModule} ${manifest.name} was registered in place, forgetting ${absolutePath} rather than deleting it`,
       );
+    }
+
+    // For either kind of install: the credentials are in the user data
+    // directory, not in the extension's. The extension is gone by now, so a
+    // failure here is logged rather than reported as a failed uninstall.
+    try {
+      await this.dependencies.removeExtensionCredentials(extension.id);
+    } catch (error) {
+      this.dependencies.logger.error(`${logModule} could not remove the credentials of ${manifest.name}: ${error}`, {
+        error,
+      });
     }
   }
 

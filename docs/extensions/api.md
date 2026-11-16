@@ -17,7 +17,7 @@ Each contract states three things:
 - **Surface** — the stable names the guarantee is expressed in.
 - **Failure mode** — what an author sees when the contract is violated. This is
   recorded because most of these fail at runtime rather than at build time, and
-  several fail *silently*.
+  several fail _silently_.
 
 Anything not stated here is not part of the contract. Extensions run with full
 privileges and can reach much more than this document describes; reaching it is
@@ -44,7 +44,7 @@ every `@freelensapp/*` is inlined. Nothing else needs publishing.
 fails to install — the package does not exist on the registry.
 
 **Consequence worth stating separately.** Because workspace packages are private
-*and* inlined, **a symbol the API namespaces do not re-export is unreachable by
+_and_ inlined, **a symbol the API namespaces do not re-export is unreachable by
 any means.** There is no package left to install and a type-only import fails at
 module resolution with no `@types/` fallback. Re-export completeness is
 therefore a correctness property, not a convenience. See [C5](#c5-namespace-enumeration).
@@ -92,14 +92,14 @@ marks them external, and lets its bundler rewrite the bare id to the global.
 
 **Surface.** A closed list of module ids:
 
-| Module id | Global | Published in |
-| --- | --- | --- |
-| `react` | `React` | renderer |
-| `react-dom` | `ReactDom` | renderer |
-| `react/jsx-runtime` | `ReactJsxRuntime` | renderer |
-| `mobx` | `Mobx` | both |
-| `mobx-react` | `MobxReact` | renderer |
-| `monaco-editor` | `MonacoEditor` | renderer |
+| Module id           | Global            | Published in |
+| ------------------- | ----------------- | ------------ |
+| `react`             | `React`           | renderer     |
+| `react-dom`         | `ReactDom`        | renderer     |
+| `react/jsx-runtime` | `ReactJsxRuntime` | renderer     |
+| `mobx`              | `Mobx`            | both         |
+| `mobx-react`        | `MobxReact`       | renderer     |
+| `monaco-editor`     | `MonacoEditor`    | renderer     |
 
 An extension declares a listed package also when it does not import it but
 uses a host API whose types name it: `Renderer.Component.MonacoEditor` takes its
@@ -246,11 +246,11 @@ before the first extension loads.
 **Guarantee.** These are the members of each namespace. A symbol not listed here
 is not reachable (see [C1](#c1-packaging-and-publication)).
 
-| Namespace | Members |
-| --- | --- |
-| `Common` | `App`, `Catalog`, `Clusters`, `EventBus`, `Proxy`, `Store`, `Types`, `Util`, `logger`; types `InstalledExtension`, `LensExtension`, `LensExtensionManifest`, `Logger`, `PackageJson` |
-| `Main` | `Catalog`, `Ipc`, `K8s`, `K8sApi`, `LensExtension`, `Navigation`, `Power`, `Shell`, `Util` |
-| `Renderer` | `Catalog`, `Component`, `Ipc`, `K8s`, `K8sApi`, `LensExtension`, `Navigation`, `Theme`, `Util` |
+| Namespace  | Members                                                                                                                                                                                                                     |
+| ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Common`   | `App`, `Catalog`, `Clusters`, `Credentials`, `EventBus`, `Proxy`, `Store`, `Types`, `Util`, `logger`; types `ExtensionCredentials`, `InstalledExtension`, `LensExtension`, `LensExtensionManifest`, `Logger`, `PackageJson` |
+| `Main`     | `Catalog`, `Ipc`, `K8s`, `K8sApi`, `LensExtension`, `Navigation`, `Power`, `Shell`, `Util`                                                                                                                                  |
+| `Renderer` | `Catalog`, `Component`, `Ipc`, `K8s`, `K8sApi`, `LensExtension`, `Navigation`, `Theme`, `Util`                                                                                                                              |
 
 There is no `Renderer.React`, no `Renderer.ReactDOM` and no
 `Renderer.Registrations`. React reaches extensions through
@@ -386,6 +386,100 @@ function through the API and change a cluster's status the way the host does.
 **Failure mode.** A reaction made with the extension's own copy of mobx rather
 than the host's fails silently, as [C3](#c3-host-provided-singletons)
 describes: it does not fire where it should, and nothing reports it.
+
+### `Credentials` keeps an extension's values encrypted at rest
+
+`Common.Credentials.forExtension(extension)` returns the credentials of an
+extension, typed as `Common.ExtensionCredentials`: string values under string
+keys, for the token, password or API key of a service outside the cluster. It
+works in both processes. `Common.Store.ExtensionStore` writes a plain JSON
+file, which is the wrong place for such a value.
+
+```ts
+import { Common, Main } from "@freelensapp/extensions";
+
+export default class MyExtension extends Main.LensExtension {
+  private readonly credentials = Common.Credentials.forExtension(this);
+
+  async onActivate() {
+    if (await this.credentials.isAvailable()) {
+      const token = await this.credentials.get("api-token");
+      // ...
+    }
+  }
+}
+```
+
+**Guarantee.** A value is never written to disk in clear text. It is
+encrypted with Electron's `safeStorage`, with a key that the operating
+system's secret store holds: the Keychain on macOS, DPAPI on Windows,
+libsecret or KWallet on Linux. That protects it at rest: in backups, on a
+copied disk, from other accounts of the system.
+
+**Surface.**
+
+| Member            | Does                                                                 |
+| ----------------- | -------------------------------------------------------------------- |
+| `isAvailable()`   | resolves to whether the system has a secret store to encrypt with    |
+| `get(key)`        | resolves to the value under `key`, or `undefined` when there is none |
+| `set(key, value)` | stores `value` under `key`, replacing a previous value               |
+| `delete(key)`     | removes the value under `key`; a key without a value is no error     |
+| `keys()`          | resolves to the keys that have a value, sorted                       |
+
+- **Bound to the instance.** `forExtension` takes the extension instance,
+  `this` in the `Main.LensExtension` or `Renderer.LensExtension` subclass, and
+  the host derives the scope from the instance it loaded, never from a string
+  or a property of the instance. Both processes of one extension reach the
+  same values. A field initializer, as above, is a supported place to call
+  it.
+- **Small values.** A key is 1 to 128 characters of `A-Z`, `a-z`, `0-9`,
+  `.`, `_` and `-`. A value is a string of at most 64 KiB in UTF-8.
+- **Keys are in clear text.** Only the values are encrypted; the keys are
+  written to the file as they are. A key names a value and must not hold one,
+  such as a user name or a host that should not be visible: put that in a
+  value, under a key such as `username`.
+- **One file per extension**, in the user data directory, named after the
+  extension's sanitized ID. Uninstalling the extension removes it, for a
+  managed and a development install alike; disabling the extension keeps it.
+- **Errors never contain a value**, nor a key.
+
+**Failure mode.**
+
+- When the system has no secret store, `isAvailable()` resolves to `false` and
+  every other method rejects. On Linux the check fails closed: the store is
+  available only when Electron reports the libsecret or KWallet backend
+  (`gnome_libsecret`, `kwallet`, `kwallet5`, `kwallet6`), and not for
+  `basic_text` (`--password-store=basic`, or a desktop the host does not
+  recognise), `unknown`, any other backend, or an Electron that cannot report
+  one. A session with no secret service at all therefore has no credentials,
+  even where Electron's asynchronous API offers a fallback provider. There is
+  no fallback to clear text and no in-memory substitute: an extension that
+  needs the value asks the user for it again, or tells the user why it cannot
+  keep it.
+- On a Linux desktop the host does not recognise, a user with a running
+  secret store makes it available by starting Freelens with
+  `--password-store=gnome-libsecret` for a Secret Service provider such as
+  GNOME Keyring or KeePassXC, or `--password-store=kwallet6` (or `kwallet5`)
+  for KWallet. An extension that tells the user why it cannot keep a value can
+  point to this.
+- A value that is not an extension instance the host loaded rejects every
+  method with a `TypeError`. So do a key and a value outside the limits.
+- A credentials file that cannot be read as one rejects every method of that
+  extension, and of no other, with an error that names the extension. The
+  host does not replace the file.
+
+**Not guaranteed.** The credentials are not a boundary between extensions, and
+not a protection against programs running as the same user. Extensions run in
+the host's processes and can call `safeStorage` themselves; on Windows any
+process of the user can decrypt DPAPI data, and on Linux any process of the
+session can read an unlocked keyring. Binding the credentials to the extension
+instance keeps one extension from reaching another's values by mistake, not by
+intent.
+
+`packages/core/src/features/extension-credentials/main/__tests__/extension-credentials-store.test.ts`
+covers the store, and
+`packages/core/src/extensions/__tests__/extension-api-credentials.test.ts` the
+binding to the instance through the API.
 
 ---
 
@@ -525,7 +619,7 @@ methods that navigate: `navigate()` to the extension's own pages and
 Two of these matter more than they look:
 
 - **`manifestPath`** is how an extension locates its own shipped files. In the
-  renderer it is the *only* route, since there is no `__dirname` under URL
+  renderer it is the _only_ route, since there is no `__dirname` under URL
   loading.
 - **`getExtensionFileFolder()`** returns a writable directory for this extension
   alone, resolved from `storeName` through a hash — so it is **unaffected by
@@ -584,8 +678,8 @@ container out of the API is a contract boundary, not a security one. What is
 supported is what the namespaces expose; anything else may change without
 notice.
 
-**The lifecycle invariant:** *the view exists before the author's first hook and
-is released after their last.* The loader injects it right after it constructs
+**The lifecycle invariant:** _the view exists before the author's first hook and
+is released after their last._ The loader injects it right after it constructs
 the extension instance; the registrators populate it after activation, because
 activation can register catalog categories they must see; and `disable()` runs
 `onDeactivate` before `deregister()`.
@@ -738,8 +832,8 @@ It splits in two:
 `react-select`.
 
 This is the complement of the namespace enumeration in
-[C5](#c5-namespace-enumeration): that records what the API *exports*, this what
-it *imports* and therefore imposes on an author. It is read off the built
+[C5](#c5-namespace-enumeration): that records what the API _exports_, this what
+it _imports_ and therefore imposes on an author. It is read off the built
 bundle, not the source tree:
 
 ```sh
@@ -919,15 +1013,15 @@ for the package**, because the two differ.
 
 **Surface.**
 
-| Requirement | Why |
-| --- | --- |
-| TypeScript 4.9 or newer | the declaration has `accessor` fields, which older compilers fail to parse whatever `skipLibCheck` says |
-| `"skipLibCheck": true` | the type dependency graph is not clean under `false`, and checking it is not an author's job |
+| Requirement                                                   | Why                                                                                                                                          |
+| ------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| TypeScript 4.9 or newer                                       | the declaration has `accessor` fields, which older compilers fail to parse whatever `skipLibCheck` says                                      |
+| `"skipLibCheck": true`                                        | the type dependency graph is not clean under `false`, and checking it is not an author's job                                                 |
 | `"lib"` including `DOM` and `DOM.Iterable`, `ES2024` or newer | the React component types name DOM types nothing else declares; the mobx types name `ReadonlySetLike`, which first appears in the ES2024 lib |
-| `"moduleResolution": "bundler"`, `node16` or `nodenext` | to resolve the package's `exports` |
-| `electron` as a devDependency, at the host's version | an **optional** peer — a required `>=43.0.0` peer would be installed automatically at the newest Electron major, not the one the host runs |
+| `"moduleResolution": "bundler"`, `node16` or `nodenext`       | to resolve the package's `exports`                                                                                                           |
+| `electron` as a devDependency, at the host's version          | an **optional** peer — a required `>=43.0.0` peer would be installed automatically at the newest Electron major, not the one the host runs   |
 
-The **HTTP surface alone** needs `lib.dom` *or* `@types/node`: `Main.Util.fetch`
+The **HTTP surface alone** needs `lib.dom` _or_ `@types/node`: `Main.Util.fetch`
 is typed as the global `fetch`, and the structural types name only `AbortSignal`,
 `ReadableStream`, `URL` and `Uint8Array`, all of which both declare. The package
 as a whole still requires `lib.dom`.
@@ -943,7 +1037,7 @@ errors in the React component types.
 ## C14. Versioning and compatibility
 
 **Guarantee.** `engines.freelens` is the **enforced gate**, checked at discovery
-before any extension code runs — and it is the *only* enforced one. The version
+before any extension code runs — and it is the _only_ enforced one. The version
 range an extension declares for `@freelensapp/extensions` is a compile-time
 convenience that the host never reads.
 
@@ -1002,11 +1096,11 @@ tool by the path its function returns; the environment provides `KUBECONFIG`,
 outside any cluster when called without a cluster id, and for the terminal of
 the cluster when called with one:
 
-| Function | Without a cluster | For a cluster |
-| --- | --- | --- |
-| `getKubectlPath(clusterId?, options?)` | the "Path to kubectl binary" preference (`kubectlBinariesPath`) when downloading kubectl binaries is turned off (`downloadKubectlBinaries`), else the bundled kubectl | the same preference when downloading is turned off; otherwise the kubectl matched to the cluster's Kubernetes version in the download directory (`downloadBinariesPath`), downloaded when it is missing, else the bundled kubectl |
-| `getHelmPath(clusterId?)` | the "Path to helm binary" preference (`helmBinariesPath`), else the bundled helm | the same: helm does not depend on the cluster's version |
-| `getEnvironment(clusterId?, options?)` | the user's shell environment, with the bundled binaries directory appended to `PATH`, so that a kubectl or helm the user installed keeps winning; `KUBECONFIG` is the user's own | the user's shell environment, with the directory of the version-matched kubectl first on `PATH` when downloading is turned on and that kubectl is in place, the bundled binaries directory last, `KUBECONFIG` and `KUBECACHEDIR` that reach the cluster through Freelens in place of every kubeconfig variable of the user's, the cluster's proxy setting as `HTTPS_PROXY`, and `localhost` and `127.0.0.1` added to `NO_PROXY` |
+| Function                               | Without a cluster                                                                                                                                                                                                                               | For a cluster                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| -------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `getKubectlPath(clusterId?, options?)` | the "Path to kubectl binary" preference (`kubectlBinariesPath`) when downloading kubectl binaries is turned off (`downloadKubectlBinaries`), else the bundled kubectl                                                                           | the same preference when downloading is turned off; otherwise the kubectl matched to the cluster's Kubernetes version in the download directory (`downloadBinariesPath`), downloaded when it is missing, else the bundled kubectl                                                                                                                                                                                               |
+| `getHelmPath(clusterId?)`              | the "Path to helm binary" preference (`helmBinariesPath`), else the bundled helm                                                                                                                                                                | the same: helm does not depend on the cluster's version                                                                                                                                                                                                                                                                                                                                                                         |
+| `getEnvironment(clusterId?, options?)` | the user's shell environment, with the bundled binaries directory appended to `PATH`, so that a kubectl or helm the user installed keeps winning; `KUBECONFIG` is the user's own, and the application's proxy setting is `HTTPS_PROXY` when set | the user's shell environment, with the directory of the version-matched kubectl first on `PATH` when downloading is turned on and that kubectl is in place, the bundled binaries directory last, `KUBECONFIG` and `KUBECACHEDIR` that reach the cluster through Freelens in place of every kubeconfig variable of the user's, the cluster's proxy setting as `HTTPS_PROXY`, and `localhost` and `127.0.0.1` added to `NO_PROXY` |
 
 Every path is absolute, and a path a preference names is returned as it is.
 The environment is a `Record<string, string>` to pass as `env` to
@@ -1088,7 +1182,7 @@ directory moves with the `downloadBinariesPath` preference.
 An extension **vendors or bundles whatever it needs apart from what the host
 provides**, so installing one is downloading a tarball and extracting it — there
 is nothing to resolve and no package manager involved. Installs land under
-`<userData>/extensions/<sanitized-name>/<version>-<digest8>/`; a *directory*
+`<userData>/extensions/<sanitized-name>/<version>-<digest8>/`; a _directory_
 install registers an extension in place and is the development mode, which is
 why there is no packing step and no symlink. The renderer loads from
 `freelens-extension://extensions/<sanitized-name>/<version>-<digest8>/<file>`
@@ -1109,10 +1203,11 @@ The contract has three, not two:
 - [`docs/extensions/binaries.md`](./binaries.md) — shipped binaries and process invocation
 - [freelens-example-extension](https://github.com/freelensapp/freelens-example-extension) —
   the reference template for building, type-checking, testing and releasing an
-  extension, which this document leaves to the author. It ships two agent
-  skills for coding agents:
-  [`create-freelens-extension`](https://github.com/freelensapp/freelens-example-extension/blob/main/skills/create-freelens-extension/SKILL.md)
+  extension, which this document leaves to the author
+- [`plugins/freelens`](../../plugins/freelens) — the skills for coding agents,
+  a plugin of Claude Code:
+  [`create-extension`](../../plugins/freelens/skills/create-extension/SKILL.md)
   starts a new extension from a copy of the template, and
-  [`port-freelens-extension-to-v2`](https://github.com/freelensapp/freelens-example-extension/blob/main/skills/port-freelens-extension-to-v2/SKILL.md)
+  [`port-extension-to-v2`](../../plugins/freelens/skills/port-extension-to-v2/SKILL.md)
   ports a v1 extension to this API
 - [`docs/styling.md`](../styling.md) — the styling model in full

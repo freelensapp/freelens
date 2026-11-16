@@ -508,7 +508,7 @@ exports[`extensions - navigation using application menu > when navigating to ext
         id="lens-views"
       />
       <div
-        class="SettingLayout DropFileInput Extensions"
+        class="SettingLayout withCloseButton DropFileInput Extensions"
         data-testid="extensions-page"
       >
         <div

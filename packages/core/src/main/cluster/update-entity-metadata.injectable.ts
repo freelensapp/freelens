@@ -39,6 +39,13 @@ const updateEntityMetadataInjectable = getInjectable({
          */
         entity.metadata.name = cluster.preferences.clusterName;
       }
+
+      if (cluster.preferences?.iconShortName) {
+        entity.metadata.shortName = cluster.preferences.iconShortName;
+      } else if (cluster.preferences?.iconShortName === null) {
+        entity.metadata.shortName = undefined;
+        cluster.preferences.iconShortName = undefined;
+      }
     };
   },
 });

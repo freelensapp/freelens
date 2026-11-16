@@ -47,8 +47,14 @@ const createLogsTab =
       // new tab rather than leaking from a previously viewed pod. It is forced to
       // false after the preferences spread so a stale persisted value (from an
       // upgraded store) cannot leak back in, while explicit tab data can still set it.
+      // Only the preferences that are part of the tab data are copied: the
+      // others, such as `maxCombinedLogsPods`, apply to every tab and are read
+      // from the preferences directly.
+      const { showTimestamps, showWordWrap } = userPreferencesState.logViewerPreferences ?? defaultLogViewerPreferences;
+
       setLogTabData(id, {
-        ...(userPreferencesState.logViewerPreferences ?? defaultLogViewerPreferences),
+        showTimestamps,
+        showWordWrap,
         showPrevious: false,
         ...data,
       });

@@ -1,6 +1,6 @@
 {
   "name": "freelens",
-  "version": "2.0.0-0",
+  "version": "2.0.1-0",
   "private": true,
   "description": "Freelens - Free IDE for Kubernetes",
   "keywords": [],
@@ -32,7 +32,7 @@
     "build:resources": "pnpm \"/^build:resources:/\"",
     "build:resources:license": "generate-license --prod --header license-header.txt --output static/build/license.txt",
     "build:resources:tray": "generate-tray-icons --output static/build/tray --input @freelensapp/icon/icons/logo-lens.svg --notice-icon @freelensapp/icon/icons/notice.svg --spinner-icon @freelensapp/icon/icons/arrow-spinner.svg --none-color fbfbfb",
-    "clean:dist": "pnpm dlx rimraf@6.1.3 binaries dist static/build",
+    "clean:dist": "pnpm dlx rimraf@6.1.4 binaries dist static/build",
     "preupdate-binaries-lock": "pnpm --filter @freelensapp/ensure-binaries build",
     "update-binaries-lock": "update-binaries-lock --package package.json",
     "predev": "install-electron",
@@ -55,7 +55,7 @@
   },
   "config": {
     "bundledHelmVersion": "4.3.1",
-    "bundledKubectlVersion": "1.37.1",
+    "bundledKubectlVersion": "1.37.2",
     "contentSecurityPolicy": "script-src 'unsafe-eval' 'self' freelens-extension:; frame-src https://*.renderer.freelens.app:*/; img-src * data:",
     "k8sProxyVersion": "2.0.0",
     "welcomeRoute": "/welcome"
@@ -89,7 +89,6 @@
     "joi": "catalog:",
     "js-yaml": "catalog:",
     "mobx": "catalog:",
-    "undici": "catalog:",
     "node-pty": "catalog:",
     "proper-lockfile": "catalog:",
     "react": "catalog:",
@@ -98,6 +97,7 @@
     "tcp-port-used": "catalog:",
     "tempy": "catalog:",
     "triple-beam": "catalog:",
+    "undici": "catalog:",
     "uuid": "catalog:",
     "verkit": "catalog:",
     "winston": "catalog:",

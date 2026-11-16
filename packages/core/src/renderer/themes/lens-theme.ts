@@ -82,6 +82,7 @@ export type LensColorName =
   | "textColorTertiary"
   | "textColorAccent"
   | "textColorDimmed"
+  | "textColorOnPrimary"
   | "borderColor"
   | "borderFaintColor"
   | "mainBackground"

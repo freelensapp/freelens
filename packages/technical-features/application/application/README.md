@@ -1,6 +1,6 @@
 # @freelensapp/application
 
-This package contains stuff related to creating Lens-applications. 
+This package contains stuff related to creating Lens-applications.
 
 ## Usage
 
@@ -22,10 +22,10 @@ const startApplication = di.inject(startApplicationInjectionToken);
 startApplication();
 ```
 
-
 ## Features
 
 ### Start application
+
 `startApplicationInjectionToken`
 
 Starts the application and calls timeslots in specified order. Check for timeslots for more info.

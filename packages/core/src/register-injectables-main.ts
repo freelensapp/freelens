@@ -16,6 +16,8 @@ import { registerInjectables as registerFeaturesFeaturesClusterExecuteMainInject
 import { registerInjectables as registerFeaturesFeaturesClusterInjectables } from "./features/cluster/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesClusterStateSyncMainInjectables } from "./features/cluster/state-sync/main/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesClusterStorageMainInjectables } from "./features/cluster/storage/main/register-injectables";
+import { registerInjectables as registerFeaturesFeaturesExtensionCredentialsMainInjectables } from "./features/extension-credentials/main/register-injectables";
+import { registerInjectables as registerFeaturesFeaturesExtensionCredentialsInjectables } from "./features/extension-credentials/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesExtensionsEnabledMainInjectables } from "./features/extensions/enabled/main/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesExtensionsInstallerMainInjectables } from "./features/extensions/installer/main/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesExtensionsLoaderMainInjectables } from "./features/extensions/loader/main/register-injectables";
@@ -36,6 +38,7 @@ import { registerInjectables as registerFeaturesFeaturesPopulationOfLogsToAFileM
 import { registerInjectables as registerFeaturesFeaturesPreferencesChildFeaturesApplicationMenuMainInjectables } from "./features/preferences/child-features/application-menu/main/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesPreferencesChildFeaturesTrayMainInjectables } from "./features/preferences/child-features/tray/main/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesPreferencesCommonInjectables } from "./features/preferences/common/register-injectables";
+import { registerInjectables as registerFeaturesFeaturesSecretCertificatesMainInjectables } from "./features/secret-certificates/main/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesShellSyncMainInjectables } from "./features/shell-sync/main/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesThemeSystemTypeMainInjectables } from "./features/theme/system-type/main/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesUserPreferencesMainInjectables } from "./features/user-preferences/main/register-injectables";
@@ -60,6 +63,8 @@ export function registerInjectables(di: DiContainerForInjection): void {
   registerFeaturesFeaturesClusterExecuteMainInjectables(di);
   registerFeaturesFeaturesClusterStateSyncMainInjectables(di);
   registerFeaturesFeaturesClusterStorageMainInjectables(di);
+  registerFeaturesFeaturesExtensionCredentialsMainInjectables(di);
+  registerFeaturesFeaturesExtensionCredentialsInjectables(di);
   registerFeaturesFeaturesExtensionsInjectables(di);
   registerFeaturesFeaturesExtensionsEnabledMainInjectables(di);
   registerFeaturesFeaturesExtensionsInstallerMainInjectables(di);
@@ -80,6 +85,7 @@ export function registerInjectables(di: DiContainerForInjection): void {
   registerFeaturesFeaturesPreferencesChildFeaturesApplicationMenuMainInjectables(di);
   registerFeaturesFeaturesPreferencesChildFeaturesTrayMainInjectables(di);
   registerFeaturesFeaturesPreferencesCommonInjectables(di);
+  registerFeaturesFeaturesSecretCertificatesMainInjectables(di);
   registerFeaturesFeaturesShellSyncMainInjectables(di);
   registerFeaturesFeaturesThemeSystemTypeMainInjectables(di);
   registerFeaturesFeaturesUserPreferencesMainInjectables(di);

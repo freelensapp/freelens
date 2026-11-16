@@ -25,6 +25,8 @@ export * from "./ingress-class.api";
 export * from "./job.api";
 export * from "./lease.api";
 export * from "./limit-range.api";
+export * from "./mutating-admission-policy.api";
+export * from "./mutating-admission-policy-binding.api";
 export * from "./mutating-webhook-configuration.api";
 export * from "./namespace.api";
 export * from "./network-policy.api";

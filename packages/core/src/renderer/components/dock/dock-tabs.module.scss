@@ -51,20 +51,12 @@
 
     &::before {
       left: 0;
-      background: linear-gradient(
-        270deg,
-        transparent 0%,
-        var(--dockHeadBackground) 65%
-      );
+      background: linear-gradient(270deg, transparent 0%, var(--dockHeadBackground) 65%);
     }
 
     &::after {
       right: 0;
-      background: linear-gradient(
-        90deg,
-        transparent 0%,
-        var(--dockHeadBackground) 65%
-      );
+      background: linear-gradient(90deg, transparent 0%, var(--dockHeadBackground) 65%);
     }
   }
 }

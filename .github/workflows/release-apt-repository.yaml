@@ -1,0 +1,133 @@
+name: Release APT repository
+
+# Builds and signs the APT repository index files (Packages, Release,
+# InRelease) for the .deb files of a published release and uploads them to
+# that release, which APT reads from releases/latest/download.
+#
+# It runs after every successful run of Release, for the release that run
+# made, and by hand for any published release, so the index files can be built
+# again without rebuilding the release.
+#
+# The signing key is a secret of the apt-signing environment, which only the
+# main branch may use. A run triggered by workflow_run is on main whatever ref
+# the Release run was on.
+
+on:
+  workflow_run:
+    workflows:
+      - Release
+    types:
+      - completed
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Release to update (default is the latest release)
+        type: string
+        required: false
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  find-release:
+    name: find release
+
+    # Never on a fork: it has none of the signing secrets. A Release run that
+    # failed has not published the GitHub release.
+    if: >-
+      github.repository_owner == 'freelensapp' && github.ref_name == 'main' &&
+      (github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success')
+
+    runs-on: ubuntu-26.04-arm
+
+    # The Release run was on the tag of its release, so its head branch is the
+    # tag name. A release that is missing or still a draft stops the run.
+    steps:
+      - name: Set release tag
+        id: release
+        run: |
+          set -eo pipefail
+          tag=${tag:-$(gh release view --repo "$GITHUB_REPOSITORY" --json tagName --jq .tagName)}
+          echo "tag=$tag" | tee -a $GITHUB_OUTPUT
+          if [[ $(gh release view "$tag" --repo "$GITHUB_REPOSITORY" --json isDraft --jq .isDraft) != false ]]; then
+            echo "::error::GitHub release $tag is missing or still a draft"
+            exit 1
+          fi
+        env:
+          tag: ${{ github.event.workflow_run.head_branch || inputs.tag }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    outputs:
+      tag: ${{ steps.release.outputs.tag }}
+
+  release-apt-repository:
+    name: release APT repository
+
+    needs:
+      - find-release
+
+    runs-on: ubuntu-26.04-arm
+    environment: apt-signing
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      # The secret key is imported with the passphrase in loopback mode: with
+      # GnuPG 2.4.8 on Ubuntu 26.04, importing the cv25519 subkey through
+      # pinentry.sh fails with "Bad secret key". Signing still goes through
+      # pinentry.sh.
+      - name: GPG configuration
+        run: |
+          mkdir -p -m 0700 $HOME/.gnupg
+          echo "use-agent" > $HOME/.gnupg/gpg.conf
+          echo "pinentry-program $GITHUB_WORKSPACE/.github/scripts/pinentry.sh" > $HOME/.gnupg/gpg-agent.conf
+          echo "$GPG_PASSPHRASE" > $HOME/.gnupg/passphrase
+          gpgconf --launch gpg-agent
+          echo "$GPG_PRIVATE_KEY" | gpg --batch --pinentry-mode loopback --passphrase-file $HOME/.gnupg/passphrase --import
+          echo "$GPG_KEY_ID:6:" | gpg --import-ownertrust
+        env:
+          GPG_KEY_ID: ${{ vars.GPG_KEY_ID }}
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+
+      # The Ubuntu 26.04 runner image does not have apt-utils, which provides
+      # apt-ftparchive.
+      - name: Install apt-utils
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends apt-utils
+
+      - name: Build and sign APT repository
+        run: |
+          set -x
+          gh release download $tag -p "*.deb" -D tmp
+          pushd tmp
+            apt-ftparchive packages . | tee Packages | xz > Packages.xz
+            apt-ftparchive release -c ../freelens/build/apt/release.conf . > Release
+            gpg --clearsign -o InRelease Release
+            gpg --armor --detach-sign --sign -o Release.gpg Release
+          popd
+        env:
+          tag: ${{ needs.find-release.outputs.tag }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
+      - name: Verify signatures
+        run: |
+          gpg --dearmor -o $RUNNER_TEMP/keyring.gpg freelens/build/apt/freelens.asc
+          gpgv --keyring $RUNNER_TEMP/keyring.gpg tmp/InRelease
+          gpgv --keyring $RUNNER_TEMP/keyring.gpg tmp/Release.gpg tmp/Release
+
+      - name: Upload APT repository
+        run: |
+          set -x
+          pushd tmp
+            gh release upload $tag InRelease Packages Packages.xz Release Release.gpg --clobber
+          popd
+        env:
+          tag: ${{ needs.find-release.outputs.tag }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}

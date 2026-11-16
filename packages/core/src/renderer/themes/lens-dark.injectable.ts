@@ -33,6 +33,7 @@ const lensDarkThemeInjectable: Injectable<LensTheme, ReadonlyDeep<LensTheme>> = 
         textColorTertiary: "#909ba6",
         textColorAccent: "#ffffff",
         textColorDimmed: "#8e92978c",
+        textColorOnPrimary: "#ffffff",
         borderColor: "#4c5053",
         borderFaintColor: "#373a3e",
         mainBackground: "#1e2124",

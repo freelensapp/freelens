@@ -9,6 +9,7 @@ import { jobApiInjectable } from "@freelensapp/kube-api-specifics";
 import { showCheckedErrorNotificationInjectable } from "@freelensapp/notifications";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import openConfirmDialogInjectable from "../confirm-dialog/open.injectable";
+import createWorkloadLogsTabInjectable from "../dock/logs/create-workload-logs-tab.injectable";
 import { MenuItem } from "../menu";
 
 import type { JobApi } from "@freelensapp/kube-api";
@@ -24,6 +25,7 @@ interface Dependencies {
   openConfirmDialog: OpenConfirmDialog;
   jobApi: JobApi;
   showCheckedErrorNotification: ShowCheckedErrorNotification;
+  createWorkloadLogsTab: ReturnType<typeof createWorkloadLogsTabInjectable.instantiate>;
 }
 
 const NonInjectedJobMenu = ({
@@ -32,8 +34,13 @@ const NonInjectedJobMenu = ({
   openConfirmDialog,
   jobApi,
   showCheckedErrorNotification,
+  createWorkloadLogsTab,
 }: Dependencies & JobMenuProps) => (
   <>
+    <MenuItem onClick={() => createWorkloadLogsTab({ workload: object })}>
+      <Icon material="subject" tooltip={`${object.kind} Logs`} interactive={toolbar} />
+      <span className="title">Logs</span>
+    </MenuItem>
     {object.isSuspend() ? (
       <MenuItem
         onClick={() =>
@@ -92,5 +99,6 @@ export const JobMenu = withInjectables<Dependencies, JobMenuProps>(NonInjectedJo
     openConfirmDialog: di.inject(openConfirmDialogInjectable),
     jobApi: di.inject(jobApiInjectable),
     showCheckedErrorNotification: di.inject(showCheckedErrorNotificationInjectable),
+    createWorkloadLogsTab: di.inject(createWorkloadLogsTabInjectable),
   }),
 });

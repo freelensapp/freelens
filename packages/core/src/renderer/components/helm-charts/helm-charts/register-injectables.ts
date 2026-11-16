@@ -7,6 +7,7 @@
  */
 
 import helmChartsInjectable from "./helm-charts.injectable";
+import helmRepositoriesChangedListenerInjectable from "./helm-repositories-changed-listener.injectable";
 import requestVersionsOfHelmChartForInjectable from "./request-versions.injectable";
 import requestVersionsOfHelmChartInjectable from "./request-versions-of-chart-for-release.injectable";
 import selectedHelmChartInjectable from "./selected-helm-chart.injectable";
@@ -22,6 +23,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(helmChartsInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(helmRepositoriesChangedListenerInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

@@ -7,6 +7,7 @@ import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
 import isWindowsInjectable from "../../common/vars/is-windows.injectable";
 import getClusterByIdInjectable from "../../features/cluster/storage/common/get-by-id.injectable";
+import httpsProxyConfigurationInjectable from "../../features/user-preferences/common/https-proxy.injectable";
 import freelensProxyTokenInjectable from "../freelens-proxy/freelens-proxy-token.injectable";
 import kubeconfigManagerInjectable from "../kubeconfig-manager/kubeconfig-manager.injectable";
 import createKubectlInjectable from "../kubectl/create-kubectl.injectable";
@@ -42,6 +43,7 @@ const kubeToolsForExtensionsInjectable = getInjectable({
     const resolveKubeTools = di.inject(resolveKubeToolsInjectable);
     const computeUserShellEnvironment = di.inject(computeUserShellEnvironmentInjectable);
     const token = di.inject(freelensProxyTokenInjectable);
+    const applicationHttpsProxy = di.inject(httpsProxyConfigurationInjectable);
 
     /**
      * Resolving the user's shell environment starts a login shell, which takes
@@ -121,6 +123,7 @@ const kubeToolsForExtensionsInjectable = getInjectable({
             composeKubeToolsEnvironment({
               baseEnvironment: await getShellEnvironment(),
               tools: resolveKubeTools.withoutCluster(),
+              httpsProxy: applicationHttpsProxy.get(),
               isWindows,
             }),
           );
@@ -139,9 +142,9 @@ const kubeToolsForExtensionsInjectable = getInjectable({
             clusterAccess: {
               kubeconfigPath,
               cacheDirectoryPath,
-              httpsProxy: cluster.preferences.httpsProxy,
               token: token.value,
             },
+            httpsProxy: cluster.preferences.httpsProxy,
             isWindows,
           }),
         );

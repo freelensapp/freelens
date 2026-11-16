@@ -134,7 +134,7 @@
 .activeTab,
 .activeTab:hover {
   background-color: var(--blue);
-  --color-active: white;
+  --color-active: var(--textColorOnPrimary);
 }
 
 .catalogAvatar {

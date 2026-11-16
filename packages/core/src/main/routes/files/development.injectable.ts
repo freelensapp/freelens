@@ -38,6 +38,26 @@ const devStaticFileRouteHandlerInjectable = getInjectable({
 
     abortWhenClientCloses(proxy);
 
+    // The agent closes a kept-alive socket shortly before the dev server's
+    // keep-alive timeout, but only when its timer fires in time. While the main
+    // process is busy, as when a frame loads its modules, it can hand out a
+    // socket the dev server is closing, and the request fails with ECONNRESET
+    // through no fault of its own. Such a request is sent once more, as the Node
+    // documentation of `request.reusedSocket` advises; a module that does not
+    // load stalls the whole frame.
+    const sentOnReusedSocket = new WeakMap<http.IncomingMessage, boolean>();
+    const retried = new WeakSet<http.IncomingMessage>();
+
+    proxy.on("proxyReq", (proxyReq, req) => {
+      sentOnReusedSocket.set(req, proxyReq.reusedSocket);
+    });
+
+    const isRetriable = (error: NodeJS.ErrnoException, req: http.IncomingMessage) =>
+      error.code === "ECONNRESET" &&
+      (req.method === "GET" || req.method === "HEAD") &&
+      sentOnReusedSocket.get(req) === true &&
+      !retried.has(req);
+
     proxy.on("proxyRes", (proxyRes, _req, res) => {
       // A response the dev server cuts off would otherwise stay open for good,
       // holding the `load` event of the page
@@ -56,6 +76,15 @@ const devStaticFileRouteHandlerInjectable = getInjectable({
       const response = res as ServerResponse;
 
       if (isClientGone(response)) {
+        return;
+      }
+
+      // A request without a body, so the ended request can be sent again
+      if (!response.headersSent && isRetriable(error, req)) {
+        retried.add(req);
+        logger.debug(`request for ${req.url} failed on a reused socket, retrying: ${error}`);
+        proxy.web(req, response as http.ServerResponse, { target: proxyTarget });
+
         return;
       }
 

@@ -1239,7 +1239,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     <div
                       class="list"
                       role="list"
-                      style="position: relative; max-height: 100%; flex-grow: 1; overflow-y: auto; width: 100%; height: 100%;"
+                      style="position: relative; flex-grow: 1; max-height: 100%; overflow-y: auto; width: 100%; height: 100%;"
                     >
                       <div
                         data-react-window-index="0"
@@ -2317,7 +2317,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     <div
                       class="list"
                       role="list"
-                      style="position: relative; max-height: 100%; flex-grow: 1; overflow-y: auto; width: 100%; height: 100%;"
+                      style="position: relative; flex-grow: 1; max-height: 100%; overflow-y: auto; width: 100%; height: 100%;"
                     >
                       <div
                         data-react-window-index="0"
@@ -3274,7 +3274,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     <div
                       class="list"
                       role="list"
-                      style="position: relative; max-height: 100%; flex-grow: 1; overflow-y: auto; width: 100%; height: 100%;"
+                      style="position: relative; flex-grow: 1; max-height: 100%; overflow-y: auto; width: 100%; height: 100%;"
                     >
                       <div
                         data-react-window-index="0"
@@ -3591,15 +3591,6 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   <div
                     class="install-controls flex gap-2 items-center"
                   >
-                    <span>
-                      Chart
-                    </span>
-                    <div
-                      class="badge"
-                      title="Repo/Name"
-                    >
-                      some-repository/some-name
-                    </div>
                     <span>
                       Version
                     </span>
@@ -4499,7 +4490,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     <div
                       class="list"
                       role="list"
-                      style="position: relative; max-height: 100%; flex-grow: 1; overflow-y: auto; width: 100%; height: 100%;"
+                      style="position: relative; flex-grow: 1; max-height: 100%; overflow-y: auto; width: 100%; height: 100%;"
                     >
                       <div
                         data-react-window-index="0"
@@ -4816,15 +4807,6 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   <div
                     class="install-controls flex gap-2 items-center"
                   >
-                    <span>
-                      Chart
-                    </span>
-                    <div
-                      class="badge"
-                      title="Repo/Name"
-                    >
-                      some-repository/some-name
-                    </div>
                     <span>
                       Version
                     </span>
@@ -5693,7 +5675,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     <div
                       class="list"
                       role="list"
-                      style="position: relative; max-height: 100%; flex-grow: 1; overflow-y: auto; width: 100%; height: 100%;"
+                      style="position: relative; flex-grow: 1; max-height: 100%; overflow-y: auto; width: 100%; height: 100%;"
                     >
                       <div
                         data-react-window-index="0"
@@ -6010,15 +5992,6 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   <div
                     class="install-controls flex gap-2 items-center"
                   >
-                    <span>
-                      Chart
-                    </span>
-                    <div
-                      class="badge"
-                      title="Repo/Name"
-                    >
-                      some-repository/some-name
-                    </div>
                     <span>
                       Version
                     </span>
@@ -6882,7 +6855,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     <div
                       class="list"
                       role="list"
-                      style="position: relative; max-height: 100%; flex-grow: 1; overflow-y: auto; width: 100%; height: 100%;"
+                      style="position: relative; flex-grow: 1; max-height: 100%; overflow-y: auto; width: 100%; height: 100%;"
                     >
                       <div
                         data-react-window-index="0"
@@ -7199,15 +7172,6 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   <div
                     class="install-controls flex gap-2 items-center"
                   >
-                    <span>
-                      Chart
-                    </span>
-                    <div
-                      class="badge"
-                      title="Repo/Name"
-                    >
-                      some-repository/some-name
-                    </div>
                     <span>
                       Version
                     </span>
@@ -8071,7 +8035,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     <div
                       class="list"
                       role="list"
-                      style="position: relative; max-height: 100%; flex-grow: 1; overflow-y: auto; width: 100%; height: 100%;"
+                      style="position: relative; flex-grow: 1; max-height: 100%; overflow-y: auto; width: 100%; height: 100%;"
                     >
                       <div
                         data-react-window-index="0"
@@ -8388,15 +8352,6 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   <div
                     class="install-controls flex gap-2 items-center"
                   >
-                    <span>
-                      Chart
-                    </span>
-                    <div
-                      class="badge"
-                      title="Repo/Name"
-                    >
-                      some-repository/some-name
-                    </div>
                     <span>
                       Version
                     </span>
@@ -9282,7 +9237,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     <div
                       class="list"
                       role="list"
-                      style="position: relative; max-height: 100%; flex-grow: 1; overflow-y: auto; width: 100%; height: 100%;"
+                      style="position: relative; flex-grow: 1; max-height: 100%; overflow-y: auto; width: 100%; height: 100%;"
                     >
                       <div
                         data-react-window-index="0"
@@ -9599,15 +9554,6 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   <div
                     class="install-controls flex gap-2 items-center"
                   >
-                    <span>
-                      Chart
-                    </span>
-                    <div
-                      class="badge"
-                      title="Repo/Name"
-                    >
-                      some-repository/some-name
-                    </div>
                     <span>
                       Version
                     </span>
@@ -10507,7 +10453,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     <div
                       class="list"
                       role="list"
-                      style="position: relative; max-height: 100%; flex-grow: 1; overflow-y: auto; width: 100%; height: 100%;"
+                      style="position: relative; flex-grow: 1; max-height: 100%; overflow-y: auto; width: 100%; height: 100%;"
                     >
                       <div
                         data-react-window-index="0"
@@ -10824,15 +10770,6 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   <div
                     class="install-controls flex gap-2 items-center"
                   >
-                    <span>
-                      Chart
-                    </span>
-                    <div
-                      class="badge"
-                      title="Repo/Name"
-                    >
-                      some-repository/some-name
-                    </div>
                     <span>
                       Version
                     </span>
@@ -11696,7 +11633,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     <div
                       class="list"
                       role="list"
-                      style="position: relative; max-height: 100%; flex-grow: 1; overflow-y: auto; width: 100%; height: 100%;"
+                      style="position: relative; flex-grow: 1; max-height: 100%; overflow-y: auto; width: 100%; height: 100%;"
                     >
                       <div
                         data-react-window-index="0"
@@ -12013,15 +11950,6 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   <div
                     class="install-controls flex gap-2 items-center"
                   >
-                    <span>
-                      Chart
-                    </span>
-                    <div
-                      class="badge"
-                      title="Repo/Name"
-                    >
-                      some-repository/some-name
-                    </div>
                     <span>
                       Version
                     </span>
@@ -12940,7 +12868,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     <div
                       class="list"
                       role="list"
-                      style="position: relative; max-height: 100%; flex-grow: 1; overflow-y: auto; width: 100%; height: 100%;"
+                      style="position: relative; flex-grow: 1; max-height: 100%; overflow-y: auto; width: 100%; height: 100%;"
                     >
                       <div
                         data-react-window-index="0"
@@ -14962,7 +14890,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     <div
                       class="list"
                       role="list"
-                      style="position: relative; max-height: 100%; flex-grow: 1; overflow-y: auto; width: 100%; height: 100%;"
+                      style="position: relative; flex-grow: 1; max-height: 100%; overflow-y: auto; width: 100%; height: 100%;"
                     >
                       <div
                         data-react-window-index="0"
@@ -16012,7 +15940,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     <div
                       class="list"
                       role="list"
-                      style="position: relative; max-height: 100%; flex-grow: 1; overflow-y: auto; width: 100%; height: 100%;"
+                      style="position: relative; flex-grow: 1; max-height: 100%; overflow-y: auto; width: 100%; height: 100%;"
                     >
                       <div
                         data-react-window-index="0"
@@ -16329,15 +16257,6 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   <div
                     class="install-controls flex gap-2 items-center"
                   >
-                    <span>
-                      Chart
-                    </span>
-                    <div
-                      class="badge"
-                      title="Repo/Name"
-                    >
-                      some-repository/some-name
-                    </div>
                     <span>
                       Version
                     </span>
@@ -17413,7 +17332,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     <div
                       class="list"
                       role="list"
-                      style="position: relative; max-height: 100%; flex-grow: 1; overflow-y: auto; width: 100%; height: 100%;"
+                      style="position: relative; flex-grow: 1; max-height: 100%; overflow-y: auto; width: 100%; height: 100%;"
                     >
                       <div
                         data-react-window-index="0"
@@ -18422,7 +18341,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     <div
                       class="list"
                       role="list"
-                      style="position: relative; max-height: 100%; flex-grow: 1; overflow-y: auto; width: 100%; height: 100%;"
+                      style="position: relative; flex-grow: 1; max-height: 100%; overflow-y: auto; width: 100%; height: 100%;"
                     >
                       <div
                         data-react-window-index="0"
@@ -18791,15 +18710,6 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   <div
                     class="install-controls flex gap-2 items-center"
                   >
-                    <span>
-                      Chart
-                    </span>
-                    <div
-                      class="badge"
-                      title="Repo/Name"
-                    >
-                      some-repository/some-other-name
-                    </div>
                     <span>
                       Version
                     </span>
@@ -19665,7 +19575,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     <div
                       class="list"
                       role="list"
-                      style="position: relative; max-height: 100%; flex-grow: 1; overflow-y: auto; width: 100%; height: 100%;"
+                      style="position: relative; flex-grow: 1; max-height: 100%; overflow-y: auto; width: 100%; height: 100%;"
                     >
                       <div
                         data-react-window-index="0"
@@ -20034,15 +19944,6 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   <div
                     class="install-controls flex gap-2 items-center"
                   >
-                    <span>
-                      Chart
-                    </span>
-                    <div
-                      class="badge"
-                      title="Repo/Name"
-                    >
-                      some-repository/some-name
-                    </div>
                     <span>
                       Version
                     </span>
@@ -20906,7 +20807,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     <div
                       class="list"
                       role="list"
-                      style="position: relative; max-height: 100%; flex-grow: 1; overflow-y: auto; width: 100%; height: 100%;"
+                      style="position: relative; flex-grow: 1; max-height: 100%; overflow-y: auto; width: 100%; height: 100%;"
                     >
                       <div
                         data-react-window-index="0"
@@ -21223,15 +21124,6 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   <div
                     class="install-controls flex gap-2 items-center"
                   >
-                    <span>
-                      Chart
-                    </span>
-                    <div
-                      class="badge"
-                      title="Repo/Name"
-                    >
-                      some-repository/some-name
-                    </div>
                     <span>
                       Version
                     </span>
@@ -22095,7 +21987,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     <div
                       class="list"
                       role="list"
-                      style="position: relative; max-height: 100%; flex-grow: 1; overflow-y: auto; width: 100%; height: 100%;"
+                      style="position: relative; flex-grow: 1; max-height: 100%; overflow-y: auto; width: 100%; height: 100%;"
                     >
                       <div
                         data-react-window-index="0"
@@ -22412,15 +22304,6 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   <div
                     class="install-controls flex gap-2 items-center"
                   >
-                    <span>
-                      Chart
-                    </span>
-                    <div
-                      class="badge"
-                      title="Repo/Name"
-                    >
-                      some-repository/some-name
-                    </div>
                     <span>
                       Version
                     </span>
@@ -23284,7 +23167,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     <div
                       class="list"
                       role="list"
-                      style="position: relative; max-height: 100%; flex-grow: 1; overflow-y: auto; width: 100%; height: 100%;"
+                      style="position: relative; flex-grow: 1; max-height: 100%; overflow-y: auto; width: 100%; height: 100%;"
                     >
                       <div
                         data-react-window-index="0"
