@@ -42,6 +42,14 @@ interface NpmRegistryPackageDescriptor {
 
 export type AttemptInstallByInfo = (info: ExtensionInfo) => Promise<void>;
 
+const isValidUrl = (value: string) => {
+  try {
+    return Boolean(new URL(value));
+  } catch {
+    return false;
+  }
+};
+
 const attemptInstallByInfoInjectable = getInjectable({
   id: "attempt-install-by-info",
   instantiate: (di): AttemptInstallByInfo => {
@@ -57,6 +65,17 @@ const attemptInstallByInfoInjectable = getInjectable({
 
     return async (info) => {
       const { name, version: versionOrTagName, requireConfirmation = false } = info;
+
+      // Checked before the pre-install phase starts: a registry that is not a URL throws below, where nothing ends
+      // the phase, and the install form would stay disabled.
+      if (!isValidUrl(await getBaseRegistryUrl())) {
+        showErrorNotification(
+          'The URL of the custom extension registry is not valid. Set it in the App preferences, under "Extension Install Registry".',
+        );
+
+        return;
+      }
+
       const disposer = extensionInstallationStateStore.startPreInstall();
       const baseUrl = await getBaseRegistryUrl();
       const registryUrl = new URL(baseUrl);
