@@ -34,11 +34,11 @@ function NonInjectedGeneralKubernetesClusterSettings({
   return (
     <section>
       <section>
-        <div className="flex">
-          <div className="flex-grow pr-4">
+        <div className="flex gap-4">
+          <div className="flex-grow">
             <ClusterNameSetting cluster={cluster} entity={entity as KubernetesCluster} />
           </div>
-          <div className="w-16 shrink-0 mr-8">
+          <div className="w-16 shrink-0">
             <ClusterIconLabelSetting cluster={cluster} entity={entity as KubernetesCluster} />
           </div>
           <div>
@@ -46,7 +46,7 @@ function NonInjectedGeneralKubernetesClusterSettings({
           </div>
         </div>
       </section>
-      <section>
+      <section className="mt-4">
         <ClusterIconColorSetting cluster={cluster} entity={entity as KubernetesCluster} />
       </section>
       <section className="small">

@@ -52,6 +52,7 @@ export const ClusterIconLabelSetting = observer(({ cluster, entity }: ClusterIco
       <Input
         theme="round-black"
         value={shortName}
+        size={maxIconShortNameLength}
         placeholder={computeDefaultShortName(entity.getName()).toUpperCase()}
         onChange={(value) => setShortName(limitGraphemeLengthOf(value, maxIconShortNameLength))}
         onBlur={saveShortName}
