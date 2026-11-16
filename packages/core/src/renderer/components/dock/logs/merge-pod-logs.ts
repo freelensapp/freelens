@@ -77,6 +77,17 @@ export function getLeadingTimestamp(line: string): string | undefined {
 }
 
 /**
+ * Splits the logs the API returned into lines. Only the line break that ends
+ * the logs is removed, so the last line keeps the spaces it ends with and is
+ * the same line when the next request returns it again. "\r\n" is one line
+ * break, as the logs of Windows containers end their lines; a "\r" alone, as
+ * a progress bar writes it, starts a line of its own without a timestamp.
+ */
+export function splitLogLines(logs: string): string[] {
+  return logs.replace(/\r?\n$/, "").split(/\r?\n|\r/);
+}
+
+/**
  * Orders two timestamps of log lines. The milliseconds decide; below them the
  * text does, which is exact for the fixed-width form the Kubernetes API emits.
  */

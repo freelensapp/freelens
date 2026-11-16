@@ -12,6 +12,7 @@ import {
   mergeIntoLogs,
   mergePodLogs,
   podLogColors,
+  splitLogLines,
   stripAnsiColors,
 } from "../merge-pod-logs";
 
@@ -179,6 +180,19 @@ describe("getLeadingTimestamp", () => {
     "2024-01-01 is only a date",
   ])("finds none in %j, which only starts with digits", (line) => {
     expect(getLeadingTimestamp(line)).toBeUndefined();
+  });
+});
+
+describe("splitLogLines", () => {
+  it("removes only the line break that ends the logs", () => {
+    expect(splitLogLines("a\nb \n")).toEqual(["a", "b "]);
+    expect(splitLogLines("a\nb")).toEqual(["a", "b"]);
+    expect(splitLogLines("")).toEqual([""]);
+  });
+
+  it("takes \\r\\n as one line break and a \\r alone as the start of a line", () => {
+    expect(splitLogLines("a\r\nb\r\n")).toEqual(["a", "b"]);
+    expect(splitLogLines("a\rb\n")).toEqual(["a", "b"]);
   });
 });
 
