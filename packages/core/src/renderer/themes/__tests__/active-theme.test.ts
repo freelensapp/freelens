@@ -140,7 +140,7 @@ describe("active theme with an accent color", () => {
     });
 
     it("applies the dark accent in dark mode", () => {
-      di.override(systemThemeConfigurationInjectable, () => computed(() => "dark" as const));
+      di.override(systemThemeConfigurationInjectable, () => observable.box<"dark" | "light">("dark"));
 
       const theme = di.inject(activeThemeInjectable).get();
 
@@ -149,7 +149,7 @@ describe("active theme with an accent color", () => {
     });
 
     it("applies the light accent in light mode", () => {
-      di.override(systemThemeConfigurationInjectable, () => computed(() => "light" as const));
+      di.override(systemThemeConfigurationInjectable, () => observable.box<"dark" | "light">("light"));
 
       const theme = di.inject(activeThemeInjectable).get();
 
@@ -192,7 +192,7 @@ spec:
 
   beforeEach(() => {
     di = getDiForUnitTesting();
-    di.override(systemThemeConfigurationInjectable, () => computed(() => "light" as const));
+    di.override(systemThemeConfigurationInjectable, () => observable.box<"dark" | "light">("light"));
   });
 
   it("is the built-in theme in the variant of the operating system by default", () => {
