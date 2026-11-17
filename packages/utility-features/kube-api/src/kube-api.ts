@@ -32,7 +32,8 @@ import type {
   ScaleCreateOptions,
 } from "@freelensapp/kube-object";
 import type { LogFunction } from "@freelensapp/logger";
-import type { Disposer, PartialDeep } from "@freelensapp/utilities";
+import type { PartialDeep } from "@freelensapp/type-fest";
+import type { Disposer } from "@freelensapp/utilities";
 
 import type { Patch } from "rfc6902";
 

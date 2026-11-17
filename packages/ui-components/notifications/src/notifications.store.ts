@@ -9,7 +9,7 @@ import { uniqueId } from "es-toolkit/compat";
 import { action, observable } from "mobx";
 
 import type { JsonApiErrorParsed } from "@freelensapp/json-api";
-import type { SetRequired } from "@freelensapp/utilities";
+import type { SetRequired } from "@freelensapp/type-fest";
 
 import type React from "react";
 

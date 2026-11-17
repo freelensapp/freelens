@@ -13,7 +13,7 @@ import { observer } from "mobx-react";
 import activeThemeInjectable from "../../themes/active.injectable";
 import { PieChart } from "../chart";
 
-import type { PascalCase } from "@freelensapp/utilities";
+import type { PascalCase } from "@freelensapp/type-fest";
 
 import type { IComputedValue } from "mobx";
 

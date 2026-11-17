@@ -86,6 +86,7 @@
     "@freelensapp/spinner": "workspace:^",
     "@freelensapp/startable-stoppable": "workspace:^",
     "@freelensapp/tooltip": "workspace:^",
+    "@freelensapp/type-fest": "workspace:^",
     "@freelensapp/utilities": "workspace:^",
     "@hapi/call": "catalog:",
     "@hapi/subtext": "catalog:",

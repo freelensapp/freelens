@@ -34,8 +34,8 @@
 // leaves out included, together with their `node:` imports.
 //
 // It also fails the build on an import of `type-fest`. The helper types the
-// declaration names come from the copy of type-fest in `@freelensapp/utilities`
-// and are inlined like the rest of it, because a dependency would impose the
+// declaration names come from the copy of type-fest in `@freelensapp/type-fest`,
+// a private package inlined like the others, because a dependency would impose the
 // compiler options and floors of each type-fest major on every extension. An
 // import of the package from a workspace source would bring it back.
 //
@@ -248,8 +248,8 @@ const declaredExternals = {
       this.error(
         "the API declaration must not import type-fest, but it references:\n" +
           vendored.map((specifier) => `  ${specifier}`).join("\n") +
-          "\nImport the type from @freelensapp/utilities, which carries a copy of the type-fest types the API" +
-          " uses; a type it lacks is added to that copy (see src/type-fest/README.md of that package).",
+          "\nImport the type from @freelensapp/type-fest, which carries a copy of the type-fest types the API" +
+          " uses; a type it lacks is added to that copy (see the README.md of that package).",
       );
     }
 

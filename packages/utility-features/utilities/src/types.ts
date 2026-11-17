@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { SetRequired } from "./type-fest";
+import type { SetRequired } from "@freelensapp/type-fest";
 
 export type RemoveUndefinedFromValues<K> = {
   [P in keyof K]: NonNullable<K[P]>;

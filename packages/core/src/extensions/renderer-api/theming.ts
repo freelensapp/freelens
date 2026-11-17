@@ -7,7 +7,7 @@
 import activeThemeInjectable from "../../renderer/themes/active.injectable";
 import { asLazyInjectedForExtensionApi } from "../extension-api-di";
 
-import type { ReadonlyDeep } from "@freelensapp/utilities";
+import type { ReadonlyDeep } from "@freelensapp/type-fest";
 
 import type { IComputedValue } from "mobx";
 

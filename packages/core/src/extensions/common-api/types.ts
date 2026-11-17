@@ -5,7 +5,7 @@
  */
 
 // The helper types that the signatures of the API are written in, from the
-// copy of type-fest in @freelensapp/utilities, so that an extension can name
+// copy of type-fest in @freelensapp/type-fest, so that an extension can name
 // them: `Common.Types.PartialDeep<Pod>` for a patch, for one.
 export type {
   JsonValue,
@@ -15,7 +15,7 @@ export type {
   RequireExactlyOne,
   SetRequired,
   ValueOf,
-} from "@freelensapp/utilities";
+} from "@freelensapp/type-fest";
 
 export type {
   ProtocolHandlerRegistration,

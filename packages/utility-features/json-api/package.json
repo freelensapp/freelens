@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@freelensapp/event-emitter": "workspace:^",
+    "@freelensapp/type-fest": "workspace:^",
     "@freelensapp/utilities": "workspace:^",
     "es-toolkit": "catalog:"
   },

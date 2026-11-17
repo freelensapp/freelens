@@ -13,7 +13,6 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import asyncFn from "@async-fn/vitest";
 import { flushPromises } from "@freelensapp/test-utils";
-import { PartialDeep } from "@freelensapp/utilities";
 import { anyObject } from "vitest-mock-extended";
 import writeJsonFileInjectable from "../../common/fs/write-json-file.injectable";
 import broadcastMessageInjectable from "../../common/ipc/broadcast-message.injectable";
@@ -25,6 +24,8 @@ import createFreelensK8sProxyInjectable from "../../main/freelens-k8s-proxy/crea
 import k8sRequestInjectable from "../../main/k8s-request.injectable";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import addClusterInjectable from "./storage/common/add.injectable";
+
+import type { PartialDeep } from "@freelensapp/type-fest";
 
 import type { AsyncFnMock } from "@async-fn/vitest";
 import type {

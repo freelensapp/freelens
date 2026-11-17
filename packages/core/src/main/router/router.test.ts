@@ -18,7 +18,7 @@ import parseRequestInjectable from "./parse-request.injectable";
 import routerInjectable, { routeInjectionToken } from "./router.injectable";
 import { contentTypes } from "./router-content-types";
 
-import type { SetRequired } from "@freelensapp/utilities";
+import type { SetRequired } from "@freelensapp/type-fest";
 
 import type { AsyncFnMock } from "@async-fn/vitest";
 

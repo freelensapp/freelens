@@ -11,7 +11,8 @@ import { getErrorMessage } from "../../../../../common/utils/get-error-message";
 import apiKubeGetInjectable from "../../../../k8s/api-kube-get.injectable";
 
 import type { KubeJsonApiData, KubeObjectMetadata, KubeObjectScope } from "@freelensapp/kube-object";
-import type { AsyncResult, Writable } from "@freelensapp/utilities";
+import type { Writable } from "@freelensapp/type-fest";
+import type { AsyncResult } from "@freelensapp/utilities";
 
 export type RequestKubeResource = (selfLink: string) => AsyncResult<KubeObject | undefined>;
 

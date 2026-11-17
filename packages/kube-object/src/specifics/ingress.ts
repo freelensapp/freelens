@@ -7,7 +7,7 @@
 import { hasTypedProperty, isString, iter } from "@freelensapp/utilities";
 import { KubeObject } from "../kube-object";
 
-import type { RequireExactlyOne } from "@freelensapp/utilities";
+import type { RequireExactlyOne } from "@freelensapp/type-fest";
 
 import type { NamespaceScopedMetadata, TypedLocalObjectReference } from "../api-types";
 

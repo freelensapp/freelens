@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "@astronautlabs/jsonpath": "catalog:",
+    "@freelensapp/type-fest": "workspace:^",
     "@noble/hashes": "catalog:",
     "es-toolkit": "catalog:",
     "mobx": "catalog:",

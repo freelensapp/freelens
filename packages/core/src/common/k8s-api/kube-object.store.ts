@@ -23,7 +23,8 @@ import type {
 } from "@freelensapp/kube-api";
 import type { KubeJsonApiDataFor, KubeObject } from "@freelensapp/kube-object";
 import type { Logger } from "@freelensapp/logger";
-import type { Disposer, PartialDeep } from "@freelensapp/utilities";
+import type { PartialDeep } from "@freelensapp/type-fest";
+import type { Disposer } from "@freelensapp/utilities";
 
 import type { Patch } from "rfc6902";
 

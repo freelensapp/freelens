@@ -10,7 +10,7 @@ import Joi from "joi";
 import * as yaml from "js-yaml";
 import { KubeConfigData } from "./kube-config";
 
-import type { PartialDeep } from "@freelensapp/utilities";
+import type { PartialDeep } from "@freelensapp/type-fest";
 
 import type { Cluster, Context, User } from "@kubernetes/client-node";
 import type { DumpOptions } from "js-yaml";

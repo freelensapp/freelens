@@ -8,7 +8,7 @@ import { getInjectionToken } from "@ogre-tools/injectable";
 
 import type { BaseIconProps } from "@freelensapp/icon";
 import type { KubeObject } from "@freelensapp/kube-object";
-import type { RequireAtLeastOne } from "@freelensapp/utilities";
+import type { RequireAtLeastOne } from "@freelensapp/type-fest";
 
 import type { IObservableArray } from "mobx";
 

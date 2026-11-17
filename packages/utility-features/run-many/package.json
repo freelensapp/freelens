@@ -24,6 +24,7 @@
     "test:unit": "vitest run -c ../../../vitest.config.ts --project @freelensapp/run-many"
   },
   "dependencies": {
+    "@freelensapp/type-fest": "workspace:^",
     "@freelensapp/utilities": "workspace:^",
     "uuid": "catalog:"
   },

@@ -338,10 +338,6 @@ are the `format` vocabulary for the CRD schema and are frozen with it under
 gone from all three; `Main.Util` adds `fetch` ([C12](#c12-http)).
 `Common.Util.getAppVersion` is the one member the host defines itself.
 
-The rule is about values: `Util` is an object, so a type the package exports is
-not reachable through it. The helper types the API exports are in
-`Common.Types` ([below](#commontypes-names-the-helper-types-of-the-signatures)).
-
 **Whoever adds an export to the package** is therefore adding API, and checks
 one thing: does it need Node or Electron to run in the renderer — a
 `node:`/Electron import, a Node global such as `Buffer` or `process`, or a Node
@@ -378,7 +374,7 @@ const patch: Common.Types.PartialDeep<Renderer.K8sApi.Pod> = {
 ```
 
 **Guarantee.** Each is the type of the same name of type-fest 5.10.0, from a
-copy of its sources that the host carries in `@freelensapp/utilities`, so it
+copy of its sources that the host carries in a private package, so it
 accepts and rejects the same values, with `exactOptionalPropertyTypes` on or
 off. The declaration imports nothing from `type-fest`
 ([C11](#c11-third-party-bundled-libraries)), and an extension needs no
@@ -930,8 +926,8 @@ members `Common.Util` leaves out
 extension whose main code needs it declares it itself.
 
 **Nothing of `type-fest` is imported.** The helper types the declaration names
-come from a copy in `@freelensapp/utilities` and are inlined with the rest of
-it ([C5](#commontypes-names-the-helper-types-of-the-signatures)), because a
+come from a copy in a private package of the host, inlined like the other
+private packages ([C5](#commontypes-names-the-helper-types-of-the-signatures)), because a
 dependency would impose the floors of each type-fest major, such as the
 TypeScript version and `exactOptionalPropertyTypes`, on every extension. The
 same config enforces it: `build:dist` fails on an import of `type-fest`, which

@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { JsonValue } from "@freelensapp/utilities";
+import type { JsonValue } from "@freelensapp/type-fest";
 
 import type { ExternalDocumentation } from "./external-documentation";
 

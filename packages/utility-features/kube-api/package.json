@@ -26,6 +26,7 @@
   "dependencies": {
     "@freelensapp/json-api": "workspace:^",
     "@freelensapp/kube-object": "workspace:^",
+    "@freelensapp/type-fest": "workspace:^",
     "@freelensapp/utilities": "workspace:^",
     "@ogre-tools/fp": "catalog:",
     "@ogre-tools/injectable": "catalog:",
