@@ -277,7 +277,7 @@ describe("technical unit tests for node shell sessions", () => {
     expect(watchRequests.map((request) => request.signal.aborted)).toEqual([true]);
   });
 
-  it("falls back to sh in the node shell pod when the host has no bash", async () => {
+  it("runs the node shell through sh so that it falls back when the host has no bash", async () => {
     await open();
 
     const args = createNamespacedPod.mock.calls[0][0].body.spec?.containers[0].args;
