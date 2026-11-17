@@ -85,7 +85,7 @@ describe("technical unit tests for node shell sessions", () => {
   let di: DiContainer;
   let spawnPtyMock: MockedFunction<SpawnPty>;
   let closeDuring: Stage | undefined;
-  let websocket: EventEmitter & { readyState: number };
+  let websocket: EventEmitter & { readyState: number; send: MockedFunction<(data: string) => void> };
   /**
    * The pods that exist in the fake cluster.
    */
