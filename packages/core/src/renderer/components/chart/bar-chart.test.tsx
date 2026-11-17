@@ -310,6 +310,51 @@ describe("BarChart", () => {
       ]);
     });
 
+    it("holds the last sample over the step before it when it is at the end of the axis", () => {
+      const data = [
+        { x: t0, y: "1" },
+        { x: t0 + 10 * step, y: "2" },
+      ];
+
+      expect(insertGapsInTimeSeries(data, step, true, t0 + 10 * step)).toEqual([
+        { x: t0, y: "1" },
+        { x: t0 + step, y: "1" },
+        { x: t0 + step, y: null },
+        { x: t0 + 9 * step, y: "2" },
+        { x: t0 + 10 * step, y: "2" },
+      ]);
+    });
+
+    it("holds the last sample forward when the axis has room for it", () => {
+      const data = [
+        { x: t0, y: "1" },
+        { x: t0 + 10 * step, y: "2" },
+      ];
+
+      expect(insertGapsInTimeSeries(data, step, true, t0 + 11 * step)).toEqual([
+        { x: t0, y: "1" },
+        { x: t0 + step, y: "1" },
+        { x: t0 + step, y: null },
+        { x: t0 + 10 * step, y: "2" },
+        { x: t0 + 11 * step, y: "2" },
+      ]);
+    });
+
+    it("does not hold the last sample back over the previous sample", () => {
+      const data = [
+        { x: t0, y: "1" },
+        { x: t0 + 1.6 * step, y: "2" },
+      ];
+
+      expect(insertGapsInTimeSeries(data, step, true, t0 + 1.6 * step)).toEqual([
+        { x: t0, y: "1" },
+        { x: t0 + step, y: "1" },
+        { x: t0 + step, y: null },
+        { x: t0 + step, y: "2" },
+        { x: t0 + 1.6 * step, y: "2" },
+      ]);
+    });
+
     it("keeps contiguous data unchanged", () => {
       const data = [
         { x: t0, y: "1" },

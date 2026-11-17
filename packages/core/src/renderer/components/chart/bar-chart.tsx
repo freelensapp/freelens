@@ -174,12 +174,17 @@ const GAP_THRESHOLD_IN_STEPS = 1.5;
  * With `holdValue` (stepped lines) the sample is first held for one step, as
  * stepped lines do between contiguous samples; otherwise a sample isolated by
  * gaps on both sides would not be drawn at all. For the same reason the last
- * sample is held for one step when it follows a gap.
+ * sample is held for one step when it follows a gap. When holding it forward
+ * would end past `maxX`, the end of the axis, the step before it is drawn
+ * instead: a sample at the very end of the range (the first one after the
+ * cluster comes back, or the last one of a custom range) would otherwise fall
+ * entirely outside the chart.
  */
 export const insertGapsInTimeSeries = <T,>(
   data: T[],
   stepMs: number | undefined,
   holdValue = false,
+  maxX?: number,
 ): Array<T | TimePoint> => {
   if (!stepMs || data.length < 2) {
     return data;
@@ -210,7 +215,14 @@ export const insertGapsInTimeSeries = <T,>(
     isTimePoint(beforeLast) &&
     last.x - beforeLast.x > stepMs * GAP_THRESHOLD_IN_STEPS
   ) {
-    result.push({ x: last.x + stepMs, y: last.y });
+    if (maxX === undefined || last.x + stepMs <= maxX) {
+      result.push({ x: last.x + stepMs, y: last.y });
+    } else {
+      // Never reach back before the null point that ends the previous sample.
+      const holdStart = Math.max(last.x - stepMs, beforeLast.x + stepMs);
+
+      result.splice(result.length - 1, 0, { x: holdStart, y: last.y });
+    }
   }
 
   return result;
@@ -268,7 +280,12 @@ const NonInjectedBarChart = observer(
         fill: useSteppedStyle,
         backgroundColor: useSteppedStyle ? getBarColor({ dataset: item } as never) : undefined,
         ...item,
-        data: insertGapsInTimeSeries(item.data ?? [], sampleStepMs, useSteppedStyle),
+        data: insertGapsInTimeSeries(
+          item.data ?? [],
+          sampleStepMs,
+          useSteppedStyle,
+          maxTime ? maxTime * 1000 : undefined,
+        ),
       }));
 
     plugins ??= [
