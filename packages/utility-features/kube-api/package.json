@@ -26,6 +26,7 @@
   "dependencies": {
     "@freelensapp/json-api": "workspace:^",
     "@freelensapp/kube-object": "workspace:^",
+    "@freelensapp/type-fest": "workspace:^",
     "@freelensapp/utilities": "workspace:^",
     "@ogre-tools/fp": "catalog:",
     "@ogre-tools/injectable": "catalog:",
@@ -38,7 +39,6 @@
     "@freelensapp/test-utils": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
     "rfc6902": "catalog:",
-    "type-fest": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"
   },

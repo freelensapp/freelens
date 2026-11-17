@@ -7,7 +7,7 @@
 import { isDefined } from "@freelensapp/utilities";
 import { KubeObject } from "../kube-object";
 
-import type { RequireExactlyOne } from "type-fest";
+import type { RequireExactlyOne } from "@freelensapp/type-fest";
 
 import type {
   Affinity,

@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@freelensapp/event-emitter": "workspace:^",
+    "@freelensapp/type-fest": "workspace:^",
     "@freelensapp/utilities": "workspace:^",
     "es-toolkit": "catalog:"
   },
@@ -31,8 +32,7 @@
     "@freelensapp/logger": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
     "@types/node": "catalog:",
-    "rfc6902": "catalog:",
-    "type-fest": "catalog:"
+    "rfc6902": "catalog:"
   },
   "publishConfig": {
     "access": "public",

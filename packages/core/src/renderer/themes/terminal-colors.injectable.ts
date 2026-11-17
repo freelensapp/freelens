@@ -11,9 +11,10 @@ import resolveThemeInjectable from "../../features/theme/files/renderer/resolve-
 import terminalThemePreferenceInjectable from "../../features/user-preferences/common/terminal-theme.injectable";
 import activeThemeInjectable from "./active.injectable";
 
+import type { ReadonlyDeep } from "@freelensapp/type-fest";
+
 import type { Injectable } from "@ogre-tools/injectable";
 import type { IComputedValue } from "mobx";
-import type { ReadonlyDeep } from "type-fest";
 
 import type { LensTheme } from "./lens-theme";
 

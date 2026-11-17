@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "@astronautlabs/jsonpath": "catalog:",
+    "@freelensapp/type-fest": "workspace:^",
     "@noble/hashes": "catalog:",
     "es-toolkit": "catalog:",
     "mobx": "catalog:",
@@ -37,7 +38,6 @@
     "@types/node": "catalog:",
     "@types/react": "catalog:",
     "jsdom": "catalog:",
-    "type-fest": "catalog:",
     "vitest": "catalog:"
   },
   "publishConfig": {

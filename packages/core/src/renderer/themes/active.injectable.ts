@@ -13,9 +13,10 @@ import themePreferenceInjectable from "../../features/user-preferences/common/th
 import { getTextColorOnAccent } from "./accent-colors";
 import systemThemeConfigurationInjectable from "./system-theme.injectable";
 
+import type { ReadonlyDeep } from "@freelensapp/type-fest";
+
 import type { Injectable } from "@ogre-tools/injectable";
 import type { IComputedValue } from "mobx";
-import type { ReadonlyDeep } from "type-fest";
 
 import type { LensColorName, LensTheme, LensThemeType } from "./lens-theme";
 

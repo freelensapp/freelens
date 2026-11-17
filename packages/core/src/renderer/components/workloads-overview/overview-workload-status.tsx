@@ -13,8 +13,9 @@ import { observer } from "mobx-react";
 import activeThemeInjectable from "../../themes/active.injectable";
 import { PieChart } from "../chart";
 
+import type { PascalCase } from "@freelensapp/type-fest";
+
 import type { IComputedValue } from "mobx";
-import type { PascalCase } from "type-fest";
 
 import type { LensTheme } from "../../themes/lens-theme";
 import type { PieChartData } from "../chart";

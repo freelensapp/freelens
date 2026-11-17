@@ -19,7 +19,7 @@ import { logFailedLoad } from "./log-failed-load";
 import sessionCertificateVerifierInjectable from "./session-certificate-verifier.injectable";
 import setFreelensProxyTokenCookieInjectable from "./set-freelens-proxy-token-cookie.injectable";
 
-import type { RequireExactlyOne } from "type-fest";
+import type { RequireExactlyOne } from "@freelensapp/type-fest";
 
 import type { ElectronWindow } from "./create-lens-window.injectable";
 

@@ -12,9 +12,9 @@ import loadProxyKubeconfigInjectable from "../../../../main/cluster/load-proxy-k
 import getClusterByIdInjectable from "../../storage/common/get-by-id.injectable";
 
 import type { KubeJsonApiData } from "@freelensapp/kube-object";
+import type { PartialDeep } from "@freelensapp/type-fest";
 
 import type { Patch as JsonPatch } from "rfc6902";
-import type { PartialDeep } from "type-fest";
 
 import type { ExecuteOnClusterRequest, ExecuteOnClusterResponse } from "../common/types";
 

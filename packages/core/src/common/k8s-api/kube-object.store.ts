@@ -23,10 +23,10 @@ import type {
 } from "@freelensapp/kube-api";
 import type { KubeJsonApiDataFor, KubeObject } from "@freelensapp/kube-object";
 import type { Logger } from "@freelensapp/logger";
+import type { PartialDeep } from "@freelensapp/type-fest";
 import type { Disposer } from "@freelensapp/utilities";
 
 import type { Patch } from "rfc6902";
-import type { PartialDeep } from "type-fest";
 
 import type { ClusterContext } from "../../renderer/cluster-frame-context/cluster-frame-context";
 import type { WatchReconnect } from "./watch-reconnect";

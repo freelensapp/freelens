@@ -60,6 +60,14 @@ export type CommonStatusBarRegistration = Common.Types.StatusBarRegistration;
 export type CommonPageRegistration = Common.Types.PageRegistration;
 export type CommonAppPreferenceRegistration = Common.Types.AppPreferenceRegistration;
 export type CommonCustomResourceRegistration = Common.Types.CustomResourceRegistration;
+// The helper types the signatures of the API are written in.
+export type CommonJsonValue = Common.Types.JsonValue;
+export type CommonPartialDeep = Common.Types.PartialDeep<Renderer.K8sApi.Pod, { recurseIntoArrays: true }>;
+export type CommonReadonlyDeep = Common.Types.ReadonlyDeep<Renderer.K8sApi.Pod>;
+export type CommonRequireAtLeastOne = Common.Types.RequireAtLeastOne<{ first?: string; second?: number }>;
+export type CommonRequireExactlyOne = Common.Types.RequireExactlyOne<{ first: string; second: number }>;
+export type CommonSetRequired = Common.Types.SetRequired<{ optional?: string }, "optional">;
+export type CommonValueOf = Common.Types.ValueOf<{ first: string; second: number }>;
 
 // --- Main --------------------------------------------------------------------
 

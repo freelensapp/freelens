@@ -161,10 +161,20 @@ in your main entry point only what main publishes — the rest is `undefined`
 there, and marking it external gets you no error, only a later surprise.
 
 Everything else may be bundled freely: `chart.js`, `react-select`, `conf`,
-`immer`, `rfc6902`, `type-fest`, and a dependency-injection library of your own
+`immer`, `rfc6902`, and a dependency-injection library of your own
 (see [Dependency injection](#dependency-injection-bundle-your-own)). A bundled
 `react-select` still gets the host's React, because that copy's own
 `import "react"` is rewritten too.
+
+`@freelensapp/extensions` does not depend on `type-fest`. The helper types its
+signatures use are exported as `Common.Types.PartialDeep`, `ReadonlyDeep`,
+`RequireAtLeastOne`, `RequireExactlyOne`, `SetRequired`, `JsonValue` and
+`ValueOf` (see
+[C5](./api.md#commontypes-names-the-helper-types-of-the-signatures)); type a
+patch as `Common.Types.PartialDeep<Renderer.K8sApi.Pod>`. An extension that
+imports `type-fest` itself, for another type or because it relied on the
+package arriving with `@freelensapp/extensions`, declares it in its own
+`devDependencies`.
 
 Two ids that **leave** the v1 externals map, and both fail at runtime rather
 than at build time if you keep them:
@@ -822,7 +832,8 @@ Each entry is marked _value_, _type_, _class_ (a value and a type) or _member_.
   `WorkspaceConfig`, `WorkspacePattern`, `YarnConfiguration` (_type_) —
   `Common.PackageJson` itself stays, but no longer carries type-fest's
   namespace of the same name. Import `PackageJson` from `type-fest` in your
-  own `devDependencies` if you need its members.
+  own `devDependencies` if you need its members. The other type-fest helpers
+  the API uses are in `Common.Types`.
 - `Common.App.slackUrl` (_value_) — it was always `""`.
 - `Common.InstalledExtension#isBundled`, `Common.LensExtension#isBundled`
   (_member_) — no replacement.

@@ -37,8 +37,7 @@
     "es-toolkit": "catalog:extensions",
     "immer": "catalog:extensions",
     "react-select": "catalog:extensions",
-    "rfc6902": "catalog:extensions",
-    "type-fest": "catalog:extensions"
+    "rfc6902": "catalog:extensions"
   },
   "devDependencies": {
     "@freelensapp/core": "workspace:^",

@@ -32,10 +32,10 @@ import type {
   ScaleCreateOptions,
 } from "@freelensapp/kube-object";
 import type { LogFunction } from "@freelensapp/logger";
+import type { PartialDeep } from "@freelensapp/type-fest";
 import type { Disposer } from "@freelensapp/utilities";
 
 import type { Patch } from "rfc6902";
-import type { PartialDeep } from "type-fest";
 
 import type { KubeJsonApi } from "./kube-json-api";
 import type { IKubeWatchEvent } from "./kube-watch-event";

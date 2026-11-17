@@ -31,6 +31,7 @@
     "@freelensapp/json-api": "workspace:^",
     "@freelensapp/logger": "workspace:^",
     "@freelensapp/react-application": "workspace:^",
+    "@freelensapp/type-fest": "workspace:^",
     "@freelensapp/utilities": "workspace:^",
     "@ogre-tools/fp": "catalog:",
     "@ogre-tools/injectable": "catalog:",
@@ -44,7 +45,6 @@
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
     "@types/react": "catalog:",
-    "type-fest": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"
   },

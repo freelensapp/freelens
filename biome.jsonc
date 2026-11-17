@@ -368,6 +368,18 @@
           }
         }
       }
+    },
+    {
+      // The copy of type-fest keeps the namespace of `PackageJson`, which is
+      // part of the shape of `Common.PackageJson` in the extension API.
+      "includes": ["**/packages/utility-features/type-fest/source/**"],
+      "linter": {
+        "rules": {
+          "style": {
+            "noNamespace": "off"
+          }
+        }
+      }
     }
   ],
   "vcs": {

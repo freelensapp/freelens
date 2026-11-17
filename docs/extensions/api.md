@@ -349,6 +349,46 @@ add the member to the omit list and a line to the migration guide.
 at runtime in a renderer without Node — a `ReferenceError` for a global such as
 `Buffer` — and not at compile time.
 
+### `Common.Types` names the helper types of the signatures
+
+Besides the registration shapes, `Common.Types` exports the helper types the
+signatures of the API are written in, so that an extension can type what it
+passes to them:
+
+| Type                | Where the API uses it                                                                  |
+| ------------------- | -------------------------------------------------------------------------------------- |
+| `PartialDeep`       | the data of `KubeApi.create`, `update` and `patch`, of `KubeObjectStore` and `JsonApi` |
+| `ReadonlyDeep`      | `Renderer.Theme.activeTheme`, `Common.Util.readonly`                                   |
+| `RequireAtLeastOne` | `KubeObjectHandlerRegistration`                                                        |
+| `RequireExactlyOne` | the pod volumes and the ingress backends of `K8sApi`                                   |
+| `SetRequired`       | the input validators of `Renderer.Component`                                           |
+| `JsonValue`         | `JSONSchemaProps.example`                                                              |
+| `ValueOf`           | the query parameters of `JsonApi`                                                      |
+
+```ts
+import type { Common, Renderer } from "@freelensapp/extensions";
+
+const patch: Common.Types.PartialDeep<Renderer.K8sApi.Pod> = {
+  metadata: { labels: { team: "storage" } },
+};
+```
+
+**Guarantee.** Each is the type of the same name of type-fest 5.10.0, from a
+copy of its sources that the host carries in a private package, so it
+accepts and rejects the same values, with `exactOptionalPropertyTypes` on or
+off. The declaration imports nothing from `type-fest`
+([C11](#c11-third-party-bundled-libraries)), and an extension needs no
+type-fest to compile against it. Moving the copy to a type-fest that requires
+more of an extension's compiler options waits for a major
+([C14](#c14-versioning-and-compatibility)). `Common.PackageJson` is the
+`PackageJson` of the same copy, as a type alias.
+
+**Failure mode.** A type-fest type that `Common.Types` does not export is not
+reachable through the API. An extension that needs one declares `type-fest` in
+its own `devDependencies`, at any version; the types of that copy are separate
+declarations, which match the ones of the API only as far as the two versions
+agree.
+
 ### `Catalog.getAllClusters()` and `getClusterById()` are observable
 
 `Main.Catalog` and `Renderer.Catalog` both have `getAllClusters()` and
@@ -829,14 +869,14 @@ It splits in two:
   `mobx`, `mobx-react`, `monaco-editor`, and the `@types/react` and
   `@types/react-dom` that type the first two.
 - **Free to bundle**: `chart.js`, `react-select`, `conf`, `es-toolkit`, `immer`,
-  `rfc6902`, `type-fest`. A bundled `react-select` still gets the host's React,
+  `rfc6902`. A bundled `react-select` still gets the host's React,
   because that copy's own `import "react"` is rewritten too. `es-toolkit` is
   there only for the `DebouncedFunc` type the declaration imports from
   `es-toolkit/compat`.
 
 **Surface.** The built declaration imports these external specifiers:
-`type-fest`, `mobx`, `mobx-react`, `react`, `react/jsx-runtime`, `react-dom`,
-`conf`, `rfc6902`, `immer`, `es-toolkit/compat`, `monaco-editor`, `chart.js`,
+`mobx`, `mobx-react`, `react`, `react/jsx-runtime`, `react-dom`, `conf`,
+`rfc6902`, `immer`, `es-toolkit/compat`, `monaco-editor`, `chart.js`,
 `react-select`.
 
 This is the complement of the namespace enumeration in
@@ -884,6 +924,16 @@ members `Common.Util` leaves out
 ([C5](#util-is-freelensapputilities-minus-the-node-bound-members)) with their
 `node:` imports. `@types/node` is therefore not a dependency of the package: an
 extension whose main code needs it declares it itself.
+
+**Nothing of `type-fest` is imported.** The helper types the declaration names
+come from a copy in a private package of the host, inlined like the other
+private packages ([C5](#commontypes-names-the-helper-types-of-the-signatures)), because a
+dependency would impose the floors of each type-fest major, such as the
+TypeScript version and `exactOptionalPropertyTypes`, on every extension. The
+same config enforces it: `build:dist` fails on an import of `type-fest`, which
+a workspace source importing the package would bring back. The doc comments of
+the inlined types still name `type-fest` in their examples; they are not
+imports.
 
 **How the package declares them.** The host-provided entries are in
 `peerDependencies`, each **optional** in `peerDependenciesMeta` alongside

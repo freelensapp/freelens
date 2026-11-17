@@ -24,6 +24,7 @@
     "test:unit": "vitest run -c ../../vitest.config.ts --project @freelensapp/kube-object"
   },
   "dependencies": {
+    "@freelensapp/type-fest": "workspace:^",
     "@freelensapp/utilities": "workspace:^",
     "auto-bind": "catalog:",
     "es-toolkit": "catalog:"
@@ -31,7 +32,6 @@
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
     "jsdom": "catalog:",
-    "type-fest": "catalog:",
     "vitest": "catalog:"
   },
   "publishConfig": {

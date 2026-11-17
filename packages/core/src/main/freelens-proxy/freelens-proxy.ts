@@ -16,9 +16,9 @@ import { stripToken, tokenFromHeaders } from "./freelens-proxy-token";
 import type http from "node:http";
 
 import type { Logger } from "@freelensapp/logger";
+import type { SetRequired } from "@freelensapp/type-fest";
 
 import type { ProxyServer, ServerOptions } from "http-proxy-3";
-import type { SetRequired } from "type-fest";
 
 import type { EmitAppEvent } from "../../common/app-event-bus/emit-event.injectable";
 import type { SelfSignedCert } from "../../common/certificate/certificate";
