@@ -392,7 +392,10 @@ the result the job ends with.
 
 `.github/scripts/test-report.mjs` turns the artifacts of a run into one
 Markdown table for all its jobs, with the tests that failed below it. It has
-no dependencies, so the jobs that run it need no `pnpm install`. It runs in:
+no dependencies, so the jobs that run it need no `pnpm install`. It reads both
+layouts of `download-artifact`, a directory per artifact and, when the pattern
+matches a single artifact, as for the integration tests of a pull request, that
+one extracted into the path itself. It runs in:
 
 - the `report` job of each of the two workflows, for the summary of the run;
 - `test-report.yaml`, a `workflow_run` workflow, for the comment on the pull
