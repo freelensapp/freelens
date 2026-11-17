@@ -15,7 +15,7 @@ import type { AsyncFnMock } from "@async-fn/vitest";
 import type { AuthorizationV1Api, V1SubjectRulesReviewStatus } from "@kubernetes/client-node";
 import type { DiContainer } from "@ogre-tools/injectable";
 
-import type { KubeApiResource } from "../rbac";
+import type { KubeApiResource } from "../../common/rbac";
 import type { RequestNamespaceListPermissions } from "./create-request-namespace-list-permissions.injectable";
 
 interface TestCase {
