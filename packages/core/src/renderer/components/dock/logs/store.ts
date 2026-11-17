@@ -8,6 +8,7 @@ import { getOrInsertWith, interval } from "@freelensapp/utilities";
 import { observable, when } from "mobx";
 import {
   compareLogTimestamps,
+  getFirstTimestamp,
   getLeadingTimestamp,
   keepNewestLogLines,
   linesBefore,
@@ -16,6 +17,7 @@ import {
   maxLogLines,
   mergeIntoLogs,
   mergePodLogs,
+  missingLinesMarker,
   podLogColors,
   splitLogLines,
 } from "./merge-pod-logs";
@@ -141,17 +143,7 @@ export class LogStore {
    * than the tab, or bring nothing at all.
    */
   private withOlderLines(oldLogs: string[], answer: string[], logsOfPods: PodLogs[]): string[] {
-    const starts = logsOfPods.flatMap(({ lines }) => {
-      for (const line of lines) {
-        const timestamp = getLeadingTimestamp(line);
-
-        if (timestamp) {
-          return [timestamp];
-        }
-      }
-
-      return [];
-    });
+    const starts = logsOfPods.map(({ lines }) => getFirstTimestamp(lines)).filter((start) => start !== undefined);
 
     if (starts.length === 0) {
       return oldLogs.length > 0 ? oldLogs : answer;
@@ -397,6 +389,7 @@ export class LogStore {
     for (const { pod, lines } of logsOfPods) {
       const podId = pod.getId();
       let cursor = cursors.get(podId);
+      const lastTimestamp = cursor?.timestamp;
       let isNew = !cursor;
       const newLines: string[] = [];
       // The lines as the API counts them for tailLines: the pieces of a line
@@ -426,6 +419,20 @@ export class LogStore {
         if (isNew && (line || newLines.length > 0)) {
           newLines.push(line);
         }
+      }
+
+      // An answer since the second of the last line brings that line again,
+      // unless the file that held it is gone: the kubelet rotated the log, or
+      // the container restarted, and the lines in between may be lost.
+      const firstTimestamp = getFirstTimestamp(lines);
+
+      if (
+        lastTimestamp !== undefined &&
+        firstTimestamp !== undefined &&
+        newLines.length > 0 &&
+        compareLogTimestamps(firstTimestamp, lastTimestamp) > 0
+      ) {
+        newLines.unshift(missingLinesMarker(firstTimestamp));
       }
 
       if (cursor) {

@@ -294,3 +294,26 @@ export function linesBefore(logs: readonly string[], timestamp: string, again: R
 
   return kept;
 }
+
+/**
+ * The timestamp of the first line of `lines` that has one.
+ */
+export function getFirstTimestamp(lines: readonly string[]): string | undefined {
+  for (const line of lines) {
+    const timestamp = getLeadingTimestamp(line);
+
+    if (timestamp !== undefined) {
+      return timestamp;
+    }
+  }
+
+  return undefined;
+}
+
+/**
+ * The line a tab shows where lines of a pod may be missing, with the timestamp
+ * of the first line after them, so that it stays right in front of that line.
+ */
+export function missingLinesMarker(timestamp: string): string {
+  return `${timestamp} ⋯ Some lines may be missing here: the log was rotated or the container restarted between two refreshes.`;
+}

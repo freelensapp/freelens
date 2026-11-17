@@ -7,7 +7,13 @@ import { Pod } from "@freelensapp/kube-object";
 import { computed, observable } from "mobx";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { defaultMaxCombinedLogsPods } from "../../../../../features/user-preferences/common/preferences-helpers";
-import { maxConcurrentLogRequests, maxLogLines, podLogColors, stripAnsiColors } from "../merge-pod-logs";
+import {
+  maxConcurrentLogRequests,
+  maxLogLines,
+  missingLinesMarker,
+  podLogColors,
+  stripAnsiColors,
+} from "../merge-pod-logs";
 import { LogStore } from "../store";
 import { dockerPod } from "./pod.mock";
 
@@ -142,7 +148,8 @@ describe("LogStore request lifecycle", () => {
     await vi.advanceTimersByTimeAsync(70_000);
     expect(callForLogs).toHaveBeenCalledTimes(2);
 
-    response.resolve(nextLog);
+    // As the API does, the answer since the second of the last line brings that line again.
+    response.resolve(`${initialLog}\n${nextLog}`);
     await vi.advanceTimersByTimeAsync(0);
     expect(store.getLogs(tabId)).toEqual([initialLog, nextLog]);
 
@@ -698,6 +705,69 @@ describe("LogStore combined logs", () => {
       expect(getLogs()).toEqual(
         [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((second) => taggedLineOf(second % 2 ? "pod-a" : "pod-b", second)),
       );
+    });
+  });
+
+  describe("when the log was rotated between two refreshes", () => {
+    const timestampOf = (second: number) => new Date(Date.UTC(2026, 0, 1, 0, 0, second)).toISOString();
+    const lineOf = (name: string, second: number) => `${timestampOf(second)} ${name} ${second}`;
+    const linesOf = (name: string, seconds: number[]) => seconds.map((second) => lineOf(name, second)).join("\n");
+    const tagged = (name: string, line: string) => line.replace(/^(\S+) /, `$1 [${name}] `);
+    let refreshes: Map<string, string[]>;
+
+    beforeEach(() => {
+      refreshes = new Map();
+      callForLogs.mockImplementation(async ({ name }, query) =>
+        query?.sinceTime ? (refreshes.get(name)?.shift() ?? "") : (logsOfPods.get(name) ?? ""),
+      );
+    });
+
+    it("marks where lines may be missing when the answer no longer brings the last line", async () => {
+      logsOfPods.set("pod-a", linesOf("pod-a", [1, 2, 3]));
+      refreshes.set("pod-a", [linesOf("pod-a", [6, 7])]);
+      pods.set([podA]);
+      await store.load(tabId, computedPods, computedTabData);
+      await vi.advanceTimersByTimeAsync(10_000);
+
+      expect(getLogs()).toEqual([
+        lineOf("pod-a", 1),
+        lineOf("pod-a", 2),
+        lineOf("pod-a", 3),
+        missingLinesMarker(timestampOf(6)),
+        lineOf("pod-a", 6),
+        lineOf("pod-a", 7),
+      ]);
+    });
+
+    it("adds no mark when the answer brings the last line again", async () => {
+      logsOfPods.set("pod-a", linesOf("pod-a", [1, 2, 3]));
+      refreshes.set("pod-a", [linesOf("pod-a", [3, 4, 5])]);
+      pods.set([podA]);
+      await store.load(tabId, computedPods, computedTabData);
+      await vi.advanceTimersByTimeAsync(10_000);
+
+      expect(getLogs()).toEqual([1, 2, 3, 4, 5].map((second) => lineOf("pod-a", second)));
+    });
+
+    it("marks only the pod of a combined tab whose lines may be missing, in front of its first new line", async () => {
+      logsOfPods.set("pod-a", linesOf("pod-a", [1, 3]));
+      logsOfPods.set("pod-b", linesOf("pod-b", [2, 4]));
+      refreshes.set("pod-a", [linesOf("pod-a", [7, 9])]);
+      refreshes.set("pod-b", [linesOf("pod-b", [4, 6, 8])]);
+      await store.load(tabId, computedPods, computedTabData);
+      await vi.advanceTimersByTimeAsync(10_000);
+
+      expect(getLogs()).toEqual([
+        tagged("pod-a", lineOf("pod-a", 1)),
+        tagged("pod-b", lineOf("pod-b", 2)),
+        tagged("pod-a", lineOf("pod-a", 3)),
+        tagged("pod-b", lineOf("pod-b", 4)),
+        tagged("pod-b", lineOf("pod-b", 6)),
+        tagged("pod-a", missingLinesMarker(timestampOf(7))),
+        tagged("pod-a", lineOf("pod-a", 7)),
+        tagged("pod-b", lineOf("pod-b", 8)),
+        tagged("pod-a", lineOf("pod-a", 9)),
+      ]);
     });
   });
 
