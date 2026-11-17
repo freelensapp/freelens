@@ -6130,7 +6130,10 @@ exports[`showing details for helm release > given application is started > when 
             <span
               class="value"
             >
-              0s ago (2025-01-01T00:00:00+0000)
+              0s
+               ago (
+              2025-01-01T00:00:00Z
+              )
             </span>
           </div>
           <div
@@ -7665,7 +7668,10 @@ exports[`showing details for helm release > given application is started > when 
             <span
               class="value"
             >
-              0s ago (2025-01-01T00:00:00+0000)
+              0s
+               ago (
+              2025-01-01T00:00:00Z
+              )
             </span>
           </div>
           <div
@@ -9200,7 +9206,10 @@ exports[`showing details for helm release > given application is started > when 
             <span
               class="value"
             >
-              0s ago (2025-01-01T00:00:00+0000)
+              0s
+               ago (
+              2025-01-01T00:00:00Z
+              )
             </span>
           </div>
           <div
@@ -10735,7 +10744,10 @@ exports[`showing details for helm release > given application is started > when 
             <span
               class="value"
             >
-              0s ago (2025-01-01T00:00:00+0000)
+              0s
+               ago (
+              2025-01-01T00:00:00Z
+              )
             </span>
           </div>
           <div
@@ -12270,7 +12282,10 @@ exports[`showing details for helm release > given application is started > when 
             <span
               class="value"
             >
-              0s ago (2025-01-01T00:00:00+0000)
+              0s
+               ago (
+              2025-01-01T00:00:00Z
+              )
             </span>
           </div>
           <div
@@ -13807,7 +13822,10 @@ exports[`showing details for helm release > given application is started > when 
             <span
               class="value"
             >
-              0s ago (2025-01-01T00:00:00+0000)
+              0s
+               ago (
+              2025-01-01T00:00:00Z
+              )
             </span>
           </div>
           <div
@@ -23017,7 +23035,10 @@ exports[`showing details for helm release > given application is started > when 
             <span
               class="value"
             >
-              0s ago (2025-01-01T00:00:00+0000)
+              0s
+               ago (
+              2025-01-01T00:00:00Z
+              )
             </span>
           </div>
           <div

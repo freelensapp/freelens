@@ -5,6 +5,7 @@
 
 import { promisify } from "node:util";
 import { gunzip } from "node:zlib";
+import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
 import k8sRequestInjectable from "../k8s-request.injectable";
 
@@ -30,9 +31,26 @@ export interface StoredHelmRelease {
   };
 }
 
-interface ReleaseList {
-  items: { data?: { release?: string } }[];
+interface StoredReleaseObject {
+  metadata?: { name?: string; namespace?: string };
+  data?: { release?: string };
 }
+
+interface StoredReleaseObjectList {
+  metadata?: { continue?: string };
+  items: StoredReleaseObject[];
+}
+
+// Objects per request: each request stays well under the timeout of k8sRequest
+// on a slow connection, also for charts that store several hundred KiB per
+// revision, where one request for all of them could time out.
+const pageSize = 50;
+
+// The order of `helm ls`, which compares the names as Go strings, byte by byte;
+// the same name in two namespaces is then ordered by namespace.
+const compare = (a: string, b: string) => (a < b ? -1 : a > b ? 1 : 0);
+const byName = (a: StoredHelmRelease, b: StoredHelmRelease) =>
+  compare(a.name, b.name) || compare(a.namespace, b.namespace);
 
 /**
  * Returns the latest revision of each Helm release, read from the release Secrets and ConfigMaps
@@ -58,6 +76,7 @@ const requestStoredHelmReleasesInjectable = getInjectable({
 
   instantiate: (di): RequestStoredHelmReleases => {
     const k8sRequest = di.inject(k8sRequestInjectable);
+    const logger = di.inject(loggerInjectionToken);
 
     return async (cluster, namespace, name) => {
       const labelSelector = ["owner=helm", "status!=superseded", ...(name ? [`name=${name}`] : [])].join(",");
@@ -65,29 +84,66 @@ const requestStoredHelmReleasesInjectable = getInjectable({
         const path = namespace
           ? `/api/v1/namespaces/${encodeURIComponent(namespace)}/${resource}`
           : `/api/v1/${resource}`;
+        const items: StoredReleaseObject[] = [];
+        let continueToken: string | undefined;
 
-        return (
-          (await k8sRequest(cluster, `${path}?labelSelector=${encodeURIComponent(labelSelector)}`)) as ReleaseList
-        ).items;
+        do {
+          const query = new URLSearchParams({ labelSelector, limit: String(pageSize) });
+
+          if (continueToken) {
+            query.set("continue", continueToken);
+          }
+
+          const page = (await k8sRequest(cluster, `${path}?${query}`)) as StoredReleaseObjectList;
+
+          items.push(...page.items);
+          continueToken = page.metadata?.continue || undefined;
+        } while (continueToken);
+
+        return items;
       };
       const [secrets, configMaps] = await Promise.all([
         request("secrets"),
-        // ponytail: the configmap driver is rare, so failing to read ConfigMaps (e.g. RBAC) must not hide the Secrets.
-        request("configmaps").catch(() => []),
+        // The configmap driver is rare, so a failure to read ConfigMaps, such
+        // as a 403, must not hide the releases stored in Secrets.
+        request("configmaps").catch((error) => {
+          logger.warn(`[HELM]: cannot read the releases stored in ConfigMaps of clusterId=${cluster.id}`, {
+            namespace,
+            error,
+          });
+
+          return [];
+        }),
       ]);
-      const encoded = [
+      const stored = [
         // A Secret base64-encodes its data once more.
-        ...secrets.map(({ data }) => data?.release && Buffer.from(data.release, "base64").toString()),
-        ...configMaps.map(({ data }) => data?.release),
+        ...secrets.map((object) => ({
+          object,
+          data: object.data?.release && Buffer.from(object.data.release, "base64").toString(),
+        })),
+        ...configMaps.map((object) => ({ object, data: object.data?.release })),
       ];
       const latest = new Map<string, StoredHelmRelease>();
 
-      for (const data of encoded) {
+      for (const { object, data } of stored) {
         if (!data) {
           continue;
         }
 
-        const release = await decodeRelease(data);
+        let release: StoredHelmRelease;
+
+        // As helm does, a release object that cannot be decoded is skipped
+        // rather than failing the whole list.
+        try {
+          release = await decodeRelease(data);
+        } catch (error) {
+          logger.warn(
+            `[HELM]: skipping release object ${object.metadata?.namespace}/${object.metadata?.name} that cannot be decoded`,
+            { error },
+          );
+          continue;
+        }
+
         const key = `${release.namespace}/${release.name}`;
 
         // A failed upgrade leaves the previous revision deployed: keep the latest one, as `helm ls` does.
@@ -96,7 +152,7 @@ const requestStoredHelmReleasesInjectable = getInjectable({
         }
       }
 
-      return [...latest.values()];
+      return [...latest.values()].sort(byName);
     };
   },
 });

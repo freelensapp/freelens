@@ -173,7 +173,7 @@ export class ReleaseDetailsModel {
   load = async () => {
     const { name, namespace } = this.dependencies.targetRelease;
 
-    // The values come from a separate helm process, so they load alongside the details instead of after them.
+    // The values come from a request of their own, so they load alongside the details instead of after them.
     const configurationLoaded = this.loadConfiguration();
 
     const result = await this.dependencies.requestDetailedHelmRelease({

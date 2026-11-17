@@ -59,7 +59,8 @@ const getClusterHelmReleaseValuesInjectable = getInjectable({
       const config = structuredClone(release.config ?? {});
       const values = all ? coalesceValues(config, release.chart.values ?? {}) : config;
 
-      return Object.keys(values).length ? yaml.dump(values) : "";
+      // As `helm get values -o yaml` prints them: sorted keys, no folded lines.
+      return Object.keys(values).length ? yaml.dump(values, { sortKeys: true, lineWidth: -1 }) : "";
     };
   },
 });

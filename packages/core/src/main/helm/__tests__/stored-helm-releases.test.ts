@@ -4,6 +4,7 @@
  */
 
 import { gzipSync } from "node:zlib";
+import { loggerInjectionToken } from "@freelensapp/logger";
 import { describe, expect, it, vi } from "vitest";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import k8sRequestInjectable from "../../k8s-request.injectable";
@@ -43,11 +44,11 @@ describe("reading helm releases from their secrets and configmaps", () => {
 
     expect(k8sRequest).toHaveBeenCalledWith(
       { id: "some-cluster" },
-      `/api/v1/namespaces/ns/secrets?labelSelector=${encodeURIComponent("owner=helm,status!=superseded,name=a")}`,
+      `/api/v1/namespaces/ns/secrets?${new URLSearchParams({ labelSelector: "owner=helm,status!=superseded,name=a", limit: "50" })}`,
     );
     expect(k8sRequest).toHaveBeenCalledWith(
       { id: "some-cluster" },
-      `/api/v1/namespaces/ns/configmaps?labelSelector=${encodeURIComponent("owner=helm,status!=superseded,name=a")}`,
+      `/api/v1/namespaces/ns/configmaps?${new URLSearchParams({ labelSelector: "owner=helm,status!=superseded,name=a", limit: "50" })}`,
     );
     expect(releases).toEqual([
       { name: "a", namespace: "ns", version: 4 },
@@ -56,8 +57,9 @@ describe("reading helm releases from their secrets and configmaps", () => {
     ]);
   });
 
-  it("still returns the secrets when the configmaps cannot be read", async () => {
+  it("still returns the secrets when the configmaps cannot be read, and logs it", async () => {
     const di = getDiForUnitTesting();
+    const warn = vi.spyOn(di.inject(loggerInjectionToken), "warn");
 
     di.override(k8sRequestInjectable, () => async (_cluster, path) => {
       if (path.startsWith("/api/v1/configmaps")) {
@@ -70,6 +72,79 @@ describe("reading helm releases from their secrets and configmaps", () => {
     expect(await di.inject(requestStoredHelmReleasesInjectable)({ id: "some-cluster" })).toEqual([
       { name: "a", namespace: "ns", version: 1 },
     ]);
+    expect(warn).toHaveBeenCalledWith(
+      expect.stringContaining("cannot read the releases stored in ConfigMaps"),
+      expect.objectContaining({ error: expect.any(Error) }),
+    );
+  });
+
+  it("reads the objects in pages, following the continue token", async () => {
+    const di = getDiForUnitTesting();
+    const k8sRequest = vi.fn(async (_cluster: unknown, path: string) => {
+      if (!path.includes("/secrets?")) {
+        return { items: [] };
+      }
+
+      return new URLSearchParams(path.split("?")[1]).get("continue") === "page-2"
+        ? { metadata: {}, items: [secret({ name: "b", namespace: "ns", version: 1 })] }
+        : { metadata: { continue: "page-2" }, items: [secret({ name: "a", namespace: "ns", version: 1 })] };
+    });
+
+    di.override(k8sRequestInjectable, () => k8sRequest);
+
+    expect(await di.inject(requestStoredHelmReleasesInjectable)({ id: "some-cluster" })).toEqual([
+      { name: "a", namespace: "ns", version: 1 },
+      { name: "b", namespace: "ns", version: 1 },
+    ]);
+    expect(k8sRequest.mock.calls.map(([, path]) => path).filter((path) => path.includes("/secrets?"))).toEqual([
+      `/api/v1/secrets?${new URLSearchParams({ labelSelector: "owner=helm,status!=superseded", limit: "50" })}`,
+      `/api/v1/secrets?${new URLSearchParams({ labelSelector: "owner=helm,status!=superseded", limit: "50", continue: "page-2" })}`,
+    ]);
+  });
+
+  it("skips a release object that cannot be decoded, with a warning, instead of failing the list", async () => {
+    const di = getDiForUnitTesting();
+    const warn = vi.spyOn(di.inject(loggerInjectionToken), "warn");
+
+    di.override(k8sRequestInjectable, () => async (_cluster, path) => ({
+      items: path.includes("/secrets?")
+        ? [
+            {
+              metadata: { name: "sh.helm.release.v1.broken.v1", namespace: "ns" },
+              data: { release: Buffer.from(Buffer.from("not json").toString("base64")).toString("base64") },
+            },
+            secret({ name: "a", namespace: "ns", version: 1 }),
+          ]
+        : [],
+    }));
+
+    expect(await di.inject(requestStoredHelmReleasesInjectable)({ id: "some-cluster" })).toEqual([
+      { name: "a", namespace: "ns", version: 1 },
+    ]);
+    expect(warn).toHaveBeenCalledWith(
+      expect.stringContaining("ns/sh.helm.release.v1.broken.v1 that cannot be decoded"),
+      expect.objectContaining({ error: expect.any(SyntaxError) }),
+    );
+  });
+
+  it("sorts the releases by name, then by namespace, as helm ls does", async () => {
+    const di = getDiForUnitTesting();
+
+    di.override(k8sRequestInjectable, () => async (_cluster, path) => ({
+      items: path.includes("/secrets?")
+        ? [
+            secret({ name: "web", namespace: "b", version: 1 }),
+            secret({ name: "api-2", namespace: "a", version: 1 }),
+            secret({ name: "web", namespace: "a", version: 1 }),
+          ]
+        : [configMap({ name: "api", namespace: "c", version: 1 })],
+    }));
+
+    expect(
+      (await di.inject(requestStoredHelmReleasesInjectable)({ id: "some-cluster" })).map(
+        ({ name, namespace }) => `${namespace}/${name}`,
+      ),
+    ).toEqual(["c/api", "a/api-2", "a/web", "b/web"]);
   });
 
   it("merges the chart defaults under the user values like helm get values --all", () => {

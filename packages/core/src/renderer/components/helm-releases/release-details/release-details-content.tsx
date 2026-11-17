@@ -17,6 +17,7 @@ import { Badge } from "../../badge";
 import { Checkbox } from "../../checkbox";
 import { DrawerItem, DrawerTitle } from "../../drawer";
 import { SubTitle } from "../../layout/sub-title";
+import { LocaleDate } from "../../locale-date";
 import { MonacoEditor } from "../../monaco-editor";
 import { Table, TableCell, TableHead, TableRow } from "../../table";
 import releaseDetailsModelInjectable from "./release-details-model/release-details-model.injectable";
@@ -60,7 +61,9 @@ const NonInjectedReleaseDetailsContent = observer(({ model }: Dependencies & Rel
         </div>
       </DrawerItem>
 
-      <DrawerItem name="Updated">{`${model.release.getUpdated()} ago (${model.release.updated})`}</DrawerItem>
+      <DrawerItem name="Updated">
+        {model.release.getUpdated()} ago (<LocaleDate date={model.release.updated} />)
+      </DrawerItem>
 
       <DrawerItem name="Namespace">{model.release.getNs()}</DrawerItem>
 
