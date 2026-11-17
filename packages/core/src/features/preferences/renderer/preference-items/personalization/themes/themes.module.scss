@@ -117,3 +117,15 @@
   white-space: pre-wrap;
   color: var(--colorError);
 }
+
+.importIcon {
+  margin-left: var(--margin);
+}
+
+.importError {
+  color: var(--colorError);
+}
+
+.importError pre {
+  margin: 2px 0 0;
+}

@@ -40,6 +40,7 @@ import { registerInjectables as registerFeaturesFeaturesPreferencesChildFeatures
 import { registerInjectables as registerFeaturesFeaturesPreferencesCommonInjectables } from "./features/preferences/common/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesSecretCertificatesMainInjectables } from "./features/secret-certificates/main/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesShellSyncMainInjectables } from "./features/shell-sync/main/register-injectables";
+import { registerInjectables as registerFeaturesFeaturesTerminalShellLookupMainInjectables } from "./features/terminal-shell-lookup/main/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesThemeFilesMainInjectables } from "./features/theme/files/main/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesThemeSystemTypeMainInjectables } from "./features/theme/system-type/main/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesUserPreferencesMainInjectables } from "./features/user-preferences/main/register-injectables";
@@ -89,6 +90,7 @@ export function registerInjectables(di: DiContainerForInjection): void {
   registerFeaturesFeaturesPreferencesCommonInjectables(di);
   registerFeaturesFeaturesSecretCertificatesMainInjectables(di);
   registerFeaturesFeaturesShellSyncMainInjectables(di);
+  registerFeaturesFeaturesTerminalShellLookupMainInjectables(di);
   registerFeaturesFeaturesThemeFilesMainInjectables(di);
   registerFeaturesFeaturesThemeSystemTypeMainInjectables(di);
   registerFeaturesFeaturesUserPreferencesMainInjectables(di);

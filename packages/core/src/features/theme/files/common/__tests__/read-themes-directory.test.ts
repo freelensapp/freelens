@@ -58,7 +58,7 @@ describe("the themes directory", () => {
     expect(invalidFiles).toEqual([{ fileName: "b.yaml", error: 'The name "same" is already taken by a.yaml' }]);
   });
 
-  it.each(["freelens", "ayu", "ayu-mirage", "dracula", "graphite", "catppuccin", "solarized"])(
+  it.each(["freelens", "ayu", "ayu-mirage", "dracula", "graphite", "catppuccin", "solarized", "high-contrast"])(
     "refuses the name of the built-in theme %s",
     (name) => {
       const { themes, invalidFiles } = readThemesDirectory([{ fileName: `${name}.yaml`, content: theme(name) }]);

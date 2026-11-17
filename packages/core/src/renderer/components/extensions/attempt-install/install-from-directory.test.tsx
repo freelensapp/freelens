@@ -53,7 +53,7 @@ const directoryInstall = (isEnabled: boolean): InstalledExtension => ({
   isEnabled,
 });
 
-describe("installFromDirectory of an extension which is already installed", () => {
+describe("installFromDirectory", () => {
   let installFromDirectory: InstallFromDirectory;
   let installed: IObservableValue<InstalledExtension | undefined>;
   let confirmMock: Mock;
@@ -113,6 +113,21 @@ describe("installFromDirectory of an extension which is already installed", () =
     );
 
     installFromDirectory = di.inject(installFromDirectoryInjectable);
+  });
+
+  describe("when it is not installed yet", () => {
+    // A directory is unverified by construction, and is shown as development
+    // rather than unverified. Registering one is the development loop, so it
+    // is enabled at once, unlike an unverified install of a tarball.
+    it("registers the directory as unverified and enables it", async () => {
+      await installFromDirectory(directory);
+
+      expect(activateInstalledBuildMock).toHaveBeenCalledWith(
+        expect.objectContaining({ path: directory, verified: false }),
+      );
+      expect(events).toEqual(["activate", "set-is-enabled true"]);
+      expect(showErrorNotificationMock).not.toHaveBeenCalled();
+    });
   });
 
   describe("when a managed install of it is enabled", () => {

@@ -1,0 +1,105 @@
+name: Test report
+
+on:
+  # A run of a pull request of a fork has a token that cannot comment, a run of
+  # workflow_run has one that can, see "Test Reports" in AGENTS.md.
+  workflow_run:
+    workflows:
+      - Unit tests
+      - Integration tests
+    types:
+      - completed
+
+permissions: {}
+
+jobs:
+  comment:
+    name: comment on the pull request
+
+    if: github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.conclusion != 'cancelled'
+
+    runs-on: ubuntu-26.04-arm
+    timeout-minutes: 5
+
+    # One comment per workflow and pull request, edited by the runs one after
+    # the other
+    concurrency:
+      group: test-report-${{ github.event.workflow_run.workflow_id }}-${{ github.event.workflow_run.head_repository.full_name }}-${{ github.event.workflow_run.head_branch }}
+
+    env:
+      # The name of the workflow, one of the names above, is the title of the
+      # report and of the marker of its comment
+      TITLE: ${{ github.event.workflow_run.name }}
+
+    permissions:
+      actions: read
+      contents: read
+      pull-requests: write
+
+    steps:
+      # The default branch: nothing of the pull request runs here, its reports
+      # are only read
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+          sparse-checkout: |
+            .github/scripts
+            .nvmrc
+          sparse-checkout-cone-mode: false
+
+      - name: Setup node
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+
+      - name: Download the reports of the tests
+        uses: actions/download-artifact@v8
+        with:
+          pattern: junit-*
+          path: reports
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ github.token }}
+
+      # The open pull request whose head is the commit of the run. None when a
+      # newer commit was pushed meanwhile: the run of that one comments.
+      - name: Find the pull request
+        id: pull-request
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          HEAD: ${{ github.event.workflow_run.head_repository.owner.login }}:${{ github.event.workflow_run.head_branch }}
+          HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          number="$(gh api --method GET "repos/${GITHUB_REPOSITORY}/pulls" -f state=open -f head="${HEAD}" --jq '.[] | select(.head.sha == $ENV.HEAD_SHA) | .number' | head -n 1)"
+          echo "number=${number}" | tee -a "${GITHUB_OUTPUT}"
+
+      - name: Summary of the reports
+        if: steps.pull-request.outputs.number
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.event.workflow_run.id }}
+          RUN_ATTEMPT: ${{ github.event.workflow_run.run_attempt }}
+          REPORT_RUN_ID: ${{ github.event.workflow_run.id }}
+        run: |
+          gh api --paginate "repos/${GITHUB_REPOSITORY}/actions/runs/${RUN_ID}/attempts/${RUN_ATTEMPT}/jobs" --jq '.jobs[] | [.name, .html_url] | @tsv' > jobs.tsv
+          node .github/scripts/test-report.mjs reports jobs.tsv "${TITLE}" > report.md
+          cat report.md >> "${GITHUB_STEP_SUMMARY}"
+
+      # The comment of github-actions that starts with the marker of the report,
+      # edited, or a new one
+      - name: Comment on the pull request
+        if: steps.pull-request.outputs.number
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ steps.pull-request.outputs.number }}
+        run: |
+          id="$(gh api --paginate "repos/${GITHUB_REPOSITORY}/issues/${PR}/comments" --jq '.[] | select(.user.login == "github-actions[bot]" and (.body | startswith("<!-- vitest-report: \($ENV.TITLE) -->"))) | .id' | head -n 1)"
+          if [[ -n ${id} ]]; then
+            gh api --method PATCH "repos/${GITHUB_REPOSITORY}/issues/comments/${id}" -F body=@report.md > /dev/null
+          else
+            gh api --method POST "repos/${GITHUB_REPOSITORY}/issues/${PR}/comments" -F body=@report.md > /dev/null
+          fi

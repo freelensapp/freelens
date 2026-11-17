@@ -35,6 +35,12 @@ describe("Table tests", () => {
       expect(i).toStrictEqual([1, 2, 4, 3]);
     });
 
+    it("should sort strings with numbers naturally", () => {
+      const i = ["job10", "job5", "job12", "job1"];
+
+      expect(getSorted(i, (v) => v, "asc")).toStrictEqual(["job1", "job5", "job10", "job12"]);
+    });
+
     describe("multi-part", () => {
       it("should sort each part by its order", () => {
         const i = ["a", "c", "b.1", "b.2", "d"];

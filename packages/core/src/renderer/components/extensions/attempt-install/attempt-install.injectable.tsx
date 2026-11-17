@@ -35,7 +35,11 @@ import type { UnpackExtension } from "./unpack-extension.injectable";
 
 export interface InstallRequest {
   fileName: string;
-  data: Buffer;
+  /**
+   * The tarball. A `Uint8Array` rather than a `Buffer`, because that is what
+   * a download over IPC delivers, and nothing here needs more.
+   */
+  data: Uint8Array;
   /**
    * What the user asked for, recorded with the install because it cannot be
    * recovered from the extracted tree afterwards.
@@ -43,7 +47,7 @@ export interface InstallRequest {
   source?: InstalledExtensionSource;
   /**
    * What the source vouched for. Absent means the download was unverifiable,
-   * which warns rather than refuses.
+   * which installs the extension disabled rather than refusing it.
    */
   checksum?: InstallChecksum;
 }
@@ -63,8 +67,8 @@ export type AttemptInstall = (request: InstallRequest, cleanup?: Disposer) => Pr
 
 /**
  * Why this download may not be installed, or `undefined` when nothing is wrong
- * with it. An absent checksum is not a failure: it warns later, once there is a
- * name to warn about.
+ * with it. An absent checksum is not a failure: the extension is installed
+ * disabled, which `unpackExtension` says once there is a name to say it about.
  *
  * A checksum string we cannot evaluate fails too. It is a different failure --
  * an unverifiable download rather than a corrupt one -- but it is not a reason
@@ -212,6 +216,13 @@ const attemptInstall =
                 ? ` ${name}@${oldVersion} is enabled and will be disabled and installed again.`
                 : ` ${name}@${oldVersion} is enabled and will be disabled and replaced by ${name}@${version}.`}
           </div>
+          {!validatedRequest.checksum && (
+            <p>
+              {"No checksum was available for this download, so "}
+              <b>{`${name}@${version}`}</b>
+              {" stays disabled after the install until it is enabled on the Extensions page."}
+            </p>
+          )}
         </div>
       ),
       labelCancel: "Cancel",

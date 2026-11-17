@@ -426,11 +426,42 @@ export class ExtensionLoader {
   }
 
   removeExtension(lensExtensionId: LensExtensionId) {
+    const extension = this.extensions.get(lensExtensionId);
+
     this.removeInstance(lensExtensionId);
 
     if (!this.extensions.delete(lensExtensionId)) {
       throw new Error(`Can't remove extension ${lensExtensionId}, doesn't exist.`);
     }
+
+    // The enabled state is merged into, so an extension which is gone would
+    // keep its last state, and the next build installed under its name would
+    // come up enabled by discovery before the installer has any say: an
+    // unverified one, which stays disabled until the user enables it, too.
+    // A build which replaces this one is not affected: discovery read its
+    // state before removing this one, and adding it writes that state again.
+    if (ipcMain && extension) {
+      this.dependencies.updateExtensionsState([[lensExtensionId, { enabled: false, name: extension.manifest.name }]]);
+    }
+  }
+
+  /**
+   * Bring whether a loaded extension is verified in line with its record, when
+   * the same build was installed again with a checksum it lacked before, or
+   * without one. The build is the same, so nothing is torn down or loaded
+   * again; only the flag changes, and it reaches the renderers with the next
+   * broadcast. Main only, like `isEnabled`: it is main's state.
+   */
+  setIsVerified(lensExtensionId: LensExtensionId, isVerified: boolean): void {
+    const extension = this.extensions.get(lensExtensionId);
+
+    if (!extension || extension.isVerified === isVerified) {
+      return;
+    }
+
+    runInAction(() => {
+      this.extensions.set(lensExtensionId, { ...extension, isVerified });
+    });
   }
 
   /**

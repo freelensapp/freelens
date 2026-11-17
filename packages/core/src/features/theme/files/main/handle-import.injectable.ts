@@ -8,11 +8,14 @@ import fsInjectable from "../../../../common/fs/fs.injectable";
 import pathExistsInjectable from "../../../../common/fs/path-exists.injectable";
 import readFileInjectable from "../../../../common/fs/read-file.injectable";
 import removePathInjectable from "../../../../common/fs/remove.injectable";
+import statInjectable from "../../../../common/fs/stat.injectable";
 import writeFileInjectable from "../../../../common/fs/write-file.injectable";
 import randomUUIDInjectable from "../../../../main/crypto/random-uuid.injectable";
 import electronDialogInjectable from "../../../../main/electron-app/features/electron-dialog.injectable";
+import downloadBinaryInjectable, { getDownloadTooLargeError } from "../../../../main/fetch/download-binary.injectable";
 import { isBuiltInThemeName } from "../common/builtin-theme";
 import { importThemeChannel } from "../common/channels";
+import { getThemeUrlError, maxThemeFileSize, themeFileTooLargeError } from "../common/import-source";
 import { parseThemeFile } from "../common/parse";
 import { getThemeNameError } from "../common/schema";
 import getThemeFilePathInjectable from "./get-theme-file-path.injectable";
@@ -23,9 +26,9 @@ import type { ImportThemeRequest, ImportThemeResponse, ThemeImportConflict } fro
 import type { ThemeFile } from "../common/schema";
 
 /**
- * A file the open dialog chose, waiting for the answer to the conflict it raised. The renderer
- * refers to it by its id only, so the file imported on `replace` is always the one the dialog
- * chose, as it was read then.
+ * A file the open dialog chose, or a download, waiting for the answer to the conflict it raised.
+ * The renderer refers to it by its id only, so the file imported on `replace` is always the one
+ * the dialog chose, or the URL gave, as it was read then.
  */
 interface PendingImport extends ChosenFile {
   id: string;
@@ -36,10 +39,13 @@ interface PendingImport extends ChosenFile {
 }
 
 /**
- * A file the open dialog chose, as it was read then.
+ * A file the open dialog chose, or a download, as it was read then.
  */
 interface ChosenFile {
-  filePath: string;
+  /**
+   * The path of the file, or the URL.
+   */
+  source: string;
   content: string;
   theme: ThemeFile;
   unknownTokens: string[];
@@ -50,12 +56,19 @@ const describeError = (error: unknown) => (error instanceof Error ? error.messag
 const isFileExistsError = (error: unknown) =>
   typeof error === "object" && error !== null && (error as { code?: unknown }).code === "EEXIST";
 
+/**
+ * How long a download of a theme file may take, from the request to the last byte.
+ */
+const downloadTimeout = 30_000;
+
 const importThemeListenerInjectable = getRequestChannelListenerInjectable({
   id: "import-theme-listener",
   channel: importThemeChannel,
   getHandler: (di) => {
     const dialog = di.inject(electronDialogInjectable);
     const readFile = di.inject(readFileInjectable);
+    const stat = di.inject(statInjectable);
+    const downloadBinary = di.inject(downloadBinaryInjectable);
     const writeFile = di.inject(writeFileInjectable);
     const removePath = di.inject(removePathInjectable);
     const pathExists = di.inject(pathExistsInjectable);
@@ -144,36 +157,20 @@ const importThemeListenerInjectable = getRequestChannelListenerInjectable({
     });
 
     /**
-     * Imports a file the open dialog chose, unless it would replace something in the themes
-     * directory: then it keeps the file pending and asks.
+     * Imports the content of a file or a download, unless it would replace something in the themes
+     * directory: then it keeps the content pending and asks. Both sources go through it, so that
+     * they are validated alike.
      */
-    const choose = async (): Promise<ImportThemeResponse> => {
-      pending = undefined;
-
-      const { canceled, filePaths } = await dialog.showOpenDialog({
-        title: "Import a theme",
-        buttonLabel: "Import",
-        properties: ["openFile"],
-        filters: [{ name: "Theme files", extensions: ["yaml", "yml", "json"] }],
-      });
-
-      if (canceled || filePaths.length === 0) {
-        return { status: "canceled" };
-      }
-
-      const [filePath] = filePaths;
-      let content: string;
-
-      try {
-        content = await readFile(filePath);
-      } catch (error) {
-        return { status: "invalid", filePath, error: `The file cannot be read: ${describeError(error)}` };
+    const importContent = async (source: string, content: string): Promise<ImportThemeResponse> => {
+      // Checked before, but measured again on what was read: a file can grow in between.
+      if (Buffer.byteLength(content, "utf-8") > maxThemeFileSize) {
+        return { status: "invalid", source, error: themeFileTooLargeError };
       }
 
       const result = parseThemeFile(content);
 
       if (!result.isValid) {
-        return { status: "invalid", filePath, error: result.error };
+        return { status: "invalid", source, error: result.error };
       }
 
       const { name } = result.theme.metadata;
@@ -182,18 +179,18 @@ const importThemeListenerInjectable = getRequestChannelListenerInjectable({
       const nameError = getThemeNameError(name);
 
       if (nameError) {
-        return { status: "invalid", filePath, error: nameError };
+        return { status: "invalid", source, error: nameError };
       }
 
       if (isBuiltInThemeName(name)) {
         return {
           status: "invalid",
-          filePath,
+          source,
           error: `The name "${name}" is the name of a built-in theme: change metadata.name to import it`,
         };
       }
 
-      const chosen = { filePath, content, theme: result.theme, unknownTokens: result.unknownTokens };
+      const chosen = { source, content, theme: result.theme, unknownTokens: result.unknownTokens };
       const targetFileName = `${name}.yaml`;
       const conflicts = await findConflicts(name, targetFileName);
 
@@ -224,6 +221,74 @@ const importThemeListenerInjectable = getRequestChannelListenerInjectable({
       await reloadImportedThemes();
 
       return importedResponse(chosen);
+    };
+
+    /**
+     * Imports a file the open dialog chose.
+     */
+    const choose = async (): Promise<ImportThemeResponse> => {
+      pending = undefined;
+
+      const { canceled, filePaths } = await dialog.showOpenDialog({
+        title: "Import a theme",
+        buttonLabel: "Import",
+        properties: ["openFile"],
+        filters: [{ name: "Theme files", extensions: ["yaml", "yml", "json"] }],
+      });
+
+      if (canceled || filePaths.length === 0) {
+        return { status: "canceled" };
+      }
+
+      const [filePath] = filePaths;
+      let content: string;
+
+      try {
+        // Measured before it is read, so that a large file is never read at all. A device or a
+        // pipe has no size to measure, and could be read forever.
+        const stats = await stat(filePath);
+
+        if (!stats.isFile()) {
+          return { status: "invalid", source: filePath, error: "The theme is not a regular file" };
+        }
+
+        if (stats.size > maxThemeFileSize) {
+          return { status: "invalid", source: filePath, error: themeFileTooLargeError };
+        }
+
+        content = await readFile(filePath);
+      } catch (error) {
+        return { status: "invalid", source: filePath, error: `The file cannot be read: ${describeError(error)}` };
+      }
+
+      return importContent(filePath, content);
+    };
+
+    /**
+     * Imports a theme file downloaded from a URL of the request, which is checked here: the
+     * renderer has checked it too, but is not trusted to.
+     */
+    const download = async (url: unknown): Promise<ImportThemeResponse> => {
+      pending = undefined;
+
+      const urlError = getThemeUrlError(url);
+
+      if (typeof url !== "string" || urlError) {
+        return { status: "invalid", source: typeof url === "string" ? url : "", error: urlError ?? "" };
+      }
+
+      const result = await downloadBinary(url, { timeout: downloadTimeout, maxSize: maxThemeFileSize });
+
+      if (!result.callWasSuccessful) {
+        const error =
+          result.error === getDownloadTooLargeError(maxThemeFileSize)
+            ? themeFileTooLargeError
+            : `The theme cannot be downloaded: ${result.error || "the request failed"}`;
+
+        return { status: "invalid", source: url, error };
+      }
+
+      return importContent(url, result.response.toString("utf-8"));
     };
 
     /**
@@ -266,12 +331,16 @@ const importThemeListenerInjectable = getRequestChannelListenerInjectable({
     };
 
     return async (request: ImportThemeRequest): Promise<ImportThemeResponse> => {
-      // Only the action and the id of a request are read: whatever else it carries, a path above
-      // all, is ignored.
+      // Only the action, the id and the URL of a request are read: whatever else it carries, a
+      // path above all, is ignored.
       const action: unknown = request?.action;
 
       if (action === "choose") {
         return choose();
+      }
+
+      if (action === "url") {
+        return download((request as { url?: unknown }).url);
       }
 
       if (action !== "replace" && action !== "cancel") {

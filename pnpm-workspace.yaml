@@ -25,8 +25,8 @@ catalog:
   '@ogre-tools/test-utils': 27.0.0
   # Testing stack
   '@async-fn/vitest': 1.8.0
-  '@vitest/coverage-v8': 5.0.5
-  vitest: 5.0.5
+  '@vitest/coverage-v8': 5.1.0
+  vitest: 5.1.0
   '@testing-library/dom': 10.4.2
   '@testing-library/jest-dom': 7.0.1
   '@testing-library/react': 16.3.3
@@ -45,12 +45,12 @@ catalog:
   electron-builder-squirrel-windows: 26.18.0
   electron-vite: 6.0.0
   playwright: 1.64.1
-  pnpm: 12.18.0
+  pnpm: 12.21.0
   rolldown: 1.2.19
   rolldown-plugin-dts: 0.28.8
   sass-embedded: 1.105.2
   tailwindcss: 4.3.3
-  turbo: 2.11.10
+  turbo: 2.11.11
   vite: 8.3.8
   # Electron
   electron: 44.10.1
@@ -98,7 +98,7 @@ catalog:
   color: 5.0.3
   command-line-args: 6.0.2
   conf: 16.0.0
-  cronstrue: 3.32.0
+  cronstrue: 3.39.0
   dompurify: 3.4.17
   electron-window-state: 5.0.3
   es-toolkit: 1.52.0

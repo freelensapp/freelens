@@ -410,6 +410,17 @@ describe("theme files", () => {
       expect(resolveEditorTheme(theme, "light", defaultTheme)).toMatchObject({ base: "hc-black", inherit: false });
       expect(resolveEditorTheme(defaultTheme, "light", defaultTheme)).toMatchObject({ base: "vs", inherit: true });
     });
+
+    it("takes hc-light as the editor base", () => {
+      const theme = parseValid(
+        minimal(`  light:
+    editor:
+      base: hc-light
+`),
+      );
+
+      expect(resolveEditorTheme(theme, "light", defaultTheme).base).toBe("hc-light");
+    });
   });
 
   describe("the rules of an editor theme", () => {
@@ -480,7 +491,7 @@ describe("theme files", () => {
     const otherThemes = builtInThemes.filter(({ theme }) => theme.metadata.name !== defaultThemeName);
     const sourceOf = (name: string) => builtInThemes.find(({ theme }) => theme.metadata.name === name)?.source ?? "";
 
-    it("are freelens, the default, then Ayu, Ayu Mirage, Dracula, Graphite, Catppuccin and Solarized", () => {
+    it("are freelens, the default, then Ayu, Ayu Mirage, Dracula, Graphite, Catppuccin, Solarized and High Contrast", () => {
       expect(builtInThemeNames).toEqual([
         "freelens",
         "ayu",
@@ -489,6 +500,7 @@ describe("theme files", () => {
         "graphite",
         "catppuccin",
         "solarized",
+        "high-contrast",
       ]);
       expect(builtInThemes[0].theme).toBe(defaultTheme);
     });
@@ -752,6 +764,249 @@ describe("theme files", () => {
         expect(belowAA).toEqual([]);
       },
     );
+
+    describe("high-contrast", () => {
+      // A color that is missing, not opaque, or not a color, has no ratio and fails.
+      const findRatiosBelow = (
+        minimum: number,
+        foregrounds: (string | undefined)[],
+        backgrounds: (string | undefined)[],
+      ) =>
+        [...new Set(foregrounds.map((color) => color ?? ""))].flatMap((foreground) =>
+          [...new Set(backgrounds.map((color) => color ?? ""))]
+            .map((background) => ({ foreground, background, ratio: getContrastRatio(foreground, background) ?? 0 }))
+            .filter(({ ratio }) => ratio < minimum),
+        );
+
+      const resolveHighContrast = (variant: "dark" | "light") => {
+        const highContrast = findBuiltInTheme("high-contrast");
+
+        expect(highContrast).toBeDefined();
+
+        return {
+          colors: resolveThemeVariant(highContrast ?? defaultTheme, variant, defaultTheme).colors,
+          terminalColors: resolveThemeVariant(highContrast ?? defaultTheme, variant, defaultTheme).terminalColors,
+          editor: resolveEditorTheme(highContrast ?? defaultTheme, variant, defaultTheme),
+        };
+      };
+
+      it("is a design of Freelens, without the notice of another theme", () => {
+        const source = sourceOf("high-contrast");
+
+        expect(findBuiltInTheme("high-contrast")?.spec).toMatchObject({
+          displayName: "High Contrast",
+          author: "Freelens Authors",
+        });
+        expect(source).not.toContain("Permission is hereby granted");
+      });
+
+      it("takes a cyan accent in the dark variant and a deep blue in the light one", () => {
+        const highContrast = findBuiltInTheme("high-contrast");
+
+        expect(highContrast?.spec.dark?.colors).toMatchObject({ primary: "#00e5ff", textColorOnPrimary: "#000000" });
+        expect(highContrast?.spec.light?.colors).toMatchObject({ primary: "#0037a6", textColorOnPrimary: "#ffffff" });
+      });
+
+      it("extends Monaco's high contrast editor themes", () => {
+        expect(resolveHighContrast("dark").editor.base).toBe("hc-black");
+        expect(resolveHighContrast("light").editor.base).toBe("hc-light");
+      });
+
+      describe.each(["dark", "light"] as const)("in the %s variant", (variant) => {
+        const { colors, terminalColors, editor } = resolveHighContrast(variant);
+
+        const surfaces = [
+          colors.mainBackground,
+          colors.secondaryBackground,
+          colors.contentColor,
+          colors.layoutBackground,
+          colors.layoutTabsBackground,
+          colors.sidebarBackground,
+          colors.sidebarLogoBackground,
+          colors.sidebarItemHoverBackground,
+          colors.tableBgcStripe,
+          colors.tableBgcSelected,
+          colors.tableHeaderBackground,
+          colors.helmDescriptionBlockquoteBackground,
+          colors.helmDescriptionTrBackground,
+          colors.helmDescriptionCodeBackground,
+          colors.helmDescriptionPreBackground,
+          colors.dockHeadBackground,
+          colors.dockInfoBackground,
+          colors.dockEditorBackground,
+          colors.dockEditorActiveLineBackground,
+          colors.dockBadgeBackground,
+          colors.dockTabActiveBackground,
+          colors.logsBackground,
+          colors.logRowHoverBackground,
+          colors.dialogBackground,
+          colors.dialogFooterBackground,
+          colors.drawerTogglerBackground,
+          colors.drawerSubtitleBackground,
+          colors.clusterMenuBackground,
+          colors.clusterMenuCellBackground,
+          colors.clusterSettingsBackground,
+          colors.filterAreaBackground,
+          colors.inputControlBackground,
+          colors.radioActiveBackground,
+          colors.menuSelectedOptionBgc,
+          colors.canvasBackground,
+          colors.settingsBackground,
+          colors.navSelectedBackground,
+          colors.tooltipBackground,
+        ];
+
+        it("has two surfaces at most, a background and a single step", () => {
+          expect(new Set(surfaces).size).toBeLessThanOrEqual(2);
+        });
+
+        it("keeps every text color at the WCAG AAA contrast, 7:1, on every surface", () => {
+          const textColors = [
+            colors.primary,
+            colors.blue,
+            colors.magenta,
+            colors.golden,
+            colors.textColorPrimary,
+            colors.textColorSecondary,
+            colors.textColorTertiary,
+            colors.textColorAccent,
+            colors.textColorDimmed,
+            colors.layoutTabsActiveColor,
+            colors.sidebarSubmenuActiveColor,
+            colors.tableHeaderColor,
+            colors.tableSelectedRowColor,
+            colors.helmStableRepo,
+            colors.helmIncubatorRepo,
+            colors.helmDescriptionBlockquoteColor,
+            colors.helmDescriptionHeaders,
+            colors.helmDescriptionH6,
+            colors.helmDescriptionPreColor,
+            colors.colorSuccess,
+            colors.colorOk,
+            colors.colorInfo,
+            colors.colorError,
+            colors.colorSoftError,
+            colors.colorWarning,
+            colors.colorTerminated,
+            colors.dockEditorTag,
+            colors.dockEditorKeyword,
+            colors.dockEditorComment,
+            colors.logsForeground,
+            colors.dialogTextColor,
+            colors.drawerItemNameColor,
+            colors.drawerItemValueColor,
+            colors.iconActiveColor,
+            colors.inputOptionHoverColor,
+            colors.settingsColor,
+            colors.navHoverColor,
+          ];
+
+          expect(findRatiosBelow(7, textColors, surfaces)).toEqual([]);
+        });
+
+        it("keeps the placeholders at 4.5:1 on every surface", () => {
+          expect(findRatiosBelow(4.5, [colors.halfGray], surfaces)).toEqual([]);
+        });
+
+        it("keeps the text on the accent at 7:1", () => {
+          const textOnAccent = [colors.textColorOnPrimary, colors.sidebarActiveColor, colors.drawerTitleText];
+          const accentBackgrounds = [
+            colors.primary,
+            colors.blue,
+            colors.buttonPrimaryBackground,
+            colors.menuActiveBackground,
+          ];
+
+          expect(findRatiosBelow(7, textOnAccent, accentBackgrounds)).toEqual([]);
+        });
+
+        it("keeps the text of buttons and dialog headers at 7:1, and of disabled buttons at 4.5:1", () => {
+          // Default and accent buttons and the header of dialogs draw white text, light buttons #505050.
+          const whiteText = [
+            colors.buttonDefaultBackground,
+            colors.buttonAccentBackground,
+            colors.dialogHeaderBackground,
+          ];
+
+          expect(findRatiosBelow(7, ["#ffffff"], whiteText)).toEqual([]);
+          expect(findRatiosBelow(7, ["#505050"], [colors.buttonLightBackground])).toEqual([]);
+          expect(findRatiosBelow(7, [colors.textColorSecondary], [colors.colorVague])).toEqual([]);
+          expect(findRatiosBelow(4.5, ["#ffffff"], [colors.buttonDisabledBackground])).toEqual([]);
+        });
+
+        it("keeps every border, separator and the accent at 3:1 on every surface", () => {
+          const borders = [
+            colors.primary,
+            colors.borderColor,
+            colors.borderFaintColor,
+            colors.halfGray,
+            colors.layoutTabsLineColor,
+            colors.helmDescriptionHr,
+            colors.helmDescriptionBlockquoteBorder,
+            colors.helmDescriptionTdBorder,
+            colors.dockInfoBorderColor,
+            colors.dockTabBorderColor,
+            colors.clusterMenuBorderColor,
+            colors.clusterMenuCellOutline,
+            colors.inputControlBorder,
+            colors.inputControlHoverBorder,
+            colors.hrColor,
+            colors.scrollBarColor,
+            colors.chartCapacityColor,
+            colors.pieChartDefaultColor,
+          ];
+
+          expect(findRatiosBelow(3, borders, surfaces)).toEqual([]);
+        });
+
+        it("keeps every ANSI color, the bright ones included, at 7:1 on the terminal background", () => {
+          const { background, cursor, cursorAccent } = terminalColors;
+          const ansiColors = [
+            terminalColors.foreground,
+            terminalColors.black,
+            terminalColors.red,
+            terminalColors.green,
+            terminalColors.yellow,
+            terminalColors.blue,
+            terminalColors.magenta,
+            terminalColors.cyan,
+            terminalColors.white,
+            terminalColors.brightBlack,
+            terminalColors.brightRed,
+            terminalColors.brightGreen,
+            terminalColors.brightYellow,
+            terminalColors.brightBlue,
+            terminalColors.brightMagenta,
+            terminalColors.brightCyan,
+            terminalColors.brightWhite,
+          ];
+
+          expect(findRatiosBelow(7, ansiColors, [background])).toEqual([]);
+          expect(findRatiosBelow(7, [cursor], [background])).toEqual([]);
+          expect(findRatiosBelow(7, [cursorAccent], [cursor])).toEqual([]);
+        });
+
+        it("keeps every editor token and the line numbers at 7:1 on the background and the highlighted line", () => {
+          const backgrounds = [editor.colors["editor.background"], editor.colors["editor.lineHighlightBackground"]];
+          const tokenColors = Object.values(editor.tokens).map((value) =>
+            typeof value === "string" ? value : (value.foreground ?? ""),
+          );
+
+          expect(
+            findRatiosBelow(
+              7,
+              [
+                editor.colors["editor.foreground"],
+                editor.colors["editorLineNumber.foreground"],
+                editor.colors["editorLineNumber.activeForeground"],
+                ...tokenColors,
+              ],
+              backgrounds,
+            ),
+          ).toEqual([]);
+        });
+      });
+    });
 
     it("share the same Ayu Light variant", () => {
       expect(findBuiltInTheme("ayu-mirage")?.spec.light).toEqual(findBuiltInTheme("ayu")?.spec.light);

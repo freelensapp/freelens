@@ -62,8 +62,8 @@ written as JSON is valid as well, since JSON is YAML.
 - `terminalColors` are the colors of the terminal: `foreground`,
   `background`, `cursor`, the sixteen ANSI colors and a few more.
 - `editor` is the theme of the code editor (Monaco):
-  - `base` is the built-in Monaco theme it extends: `vs`, `vs-dark` or
-    `hc-black`.
+  - `base` is the built-in Monaco theme it extends: `vs`, `vs-dark`,
+    `hc-black` or `hc-light`.
   - `inherit` keeps the token styles of the base under the ones of the theme.
   - `colors` are Monaco's editor colors, such as `editor.background`.
   - `tokens` map a Monaco token name, such as `comment`, `string` or
@@ -127,15 +127,16 @@ same as "Theme".
 
 Freelens comes with these themes, each with a dark and a light variant:
 
-| `metadata.name` | Name       | Dark            | Light           |
-| --------------- | ---------- | --------------- | --------------- |
-| `freelens`      | Freelens   | Freelens        | Freelens        |
-| `ayu`           | Ayu        | Ayu Dark        | Ayu Light       |
-| `ayu-mirage`    | Ayu Mirage | Ayu Mirage      | Ayu Light       |
-| `dracula`       | Dracula    | Dracula Classic | Alucard Classic |
-| `graphite`      | Graphite   | Graphite        | Graphite Light  |
-| `catppuccin`    | Catppuccin | Mocha           | Latte           |
-| `solarized`     | Solarized  | Solarized Dark  | Solarized Light |
+| `metadata.name` | Name          | Dark               | Light               |
+| --------------- | ------------- | ------------------ | ------------------- |
+| `freelens`      | Freelens      | Freelens           | Freelens            |
+| `ayu`           | Ayu           | Ayu Dark           | Ayu Light           |
+| `ayu-mirage`    | Ayu Mirage    | Ayu Mirage         | Ayu Light           |
+| `dracula`       | Dracula       | Dracula Classic    | Alucard Classic     |
+| `graphite`      | Graphite      | Graphite           | Graphite Light      |
+| `catppuccin`    | Catppuccin    | Mocha              | Latte               |
+| `solarized`     | Solarized     | Solarized Dark     | Solarized Light     |
+| `high-contrast` | High Contrast | High Contrast Dark | High Contrast Light |
 
 `freelens` is the default theme, and the theme every other one, built-in or
 imported, takes the tokens it leaves out from. The other built-in themes set
@@ -196,6 +197,33 @@ the background is the closest color of the same hue that does. Its accent is
 Solarized blue, with base03 darkened to the WCAG AA contrast on it in both
 variants. The file carries the MIT notice of Solarized in its header.
 
+The High Contrast theme is a design of Freelens of its own, for users who
+need stronger contrast than the other themes give. Its surfaces are black in
+High Contrast Dark and white in High Contrast Light, with a single step for
+headers and the hovered, selected and active states, and borders tell the
+surfaces apart. It guarantees, in both variants:
+
+- every color drawn as text, the secondary, tertiary and dimmed text, the
+  accent and the status colors included, reaches the WCAG AAA contrast, 7:1,
+  on every surface, and placeholders and the text of disabled buttons reach
+  4.5:1;
+- the text on the accent, of buttons and of dialog headers reaches 7:1 on its
+  background;
+- borders, separators and the accent reach 3:1 on every surface, and the
+  selected table row, the active tab and the active sidebar item carry the
+  accent as a bar, an underline or a background;
+- the status colors are distinct hues: green for success, blue for
+  information, red for errors, orange for soft errors and yellow for
+  warnings;
+- every ANSI color of the terminal, the bright ones included, reaches 7:1 on
+  its background, which makes ANSI black a gray in the dark variant and ANSI
+  white a gray in the light one;
+- the editor extends Monaco's `hc-black` and `hc-light`, and every token
+  color reaches 7:1 on the background and on the highlighted line.
+
+Its accent is cyan with black text in the dark variant, and a deep blue with
+white text in the light one.
+
 ## The JSON Schema
 
 The schema of `apiVersion: freelens.app/v1` is
@@ -218,6 +246,23 @@ Schema validator for draft 2020-12 checks a theme against the same file.
 The schema is generated from the one the application validates with, and a
 test fails when the committed file differs from it. After changing the
 schema or a token, update the file with `pnpm test:unit:updatesnapshot`.
+
+## Importing a theme
+
+"Import theme..." in Preferences → Personalization opens a dialog that takes
+the URL of a theme file. The URL is `https:` or `http:`; any other scheme,
+`file:` included, is refused. The folder icon next to the input, "Browse",
+picks a local file instead, with the file dialog of the operating system, and
+imports it as soon as it is chosen.
+
+A theme file, from a URL or a local file, is at most 100 KiB. A larger local
+file is refused without being read, and a download stops as soon as it passes
+the limit, whatever size the server declares. A file or a download that is
+refused leaves the dialog open with the reason, so the URL can be corrected.
+
+The file is imported as it is, comments included, in the same way from both
+sources. The URL is not recorded: a theme imported from a URL is not updated
+from it later. Import it again to update it.
 
 ## Where themes live
 

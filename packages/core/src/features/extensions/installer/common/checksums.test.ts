@@ -11,15 +11,29 @@ const data = Buffer.from("a tarball, for the purposes of this test");
 const sha256 = createHash("sha256").update(data).digest("hex");
 const sha512Base64 = createHash("sha512").update(data).digest("base64");
 
+/**
+ * The same bytes as a plain `Uint8Array`, the form a download takes after the
+ * IPC from main.
+ */
+const plainData = new Uint8Array(data);
+
 describe("computeTarballDigest", () => {
   it("is the sha256 of the archive bytes", () => {
     expect(computeTarballDigest(data)).toBe(sha256);
+  });
+
+  it("is the same for a plain Uint8Array", () => {
+    expect(computeTarballDigest(plainData)).toBe(sha256);
   });
 });
 
 describe("verifySubresourceIntegrity", () => {
   it("returns nothing when the data matches", () => {
     expect(verifySubresourceIntegrity(data, `sha512-${sha512Base64}`)).toBeUndefined();
+  });
+
+  it("returns nothing when a plain Uint8Array matches", () => {
+    expect(verifySubresourceIntegrity(plainData, `sha512-${sha512Base64}`)).toBeUndefined();
   });
 
   it("returns the mismatch when the data does not match", () => {
@@ -41,6 +55,10 @@ describe("verifySubresourceIntegrity", () => {
 describe("verifySha256", () => {
   it("accepts a digest in either case", () => {
     expect(verifySha256(data, sha256.toUpperCase())).toBeUndefined();
+  });
+
+  it("accepts a plain Uint8Array which matches", () => {
+    expect(verifySha256(plainData, sha256)).toBeUndefined();
   });
 
   it("returns the mismatch when the data does not match", () => {

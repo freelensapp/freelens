@@ -4,9 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { rectifyOrdering, sortCompare } from "@freelensapp/utilities";
 import autoBind from "auto-bind";
 import { isEqual } from "es-toolkit";
-import { orderBy } from "es-toolkit/compat";
 import { action, computed, observable, when } from "mobx";
 
 import type { ItemObject } from "@freelensapp/list-layout";
@@ -18,6 +18,21 @@ import type { ItemObject } from "@freelensapp/list-layout";
 export interface ItemSorting<Item> {
   readonly by: ((item: Item) => any)[];
   readonly order?: "asc" | "desc";
+}
+
+/**
+ * `null`, `undefined` and then `NaN` sort after every other value, as they did
+ * with `orderBy` of es-toolkit: last ascending, first descending. `<` and `>`
+ * are false for each of them, so `sortCompare` alone would hold them equal to
+ * every value, and the order would depend on the input.
+ */
+const sortedLast: unknown[] = [null, undefined, Number.NaN];
+const lastRank = (value: unknown) => sortedLast.findIndex((last) => Object.is(last, value)) + 1;
+
+function compareSortValues(left: unknown, right: unknown) {
+  const rank = lastRank(left) - lastRank(right);
+
+  return rank ? Math.sign(rank) : sortCompare(left, right);
 }
 
 export abstract class ItemStore<Item extends ItemObject> {
@@ -75,11 +90,18 @@ export abstract class ItemStore<Item extends ItemObject> {
    */
   @action
   protected sortItems(items: Item[] = this.items, sorting?: ((item: Item) => any)[], order?: "asc" | "desc"): Item[] {
-    if (sorting) {
-      return orderBy(items, sorting, order);
-    }
+    const by = sorting ?? this.sorting.by;
+    const direction = (sorting ? order : (order ?? this.sorting.order)) ?? "asc";
 
-    return orderBy(items, this.sorting.by, order ?? this.sorting.order);
+    return [...items].sort((left, right) => {
+      for (const sort of by) {
+        const ordering = rectifyOrdering(compareSortValues(sort(left), sort(right)), direction);
+
+        if (ordering) return ordering;
+      }
+
+      return 0;
+    });
   }
 
   /**
