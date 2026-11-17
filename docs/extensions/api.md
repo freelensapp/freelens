@@ -107,6 +107,14 @@ uses a host API whose types name it: `Renderer.Component.MonacoEditor` takes its
 extension that renders it declares `monaco-editor`, at the host's version
 ([C11](#c11-third-party-bundled-libraries)).
 
+**The host's Monaco leaves out what Freelens does not use:** the language
+services of TypeScript and JavaScript, CSS and HTML, and the LSP client.
+`MonacoEditor.typescript`, `MonacoEditor.css`, `MonacoEditor.html` and
+`MonacoEditor.lsp` are empty, although the types of `monaco-editor` declare
+them, so an extension that uses them fails at runtime, not when it compiles.
+Those languages keep their syntax highlighting, and JSON keeps its language
+service.
+
 **Each process publishes the set it has**, which is why the third column exists.
 Main has no window, so it publishes no DOM renderer and no code editor. What it
 has is what an extension's main entry point can really share: `mobx`, where an
