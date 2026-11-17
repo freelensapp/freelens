@@ -21,11 +21,13 @@ export interface ItemSorting<Item> {
 }
 
 /**
- * `null` and then `undefined` sort after every other value, as they did with
- * `orderBy` of es-toolkit: last ascending, first descending.
+ * `null`, `undefined` and then `NaN` sort after every other value, as they did
+ * with `orderBy` of es-toolkit: last ascending, first descending. `<` and `>`
+ * are false for each of them, so `sortCompare` alone would hold them equal to
+ * every value, and the order would depend on the input.
  */
-const sortedLast: unknown[] = [null, undefined];
-const lastRank = (value: unknown) => sortedLast.indexOf(value) + 1;
+const sortedLast: unknown[] = [null, undefined, Number.NaN];
+const lastRank = (value: unknown) => sortedLast.findIndex((last) => Object.is(last, value)) + 1;
 
 function compareSortValues(left: unknown, right: unknown) {
   const rank = lastRank(left) - lastRank(right);
