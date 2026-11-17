@@ -104,15 +104,23 @@ if (linksFile) {
 
 const link = (job, text) => (urls.has(job) ? `[${text}](${urls.get(job)})` : text);
 
-const jobs = readdirSync(directory)
-  .filter((name) => name.startsWith("junit-") && statSync(join(directory, name)).isDirectory())
-  .sort()
-  .map((name) => {
-    const path = join(directory, name);
+const isReport = (files) => files.includes("job.txt") || files.some((file) => file.endsWith(".xml"));
+const entries = readdirSync(directory);
+
+// download-artifact extracts each artifact into a directory of its own, except
+// when its pattern matches a single one, which it extracts into the path itself
+const reportDirectories = [
+  ...(isReport(entries) ? [{ path: directory, name: "tests" }] : []),
+  ...entries
+    .filter((name) => name.startsWith("junit-") && statSync(join(directory, name)).isDirectory())
+    .sort()
+    .map((name) => ({ path: join(directory, name), name: name.slice("junit-".length) })),
+];
+
+const jobs = reportDirectories
+  .map(({ path, name }) => {
     const files = readdirSync(path);
-    const job = files.includes("job.txt")
-      ? readFileSync(join(path, "job.txt"), "utf-8").trim()
-      : name.slice("junit-".length);
+    const job = files.includes("job.txt") ? readFileSync(join(path, "job.txt"), "utf-8").trim() : name;
     const reports = files
       .filter((file) => file.endsWith(".xml"))
       .sort()
