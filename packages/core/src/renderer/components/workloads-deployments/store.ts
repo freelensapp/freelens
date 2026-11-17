@@ -62,9 +62,18 @@ export class DeploymentStore extends KubeObjectStore<Deployment, DeploymentApi> 
     return status;
   }
 
+  // The match of `podStore.getByLabel(deployment.getTemplateLabels())`, among
+  // the pods of the deployment's namespace only rather than every pod of the
+  // cluster. It compares the label maps instead of their `name=value` strings,
+  // which is the same match, as a label name cannot contain `=`, without
+  // building the strings of every pod for every deployment.
   getChildPods(deployment: Deployment) {
-    return this.dependencies.podStore
-      .getByLabel(deployment.getTemplateLabels())
-      .filter((pod) => pod.getNs() === deployment.getNs());
+    const templateLabels = Object.entries(deployment.spec.template.metadata.labels ?? {});
+
+    return this.dependencies.podStore.getPodsByNamespace(deployment.getNs()).filter((pod) => {
+      const podLabels = pod.metadata.labels ?? {};
+
+      return templateLabels.every(([name, value]) => podLabels[name] === value);
+    });
   }
 }
