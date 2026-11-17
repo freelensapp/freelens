@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { Pod } from "@freelensapp/kube-object";
+import { PersistentVolumeClaim, Pod } from "@freelensapp/kube-object";
 import { observable } from "mobx";
 import { beforeEach, describe, expect, it } from "vitest";
 import directoryForKubeConfigsInjectable from "../../../common/app-paths/directory-for-kube-configs/directory-for-kube-configs.injectable";
@@ -177,7 +177,8 @@ describe("Pod Store tests", () => {
         namespace = "default",
         nodeName,
         ownerIds = [],
-      }: { namespace?: string; nodeName?: string; ownerIds?: string[] },
+        claimNames = [],
+      }: { namespace?: string; nodeName?: string; ownerIds?: string[]; claimNames?: string[] },
     ) =>
       new Pod({
         apiVersion: "v1",
@@ -195,7 +196,16 @@ describe("Pod Store tests", () => {
             uid,
           })),
         },
-        spec: nodeName ? ({ nodeName } as Pod["spec"]) : undefined,
+        spec:
+          nodeName || claimNames.length
+            ? ({
+                nodeName,
+                volumes: claimNames.map((claimName, index) => ({
+                  name: `volume-${index}`,
+                  persistentVolumeClaim: { claimName },
+                })),
+              } as Pod["spec"])
+            : undefined,
       });
 
     const a1 = createPod("a1", { nodeName: "node-1", ownerIds: ["owner-a"] });
@@ -247,6 +257,38 @@ describe("Pod Store tests", () => {
       expect(podStore.getPodsByOwnerId("owner-a")).toEqual([a1, a2, unscheduled]);
       expect(podStore.getPodsByNode("node-2")).toEqual([b1, a2]);
       expect(podStore.getPodsByNamespace("default")).toEqual([a1, a2, unscheduled]);
+    });
+
+    it("returns the pods that mount a persistent volume claim, as the claim's getPods does", () => {
+      const createClaim = (name: string, namespace: string) =>
+        new PersistentVolumeClaim({
+          apiVersion: "v1",
+          kind: "PersistentVolumeClaim",
+          metadata: {
+            name,
+            resourceVersion: "1",
+            uid: `${namespace}-claim-${name}`,
+            namespace,
+            selfLink: `/api/v1/namespaces/${namespace}/persistentvolumeclaims/${name}`,
+          },
+        });
+      const twice = createPod("twice", { claimNames: ["data", "data"] });
+      const otherNamespace = createPod("other-namespace", { namespace: "other", claimNames: ["data"] });
+      const both = createPod("both", { nodeName: "node-1", claimNames: ["logs", "data"] });
+      const data = createClaim("data", "default");
+      const logs = createClaim("logs", "default");
+      const missing = createClaim("missing", "default");
+
+      podStore.items.push(twice, otherNamespace, both);
+
+      expect(podStore.getPodsByPersistentVolumeClaim(data)).toEqual([twice, both]);
+      expect(podStore.getPodsByPersistentVolumeClaim(logs)).toEqual([both]);
+      expect(podStore.getPodsByPersistentVolumeClaim(createClaim("data", "other"))).toEqual([otherNamespace]);
+      expect(podStore.getPodsByPersistentVolumeClaim(missing)).toEqual([]);
+
+      for (const claim of [data, logs, missing]) {
+        expect(podStore.getPodsByPersistentVolumeClaim(claim)).toEqual(claim.getPods(podStore.items));
+      }
     });
 
     it("follows added, changed and removed pods", () => {

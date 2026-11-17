@@ -60,7 +60,7 @@ class NonInjectedPersistentVolumeClaims extends React.Component<Dependencies> {
           sortingCallbacks={{
             [columnId.name]: (pvc) => pvc.getName(),
             [columnId.namespace]: (pvc) => pvc.getNs(),
-            [columnId.pods]: (pvc) => pvc.getPods(podStore.items).map((pod) => pod.getName()),
+            [columnId.pods]: (pvc) => podStore.getPodsByPersistentVolumeClaim(pvc).map((pod) => pod.getName()),
             [columnId.status]: (pvc) => pvc.getStatus(),
             [columnId.size]: (pvc) => unitsToBytes(pvc.getStorage()),
             [columnId.storageClass]: (pvc) => pvc.spec.storageClassName,
@@ -68,7 +68,7 @@ class NonInjectedPersistentVolumeClaims extends React.Component<Dependencies> {
           }}
           searchFilters={[
             (pvc) => pvc.getSearchFields(),
-            (pvc) => pvc.getPods(podStore.items).map((pod) => pod.getName()),
+            (pvc) => podStore.getPodsByPersistentVolumeClaim(pvc).map((pod) => pod.getName()),
           ]}
           renderHeaderTitle="Persistent Volume Claims"
           renderTableHeader={[
@@ -86,7 +86,7 @@ class NonInjectedPersistentVolumeClaims extends React.Component<Dependencies> {
             { title: "Status", className: "status", sortBy: columnId.status, id: columnId.status },
           ]}
           renderTableContents={(pvc) => {
-            const pods = pvc.getPods(podStore.items);
+            const pods = podStore.getPodsByPersistentVolumeClaim(pvc);
             const { storageClassName } = pvc.spec;
             const storageClassDetailsUrl = getDetailsUrl(
               storageClassApi.formatUrlForNotListing({
