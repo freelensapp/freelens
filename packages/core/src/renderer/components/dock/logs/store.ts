@@ -11,8 +11,8 @@ import {
   getLeadingTimestamp,
   keepNewestLogLines,
   logTimestampPattern,
-  maxCombinedLogLines,
   maxConcurrentLogRequests,
+  maxLogLines,
   mergeIntoLogs,
   mergePodLogs,
   podLogColors,
@@ -106,7 +106,7 @@ export class LogStore {
         this.cursors.set(tabId, cursors);
         this.lineCounts.set(tabId, new Map());
         this.getRefresher(tabId, computedPods, logTabData).start();
-        this.podLogs.set(tabId, this.limitLines(this.mergeNewLines(tabId, cursors, logsOfPods, tagged), tagged));
+        this.podLogs.set(tabId, this.limitLines(this.mergeNewLines(tabId, cursors, logsOfPods, tagged)));
       },
     );
   }
@@ -114,28 +114,22 @@ export class LogStore {
   /**
    * The lines to ask a pod for: the ones it has in the tab and
    * `logLinesToLoad` more. In a combined tab every pod asks for its own lines,
-   * not the lines of the whole tab, and for no more than its share of
-   * `maxCombinedLogLines`, even when the polling has given it more since: the
-   * tab keeps no more than that, so a request for more would only be cut.
+   * not the lines of the whole tab. No pod asks for more than its share of
+   * `maxLogLines`, all of it for a single pod, even when the polling has given
+   * it more since: the tab keeps no more than that, so a request for more
+   * would only be cut.
    */
   private getTailLines(podLines: number, podCount: number): number {
-    const tailLines = podLines + logLinesToLoad;
+    const share = podCount <= 1 ? maxLogLines : Math.max(logLinesToLoad, Math.floor(maxLogLines / podCount));
 
-    if (podCount <= 1) {
-      return tailLines;
-    }
-
-    const share = Math.max(logLinesToLoad, Math.floor(maxCombinedLogLines / podCount));
-
-    return Math.min(tailLines, share);
+    return Math.min(podLines + logLinesToLoad, share);
   }
 
   /**
-   * A combined tab keeps its newest `maxCombinedLogLines` lines. The tab of a
-   * single pod is left as it is.
+   * Every tab keeps its newest `maxLogLines` lines.
    */
-  private limitLines(logs: string[], tagged: boolean): string[] {
-    return tagged ? keepNewestLogLines(logs, maxCombinedLogLines) : logs;
+  private limitLines(logs: string[]): string[] {
+    return keepNewestLogLines(logs, maxLogLines);
   }
 
   private getRefresher(
@@ -198,7 +192,7 @@ export class LogStore {
         const newLines = this.mergeNewLines(tabId, cursors, logsOfPods, tagged);
 
         // Add newly received logs to bottom.
-        this.podLogs.set(tabId, this.limitLines(mergeIntoLogs(this.podLogs.get(tabId) ?? oldLogs, newLines), tagged));
+        this.podLogs.set(tabId, this.limitLines(mergeIntoLogs(this.podLogs.get(tabId) ?? oldLogs, newLines)));
       },
     );
   }
