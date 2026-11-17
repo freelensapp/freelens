@@ -93,6 +93,8 @@ describe("the Terminal Shell Path setting", () => {
 
     expect(requestTerminalShellLookup).toHaveBeenCalledWith("zsh");
     expect(await result.findByText("Terminals start /bin/zsh.")).toBeInTheDocument();
+    expect(result.getByTestId("terminal-shell-lookup")).toHaveClass("found");
+    expect(result.getByTestId("terminal-shell-lookup")).not.toHaveClass("notFound");
   });
 
   it("says when terminals cannot find the shell", async () => {
@@ -103,6 +105,8 @@ describe("the Terminal Shell Path setting", () => {
     typeAndLeave(result.getByRole("textbox"), "elvish");
 
     expect(await result.findByText(/"elvish" was not found, so terminals cannot start it\./)).toBeInTheDocument();
+    expect(result.getByTestId("terminal-shell-lookup")).toHaveClass("notFound");
+    expect(result.getByTestId("terminal-shell-lookup")).not.toHaveClass("found");
   });
 
   it("keeps the answer to the latest lookup when an older one comes back later", async () => {

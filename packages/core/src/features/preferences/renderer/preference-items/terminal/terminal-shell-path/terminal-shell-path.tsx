@@ -4,6 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import { useEffect, useRef, useState } from "react";
@@ -12,6 +13,7 @@ import { Input } from "../../../../../../renderer/components/input";
 import { SubTitle } from "../../../../../../renderer/components/layout/sub-title";
 import requestTerminalShellLookupInjectable from "../../../../../terminal-shell-lookup/renderer/request-terminal-shell-lookup.injectable";
 import userPreferencesStateInjectable from "../../../../../user-preferences/common/state.injectable";
+import styles from "./terminal-shell-path.module.scss";
 
 import type { TerminalShellLookup } from "../../../../../terminal-shell-lookup/common/channels";
 import type { RequestTerminalShellLookup } from "../../../../../terminal-shell-lookup/renderer/request-terminal-shell-lookup.injectable";
@@ -76,7 +78,10 @@ const NonInjectedTerminalShellPath = observer(({ state, defaultShell, requestTer
         onBlur={() => void lookUpShell()}
       />
       {lookup && (
-        <div className="hint" data-testid="terminal-shell-lookup">
+        <div
+          className={cssNames("hint", lookup.path ? styles.found : styles.notFound)}
+          data-testid="terminal-shell-lookup"
+        >
           {lookup.path
             ? `Terminals start ${lookup.path}.`
             : `"${lookup.shell}" was not found, so terminals cannot start it. Give the full path of a shell, or the name of one on the PATH.`}
