@@ -650,6 +650,57 @@ describe("LogStore combined logs", () => {
     expect(getCallsFor("pod-a")[1][1]).toHaveProperty("sinceTime");
   });
 
+  describe("when loading older lines after the log was rotated", () => {
+    // A line of a pod at second `second`, as the API returns it.
+    const lineOf = (name: string, second: number) =>
+      `${new Date(Date.UTC(2026, 0, 1, 0, 0, second)).toISOString()} ${name} ${second}`;
+    const linesOf = (name: string, seconds: number[]) => seconds.map((second) => lineOf(name, second)).join("\n");
+    const taggedLineOf = (name: string, second: number) =>
+      `${new Date(Date.UTC(2026, 0, 1, 0, 0, second)).toISOString()} [${name}] ${name} ${second}`;
+    let answers: Map<string, string[]>;
+
+    beforeEach(() => {
+      answers = new Map();
+      // Every load takes the next answer of its pod; the refresh gets nothing new.
+      callForLogs.mockImplementation(async ({ name }, query) =>
+        query?.sinceTime ? "" : (answers.get(name)?.shift() ?? ""),
+      );
+    });
+
+    it("keeps the lines of the tab that the answer of a single pod no longer reaches", async () => {
+      answers.set("pod-a", [linesOf("pod-a", [1, 2, 3, 4, 5, 6]), linesOf("pod-a", [4, 5, 6, 7, 8])]);
+      pods.set([podA]);
+      await store.load(tabId, computedPods, computedTabData);
+      await store.load(tabId, computedPods, computedTabData);
+
+      expect(getLogs()).toEqual([1, 2, 3, 4, 5, 6, 7, 8].map((second) => lineOf("pod-a", second)));
+    });
+
+    it("keeps the tab when the answer brings nothing, and goes on refreshing from its last line", async () => {
+      answers.set("pod-a", [linesOf("pod-a", [1, 2, 3]), ""]);
+      pods.set([podA]);
+      await store.load(tabId, computedPods, computedTabData);
+      await store.load(tabId, computedPods, computedTabData);
+
+      expect(getLogs()).toEqual([1, 2, 3].map((second) => lineOf("pod-a", second)));
+
+      await vi.advanceTimersByTimeAsync(10_000);
+
+      expect(getCallsFor("pod-a").at(-1)?.[1]).toMatchObject({ sinceTime: "2026-01-01T00:00:03Z" });
+    });
+
+    it("keeps every line of a combined tab once when the answer of one pod starts later", async () => {
+      answers.set("pod-a", [linesOf("pod-a", [1, 3, 5, 7, 9]), linesOf("pod-a", [5, 7, 9, 11])]);
+      answers.set("pod-b", [linesOf("pod-b", [2, 4, 6, 8, 10]), linesOf("pod-b", [2, 4, 6, 8, 10, 12])]);
+      await store.load(tabId, computedPods, computedTabData);
+      await store.load(tabId, computedPods, computedTabData);
+
+      expect(getLogs()).toEqual(
+        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((second) => taggedLineOf(second % 2 ? "pod-a" : "pod-b", second)),
+      );
+    });
+  });
+
   it("never sends more requests at the same time than the limit", async () => {
     const manyPods = Array.from({ length: maxConcurrentLogRequests * 3 }, (_, index) => createPod(`pod-${index}`));
     const responses = new Map(manyPods.map((pod) => [pod.getName(), deferred<string>()]));

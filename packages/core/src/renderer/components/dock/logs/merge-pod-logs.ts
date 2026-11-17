@@ -264,3 +264,33 @@ export function keepNewestLogLines(logs: string[], maxLines: number): string[] {
 
   return logs.slice(start);
 }
+
+/**
+ * The lines of `logs` older than `timestamp`, the start of a newer answer for
+ * the same tab, without the ones that answer brings again: a line with a
+ * timestamp that `again` has word for word, and the lines without a timestamp
+ * that continue it. Lines before the first one with a timestamp, such as an
+ * error message, are left out.
+ */
+export function linesBefore(logs: readonly string[], timestamp: string, again: ReadonlySet<string>): string[] {
+  const kept: string[] = [];
+  let keeping = false;
+
+  for (const line of logs) {
+    const lineTimestamp = getLeadingTimestamp(line);
+
+    if (lineTimestamp !== undefined) {
+      if (compareLogTimestamps(lineTimestamp, timestamp) >= 0) {
+        break;
+      }
+
+      keeping = !again.has(line);
+    }
+
+    if (keeping) {
+      kept.push(line);
+    }
+  }
+
+  return kept;
+}
