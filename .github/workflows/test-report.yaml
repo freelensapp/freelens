@@ -6,6 +6,7 @@ on:
   workflow_run:
     workflows:
       - Unit tests
+      - Integration tests
     types:
       - completed
 
@@ -20,9 +21,15 @@ jobs:
     runs-on: ubuntu-26.04-arm
     timeout-minutes: 5
 
-    # One comment per pull request, edited by the runs one after the other
+    # One comment per workflow and pull request, edited by the runs one after
+    # the other
     concurrency:
-      group: test-report-${{ github.event.workflow_run.head_repository.full_name }}-${{ github.event.workflow_run.head_branch }}
+      group: test-report-${{ github.event.workflow_run.workflow_id }}-${{ github.event.workflow_run.head_repository.full_name }}-${{ github.event.workflow_run.head_branch }}
+
+    env:
+      # The name of the workflow, one of the names above, is the title of the
+      # report and of the marker of its comment
+      TITLE: ${{ github.event.workflow_run.name }}
 
     permissions:
       actions: read
@@ -78,7 +85,7 @@ jobs:
           REPORT_RUN_ID: ${{ github.event.workflow_run.id }}
         run: |
           gh api --paginate "repos/${GITHUB_REPOSITORY}/actions/runs/${RUN_ID}/attempts/${RUN_ATTEMPT}/jobs" --jq '.jobs[] | [.name, .html_url] | @tsv' > jobs.tsv
-          node .github/scripts/test-report.mjs reports jobs.tsv "Unit tests" > report.md
+          node .github/scripts/test-report.mjs reports jobs.tsv "${TITLE}" > report.md
           cat report.md >> "${GITHUB_STEP_SUMMARY}"
 
       # The comment of github-actions that starts with the marker of the report,
@@ -90,7 +97,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           PR: ${{ steps.pull-request.outputs.number }}
         run: |
-          id="$(gh api --paginate "repos/${GITHUB_REPOSITORY}/issues/${PR}/comments" --jq '.[] | select(.user.login == "github-actions[bot]" and (.body | startswith("<!-- vitest-report: Unit tests -->"))) | .id' | head -n 1)"
+          id="$(gh api --paginate "repos/${GITHUB_REPOSITORY}/issues/${PR}/comments" --jq '.[] | select(.user.login == "github-actions[bot]" and (.body | startswith("<!-- vitest-report: \($ENV.TITLE) -->"))) | .id' | head -n 1)"
           if [[ -n ${id} ]]; then
             gh api --method PATCH "repos/${GITHUB_REPOSITORY}/issues/comments/${id}" -F body=@report.md > /dev/null
           else

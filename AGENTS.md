@@ -379,22 +379,27 @@ unused classes inside a stylesheet.
 
 ## Test Reports
 
-Each shard of `unit-tests.yaml` writes the JUnit XML of Vitest next to its
-GitHub Actions reporter, which annotates the failed tests, and uploads it as an
-artifact named `junit-…`. The artifact also holds `job.txt` with the name of
-the job, written by the first step of the shard, so that a shard which fails
-before its tests still has a row in the report, marked as one without results,
-and the table never looks greener than the run.
+Each test job of `unit-tests.yaml` and `integration-tests.yaml` writes the
+JUnit XML of Vitest next to its GitHub Actions reporter, which annotates the
+failed tests, and uploads it as an artifact named `junit-…`. The artifact also
+holds `job.txt` with the name of the job as GitHub shows it, written by the
+first step of the job, so that a job which fails before its tests still has a
+row in the report, marked as one without results, and the table never looks
+greener than the run. The name links the row to the job; a name that differs
+from the one of the run only leaves the row without a link. A retry of the
+integration tests writes over the XML of the first run, so the report shows
+the result the job ends with.
 
-`.github/scripts/test-report.mjs` turns the artifacts into one Markdown table
-for all the shards, with the tests that failed below it. It has no
-dependencies, so the jobs that run it need no `pnpm install`. Two jobs run it:
+`.github/scripts/test-report.mjs` turns the artifacts of a run into one
+Markdown table for all its jobs, with the tests that failed below it. It has
+no dependencies, so the jobs that run it need no `pnpm install`. It runs in:
 
-- `report` in `unit-tests.yaml`, for the summary of the run;
+- the `report` job of each of the two workflows, for the summary of the run;
 - `test-report.yaml`, a `workflow_run` workflow, for the comment on the pull
-  request, which each run edits rather than adding a new one. The run of a pull
-  request of a fork has a token that cannot comment, and a `workflow_run` run
-  has one that can, as it runs the workflow of the default branch.
+  request, one per workflow, which each run edits rather than adding a new
+  one. The run of a pull request of a fork has a token that cannot comment,
+  and a `workflow_run` run has one that can, as it runs the workflow of the
+  default branch.
 
 That makes the XML of `test-report.yaml` untrusted input with a token that can
 write: it may come from a pull request of a fork. The workflow checks out the
@@ -407,8 +412,8 @@ artifact, and a run whose commit is no longer the head of an open pull request
 does not comment.
 
 A `workflow_run` workflow runs from the default branch only, so a change of
-`test-report.yaml` takes effect once it is merged; the `report` job of
-`unit-tests.yaml` runs in the pull request itself.
+`test-report.yaml` takes effect once it is merged; the `report` jobs run in the
+pull request itself.
 
 ## Dependency Injection System
 
