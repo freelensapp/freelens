@@ -539,8 +539,12 @@ describe("LogStore combined logs", () => {
     const share = Math.floor(maxLogLines / defaultMaxCombinedLogsPods);
     const manyPods = Array.from({ length: defaultMaxCombinedLogsPods }, (_, index) => createPod(`pod-${index}`));
 
+    // Only pod-0 has more than its share, so that the tab is not full.
     callForLogs.mockImplementation(async ({ name }) =>
-      Array.from({ length: share + 100 }, (_, index) => `2026-01-01T00:00:00Z ${name} ${index}`).join("\n"),
+      Array.from(
+        { length: name === "pod-0" ? share + 100 : 10 },
+        (_, index) => `2026-01-01T00:00:00Z ${name} ${index}`,
+      ).join("\n"),
     );
     pods.set(manyPods);
     await store.load(tabId, computedPods, computedTabData);
@@ -619,13 +623,31 @@ describe("LogStore combined logs", () => {
 
   it("asks a single pod for no more lines than a tab holds", async () => {
     callForLogs.mockImplementation(async ({ name }) =>
-      Array.from({ length: maxLogLines }, (_, index) => `2026-01-01T00:00:00Z ${name} ${index}`).join("\n"),
+      Array.from({ length: maxLogLines - 100 }, (_, index) => `2026-01-01T00:00:00Z ${name} ${index}`).join("\n"),
     );
     pods.set([podA]);
     await store.load(tabId, computedPods, computedTabData);
     await store.load(tabId, computedPods, computedTabData);
 
     expect(getCallsFor("pod-a").map(([, query]) => query?.tailLines)).toEqual([500, maxLogLines]);
+  });
+
+  it("does not ask for older lines once the tab is full, and keeps refreshing it", async () => {
+    callForLogs.mockImplementation(async ({ name }, query) =>
+      query?.sinceTime
+        ? ""
+        : Array.from({ length: maxLogLines }, (_, index) => `2026-01-01T00:00:00Z ${name} ${index}`).join("\n"),
+    );
+    pods.set([podA]);
+    await store.load(tabId, computedPods, computedTabData);
+    await store.load(tabId, computedPods, computedTabData);
+
+    expect(getCallsFor("pod-a")).toHaveLength(1);
+
+    await vi.advanceTimersByTimeAsync(10_000);
+
+    expect(getCallsFor("pod-a")).toHaveLength(2);
+    expect(getCallsFor("pod-a")[1][1]).toHaveProperty("sinceTime");
   });
 
   it("never sends more requests at the same time than the limit", async () => {

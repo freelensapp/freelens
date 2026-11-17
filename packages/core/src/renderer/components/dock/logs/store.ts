@@ -90,6 +90,12 @@ export class LogStore {
     computedPods: IComputedValue<Pod[]>,
     logTabData: IComputedValue<LogTabData | undefined>,
   ): Promise<void> {
+    // A full tab holds no older line: asking for them would only fetch the
+    // lines it shows again. Its refresh goes on.
+    if ((this.podLogs.get(tabId)?.length ?? 0) >= maxLogLines) {
+      return;
+    }
+
     // A manual load supersedes any poll or load from the previous tab selection.
     this.stopLoadingLogs(tabId);
 
