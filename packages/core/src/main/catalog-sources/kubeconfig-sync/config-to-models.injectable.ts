@@ -8,11 +8,10 @@ import { getInjectable } from "@ogre-tools/injectable";
 import { splitConfig } from "../../../common/kube-helpers";
 import kubeconfigSyncLoggerInjectable from "./logger.injectable";
 
-import type { KubeConfig } from "@kubernetes/client-node";
-
 import type { UpdateClusterModel } from "../../../common/cluster-types";
+import type { KubeConfigData } from "../../../common/kube-config";
 
-export type ConfigToModels = (rootConfig: KubeConfig, filePath: string) => UpdateClusterModel[];
+export type ConfigToModels = (rootConfig: KubeConfigData, filePath: string) => UpdateClusterModel[];
 
 const configToModelsInjectable = getInjectable({
   id: "config-to-models",
