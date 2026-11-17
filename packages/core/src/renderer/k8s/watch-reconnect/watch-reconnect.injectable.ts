@@ -25,6 +25,11 @@ const watchReconnectInjectable = getInjectable({
           signal: AbortSignal.timeout(probeTimeout),
         });
 
+        // Read to the end, or the timeout aborts the unread body later, and
+        // every probe shows up as a failed request. Both bodies are small, and
+        // the status already said what the probe asks.
+        await response.text().catch(() => {});
+
         return response.status < 500;
       },
     }),
