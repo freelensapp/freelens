@@ -9,7 +9,7 @@ import { getInjectable } from "@ogre-tools/injectable";
 
 import type { AuthorizationV1Api } from "@kubernetes/client-node";
 
-import type { KubeApiResource } from "../rbac";
+import type { KubeApiResource } from "../../common/rbac";
 
 export type CanListResource = (resource: KubeApiResource) => boolean;
 
