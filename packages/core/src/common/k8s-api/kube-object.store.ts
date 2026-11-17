@@ -95,6 +95,31 @@ export interface KubeObjectStoreDependencies {
   readonly logger: Logger;
 }
 
+interface ItemLookups<K> {
+  readonly byId: Map<string, K>;
+  readonly byPath: Map<string, K>;
+}
+
+// The first item of each id and of each self link, as a `find` over the items
+// returns it.
+const indexItems = <K extends KubeObject>(items: readonly K[]): ItemLookups<K> => {
+  const lookups: ItemLookups<K> = { byId: new Map(), byPath: new Map() };
+
+  for (const item of items) {
+    const id = item.getId();
+
+    if (!lookups.byId.has(id)) {
+      lookups.byId.set(id, item);
+    }
+
+    if (!lookups.byPath.has(item.selfLink)) {
+      lookups.byPath.set(item.selfLink, item);
+    }
+  }
+
+  return lookups;
+};
+
 export class KubeObjectStore<
   K extends KubeObject = KubeObject,
   A extends KubeApi<K, D> = KubeApi<K, KubeJsonApiDataFor<K>>,
@@ -105,6 +130,13 @@ export class KubeObjectStore<
 
   private readonly loadedNamespaces = observable.box<string[]>();
   private readonly watchingController = new AbortController();
+
+  // Lookups by id and self link run once per row of a list (its menu), once
+  // per warning of the cluster overview, and from details and logs. Kept
+  // alive, so that the index is built once per change of the items, and only
+  // for a store that is looked up in at all: a computed nobody reads is never
+  // evaluated.
+  private readonly lookups = computed(() => indexItems(this.items), { keepAlive: true });
 
   constructor(
     protected readonly dependencies: KubeObjectStoreDependencies,
@@ -165,7 +197,7 @@ export class KubeObjectStore<
   }
 
   getById(id: string): K | undefined {
-    return this.items.find((item) => item.getId() === id);
+    return this.lookups.get().byId.get(id);
   }
 
   getByName(name: string, namespace?: string): K | undefined {
@@ -186,7 +218,7 @@ export class KubeObjectStore<
   }
 
   getByPath(path: string): K | undefined {
-    return this.items.find((item) => item.selfLink === path);
+    return this.lookups.get().byPath.get(path);
   }
 
   getByLabel(labels: string[] | Partial<Record<string, string>>): K[] {
