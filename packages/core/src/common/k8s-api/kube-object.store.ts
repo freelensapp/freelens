@@ -29,6 +29,7 @@ import type { Patch } from "rfc6902";
 import type { PartialDeep } from "type-fest";
 
 import type { ClusterContext } from "../../renderer/cluster-frame-context/cluster-frame-context";
+import type { WatchReconnect } from "./watch-reconnect";
 
 export type OnLoadFailure = (error: unknown) => void;
 
@@ -93,6 +94,12 @@ export type JsonPatch = Patch;
 export interface KubeObjectStoreDependencies {
   readonly context: ClusterContext;
   readonly logger: Logger;
+
+  /**
+   * Decides when a failed watch starts again. Without it a failed watch
+   * starts again after 5 seconds.
+   */
+  readonly watchReconnect?: WatchReconnect;
 }
 
 interface ItemLookups<K> {
@@ -582,7 +589,28 @@ export class KubeObjectStore<
     }
 
     let timedRetry: NodeJS.Timeout;
+    let cancelReconnect: Disposer | undefined;
+    // Failures in a row since the watch last connected.
+    let failures = 0;
     const signal = abortController.signal;
+    const { watchReconnect } = this.dependencies;
+
+    const retryLater = () => {
+      clearTimeout(timedRetry);
+      cancelReconnect?.();
+      failures += 1;
+
+      if (watchReconnect) {
+        cancelReconnect = watchReconnect.schedule(startNewWatch, failures);
+      } else {
+        timedRetry = setTimeout(startNewWatch, 5000);
+      }
+    };
+
+    const onConnect = () => {
+      failures = 0;
+      watchReconnect?.connected();
+    };
 
     const startNewWatch = () => {
       // A retry or a reload scheduled before the abort must not start a
@@ -593,6 +621,7 @@ export class KubeObjectStore<
         namespace,
         abortController,
         callback,
+        onConnect,
       });
     };
 
@@ -609,8 +638,7 @@ export class KubeObjectStore<
         }
 
         // not sure what to do, best to retry
-        clearTimeout(timedRetry);
-        timedRetry = setTimeout(startNewWatch, 5000);
+        retryLater();
       } else if (error instanceof KubeStatus && error.code === 410) {
         clearTimeout(timedRetry);
         // resourceVersion has gone, let's try to reload
@@ -623,16 +651,20 @@ export class KubeObjectStore<
         }, 1000);
       } else if (error) {
         // not sure what to do, best to retry
-        clearTimeout(timedRetry);
-        timedRetry = setTimeout(startNewWatch, 5000);
+        retryLater();
       }
 
       if (data) {
+        // Also for an API whose `watch` does not call `onConnect`.
+        failures = 0;
         this.eventsBuffer.push(data);
       }
     };
 
-    signal.addEventListener("abort", () => clearTimeout(timedRetry));
+    signal.addEventListener("abort", () => {
+      clearTimeout(timedRetry);
+      cancelReconnect?.();
+    });
     startNewWatch();
   }
 

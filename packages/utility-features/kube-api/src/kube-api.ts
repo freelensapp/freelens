@@ -270,6 +270,13 @@ export interface KubeApiWatchOptions<Object extends KubeObject, Data extends Kub
    * timeout in seconds
    */
   timeout?: number;
+
+  /**
+   * Called each time the watch request is accepted, including the requests
+   * that restart it: the connection works, even before the first event, which
+   * a resource that seldom changes may not send for a long time.
+   */
+  onConnect?: () => void;
 }
 
 export type KubeApiPatchType = "merge" | "json" | "strategic";
@@ -819,6 +826,7 @@ export class KubeApi<
       retry = false,
       timeout = 600,
       watchId = `${this.kind.toLowerCase()}-${this.watchId++}`,
+      onConnect,
     } = opts ?? {};
 
     // Create AbortController for this request
@@ -849,6 +857,8 @@ export class KubeApi<
 
           return callback(null, response);
         }
+
+        onConnect?.();
 
         // Add mechanism to retry in case timeoutSeconds is set but the watch wasn't timed out.
         // This can happen if e.g. network is offline and AWS NLB is used.
