@@ -904,4 +904,53 @@ describe("KubeObjectStore", () => {
       expect(store.getAllByNs([], true)).toEqual([]);
     });
   });
+
+  describe("lookups by id and path", () => {
+    const createObject = (name: string, uid: string, selfLink: string) =>
+      new KubeObject({
+        apiVersion: "v1",
+        kind: "Foo",
+        metadata: { name, resourceVersion: "1", uid, namespace: "default", selfLink },
+      });
+
+    const first = createObject("first", "uid-1", "/path/1");
+    const second = createObject("second", "uid-2", "/path/2");
+    const sameAsFirst = createObject("same-as-first", "uid-1", "/path/1");
+
+    const createStore = () => {
+      const store = new FakeKubeObjectStore(() => [], {});
+
+      store.items.replace([first, second, sameAsFirst]);
+
+      return store;
+    };
+
+    it("returns the first object of an id or a path, as a find over the items does", () => {
+      const store = createStore();
+
+      expect(store.getById("uid-1")).toBe(first);
+      expect(store.getById("uid-2")).toBe(second);
+      expect(store.getById("none")).toBeUndefined();
+      expect(store.getByPath("/path/1")).toBe(first);
+      expect(store.getByPath("/path/2")).toBe(second);
+      expect(store.getByPath("/none")).toBeUndefined();
+    });
+
+    it("follows added, replaced and removed objects", () => {
+      const store = createStore();
+      const third = createObject("third", "uid-3", "/path/3");
+      const newSecond = createObject("second", "uid-2", "/path/2");
+
+      expect(store.getById("uid-3")).toBeUndefined();
+
+      store.items.push(third);
+      store.items[1] = newSecond;
+      store.items.remove(first);
+
+      expect(store.getById("uid-3")).toBe(third);
+      expect(store.getByPath("/path/2")).toBe(newSecond);
+      expect(store.getById("uid-1")).toBe(sameAsFirst);
+      expect(store.getByPath("/path/1")).toBe(sameAsFirst);
+    });
+  });
 });
