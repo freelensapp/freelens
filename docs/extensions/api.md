@@ -1189,6 +1189,19 @@ why there is no packing step and no symlink. The renderer loads from
 — one origin for all extensions, because an origin per extension would advertise
 an isolation the host cannot guarantee under `contextIsolation: false`.
 
+**Verified and unverified installs.** A tarball is installed **verified** when
+its source vouches for its bytes: the `dist.integrity` of the registry's
+package metadata, or a `.tgz.sha256` sidecar beside a tarball installed from a
+URL or from a file. A download which does not match its checksum is refused. A
+tarball with no checksum is installed **unverified**, and an unverified install
+stays **disabled** until the user enables it on the Extensions page; a verified
+install is enabled at once. Installing over an enabled extension disables it
+first, so an unverified build installed over it leaves it disabled too. A
+directory install is unverified by construction, is shown as development rather
+than unverified, and is enabled at once, because it is the development loop. A
+checksum proves transfer integrity, not authenticity: a host which can rewrite
+the tarball can rewrite its sidecar.
+
 ## The three dependency categories
 
 The contract has three, not two:

@@ -23,8 +23,9 @@ const sidecarSuffix = ".sha256";
  * dialog or a drop.
  *
  * As with a URL install the checksum comes from an optional `.tgz.sha256`
- * sidecar beside the tarball, and its absence warns rather than refuses. That is
- * the common case for an author installing their own build.
+ * sidecar beside the tarball, and its absence installs the extension disabled
+ * rather than refusing it. That is the common case for an author installing
+ * their own build, who enables it by hand, or registers the directory instead.
  */
 const installFromFileInjectable = getInjectable({
   id: "install-from-file",

@@ -15,6 +15,7 @@ import {
   maxCombinedLogsDownloadBytes,
   maxConcurrentLogRequests,
   mergePodLogs,
+  splitLogLines,
   stripAnsiColors,
 } from "./merge-pod-logs";
 
@@ -92,7 +93,7 @@ const downloadAllLogsForPodsInjectable = getInjectable({
         ...(tailLines === undefined ? {} : { tailLines }),
       });
       const bytes = encoder.encode(logs).byteLength;
-      const lines = logs.trimEnd().replace(/\r/g, "\n").split("\n").filter(Boolean);
+      const lines = splitLogLines(logs).filter(Boolean);
       const cut = bytes >= limitBytes;
 
       // The API ends a longer log at limitBytes exactly, usually in the middle of a line.

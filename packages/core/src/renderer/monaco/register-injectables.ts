@@ -7,12 +7,18 @@
  */
 
 import addNewMonacoThemeInjectable from "./add-new-theme.injectable";
+import registerYamlFoldingRangeProviderInjectable from "./register-yaml-folding-range-provider.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
   try {
     di.register(addNewMonacoThemeInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(registerYamlFoldingRangeProviderInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

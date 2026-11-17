@@ -162,3 +162,13 @@ export type UserStoreFlatModel = {
 export type UserPreferencesModel = {
   [field in keyof PreferenceDescriptors]?: PreferencesModelType<field>;
 };
+
+/**
+ * The variant of the theme: the one the operating system uses, or a fixed one.
+ */
+export type ThemeVariantPreference = "system" | "dark" | "light";
+
+/**
+ * The variant of the terminal theme, when the terminal does not match the theme of the application.
+ */
+export type TerminalThemeVariantPreference = "dark" | "light";

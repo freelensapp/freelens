@@ -10,11 +10,13 @@ import {
   compareLogTimestamps,
   getLeadingTimestamp,
   keepNewestLogLines,
+  logTimestampPattern,
   maxCombinedLogLines,
   maxConcurrentLogRequests,
   mergeIntoLogs,
   mergePodLogs,
   podLogColors,
+  splitLogLines,
 } from "./merge-pod-logs";
 
 import type { Pod, PodLogsQuery } from "@freelensapp/kube-object";
@@ -29,6 +31,11 @@ import type { LogTabData } from "./tab-store";
 type PodLogLine = string;
 
 const logLinesToLoad = 500;
+
+// A line can come without the timestamp of the API: see getLeadingTimestamp.
+const timestampAndLine = new RegExp(`^(${logTimestampPattern})(?=\\s|$)(.*)`, "m");
+const timestamps = new RegExp(`^${logTimestampPattern}(?=\\s|$)`, "gm");
+const timestampsAndSeparator = new RegExp(`^${logTimestampPattern}(?:\\s|$)`, "gm");
 
 interface Dependencies {
   callForLogs: CallForLogs;
@@ -292,7 +299,7 @@ export class LogStore {
             signal,
           );
 
-          logsOfPods.push({ pod, lines: result.trimEnd().replace(/\r/g, "\n").split("\n") });
+          logsOfPods.push({ pod, lines: splitLogLines(result) });
         } catch (error) {
           errors.push(error);
         }
@@ -452,7 +459,7 @@ export class LogStore {
   }
 
   splitOutTimestamp(logs: string): [string, string] {
-    const extraction = /^(\d+\S+)(.*)/m.exec(logs);
+    const extraction = timestampAndLine.exec(logs);
 
     if (!extraction || extraction.length < 3) {
       return ["", logs];
@@ -462,11 +469,11 @@ export class LogStore {
   }
 
   getTimestamps(logs: string) {
-    return logs.match(/^\d+\S+/gm);
+    return logs.match(timestamps);
   }
 
   removeTimestamps(logs: string): string {
-    return logs.replace(/^\d+.*?\s/gm, "");
+    return logs.replace(timestampsAndSeparator, "");
   }
 
   clearLogs(tabId: TabId): void {

@@ -853,9 +853,9 @@ Each entry is marked _value_, _type_, _class_ (a value and a type) or _member_.
   `Renderer.Component.Dependencies` (_type_) — see
   [`NamespaceSelectBadgeNonInjected` is gone with them](#namespaceselectbadgenoninjected-is-gone-with-them).
 - `Renderer.Component.SliderProps`: the members it inherited from MUI's
-  `SliderProps` — `sx`, `slots`, `slotProps`, `marks`, `track`,
-  `valueLabelFormat` and the rest, and the HTML and ARIA attributes (_member_).
-  `SliderProps` now declares only `className`, `min`, `max`, `step`, `value`,
+  `SliderProps` — `sx`, `slots`, `slotProps`, `track`, `valueLabelFormat` and
+  the rest, and the HTML and ARIA attributes (_member_). `SliderProps` now
+  declares only `className`, `min`, `max`, `step`, `marks`, `value`,
   `disabled`, `orientation`, `valueLabelDisplay`, `onChange` and
   `onChangeCommitted`.
 - `Renderer.K8sApi` store classes (_class_): `ClusterRoleBindingStore`,
@@ -2155,9 +2155,12 @@ What a reload is, so that what you have to write is clear:
 
 Three consequences to know:
 
-- An extension installed this way is **unverified by construction** and is
-  marked as such in the UI. The absence of a version-and-digest segment in its
-  path is what identifies it; there is no separate flag.
+- An extension installed this way is **unverified by construction**, and is
+  shown as development in the UI. Unlike an unverified tarball, it is enabled
+  when you register it (see
+  [Publishing a checksum](#publishing-a-checksum)). The absence of a
+  version-and-digest segment in its path is what identifies it; there is no
+  separate flag.
 - **Each reload retains the previous module graph.** A module object cannot be
   evicted from a realm's module map, so memory grows with the reload count.
   Deinitialisation still happens properly through `onDeactivate`, but a long
@@ -2204,109 +2207,137 @@ restarted once.
 ## Checklist
 
 - [ ] Replace any direct `@freelensapp/*` internal dependency with
-  `@freelensapp/extensions` (types only).
+      `@freelensapp/extensions` (types only).
 - [ ] Import stylesheets normally (side-effect or CSS-module import); drop any
-  `?inline` + `<style>` CSS workaround, and make sure your build emits a
-  single CSS asset next to the renderer entry.
+      `?inline` + `<style>` CSS workaround, and make sure your build emits a
+      single CSS asset next to the renderer entry.
 - [ ] Replace any legacy `flexbox.scss` classes (`flex`, `column`, `gaps`,
-  `box`, `grow`, `align-center`, …) with plain CSS in your own stylesheet —
-  the host no longer provides them (see
-  [Migrating off flexbox.scss](#migrating-off-flexboxscss)). For substantial
-  UI you can instead run your own Tailwind build (see
-  [Bringing your own Tailwind](#bringing-your-own-tailwind)).
+      `box`, `grow`, `align-center`, …) with plain CSS in your own stylesheet —
+      the host no longer provides them (see
+      [Migrating off flexbox.scss](#migrating-off-flexboxscss)). For substantial
+      UI you can instead run your own Tailwind build (see
+      [Bringing your own Tailwind](#bringing-your-own-tailwind)).
 - [ ] Confirm your entrypoints are ESM or CommonJS and, if ESM, that
-  `package.json` declares it.
+      `package.json` declares it.
 - [ ] Access only the process-appropriate namespace (`Main` in main,
-  `Renderer` in the renderer, `Common` in both).
+      `Renderer` in the renderer, `Common` in both).
 - [ ] Look up every v1 namespace path you use in the
-  [v1→v2 rename table](#v1v2-rename-table).
+      [v1→v2 rename table](#v1v2-rename-table).
 - [ ] Replace any `K8sApi.forRemoteCluster` usage with a direct call to the API
-  server — it was removed (see
-  [`K8sApi.forRemoteCluster` removed](#k8sapiforremotecluster-removed)).
+      server — it was removed (see
+      [`K8sApi.forRemoteCluster` removed](#k8sapiforremotecluster-removed)).
 - [ ] For HTTP to anything other than the cluster, replace any bundled HTTP
-  client, and any `globalThis.fetch` in main, with `Main.Util.fetch`, and
-  give it to a bundled library in main that takes a `fetch` option — the
-  host's client is the one that honours the user's proxy and CA settings.
-  In the renderer, use the global `fetch` (see
-  [HTTP: `Main.Util.fetch` and the renderer's `fetch`](#http-mainutilfetch-and-the-renderers-fetch)).
+      client, and any `globalThis.fetch` in main, with `Main.Util.fetch`, and
+      give it to a bundled library in main that takes a `fetch` option — the
+      host's client is the one that honours the user's proxy and CA settings.
+      In the renderer, use the global `fetch` (see
+      [HTTP: `Main.Util.fetch` and the renderer's `fetch`](#http-mainutilfetch-and-the-renderers-fetch)).
 - [ ] Replace any client of a catalog cluster built from its `kubeConfigPath`
-  — a bundled Kubernetes client, a `fetch` to the API server — with
-  `K8sApi.forCluster` / `K8sApi.KubeJsonApi.forCluster`, and run a spawned
-  `kubectl` or `helm` with the environment of
-  `Main.Shell.getEnvironment(clusterId)`. Such a client works on a plain
-  network and ignores the cluster's proxy setting (see
-  [Reaching a catalog cluster](#reaching-a-catalog-cluster)).
+      — a bundled Kubernetes client, a `fetch` to the API server — with
+      `K8sApi.forCluster` / `K8sApi.KubeJsonApi.forCluster`, and run a spawned
+      `kubectl` or `helm` with the environment of
+      `Main.Shell.getEnvironment(clusterId)`. Such a client works on a plain
+      network and ignores the cluster's proxy setting (see
+      [Reaching a catalog cluster](#reaching-a-catalog-cluster)).
 - [ ] Drop any `undici` dependency added for the `dispatcher` field of
-  `reqInit` — the field is gone and `undici` is no longer a declared type
-  dependency of `@freelensapp/extensions`.
+      `reqInit` — the field is gone and `undici` is no longer a declared type
+      dependency of `@freelensapp/extensions`.
 - [ ] Re-check anything annotated `Response` or `RequestInit` from the DOM
-  around `K8sApi.KubeJsonApi` and `reqInit`: the host's fetch types are
-  structural now, so `const r: Response = await api.getResponse(...)` no
-  longer compiles.
+      around `K8sApi.KubeJsonApi` and `reqInit`: the host's fetch types are
+      structural now, so `const r: Response = await api.getResponse(...)` no
+      longer compiles.
 - [ ] Replace any `react-router` / `react-router-dom` usage imported via the
-  Freelens bundle, a `Link` with `Renderer.Component.MaybeLink` — the
-  `ReactRouter*` re-exports were removed (see
-  [Routing: `react-router` re-exports removed](#routing-react-router-re-exports-removed)).
+      Freelens bundle, a `Link` with `Renderer.Component.MaybeLink` — the
+      `ReactRouter*` re-exports were removed (see
+      [Routing: `react-router` re-exports removed](#routing-react-router-re-exports-removed)).
 - [ ] Replace any `Renderer.Component.List` usage with your own table — it was
-  removed along with the `react-table` dependency behind it (see
-  [`Renderer.Component.List` removed](#renderercomponentlist-removed)).
+      removed along with the `react-table` dependency behind it (see
+      [`Renderer.Component.List` removed](#renderercomponentlist-removed)).
 - [ ] Replace any built-in store **class** named from `Renderer.K8sApi`
-  (`PodStore`, `CRDStore`, `HPAStore`, …) with the store singleton, with
-  `typeof` that singleton in type positions, or with
-  `KubeObjectStore<T>` as the base class for your own store (see
-  [`Renderer.K8sApi` concrete store classes removed](#rendererk8sapi-concrete-store-classes-removed)).
+      (`PodStore`, `CRDStore`, `HPAStore`, …) with the store singleton, with
+      `typeof` that singleton in type positions, or with
+      `KubeObjectStore<T>` as the base class for your own store (see
+      [`Renderer.K8sApi` concrete store classes removed](#rendererk8sapi-concrete-store-classes-removed)).
 - [ ] If you declare one `LensExtensionKubeObject` class per version of a CRD,
-  list every version in one class or pick one class yourself. In v2 every
-  class whose version the cluster serves resolves, so code that walks them
-  shows the same objects twice, and no type check catches it (see
-  [`Renderer.K8sApi` concrete store classes removed](#rendererk8sapi-concrete-store-classes-removed)).
+      list every version in one class or pick one class yourself. In v2 every
+      class whose version the cluster serves resolves, so code that walks them
+      shows the same objects twice, and no type check catches it (see
+      [`Renderer.K8sApi` concrete store classes removed](#rendererk8sapi-concrete-store-classes-removed)).
 - [ ] Replace any use of `Renderer.Component.VirtualList`, `appMenus`,
-  `trayMenus`, `Common.Types.IpcRendererEvent`,
-  `Common.Types.IpcMainEvent` or `Common.Types.IpcMainInvokeEvent` — they
-  were removed (see
-  [Unused members removed](#unused-members-removed)).
+      `trayMenus`, `Common.Types.IpcRendererEvent`,
+      `Common.Types.IpcMainEvent` or `Common.Types.IpcMainInvokeEvent` — they
+      were removed (see
+      [Unused members removed](#unused-members-removed)).
 - [ ] Move any Node or Electron use out of the renderer — `require()`, a
-  builtin import, `Buffer`, `process` — to the replacements in
-  [Node and Electron in the renderer](#node-and-electron-in-the-renderer),
-  or into main behind `Ipc`, and stop marking the builtins external in the
-  renderer build.
+      builtin import, `Buffer`, `process` — to the replacements in
+      [Node and Electron in the renderer](#node-and-electron-in-the-renderer),
+      or into main behind `Ipc`, and stop marking the builtins external in the
+      renderer build.
 - [ ] Build the main entry for Node (`platform: "node"` with Vite 8 or
-  Rolldown), so that a bundled CommonJS package can `require()` the
-  builtins (see
-  [Node and Electron in the renderer](#node-and-electron-in-the-renderer)).
+      Rolldown), so that a bundled CommonJS package can `require()` the
+      builtins (see
+      [Node and Electron in the renderer](#node-and-electron-in-the-renderer)).
 - [ ] Move mobx decorators to standard decorators: drop
-  `experimentalDecorators`, write `@observable accessor`, replace the
-  namespaced annotations and `comparer.*` with their named exports,
-  remove `makeObservable(this)`, and read `this.props` of an `@observer`
-  class component only in its `render()` (see
-  [MobX 7 and mobx-react 10](#mobx-7-and-mobx-react-10-standard-decorators-only)).
+      `experimentalDecorators`, write `@observable accessor`, replace the
+      namespaced annotations and `comparer.*` with their named exports,
+      remove `makeObservable(this)`, and read `this.props` of an `@observer`
+      class component only in its `render()` (see
+      [MobX 7 and mobx-react 10](#mobx-7-and-mobx-react-10-standard-decorators-only)).
 - [ ] Give main, renderer and common code a directory and a `tsconfig.json`
-  each, so the type check catches the next Node API in renderer code (see
-  [Source layout](#source-layout-one-tsconfig-per-runtime-environment)).
+      each, so the type check catches the next Node API in renderer code (see
+      [Source layout](#source-layout-one-tsconfig-per-runtime-environment)).
 - [ ] Write your `kubeObjectDetailItems` and `kubeObjectMenuItems` with
-  `Renderer.K8sApi.detailsFor` and `menuItemFor`, and declare the instance
-  `kind` and `apiVersion` of your model classes as literal types, so a
-  component typed for another kind or version than its registration's
-  fails the type check (see
-  [Registering things](#registering-things-declarative-fields)).
+      `Renderer.K8sApi.detailsFor` and `menuItemFor`, and declare the instance
+      `kind` and `apiVersion` of your model classes as literal types, so a
+      component typed for another kind or version than its registration's
+      fails the type check (see
+      [Registering things](#registering-things-declarative-fields)).
 - [ ] List in `customResources` the model class of every custom resource your
-  extension presents with a sidebar entry and pages of its own, so the
-  Custom Resources tree stops listing it a second time; leave out the
-  models you only decorate (see
-  [Registering things](#registering-things-declarative-fields)).
+      extension presents with a sidebar entry and pages of its own, so the
+      Custom Resources tree stops listing it a second time; leave out the
+      models you only decorate (see
+      [Registering things](#registering-things-declarative-fields)).
+- [ ] Publish your tarball with a checksum — on a registry, or with a
+      `.tgz.sha256` sidecar beside it — so that it is enabled on install (see
+      [Publishing a checksum](#publishing-a-checksum)).
 - [ ] Load your extension in a v2 build and verify its UI renders through the
-  runtime global.
+      runtime global.
 
 And the two that fail silently rather than loudly, so they need an explicit
 check rather than a smoke test:
 
 - [ ] **Bump `engines.freelens` to `^2.0.0` first** — without it the host
-  refuses the extension at discovery and nothing else you changed is
-  observable.
+      refuses the extension at discovery and nothing else you changed is
+      observable.
 - [ ] Verify you are on the **host's** React and mobx instances, not copies. A
-  second React throws `invalid hook call` when a hook runs; a second mobx
-  throws nothing at all — its reactions simply do not fire. Assert on an
-  observable the host reacts to rather than eyeballing the UI.
+      second React throws `invalid hook call` when a hook runs; a second mobx
+      throws nothing at all — its reactions simply do not fire. Assert on an
+      observable the host reacts to rather than eyeballing the UI.
+
+## Publishing a checksum
+
+An extension installed from a tarball which nothing vouches for is installed
+**unverified**, and stays **disabled** until the user enables it on the
+Extensions page. If you want yours to be enabled on install, publish a
+checksum with it:
+
+- **From a registry**, `npm publish` records `dist.integrity` in the package
+  metadata, and the host checks the download against it. There is nothing
+  more to do.
+- **From a URL**, such as a release asset, publish a sidecar at the URL of the
+  tarball with `.sha256` appended, e.g. `my-extension-2.0.0.tgz.sha256` next
+  to `my-extension-2.0.0.tgz`. It holds the SHA-256 of the tarball, either
+  bare or in the `sha256sum` format (`<hex>  my-extension-2.0.0.tgz`). A
+  combined listing of several files works too, as long as one of its lines
+  names the tarball.
+- **From a file**, the host looks for the same sidecar next to the tarball.
+
+A download which does not match its checksum is refused rather than installed
+unverified. The checksum proves that the tarball arrived as published, not who
+published it: whoever can replace the tarball can replace its sidecar as well.
+
+A directory registered for development is not affected: it is enabled when you
+register it (see [The development loop](#the-development-loop)).
 
 ## Shipping executables
 

@@ -110,6 +110,18 @@ exports[`remove helm repository from list of active repositories in preferences 
                   </div>
                   <div
                     class="Tab flex gap-2 items-center"
+                    data-preference-tab-link-test="personalization"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      Personalization
+                    </div>
+                  </div>
+                  <div
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="proxy"
                     role="tab"
                     tabindex="0"
@@ -990,6 +1002,18 @@ exports[`remove helm repository from list of active repositories in preferences 
                       class="label"
                     >
                       App
+                    </div>
+                  </div>
+                  <div
+                    class="Tab flex gap-2 items-center"
+                    data-preference-tab-link-test="personalization"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      Personalization
                     </div>
                   </div>
                   <div
@@ -1916,6 +1940,18 @@ exports[`remove helm repository from list of active repositories in preferences 
                   </div>
                   <div
                     class="Tab flex gap-2 items-center"
+                    data-preference-tab-link-test="personalization"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      Personalization
+                    </div>
+                  </div>
+                  <div
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="proxy"
                     role="tab"
                     tabindex="0"
@@ -2834,6 +2870,18 @@ exports[`remove helm repository from list of active repositories in preferences 
                       class="label"
                     >
                       App
+                    </div>
+                  </div>
+                  <div
+                    class="Tab flex gap-2 items-center"
+                    data-preference-tab-link-test="personalization"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      Personalization
                     </div>
                   </div>
                   <div

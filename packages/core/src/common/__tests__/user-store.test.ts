@@ -14,7 +14,7 @@ import directoryForUserDataInjectable from "../app-paths/directory-for-user-data
 import readJsonSyncInjectable from "../fs/read-json-sync.injectable";
 import writeFileInjectable from "../fs/write-file.injectable";
 import writeJsonSyncInjectable from "../fs/write-json-sync.injectable";
-import { defaultColorThemePreference } from "../vars";
+import { defaultThemePreference, defaultThemeVariantPreference } from "../vars";
 
 import type { DiContainer } from "@ogre-tools/injectable";
 
@@ -52,16 +52,99 @@ describe("user store tests", () => {
       state.httpsProxy = "abcd://defg";
 
       expect(state.httpsProxy).toBe("abcd://defg");
-      expect(state.colorTheme).toBe(defaultColorThemePreference);
+      expect(state.theme).toBe(defaultThemePreference);
+      expect(state.themeVariant).toBe(defaultThemeVariantPreference);
 
-      state.colorTheme = "light";
-      expect(state.colorTheme).toBe("light");
+      state.themeVariant = "light";
+      expect(state.themeVariant).toBe("light");
     });
 
     it("correctly resets theme to default value", async () => {
-      state.colorTheme = "some other theme";
+      state.theme = "some-other-theme";
+      state.themeVariant = "light";
       resetTheme();
-      expect(state.colorTheme).toBe(defaultColorThemePreference);
+      expect(state.theme).toBe(defaultThemePreference);
+      expect(state.themeVariant).toBe(defaultThemeVariantPreference);
+    });
+
+    it("stores neither the default theme nor the default variant", () => {
+      const readJsonSync = di.inject(readJsonSyncInjectable);
+
+      state.theme = "my-theme";
+      state.themeVariant = "dark";
+      expect(readJsonSync("/some-directory-for-user-data/lens-user-store.json").preferences).toMatchObject({
+        theme: "my-theme",
+        themeVariant: "dark",
+      });
+
+      resetTheme();
+      expect(readJsonSync("/some-directory-for-user-data/lens-user-store.json").preferences.theme).toBeUndefined();
+      expect(
+        readJsonSync("/some-directory-for-user-data/lens-user-store.json").preferences.themeVariant,
+      ).toBeUndefined();
+    });
+
+    describe.each([
+      [undefined, "freelens", "system"],
+      ["system", "freelens", "system"],
+      ["Dark", "freelens", "dark"],
+      ["Light", "freelens", "light"],
+      ["some removed theme", "freelens", "dark"],
+    ] as const)("with the colorTheme %j of an earlier version", (colorTheme, theme, themeVariant) => {
+      beforeEach(() => {
+        const writeJsonSync = di.inject(writeJsonSyncInjectable);
+
+        writeJsonSync("/some-directory-for-user-data/lens-user-store.json", {
+          preferences: { colorTheme },
+        });
+        di.inject(userPreferencesPersistentStorageInjectable).loadAndStartSyncing();
+      });
+
+      it(`uses the ${themeVariant} variant of the ${theme} theme`, () => {
+        expect(state.theme).toBe(theme);
+        expect(state.themeVariant).toBe(themeVariant);
+      });
+
+      it("no longer stores colorTheme", () => {
+        const readJsonSync = di.inject(readJsonSyncInjectable);
+
+        state.persistentSearch = true;
+        expect(readJsonSync("/some-directory-for-user-data/lens-user-store.json").preferences).not.toHaveProperty(
+          "colorTheme",
+        );
+      });
+    });
+
+    describe.each([
+      [undefined, "", "dark"],
+      ["Dark", "freelens", "dark"],
+      ["Light", "freelens", "light"],
+    ] as const)("with the terminalTheme %j of an earlier version", (terminalTheme, name, variant) => {
+      beforeEach(() => {
+        const writeJsonSync = di.inject(writeJsonSyncInjectable);
+
+        writeJsonSync("/some-directory-for-user-data/lens-user-store.json", {
+          preferences: { terminalTheme },
+        });
+        di.inject(userPreferencesPersistentStorageInjectable).loadAndStartSyncing();
+      });
+
+      it(`uses the theme ${JSON.stringify(name)} in the ${variant} variant`, () => {
+        expect(state.terminalTheme).toBe(name);
+        expect(state.terminalThemeVariant).toBe(variant);
+      });
+    });
+
+    it("keeps a theme and a variant of this version", () => {
+      const writeJsonSync = di.inject(writeJsonSyncInjectable);
+
+      writeJsonSync("/some-directory-for-user-data/lens-user-store.json", {
+        preferences: { colorTheme: "Dark", theme: "my-theme", themeVariant: "light" },
+      });
+      di.inject(userPreferencesPersistentStorageInjectable).loadAndStartSyncing();
+
+      expect(state.theme).toBe("my-theme");
+      expect(state.themeVariant).toBe("light");
     });
 
     it("loads and stores persistentSearch as a global preference", async () => {

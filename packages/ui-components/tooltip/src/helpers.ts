@@ -93,7 +93,7 @@ export const computeNextPosition = ({
   tooltip,
 }: ComputeNextPositionArgs): NextPosition => {
   const positions = new Set<TooltipPosition>([
-    ...[preferredPositions ?? []].filter(isTooltipPosition).flat(),
+    ...[preferredPositions ?? []].flat().filter(isTooltipPosition),
     TooltipPosition.RIGHT,
     TooltipPosition.BOTTOM,
     TooltipPosition.TOP,

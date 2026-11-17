@@ -1,0 +1,131 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+}
+
+.card {
+  border: 2px solid var(--borderFaintColor);
+  border-radius: 6px;
+  background: var(--layoutBackground);
+  overflow: hidden;
+}
+
+.card.selected {
+  border-color: var(--primary);
+}
+
+.select {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  border: 0;
+  background: none;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.select:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: -2px;
+}
+
+.previews {
+  display: flex;
+  gap: 6px;
+}
+
+.preview {
+  display: flex;
+  flex: 1;
+  height: 72px;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 0 0 1px var(--borderFaintColor);
+}
+
+.previewSidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 28%;
+  padding: 6px 4px;
+}
+
+.previewContent {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 5px;
+  margin: 6px;
+  padding: 6px;
+  border-radius: 2px;
+}
+
+.previewLine {
+  height: 4px;
+  border-radius: 2px;
+}
+
+.previewButton {
+  width: 40%;
+  height: 8px;
+  margin-top: auto;
+  border-radius: 2px;
+}
+
+.name {
+  margin-top: 8px;
+  color: var(--textColorAccent);
+  font-weight: 500;
+}
+
+.details {
+  color: var(--textColorSecondary);
+  font-size: smaller;
+}
+
+.badge {
+  margin-left: 6px;
+  padding: 0 6px;
+  border-radius: 3px;
+  background: var(--borderFaintColor);
+  color: var(--textColorSecondary);
+  font-size: smaller;
+  font-weight: normal;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 4px;
+  padding: 0 10px 8px;
+}
+
+.invalidFile {
+  margin-top: 6px;
+}
+
+.invalidFile pre {
+  margin: 2px 0 0;
+  white-space: pre-wrap;
+  color: var(--colorError);
+}
+
+.importIcon {
+  margin-left: var(--margin);
+}
+
+.importError {
+  color: var(--colorError);
+}
+
+.importError pre {
+  margin: 2px 0 0;
+}

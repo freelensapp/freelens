@@ -41,6 +41,7 @@ import { registerInjectables as registerFeaturesFeaturesPreferencesCommonInjecta
 import { registerInjectables as registerFeaturesFeaturesSecretCertificatesMainInjectables } from "./features/secret-certificates/main/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesShellSyncMainInjectables } from "./features/shell-sync/main/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesTerminalShellLookupMainInjectables } from "./features/terminal-shell-lookup/main/register-injectables";
+import { registerInjectables as registerFeaturesFeaturesThemeFilesMainInjectables } from "./features/theme/files/main/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesThemeSystemTypeMainInjectables } from "./features/theme/system-type/main/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesUserPreferencesMainInjectables } from "./features/user-preferences/main/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesUserPreferencesInjectables } from "./features/user-preferences/register-injectables";
@@ -48,6 +49,7 @@ import { registerInjectables as registerFeaturesFeaturesVarsBuildVersionMainInje
 import { registerInjectables as registerFeaturesFeaturesVarsInjectables } from "./features/vars/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesWeblinksMainInjectables } from "./features/weblinks/main/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesWeblinksInjectables } from "./features/weblinks/register-injectables";
+import { registerInjectables as registerFeaturesFeaturesZoomMainInjectables } from "./features/zoom/main/register-injectables";
 import { registerInjectables as registerMainInjectables } from "./main/register-injectables";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
@@ -89,6 +91,7 @@ export function registerInjectables(di: DiContainerForInjection): void {
   registerFeaturesFeaturesSecretCertificatesMainInjectables(di);
   registerFeaturesFeaturesShellSyncMainInjectables(di);
   registerFeaturesFeaturesTerminalShellLookupMainInjectables(di);
+  registerFeaturesFeaturesThemeFilesMainInjectables(di);
   registerFeaturesFeaturesThemeSystemTypeMainInjectables(di);
   registerFeaturesFeaturesUserPreferencesMainInjectables(di);
   registerFeaturesFeaturesUserPreferencesInjectables(di);
@@ -96,5 +99,6 @@ export function registerInjectables(di: DiContainerForInjection): void {
   registerFeaturesFeaturesVarsBuildVersionMainInjectables(di);
   registerFeaturesFeaturesWeblinksMainInjectables(di);
   registerFeaturesFeaturesWeblinksInjectables(di);
+  registerFeaturesFeaturesZoomMainInjectables(di);
   registerMainInjectables(di);
 }

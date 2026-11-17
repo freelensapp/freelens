@@ -19,9 +19,11 @@ const setupApplyActiveThemeInjectable = getInjectable({
       const activeTheme = di.inject(activeThemeInjectable);
       const applyLensTheme = di.inject(applyLensThemeInjectable);
 
-      reaction(() => activeTheme.get(), applyLensTheme, {
-        fireImmediately: true,
-      });
+      reaction(
+        () => activeTheme.get(),
+        (theme) => applyLensTheme(theme),
+        { fireImmediately: true },
+      );
     },
     runAfter: [initializeSystemThemeTypeInjectable, initUserStoreInjectable],
   }),
