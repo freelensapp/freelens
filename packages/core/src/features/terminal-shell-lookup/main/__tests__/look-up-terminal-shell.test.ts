@@ -32,6 +32,7 @@ function fakeFileSystem(files: Record<string, FakeFile>): Pick<LookUpTerminalShe
 describe("looking up the shell of the Terminal Shell Path setting", () => {
   describe("on Windows", () => {
     const dependencies: LookUpTerminalShellDependencies = {
+      loginShell: null,
       defaultShell: "powershell.exe",
       isWindows: true,
       // Windows spells it Path, and the lookup ignores the case of the names
@@ -74,10 +75,12 @@ describe("looking up the shell of the Terminal Shell Path setting", () => {
 
   describe("on macOS and Linux", () => {
     const dependencies: LookUpTerminalShellDependencies = {
+      loginShell: "/bin/bash",
       defaultShell: "/bin/zsh",
       isWindows: false,
       env: { PATH: "/usr/local/bin:/usr/bin:/bin" },
       ...fakeFileSystem({
+        "/bin/bash": { executable: true },
         "/bin/zsh": { executable: true },
         "/usr/local/bin/fish": { executable: true },
         "/usr/bin/notes": {},
@@ -105,8 +108,15 @@ describe("looking up the shell of the Terminal Shell Path setting", () => {
       expect(await lookUpTerminalShell("elvish", dependencies)).toEqual({ shell: "elvish" });
     });
 
-    it("looks up the default shell when the setting is empty", async () => {
-      expect(await lookUpTerminalShell("", dependencies)).toEqual({ shell: "/bin/zsh", path: "/bin/zsh" });
+    it("looks up the login shell, not the SHELL of the environment, when the setting is empty", async () => {
+      expect(await lookUpTerminalShell("", dependencies)).toEqual({ shell: "/bin/bash", path: "/bin/bash" });
+    });
+
+    it("looks up the default shell when the setting is empty and the account has no shell", async () => {
+      expect(await lookUpTerminalShell("", { ...dependencies, loginShell: "" })).toEqual({
+        shell: "/bin/zsh",
+        path: "/bin/zsh",
+      });
     });
   });
 });

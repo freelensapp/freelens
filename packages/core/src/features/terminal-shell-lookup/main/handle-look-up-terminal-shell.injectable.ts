@@ -8,6 +8,7 @@ import accessPathInjectable from "../../../common/fs/access-path.injectable";
 import statInjectable from "../../../common/fs/stat.injectable";
 import defaultShellInjectable from "../../../common/vars/default-shell.injectable";
 import isWindowsInjectable from "../../../common/vars/is-windows.injectable";
+import userInfoInjectable from "../../../common/vars/user-info.injectable";
 import processEnvInjectable from "../../shell-sync/main/env.injectable";
 import { lookUpTerminalShellChannel } from "../common/channels";
 import { lookUpTerminalShell } from "./look-up-terminal-shell";
@@ -18,6 +19,7 @@ const handleLookUpTerminalShellInjectable = getRequestChannelListenerInjectable(
   // Injected at each request, not when the listeners start: the environment and the file system have side effects.
   getHandler: (di) => (setting) =>
     lookUpTerminalShell(setting, {
+      loginShell: di.inject(userInfoInjectable).shell,
       defaultShell: di.inject(defaultShellInjectable),
       isWindows: di.inject(isWindowsInjectable),
       // The PATH of the Freelens process, which shell-sync set at startup from the shell configured then: the hint says

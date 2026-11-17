@@ -10,6 +10,8 @@ import type { Stat } from "../../../common/fs/stat.injectable";
 import type { TerminalShellLookup } from "../common/channels";
 
 export interface LookUpTerminalShellDependencies {
+  /** The shell of the user's account, as `os.userInfo()` gives it; `null` on Windows. */
+  loginShell: string | null;
   defaultShell: string;
   isWindows: boolean;
   env: Record<string, string | undefined>;
@@ -23,10 +25,11 @@ export interface LookUpTerminalShellDependencies {
  */
 export async function lookUpTerminalShell(
   setting: string,
-  { defaultShell, isWindows, env, stat, accessPath }: LookUpTerminalShellDependencies,
+  { loginShell, defaultShell, isWindows, env, stat, accessPath }: LookUpTerminalShellDependencies,
 ): Promise<TerminalShellLookup> {
-  // As `getUserShell`: the setting, else the default shell
-  const shell = setting || defaultShell;
+  // As `userShellSetting` and `getUserShell`: the setting, else the login shell, else the default shell. The login
+  // shell comes from the user's account and the default shell from `SHELL`, which can name another shell.
+  const shell = setting || loginShell || defaultShell;
   const path = isWindows
     ? await findWindowsShellFile(shell, env, stat)
     : await findUnixShellFile(shell, env, stat, accessPath);

@@ -25,8 +25,9 @@ interface Dependencies {
 
 const NonInjectedTerminalShellPath = observer(({ state, defaultShell, requestTerminalShellLookup }: Dependencies) => {
   const [lookup, setLookup] = useState<TerminalShellLookup>();
-  // Terminals start the default shell of main when the setting is empty, and the renderer cannot compute it: it does
-  // not have the SHELL of main. The default shell of the renderer stands in for it until main answers.
+  // When the setting is empty, terminals start the login shell, else the default shell of main, and the renderer cannot
+  // compute it: it does not have the SHELL of main. The default shell of the renderer stands in for it until main
+  // answers.
   const [placeholder, setPlaceholder] = useState(defaultShell);
   // Only the answer to the latest lookup is shown, whatever order the answers come back in
   const latestLookup = useRef(0);
@@ -56,7 +57,7 @@ const NonInjectedTerminalShellPath = observer(({ state, defaultShell, requestTer
 
   useEffect(() => {
     // A setting that is already broken shows its warning as soon as the section opens. The lookup of an empty
-    // setting also gives the default shell of main; for another setting it is asked for apart.
+    // setting also gives the shell main starts for it; for another setting it is asked for apart.
     void lookUpShell();
 
     if (state.shell) {
