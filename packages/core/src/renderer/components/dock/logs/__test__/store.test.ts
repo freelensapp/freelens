@@ -7,7 +7,7 @@ import { Pod } from "@freelensapp/kube-object";
 import { computed, observable } from "mobx";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { defaultMaxCombinedLogsPods } from "../../../../../features/user-preferences/common/preferences-helpers";
-import { maxCombinedLogLines, maxConcurrentLogRequests, podLogColors, stripAnsiColors } from "../merge-pod-logs";
+import { maxConcurrentLogRequests, maxLogLines, podLogColors, stripAnsiColors } from "../merge-pod-logs";
 import { LogStore } from "../store";
 import { dockerPod } from "./pod.mock";
 
@@ -522,7 +522,7 @@ describe("LogStore combined logs", () => {
   });
 
   it("asks every pod for at most its share of the lines of a combined tab", async () => {
-    const share = Math.floor(maxCombinedLogLines / defaultMaxCombinedLogsPods);
+    const share = Math.floor(maxLogLines / defaultMaxCombinedLogsPods);
     const manyPods = Array.from({ length: defaultMaxCombinedLogsPods }, (_, index) => createPod(`pod-${index}`));
 
     callForLogs.mockImplementation(async ({ name }) =>
@@ -536,11 +536,15 @@ describe("LogStore combined logs", () => {
   });
 
   it("asks no pod for more than its share, even when it has more", async () => {
-    const share = Math.floor(maxCombinedLogLines / defaultMaxCombinedLogsPods);
+    const share = Math.floor(maxLogLines / defaultMaxCombinedLogsPods);
     const manyPods = Array.from({ length: defaultMaxCombinedLogsPods }, (_, index) => createPod(`pod-${index}`));
 
+    // Only pod-0 has more than its share, so that the tab is not full.
     callForLogs.mockImplementation(async ({ name }) =>
-      Array.from({ length: share + 100 }, (_, index) => `2026-01-01T00:00:00Z ${name} ${index}`).join("\n"),
+      Array.from(
+        { length: name === "pod-0" ? share + 100 : 10 },
+        (_, index) => `2026-01-01T00:00:00Z ${name} ${index}`,
+      ).join("\n"),
     );
     pods.set(manyPods);
     await store.load(tabId, computedPods, computedTabData);
@@ -550,7 +554,7 @@ describe("LogStore combined logs", () => {
   });
 
   describe("when the refresh brings more lines than the tab holds", () => {
-    const linesPerPod = Math.ceil((maxCombinedLogLines * 3) / 4);
+    const linesPerPod = Math.ceil((maxLogLines * 3) / 4);
     // The lines of the two pods take turns, a millisecond apart, after the ones of the first load.
     const newLinesOf = (name: string, offset: number) =>
       Array.from(
@@ -575,17 +579,27 @@ describe("LogStore combined logs", () => {
 
       const logs = getLogs();
 
-      expect(logs).toHaveLength(maxCombinedLogLines);
+      expect(logs).toHaveLength(maxLogLines);
       expect(logs.at(-1)).toBe(newestLine);
       expect(logs.some((line) => line.endsWith("[pod-a] a1"))).toBe(false);
     });
 
-    it("keeps every line of the tab of a single pod", async () => {
+    it("keeps the newest lines of the tab of a single pod, up to the same limit", async () => {
+      const lineOf = (index: number) => `${new Date(Date.UTC(2026, 0, 1, 0, 1) + index).toISOString()} pod-a ${index}`;
+      const refreshed = Array.from({ length: maxLogLines + 100 }, (_, index) => lineOf(index)).join("\n");
+
+      callForLogs.mockImplementation(async ({ name }, query) =>
+        query?.sinceTime ? refreshed : (logsOfPods.get(name) ?? ""),
+      );
       pods.set([podA]);
       await store.load(tabId, computedPods, computedTabData);
       await vi.advanceTimersByTimeAsync(10_000);
 
-      expect(getLogs()).toHaveLength(2 + linesPerPod);
+      const logs = getLogs();
+
+      expect(logs).toHaveLength(maxLogLines);
+      expect(logs[0]).toBe(lineOf(100));
+      expect(logs.at(-1)).toBe(lineOf(maxLogLines + 99));
     });
   });
 
@@ -607,15 +621,33 @@ describe("LogStore combined logs", () => {
     expect(getCallsFor("pod-a").map(([, query]) => query?.tailLines)).toEqual([500, 503]);
   });
 
-  it("keeps a tab of a single pod without the limit of a combined tab", async () => {
+  it("asks a single pod for no more lines than a tab holds", async () => {
     callForLogs.mockImplementation(async ({ name }) =>
-      Array.from({ length: maxCombinedLogLines }, (_, index) => `2026-01-01T00:00:00Z ${name} ${index}`).join("\n"),
+      Array.from({ length: maxLogLines - 100 }, (_, index) => `2026-01-01T00:00:00Z ${name} ${index}`).join("\n"),
     );
     pods.set([podA]);
     await store.load(tabId, computedPods, computedTabData);
     await store.load(tabId, computedPods, computedTabData);
 
-    expect(getCallsFor("pod-a").map(([, query]) => query?.tailLines)).toEqual([500, maxCombinedLogLines + 500]);
+    expect(getCallsFor("pod-a").map(([, query]) => query?.tailLines)).toEqual([500, maxLogLines]);
+  });
+
+  it("does not ask for older lines once the tab is full, and keeps refreshing it", async () => {
+    callForLogs.mockImplementation(async ({ name }, query) =>
+      query?.sinceTime
+        ? ""
+        : Array.from({ length: maxLogLines }, (_, index) => `2026-01-01T00:00:00Z ${name} ${index}`).join("\n"),
+    );
+    pods.set([podA]);
+    await store.load(tabId, computedPods, computedTabData);
+    await store.load(tabId, computedPods, computedTabData);
+
+    expect(getCallsFor("pod-a")).toHaveLength(1);
+
+    await vi.advanceTimersByTimeAsync(10_000);
+
+    expect(getCallsFor("pod-a")).toHaveLength(2);
+    expect(getCallsFor("pod-a")[1][1]).toHaveProperty("sinceTime");
   });
 
   it("never sends more requests at the same time than the limit", async () => {

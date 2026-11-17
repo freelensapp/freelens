@@ -10,13 +10,15 @@
 export const maxConcurrentLogRequests = 5;
 
 /**
- * A combined logs tab holds at most this many lines. Scrolling to its top asks
- * every pod for more lines, up to its share of them, and the refresh drops the
- * oldest lines once the new ones take the tab over the limit. Without it the
- * logs of a large workload would grow with every scroll and every refresh
- * until they no longer fit in the cluster frame.
+ * A logs tab holds at most this many lines, of one pod or shared between the
+ * pods of a workload. Scrolling to its top asks every pod for more lines, up
+ * to its share of them, and the refresh drops the oldest lines once the new
+ * ones take the tab over the limit. Without it a tab would grow with every
+ * scroll and every refresh for as long as it stays open, until it no longer
+ * fits in the cluster frame. At some 200 bytes a line, a full tab takes about
+ * 20 MB, and so does each reload of its tail.
  */
-export const maxCombinedLogLines = 100_000;
+export const maxLogLines = 100_000;
 
 /**
  * "All logs" of a combined logs tab reads at most this many bytes, shared out
@@ -225,7 +227,7 @@ export function mergeIntoLogs(logs: readonly string[], newLines: readonly string
   let start = logs.length;
 
   // From the bottom, and only as far as the lines newer than the new ones go:
-  // the tab holds up to `maxCombinedLogLines` lines and is merged at every
+  // the tab holds up to `maxLogLines` lines and is merged at every
   // refresh, while the new lines rarely reach far back. A line without a
   // timestamp moves with the message it continues.
   for (let index = logs.length - 1; index >= 0; index -= 1) {
