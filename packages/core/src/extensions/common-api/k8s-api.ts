@@ -33,6 +33,7 @@ import createKubeJsonApiForClusterInjectable from "../../common/k8s-api/create-k
 import { KubeObjectStore as InternalKubeObjectStore } from "../../common/k8s-api/kube-object.store";
 import clusterFrameContextForNamespacedResourcesInjectable from "../../renderer/cluster-frame-context/for-namespaced-resources.injectable";
 import getPodsByOwnerIdInjectable from "../../renderer/components/workloads-pods/get-pods-by-owner-id.injectable";
+import watchReconnectInjectable from "../../renderer/k8s/watch-reconnect/watch-reconnect.injectable";
 import {
   asLazyInjectedForExtensionApi,
   asLazyInjectedFunctionForExtensionApi,
@@ -185,6 +186,7 @@ export abstract class KubeObjectStore<
     super(
       {
         context: di.inject(clusterFrameContextForNamespacedResourcesInjectable),
+        watchReconnect: di.inject(watchReconnectInjectable),
         logger: di.inject(loggerInjectionToken),
       },
       api!,

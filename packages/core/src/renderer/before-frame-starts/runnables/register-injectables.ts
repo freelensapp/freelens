@@ -19,6 +19,7 @@ import setupKubernetesClusterCatalogAddMenuListenerInjectable from "./setup-kube
 import setupKubernetesClusterContextMenuOpenInjectable from "./setup-kubernetes-cluster-context-menu-open.injectable";
 import setupRootMacClassnameInjectable from "./setup-root-mac-class.injectable";
 import setupWeblinkContextMenuOpenInjectable from "./setup-weblink-context-menu-open.injectable";
+import wakeWatchReconnectInjectable from "./wake-watch-reconnect.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
@@ -85,6 +86,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(setupWeblinkContextMenuOpenInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(wakeWatchReconnectInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }
