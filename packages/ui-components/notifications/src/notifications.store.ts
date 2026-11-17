@@ -9,9 +9,9 @@ import { uniqueId } from "es-toolkit/compat";
 import { action, observable } from "mobx";
 
 import type { JsonApiErrorParsed } from "@freelensapp/json-api";
+import type { SetRequired } from "@freelensapp/utilities";
 
 import type React from "react";
-import type { SetRequired } from "type-fest";
 
 export type NotificationId = string | number;
 export type NotificationMessage = string | React.ReactElement | React.ReactElement[] | JsonApiErrorParsed | Error;

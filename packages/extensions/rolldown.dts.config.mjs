@@ -32,8 +32,19 @@
 // does from 0.28.8: without that, it keeps every member of
 // `@freelensapp/utilities` in the bundle, the Node-bound ones `Common.Util`
 // leaves out included, together with their `node:` imports.
+//
+// It also fails the build on an import of `type-fest`. The helper types the
+// declaration names come from the copy of type-fest in `@freelensapp/utilities`
+// and are inlined like the rest of it, because a dependency would impose the
+// compiler options and floors of each type-fest major on every extension. An
+// import of the package from a workspace source would bring it back.
+//
+// A declaration file of the sources, such as that copy, is input of the tsc
+// program rather than output, so `dist-types/` has no copy of it. A relative
+// import an emitted declaration makes of one is resolved to the file in the
+// sources (`declarationSourceFor`).
 
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { createRequire, isBuiltin } from "node:module";
 import path from "node:path";
 import { defineConfig, VERSION } from "rolldown";
@@ -59,6 +70,31 @@ for (const [specifier, sourcePath] of enumerateWorkspaceEntries(repoRoot)) {
 const assetModule = /\.(s?css|svg|png|jpg|ttf|woff2?|eot)$|\?(raw|worker)$/;
 const emptyModuleId = "\0empty-asset-module.d.ts";
 
+/** Whether a relative specifier resolves to a file at `base`, as the dts plugin would resolve it. */
+const resolvesAt = (base) =>
+  [base, `${base}.d.ts`, path.join(base, "index.d.ts")].some((candidate) => existsSync(candidate));
+
+/**
+ * The declaration file in the sources that a relative import of an emitted
+ * declaration means, when tsc emitted no file for it because it is a
+ * declaration file of the sources itself. `undefined` when there is none.
+ */
+const declarationSourceFor = (source, importer) => {
+  if (!source.startsWith(".") || !importer?.startsWith(`${outRoot}${path.sep}`)) {
+    return undefined;
+  }
+
+  const emitted = path.resolve(path.dirname(importer), source);
+
+  if (resolvesAt(emitted)) {
+    return undefined;
+  }
+
+  const inSources = path.join(repoRoot, path.relative(outRoot, emitted));
+
+  return [`${inSources}.d.ts`, path.join(inSources, "index.d.ts")].find((candidate) => existsSync(candidate));
+};
+
 const workspaceDtsAlias = {
   name: "workspace-dts-alias",
 
@@ -68,8 +104,8 @@ const workspaceDtsAlias = {
   resolveId: {
     order: "pre",
 
-    handler(source) {
-      const aliased = workspaceAliases.get(source);
+    handler(source, importer) {
+      const aliased = workspaceAliases.get(source) ?? declarationSourceFor(source, importer);
 
       if (aliased) {
         return aliased;
@@ -203,6 +239,17 @@ const declaredExternals = {
           "\nA likely cause is rolldown-plugin-dts no longer tree-shaking a namespace import" +
           " referenced only by qualified name (fixed in 0.28.8), which lets the Node-bound" +
           " members of @freelensapp/utilities that Common.Util leaves out into the bundle.",
+      );
+    }
+
+    const vendored = externals.filter((specifier) => packageOf(specifier) === "type-fest");
+
+    if (vendored.length > 0) {
+      this.error(
+        "the API declaration must not import type-fest, but it references:\n" +
+          vendored.map((specifier) => `  ${specifier}`).join("\n") +
+          "\nImport the type from @freelensapp/utilities, which carries a copy of the type-fest types the API" +
+          " uses; a type it lacks is added to that copy (see src/type-fest/README.md of that package).",
       );
     }
 

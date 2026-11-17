@@ -7,8 +7,8 @@
 import { dumpConfigYaml } from "../../common/kube-helpers";
 
 import type { Logger } from "@freelensapp/logger";
+import type { PartialDeep } from "@freelensapp/utilities";
 
-import type { PartialDeep } from "type-fest";
 
 import type { SelfSignedCert } from "../../common/certificate/certificate";
 import type { Cluster } from "../../common/cluster/cluster";

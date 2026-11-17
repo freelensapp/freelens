@@ -6,7 +6,7 @@
 
 import { getInjectionToken } from "@ogre-tools/injectable";
 
-import type { Orderable } from "@freelensapp/utilities";
+import type { Orderable, SetOptional } from "@freelensapp/utilities";
 
 import type {
   BaseWindow,
@@ -15,7 +15,6 @@ import type {
   KeyboardEvent,
   MenuItemConstructorOptions,
 } from "electron";
-import type { SetOptional } from "type-fest";
 
 import type { Discriminable } from "../../../../common/utils/composable-responsibilities/discriminable/discriminable";
 import type { MaybeShowable } from "../../../../common/utils/composable-responsibilities/showable/showable";

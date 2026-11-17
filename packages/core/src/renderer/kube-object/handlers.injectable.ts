@@ -10,9 +10,10 @@ import { computed } from "mobx";
 import rendererExtensionsInjectable from "../../extensions/renderer-extensions.injectable";
 import { staticKubeObjectHandlerInjectionToken } from "./handler";
 
+import type { ReadonlyDeep } from "@freelensapp/utilities";
+
 import type { Injectable } from "@ogre-tools/injectable";
 import type { IComputedValue } from "mobx";
-import type { ReadonlyDeep } from "type-fest";
 
 import type { KubeObjectHandlerRegistration, KubeObjectHandlers } from "./handler";
 

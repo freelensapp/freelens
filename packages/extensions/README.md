@@ -46,9 +46,14 @@ own container.
 only an extension that names it needs it installed.
 
 Everything else this package depends on — `chart.js`, `react-select`, `conf`,
-`immer`, `rfc6902`, `type-fest` — is free to bundle. `react-select` requires
+`immer`, `rfc6902` — is free to bundle. `react-select` requires
 `react` and `react-dom` as peers, so a React is installed in your tree even if
 you import none; mark the host-provided modules external all the same.
+
+The package does not depend on `type-fest`: the helper types its signatures
+use, such as `PartialDeep` for a patch, are exported in `Common.Types`. An
+extension that imports `type-fest` itself declares it in its own
+`devDependencies`.
 
 ## Documentation
 

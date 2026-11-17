@@ -36,7 +36,6 @@
     "@types/node": "catalog:",
     "jsdom": "catalog:",
     "mobx": "catalog:",
-    "type-fest": "catalog:",
     "vitest": "catalog:"
   },
   "publishConfig": {

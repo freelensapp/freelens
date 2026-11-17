@@ -45,6 +45,29 @@ export type FixtureAppPreferenceRegistration = Common.Types.AppPreferenceRegistr
 export type FixtureProtocolHandlerRegistration = Common.Types.ProtocolHandlerRegistration;
 export type FixtureCustomResourceRegistration = Common.Types.CustomResourceRegistration;
 
+// The helper types the signatures of the API are written in, so that an
+// extension can type what it passes to them, and the declaration names them
+// without importing a package of its own.
+export type FixtureJsonValue = Common.Types.JsonValue;
+export type FixturePodPatch = Common.Types.PartialDeep<Renderer.K8sApi.Pod>;
+export type FixturePodPatchIntoArrays = Common.Types.PartialDeep<Renderer.K8sApi.Pod, { recurseIntoArrays: true }>;
+export type FixtureReadonlyPod = Common.Types.ReadonlyDeep<Renderer.K8sApi.Pod>;
+export type FixtureRequireAtLeastOne = Common.Types.RequireAtLeastOne<{ first?: string; second?: number }>;
+export type FixtureRequireExactlyOne = Common.Types.RequireExactlyOne<{ first: string; second: number }>;
+export type FixtureSetRequired = Common.Types.SetRequired<{ optional?: string }, "optional">;
+export type FixtureValueOf = Common.Types.ValueOf<{ first: string; second: number }>;
+// The patch `KubeApi.update` takes is the one an extension names.
+type FixturePodUpdatePatch = Parameters<Renderer.K8sApi.PodApi["update"]>[1];
+export type PodUpdateTakesThePartialDeepOfCommonTypes = Holds<
+  FixturePodPatch extends FixturePodUpdatePatch ? (FixturePodUpdatePatch extends FixturePodPatch ? true : false) : false
+>;
+// The active theme is the `ReadonlyDeep` of the theme type an extension names.
+export type ActiveThemeIsTheReadonlyDeepOfLensTheme = Holds<
+  ReturnType<typeof Renderer.Theme.activeTheme.get> extends Common.Types.ReadonlyDeep<Renderer.Theme.LensTheme>
+    ? true
+    : false
+>;
+
 // The `fetch` option of a bundled library, typed with the environment's own
 // standard `fetch` types, the way the MCP SDK types its transports'.
 // `Main.Util.fetch` has to fit it without an assertion, in all three programs:

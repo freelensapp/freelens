@@ -143,10 +143,14 @@ lint:
       paths:
         - "**"
         - "!packages/resource-templates/templates/**"
+    # Biome also leaves out the copy of type-fest in @freelensapp/utilities,
+    # which stays byte-identical with the package it comes from, as
+    # biome.jsonc does.
     - linters:
         - biome
       paths:
         - packages/resource-templates/templates/**
+        - packages/utility-features/utilities/src/type-fest/source/**
     # Vitest/testing-library snapshots are generated artifacts whose DOM
     # serializer emits whitespace-only lines (e.g. indented empty elements and
     # inline SVG <style> blocks). git-diff-check only flags such lines when they

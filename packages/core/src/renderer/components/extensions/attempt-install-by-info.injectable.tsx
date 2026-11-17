@@ -19,9 +19,7 @@ import attemptInstallInjectable from "./attempt-install/attempt-install.injectab
 import getBaseRegistryUrlInjectable from "./get-base-registry-url/get-base-registry-url.injectable";
 import { getTarballDownloadUrl } from "./get-tarball-download-url";
 
-import type { ExtendableDisposer } from "@freelensapp/utilities";
-
-import type { PackageJson } from "type-fest";
+import type { ExtendableDisposer, PackageJson } from "@freelensapp/utilities";
 
 export interface ExtensionInfo {
   name: string;

@@ -7,13 +7,14 @@
 import activeThemeInjectable from "../../renderer/themes/active.injectable";
 import { asLazyInjectedForExtensionApi } from "../extension-api-di";
 
+import type { ReadonlyDeep } from "@freelensapp/utilities";
+
 import type { IComputedValue } from "mobx";
-import type { ReadonlyDeep } from "type-fest";
 
 import type { LensTheme } from "../../renderer/themes/lens-theme";
 
 // The explicit annotation keeps `ReadonlyDeep` unexpanded in declaration emit (the extension-api
-// d.ts build); without it the emitter reaches for type-fest internals it cannot reference (TS2742).
+// d.ts build); without it the emitter reaches for the internal helpers of type-fest (TS2742).
 /**
  * The active theme in the variant in use, a mobx computed: reading it inside a reaction tracks
  * every change of the theme, of its variant and of the accent color.

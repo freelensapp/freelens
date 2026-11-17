@@ -7,9 +7,7 @@
 import { namedCaptures } from "@freelensapp/utilities";
 import fse from "fs-extra";
 
-import type { StrictReactNode } from "@freelensapp/utilities";
-
-import type { SetRequired } from "type-fest";
+import type { SetRequired, StrictReactNode } from "@freelensapp/utilities";
 
 import type { InputProps } from "./input";
 

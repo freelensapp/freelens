@@ -37,7 +37,6 @@
     "@types/node": "catalog:",
     "@types/react": "catalog:",
     "jsdom": "catalog:",
-    "type-fest": "catalog:",
     "vitest": "catalog:"
   },
   "publishConfig": {

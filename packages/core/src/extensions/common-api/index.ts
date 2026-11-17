@@ -23,12 +23,13 @@ export type { Logger } from "@freelensapp/logger";
 export type { ExtensionCredentials } from "../../features/extension-credentials/common/extension-credentials";
 export type { InstalledExtension, LensExtensionManifest } from "../installed-extension";
 
-// A plain alias instead of a re-export: type-fest declares PackageJson as a
-// type plus a same-named namespace. A declaration bundler that rewrites a
-// namespace re-export into `declare const ...: typeof PackageJson` makes it
-// invalid, because the namespace is type-only (TS2708 for consumers of the
-// bundled d.ts); the alias holds whatever the bundler does with namespaces.
-export type PackageJson = import("type-fest").PackageJson;
+// A plain alias instead of a re-export: the copy of type-fest in
+// @freelensapp/utilities declares PackageJson as a type plus a same-named
+// namespace. A declaration bundler that rewrites a namespace re-export into
+// `declare const ...: typeof PackageJson` makes it invalid, because the
+// namespace is type-only (TS2708 for consumers of the bundled d.ts); the alias
+// holds whatever the bundler does with namespaces.
+export type PackageJson = import("@freelensapp/utilities").PackageJson;
 
 // A type alias instead of a type-only re-export: rolldown-plugin-dts declares a
 // class re-exported with `export type` inside a namespace as a value too, and

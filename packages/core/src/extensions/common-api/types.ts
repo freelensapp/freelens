@@ -4,6 +4,19 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+// The helper types that the signatures of the API are written in, from the
+// copy of type-fest in @freelensapp/utilities, so that an extension can name
+// them: `Common.Types.PartialDeep<Pod>` for a patch, for one.
+export type {
+  JsonValue,
+  PartialDeep,
+  ReadonlyDeep,
+  RequireAtLeastOne,
+  RequireExactlyOne,
+  SetRequired,
+  ValueOf,
+} from "@freelensapp/utilities";
+
 export type {
   ProtocolHandlerRegistration,
   RouteHandler as ProtocolRouteHandler,

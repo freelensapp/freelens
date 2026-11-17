@@ -13,7 +13,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import asyncFn from "@async-fn/vitest";
 import { flushPromises } from "@freelensapp/test-utils";
-import { PartialDeep } from "type-fest";
+import { PartialDeep } from "@freelensapp/utilities";
 import { anyObject } from "vitest-mock-extended";
 import writeJsonFileInjectable from "../../common/fs/write-json-file.injectable";
 import broadcastMessageInjectable from "../../common/ipc/broadcast-message.injectable";

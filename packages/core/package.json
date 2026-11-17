@@ -171,7 +171,6 @@
     "mock-http": "catalog:",
     "react-select-event": "catalog:",
     "tailwindcss": "catalog:",
-    "type-fest": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:",
     "vitest-canvas-mock": "catalog:",

@@ -42,7 +42,8 @@
     // unindented, which Biome cannot do, so yamlfmt formats them with the
     // .yamlfmt.yaml of their directory. pnpm writes its own lockfile and
     // workspace file, and Trunk rewrites its own .trunk/trunk.yaml on every
-    // trunk upgrade.
+    // trunk upgrade. The copy of type-fest in @freelensapp/utilities stays
+    // byte-identical with the package it comes from.
     "includes": [
       "**",
       "!**/.trunk/**",
@@ -50,6 +51,7 @@
       "!**/dist/**",
       "**/build/*.{js,cjs,mjs}",
       "!**/packages/resource-templates/templates/**",
+      "!**/packages/utility-features/utilities/src/type-fest/source/**",
       "!**/pnpm-lock.yaml",
       "!**/pnpm-workspace.yaml"
     ]

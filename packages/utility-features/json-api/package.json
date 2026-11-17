@@ -31,8 +31,7 @@
     "@freelensapp/logger": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
     "@types/node": "catalog:",
-    "rfc6902": "catalog:",
-    "type-fest": "catalog:"
+    "rfc6902": "catalog:"
   },
   "publishConfig": {
     "access": "public",

@@ -9,7 +9,7 @@ import path from "node:path";
 // Docs: https://github.com/npm/node-tar
 import { list } from "tar";
 
-import type { JsonValue } from "type-fest";
+import type { JsonValue } from "./type-fest";
 
 export type ReadFileFromTarOpts<ParseJson extends boolean> = {
   tarPath: string;
