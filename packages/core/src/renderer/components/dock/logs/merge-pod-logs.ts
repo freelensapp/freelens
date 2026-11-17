@@ -264,3 +264,56 @@ export function keepNewestLogLines(logs: string[], maxLines: number): string[] {
 
   return logs.slice(start);
 }
+
+/**
+ * The lines of `logs` older than `timestamp`, the start of a newer answer for
+ * the same tab, without the ones that answer brings again: a line with a
+ * timestamp that `again` has word for word, and the lines without a timestamp
+ * that continue it. Lines before the first one with a timestamp, such as an
+ * error message, are left out.
+ */
+export function linesBefore(logs: readonly string[], timestamp: string, again: ReadonlySet<string>): string[] {
+  const kept: string[] = [];
+  let keeping = false;
+
+  for (const line of logs) {
+    const lineTimestamp = getLeadingTimestamp(line);
+
+    if (lineTimestamp !== undefined) {
+      if (compareLogTimestamps(lineTimestamp, timestamp) >= 0) {
+        break;
+      }
+
+      keeping = !again.has(line);
+    }
+
+    if (keeping) {
+      kept.push(line);
+    }
+  }
+
+  return kept;
+}
+
+/**
+ * The timestamp of the first line of `lines` that has one.
+ */
+export function getFirstTimestamp(lines: readonly string[]): string | undefined {
+  for (const line of lines) {
+    const timestamp = getLeadingTimestamp(line);
+
+    if (timestamp !== undefined) {
+      return timestamp;
+    }
+  }
+
+  return undefined;
+}
+
+/**
+ * The line a tab shows where lines of a pod may be missing, with the timestamp
+ * of the first line after them, so that it stays right in front of that line.
+ */
+export function missingLinesMarker(timestamp: string): string {
+  return `${timestamp} ⋯ Some lines may be missing here: the log was rotated or the container restarted between two refreshes.`;
+}

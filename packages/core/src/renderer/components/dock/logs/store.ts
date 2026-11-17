@@ -8,13 +8,16 @@ import { getOrInsertWith, interval } from "@freelensapp/utilities";
 import { observable, when } from "mobx";
 import {
   compareLogTimestamps,
+  getFirstTimestamp,
   getLeadingTimestamp,
   keepNewestLogLines,
+  linesBefore,
   logTimestampPattern,
   maxConcurrentLogRequests,
   maxLogLines,
   mergeIntoLogs,
   mergePodLogs,
+  missingLinesMarker,
   podLogColors,
   splitLogLines,
 } from "./merge-pod-logs";
@@ -107,14 +110,53 @@ export class LogStore {
       logTabData,
       (pod, podCount) => ({ tailLines: this.getTailLines(lineCounts?.get(pod.getId()) ?? 0, podCount) }),
       (logsOfPods, tagged) => {
+        const oldLogs = this.podLogs.get(tabId) ?? [];
+        const oldCursors = this.cursors.get(tabId);
         const cursors = new Map<string, PodLogsCursor>();
+        const newLineCounts = new Map<string, number>();
 
         this.cursors.set(tabId, cursors);
-        this.lineCounts.set(tabId, new Map());
+        this.lineCounts.set(tabId, newLineCounts);
+
+        const answer = this.mergeNewLines(tabId, cursors, logsOfPods, tagged);
+
+        // A pod that brought no line, as one whose log was rotated a moment
+        // ago or whose request failed, keeps its place, so that the refresh
+        // does not ask it again for lines the tab still has.
+        for (const [podId, cursor] of oldCursors ?? []) {
+          if (!cursors.has(podId)) {
+            cursors.set(podId, cursor);
+            newLineCounts.set(podId, lineCounts?.get(podId) ?? 0);
+          }
+        }
+
         this.getRefresher(tabId, computedPods, logTabData).start();
-        this.podLogs.set(tabId, this.limitLines(this.mergeNewLines(tabId, cursors, logsOfPods, tagged)));
+        this.podLogs.set(tabId, this.limitLines(this.withOlderLines(oldLogs, answer, logsOfPods)));
       },
     );
+  }
+
+  /**
+   * The answer of a load of older lines, with the lines of the tab that it
+   * does not reach in front of it. The kubelet rotates the log of a container,
+   * and `tailLines` reads the current file only, so the answer can start later
+   * than the tab, or bring nothing at all.
+   */
+  private withOlderLines(oldLogs: string[], answer: string[], logsOfPods: PodLogs[]): string[] {
+    const starts = logsOfPods.map(({ lines }) => getFirstTimestamp(lines)).filter((start) => start !== undefined);
+
+    if (starts.length === 0) {
+      return oldLogs.length > 0 ? oldLogs : answer;
+    }
+
+    // The latest start, so that no pod loses a line: the lines of the pods
+    // whose answer starts earlier come back in it, and are not kept twice.
+    const start = starts.reduce((latest, timestamp) =>
+      compareLogTimestamps(timestamp, latest) > 0 ? timestamp : latest,
+    );
+    const older = linesBefore(oldLogs, start, new Set(answer));
+
+    return older.length > 0 ? mergeIntoLogs(older, answer) : answer;
   }
 
   /**
@@ -347,6 +389,7 @@ export class LogStore {
     for (const { pod, lines } of logsOfPods) {
       const podId = pod.getId();
       let cursor = cursors.get(podId);
+      const lastTimestamp = cursor?.timestamp;
       let isNew = !cursor;
       const newLines: string[] = [];
       // The lines as the API counts them for tailLines: the pieces of a line
@@ -376,6 +419,20 @@ export class LogStore {
         if (isNew && (line || newLines.length > 0)) {
           newLines.push(line);
         }
+      }
+
+      // An answer since the second of the last line brings that line again,
+      // unless the file that held it is gone: the kubelet rotated the log, or
+      // the container restarted, and the lines in between may be lost.
+      const firstTimestamp = getFirstTimestamp(lines);
+
+      if (
+        lastTimestamp !== undefined &&
+        firstTimestamp !== undefined &&
+        newLines.length > 0 &&
+        compareLogTimestamps(firstTimestamp, lastTimestamp) > 0
+      ) {
+        newLines.unshift(missingLinesMarker(firstTimestamp));
       }
 
       if (cursor) {

@@ -9,6 +9,7 @@ import {
   getLeadingTimestamp,
   getPodLogColor,
   keepNewestLogLines,
+  linesBefore,
   mergeIntoLogs,
   mergePodLogs,
   podLogColors,
@@ -313,6 +314,28 @@ describe("stripAnsiColors", () => {
   it("removes the colors and keeps the tag", () => {
     expect(stripAnsiColors("2024-01-01T00:00:00Z \x1b[36m[pod-a]\x1b[0m hello")).toBe(
       "2024-01-01T00:00:00Z [pod-a] hello",
+    );
+  });
+});
+
+describe("linesBefore", () => {
+  const logs = [
+    "Failed to load logs: gone",
+    "2024-01-01T00:00:01.000000000Z a1",
+    "  continued a1",
+    "2024-01-01T00:00:02.000000000Z a2",
+    "  continued a2",
+    "2024-01-01T00:00:03.000000000Z a3",
+    "2024-01-01T00:00:04.000000000Z a4",
+  ];
+
+  it("keeps the lines older than the start, with their continuations, and leaves out what comes before the first timestamp", () => {
+    expect(linesBefore(logs, "2024-01-01T00:00:03.000000000Z", new Set())).toEqual(logs.slice(1, 5));
+  });
+
+  it("leaves out a line the answer brings again, with its continuation", () => {
+    expect(linesBefore(logs, "2024-01-01T00:00:04.000000000Z", new Set(["2024-01-01T00:00:02.000000000Z a2"]))).toEqual(
+      ["2024-01-01T00:00:01.000000000Z a1", "  continued a1", "2024-01-01T00:00:03.000000000Z a3"],
     );
   });
 });
