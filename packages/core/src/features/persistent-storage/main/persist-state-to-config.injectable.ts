@@ -13,12 +13,16 @@ const persistStateToConfigInjectable = getInjectable({
   instantiate: (di) => {
     const logger = di.inject(loggerInjectionToken);
 
+    // One `set` for the whole state: conf reads and writes the whole file on
+    // every `set`, so a `set` per key would leave the file half updated
+    // between them. A state without keys has nothing to write.
     return (config, state) => {
-      logger.info(`[BASE-STORE]: saving ${config.path}...`);
-
-      for (const [key, value] of Object.entries(state)) {
-        config.set(key, value);
+      if (Object.keys(state).length === 0) {
+        return;
       }
+
+      logger.info(`[BASE-STORE]: saving ${config.path}...`);
+      config.set(state);
     };
   },
   injectionToken: persistStateToConfigInjectionToken,
