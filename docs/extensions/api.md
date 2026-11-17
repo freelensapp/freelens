@@ -484,7 +484,7 @@ binding to the instance through the API.
 ### The overview cards follow the user's choice of Cards or Charts
 
 The cluster overview and the workloads overview show their numbers either as
-cards or as the ring and pie charts, by the user's choice in Preferences →
+the ring and pie charts or as cards, by the user's choice in Preferences →
 Personalization → Overview style. An extension shows its own numbers the same
 way with the components the overviews render:
 
@@ -505,8 +505,8 @@ way with the components the overviews render:
   `StatusCardStatus` has a `label`, a `count`, a CSS `color` and a `tone`
   (`StatusCardTone`): `healthy` statuses make the healthy share, `failing` ones
   the number that fail.
-- **`Common.App.Preferences.getOverviewStyle()`** returns `"cards"`, the
-  default, or `"charts"`. It is observable: an `observer` component that calls
+- **`Common.App.Preferences.getOverviewStyle()`** returns `"charts"`, the
+  default, or `"cards"`. It is observable: an `observer` component that calls
   it renders again when the user switches.
 
 The props are the contract, not the shape of the host's metrics or stores, and

@@ -48,8 +48,8 @@ interface OverviewStyleOption {
 }
 
 const options: OverviewStyleOption[] = [
-  { value: "cards", label: "Cards", Preview: CardsPreview, stageClassName: styles.cardsStage },
   { value: "charts", label: "Charts", Preview: ChartsPreview, stageClassName: styles.chartsStage },
+  { value: "cards", label: "Cards", Preview: CardsPreview, stageClassName: styles.cardsStage },
 ];
 
 const NonInjectedOverviewStyle = observer(({ state, overviewStyle }: Dependencies) => {
@@ -86,7 +86,7 @@ const NonInjectedOverviewStyle = observer(({ state, overviewStyle }: Dependencie
         ))}
       </div>
       <small className="hint">
-        How the cluster and workloads overviews show their numbers: as cards, or as ring and pie charts.
+        How the cluster and workloads overviews show their numbers: as ring and pie charts, or as cards.
       </small>
     </section>
   );

@@ -536,9 +536,12 @@ exports[`legacy extension adding cluster frame components > given custom compone
               </div>
             </div>
             <div
-              class="cards"
-              data-testid="workload-status-cards"
-            />
+              class="OverviewStatuses"
+            >
+              <div
+                class="workloads"
+              />
+            </div>
           </div>
         </main>
       </div>

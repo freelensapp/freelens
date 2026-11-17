@@ -536,9 +536,12 @@ exports[`cluster - custom resources in sidebar > renders 1`] = `
               </div>
             </div>
             <div
-              class="cards"
-              data-testid="workload-status-cards"
-            />
+              class="OverviewStatuses"
+            >
+              <div
+                class="workloads"
+              />
+            </div>
           </div>
         </main>
       </div>
@@ -1248,9 +1251,12 @@ exports[`cluster - custom resources in sidebar > when custom resource definition
               </div>
             </div>
             <div
-              class="cards"
-              data-testid="workload-status-cards"
-            />
+              class="OverviewStatuses"
+            >
+              <div
+                class="workloads"
+              />
+            </div>
           </div>
         </main>
       </div>
@@ -1923,9 +1929,12 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > r
               </div>
             </div>
             <div
-              class="cards"
-              data-testid="workload-status-cards"
-            />
+              class="OverviewStatuses"
+            >
+              <div
+                class="workloads"
+              />
+            </div>
           </div>
         </main>
       </div>
@@ -2635,9 +2644,12 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
               </div>
             </div>
             <div
-              class="cards"
-              data-testid="workload-status-cards"
-            />
+              class="OverviewStatuses"
+            >
+              <div
+                class="workloads"
+              />
+            </div>
           </div>
         </main>
       </div>
@@ -3393,9 +3405,12 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
               </div>
             </div>
             <div
-              class="cards"
-              data-testid="workload-status-cards"
-            />
+              class="OverviewStatuses"
+            >
+              <div
+                class="workloads"
+              />
+            </div>
           </div>
         </main>
       </div>
@@ -4105,9 +4120,12 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
               </div>
             </div>
             <div
-              class="cards"
-              data-testid="workload-status-cards"
-            />
+              class="OverviewStatuses"
+            >
+              <div
+                class="workloads"
+              />
+            </div>
           </div>
         </main>
       </div>
@@ -4848,9 +4866,12 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
               </div>
             </div>
             <div
-              class="cards"
-              data-testid="workload-status-cards"
-            />
+              class="OverviewStatuses"
+            >
+              <div
+                class="workloads"
+              />
+            </div>
           </div>
         </main>
       </div>
@@ -5637,9 +5658,12 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
               </div>
             </div>
             <div
-              class="cards"
-              data-testid="workload-status-cards"
-            />
+              class="OverviewStatuses"
+            >
+              <div
+                class="workloads"
+              />
+            </div>
           </div>
         </main>
       </div>

@@ -116,8 +116,8 @@ const userPreferenceDescriptorsInjectable = getInjectable({
         toStore: (val) => val || undefined,
       }),
       overviewStyle: getPreferenceDescriptor<OverviewStylePreference>({
-        fromStore: (val) => (val === "charts" ? val : defaultOverviewStylePreference),
-        toStore: (val) => (val === "charts" ? val : undefined),
+        fromStore: (val) => (val === "cards" ? val : defaultOverviewStylePreference),
+        toStore: (val) => (val === "cards" ? val : undefined),
       }),
       zoom: getPreferenceDescriptor<number>({
         fromStore: (val) => (isZoomStep(val) ? val : defaultZoom),

@@ -159,8 +159,6 @@ describe("ClusterPieCharts", () => {
       hasWorkerNodes: computed(() => true),
     }));
 
-    di.inject(userPreferencesStateInjectable).overviewStyle = "charts";
-
     render(<ClusterPieCharts />);
 
     expect(screen.getAllByTestId("cluster-pie-chart")).toHaveLength(3);
@@ -218,9 +216,19 @@ describe("ClusterPieCharts", () => {
       return { state: di.inject(userPreferencesStateInjectable), render };
     };
 
-    it("shows capacity cards instead of the ring charts by default", () => {
+    it("shows the ring charts by default", () => {
       const { render } = setup();
 
+      render(<ClusterPieCharts />);
+
+      expect(screen.getAllByTestId("cluster-pie-chart")).toHaveLength(3);
+      expect(screen.queryByTestId("cluster-capacity-cards")).not.toBeInTheDocument();
+    });
+
+    it("shows capacity cards instead of the ring charts with the cards style", () => {
+      const { state, render } = setup();
+
+      state.overviewStyle = "cards";
       render(<ClusterPieCharts />);
 
       expect(screen.getByTestId("cluster-capacity-cards")).toBeInTheDocument();
@@ -228,27 +236,10 @@ describe("ClusterPieCharts", () => {
       expect(screen.queryByTestId("cluster-pie-chart")).not.toBeInTheDocument();
     });
 
-    it("shows the ring charts with the charts style", () => {
-      const { state, render } = setup();
-
-      state.overviewStyle = "charts";
-      render(<ClusterPieCharts />);
-
-      expect(screen.getAllByTestId("cluster-pie-chart")).toHaveLength(3);
-      expect(screen.queryByTestId("cluster-capacity-cards")).not.toBeInTheDocument();
-    });
-
-    it("switches between cards and charts while the overview is open", () => {
+    it("switches between charts and cards while the overview is open", () => {
       const { state, render } = setup();
 
       render(<ClusterPieCharts />);
-
-      act(() => {
-        state.overviewStyle = "charts";
-      });
-
-      expect(screen.getAllByTestId("cluster-pie-chart")).toHaveLength(3);
-      expect(screen.queryByTestId("cluster-capacity-cards")).not.toBeInTheDocument();
 
       act(() => {
         state.overviewStyle = "cards";
@@ -256,6 +247,13 @@ describe("ClusterPieCharts", () => {
 
       expect(screen.getByTestId("cluster-capacity-cards")).toBeInTheDocument();
       expect(screen.queryByTestId("cluster-pie-chart")).not.toBeInTheDocument();
+
+      act(() => {
+        state.overviewStyle = "charts";
+      });
+
+      expect(screen.getAllByTestId("cluster-pie-chart")).toHaveLength(3);
+      expect(screen.queryByTestId("cluster-capacity-cards")).not.toBeInTheDocument();
     });
   });
 });

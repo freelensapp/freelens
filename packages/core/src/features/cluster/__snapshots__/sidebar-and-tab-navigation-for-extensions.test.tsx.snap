@@ -582,9 +582,12 @@ exports[`cluster - sidebar and tab navigation for extensions > given extension w
               </div>
             </div>
             <div
-              class="cards"
-              data-testid="workload-status-cards"
-            />
+              class="OverviewStatuses"
+            >
+              <div
+                class="workloads"
+              />
+            </div>
           </div>
         </main>
       </div>
@@ -1303,9 +1306,12 @@ exports[`cluster - sidebar and tab navigation for extensions > given extension w
               </div>
             </div>
             <div
-              class="cards"
-              data-testid="workload-status-cards"
-            />
+              class="OverviewStatuses"
+            >
+              <div
+                class="workloads"
+              />
+            </div>
           </div>
         </main>
       </div>
@@ -2112,9 +2118,12 @@ exports[`cluster - sidebar and tab navigation for extensions > given extension w
               </div>
             </div>
             <div
-              class="cards"
-              data-testid="workload-status-cards"
-            />
+              class="OverviewStatuses"
+            >
+              <div
+                class="workloads"
+              />
+            </div>
           </div>
         </main>
       </div>
@@ -5019,9 +5028,12 @@ exports[`cluster - sidebar and tab navigation for extensions > given extension w
               </div>
             </div>
             <div
-              class="cards"
-              data-testid="workload-status-cards"
-            />
+              class="OverviewStatuses"
+            >
+              <div
+                class="workloads"
+              />
+            </div>
           </div>
         </main>
       </div>
@@ -5740,9 +5752,12 @@ exports[`cluster - sidebar and tab navigation for extensions > given extension w
               </div>
             </div>
             <div
-              class="cards"
-              data-testid="workload-status-cards"
-            />
+              class="OverviewStatuses"
+            >
+              <div
+                class="workloads"
+              />
+            </div>
           </div>
         </main>
       </div>

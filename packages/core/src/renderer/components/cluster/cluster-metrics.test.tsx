@@ -278,9 +278,10 @@ describe("ClusterMetrics", () => {
         data: { datasets: { id: string; type?: string; borderColor: string; borderDash?: number[]; data: unknown }[] };
       };
 
-    it("draws the metric as a line in the accent of the theme, with requests and allocatable as dashed lines", () => {
-      const { render } = setup();
+    it("draws the metric as a line in the accent of the theme, with requests and allocatable as dashed lines, with the cards style", () => {
+      const { state, render } = setup();
 
+      state.overviewStyle = "cards";
       render(<ClusterMetrics />);
 
       const { datasets } = lastBarChartProps().data;
@@ -299,10 +300,9 @@ describe("ClusterMetrics", () => {
       expect(lastBarChartProps().showLegend).toBe(true);
     });
 
-    it("keeps the bars of today with the charts style", () => {
-      const { state, render } = setup();
+    it("keeps the bars of today by default", () => {
+      const { render } = setup();
 
-      state.overviewStyle = "charts";
       render(<ClusterMetrics />);
 
       const { datasets } = lastBarChartProps().data;
@@ -319,16 +319,16 @@ describe("ClusterMetrics", () => {
       render(<ClusterMetrics />);
 
       act(() => {
-        state.overviewStyle = "charts";
-      });
-
-      expect(lastBarChartProps().data.datasets).toHaveLength(1);
-
-      act(() => {
         state.overviewStyle = "cards";
       });
 
       expect(lastBarChartProps().data.datasets).toHaveLength(3);
+
+      act(() => {
+        state.overviewStyle = "charts";
+      });
+
+      expect(lastBarChartProps().data.datasets).toHaveLength(1);
     });
   });
 });

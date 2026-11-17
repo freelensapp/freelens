@@ -35,26 +35,26 @@ describe("overview style preference", () => {
     renderFor(di)(<OverviewStyle />);
   });
 
-  it("is a radio group named Overview style with Cards and Charts", () => {
+  it("is a radio group named Overview style with Charts and Cards", () => {
     const group = screen.getByRole("radiogroup", { name: "Overview style" });
 
     expect(
       within(group)
         .getAllByRole("radio")
         .map((element) => element.getAttribute("value")),
-    ).toEqual(["cards", "charts"]);
+    ).toEqual(["charts", "cards"]);
   });
 
   it("names each radio by the label under its preview only", () => {
-    expect(radio("Cards")).toBeInTheDocument();
     expect(radio("Charts")).toBeInTheDocument();
+    expect(radio("Cards")).toBeInTheDocument();
   });
 
-  it("selects Cards by default", () => {
-    expect(radio("Cards")).toBeChecked();
-    expect(radio("Charts")).not.toBeChecked();
-    expect(tile("cards")).toHaveClass("selected");
-    expect(tile("charts")).not.toHaveClass("selected");
+  it("selects Charts by default", () => {
+    expect(radio("Charts")).toBeChecked();
+    expect(radio("Cards")).not.toBeChecked();
+    expect(tile("charts")).toHaveClass("selected");
+    expect(tile("cards")).not.toHaveClass("selected");
   });
 
   it("previews the cards with a status card of sample pods", () => {
@@ -80,76 +80,76 @@ describe("overview style preference", () => {
   });
 
   it("keeps the previews out of the accessibility tree and out of reach", () => {
-    for (const value of ["cards", "charts"]) {
+    for (const value of ["charts", "cards"]) {
       expect(preview(value)).toHaveAttribute("aria-hidden", "true");
       expect(preview(value)).toHaveAttribute("inert");
       expect(within(preview(value)).queryAllByRole("button", { hidden: true })).toEqual([]);
     }
   });
 
-  it("switches both overviews to the charts from a click on the tile", async () => {
-    await user.click(preview("charts"));
-
-    expect(state.overviewStyle).toBe("charts");
-    expect(radio("Charts")).toBeChecked();
-    expect(tile("charts")).toHaveClass("selected");
-    expect(tile("cards")).not.toHaveClass("selected");
-  });
-
-  it("switches back to the cards from a click on the label", async () => {
-    await user.click(screen.getByText("Charts"));
-    await user.click(screen.getByText("Cards"));
+  it("switches both overviews to the cards from a click on the tile", async () => {
+    await user.click(preview("cards"));
 
     expect(state.overviewStyle).toBe("cards");
     expect(radio("Cards")).toBeChecked();
     expect(tile("cards")).toHaveClass("selected");
+    expect(tile("charts")).not.toHaveClass("selected");
+  });
+
+  it("switches back to the charts from a click on the label", async () => {
+    await user.click(screen.getByText("Cards"));
+    await user.click(screen.getByText("Charts"));
+
+    expect(state.overviewStyle).toBe("charts");
+    expect(radio("Charts")).toBeChecked();
+    expect(tile("charts")).toHaveClass("selected");
   });
 
   it("moves through the styles with the arrow keys", async () => {
     await user.tab();
 
-    expect(radio("Cards")).toHaveFocus();
+    expect(radio("Charts")).toHaveFocus();
 
     await user.keyboard("{ArrowRight}");
 
-    expect(radio("Charts")).toHaveFocus();
-    expect(state.overviewStyle).toBe("charts");
+    expect(radio("Cards")).toHaveFocus();
+    expect(state.overviewStyle).toBe("cards");
 
     await user.keyboard("{ArrowLeft}");
 
-    expect(radio("Cards")).toHaveFocus();
-    expect(state.overviewStyle).toBe("cards");
+    expect(radio("Charts")).toHaveFocus();
+    expect(state.overviewStyle).toBe("charts");
   });
 
   it("is a single stop in the tab order", async () => {
     await user.tab();
 
-    expect(radio("Cards")).toHaveFocus();
+    expect(radio("Charts")).toHaveFocus();
 
     await user.tab();
 
-    expect(radio("Charts")).not.toHaveFocus();
+    expect(radio("Cards")).not.toHaveFocus();
   });
 
   it("follows a change of the preference made elsewhere", async () => {
-    state.overviewStyle = "charts";
+    state.overviewStyle = "cards";
 
-    expect(await screen.findByRole("radio", { name: "Charts", checked: true })).toBeInTheDocument();
-    expect(tile("charts")).toHaveClass("selected");
+    expect(await screen.findByRole("radio", { name: "Cards", checked: true })).toBeInTheDocument();
+    expect(tile("cards")).toHaveClass("selected");
   });
 
   it("keeps the description under the previews", () => {
     expect(screen.getByText(/How the cluster and workloads overviews show their numbers/)).toBeInTheDocument();
   });
 
-  it("stores nothing for the default, Cards", () => {
-    expect(descriptors.overviewStyle.toStore("cards")).toBeUndefined();
-    expect(descriptors.overviewStyle.toStore("charts")).toBe("charts");
+  it("stores nothing for the default, Charts", () => {
+    expect(descriptors.overviewStyle.toStore("charts")).toBeUndefined();
+    expect(descriptors.overviewStyle.toStore("cards")).toBe("cards");
   });
 
-  it("reads Cards when nothing or something unknown is stored", () => {
-    expect(descriptors.overviewStyle.fromStore(undefined)).toBe("cards");
-    expect(descriptors.overviewStyle.fromStore("pies" as never)).toBe("cards");
-    expect(descriptors.overviewStyle.fromStore("charts")).toBe("charts");
+  it("reads Charts when nothing or something unknown is stored", () => {
+    expect(descriptors.overviewStyle.fromStore(undefined)).toBe("charts");
+    expect(descriptors.overviewStyle.fromStore("pies" as never)).toBe("charts");
+    expect(descriptors.overviewStyle.fromStore("cards")).toBe("cards");
   });
 });

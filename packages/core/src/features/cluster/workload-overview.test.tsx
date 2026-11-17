@@ -48,28 +48,18 @@ describe("workload overview", () => {
       expect(rendered.queryByTestId("page-for-workloads-overview")).toBeInTheDocument();
     });
 
-    it("shows a status card for pods", () => {
-      expect(rendered.queryByTestId("workload-status-card-pods")).toBeInTheDocument();
+    it("shows pods pie chart", () => {
+      expect(rendered.queryByTestId("workload-overview-status-chart-pods")).toBeInTheDocument();
     });
 
-    it("does not show the pods pie chart", () => {
-      expect(rendered.queryByTestId("workload-overview-status-chart-pods")).not.toBeInTheDocument();
+    it("does not show the status cards", () => {
+      expect(rendered.queryByTestId("workload-status-card-pods")).not.toBeInTheDocument();
     });
 
-    it("says there are no pods in any namespace while all namespaces are selected", () => {
-      expect(rendered.getByTestId("workload-status-card-pods-empty")).toHaveTextContent("None in any namespace");
-    });
-
-    it("opens the list of pods from the card", () => {
-      fireEvent.click(rendered.getByTestId("workload-status-card-pods"));
-
-      expect(builder.applicationWindow.only.di.inject(currentPathInjectable).get()).toBe("/pods");
-    });
-
-    describe("when the overview style changes to charts", () => {
+    describe("when the overview style changes to cards", () => {
       beforeEach(() => {
         act(() => {
-          getUserPreferences().overviewStyle = "charts";
+          getUserPreferences().overviewStyle = "cards";
         });
       });
 
@@ -77,45 +67,55 @@ describe("workload overview", () => {
         expect(rendered.baseElement).toMatchSnapshot();
       });
 
-      it("shows pods pie chart", () => {
-        expect(rendered.queryByTestId("workload-overview-status-chart-pods")).toBeInTheDocument();
+      it("shows a status card for pods", () => {
+        expect(rendered.queryByTestId("workload-status-card-pods")).toBeInTheDocument();
       });
 
-      it("does not show the status cards", () => {
+      it("does not show the pods pie chart", () => {
+        expect(rendered.queryByTestId("workload-overview-status-chart-pods")).not.toBeInTheDocument();
+      });
+
+      it("says there are no pods in any namespace while all namespaces are selected", () => {
+        expect(rendered.getByTestId("workload-status-card-pods-empty")).toHaveTextContent("None in any namespace");
+      });
+
+      it("opens the list of pods from the card", () => {
+        fireEvent.click(rendered.getByTestId("workload-status-card-pods"));
+
+        expect(builder.applicationWindow.only.di.inject(currentPathInjectable).get()).toBe("/pods");
+      });
+
+      it("shows the pie charts again when the style changes back to charts", () => {
+        act(() => {
+          getUserPreferences().overviewStyle = "charts";
+        });
+
+        expect(rendered.queryByTestId("workload-overview-status-chart-pods")).toBeInTheDocument();
         expect(rendered.queryByTestId("workload-status-card-pods")).not.toBeInTheDocument();
       });
 
-      it("shows the status cards again when the style changes back to cards", () => {
-        act(() => {
-          getUserPreferences().overviewStyle = "cards";
+      describe("when one namespace is selected", () => {
+        beforeEach(() => {
+          builder.namespaces.add("default");
+          builder.namespaces.select("default");
         });
 
-        expect(rendered.queryByTestId("workload-status-card-pods")).toBeInTheDocument();
-        expect(rendered.queryByTestId("workload-overview-status-chart-pods")).not.toBeInTheDocument();
-      });
-    });
-
-    describe("when one namespace is selected", () => {
-      beforeEach(() => {
-        builder.namespaces.add("default");
-        builder.namespaces.select("default");
+        it("says there are no pods in the namespace", () => {
+          expect(rendered.getByTestId("workload-status-card-pods-empty")).toHaveTextContent("None in this namespace");
+        });
       });
 
-      it("says there are no pods in the namespace", () => {
-        expect(rendered.getByTestId("workload-status-card-pods-empty")).toHaveTextContent("None in this namespace");
-      });
-    });
+      describe("when several namespaces are selected", () => {
+        beforeEach(() => {
+          builder.namespaces.add("default");
+          builder.namespaces.add("kube-system");
+          builder.namespaces.select("default");
+          builder.namespaces.select("kube-system");
+        });
 
-    describe("when several namespaces are selected", () => {
-      beforeEach(() => {
-        builder.namespaces.add("default");
-        builder.namespaces.add("kube-system");
-        builder.namespaces.select("default");
-        builder.namespaces.select("kube-system");
-      });
-
-      it("says there are no pods in the namespaces", () => {
-        expect(rendered.getByTestId("workload-status-card-pods-empty")).toHaveTextContent("None in these namespaces");
+        it("says there are no pods in the namespaces", () => {
+          expect(rendered.getByTestId("workload-status-card-pods-empty")).toHaveTextContent("None in these namespaces");
+        });
       });
     });
   });

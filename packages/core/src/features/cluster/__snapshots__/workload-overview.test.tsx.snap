@@ -550,54 +550,51 @@ exports[`workload overview > when navigating to workload overview > renders 1`] 
                 </div>
               </div>
               <div
-                class="cards"
-                data-testid="workload-status-cards"
+                class="OverviewStatuses"
               >
-                <button
-                  class="StatusCard"
-                  data-testid="workload-status-card-pods"
-                  type="button"
+                <div
+                  class="workloads"
                 >
-                  <span
-                    class="StatusCard-header"
+                  <div
+                    class="workload"
                   >
-                    <span
-                      class="StatusCard-title"
+                    <div
+                      class="title"
                     >
-                      Pods
-                    </span>
-                    <i
-                      class="Icon StatusCard-chevron material focusable smallest"
+                      <a>
+                        Pods (0)
+                      </a>
+                    </div>
+                    <div
+                      class="OverviewWorkloadStatus"
                     >
-                      <span
-                        class="icon"
-                        data-icon-name="chevron_right"
+                      <div
+                        class="flex flex-col items-center grow shrink-0 basis-0"
                       >
-                        chevron_right
-                      </span>
-                    </i>
-                  </span>
-                  <span
-                    class="StatusCard-summary"
-                  >
-                    <span
-                      class="StatusCard-total"
-                      data-testid="workload-status-card-pods-total"
-                    >
-                      0
-                    </span>
-                  </span>
-                  <span
-                    aria-hidden="true"
-                    class="StatusCard-bar"
-                  />
-                  <span
-                    class="StatusCard-empty"
-                    data-testid="workload-status-card-pods-empty"
-                  >
-                    None in any namespace
-                  </span>
-                </button>
+                        <div
+                          class="Chart PieChart flex flex-col items-center"
+                          data-testid="workload-overview-status-chart-pods"
+                        >
+                          <div
+                            class="chart-container"
+                          >
+                            <canvas
+                              height="0"
+                              style="display: block; box-sizing: border-box; height: 0px; width: 0px;"
+                              width="0"
+                            />
+                            <div
+                              class="chartjs-tooltip flex flex-col"
+                            />
+                          </div>
+                          <div
+                            class="legend flex flex-wrap"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </main>
@@ -736,7 +733,7 @@ exports[`workload overview > when navigating to workload overview > renders 1`] 
 </body>
 `;
 
-exports[`workload overview > when navigating to workload overview > when the overview style changes to charts > renders 1`] = `
+exports[`workload overview > when navigating to workload overview > when the overview style changes to cards > renders 1`] = `
 <body>
   <div>
     <div
@@ -770,7 +767,7 @@ exports[`workload overview > when navigating to workload overview > when the ove
             class="container sidebarNav sidebar-active-status"
           >
             <div
-              aria-describedby="DndDescribedBy-6"
+              aria-describedby="DndDescribedBy-4"
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
@@ -815,7 +812,7 @@ exports[`workload overview > when navigating to workload overview > when the ove
               </div>
             </div>
             <div
-              aria-describedby="DndDescribedBy-6"
+              aria-describedby="DndDescribedBy-4"
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
@@ -823,7 +820,7 @@ exports[`workload overview > when navigating to workload overview > when the ove
               tabindex="0"
             />
             <div
-              aria-describedby="DndDescribedBy-6"
+              aria-describedby="DndDescribedBy-4"
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
@@ -831,7 +828,7 @@ exports[`workload overview > when navigating to workload overview > when the ove
               tabindex="0"
             />
             <div
-              aria-describedby="DndDescribedBy-6"
+              aria-describedby="DndDescribedBy-4"
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
@@ -931,7 +928,7 @@ exports[`workload overview > when navigating to workload overview > when the ove
               </div>
             </div>
             <div
-              aria-describedby="DndDescribedBy-6"
+              aria-describedby="DndDescribedBy-4"
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
@@ -939,7 +936,7 @@ exports[`workload overview > when navigating to workload overview > when the ove
               tabindex="0"
             />
             <div
-              aria-describedby="DndDescribedBy-6"
+              aria-describedby="DndDescribedBy-4"
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
@@ -984,7 +981,7 @@ exports[`workload overview > when navigating to workload overview > when the ove
               </div>
             </div>
             <div
-              aria-describedby="DndDescribedBy-6"
+              aria-describedby="DndDescribedBy-4"
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
@@ -992,7 +989,7 @@ exports[`workload overview > when navigating to workload overview > when the ove
               tabindex="0"
             />
             <div
-              aria-describedby="DndDescribedBy-6"
+              aria-describedby="DndDescribedBy-4"
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
@@ -1000,7 +997,7 @@ exports[`workload overview > when navigating to workload overview > when the ove
               tabindex="0"
             />
             <div
-              aria-describedby="DndDescribedBy-6"
+              aria-describedby="DndDescribedBy-4"
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
@@ -1008,7 +1005,7 @@ exports[`workload overview > when navigating to workload overview > when the ove
               tabindex="0"
             />
             <div
-              aria-describedby="DndDescribedBy-6"
+              aria-describedby="DndDescribedBy-4"
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
@@ -1113,7 +1110,7 @@ exports[`workload overview > when navigating to workload overview > when the ove
               </div>
             </div>
             <div
-              aria-describedby="DndDescribedBy-6"
+              aria-describedby="DndDescribedBy-4"
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
@@ -1121,7 +1118,7 @@ exports[`workload overview > when navigating to workload overview > when the ove
               tabindex="0"
             />
             <div
-              aria-describedby="DndDescribedBy-6"
+              aria-describedby="DndDescribedBy-4"
               aria-disabled="false"
               aria-roledescription="sortable"
               role="button"
@@ -1129,7 +1126,7 @@ exports[`workload overview > when navigating to workload overview > when the ove
               tabindex="0"
             />
             <div
-              id="DndDescribedBy-6"
+              id="DndDescribedBy-4"
               style="display: none;"
             >
               
@@ -1141,7 +1138,7 @@ exports[`workload overview > when navigating to workload overview > when the ove
             <div
               aria-atomic="true"
               aria-live="assertive"
-              id="DndLiveRegion-6"
+              id="DndLiveRegion-4"
               role="status"
               style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
             />
@@ -1286,51 +1283,54 @@ exports[`workload overview > when navigating to workload overview > when the ove
                 </div>
               </div>
               <div
-                class="OverviewStatuses"
+                class="cards"
+                data-testid="workload-status-cards"
               >
-                <div
-                  class="workloads"
+                <button
+                  class="StatusCard"
+                  data-testid="workload-status-card-pods"
+                  type="button"
                 >
-                  <div
-                    class="workload"
+                  <span
+                    class="StatusCard-header"
                   >
-                    <div
-                      class="title"
+                    <span
+                      class="StatusCard-title"
                     >
-                      <a>
-                        Pods (0)
-                      </a>
-                    </div>
-                    <div
-                      class="OverviewWorkloadStatus"
+                      Pods
+                    </span>
+                    <i
+                      class="Icon StatusCard-chevron material focusable smallest"
                     >
-                      <div
-                        class="flex flex-col items-center grow shrink-0 basis-0"
+                      <span
+                        class="icon"
+                        data-icon-name="chevron_right"
                       >
-                        <div
-                          class="Chart PieChart flex flex-col items-center"
-                          data-testid="workload-overview-status-chart-pods"
-                        >
-                          <div
-                            class="chart-container"
-                          >
-                            <canvas
-                              height="0"
-                              style="display: block; box-sizing: border-box; height: 0px; width: 0px;"
-                              width="0"
-                            />
-                            <div
-                              class="chartjs-tooltip flex flex-col"
-                            />
-                          </div>
-                          <div
-                            class="legend flex flex-wrap"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                        chevron_right
+                      </span>
+                    </i>
+                  </span>
+                  <span
+                    class="StatusCard-summary"
+                  >
+                    <span
+                      class="StatusCard-total"
+                      data-testid="workload-status-card-pods-total"
+                    >
+                      0
+                    </span>
+                  </span>
+                  <span
+                    aria-hidden="true"
+                    class="StatusCard-bar"
+                  />
+                  <span
+                    class="StatusCard-empty"
+                    data-testid="workload-status-card-pods-empty"
+                  >
+                    None in any namespace
+                  </span>
+                </button>
               </div>
             </div>
           </main>

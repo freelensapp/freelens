@@ -564,9 +564,12 @@ exports[`disable sidebar items when cluster is not relevant > given extension sh
                 </div>
               </div>
               <div
-                class="cards"
-                data-testid="workload-status-cards"
-              />
+                class="OverviewStatuses"
+              >
+                <div
+                  class="workloads"
+                />
+              </div>
             </div>
           </main>
         </div>
@@ -1249,9 +1252,12 @@ exports[`disable sidebar items when cluster is not relevant > given extension sh
                 </div>
               </div>
               <div
-                class="cards"
-                data-testid="workload-status-cards"
-              />
+                class="OverviewStatuses"
+              >
+                <div
+                  class="workloads"
+                />
+              </div>
             </div>
           </main>
         </div>
@@ -1934,9 +1940,12 @@ exports[`disable sidebar items when cluster is not relevant > given not yet know
                 </div>
               </div>
               <div
-                class="cards"
-                data-testid="workload-status-cards"
-              />
+                class="OverviewStatuses"
+              >
+                <div
+                  class="workloads"
+                />
+              </div>
             </div>
           </main>
         </div>

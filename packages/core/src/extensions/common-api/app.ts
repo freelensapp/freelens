@@ -32,8 +32,8 @@ export const App = {
   Preferences: {
     getKubectlPath: () => userStore.kubectlBinariesPath,
     /**
-     * How the user chose to see the cluster and workloads overviews: `"cards"`, the default, or
-     * `"charts"`. Observable: an `observer` component that calls it renders again when the user
+     * How the user chose to see the cluster and workloads overviews: `"charts"`, the default, or
+     * `"cards"`. Observable: an `observer` component that calls it renders again when the user
      * switches.
      */
     getOverviewStyle: (): OverviewStylePreference => overviewStyle.get(),

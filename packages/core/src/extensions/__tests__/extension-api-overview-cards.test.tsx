@@ -91,26 +91,20 @@ describe("overview cards in the extension API", () => {
   });
 
   describe("Common.App.Preferences.getOverviewStyle()", () => {
-    it("is cards when the user has not chosen", () => {
-      expect(Common.App.Preferences.getOverviewStyle()).toBe("cards");
+    it("is charts when the user has not chosen", () => {
+      expect(Common.App.Preferences.getOverviewStyle()).toBe("charts");
     });
 
     it("is the style the user chose", () => {
-      state.overviewStyle = "charts";
+      state.overviewStyle = "cards";
 
-      expect(Common.App.Preferences.getOverviewStyle()).toBe("charts");
+      expect(Common.App.Preferences.getOverviewStyle()).toBe("cards");
     });
 
     it("renders an observer again when the user switches", () => {
       const Overview = observer(() => <div data-testid="overview">{Common.App.Preferences.getOverviewStyle()}</div>);
 
       render(<Overview />);
-
-      expect(screen.getByTestId("overview")).toHaveTextContent("cards");
-
-      act(() => {
-        state.overviewStyle = "charts";
-      });
 
       expect(screen.getByTestId("overview")).toHaveTextContent("charts");
 
@@ -119,6 +113,12 @@ describe("overview cards in the extension API", () => {
       });
 
       expect(screen.getByTestId("overview")).toHaveTextContent("cards");
+
+      act(() => {
+        state.overviewStyle = "charts";
+      });
+
+      expect(screen.getByTestId("overview")).toHaveTextContent("charts");
     });
   });
 });

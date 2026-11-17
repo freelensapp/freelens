@@ -537,9 +537,12 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 </div>
               </div>
               <div
-                class="cards"
-                data-testid="workload-status-cards"
-              />
+                class="OverviewStatuses"
+              >
+                <div
+                  class="workloads"
+                />
+              </div>
             </div>
           </main>
         </div>

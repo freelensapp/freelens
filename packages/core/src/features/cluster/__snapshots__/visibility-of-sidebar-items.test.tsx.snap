@@ -544,9 +544,12 @@ exports[`cluster - visibility of sidebar items > given kube resource for route i
               </div>
             </div>
             <div
-              class="cards"
-              data-testid="workload-status-cards"
-            />
+              class="OverviewStatuses"
+            >
+              <div
+                class="workloads"
+              />
+            </div>
           </div>
         </main>
       </div>
@@ -1269,9 +1272,12 @@ exports[`cluster - visibility of sidebar items > given kube resource for route i
               </div>
             </div>
             <div
-              class="cards"
-              data-testid="workload-status-cards"
-            />
+              class="OverviewStatuses"
+            >
+              <div
+                class="workloads"
+              />
+            </div>
           </div>
         </main>
       </div>
