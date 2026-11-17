@@ -69,7 +69,8 @@ export default getGlobalOverride(getConfigurationFileModelInjectable, (di) => {
       },
       path: configFilePath,
       get: (key: string) => get(store, key),
-      set: (key: string, value: unknown) => {
+      // Both forms of conf: `set(key, value)` and `set(object)`.
+      set: (key: string | Record<string, unknown>, value?: unknown) => {
         let currentState: Partial<Record<string, unknown>>;
 
         try {
@@ -80,7 +81,7 @@ export default getGlobalOverride(getConfigurationFileModelInjectable, (di) => {
 
         writeJsonSync(configFilePath, {
           ...currentState,
-          [key]: value,
+          ...(typeof key === "string" ? { [key]: value } : key),
         });
         store = readJsonSync(configFilePath);
       },
