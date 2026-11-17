@@ -844,4 +844,64 @@ describe("KubeObjectStore", () => {
       expect(watch).toHaveBeenCalledTimes(1);
     });
   });
+
+  describe("namespace filtering", () => {
+    const createObject = (name: string, namespace?: string) =>
+      new KubeObject({
+        apiVersion: "v1",
+        kind: "Foo",
+        metadata: {
+          name,
+          resourceVersion: "1",
+          uid: `${namespace}-${name}`,
+          namespace,
+          selfLink: `/some/${namespace}/${name}`,
+        },
+      });
+
+    const inA = createObject("in-a", "a");
+    const inB = createObject("in-b", "b");
+    const clusterWide = createObject("cluster-wide");
+    const inC = createObject("in-c", "c");
+
+    const createStore = (contextNamespaces: string[]) => {
+      const store = new KubeObjectStore<KubeObject>(
+        {
+          context: {
+            allNamespaces: ["a", "b", "c"],
+            contextNamespaces,
+            hasSelectedAll: false,
+            isGlobalWatchEnabled: () => true,
+            isLoadingAll: () => false,
+          },
+          logger: { debug: noop, error: noop, info: noop, silly: noop, warn: noop },
+        },
+        {} as KubeApi<KubeObject>,
+      );
+
+      store.items.replace([inA, inB, clusterWide, inC]);
+
+      return store;
+    };
+
+    it("keeps the objects of the context namespaces and the cluster-wide ones in store order", () => {
+      expect(createStore(["c", "a"]).contextItems).toEqual([inA, clusterWide, inC]);
+      expect(createStore([]).contextItems).toEqual([clusterWide]);
+    });
+
+    it("returns the objects of the given namespaces in store order, without the cluster-wide ones", () => {
+      const store = createStore([]);
+
+      expect(store.getAllByNs(["c", "a"])).toEqual([inA, inC]);
+      expect(store.getAllByNs("b")).toEqual([inB]);
+      expect(store.getAllByNs("none")).toEqual([]);
+    });
+
+    it("returns every object for no namespaces unless strict", () => {
+      const store = createStore([]);
+
+      expect(store.getAllByNs([])).toEqual([inA, inB, clusterWide, inC]);
+      expect(store.getAllByNs([], true)).toEqual([]);
+    });
+  });
 });
