@@ -10,7 +10,13 @@ import { computed, observable } from "mobx";
 import { KubeObjectStore } from "../../../common/k8s-api/kube-object.store";
 
 import type { PodApi, PodMetricsApi } from "@freelensapp/kube-api";
-import type { KubeObject, NamespaceScopedMetadata, Pod, PodMetrics } from "@freelensapp/kube-object";
+import type {
+  KubeObject,
+  NamespaceScopedMetadata,
+  PersistentVolumeClaim,
+  Pod,
+  PodMetrics,
+} from "@freelensapp/kube-object";
 
 import type { KubeObjectStoreDependencies, KubeObjectStoreOptions } from "../../../common/k8s-api/kube-object.store";
 
@@ -22,6 +28,7 @@ interface PodIndexes {
   readonly byOwnerId: Map<string, Pod[]>;
   readonly byNode: Map<string, Pod[]>;
   readonly byNamespace: Map<string, Pod[]>;
+  readonly byPersistentVolumeClaim: Map<string, Pod[]>;
 }
 
 const addToIndex = (index: Map<string, Pod[]>, key: string, pod: Pod) => {
@@ -34,10 +41,17 @@ const addToIndex = (index: Map<string, Pod[]>, key: string, pod: Pod) => {
   }
 };
 
+const persistentVolumeClaimKey = (namespace: string, name: string) => `${namespace}/${name}`;
+
 // One pass in store order, so that a lookup returns its pods in the order a
 // filter of `items` would.
 const indexPods = (pods: readonly Pod[]): PodIndexes => {
-  const indexes: PodIndexes = { byOwnerId: new Map(), byNode: new Map(), byNamespace: new Map() };
+  const indexes: PodIndexes = {
+    byOwnerId: new Map(),
+    byNode: new Map(),
+    byNamespace: new Map(),
+    byPersistentVolumeClaim: new Map(),
+  };
 
   for (const pod of pods) {
     // A pod that names the same owner twice is listed once for it.
@@ -52,6 +66,12 @@ const indexPods = (pods: readonly Pod[]): PodIndexes => {
     }
 
     addToIndex(indexes.byNamespace, pod.getNs(), pod);
+
+    const claimNames = new Set(pod.getVolumes().flatMap((volume) => volume.persistentVolumeClaim?.claimName ?? []));
+
+    for (const claimName of claimNames) {
+      addToIndex(indexes.byPersistentVolumeClaim, persistentVolumeClaimKey(pod.getNs(), claimName), pod);
+    }
   }
 
   return indexes;
@@ -112,6 +132,13 @@ export class PodStore extends KubeObjectStore<Pod, PodApi> {
 
   getPodsByNamespace(namespace: string): Pod[] {
     return [...(this.indexes.get().byNamespace.get(namespace) ?? [])];
+  }
+
+  // The pods `persistentVolumeClaim.getPods(podStore.items)` returns.
+  getPodsByPersistentVolumeClaim(persistentVolumeClaim: PersistentVolumeClaim): Pod[] {
+    const key = persistentVolumeClaimKey(persistentVolumeClaim.getNs(), persistentVolumeClaim.getName());
+
+    return [...(this.indexes.get().byPersistentVolumeClaim.get(key) ?? [])];
   }
 
   getStatuses(pods: Pod[]) {
