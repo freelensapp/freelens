@@ -174,7 +174,20 @@ export class NodeShellSession extends ShellSession {
         if (nodeOsImage && nodeOsImage.startsWith("Bottlerocket OS")) {
           args = ["-t", "1", "-m", "-u", "-i", "-n", "-p", "--", "apiclient", "exec", "admin", "bash", "-l"];
         } else {
-          args = ["-t", "1", "-m", "-u", "-i", "-n", "-p", "--", "bash", "-l"];
+          // Not every host has bash, such as the OrbStack node.
+          args = [
+            "-t",
+            "1",
+            "-m",
+            "-u",
+            "-i",
+            "-n",
+            "-p",
+            "--",
+            "sh",
+            "-c",
+            "command -v bash >/dev/null && exec bash -l || exec sh -l",
+          ];
         }
 
         securityContext = {
@@ -303,8 +316,13 @@ export class NodeShellSession extends ShellSession {
                   break;
                 case "Failed":
                   if (settle()) {
+                    const terminated = status.containerStatuses?.find((container) => container.state?.terminated)?.state
+                      ?.terminated;
+                    const reason =
+                      terminated && `${terminated.reason ?? "terminated"} (exit code ${terminated.exitCode})`;
+
                     reject(
-                      `Failed to be created: ${(status as unknown as Record<string, string>).message || "unknown error"}`,
+                      `Failed to be created: ${(status as unknown as Record<string, string>).message || reason || "unknown error"}`,
                     );
                   }
                   break;
