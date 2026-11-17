@@ -7,7 +7,7 @@
 import assert from "node:assert";
 import { parseKubeApi } from "@freelensapp/kube-api";
 import { KubeStatus } from "@freelensapp/kube-object";
-import { includes, isAbortError, noop, object, rejectPromiseBy, waitUntilDefined } from "@freelensapp/utilities";
+import { isAbortError, noop, object, rejectPromiseBy, waitUntilDefined } from "@freelensapp/utilities";
 import autoBind from "auto-bind";
 import { action, computed, observable, reaction } from "mobx";
 import { ItemStore } from "../item.store";
@@ -121,12 +121,12 @@ export class KubeObjectStore<
 
   // TODO: Circular dependency: KubeObjectStore -> ClusterFrameContext -> NamespaceStore -> KubeObjectStore
   @computed get contextItems(): K[] {
-    const namespaces = this.dependencies.context.contextNamespaces;
+    const namespaces = new Set(this.dependencies.context.contextNamespaces);
 
     return this.items.filter((item) => {
       const itemNamespace = item.getNs();
 
-      return !itemNamespace /* cluster-wide */ || namespaces.includes(itemNamespace);
+      return !itemNamespace /* cluster-wide */ || namespaces.has(itemNamespace);
     });
   }
 
@@ -148,7 +148,13 @@ export class KubeObjectStore<
     const namespaces = [namespace].flat();
 
     if (namespaces.length) {
-      return this.items.filter((item) => includes(namespaces, item.getNs()));
+      const selected = new Set(namespaces);
+
+      return this.items.filter((item) => {
+        const itemNamespace = item.getNs();
+
+        return itemNamespace !== undefined && selected.has(itemNamespace);
+      });
     }
 
     if (!strict) {

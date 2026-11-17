@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { Job, Pod } from "@freelensapp/kube-object";
+import { CronJob, Job, Pod } from "@freelensapp/kube-object";
 import { observable } from "mobx";
 import { beforeEach, describe, expect, it } from "vitest";
 import directoryForKubeConfigsInjectable from "../../../common/app-paths/directory-for-kube-configs/directory-for-kube-configs.injectable";
@@ -257,5 +257,69 @@ describe("Job Store tests", () => {
       ["failed", 0],
       ["pending", 1],
     ]);
+  });
+
+  describe("getJobsByOwner", () => {
+    const createCronJob = (name: string, namespace = "default") =>
+      new CronJob({
+        apiVersion: "batch/v1",
+        kind: "CronJob",
+        metadata: {
+          name,
+          resourceVersion: "1",
+          uid: `${namespace}-cronjob-${name}`,
+          namespace,
+          selfLink: `/apis/batch/v1/namespaces/${namespace}/cronjobs/${name}`,
+        },
+        spec: {} as CronJob["spec"],
+      });
+    const createOwnedJob = (name: string, owners: { kind: string; name: string }[], namespace = "default") =>
+      new Job({
+        apiVersion: "batch/v1",
+        kind: "Job",
+        metadata: {
+          name,
+          resourceVersion: "1",
+          uid: `${namespace}-job-${name}`,
+          namespace,
+          selfLink: `/apis/batch/v1/namespaces/${namespace}/jobs/${name}`,
+          ownerReferences: owners.map((owner) => ({ apiVersion: "batch/v1", uid: owner.name, ...owner })),
+        },
+      });
+
+    const backup = createCronJob("backup");
+    const first = createOwnedJob("backup-1", [{ kind: "CronJob", name: "backup" }]);
+    const otherNamespace = createOwnedJob("backup-1", [{ kind: "CronJob", name: "backup" }], "other");
+    const otherKind = createOwnedJob("backup-x", [{ kind: "Workflow", name: "backup" }]);
+    const twice = createOwnedJob("backup-2", [
+      { kind: "CronJob", name: "backup" },
+      { kind: "CronJob", name: "backup" },
+    ]);
+    const unowned = createOwnedJob("manual", []);
+
+    beforeEach(() => {
+      jobStore.items = observable.array([first, otherNamespace, otherKind, twice, unowned]);
+    });
+
+    it("returns the jobs of a CronJob of its namespace and kind in store order, each once", () => {
+      expect(jobStore.getJobsByOwner(backup)).toEqual([first, twice]);
+      expect(jobStore.getJobsByOwner(createCronJob("backup", "other"))).toEqual([otherNamespace]);
+      expect(jobStore.getJobsByOwner(createCronJob("missing"))).toEqual([]);
+    });
+
+    it("returns a copy that a caller may sort without changing the store", () => {
+      jobStore.getJobsByOwner(backup).reverse();
+
+      expect(jobStore.getJobsByOwner(backup)).toEqual([first, twice]);
+    });
+
+    it("follows added and removed jobs", () => {
+      const third = createOwnedJob("backup-3", [{ kind: "CronJob", name: "backup" }]);
+
+      jobStore.items.push(third);
+      jobStore.items.remove(first);
+
+      expect(jobStore.getJobsByOwner(backup)).toEqual([twice, third]);
+    });
   });
 });

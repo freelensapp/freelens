@@ -5,6 +5,7 @@
  */
 
 import { PodStatusPhase } from "@freelensapp/kube-object";
+import { computed } from "mobx";
 import { KubeObjectStore } from "../../../common/k8s-api/kube-object.store";
 
 import type { JobApi } from "@freelensapp/kube-api";
@@ -16,6 +17,30 @@ import type { GetPodsByOwnerId } from "../workloads-pods/get-pods-by-owner-id.in
 interface Dependencies extends KubeObjectStoreDependencies {
   getPodsByOwnerId: GetPodsByOwnerId;
 }
+
+const ownerKey = (namespace: string | undefined, kind: string, name: string) => `${namespace}/${kind}/${name}`;
+
+// Jobs by the namespace, kind and name of each owner, in store order, each job
+// once per owner.
+const indexJobsByOwner = (jobs: readonly Job[]): Map<string, Job[]> => {
+  const index = new Map<string, Job[]>();
+
+  for (const job of jobs) {
+    const keys = new Set(job.getOwnerRefs().map((ref) => ownerKey(job.getNs(), ref.kind, ref.name)));
+
+    for (const key of keys) {
+      const owned = index.get(key);
+
+      if (owned) {
+        owned.push(job);
+      } else {
+        index.set(key, [job]);
+      }
+    }
+  }
+
+  return index;
+};
 
 export class JobStore extends KubeObjectStore<Job, JobApi> {
   constructor(
@@ -33,12 +58,14 @@ export class JobStore extends KubeObjectStore<Job, JobApi> {
     return this.dependencies.getPodsByOwnerId(job.getId());
   }
 
-  getJobsByOwner(cronJob: CronJob) {
-    return this.items.filter(
-      (job) =>
-        job.getNs() == cronJob.getNs() &&
-        job.getOwnerRefs().find((ref) => ref.name === cronJob.getName() && ref.kind === cronJob.kind),
-    );
+  // The Active column of the CronJobs list asks once per row, and sorting by it
+  // once per CronJob: kept alive, so that the index is built once per change
+  // of the jobs and not once per lookup.
+  private readonly jobsByOwner = computed(() => indexJobsByOwner(this.items), { keepAlive: true });
+
+  // A copy, so that a caller sorting the result does not change the index.
+  getJobsByOwner(cronJob: CronJob): Job[] {
+    return [...(this.jobsByOwner.get().get(ownerKey(cronJob.getNs(), cronJob.kind, cronJob.getName())) ?? [])];
   }
 
   getStatuses(jobs?: Job[]) {
