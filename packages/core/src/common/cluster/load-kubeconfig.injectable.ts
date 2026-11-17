@@ -7,13 +7,12 @@
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import loadConfigFromFileInjectable from "../kube-helpers/load-config-from-file.injectable";
 
-import type { KubeConfig } from "@kubernetes/client-node";
-
+import type { KubeConfigData } from "../kube-config";
 import type { ConfigResult } from "../kube-helpers";
 import type { Cluster } from "./cluster";
 
 export interface LoadKubeconfig {
-  (fullResult?: false): Promise<KubeConfig>;
+  (fullResult?: false): Promise<KubeConfigData>;
   (fullResult: true): Promise<ConfigResult>;
 }
 

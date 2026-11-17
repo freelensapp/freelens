@@ -53,7 +53,9 @@ describe.each([
 
     expect(error).toBeUndefined();
     expect(config.currentContext).toBe("some-context");
-    expect(config.getCurrentCluster()?.server).toBe("https://some.example.test:6443");
+    expect(config.getCluster(config.getContextObject(config.currentContext)?.cluster ?? "")?.server).toBe(
+      "https://some.example.test:6443",
+    );
   });
 
   it("loadValidatedClusterConfig reads it", async () => {

@@ -8,11 +8,10 @@ import { getInjectable } from "@ogre-tools/injectable";
 import { isCurrentContext } from "./is-current-context";
 import deleteClusterDialogStateInjectable from "./state.injectable";
 
-import type { KubeConfig } from "@kubernetes/client-node";
-
 import type { Cluster } from "../../../common/cluster/cluster";
+import type { KubeConfigData } from "../../../common/kube-config";
 
-export type OpenDeleteClusterDialog = (config: KubeConfig, cluster: Cluster) => void;
+export type OpenDeleteClusterDialog = (config: KubeConfigData, cluster: Cluster) => void;
 
 const openDeleteClusterDialogInjectable = getInjectable({
   id: "open-delete-cluster-dialog",

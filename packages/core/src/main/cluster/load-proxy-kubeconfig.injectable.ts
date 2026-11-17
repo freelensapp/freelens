@@ -8,6 +8,7 @@ import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import loadConfigFromFileInjectable from "../../common/kube-helpers/load-config-from-file.injectable";
 import freelensProxyTokenInjectable from "../freelens-proxy/freelens-proxy-token.injectable";
 import kubeconfigManagerInjectable from "../kubeconfig-manager/kubeconfig-manager.injectable";
+import { toClientKubeConfig } from "./to-client-kube-config";
 
 import type { KubeConfig } from "@kubernetes/client-node";
 
@@ -33,7 +34,7 @@ const loadProxyKubeconfigInjectable = getInjectable({
       // file. undici sends it as `Authorization: Bearer` to freelens-proxy.
       config.users = config.users.map((user) => (user.exec ? { ...user, exec: undefined, token: token.value } : user));
 
-      return config;
+      return toClientKubeConfig(config);
     };
   },
   lifecycle: lifecycleEnum.keyedSingleton({
