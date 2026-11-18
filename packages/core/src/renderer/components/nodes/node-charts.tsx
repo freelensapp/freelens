@@ -4,6 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { Node } from "@freelensapp/kube-object";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { mapValues } from "es-toolkit";
 import { observer } from "mobx-react";
@@ -15,6 +16,8 @@ import { type MetricsTab, metricTabOptions } from "../chart/options";
 import selectedMetricsTimeRangeInjectable from "../cluster/overview/selected-metrics-time-range.injectable";
 import { ResourceMetricsContext } from "../resource-metrics";
 import { NoMetrics } from "../resource-metrics/no-metrics";
+
+import type { KubeObject } from "@freelensapp/kube-object";
 
 import type { IComputedValue } from "mobx";
 
@@ -31,6 +34,16 @@ interface Dependencies {
 
 const convertNodeMetricValuesToChartData = (values: Array<[number, string]>) =>
   values.map(([x, y]) => ({ x: x * 1000, y }));
+
+/**
+ * The pod capacity from the status of the node, at the times of the pod usage, for a provider that has no metric of
+ * it, as the one for GKE system metrics.
+ */
+const podCapacityOfNode = (object: KubeObject, podUsage: Array<[number, string]>): Array<[number, string]> => {
+  const pods = object instanceof Node ? object.status?.capacity?.pods : undefined;
+
+  return pods ? podUsage.map(([time]) => [time, pods]) : [];
+};
 
 const NonInjectedNodeCharts = observer(({ activeTheme, selectedMetricsTimeRange }: Dependencies & NodeChartsProps) => {
   const { metrics, tab, object } = useContext(ResourceMetricsContext) ?? {};
@@ -56,6 +69,7 @@ const NonInjectedNodeCharts = observer(({ activeTheme, selectedMetricsTimeRange 
     fsSize,
     fsUsage,
   } = mapValues(metrics, (metric) => normalizeMetrics(metric).data.result[0].values);
+  const podCapacityValues = podCapacity.length ? podCapacity : podCapacityOfNode(object, podUsage);
 
   const datasets: Partial<Record<MetricsTab, ChartDataSets[]>> = {
     CPU: [
@@ -154,7 +168,7 @@ const NonInjectedNodeCharts = observer(({ activeTheme, selectedMetricsTimeRange 
         label: `Capacity`,
         tooltip: `Node Pods capacity`,
         borderColor: chartCapacityColor,
-        data: convertNodeMetricValuesToChartData(podCapacity),
+        data: convertNodeMetricValuesToChartData(podCapacityValues),
       },
     ],
   };
