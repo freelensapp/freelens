@@ -827,8 +827,10 @@ The template of the migration issue, `references/migration-issue.md` of
 - Its pin in "Source of truth", a Freelens release tag and the
   `@freelensapp/extensions` release of the same version, is never older than
   what the skills or the documents they link to require. Moving it moves the
-  links of the skills to the same tag and the versions of "Stack alignment"
-  with it.
+  links of the skills to the same tag with it.
+- It names no version of a library or a tool. "Stack alignment" names the
+  file of Freelens that holds each one, read at the pinned tag, so a copied
+  number cannot go stale while the pin stands still.
 - A finding of a port that applies to any port is folded into the generic
   section it affects. The template keeps no list of findings: the history is
   in git and in the migration issues of the extensions.
