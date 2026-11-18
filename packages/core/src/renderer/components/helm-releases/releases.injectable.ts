@@ -12,7 +12,7 @@ import { asyncComputed } from "../../../common/utils/async-computed";
 import requestListHelmReleasesInjectable from "../../../features/helm-releases/renderer/request-list-helm-releases.injectable";
 import clusterFrameContextForNamespacedResourcesInjectable from "../../cluster-frame-context/for-namespaced-resources.injectable";
 import hostedClusterIdInjectable from "../../cluster-frame-context/hosted-cluster-id.injectable";
-import releaseSecretsInjectable from "./release-secrets.injectable";
+import releaseObjectsInjectable from "./release-objects/release-objects.injectable";
 import { toHelmRelease } from "./to-helm-release";
 
 const releasesInjectable = getInjectable({
@@ -21,7 +21,7 @@ const releasesInjectable = getInjectable({
   instantiate: (di) => {
     const clusterContext = di.inject(clusterFrameContextForNamespacedResourcesInjectable);
     const hostedClusterId = di.inject(hostedClusterIdInjectable);
-    const releaseSecrets = di.inject(releaseSecretsInjectable);
+    const releaseObjects = di.inject(releaseObjectsInjectable);
     const requestListHelmReleases = di.inject(requestListHelmReleasesInjectable);
     const logger = di.inject(prefixedLoggerInjectable, "HELM-RELEASES");
 
@@ -29,7 +29,7 @@ const releasesInjectable = getInjectable({
 
     return asyncComputed({
       getValueFromObservedPromise: async () => {
-        void releaseSecrets.get();
+        void releaseObjects.get();
 
         const releaseResults = await (clusterContext.hasSelectedAll
           ? requestListHelmReleases({ clusterId: hostedClusterId })

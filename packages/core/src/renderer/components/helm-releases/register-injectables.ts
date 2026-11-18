@@ -13,7 +13,7 @@ import helmChartRepoInjectable from "./helm-chart-repo.injectable";
 import helmReleasesRouteComponentInjectable from "./helm-releases-route-component.injectable";
 import helmReleasesRouteParametersInjectable from "./helm-releases-route-parameters.injectable";
 import { registerInjectables as registerReleaseDetailsInjectables } from "./release-details/register-injectables";
-import releaseSecretsInjectable from "./release-secrets.injectable";
+import { registerInjectables as registerReleaseObjectsInjectables } from "./release-objects/register-injectables";
 import releasesInjectable from "./releases.injectable";
 import removableReleasesInjectable from "./removable-releases.injectable";
 import { registerInjectables as registerRollbackReleaseInjectables } from "./rollback-release/register-injectables";
@@ -44,11 +44,6 @@ export function registerInjectables(di: DiContainerForInjection): void {
     /* Ignore duplicate registration */
   }
   try {
-    di.register(releaseSecretsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
     di.register(releasesInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
@@ -75,6 +70,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     registerReleaseDetailsInjectables(di);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    registerReleaseObjectsInjectables(di);
   } catch (e) {
     /* Ignore duplicate registration */
   }
