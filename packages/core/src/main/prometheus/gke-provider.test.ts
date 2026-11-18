@@ -254,7 +254,7 @@ describe("the GKE prometheus provider", () => {
 
       expect(provider).toMatchObject({
         kind: "gke",
-        name: "Google Managed Prometheus (GKE system metrics)",
+        name: "Google Managed Prometheus",
         isConfigurable: true,
         isFallback: true,
       });
@@ -518,7 +518,7 @@ describe("the GKE prometheus provider", () => {
       const { client } = fakeClient({ services: [], pods: [] });
 
       await expect(di.inject(gkePrometheusProviderInjectable).getPrometheusService(client)).rejects.toThrow(
-        'Failed to find Prometheus provider for "Google Managed Prometheus (GKE system metrics)"',
+        'Failed to find Prometheus provider for "Google Managed Prometheus"',
       );
     });
   });

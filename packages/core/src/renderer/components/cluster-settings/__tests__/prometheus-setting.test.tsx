@@ -36,7 +36,7 @@ describe("ClusterPrometheusSetting", () => {
 
     di.override(requestMetricsProvidersInjectable, () => async () => [
       { id: "operator", name: "Prometheus Operator", isConfigurable: true },
-      { id: "gke", name: "Google Managed Prometheus (GKE system metrics)", isConfigurable: true },
+      { id: "gke", name: "Google Managed Prometheus", isConfigurable: true },
     ]);
     di.override(openLinkInBrowserInjectable, () => openLinkInBrowser);
 

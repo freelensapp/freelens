@@ -354,7 +354,7 @@ const gkePrometheusProviderInjectable = getInjectable({
   instantiate: () =>
     createPrometheusProvider({
       kind: gkePrometheusProviderKind,
-      name: "Google Managed Prometheus (GKE system metrics)",
+      name: "Google Managed Prometheus",
       isConfigurable: true,
       // A Prometheus run in the cluster has the full metric set; the GKE system metrics are what is left without one.
       isFallback: true,
