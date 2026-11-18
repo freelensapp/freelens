@@ -14,6 +14,7 @@ import {
 import httpsProxyConfigurationInjectable from "./https-proxy.injectable";
 import isTableColumnHiddenInjectable from "./is-table-column-hidden.injectable";
 import kubeconfigSyncsInjectable from "./kubeconfig-syncs.injectable";
+import overviewStyleInjectable from "./overview-style.injectable";
 import userPreferenceDescriptorsInjectable from "./preference-descriptors.injectable";
 import resetThemeInjectable from "./reset-theme.injectable";
 import userShellSettingInjectable from "./shell-setting.injectable";
@@ -50,6 +51,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(kubeconfigSyncsInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(overviewStyleInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

@@ -18,6 +18,7 @@ import {
   defaultEditorConfig,
   defaultExtensionRegistryUrlLocation,
   defaultLogViewerPreferences,
+  defaultOverviewStylePreference,
   defaultPackageMirror,
   defaultTerminalConfig,
   getPreferenceDescriptor,
@@ -32,6 +33,7 @@ import type {
   KubeconfigSyncEntry,
   KubeconfigSyncValue,
   LogViewerPreferences,
+  OverviewStylePreference,
   PreferenceDescription,
   StoredExtensionRegistry,
   TerminalConfig,
@@ -50,6 +52,7 @@ export type PreferenceDescriptors = {
   readonly themeVariant: PreferenceDescription<ThemeVariantPreference>;
   readonly accentColorDark: PreferenceDescription<string | undefined>;
   readonly accentColorLight: PreferenceDescription<string | undefined>;
+  readonly overviewStyle: PreferenceDescription<OverviewStylePreference>;
   readonly zoom: PreferenceDescription<number>;
   readonly terminalTheme: PreferenceDescription<string>;
   readonly terminalThemeVariant: PreferenceDescription<TerminalThemeVariantPreference>;
@@ -111,6 +114,10 @@ const userPreferenceDescriptorsInjectable = getInjectable({
       accentColorLight: getPreferenceDescriptor<string | undefined>({
         fromStore: (val) => val,
         toStore: (val) => val || undefined,
+      }),
+      overviewStyle: getPreferenceDescriptor<OverviewStylePreference>({
+        fromStore: (val) => (val === "cards" ? val : defaultOverviewStylePreference),
+        toStore: (val) => (val === "cards" ? val : undefined),
       }),
       zoom: getPreferenceDescriptor<number>({
         fromStore: (val) => (isZoomStep(val) ? val : defaultZoom),

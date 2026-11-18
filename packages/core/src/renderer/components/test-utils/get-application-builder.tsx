@@ -571,6 +571,9 @@ export const getApplicationBuilder = () => {
               get contextNamespaces() {
                 return Array.from(selectedNamespaces);
               },
+              get areAllSelectedImplicitly() {
+                return selectedNamespaces.size === 0;
+              },
               get allowedNamespaces() {
                 return Array.from(namespaceItems, (n) => n.getName());
               },

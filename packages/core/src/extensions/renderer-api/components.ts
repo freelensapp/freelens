@@ -109,6 +109,17 @@ export {
 } from "../../renderer/components/namespaces/namespace-select-badge";
 export * from "../../renderer/components/namespaces/namespace-select-filter";
 export * from "../../renderer/components/no-items";
+// Explicit rather than a star export: the contract is the two cards and their
+// props, whatever else the module comes to hold.
+export {
+  CapacityCard,
+  type CapacityCardLabels,
+  type CapacityCardProps,
+  StatusCard,
+  type StatusCardProps,
+  type StatusCardStatus,
+  type StatusCardTone,
+} from "../../renderer/components/overview-cards";
 export * from "../../renderer/components/path-picker";
 export * from "../../renderer/components/radio";
 export * from "../../renderer/components/render-delay";
