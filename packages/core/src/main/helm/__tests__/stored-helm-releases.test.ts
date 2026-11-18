@@ -8,9 +8,11 @@ import { loggerInjectionToken } from "@freelensapp/logger";
 import { describe, expect, it, vi } from "vitest";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import k8sRequestInjectable from "../../k8s-request.injectable";
+import getHelmReleaseInjectable from "../helm-service/get-helm-release.injectable";
 import getClusterHelmReleaseValuesInjectable, {
   coalesceValues,
 } from "../helm-service/get-helm-release-values.injectable";
+import listClusterHelmReleasesInjectable from "../helm-service/list-helm-releases.injectable";
 import requestStoredHelmReleasesInjectable from "../request-stored-helm-releases.injectable";
 
 const helmEncode = (release: object, gzip = true) => {
@@ -189,5 +191,48 @@ describe("reading helm releases from their secrets and configmaps", () => {
     });
 
     expect(values).toBe(`alpha:\n  aleph: true\n  beta: ${long}\nzeta: 1\n`);
+  });
+
+  it("returns the details of one release with its row of the list, reading only that release", async () => {
+    const di = getDiForUnitTesting();
+    const stored = {
+      name: "a",
+      namespace: "ns",
+      version: 2,
+      info: { status: "deployed", last_deployed: "2026-11-18T07:00:00Z" },
+      manifest: "",
+      chart: { metadata: { name: "c", version: "1.0.0", appVersion: "2.0" } },
+    };
+    const k8sRequest = vi.fn(async (_cluster: unknown, path: string) => ({
+      items: path.includes("/secrets?") ? [secret(stored)] : [],
+    }));
+
+    di.override(k8sRequestInjectable, () => k8sRequest);
+    di.unoverride(getHelmReleaseInjectable);
+    di.permitSideEffects(getHelmReleaseInjectable);
+
+    const result = await di.inject(getHelmReleaseInjectable)({
+      cluster: { id: "some-cluster" } as never,
+      namespace: "ns",
+      releaseName: "a",
+    });
+
+    expect(
+      k8sRequest.mock.calls.map(([, path]) => new URLSearchParams(path.split("?")[1]).get("labelSelector")),
+    ).toEqual(["owner=helm,status!=superseded,name=a", "owner=helm,status!=superseded,name=a"]);
+
+    const list = await di.inject(listClusterHelmReleasesInjectable)({ id: "some-cluster" } as never, "ns");
+    const row = {
+      name: "a",
+      namespace: "ns",
+      revision: "2",
+      updated: "2026-11-18T07:00:00Z",
+      status: "deployed",
+      chart: "c-1.0.0",
+      app_version: "2.0",
+    };
+
+    expect(result).toMatchObject({ callWasSuccessful: true, response: { listed: row } });
+    expect(list).toEqual({ callWasSuccessful: true, response: [row] });
   });
 });

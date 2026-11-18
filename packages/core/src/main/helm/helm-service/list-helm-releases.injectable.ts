@@ -7,6 +7,7 @@
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
 import requestStoredHelmReleasesInjectable from "../request-stored-helm-releases.injectable";
+import { toListedHelmRelease } from "../to-listed-helm-release";
 
 import type { AsyncResult } from "@freelensapp/utilities";
 
@@ -33,15 +34,7 @@ const listClusterHelmReleasesInjectable = getInjectable({
 
         return {
           callWasSuccessful: true,
-          response: releases.map(({ name, namespace, version, info, chart }) => ({
-            name,
-            namespace,
-            revision: String(version),
-            updated: info.last_deployed,
-            status: info.status,
-            chart: `${chart.metadata.name}-${chart.metadata.version}`,
-            app_version: chart.metadata.appVersion ?? "",
-          })),
+          response: releases.map(toListedHelmRelease),
         };
       } catch (error) {
         return {

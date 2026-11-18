@@ -26,6 +26,11 @@ export interface HelmReleaseInfo {
 
 export interface HelmReleaseDataWithResources extends HelmReleaseData {
   resources: KubeJsonApiData[];
+
+  /**
+   * The release as the list of releases shows it, so that its details need no list.
+   */
+  listed: ListedHelmRelease;
 }
 
 export interface HelmReleaseData {
