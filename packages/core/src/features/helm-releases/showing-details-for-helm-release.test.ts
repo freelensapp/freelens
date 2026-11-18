@@ -265,6 +265,15 @@ describe("showing details for helm release", () => {
                     }),
 
                     details: {
+                      listed: {
+                        app_version: "some-app-version",
+                        chart: "some-chart-1.0.0",
+                        status: "some-status",
+                        updated: "2025-01-01T00:00:00+0000",
+                        revision: "some-revision",
+                        name: "some-other-name",
+                        namespace: "some-other-namespace",
+                      },
                       name: "some-other-name",
                       namespace: "some-other-namespace",
                       version: 1,
@@ -398,6 +407,15 @@ describe("showing details for helm release", () => {
                   }),
 
                   details: {
+                    listed: {
+                      app_version: "some-app-version",
+                      chart: "some-chart-1.0.0",
+                      status: "some-status",
+                      updated: "2025-01-01T00:00:00+0000",
+                      revision: "some-revision",
+                      name: "some-name",
+                      namespace: "some-namespace",
+                    },
                     name: "some-name",
                     namespace: "some-namespace",
                     version: 1,

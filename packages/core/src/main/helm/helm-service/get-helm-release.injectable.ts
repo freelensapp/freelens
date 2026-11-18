@@ -8,6 +8,7 @@ import { isObject } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import * as yaml from "js-yaml";
 import requestStoredHelmReleasesInjectable from "../request-stored-helm-releases.injectable";
+import { toListedHelmRelease } from "../to-listed-helm-release";
 
 import type { KubeJsonApiData, KubeJsonApiDataList } from "@freelensapp/kube-object";
 import type { AsyncResult } from "@freelensapp/utilities";
@@ -49,7 +50,16 @@ const getHelmReleaseInjectable = getInjectable({
 
         return {
           callWasSuccessful: true,
-          response: { name, namespace: release.namespace, info, config: config ?? {}, manifest, version, resources },
+          response: {
+            name,
+            namespace: release.namespace,
+            info,
+            config: config ?? {},
+            manifest,
+            version,
+            resources,
+            listed: toListedHelmRelease(release),
+          },
         };
       } catch (error) {
         return {

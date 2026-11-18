@@ -6,7 +6,6 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import requestHelmReleaseInjectable from "../../../../../features/helm-releases/renderer/request-helm-release.injectable";
-import requestListHelmReleasesInjectable from "../../../../../features/helm-releases/renderer/request-list-helm-releases.injectable";
 import { toHelmRelease } from "../../to-helm-release";
 
 import type { AsyncResult } from "@freelensapp/utilities";
@@ -28,29 +27,10 @@ const requestDetailedHelmReleaseInjectable = getInjectable({
   id: "request-detailed-helm-release",
 
   instantiate: (di): RequestDetailedHelmRelease => {
-    const requestListHelmReleases = di.inject(requestListHelmReleasesInjectable);
     const requestHelmRelease = di.inject(requestHelmReleaseInjectable);
 
-    return async ({ clusterId, namespace, releaseName }) => {
-      const [listReleasesResult, detailsResult] = await Promise.all([
-        requestListHelmReleases({ clusterId, namespace }),
-        requestHelmRelease({ clusterId, releaseName, namespace }),
-      ]);
-
-      if (!listReleasesResult.callWasSuccessful) {
-        return listReleasesResult;
-      }
-
-      const release = listReleasesResult.response.find(
-        (rel) => rel.name === releaseName && rel.namespace === namespace,
-      );
-
-      if (!release) {
-        return {
-          callWasSuccessful: false,
-          error: `Release ${releaseName} didn't exist in ${namespace} namespace.`,
-        };
-      }
+    return async (args) => {
+      const detailsResult = await requestHelmRelease(args);
 
       if (!detailsResult.callWasSuccessful) {
         return detailsResult;
@@ -59,7 +39,7 @@ const requestDetailedHelmReleaseInjectable = getInjectable({
       return {
         callWasSuccessful: true,
         response: {
-          release: toHelmRelease(release),
+          release: toHelmRelease(detailsResult.response.listed),
           details: detailsResult.response,
         },
       };
