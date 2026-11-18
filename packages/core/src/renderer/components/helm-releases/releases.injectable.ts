@@ -55,6 +55,7 @@ const releasesInjectable = getInjectable({
           .toArray();
       },
       valueWhenPending: [],
+      betweenUpdates: "show-latest-value",
     });
   },
 });

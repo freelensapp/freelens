@@ -49,6 +49,11 @@ interface Dependencies {
 }
 
 class NonInjectedHelmReleases extends Component<Dependencies> {
+  // Whether the first list has arrived. A refresh keeps the previous list, empty
+  // or not, so the spinner is only for the first load. A plain field, set from
+  // the store below: it remembers, it does not need to be observed.
+  private hasLoaded = false;
+
   onDetails = (item: HelmRelease) => {
     this.showDetails(item);
   };
@@ -80,11 +85,16 @@ class NonInjectedHelmReleases extends Component<Dependencies> {
   render() {
     const releases = this.props.releases;
     const releasesArePending = this.props.releasesArePending;
+    const view = this;
 
     // TODO: Implement ItemListLayout without stateful stores
     const legacyReleaseStore: ItemListStore<RemovableHelmRelease, false> = {
       get isLoaded() {
-        return !releasesArePending.get();
+        if (!releasesArePending.get()) {
+          view.hasLoaded = true;
+        }
+
+        return view.hasLoaded;
       },
 
       failedLoading: false,

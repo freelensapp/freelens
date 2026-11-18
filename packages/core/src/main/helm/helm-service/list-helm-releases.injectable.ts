@@ -6,8 +6,7 @@
 
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
-import kubeconfigManagerInjectable from "../../kubeconfig-manager/kubeconfig-manager.injectable";
-import listHelmReleasesInjectable from "../list-helm-releases.injectable";
+import requestStoredHelmReleasesInjectable from "../request-stored-helm-releases.injectable";
 
 import type { AsyncResult } from "@freelensapp/utilities";
 
@@ -24,15 +23,32 @@ const listClusterHelmReleasesInjectable = getInjectable({
 
   instantiate: (di): ListClusterHelmReleases => {
     const logger = di.inject(loggerInjectionToken);
-    const listHelmReleases = di.inject(listHelmReleasesInjectable);
+    const requestStoredHelmReleases = di.inject(requestStoredHelmReleasesInjectable);
 
     return async (cluster, namespace) => {
-      const proxyKubeconfigManager = di.inject(kubeconfigManagerInjectable, cluster);
-      const proxyKubeconfig = await proxyKubeconfigManager.ensurePaths();
-
       logger.debug(`[CLUSTER]: listing helm releases for clusterId=${cluster.id}`, { namespace });
 
-      return listHelmReleases(proxyKubeconfig, namespace);
+      try {
+        const releases = await requestStoredHelmReleases(cluster, namespace);
+
+        return {
+          callWasSuccessful: true,
+          response: releases.map(({ name, namespace, version, info, chart }) => ({
+            name,
+            namespace,
+            revision: String(version),
+            updated: info.last_deployed,
+            status: info.status,
+            chart: `${chart.metadata.name}-${chart.metadata.version}`,
+            app_version: chart.metadata.appVersion ?? "",
+          })),
+        };
+      } catch (error) {
+        return {
+          callWasSuccessful: false,
+          error: `Failed to list helm releases: ${error}`,
+        };
+      }
     };
   },
 });

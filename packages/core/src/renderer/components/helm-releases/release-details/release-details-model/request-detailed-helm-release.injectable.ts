@@ -32,8 +32,10 @@ const requestDetailedHelmReleaseInjectable = getInjectable({
     const requestHelmRelease = di.inject(requestHelmReleaseInjectable);
 
     return async ({ clusterId, namespace, releaseName }) => {
-      const listReleasesResult = await requestListHelmReleases({ clusterId, namespace });
-      const detailsResult = await requestHelmRelease({ clusterId, releaseName, namespace });
+      const [listReleasesResult, detailsResult] = await Promise.all([
+        requestListHelmReleases({ clusterId, namespace }),
+        requestHelmRelease({ clusterId, releaseName, namespace }),
+      ]);
 
       if (!listReleasesResult.callWasSuccessful) {
         return listReleasesResult;

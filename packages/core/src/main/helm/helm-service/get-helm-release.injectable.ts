@@ -4,11 +4,12 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { isObject } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
-import kubeconfigManagerInjectable from "../../kubeconfig-manager/kubeconfig-manager.injectable";
-import getHelmReleaseDataInjectable from "./get-helm-release-data.injectable";
-import getHelmReleaseResourcesInjectable from "./get-helm-release-resources/get-helm-release-resources.injectable";
+import * as yaml from "js-yaml";
+import requestStoredHelmReleasesInjectable from "../request-stored-helm-releases.injectable";
 
+import type { KubeJsonApiData, KubeJsonApiDataList } from "@freelensapp/kube-object";
 import type { AsyncResult } from "@freelensapp/utilities";
 
 import type { Cluster } from "../../../common/cluster/cluster";
@@ -26,38 +27,36 @@ const getHelmReleaseInjectable = getInjectable({
   id: "get-helm-release",
 
   instantiate: (di): GetHelmRelease => {
-    const getHelmReleaseData = di.inject(getHelmReleaseDataInjectable);
-    const getHelmReleaseResources = di.inject(getHelmReleaseResourcesInjectable);
+    const requestStoredHelmReleases = di.inject(requestStoredHelmReleasesInjectable);
 
     return async ({ cluster, namespace, releaseName }) => {
-      const proxyKubeconfigManager = di.inject(kubeconfigManagerInjectable, cluster);
-      const proxyKubeconfig = await proxyKubeconfigManager.ensurePaths();
+      try {
+        const [release] = await requestStoredHelmReleases(cluster, namespace, releaseName);
 
-      const releaseResult = await getHelmReleaseData(releaseName, namespace, proxyKubeconfig);
+        if (!release) {
+          return {
+            callWasSuccessful: false,
+            error: `Failed to get helm release data: release ${releaseName} not found in ${namespace}`,
+          };
+        }
 
-      if (!releaseResult.callWasSuccessful) {
+        const { name, info, config, manifest, version } = release;
+        const resources = (
+          yaml.loadAll(manifest).filter(isObject) as unknown as (KubeJsonApiData | KubeJsonApiDataList)[]
+        ).flatMap((item) =>
+          Array.isArray(item.items) ? (item as KubeJsonApiDataList).items : (item as KubeJsonApiData),
+        );
+
+        return {
+          callWasSuccessful: true,
+          response: { name, namespace: release.namespace, info, config: config ?? {}, manifest, version, resources },
+        };
+      } catch (error) {
         return {
           callWasSuccessful: false,
-          error: `Failed to get helm release data: ${releaseResult.error}`,
+          error: `Failed to get helm release data: ${error}`,
         };
       }
-
-      const resourcesResult = await getHelmReleaseResources(releaseName, namespace, proxyKubeconfig);
-
-      if (!resourcesResult.callWasSuccessful) {
-        return {
-          callWasSuccessful: false,
-          error: `Failed to get helm release resources: ${resourcesResult.error}`,
-        };
-      }
-
-      return {
-        callWasSuccessful: true,
-        response: {
-          ...releaseResult.response,
-          resources: resourcesResult.response,
-        },
-      };
     };
   },
 

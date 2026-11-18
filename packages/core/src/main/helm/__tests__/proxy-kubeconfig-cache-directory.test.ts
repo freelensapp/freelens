@@ -16,13 +16,10 @@ import deleteHelmReleaseInjectable from "../delete-helm-release.injectable";
 import execHelmEnvInjectable from "../exec-helm/exec-env.injectable";
 import execHelmInjectable from "../exec-helm/exec-helm.injectable";
 import getHelmReleaseHistoryInjectable from "../get-helm-release-history.injectable";
-import getHelmReleaseValuesInjectable from "../get-helm-release-values.injectable";
 import helmBinaryPathInjectable from "../helm-binary-path.injectable";
 import getHelmReleaseInjectable from "../helm-service/get-helm-release.injectable";
-import getHelmReleaseDataInjectable from "../helm-service/get-helm-release-data.injectable";
 import updateHelmReleaseInjectable from "../helm-service/update-helm-release.injectable";
 import installHelmChartInjectable from "../install-helm-chart.injectable";
-import listHelmReleasesInjectable from "../list-helm-releases.injectable";
 import rollbackHelmReleaseInjectable from "../rollback-helm-release.injectable";
 
 import type { DiContainer } from "@ogre-tools/injectable";
@@ -111,29 +108,6 @@ describe("helm with the proxy kubeconfig", () => {
         { env: { KUBECACHEDIR: kubeconfig.cacheDirectoryPath }, throughProxy: true },
       );
     };
-
-    it("lists releases with KUBECACHEDIR", async () => {
-      await di.inject(listHelmReleasesInjectable)(kubeconfig, "some-namespace");
-
-      expectKubeCacheDir();
-    });
-
-    it("gets release data with KUBECACHEDIR", async () => {
-      execHelmMock.mockResolvedValue({ callWasSuccessful: true, response: "{}" });
-
-      await di.inject(getHelmReleaseDataInjectable)("some-release", "some-namespace", kubeconfig);
-
-      expectKubeCacheDir();
-    });
-
-    it("gets release values with KUBECACHEDIR", async () => {
-      await di.inject(getHelmReleaseValuesInjectable)(kubeconfig, {
-        name: "some-release",
-        namespace: "some-namespace",
-      });
-
-      expectKubeCacheDir();
-    });
 
     it("gets release history with KUBECACHEDIR", async () => {
       await di.inject(getHelmReleaseHistoryInjectable)(kubeconfig, {
