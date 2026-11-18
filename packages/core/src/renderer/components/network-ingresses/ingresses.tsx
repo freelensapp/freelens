@@ -89,13 +89,13 @@ const NonInjectedIngresses = observer((props: Dependencies) => {
         sortingCallbacks={{
           [columnId.name]: (ingress) => ingress.getName(),
           [columnId.namespace]: (ingress) => ingress.getNs(),
-          [columnId.ingressClass]: (ingress) => ingress.getIngressClassName(),
+          [columnId.ingressClass]: (ingress) => ingress.getIngressClassName() ?? "",
           [columnId.age]: (ingress) => -ingress.getCreationTimestamp(),
         }}
         searchFilters={[
           (ingress) => ingress.getSearchFields(),
           (ingress) => ingress.getPorts(),
-          (ingress) => ingress.getIngressClassName(),
+          (ingress) => ingress.getIngressClassName() ?? "",
         ]}
         renderHeaderTitle="Ingresses"
         renderTableHeader={[
