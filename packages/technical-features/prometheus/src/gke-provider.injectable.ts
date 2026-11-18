@@ -74,6 +74,18 @@ const podMatchers = (opts: Record<string, string>, resource: MonitoredResource):
 
 const rate = (expr: string) => `rate(${expr}[${rateAccuracy}])`;
 
+/**
+ * Puts on each container series of `expr` the node of its pod. The series of init containers, the native sidecars
+ * among them, carry no node name in their metadata, so a filter or a sum by it would leave out what they request and
+ * use. The node is taken from the container of the pod that started last, so that a pod that moved to another node
+ * within the window joins one node, not two, which would fail the whole query. `nodeMatcher` selects the nodes.
+ */
+const withNodeOfPod = (opts: Record<string, string>, expr: string, nodeMatcher: string): string => {
+  const uptime = series(opts, "container_uptime", "k8s_container", [nodeMatcher]);
+
+  return `${expr} * on (namespace_name, pod_name) group_left (${metadataNodeNameLabel}) (0 * bottomk by (namespace_name, pod_name) (1, ${uptime}) + 1)`;
+};
+
 const parseSelector = (selector: string | undefined): string[] =>
   (selector ?? "")
     .split(",")
@@ -104,8 +116,13 @@ const nonEvictable = ['memory_type="non-evictable"'];
 export const getGkeQuery: GetPrometheusQuery = (opts, queryName) => {
   switch (opts.category) {
     case "cluster": {
-      const containers = (path: string, matchers: string[] = []) =>
-        series(opts, path, "k8s_container", [...matchers, ...nodeMatchers(opts, "k8s_container")]);
+      const containers = (path: string, matchers: string[] = []) => {
+        const containerSeries = series(opts, path, "k8s_container", matchers);
+
+        return opts.nodes
+          ? withNodeOfPod(opts, containerSeries, `${metadataNodeNameLabel}=~"${opts.nodes}"`)
+          : containerSeries;
+      };
       const nodes = (path: string, matchers: string[] = []) =>
         series(opts, path, "k8s_node", [...matchers, ...nodeMatchers(opts, "k8s_node")]);
 
@@ -133,7 +150,8 @@ export const getGkeQuery: GetPrometheusQuery = (opts, queryName) => {
         case "cpuAllocatableCapacity":
           return sum(nodes("node_cpu_allocatable_cores"));
         case "podUsage":
-          return `count(count by (namespace_name, pod_name) (${containers("container_uptime")}))`;
+          // Every pod has a container that carries the node, so the pods are counted without the join.
+          return `count(count by (namespace_name, pod_name) (${series(opts, "container_uptime", "k8s_container", nodeMatchers(opts, "k8s_container"))}))`;
         case "podCapacity":
         case "podAllocatableCapacity":
           return undefined;
@@ -154,7 +172,13 @@ export const getGkeQuery: GetPrometheusQuery = (opts, queryName) => {
         case "memoryUsage":
           return byNode(nodes("node_memory_used_bytes", nonEvictable));
         case "workloadMemoryUsage":
-          return byNodeOfContainer(containers("container_memory_used_bytes", nonEvictable));
+          return byNodeOfContainer(
+            withNodeOfPod(
+              opts,
+              containers("container_memory_used_bytes", nonEvictable),
+              `${metadataNodeNameLabel}!=""`,
+            ),
+          );
         case "memoryCapacity":
           return byNode(nodes("node_memory_total_bytes"));
         case "memoryAllocatableCapacity":
