@@ -406,6 +406,13 @@ class ClusterConnection {
   }
 
   async refreshAccessibilityAndMetadata() {
+    // The access reviews go through the proxy, which answers 503 once the
+    // cluster is disconnected. The renderer asks for a refresh when its CRD
+    // list changes, which happens as the watches end on a disconnect.
+    if (this.cluster.disconnected.get()) {
+      return;
+    }
+
     await this.refreshAccessibility();
     await this.refreshMetadata();
   }
