@@ -814,9 +814,22 @@ jobs:
           os="${{ matrix.os }}"
           arch="${{ matrix.arch == 'x64' && 'amd64' || matrix.arch }}"
           out="freelens/dist/${{ github.event.repository.name }}-${os}-${arch}-prod-packages.json"
+          # electron is a devDependency, as nothing imports the package at
+          # runtime, so the production tree leaves it out. electron-builder packs
+          # its binary into every build all the same, and release-scan.yaml
+          # derives the Node embedded in it from this version, so it is listed
+          # too. The version is read from the installed package, so it follows
+          # every update of the catalog.
+          electron=$(cd freelens && node -p '
+            const fs = require("node:fs");
+            const path = require("node:path");
+            const dir = path.dirname(fs.realpathSync(require.resolve("electron/package.json")));
+            `electron@${require("electron/package.json").version}\t${path.relative(path.resolve(".."), dir).split(path.sep).join("/")}`
+          ')
           (
             cd "$deploy_dir"
             printf 'key\tvalue\n'
+            printf '%s\n' "$electron"
             for d in node_modules/.pnpm/*/; do
               d="${d#node_modules/.pnpm/}"
               d="${d%/}"

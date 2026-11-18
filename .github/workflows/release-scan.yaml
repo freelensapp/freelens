@@ -155,6 +155,11 @@ jobs:
             echo "Runtime package set is empty - refusing to scan (every npm finding would be dropped)" >&2
             exit 1
           fi
+          # The Node embedded in the Electron binary is in no SBOM, as Syft
+          # does not recognize it there. Each SBOM gets it added below, with the
+          # version the index of Electron releases gives for its Electron.
+          curl -fsSL --retry 3 https://releases.electronjs.org/releases.json |
+            yq -pj -oj 'map({"key": .version, "value": .node}) | from_entries' > electron-node.json
           format="${{ steps.release.outputs.format }}"
           for sbom in sboms/*-sbom."$format".json; do
             name=$(basename "$sbom" ".${format}.json")
@@ -175,6 +180,10 @@ jobs:
             # code still shows up through them when the vulnerable function is
             # compiled into those builds too. The SPDX fallback drops them as
             # well, so that both formats scan the same packages.
+            #
+            # electron is kept even when the runtime package list lacks it: the
+            # lists of releases made before it was added to them do. It is a
+            # devDependency, but its binary ships in every build.
             if [[ "$format" == syft ]]; then
               # Relationships that point at a dropped package go with it, so
               # the decoder does not warn about every one of them. The dropped
@@ -190,6 +199,8 @@ jobs:
                   .runtime = (
                     (($purl | test("^pkg:npm/")) and ($set[$key] != null))
                     or
+                    ($purl | test("^pkg:npm/electron@"))
+                    or
                     (($purl | test("^pkg:npm/") | not) and ($path | test("^/freelens/(dist|binaries)/"))
                       and (($purl | test("^pkg:golang/") | not) or ($path | test("\\.exe$") | not)))
                   )
@@ -201,6 +212,36 @@ jobs:
                   select(($dropped[$parent] == null) and ($dropped[$child] == null))
                 ))
               ' "$sbom" > "runtime-${name}.json"
+              # The Node of Electron, described as Syft describes a Node binary,
+              # so that Grype matches the advisories of Node.js by its CPE. It
+              # is located where Electron is, in which it ships.
+              electrons=$(yq -pj -oy '.artifacts[] | select((.purl // "") | test("^pkg:npm/electron@")) | .version' "runtime-${name}.json")
+              if [[ -z "$electrons" ]]; then
+                echo "${sbom} has no Electron among its runtime packages - refusing to scan without it and its Node" >&2
+                exit 1
+              fi
+              for electron in $electrons; do
+                node=$(ELECTRON="$electron" yq -pj -oy '.[strenv(ELECTRON)] // ""' electron-node.json)
+                if [[ -z "$node" ]]; then
+                  echo "The index of Electron releases has no Node for Electron ${electron}" >&2
+                  exit 1
+                fi
+                ELECTRON="$electron" NODE="$node" yq -i -pj -oj '
+                  (load("prod-set.json")) as $set |
+                  .artifacts += [{
+                    "id": "electron-node-" + strenv(NODE),
+                    "name": "node",
+                    "version": strenv(NODE),
+                    "type": "binary",
+                    "foundBy": "electron-releases",
+                    "locations": [{"path": "/" + ($set["electron@" + strenv(ELECTRON)] // "node_modules/electron")}],
+                    "licenses": [],
+                    "language": "",
+                    "cpes": [{"cpe": "cpe:2.3:a:nodejs:node.js:" + strenv(NODE) + ":*:*:*:*:*:*:*", "source": "nvd-cpe-dictionary"}],
+                    "purl": "pkg:generic/node@" + strenv(NODE)
+                  }]
+                ' "runtime-${name}.json"
+              done
               all=$(yq -pj -oj '.artifacts | length' "$sbom")
               run=$(yq -pj -oj '.artifacts | length' "runtime-${name}.json")
               # Symbol capture failing would not fail the scan, only bring back
@@ -223,6 +264,8 @@ jobs:
                   (((.sourceInfo // "") | sub("\\x5c"; "/")) | (capture("(?<p>/[^,]*)").p // "")) as $path |
                   select(
                     (($purl | test("^pkg:npm/")) and ($set[$key] != null))
+                    or
+                    ($purl | test("^pkg:npm/electron@"))
                     or
                     (($purl | test("^pkg:npm/") | not) and ($path | test("^/freelens/(dist|binaries)/"))
                       and (($purl | test("^pkg:golang/") | not) or ($path | test("\\.exe$") | not)))
