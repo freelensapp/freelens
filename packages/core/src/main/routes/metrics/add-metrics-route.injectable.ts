@@ -25,6 +25,13 @@ import type { GetMetrics } from "../../get-metrics.injectable";
  */
 const emptyMetricResult = () => ({ status: "success", data: { resultType: "matrix", result: [] } });
 
+/**
+ * The parameters of a range query that the route passes on to Prometheus. A client can send others, as the renderer
+ * sends `kubernetes_namespace`, which nothing reads: Prometheus ignores an unknown parameter, but the API of Google
+ * Cloud Managed Service for Prometheus rejects the whole query with 400 INVALID_ARGUMENT.
+ */
+const rangeQueryParams = ["start", "end", "step"] as const;
+
 // This is used for backoff retry tracking.
 const ATTEMPTS = [false, false, false, false, true];
 
@@ -127,7 +134,13 @@ const addMetricsRouteInjectable = getRouteInjectable({
       method: "post",
       path: `${apiPrefix}/metrics`,
     })(async ({ cluster, payload, query }) => {
-      const queryParams: Partial<Record<string, string>> = Object.fromEntries(query.entries());
+      const queryParams: Partial<Record<string, string>> = Object.fromEntries(
+        rangeQueryParams.flatMap((name) => {
+          const value = query.get(name);
+
+          return value === null ? [] : [[name, value]];
+        }),
+      );
       const prometheusMetadata: ClusterPrometheusMetadata = {};
       const prometheusHandler = di.inject(prometheusHandlerInjectable, cluster);
       const mountpoints = cluster.preferences.filesystemMountpoints || initialFilesystemMountpoints;

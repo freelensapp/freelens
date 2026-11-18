@@ -113,6 +113,24 @@ describe("the metrics route", () => {
     });
   });
 
+  it("passes on to Prometheus only the parameters of a range query", async () => {
+    const sentParams: unknown[] = [];
+
+    getMetrics = async (...args: unknown[]) => {
+      sentParams.push(args[2]);
+
+      return {};
+    };
+
+    await di.inject(addMetricsRouteInjectable).handler({
+      cluster,
+      payload: "up",
+      query: new URLSearchParams({ start: "100", end: "200", step: "60", kubernetes_namespace: "default" }),
+    } as never);
+
+    expect(sentParams).toEqual([{ query: "up", start: "100", end: "200", step: "60" }]);
+  });
+
   describe("given a provider that has no query for some names", () => {
     let sentQueries: string[];
 
