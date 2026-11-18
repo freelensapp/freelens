@@ -5,7 +5,7 @@
  */
 
 import { loggerInjectionToken } from "@freelensapp/logger";
-import { isRequestError, object } from "@freelensapp/utilities";
+import { isDefined, isRequestError, object } from "@freelensapp/utilities";
 import { isObject } from "es-toolkit/compat";
 import { runInAction } from "mobx";
 import { ClusterMetadataKey, initialFilesystemMountpoints } from "../../../common/cluster-types";
@@ -18,6 +18,12 @@ import { getRouteInjectable } from "../../router/router.injectable";
 import type { Cluster } from "../../../common/cluster/cluster";
 import type { ClusterPrometheusMetadata } from "../../../common/cluster-types";
 import type { GetMetrics } from "../../get-metrics.injectable";
+
+/**
+ * The answer for a query the provider has no metric for: what Prometheus returns for a query without series, so
+ * the views show it the same way.
+ */
+const emptyMetricResult = () => ({ status: "success", data: { resultType: "matrix", result: [] } });
 
 // This is used for backoff retry tracking.
 const ATTEMPTS = [false, false, false, false, true];
@@ -127,7 +133,11 @@ const addMetricsRouteInjectable = getRouteInjectable({
       const mountpoints = cluster.preferences.filesystemMountpoints || initialFilesystemMountpoints;
 
       try {
-        const { prometheusPath, provider } = await prometheusHandler.getPrometheusDetails();
+        const {
+          prometheusPath,
+          provider,
+          queryOpts: serviceQueryOpts,
+        } = await prometheusHandler.getPrometheusDetails();
 
         prometheusMetadata.provider = provider?.kind;
         prometheusMetadata.autoDetected = !cluster.preferences.prometheusProvider?.type;
@@ -155,10 +165,21 @@ const addMetricsRouteInjectable = getRouteInjectable({
           const data = payload as Record<string, Record<string, string>>;
           const queries = object
             .entries(data)
-            .map(([queryName, queryOpts]) => provider.getQuery({ ...queryOpts, mountpoints }, queryName));
+            .map(([queryName, queryOpts]) =>
+              provider.getQuery({ ...queryOpts, mountpoints, ...serviceQueryOpts }, queryName),
+            );
+          const supportedQueries = queries.filter(isDefined);
 
-          const result = await loadMetrics(queries, cluster, prometheusPath, queryParams);
-          const response = object.fromEntries(object.keys(data).map((metricName, i) => [metricName, result[i]]));
+          const result = await loadMetrics(supportedQueries, cluster, prometheusPath, queryParams);
+          const results = new Map(supportedQueries.map((query, i) => [query, result[i]]));
+          const response = object.fromEntries(
+            object
+              .keys(data)
+              .map((metricName, i) => [
+                metricName,
+                queries[i] === undefined ? emptyMetricResult() : results.get(queries[i]),
+              ]),
+          );
 
           prometheusMetadata.success = true;
 

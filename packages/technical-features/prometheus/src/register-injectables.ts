@@ -6,6 +6,7 @@
  * This replaces the webpack-based auto-registration system.
  */
 
+import gkePrometheusProviderInjectable from "./gke-provider.injectable";
 import helm14PrometheusProviderInjectable from "./helm-14-provider.injectable";
 import helmPrometheusProviderInjectable from "./helm-provider.injectable";
 import lensPrometheusProviderInjectable from "./lens-provider.injectable";
@@ -16,6 +17,11 @@ import stacklightPrometheusProviderInjectable from "./stacklight-provider.inject
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
+  try {
+    di.register(gkePrometheusProviderInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
   try {
     di.register(helm14PrometheusProviderInjectable);
   } catch (e) {
