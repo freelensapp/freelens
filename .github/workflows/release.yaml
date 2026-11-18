@@ -47,6 +47,35 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      # The release notes are written ahead of the release, in the Roadmap
+      # discussion titled after the tag. Without such a discussion the draft
+      # keeps the generated notes.
+      - name: Find release notes discussion
+        id: discussion
+        run: |
+          set -eo pipefail
+          # The newest one, should an older discussion have the same title.
+          gh discussion list --category roadmap --state all --sort created --limit 100 \
+            --json title,url,body \
+            --jq 'first(.discussions[] | select(.title == env.GITHUB_REF_NAME)) // {}' > "$RUNNER_TEMP/discussion.json"
+          url=$(yq -pj -oy '.url // ""' "$RUNNER_TEMP/discussion.json")
+          if [[ -z "$url" ]]; then
+            echo "No Roadmap discussion titled ${GITHUB_REF_NAME}: the draft keeps the generated notes"
+            exit 0
+          fi
+          # A discussion edited in the browser has CRLF line endings.
+          yq -pj -oy '.body' "$RUNNER_TEMP/discussion.json" | perl -pe 's/\r$//' > "$RUNNER_TEMP/release-notes.md"
+          echo "Release notes from $url"
+          echo "found=true" >> "$GITHUB_OUTPUT"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Copy release notes from the discussion
+        if: steps.discussion.outputs.found == 'true'
+        run: gh release edit "${GITHUB_REF_NAME}" --notes-file "$RUNNER_TEMP/release-notes.md"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   build-app:
     name: build app
 
