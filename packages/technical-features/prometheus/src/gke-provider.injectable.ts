@@ -82,10 +82,11 @@ const parseSelector = (selector: string | undefined): string[] =>
 
 /**
  * Sums `expr` by the labels Freelens expects, which GKE names differently: it sums by the GKE labels, renames them,
- * and sums again by the new names, so the result carries exactly the labels asked for.
+ * and sums again by the new names, so the result carries exactly the labels asked for. `names` maps a label to its
+ * GKE name when the series carry it under another one than `gkeLabelNames` says.
  */
-export const sumBy = (expr: string, labels: string[]): string => {
-  const sources = labels.map((label) => gkeLabelNames[label] ?? label);
+export const sumBy = (expr: string, labels: string[], names: Partial<Record<string, string>> = {}): string => {
+  const sources = labels.map((label) => names[label] ?? gkeLabelNames[label] ?? label);
   const aggregated = `sum by (${sources.join(", ")}) (${expr})`;
   const renamed = labels.reduce(
     (inner, label, index) =>
@@ -146,11 +147,14 @@ export const getGkeQuery: GetPrometheusQuery = (opts, queryName) => {
     case "nodes": {
       const nodes = (path: string, matchers: string[] = []) => series(opts, path, "k8s_node", matchers);
       const byNode = (expr: string) => sumBy(expr, ["node"]);
+      const containers = (path: string, matchers: string[] = []) => series(opts, path, "k8s_container", matchers);
+      const byNodeOfContainer = (expr: string) => sumBy(expr, ["node"], { node: metadataNodeNameLabel });
 
       switch (queryName) {
         case "memoryUsage":
-        case "workloadMemoryUsage":
           return byNode(nodes("node_memory_used_bytes", nonEvictable));
+        case "workloadMemoryUsage":
+          return byNodeOfContainer(containers("container_memory_used_bytes", nonEvictable));
         case "memoryCapacity":
           return byNode(nodes("node_memory_total_bytes"));
         case "memoryAllocatableCapacity":
@@ -199,13 +203,23 @@ export const getGkeQuery: GetPrometheusQuery = (opts, queryName) => {
       }
       break;
     }
-    case "pvc":
+    case "pvc": {
+      // The series of a volume that a claim backs carry the claim in labels of their own. A claim mounted by several
+      // pods has a series for each of them, all for the same disk, so the query takes their maximum, not the sum.
+      const claim = (path: string) =>
+        `max(${series(opts, path, "k8s_pod", [
+          `persistentvolumeclaim_name=${quote(opts.pvc ?? "")}`,
+          `persistentvolumeclaim_namespace=${quote(opts.namespace ?? "")}`,
+        ])})`;
+
       switch (queryName) {
         case "diskUsage":
+          return claim("pod_volume_used_bytes");
         case "diskCapacity":
-          return undefined;
+          return claim("pod_volume_total_bytes");
       }
       break;
+    }
     case "ingress":
       switch (queryName) {
         case "bytesSentSuccess":

@@ -77,7 +77,7 @@ describe("the GKE prometheus provider", () => {
       ],
       [
         "workloadMemoryUsage",
-        byNode('kubernetes_io:node_memory_used_bytes{monitored_resource="k8s_node",memory_type="non-evictable"}'),
+        'sum by (node) (label_replace(sum by (metadata_system_node_name) (kubernetes_io:container_memory_used_bytes{monitored_resource="k8s_container",memory_type="non-evictable"}), "node", "$1", "metadata_system_node_name", "(.*)"))',
       ],
       ["memoryCapacity", byNode('kubernetes_io:node_memory_total_bytes{monitored_resource="k8s_node"}')],
       [
@@ -174,12 +174,19 @@ describe("the GKE prometheus provider", () => {
     });
 
     it.each([
+      ["diskUsage", "pod_volume_used_bytes"],
+      ["diskCapacity", "pod_volume_total_bytes"],
+    ])("builds the pvc query %s from the series that carry the claim", (queryName, path) => {
+      expect(getGkeQuery({ category: "pvc", pvc: "data-db-0", namespace: "shop" }, queryName)).toBe(
+        `max(kubernetes_io:${path}{monitored_resource="k8s_pod",persistentvolumeclaim_name="data-db-0",persistentvolumeclaim_namespace="shop"})`,
+      );
+    });
+
+    it.each([
       ["cluster", "podCapacity"],
       ["cluster", "podAllocatableCapacity"],
       ["pods", "fsReads"],
       ["pods", "fsWrites"],
-      ["pvc", "diskUsage"],
-      ["pvc", "diskCapacity"],
       ["ingress", "bytesSentSuccess"],
       ["ingress", "bytesSentFailure"],
       ["ingress", "requestDurationSeconds"],
@@ -202,6 +209,7 @@ describe("the GKE prometheus provider", () => {
         ["nodes", "memoryCapacity"],
         ["pods", "memoryUsage"],
         ["pods", "networkTransmit"],
+        ["pvc", "diskUsage"],
       ])("filters %s %s on the cluster", (category, queryName) => {
         const query = getGkeQuery({ ...podsOpts, category, [gkeClusterNameQueryOpt]: "prod" }, queryName);
 
