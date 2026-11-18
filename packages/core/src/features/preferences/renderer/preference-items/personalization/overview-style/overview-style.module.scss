@@ -1,0 +1,95 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
+// Two tiles, laid out and marked as the cards of the theme gallery below them are. Each shows
+// the real components of its style at half their size: they are laid out on a stage of twice
+// the size of the preview, and the stage is scaled down into it, so they follow the active
+// theme and accent as the overviews do. Each stage is as tall as its components are at full size,
+// so the preview shows all of them and nothing else.
+
+$stage-width: 240px;
+
+.options {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.option {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 10px;
+  border: 2px solid var(--borderFaintColor);
+  border-radius: 6px;
+  background: var(--layoutBackground);
+  cursor: pointer;
+}
+
+.option.selected {
+  border-color: var(--primary);
+}
+
+.option:has(input:focus-visible) {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 148px;
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--mainBackground);
+  box-shadow: 0 0 0 1px var(--borderFaintColor);
+}
+
+.stage {
+  display: block;
+  flex: none;
+  width: $stage-width * 0.5;
+  height: calc(var(--stage-height) * 0.5);
+  overflow: hidden;
+
+  > * {
+    box-sizing: border-box;
+    width: $stage-width;
+    height: var(--stage-height);
+    transform: scale(0.5);
+    transform-origin: top left;
+    pointer-events: none;
+  }
+}
+
+// The heights of the status card and of the titled ring chart at full size.
+.cardsStage {
+  --stage-height: 200px;
+}
+
+.chartsStage {
+  --stage-height: 264px;
+}
+
+.chart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 16px;
+  background: var(--contentColor);
+}
+
+.chartTitle {
+  margin-bottom: 4px;
+  color: var(--colorInfo);
+}
+
+.label {
+  margin-top: 8px;
+  color: var(--textColorAccent);
+  font-weight: 500;
+}

@@ -1,0 +1,18 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
+@use "../vars" as *;
+
+// The grid of the capacity cards in the cluster overview. The cards style themselves, in
+// `../overview-cards/capacity-card.scss`. The overview gives the grid about half of the page,
+// so each card stays readable at 200px. The cards are spaced as the panels of the overview are,
+// and their rows fill the height of the metrics chart beside them, so the edges line up.
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: $margin * 2;
+  flex-grow: 1;
+}

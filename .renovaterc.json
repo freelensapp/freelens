@@ -55,6 +55,11 @@
       "minimumReleaseAge": "25 hours"
     },
     {
+      "description": "No delay for Electron, which ships the security releases of Chromium and Node. pnpm-workspace.yaml exempts it from pnpm's minimumReleaseAge too. Must come after the rule above to override it.",
+      "matchDepNames": ["electron"],
+      "minimumReleaseAge": "0 days"
+    },
+    {
       "description": "peerDependencies are widened.",
       "matchDepTypes": ["peerDependencies"],
       "rangeStrategy": "widen",

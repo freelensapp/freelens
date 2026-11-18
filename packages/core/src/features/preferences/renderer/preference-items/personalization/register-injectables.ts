@@ -7,6 +7,7 @@
  */
 
 import { registerInjectables as registerAccentColorInjectables } from "./accent-color/register-injectables";
+import { registerInjectables as registerOverviewStyleInjectables } from "./overview-style/register-injectables";
 import personalizationPreferencePageInjectable from "./personalization-preference-page.injectable";
 import personalizationPreferenceTabInjectable from "./personalization-preference-tab.injectable";
 import { registerInjectables as registerThemeVariantInjectables } from "./theme-variant/register-injectables";
@@ -28,6 +29,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     registerAccentColorInjectables(di);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    registerOverviewStyleInjectables(di);
   } catch (e) {
     /* Ignore duplicate registration */
   }

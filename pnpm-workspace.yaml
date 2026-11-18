@@ -172,12 +172,17 @@ allowBuilds:
 
 engineStrict: true
 
-# Releases let in before pnpm's minimumReleaseAge, one exact version each, for
-# security fixes that cannot wait. Remove an entry once that version is older
-# than the policy: the exclusion is then a no-op.
+# Releases let in before pnpm's minimumReleaseAge.
+#
+# A package name exempts every version of it, for good: Renovate does not wait
+# for it either (the matching rule is in .renovaterc.json).
+#
+# An exact version is for a security fix that cannot wait. Remove such an entry
+# once that version is older than the policy: the exclusion is then a no-op.
 minimumReleaseAgeExclude:
-  # Node 24.22.1, the fix of CVE-2026-111497.
-  - electron@44.10.0
+  # Electron ships the security releases of Chromium and Node, which the app
+  # takes as soon as they are out.
+  - electron
 
 overrides:
   # @kubernetes/client-node declares @types/node of a newer major than the

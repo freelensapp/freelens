@@ -6,13 +6,13 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import requestHelmManifestInjectable from "./call-for-helm-manifest.injectable";
+import overviewStylePreferenceBlockInjectable from "./overview-style-preference-block.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
   try {
-    di.register(requestHelmManifestInjectable);
+    di.register(overviewStylePreferenceBlockInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }
