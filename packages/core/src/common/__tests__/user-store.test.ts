@@ -14,7 +14,7 @@ import directoryForUserDataInjectable from "../app-paths/directory-for-user-data
 import readJsonSyncInjectable from "../fs/read-json-sync.injectable";
 import writeFileInjectable from "../fs/write-file.injectable";
 import writeJsonSyncInjectable from "../fs/write-json-sync.injectable";
-import { defaultColorThemePreference } from "../vars";
+import { defaultThemePreference, defaultThemeVariantPreference } from "../vars";
 
 import type { DiContainer } from "@ogre-tools/injectable";
 
@@ -52,16 +52,99 @@ describe("user store tests", () => {
       state.httpsProxy = "abcd://defg";
 
       expect(state.httpsProxy).toBe("abcd://defg");
-      expect(state.colorTheme).toBe(defaultColorThemePreference);
+      expect(state.theme).toBe(defaultThemePreference);
+      expect(state.themeVariant).toBe(defaultThemeVariantPreference);
 
-      state.colorTheme = "light";
-      expect(state.colorTheme).toBe("light");
+      state.themeVariant = "light";
+      expect(state.themeVariant).toBe("light");
     });
 
     it("correctly resets theme to default value", async () => {
-      state.colorTheme = "some other theme";
+      state.theme = "some-other-theme";
+      state.themeVariant = "light";
       resetTheme();
-      expect(state.colorTheme).toBe(defaultColorThemePreference);
+      expect(state.theme).toBe(defaultThemePreference);
+      expect(state.themeVariant).toBe(defaultThemeVariantPreference);
+    });
+
+    it("stores neither the default theme nor the default variant", () => {
+      const readJsonSync = di.inject(readJsonSyncInjectable);
+
+      state.theme = "my-theme";
+      state.themeVariant = "dark";
+      expect(readJsonSync("/some-directory-for-user-data/lens-user-store.json").preferences).toMatchObject({
+        theme: "my-theme",
+        themeVariant: "dark",
+      });
+
+      resetTheme();
+      expect(readJsonSync("/some-directory-for-user-data/lens-user-store.json").preferences.theme).toBeUndefined();
+      expect(
+        readJsonSync("/some-directory-for-user-data/lens-user-store.json").preferences.themeVariant,
+      ).toBeUndefined();
+    });
+
+    describe.each([
+      [undefined, "freelens", "system"],
+      ["system", "freelens", "system"],
+      ["Dark", "freelens", "dark"],
+      ["Light", "freelens", "light"],
+      ["some removed theme", "freelens", "dark"],
+    ] as const)("with the colorTheme %j of an earlier version", (colorTheme, theme, themeVariant) => {
+      beforeEach(() => {
+        const writeJsonSync = di.inject(writeJsonSyncInjectable);
+
+        writeJsonSync("/some-directory-for-user-data/lens-user-store.json", {
+          preferences: { colorTheme },
+        });
+        di.inject(userPreferencesPersistentStorageInjectable).loadAndStartSyncing();
+      });
+
+      it(`uses the ${themeVariant} variant of the ${theme} theme`, () => {
+        expect(state.theme).toBe(theme);
+        expect(state.themeVariant).toBe(themeVariant);
+      });
+
+      it("no longer stores colorTheme", () => {
+        const readJsonSync = di.inject(readJsonSyncInjectable);
+
+        state.persistentSearch = true;
+        expect(readJsonSync("/some-directory-for-user-data/lens-user-store.json").preferences).not.toHaveProperty(
+          "colorTheme",
+        );
+      });
+    });
+
+    describe.each([
+      [undefined, "", "dark"],
+      ["Dark", "freelens", "dark"],
+      ["Light", "freelens", "light"],
+    ] as const)("with the terminalTheme %j of an earlier version", (terminalTheme, name, variant) => {
+      beforeEach(() => {
+        const writeJsonSync = di.inject(writeJsonSyncInjectable);
+
+        writeJsonSync("/some-directory-for-user-data/lens-user-store.json", {
+          preferences: { terminalTheme },
+        });
+        di.inject(userPreferencesPersistentStorageInjectable).loadAndStartSyncing();
+      });
+
+      it(`uses the theme ${JSON.stringify(name)} in the ${variant} variant`, () => {
+        expect(state.terminalTheme).toBe(name);
+        expect(state.terminalThemeVariant).toBe(variant);
+      });
+    });
+
+    it("keeps a theme and a variant of this version", () => {
+      const writeJsonSync = di.inject(writeJsonSyncInjectable);
+
+      writeJsonSync("/some-directory-for-user-data/lens-user-store.json", {
+        preferences: { colorTheme: "Dark", theme: "my-theme", themeVariant: "light" },
+      });
+      di.inject(userPreferencesPersistentStorageInjectable).loadAndStartSyncing();
+
+      expect(state.theme).toBe("my-theme");
+      expect(state.themeVariant).toBe("light");
     });
 
     it("loads and stores persistentSearch as a global preference", async () => {
@@ -114,11 +197,13 @@ describe("user store tests", () => {
       expect(state.logViewerPreferences).toEqual({
         showTimestamps: true,
         showWordWrap: false,
+        maxCombinedLogsPods: 20,
       });
 
       state.logViewerPreferences = {
         showTimestamps: true,
         showWordWrap: false,
+        maxCombinedLogsPods: 20,
       };
 
       expect(readJsonSync("/some-directory-for-user-data/lens-user-store.json")).toMatchObject({
@@ -133,11 +218,92 @@ describe("user store tests", () => {
       state.logViewerPreferences = {
         showTimestamps: false,
         showWordWrap: true,
+        maxCombinedLogsPods: 20,
       };
 
       expect(
         readJsonSync("/some-directory-for-user-data/lens-user-store.json").preferences.logViewerPreferences,
       ).toBeUndefined();
+    });
+
+    describe("maxCombinedLogsPods of logViewerPreferences", () => {
+      const loadStoredLogViewerPreferences = (logViewerPreferences: unknown) => {
+        const writeJsonSync = di.inject(writeJsonSyncInjectable);
+
+        writeJsonSync("/some-directory-for-user-data/lens-user-store.json", {
+          preferences: { logViewerPreferences },
+        });
+        writeJsonSync("/some-directory-for-user-data/kube_config", {});
+
+        di.inject(userPreferencesPersistentStorageInjectable).loadAndStartSyncing();
+      };
+
+      const readStoredLogViewerPreferences = () =>
+        di.inject(readJsonSyncInjectable)("/some-directory-for-user-data/lens-user-store.json").preferences
+          .logViewerPreferences;
+
+      it("defaults to 20 without a stored value", () => {
+        loadStoredLogViewerPreferences(undefined);
+
+        expect(state.logViewerPreferences.maxCombinedLogsPods).toBe(20);
+      });
+
+      it("defaults to 20 for an older store without the field", () => {
+        loadStoredLogViewerPreferences({ showTimestamps: true });
+
+        expect(state.logViewerPreferences).toEqual({
+          showTimestamps: true,
+          showWordWrap: true,
+          maxCombinedLogsPods: 20,
+        });
+      });
+
+      it("reads a stored value inside the range", () => {
+        loadStoredLogViewerPreferences({ maxCombinedLogsPods: 50 });
+
+        expect(state.logViewerPreferences.maxCombinedLogsPods).toBe(50);
+      });
+
+      it.each([
+        [500, 100],
+        [101, 100],
+        [0, 1],
+        [-3, 1],
+        [12.4, 12],
+        ["50", 20],
+        [null, 20],
+      ])("reads a stored value of %j as %j", (stored, expected) => {
+        loadStoredLogViewerPreferences({ maxCombinedLogsPods: stored });
+
+        expect(state.logViewerPreferences.maxCombinedLogsPods).toBe(expected);
+      });
+
+      it("stores a value inside the range", () => {
+        loadStoredLogViewerPreferences(undefined);
+
+        state.logViewerPreferences = { ...state.logViewerPreferences, maxCombinedLogsPods: 40 };
+
+        expect(readStoredLogViewerPreferences()).toEqual({ maxCombinedLogsPods: 40 });
+      });
+
+      it.each([
+        [1000, 100],
+        [0, 1],
+      ])("stores a value of %j as %j", (value, expected) => {
+        loadStoredLogViewerPreferences(undefined);
+
+        state.logViewerPreferences = { ...state.logViewerPreferences, maxCombinedLogsPods: value };
+
+        expect(readStoredLogViewerPreferences()).toEqual({ maxCombinedLogsPods: expected });
+      });
+
+      it("does not store the default", () => {
+        loadStoredLogViewerPreferences({ maxCombinedLogsPods: 40 });
+
+        state.logViewerPreferences = { ...state.logViewerPreferences, maxCombinedLogsPods: 20 };
+
+        expect(readStoredLogViewerPreferences()).toBeUndefined();
+      });
     });
   });
 });

@@ -53,9 +53,22 @@ jobs:
       # older one, without the Go symbol capture the scan needs (see Create
       # SBOM). Stored without the leading "v" for the same reason as
       # GRYPE_VERSION in security-scan.
-      SYFT_VERSION: 1.55.0 # datasource=github-releases depName=anchore/syft
+      SYFT_VERSION: 1.57.2 # datasource=github-releases depName=anchore/syft
 
     steps: &test-integration-steps
+      # First, so that a job that fails before its tests still uploads the name
+      # of its job and shows up in the report as one without results. The name
+      # is the one GitHub shows: the macOS and Windows job gets the values of its
+      # matrix appended.
+      - name: Prepare the report of the tests
+        if: github.event_name != 'schedule'
+        shell: bash
+        env:
+          JOB: ${{ github.job == 'test-integration' && format('integration tests on {0}', matrix.runs-on) || format('integration tests on macOS and Windows ({0}, {1}, {2})', matrix.runs-on, matrix.os, matrix.arch) }}
+        run: |
+          mkdir -p "${RUNNER_TEMP}/junit"
+          printf '%s\n' "${JOB}" > "${RUNNER_TEMP}/junit/job.txt"
+
       - name: Checkout
         uses: actions/checkout@v7
 
@@ -74,7 +87,7 @@ jobs:
       - name: Set up mise
         uses: jdx/mise-action@v5
         with:
-          version: 2026.10.19 # datasource=github-releases depName=jdx/mise
+          version: 2026.11.9 # datasource=github-releases depName=jdx/mise
           install_args: yq
 
       - name: Setup node
@@ -427,7 +440,7 @@ jobs:
         run: |
           sudo chown root:root freelens/dist/linux*-unpacked/chrome-sandbox
           sudo chmod 4755 freelens/dist/linux*-unpacked/chrome-sandbox
-          timeout 600 xvfb-run -a pnpm --color=always test:integration --reporter=verbose --reporter=github-actions --includeTaskLocation
+          timeout 600 xvfb-run -a pnpm --color=always test:integration --reporter=verbose --reporter=github-actions --includeTaskLocation --reporter=junit --outputFile.junit="${RUNNER_TEMP}/junit/integration-tests.xml"
         env:
           DEBUG: pw:browser
           TEST_KIND_CLUSTER_NAME: freelens
@@ -441,7 +454,7 @@ jobs:
         run: |
           sudo chown root:root freelens/dist/linux*-unpacked/chrome-sandbox
           sudo chmod 4755 freelens/dist/linux*-unpacked/chrome-sandbox
-          timeout 600 xvfb-run -a pnpm --color=always test:integration --reporter=verbose --reporter=github-actions --includeTaskLocation
+          timeout 600 xvfb-run -a pnpm --color=always test:integration --reporter=verbose --reporter=github-actions --includeTaskLocation --reporter=junit --outputFile.junit="${RUNNER_TEMP}/junit/integration-tests.xml"
         env:
           DEBUG: pw:browser
           TEST_KIND_CLUSTER_NAME: freelens
@@ -450,7 +463,7 @@ jobs:
         id: integration-tests-macos
         if: runner.os == 'macOS' && github.event_name != 'schedule'
         shell: bash
-        run: timeout 600 pnpm --color=always test:integration --reporter=verbose --reporter=github-actions --includeTaskLocation
+        run: timeout 600 pnpm --color=always test:integration --reporter=verbose --reporter=github-actions --includeTaskLocation --reporter=junit --outputFile.junit="${RUNNER_TEMP}/junit/integration-tests.xml"
         env:
           DEBUG: pw:browser
         continue-on-error: true
@@ -458,7 +471,7 @@ jobs:
       - name: Run integration tests (macOS) (retry)
         if: runner.os == 'macOS' && steps.integration-tests-macos.outcome == 'failure'
         shell: bash
-        run: timeout 600 pnpm --color=always test:integration --reporter=verbose --reporter=github-actions --includeTaskLocation
+        run: timeout 600 pnpm --color=always test:integration --reporter=verbose --reporter=github-actions --includeTaskLocation --reporter=junit --outputFile.junit="${RUNNER_TEMP}/junit/integration-tests.xml"
         env:
           DEBUG: pw:browser
 
@@ -466,7 +479,7 @@ jobs:
         id: integration-tests-windows
         if: runner.os == 'Windows' && github.event_name != 'schedule'
         shell: bash
-        run: timeout 600 pnpm --color=always test:integration --reporter=verbose --reporter=github-actions --includeTaskLocation
+        run: timeout 600 pnpm --color=always test:integration --reporter=verbose --reporter=github-actions --includeTaskLocation --reporter=junit --outputFile.junit="${RUNNER_TEMP}/junit/integration-tests.xml"
         env:
           DEBUG: pw:browser
         continue-on-error: true
@@ -474,9 +487,21 @@ jobs:
       - name: Run integration tests (Windows) (retry)
         if: runner.os == 'Windows' && steps.integration-tests-windows.outcome == 'failure'
         shell: bash
-        run: timeout 600 pnpm --color=always test:integration --reporter=verbose --reporter=github-actions --includeTaskLocation
+        run: timeout 600 pnpm --color=always test:integration --reporter=verbose --reporter=github-actions --includeTaskLocation --reporter=junit --outputFile.junit="${RUNNER_TEMP}/junit/integration-tests.xml"
         env:
           DEBUG: pw:browser
+
+      # A retry writes over the XML of the first run, so the report shows the
+      # result the job ends with.
+      - name: Upload the report of the tests
+        if: always() && github.event_name != 'schedule'
+        uses: actions/upload-artifact@v7
+        with:
+          name: junit-integration-tests-${{ matrix.os }}-${{ matrix.arch }}
+          path: ${{ runner.temp }}/junit/
+          retention-days: 7
+          # a re-run of the job replaces the report of its earlier attempt
+          overwrite: true
 
   # The same job on macOS and Windows, where the tests fail more often without
   # a change being at fault. A pull request runs them on Linux only; every
@@ -535,6 +560,54 @@ jobs:
         env:
           RESULT: ${{ needs.test-integration.result }}
 
+  # The summary of the run. The comment on a pull request comes from the Test
+  # report workflow, see "Test Reports" in AGENTS.md.
+  report:
+    name: report
+
+    needs:
+      - test-integration
+      - test-integration-macos-windows
+    if: ${{ !cancelled() && github.event_name != 'schedule' }}
+
+    runs-on: ubuntu-26.04-arm
+    timeout-minutes: 5
+
+    permissions:
+      actions: read
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+          sparse-checkout: |
+            .github/scripts
+            .nvmrc
+          sparse-checkout-cone-mode: false
+
+      - name: Setup node
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+
+      - name: Download the reports of the tests
+        uses: actions/download-artifact@v8
+        with:
+          pattern: junit-*
+          path: reports
+
+      - name: Summary of the reports
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPORT_RUN_ID: ${{ github.run_id }}
+        run: |
+          gh api --paginate "repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}/attempts/${GITHUB_RUN_ATTEMPT}/jobs" --jq '.jobs[] | [.name, .html_url] | @tsv' > jobs.tsv
+          node .github/scripts/test-report.mjs reports jobs.tsv "Integration tests" >> "${GITHUB_STEP_SUMMARY}"
+
   security-scan:
     name: security scan
 
@@ -561,7 +634,7 @@ jobs:
       # "v" because that manager's extractVersionTemplate strips it on every
       # bump; grype's installer needs the exact tag, so the "v" is re-added
       # where this is consumed rather than kept here (it would not survive).
-      GRYPE_VERSION: 0.121.0 # datasource=github-releases depName=anchore/grype
+      GRYPE_VERSION: 0.122.0 # datasource=github-releases depName=anchore/grype
 
     steps:
       - name: Checkout
@@ -572,7 +645,7 @@ jobs:
       - name: Set up mise
         uses: jdx/mise-action@v5
         with:
-          version: 2026.10.19 # datasource=github-releases depName=jdx/mise
+          version: 2026.11.9 # datasource=github-releases depName=jdx/mise
           install_args: yq
 
       - name: Download SBOMs
@@ -819,7 +892,7 @@ jobs:
       - name: Set up mise
         uses: jdx/mise-action@v5
         with:
-          version: 2026.10.19 # datasource=github-releases depName=jdx/mise
+          version: 2026.11.9 # datasource=github-releases depName=jdx/mise
           install_args: yq
 
       - name: Download merged vulnerability report

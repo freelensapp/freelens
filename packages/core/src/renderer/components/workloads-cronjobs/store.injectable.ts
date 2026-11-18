@@ -10,6 +10,7 @@ import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
 import { kubeObjectStoreInjectionToken } from "../../../common/k8s-api/api-manager/kube-object-store-token";
 import clusterFrameContextForNamespacedResourcesInjectable from "../../cluster-frame-context/for-namespaced-resources.injectable";
+import watchReconnectInjectable from "../../k8s/watch-reconnect/watch-reconnect.injectable";
 import getJobsByOwnerInjectable from "../workloads-jobs/get-jobs-by-owner.injectable";
 import { CronJobStore } from "./store";
 
@@ -27,6 +28,7 @@ const cronJobStoreInjectable = getInjectable({
       {
         getJobsByOwner: di.inject(getJobsByOwnerInjectable),
         context: di.inject(clusterFrameContextForNamespacedResourcesInjectable),
+        watchReconnect: di.inject(watchReconnectInjectable),
         logger: di.inject(loggerInjectionToken),
       },
       api,

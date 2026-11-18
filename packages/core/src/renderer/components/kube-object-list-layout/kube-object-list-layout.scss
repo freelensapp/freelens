@@ -5,7 +5,8 @@
  */
 
 .KubeObjectListLayout {
-  .Icon.load-error {
+  .Icon.load-error,
+  .Icon.cluster-unreachable {
     color: var(--colorWarning);
     float: right;
   }

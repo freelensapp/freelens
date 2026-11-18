@@ -1,7 +1,7 @@
 {
   // Ignore mismatch for Biome version to make Renovate updates without error
   // trunk-ignore(biome/deserialize)
-  "$schema": "https://biomejs.dev/schemas/2.6.4/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.6.8/schema.json",
   "assist": {
     "actions": {
       "source": {
@@ -137,6 +137,13 @@
         "noUnsafeDeclarationMerging": "off",
         "useNamespaceKeyword": "error"
       }
+    }
+  },
+  "markdown": {
+    "parser": {
+      // The SKILL.md files of the agent skills start with YAML frontmatter,
+      // which Biome otherwise reads as a thematic break and a setext heading.
+      "frontmatter": true
     }
   },
   "overrides": [
@@ -351,7 +358,6 @@
         "**/packages/core/src/renderer/k8s/api-kube.injectable.ts",
         "**/packages/core/src/renderer/logger/browser-console-transport.ts",
         "**/packages/core/src/renderer/protocol-handler/bind-protocol-add-route-handlers/bind-protocol-add-route-handlers.tsx",
-        "**/packages/core/src/renderer/themes/active.injectable.ts",
         "**/packages/core/src/renderer/utils/storage-helper.ts",
         "**/packages/core/src/renderer/utils/sync-box/provide-initial-values-for-sync-boxes.injectable.ts"
       ],
@@ -359,6 +365,18 @@
         "rules": {
           "correctness": {
             "noNodejsModules": "off"
+          }
+        }
+      }
+    },
+    {
+      // The copy of type-fest keeps the namespace of `PackageJson`, which is
+      // part of the shape of `Common.PackageJson` in the extension API.
+      "includes": ["**/packages/utility-features/type-fest/source/**"],
+      "linter": {
+        "rules": {
+          "style": {
+            "noNamespace": "off"
           }
         }
       }

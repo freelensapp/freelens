@@ -9,13 +9,9 @@
 import activeThemeInjectable from "./active.injectable";
 import activeThemeTypeInjectable from "./active-type.injectable";
 import applyLensThemeInjectable from "./apply-lens-theme.injectable";
-import defaultLensThemeInjectable from "./default-theme.injectable";
-import lensDarkThemeInjectable from "./lens-dark.injectable";
-import lensLightThemeInjectable from "./lens-light.injectable";
 import setupApplyActiveThemeInjectable from "./setup-apply-active-theme.injectable";
 import systemThemeConfigurationInjectable from "./system-theme.injectable";
 import xtermColorThemeInjectable from "./terminal-colors.injectable";
-import lensThemesInjectable from "./themes.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
@@ -32,26 +28,6 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(applyLensThemeInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(defaultLensThemeInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(lensDarkThemeInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(lensLightThemeInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(lensThemesInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

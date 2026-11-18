@@ -48,6 +48,7 @@
       "@freelensapp/startable-stoppable": ["./packages/utility-features/startable-stoppable/index.ts"],
       "@freelensapp/test-utils": ["./packages/utility-features/test-utils/index.ts"],
       "@freelensapp/tooltip": ["./packages/ui-components/tooltip/src/index.ts"],
+      "@freelensapp/type-fest": ["./packages/utility-features/type-fest/index.ts"],
       "@freelensapp/utilities": ["./packages/utility-features/utilities/index.ts"]
     },
     "types": ["node"]

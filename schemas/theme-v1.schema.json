@@ -1,0 +1,860 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/freelensapp/freelens/main/schemas/theme-v1.schema.json",
+  "title": "Freelens theme",
+  "description": "A Freelens theme file, apiVersion freelens.app/v1",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "description": "The URL of this JSON Schema, for editors",
+      "type": "string"
+    },
+    "apiVersion": {
+      "type": "string",
+      "const": "freelens.app/v1"
+    },
+    "kind": {
+      "type": "string",
+      "const": "Theme"
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "maxLength": 63,
+          "pattern": "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$",
+          "description": "The identifier of the theme, which the preferences store"
+        },
+        "labels": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "annotations": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      },
+      "required": ["name"],
+      "additionalProperties": false
+    },
+    "spec": {
+      "type": "object",
+      "properties": {
+        "displayName": {
+          "type": "string",
+          "minLength": 1,
+          "description": "The name shown in the preferences"
+        },
+        "description": {
+          "type": "string"
+        },
+        "author": {
+          "type": "string"
+        },
+        "dark": {
+          "description": "The dark variant of the theme",
+          "$ref": "#/$defs/ThemeVariant"
+        },
+        "light": {
+          "description": "The light variant of the theme",
+          "$ref": "#/$defs/ThemeVariant"
+        }
+      },
+      "required": ["displayName"],
+      "additionalProperties": false,
+      "anyOf": [
+        {
+          "required": ["dark"]
+        },
+        {
+          "required": ["light"]
+        }
+      ]
+    }
+  },
+  "required": ["apiVersion", "kind", "metadata", "spec"],
+  "additionalProperties": false,
+  "$defs": {
+    "ThemeVariant": {
+      "type": "object",
+      "properties": {
+        "colors": {
+          "type": "object",
+          "properties": {
+            "blue": {
+              "description": "Blue of the palette, an accent color by default",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "magenta": {
+              "description": "Magenta of the palette",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "golden": {
+              "description": "Golden yellow of the palette",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "halfGray": {
+              "description": "Half-transparent gray of borders and placeholders",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "primary": {
+              "description": "The accent color: active elements, links and highlights",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "textColorPrimary": {
+              "description": "Main text",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "textColorSecondary": {
+              "description": "Secondary text",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "textColorTertiary": {
+              "description": "Tertiary text, such as hints",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "textColorAccent": {
+              "description": "Emphasized text",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "textColorDimmed": {
+              "description": "Dimmed text",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "textColorOnPrimary": {
+              "description": "Text drawn on an accent background",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "borderColor": {
+              "description": "Borders",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "borderFaintColor": {
+              "description": "Faint borders and separators",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "mainBackground": {
+              "description": "Background of the main area",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "secondaryBackground": {
+              "description": "Secondary background",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "contentColor": {
+              "description": "Background of content panels",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "layoutBackground": {
+              "description": "Background of the layout",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "layoutTabsBackground": {
+              "description": "Background of the layout tabs",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "layoutTabsActiveColor": {
+              "description": "Text of the active layout tab",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "layoutTabsLineColor": {
+              "description": "Line under the layout tabs",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "sidebarLogoBackground": {
+              "description": "Background of the logo in the sidebar",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "sidebarActiveColor": {
+              "description": "Text of the active sidebar item, drawn on the accent",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "sidebarSubmenuActiveColor": {
+              "description": "Text of the active sidebar submenu item",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "sidebarBackground": {
+              "description": "Background of the sidebar",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "sidebarItemHoverBackground": {
+              "description": "Background of a hovered sidebar item",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "badgeBackgroundColor": {
+              "description": "Background of badges",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "buttonPrimaryBackground": {
+              "description": "Background of primary buttons",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "buttonDefaultBackground": {
+              "description": "Background of default buttons",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "buttonLightBackground": {
+              "description": "Background of light buttons",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "buttonAccentBackground": {
+              "description": "Background of accent (destructive) buttons",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "buttonDisabledBackground": {
+              "description": "Background of disabled buttons",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "tableBgcStripe": {
+              "description": "Background of striped table rows",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "tableBgcSelected": {
+              "description": "Background of selected table rows",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "tableHeaderBackground": {
+              "description": "Background of table headers",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "tableHeaderColor": {
+              "description": "Text of table headers",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "tableSelectedRowColor": {
+              "description": "Text of selected table rows",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "helmLogoBackground": {
+              "description": "Background of Helm chart logos",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "helmStableRepo": {
+              "description": "Label of stable Helm repositories",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "helmIncubatorRepo": {
+              "description": "Label of incubator Helm repositories",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "helmDescriptionHr": {
+              "description": "Horizontal rules in Helm chart descriptions",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "helmDescriptionBlockquoteColor": {
+              "description": "Text of block quotes in Helm chart descriptions",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "helmDescriptionBlockquoteBorder": {
+              "description": "Border of block quotes in Helm chart descriptions",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "helmDescriptionBlockquoteBackground": {
+              "description": "Background of block quotes in Helm chart descriptions",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "helmDescriptionHeaders": {
+              "description": "Headings in Helm chart descriptions",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "helmDescriptionH6": {
+              "description": "Sixth-level headings in Helm chart descriptions",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "helmDescriptionTdBorder": {
+              "description": "Table cell borders in Helm chart descriptions",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "helmDescriptionTrBackground": {
+              "description": "Table row background in Helm chart descriptions",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "helmDescriptionCodeBackground": {
+              "description": "Inline code background in Helm chart descriptions",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "helmDescriptionPreBackground": {
+              "description": "Code block background in Helm chart descriptions",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "helmDescriptionPreColor": {
+              "description": "Code block text in Helm chart descriptions",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "colorSuccess": {
+              "description": "Status: success",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "colorOk": {
+              "description": "Status: ok",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "colorInfo": {
+              "description": "Status: information",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "colorError": {
+              "description": "Status: error",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "colorSoftError": {
+              "description": "Status: soft error",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "colorWarning": {
+              "description": "Status: warning",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "colorVague": {
+              "description": "Status: vague or unknown",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "colorTerminated": {
+              "description": "Status: terminated",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "dockHeadBackground": {
+              "description": "Background of the dock header",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "dockInfoBackground": {
+              "description": "Background of the dock info panel",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "dockInfoBorderColor": {
+              "description": "Border of the dock info panel",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "dockEditorBackground": {
+              "description": "Background of the dock editor",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "dockEditorTag": {
+              "description": "Tags in the dock editor",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "dockEditorKeyword": {
+              "description": "Keywords in the dock editor",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "dockEditorComment": {
+              "description": "Comments in the dock editor",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "dockEditorActiveLineBackground": {
+              "description": "Background of the active line in the dock editor",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "dockBadgeBackground": {
+              "description": "Background of badges in the dock",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "dockTabBorderColor": {
+              "description": "Border of the dock tabs",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "dockTabActiveBackground": {
+              "description": "Background of the active dock tab",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "logsBackground": {
+              "description": "Background of the log viewer",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "logsForeground": {
+              "description": "Text of the log viewer",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "logRowHoverBackground": {
+              "description": "Background of a hovered log row",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "dialogTextColor": {
+              "description": "Text of dialogs",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "dialogBackground": {
+              "description": "Background of dialogs",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "dialogHeaderBackground": {
+              "description": "Background of dialog headers",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "dialogFooterBackground": {
+              "description": "Background of dialog footers",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "drawerTogglerBackground": {
+              "description": "Background of the drawer toggler",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "drawerTitleText": {
+              "description": "Title text of drawers, drawn on the accent",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "drawerSubtitleBackground": {
+              "description": "Background of drawer subtitles",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "drawerItemNameColor": {
+              "description": "Names of drawer items",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "drawerItemValueColor": {
+              "description": "Values of drawer items",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "clusterMenuBackground": {
+              "description": "Background of the cluster menu",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "clusterMenuBorderColor": {
+              "description": "Border of the cluster menu",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "clusterMenuCellBackground": {
+              "description": "Background of cluster menu cells",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "clusterMenuCellOutline": {
+              "description": "Outline of the active cluster menu cell",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "clusterSettingsBackground": {
+              "description": "Background of the cluster settings",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "addClusterIconColor": {
+              "description": "Icon of the add cluster button",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "boxShadow": {
+              "description": "Box shadows",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "iconActiveColor": {
+              "description": "Active icons",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "iconActiveBackground": {
+              "description": "Background of active icons",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "filterAreaBackground": {
+              "description": "Background of the filter area",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "chartLiveBarBackground": {
+              "description": "Background of live chart bars",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "chartStripesColor": {
+              "description": "Stripes of charts",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "chartCapacityColor": {
+              "description": "Capacity in charts",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "pieChartDefaultColor": {
+              "description": "Default slice of pie charts",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "inputOptionHoverColor": {
+              "description": "Hovered input options",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "inputControlBackground": {
+              "description": "Background of input controls",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "inputControlBorder": {
+              "description": "Border of input controls",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "inputControlHoverBorder": {
+              "description": "Border of hovered input controls",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "lineProgressBackground": {
+              "description": "Background of progress lines",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "radioActiveBackground": {
+              "description": "Background of the active radio button",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "menuActiveBackground": {
+              "description": "Background of the active menu item",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "menuSelectedOptionBgc": {
+              "description": "Background of the selected menu option",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "canvasBackground": {
+              "description": "Background of canvases",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "scrollBarColor": {
+              "description": "Scroll bars",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "settingsBackground": {
+              "description": "Background of the settings",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "settingsColor": {
+              "description": "Text of the settings",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "navSelectedBackground": {
+              "description": "Background of the selected navigation item",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "navHoverColor": {
+              "description": "Hovered navigation items",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "hrColor": {
+              "description": "Horizontal rules",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "tooltipBackground": {
+              "description": "Background of tooltips",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            }
+          },
+          "additionalProperties": false,
+          "description": "The colors of the application; missing ones are taken from the built-in theme"
+        },
+        "terminalColors": {
+          "type": "object",
+          "properties": {
+            "foreground": {
+              "description": "Default text",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "background": {
+              "description": "Background",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "cursor": {
+              "description": "Cursor",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "cursorAccent": {
+              "description": "Text under a block cursor",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "selectionBackground": {
+              "description": "Background of the selection",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "selectionForeground": {
+              "description": "Text of the selection",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "selectionInactiveBackground": {
+              "description": "Background of the selection when the terminal has no focus",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "scrollbarSliderBackground": {
+              "description": "Scroll bar slider",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "scrollbarSliderHoverBackground": {
+              "description": "Hovered scroll bar slider",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "scrollbarSliderActiveBackground": {
+              "description": "Dragged scroll bar slider",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "overviewRulerBorder": {
+              "description": "Border of the overview ruler",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "black": {
+              "description": "ANSI black",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "red": {
+              "description": "ANSI red",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "green": {
+              "description": "ANSI green",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "yellow": {
+              "description": "ANSI yellow",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "blue": {
+              "description": "ANSI blue",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "magenta": {
+              "description": "ANSI magenta",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "cyan": {
+              "description": "ANSI cyan",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "white": {
+              "description": "ANSI white",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "brightBlack": {
+              "description": "ANSI bright black",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "brightRed": {
+              "description": "ANSI bright red",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "brightGreen": {
+              "description": "ANSI bright green",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "brightYellow": {
+              "description": "ANSI bright yellow",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "brightBlue": {
+              "description": "ANSI bright blue",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "brightMagenta": {
+              "description": "ANSI bright magenta",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "brightCyan": {
+              "description": "ANSI bright cyan",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "brightWhite": {
+              "description": "ANSI bright white",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            }
+          },
+          "additionalProperties": false,
+          "description": "The colors of the terminal; missing ones are taken from the built-in theme"
+        },
+        "editor": {
+          "type": "object",
+          "properties": {
+            "base": {
+              "description": "The built-in Monaco theme the editor theme extends; the built-in theme's when left out",
+              "type": "string",
+              "enum": ["vs", "vs-dark", "hc-black", "hc-light"]
+            },
+            "inherit": {
+              "description": "Whether the token styles of the base apply as well; the built-in theme's when left out",
+              "type": "boolean"
+            },
+            "colors": {
+              "description": "Monaco's editor colors, such as editor.background; missing ones come from the built-in theme",
+              "type": "object",
+              "propertyNames": {
+                "type": "string"
+              },
+              "additionalProperties": {
+                "type": "string",
+                "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+              }
+            },
+            "tokens": {
+              "description": "The style of each token, by Monaco's token name (empty for every token): a color, which is the foreground, or foreground, background and fontStyle; missing ones come from the built-in theme",
+              "type": "object",
+              "propertyNames": {
+                "type": "string"
+              },
+              "additionalProperties": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^#[0-9a-fA-F]{6}([0-9a-fA-F]{2})?$"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "foreground": {
+                        "type": "string",
+                        "pattern": "^#[0-9a-fA-F]{6}([0-9a-fA-F]{2})?$"
+                      },
+                      "background": {
+                        "type": "string",
+                        "pattern": "^#[0-9a-fA-F]{6}([0-9a-fA-F]{2})?$"
+                      },
+                      "fontStyle": {
+                        "description": "italic, bold, underline or strikethrough, several of them separated by spaces",
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                ]
+              }
+            }
+          },
+          "additionalProperties": false,
+          "description": "The theme of the code editor"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

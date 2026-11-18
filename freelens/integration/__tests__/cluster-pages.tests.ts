@@ -393,6 +393,18 @@ const scenarios = [
     parentSidebarItemTestId: "link-for-sidebar-item-config",
     sidebarItemTestId: "link-for-sidebar-item-validating-admission-policy-bindings",
   },
+
+  {
+    expectedSelector: "h5.title",
+    parentSidebarItemTestId: "link-for-sidebar-item-config",
+    sidebarItemTestId: "link-for-sidebar-item-mutating-admission-policies",
+  },
+
+  {
+    expectedSelector: "h5.title",
+    parentSidebarItemTestId: "link-for-sidebar-item-config",
+    sidebarItemTestId: "link-for-sidebar-item-mutating-admission-policy-bindings",
+  },
 ];
 
 const navigateToPods = async (frame: Frame) => {

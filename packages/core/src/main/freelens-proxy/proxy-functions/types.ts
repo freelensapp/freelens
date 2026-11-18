@@ -7,7 +7,7 @@
 import type http from "node:http";
 import type net from "node:net";
 
-import type { SetRequired } from "type-fest";
+import type { SetRequired } from "@freelensapp/type-fest";
 
 import type { Cluster } from "../../../common/cluster/cluster";
 

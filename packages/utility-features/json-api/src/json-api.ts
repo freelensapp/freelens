@@ -10,10 +10,10 @@ import { isObject, isString, json } from "@freelensapp/utilities";
 import { merge } from "es-toolkit/compat";
 
 import type { Logger } from "@freelensapp/logger";
+import type { PartialDeep, ValueOf } from "@freelensapp/type-fest";
 import type { Defaulted } from "@freelensapp/utilities";
 
 import type { Patch } from "rfc6902";
-import type { PartialDeep, ValueOf } from "type-fest";
 
 import type { Fetch, FetchMethod, FetchRequestInit as RequestInit, FetchResponse as Response } from "./fetch";
 

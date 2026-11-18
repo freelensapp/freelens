@@ -7,7 +7,7 @@
 import assert from "node:assert";
 import { parseKubeApi } from "@freelensapp/kube-api";
 import { KubeStatus } from "@freelensapp/kube-object";
-import { includes, isAbortError, noop, object, rejectPromiseBy, waitUntilDefined } from "@freelensapp/utilities";
+import { isAbortError, noop, object, rejectPromiseBy, waitUntilDefined } from "@freelensapp/utilities";
 import autoBind from "auto-bind";
 import { action, computed, observable, reaction } from "mobx";
 import { ItemStore } from "../item.store";
@@ -23,12 +23,13 @@ import type {
 } from "@freelensapp/kube-api";
 import type { KubeJsonApiDataFor, KubeObject } from "@freelensapp/kube-object";
 import type { Logger } from "@freelensapp/logger";
+import type { PartialDeep } from "@freelensapp/type-fest";
 import type { Disposer } from "@freelensapp/utilities";
 
 import type { Patch } from "rfc6902";
-import type { PartialDeep } from "type-fest";
 
 import type { ClusterContext } from "../../renderer/cluster-frame-context/cluster-frame-context";
+import type { WatchReconnect } from "./watch-reconnect";
 
 export type OnLoadFailure = (error: unknown) => void;
 
@@ -93,7 +94,38 @@ export type JsonPatch = Patch;
 export interface KubeObjectStoreDependencies {
   readonly context: ClusterContext;
   readonly logger: Logger;
+
+  /**
+   * Decides when a failed watch starts again. Without it a failed watch
+   * starts again after 5 seconds.
+   */
+  readonly watchReconnect?: WatchReconnect;
 }
+
+interface ItemLookups<K> {
+  readonly byId: Map<string, K>;
+  readonly byPath: Map<string, K>;
+}
+
+// The first item of each id and of each self link, as a `find` over the items
+// returns it.
+const indexItems = <K extends KubeObject>(items: readonly K[]): ItemLookups<K> => {
+  const lookups: ItemLookups<K> = { byId: new Map(), byPath: new Map() };
+
+  for (const item of items) {
+    const id = item.getId();
+
+    if (!lookups.byId.has(id)) {
+      lookups.byId.set(id, item);
+    }
+
+    if (!lookups.byPath.has(item.selfLink)) {
+      lookups.byPath.set(item.selfLink, item);
+    }
+  }
+
+  return lookups;
+};
 
 export class KubeObjectStore<
   K extends KubeObject = KubeObject,
@@ -105,6 +137,13 @@ export class KubeObjectStore<
 
   private readonly loadedNamespaces = observable.box<string[]>();
   private readonly watchingController = new AbortController();
+
+  // Lookups by id and self link run once per row of a list (its menu), once
+  // per warning of the cluster overview, and from details and logs. Kept
+  // alive, so that the index is built once per change of the items, and only
+  // for a store that is looked up in at all: a computed nobody reads is never
+  // evaluated.
+  private readonly lookups = computed(() => indexItems(this.items), { keepAlive: true });
 
   constructor(
     protected readonly dependencies: KubeObjectStoreDependencies,
@@ -121,12 +160,12 @@ export class KubeObjectStore<
 
   // TODO: Circular dependency: KubeObjectStore -> ClusterFrameContext -> NamespaceStore -> KubeObjectStore
   @computed get contextItems(): K[] {
-    const namespaces = this.dependencies.context.contextNamespaces;
+    const namespaces = new Set(this.dependencies.context.contextNamespaces);
 
     return this.items.filter((item) => {
       const itemNamespace = item.getNs();
 
-      return !itemNamespace /* cluster-wide */ || namespaces.includes(itemNamespace);
+      return !itemNamespace /* cluster-wide */ || namespaces.has(itemNamespace);
     });
   }
 
@@ -148,7 +187,13 @@ export class KubeObjectStore<
     const namespaces = [namespace].flat();
 
     if (namespaces.length) {
-      return this.items.filter((item) => includes(namespaces, item.getNs()));
+      const selected = new Set(namespaces);
+
+      return this.items.filter((item) => {
+        const itemNamespace = item.getNs();
+
+        return itemNamespace !== undefined && selected.has(itemNamespace);
+      });
     }
 
     if (!strict) {
@@ -159,7 +204,7 @@ export class KubeObjectStore<
   }
 
   getById(id: string): K | undefined {
-    return this.items.find((item) => item.getId() === id);
+    return this.lookups.get().byId.get(id);
   }
 
   getByName(name: string, namespace?: string): K | undefined {
@@ -180,7 +225,7 @@ export class KubeObjectStore<
   }
 
   getByPath(path: string): K | undefined {
-    return this.items.find((item) => item.selfLink === path);
+    return this.lookups.get().byPath.get(path);
   }
 
   getByLabel(labels: string[] | Partial<Record<string, string>>): K[] {
@@ -544,7 +589,28 @@ export class KubeObjectStore<
     }
 
     let timedRetry: NodeJS.Timeout;
+    let cancelReconnect: Disposer | undefined;
+    // Failures in a row since the watch last connected.
+    let failures = 0;
     const signal = abortController.signal;
+    const { watchReconnect } = this.dependencies;
+
+    const retryLater = () => {
+      clearTimeout(timedRetry);
+      cancelReconnect?.();
+      failures += 1;
+
+      if (watchReconnect) {
+        cancelReconnect = watchReconnect.schedule(startNewWatch, failures);
+      } else {
+        timedRetry = setTimeout(startNewWatch, 5000);
+      }
+    };
+
+    const onConnect = () => {
+      failures = 0;
+      watchReconnect?.connected();
+    };
 
     const startNewWatch = () => {
       // A retry or a reload scheduled before the abort must not start a
@@ -555,6 +621,7 @@ export class KubeObjectStore<
         namespace,
         abortController,
         callback,
+        onConnect,
       });
     };
 
@@ -571,8 +638,7 @@ export class KubeObjectStore<
         }
 
         // not sure what to do, best to retry
-        clearTimeout(timedRetry);
-        timedRetry = setTimeout(startNewWatch, 5000);
+        retryLater();
       } else if (error instanceof KubeStatus && error.code === 410) {
         clearTimeout(timedRetry);
         // resourceVersion has gone, let's try to reload
@@ -585,16 +651,20 @@ export class KubeObjectStore<
         }, 1000);
       } else if (error) {
         // not sure what to do, best to retry
-        clearTimeout(timedRetry);
-        timedRetry = setTimeout(startNewWatch, 5000);
+        retryLater();
       }
 
       if (data) {
+        // Also for an API whose `watch` does not call `onConnect`.
+        failures = 0;
         this.eventsBuffer.push(data);
       }
     };
 
-    signal.addEventListener("abort", () => clearTimeout(timedRetry));
+    signal.addEventListener("abort", () => {
+      clearTimeout(timedRetry);
+      cancelReconnect?.();
+    });
     startNewWatch();
   }
 

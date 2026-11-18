@@ -33,6 +33,13 @@ describe("<Avatar/>", () => {
     expect(getByText("JF")).toBeInTheDocument();
   });
 
+  test("shows the short name instead of the initials of the title", () => {
+    const { getByText, queryByText } = render(<Avatar title="us-west-2-non-prod" shortName="W2NP" />);
+
+    expect(getByText("W2NP")).toBeInTheDocument();
+    expect(queryByText("UW2")).not.toBeInTheDocument();
+  });
+
   test("shows custom icon passed as children", () => {
     const { getByTestId } = render(
       <Avatar title="John Ferguson">

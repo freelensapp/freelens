@@ -134,6 +134,15 @@ export class ExtensionLoader {
 
   private readonly onRemoveExtensionId = new EventEmitter<[string]>();
 
+  /**
+   * The ID of every instance this loader constructed, held weakly, so that an
+   * API scoped to an extension derives the scope from what the host knows
+   * rather than from a property the instance could change. An instance stays
+   * here after it is disabled, so that its `onDeactivate` can still use such
+   * an API.
+   */
+  private readonly constructedInstanceIds = new WeakMap<object, LensExtensionId>();
+
   // URLs of extension stylesheets already linked into the renderer document, so
   // a reload (the toJSON reaction re-loads user extensions) does not append the
   // same <link> twice. Keying on the URL rather than the file means a new build
@@ -417,11 +426,42 @@ export class ExtensionLoader {
   }
 
   removeExtension(lensExtensionId: LensExtensionId) {
+    const extension = this.extensions.get(lensExtensionId);
+
     this.removeInstance(lensExtensionId);
 
     if (!this.extensions.delete(lensExtensionId)) {
       throw new Error(`Can't remove extension ${lensExtensionId}, doesn't exist.`);
     }
+
+    // The enabled state is merged into, so an extension which is gone would
+    // keep its last state, and the next build installed under its name would
+    // come up enabled by discovery before the installer has any say: an
+    // unverified one, which stays disabled until the user enables it, too.
+    // A build which replaces this one is not affected: discovery read its
+    // state before removing this one, and adding it writes that state again.
+    if (ipcMain && extension) {
+      this.dependencies.updateExtensionsState([[lensExtensionId, { enabled: false, name: extension.manifest.name }]]);
+    }
+  }
+
+  /**
+   * Bring whether a loaded extension is verified in line with its record, when
+   * the same build was installed again with a checksum it lacked before, or
+   * without one. The build is the same, so nothing is torn down or loaded
+   * again; only the flag changes, and it reaches the renderers with the next
+   * broadcast. Main only, like `isEnabled`: it is main's state.
+   */
+  setIsVerified(lensExtensionId: LensExtensionId, isVerified: boolean): void {
+    const extension = this.extensions.get(lensExtensionId);
+
+    if (!extension || extension.isVerified === isVerified) {
+      return;
+    }
+
+    runInAction(() => {
+      this.extensions.set(lensExtensionId, { ...extension, isVerified });
+    });
   }
 
   /**
@@ -806,6 +846,7 @@ export class ExtensionLoader {
 
           const instance = new LensExtensionClass(installedExtension);
 
+          this.constructedInstanceIds.set(instance, extId);
           this.dependencies.extensionInstances.set(extId, instance);
 
           // Creates the extension's view of the host's DI container, before
@@ -1115,6 +1156,14 @@ export class ExtensionLoader {
 
   getInstanceById(extId: LensExtensionId) {
     return this.dependencies.extensionInstances.get(extId);
+  }
+
+  /**
+   * The ID of the extension `value` is an instance of, when this loader
+   * constructed it, and `undefined` for any other value.
+   */
+  getIdOfConstructedInstance(value: unknown): LensExtensionId | undefined {
+    return typeof value === "object" && value !== null ? this.constructedInstanceIds.get(value) : undefined;
   }
 
   toJSON(): Map<LensExtensionId, InstalledExtension> {

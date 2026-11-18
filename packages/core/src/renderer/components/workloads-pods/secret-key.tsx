@@ -11,8 +11,7 @@ import React, { useState } from "react";
 import secretStoreInjectable from "../config-secrets/store.injectable";
 
 import type { EnvVarKeySelector } from "@freelensapp/kube-object";
-
-import type { SetRequired } from "type-fest";
+import type { SetRequired } from "@freelensapp/type-fest";
 
 import type { SecretStore } from "../config-secrets/store";
 

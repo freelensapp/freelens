@@ -81,6 +81,7 @@ jobs:
       text: ${{ steps.parse.outputs.text }}
       is-fork: ${{ steps.fork.outputs.is-fork }}
       pr-number: ${{ steps.fork.outputs.pr-number }}
+      is-agent-pr: ${{ steps.fork.outputs.is-agent-pr }}
 
     permissions:
       actions: read
@@ -236,17 +237,23 @@ jobs:
         id: fork
         shell: bash
         run: |
+          IS_AGENT_PR="false"
           if [ -z "$PR_NUMBER" ]; then
             IS_FORK="false"
           else
-            HEAD_REPO=$(gh api "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}" --jq '.head.repo.full_name // ""')
+            PR_INFO=$(gh api "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}" --jq '(.head.repo.full_name // ""), .user.login')
+            { read -r HEAD_REPO; read -r PR_AUTHOR; } <<< "$PR_INFO"
             if [ "$HEAD_REPO" = "$GITHUB_REPOSITORY" ]; then
               IS_FORK="false"
+              if [ "$PR_AUTHOR" = "claude[bot]" ]; then
+                IS_AGENT_PR="true"
+              fi
             else
               IS_FORK="true"
             fi
           fi
-          echo "Pull request: ${PR_NUMBER:-<none>}, from a fork: $IS_FORK"
+          echo "Pull request: ${PR_NUMBER:-<none>}, from a fork: $IS_FORK, opened by the agent: $IS_AGENT_PR"
+          echo "is-agent-pr=$IS_AGENT_PR" >> "$GITHUB_OUTPUT"
           echo "is-fork=$IS_FORK" >> "$GITHUB_OUTPUT"
           echo "pr-number=$PR_NUMBER" >> "$GITHUB_OUTPUT"
         env:
@@ -374,7 +381,7 @@ jobs:
         if: needs.parse.outputs.is-fork != 'true'
         uses: jdx/mise-action@v5
         with:
-          version: 2026.10.19 # datasource=github-releases depName=jdx/mise
+          version: 2026.11.9 # datasource=github-releases depName=jdx/mise
           install_args: cosign yq
           cache: false
         timeout-minutes: 5
@@ -418,6 +425,18 @@ jobs:
         uses: anthropics/claude-code-action@v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          # The action denies the commands that run code from the checkout (pnpm,
+          # node, trunk) when the author of the pull request is not confirmed to
+          # have write access, and it counts every bot as such an author. That
+          # leaves the agent unable to build, test or format on the pull requests
+          # it opened itself, so the restriction is off for those only: a branch
+          # of this repository, which only those with write access can push to,
+          # opened by claude[bot]. Pull requests of other bots, such as Renovate,
+          # keep it, as their dependency updates run code from the registry.
+          # actionlint knows the inputs of the action from a list of its own, which
+          # predates this one; action.yml of v1 has it.
+          # trunk-ignore(actionlint/action)
+          restrict_untrusted_prs: ${{ needs.parse.outputs.is-agent-pr == 'true' && 'false' || 'true' }}
           # The app token gets only contents, issues and pull requests unless
           # more is requested, whatever the Claude app itself is granted.
           additional_permissions: |

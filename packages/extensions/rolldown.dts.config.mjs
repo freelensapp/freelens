@@ -32,11 +32,22 @@
 // does from 0.28.8: without that, it keeps every member of
 // `@freelensapp/utilities` in the bundle, the Node-bound ones `Common.Util`
 // leaves out included, together with their `node:` imports.
+//
+// It also fails the build on an import of `type-fest`. The helper types the
+// declaration names come from the copy of type-fest in `@freelensapp/type-fest`,
+// a private package inlined like the others, because a dependency would impose the
+// compiler options and floors of each type-fest major on every extension. An
+// import of the package from a workspace source would bring it back.
+//
+// A declaration file of the sources, such as that copy, is input of the tsc
+// program rather than output, so `dist-types/` has no copy of it. A relative
+// import an emitted declaration makes of one is resolved to the file in the
+// sources (`declarationSourceFor`).
 
-import { readFileSync } from "node:fs";
-import { isBuiltin } from "node:module";
+import { existsSync, readFileSync } from "node:fs";
+import { createRequire, isBuiltin } from "node:module";
 import path from "node:path";
-import { defineConfig } from "rolldown";
+import { defineConfig, VERSION } from "rolldown";
 import { parseAst } from "rolldown/parseAst";
 import { dts } from "rolldown-plugin-dts";
 import { enumerateWorkspaceEntries } from "./scripts/workspace-entries.mjs";
@@ -59,6 +70,31 @@ for (const [specifier, sourcePath] of enumerateWorkspaceEntries(repoRoot)) {
 const assetModule = /\.(s?css|svg|png|jpg|ttf|woff2?|eot)$|\?(raw|worker)$/;
 const emptyModuleId = "\0empty-asset-module.d.ts";
 
+/** Whether a relative specifier resolves to a file at `base`, as the dts plugin would resolve it. */
+const resolvesAt = (base) =>
+  [base, `${base}.d.ts`, path.join(base, "index.d.ts")].some((candidate) => existsSync(candidate));
+
+/**
+ * The declaration file in the sources that a relative import of an emitted
+ * declaration means, when tsc emitted no file for it because it is a
+ * declaration file of the sources itself. `undefined` when there is none.
+ */
+const declarationSourceFor = (source, importer) => {
+  if (!source.startsWith(".") || !importer?.startsWith(`${outRoot}${path.sep}`)) {
+    return undefined;
+  }
+
+  const emitted = path.resolve(path.dirname(importer), source);
+
+  if (resolvesAt(emitted)) {
+    return undefined;
+  }
+
+  const inSources = path.join(repoRoot, path.relative(outRoot, emitted));
+
+  return [`${inSources}.d.ts`, path.join(inSources, "index.d.ts")].find((candidate) => existsSync(candidate));
+};
+
 const workspaceDtsAlias = {
   name: "workspace-dts-alias",
 
@@ -68,8 +104,8 @@ const workspaceDtsAlias = {
   resolveId: {
     order: "pre",
 
-    handler(source) {
-      const aliased = workspaceAliases.get(source);
+    handler(source, importer) {
+      const aliased = workspaceAliases.get(source) ?? declarationSourceFor(source, importer);
 
       if (aliased) {
         return aliased;
@@ -206,6 +242,17 @@ const declaredExternals = {
       );
     }
 
+    const vendored = externals.filter((specifier) => packageOf(specifier) === "type-fest");
+
+    if (vendored.length > 0) {
+      this.error(
+        "the API declaration must not import type-fest, but it references:\n" +
+          vendored.map((specifier) => `  ${specifier}`).join("\n") +
+          "\nImport the type from @freelensapp/type-fest, which carries a copy of the type-fest types the API" +
+          " uses; a type it lacks is added to that copy (see the README.md of that package).",
+      );
+    }
+
     const undeclared = externals.filter((specifier) => !isDeclared(specifier));
 
     if (undeclared.length > 0) {
@@ -213,6 +260,42 @@ const declaredExternals = {
         "the declaration imports packages that package.json declares in neither dependencies nor peerDependencies," +
           " by themselves or through their @types/ package:\n" +
           undeclared.map((specifier) => `  ${specifier}`).join("\n"),
+      );
+    }
+  },
+};
+
+const readManifest = (manifestPath) => JSON.parse(readFileSync(manifestPath, "utf8"));
+
+// The catalog's rolldown follows the one that vite and electron-vite pin, so
+// the declaration and the application build with the same bundler from a
+// single copy. A rolldown that Vite does not pin can break the application
+// build without failing it; see "Rolldown Follows Vite" in AGENTS.md.
+const rolldownFollowsVite = {
+  name: "rolldown-follows-vite",
+
+  buildStart() {
+    const requireFromApp = createRequire(path.join(repoRoot, "freelens/package.json"));
+    const mismatches = [];
+
+    for (const bundler of ["vite", "electron-vite"]) {
+      const bundlerManifestPath = requireFromApp.resolve(`${bundler}/package.json`);
+      const bundlerManifest = readManifest(bundlerManifestPath);
+      const theirs = readManifest(createRequire(bundlerManifestPath).resolve("rolldown/package.json")).version;
+
+      if (theirs !== VERSION) {
+        mismatches.push(
+          `  ${bundler} ${bundlerManifest.version} pins rolldown ${bundlerManifest.dependencies.rolldown} and builds with ${theirs}`,
+        );
+      }
+    }
+
+    if (mismatches.length > 0) {
+      this.error(
+        `the declaration builds with rolldown ${VERSION}, but the application does not:\n` +
+          mismatches.join("\n") +
+          "\nKeep rolldown in the catalog of pnpm-workspace.yaml on the version that vite and electron-vite build" +
+          " with, and run pnpm dedupe; move it to a new minor only together with a vite that pins that minor.",
       );
     }
   },
@@ -228,6 +311,7 @@ export default defineConfig({
   },
   external,
   plugins: [
+    rolldownFollowsVite,
     workspaceDtsAlias,
     // No generator runs on declaration input, but the plugin still picks one
     // up front, and with TypeScript 7 installed it picks `tsgo`, which refuses

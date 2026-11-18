@@ -7,7 +7,7 @@
 @use "../vars" as *;
 
 .Drawer {
-  --spacing: #{$padding * 3};
+  --drawer-spacing: #{$padding * 3};
   --icon-focus-color: white;
 
   position: absolute;
@@ -87,6 +87,6 @@
 
   .drawer-content {
     overflow: auto;
-    padding: var(--spacing);
+    padding: var(--drawer-spacing);
   }
 }

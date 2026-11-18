@@ -45,6 +45,12 @@ export type CommonInstalledExtension = Common.InstalledExtension;
 export type CommonCluster = Common.Catalog.KubernetesCluster;
 export type CommonCatalogEntity = Common.Catalog.CatalogEntity;
 export type CommonClusterConnectionStatus = Common.Clusters.ClusterConnectionStatus;
+export type CommonExtensionCredentials = Common.ExtensionCredentials;
+// What `forExtension` returns is the exported type, so that an extension can
+// name the field it keeps the result in.
+export type CommonCredentialsForExtensionReturnsTheExportedType = Holds<
+  ReturnType<typeof Common.Credentials.forExtension> extends Common.ExtensionCredentials ? true : false
+>;
 
 // `Common.Types` contributes nothing at runtime, so these are reachable from
 // here and from nowhere else. `KubeObjectMenuItemProps` is the one the fluxcd
@@ -54,6 +60,14 @@ export type CommonStatusBarRegistration = Common.Types.StatusBarRegistration;
 export type CommonPageRegistration = Common.Types.PageRegistration;
 export type CommonAppPreferenceRegistration = Common.Types.AppPreferenceRegistration;
 export type CommonCustomResourceRegistration = Common.Types.CustomResourceRegistration;
+// The helper types the signatures of the API are written in.
+export type CommonJsonValue = Common.Types.JsonValue;
+export type CommonPartialDeep = Common.Types.PartialDeep<Renderer.K8sApi.Pod, { recurseIntoArrays: true }>;
+export type CommonReadonlyDeep = Common.Types.ReadonlyDeep<Renderer.K8sApi.Pod>;
+export type CommonRequireAtLeastOne = Common.Types.RequireAtLeastOne<{ first?: string; second?: number }>;
+export type CommonRequireExactlyOne = Common.Types.RequireExactlyOne<{ first: string; second: number }>;
+export type CommonSetRequired = Common.Types.SetRequired<{ optional?: string }, "optional">;
+export type CommonValueOf = Common.Types.ValueOf<{ first: string; second: number }>;
 
 // --- Main --------------------------------------------------------------------
 
@@ -98,6 +112,7 @@ export type RendererKubeObjectMenuProps = Renderer.Component.KubeObjectMenuProps
 export type RendererIconProps = Renderer.Component.IconProps;
 export type RendererTableOrderBy = Renderer.Component.TableOrderBy;
 export type RendererPieChartData = Renderer.Component.PieChartData;
+export type RendererSecretCertificatesProps = Renderer.Component.SecretCertificatesProps;
 
 // The custom-resource vocabulary: both published extensions declare their CRDs
 // with these four and register the result with `apiManager`.

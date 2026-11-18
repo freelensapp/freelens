@@ -7,12 +7,11 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import { observable } from "mobx";
 
-import type { KubeConfig } from "@kubernetes/client-node";
-
 import type { Cluster } from "../../../common/cluster/cluster";
+import type { KubeConfigData } from "../../../common/kube-config";
 
 export interface DeleteClusterDialogState {
-  config: KubeConfig;
+  config: KubeConfigData;
   cluster: Cluster;
   showContextSwitch: boolean;
   newCurrentContext: string;

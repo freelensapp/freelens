@@ -19,7 +19,11 @@
     radial-gradient(farthest-side at 50% 0, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0)),
     radial-gradient(farthest-side at 50% 100%, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0)) 0 100%;
   background-repeat: no-repeat;
-  background-size: 100% 40px, 100% 40px, 100% 12px, 100% 12px;
+  background-size:
+    100% 40px,
+    100% 40px,
+    100% 12px,
+    100% 12px;
   background-attachment: local, local, scroll, scroll;
 }
 

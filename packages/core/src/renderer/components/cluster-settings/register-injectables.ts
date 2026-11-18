@@ -6,17 +6,11 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import clusterIconSettingsMenuClearItem from "./cluster-settings-menu-clear-item.injectable";
 import localTerminalSettingPresenterInjectable from "./local-terminal-setting-presenter.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(clusterIconSettingsMenuClearItem);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
   try {
     di.register(localTerminalSettingPresenterInjectable);
   } catch (e) {

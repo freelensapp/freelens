@@ -358,6 +358,13 @@ export class DockStore implements DockStorageState {
     this.closeTabs(tabs);
   }
 
+  closeTabsToTheLeft(tabId: TabId) {
+    const index = this.getTabIndex(tabId);
+    const tabs = this.tabs.slice(0, Math.max(index, 0));
+
+    this.closeTabs(tabs);
+  }
+
   closeTabsToTheRight(tabId: TabId) {
     const index = this.getTabIndex(tabId);
     const tabs = this.tabs.slice(index + 1);

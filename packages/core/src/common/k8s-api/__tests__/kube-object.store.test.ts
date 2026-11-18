@@ -15,12 +15,14 @@ import type { KubeApi, KubeApiWatchOptions } from "@freelensapp/kube-api";
 import type { KubeJsonApiDataFor } from "@freelensapp/kube-object";
 
 import type { KubeObjectStoreLoadingParams, KubeObjectStoreOptions } from "../kube-object.store";
+import type { WatchReconnect } from "../watch-reconnect";
 
 class FakeKubeObjectStore extends KubeObjectStore<KubeObject> {
   constructor(
     private readonly _loadItems: (params: KubeObjectStoreLoadingParams) => KubeObject[],
     api: Partial<KubeApi<KubeObject>>,
     opts?: KubeObjectStoreOptions,
+    watchReconnect?: WatchReconnect,
   ) {
     super(
       {
@@ -38,6 +40,7 @@ class FakeKubeObjectStore extends KubeObjectStore<KubeObject> {
           silly: noop,
           warn: noop,
         },
+        watchReconnect,
       },
       api as KubeApi<KubeObject>,
       opts,
@@ -746,25 +749,32 @@ describe("KubeObjectStore", () => {
   });
 
   describe("subscribe", () => {
-    const createWatchedStore = () => {
+    const createWatchedStore = (watchReconnect?: WatchReconnect) => {
       const watchSignals: AbortSignal[] = [];
       const watchCallbacks: Array<(data: null, error: unknown) => void> = [];
+      const watchOnConnects: Array<() => void> = [];
       const watch = vi.fn((opts: KubeApiWatchOptions<KubeObject, KubeJsonApiDataFor<KubeObject>>) => {
         // Like KubeApi.watch, which wraps the controller it is given
         const controller = new WrappedAbortController(opts.abortController);
 
         watchSignals.push(controller.signal);
         watchCallbacks.push(opts.callback as (data: null, error: unknown) => void);
+        watchOnConnects.push(opts.onConnect ?? (() => {}));
 
         return () => controller.abort();
       });
-      const store = new FakeKubeObjectStore(() => [], {
-        isNamespaced: false,
-        getResourceVersion: () => "1",
-        watch,
-      });
+      const store = new FakeKubeObjectStore(
+        () => [],
+        {
+          isNamespaced: false,
+          getResourceVersion: () => "1",
+          watch,
+        },
+        undefined,
+        watchReconnect,
+      );
 
-      return { store, watch, watchSignals, watchCallbacks };
+      return { store, watch, watchSignals, watchCallbacks, watchOnConnects };
     };
 
     afterEach(() => {
@@ -842,6 +852,196 @@ describe("KubeObjectStore", () => {
       vi.advanceTimersByTime(60_000);
 
       expect(watch).toHaveBeenCalledTimes(1);
+    });
+
+    describe("with a reconnect coordinator", () => {
+      const createWatchReconnect = () => {
+        const scheduled: { reconnect: () => void; failures: number; cancel: ReturnType<typeof vi.fn> }[] = [];
+        const watchReconnect = {
+          schedule: vi.fn((reconnect: () => void, failures: number) => {
+            const cancel = vi.fn();
+
+            scheduled.push({ reconnect, failures, cancel });
+
+            return cancel;
+          }),
+          connected: vi.fn(),
+          isClusterUnreachable: false,
+        };
+
+        return { watchReconnect, scheduled };
+      };
+
+      it("leaves the restart of a failed watch to the coordinator, counting the failures in a row", async () => {
+        const { watchReconnect, scheduled } = createWatchReconnect();
+        const { store, watch, watchCallbacks } = createWatchedStore(watchReconnect);
+
+        await store.loadAll({});
+        vi.useFakeTimers();
+        store.subscribe();
+
+        watchCallbacks[0](null, new Error("connection refused"));
+        vi.advanceTimersByTime(60_000);
+        expect(watch).toHaveBeenCalledTimes(1);
+        expect(scheduled.map(({ failures }) => failures)).toEqual([1]);
+
+        scheduled[0].reconnect();
+        expect(watch).toHaveBeenCalledTimes(2);
+
+        watchCallbacks[1](null, new Response(null, { status: 500 }));
+        expect(scheduled.map(({ failures }) => failures)).toEqual([1, 2]);
+      });
+
+      it("tells the coordinator of a connected watch and counts its failures from one again", async () => {
+        const { watchReconnect, scheduled } = createWatchReconnect();
+        const { store, watchCallbacks, watchOnConnects } = createWatchedStore(watchReconnect);
+
+        await store.loadAll({});
+        store.subscribe();
+
+        watchCallbacks[0](null, new Error("connection refused"));
+        scheduled[0].reconnect();
+        watchOnConnects[1]();
+        expect(watchReconnect.connected).toHaveBeenCalledTimes(1);
+
+        watchCallbacks[1](null, new Error("connection reset"));
+        expect(scheduled.map(({ failures }) => failures)).toEqual([1, 1]);
+      });
+
+      it("cancels the waiting restart when the subscription is disposed", async () => {
+        const { watchReconnect, scheduled } = createWatchReconnect();
+        const { store, watchCallbacks } = createWatchedStore(watchReconnect);
+
+        await store.loadAll({});
+
+        const unsubscribe = store.subscribe();
+
+        watchCallbacks[0](null, new Error("connection refused"));
+        unsubscribe();
+
+        expect(scheduled[0].cancel).toHaveBeenCalled();
+      });
+
+      it("still stops for a 404", async () => {
+        const { watchReconnect } = createWatchReconnect();
+        const { store, watchCallbacks } = createWatchedStore(watchReconnect);
+
+        await store.loadAll({});
+        store.subscribe();
+
+        watchCallbacks[0](null, new Response(null, { status: 404 }));
+
+        expect(watchReconnect.schedule).not.toHaveBeenCalled();
+      });
+    });
+  });
+
+  describe("namespace filtering", () => {
+    const createObject = (name: string, namespace?: string) =>
+      new KubeObject({
+        apiVersion: "v1",
+        kind: "Foo",
+        metadata: {
+          name,
+          resourceVersion: "1",
+          uid: `${namespace}-${name}`,
+          namespace,
+          selfLink: `/some/${namespace}/${name}`,
+        },
+      });
+
+    const inA = createObject("in-a", "a");
+    const inB = createObject("in-b", "b");
+    const clusterWide = createObject("cluster-wide");
+    const inC = createObject("in-c", "c");
+
+    const createStore = (contextNamespaces: string[]) => {
+      const store = new KubeObjectStore<KubeObject>(
+        {
+          context: {
+            allNamespaces: ["a", "b", "c"],
+            contextNamespaces,
+            hasSelectedAll: false,
+            isGlobalWatchEnabled: () => true,
+            isLoadingAll: () => false,
+          },
+          logger: { debug: noop, error: noop, info: noop, silly: noop, warn: noop },
+        },
+        {} as KubeApi<KubeObject>,
+      );
+
+      store.items.replace([inA, inB, clusterWide, inC]);
+
+      return store;
+    };
+
+    it("keeps the objects of the context namespaces and the cluster-wide ones in store order", () => {
+      expect(createStore(["c", "a"]).contextItems).toEqual([inA, clusterWide, inC]);
+      expect(createStore([]).contextItems).toEqual([clusterWide]);
+    });
+
+    it("returns the objects of the given namespaces in store order, without the cluster-wide ones", () => {
+      const store = createStore([]);
+
+      expect(store.getAllByNs(["c", "a"])).toEqual([inA, inC]);
+      expect(store.getAllByNs("b")).toEqual([inB]);
+      expect(store.getAllByNs("none")).toEqual([]);
+    });
+
+    it("returns every object for no namespaces unless strict", () => {
+      const store = createStore([]);
+
+      expect(store.getAllByNs([])).toEqual([inA, inB, clusterWide, inC]);
+      expect(store.getAllByNs([], true)).toEqual([]);
+    });
+  });
+
+  describe("lookups by id and path", () => {
+    const createObject = (name: string, uid: string, selfLink: string) =>
+      new KubeObject({
+        apiVersion: "v1",
+        kind: "Foo",
+        metadata: { name, resourceVersion: "1", uid, namespace: "default", selfLink },
+      });
+
+    const first = createObject("first", "uid-1", "/path/1");
+    const second = createObject("second", "uid-2", "/path/2");
+    const sameAsFirst = createObject("same-as-first", "uid-1", "/path/1");
+
+    const createStore = () => {
+      const store = new FakeKubeObjectStore(() => [], {});
+
+      store.items.replace([first, second, sameAsFirst]);
+
+      return store;
+    };
+
+    it("returns the first object of an id or a path, as a find over the items does", () => {
+      const store = createStore();
+
+      expect(store.getById("uid-1")).toBe(first);
+      expect(store.getById("uid-2")).toBe(second);
+      expect(store.getById("none")).toBeUndefined();
+      expect(store.getByPath("/path/1")).toBe(first);
+      expect(store.getByPath("/path/2")).toBe(second);
+      expect(store.getByPath("/none")).toBeUndefined();
+    });
+
+    it("follows added, replaced and removed objects", () => {
+      const store = createStore();
+      const third = createObject("third", "uid-3", "/path/3");
+      const newSecond = createObject("second", "uid-2", "/path/2");
+
+      expect(store.getById("uid-3")).toBeUndefined();
+
+      store.items.push(third);
+      store.items[1] = newSecond;
+      store.items.remove(first);
+
+      expect(store.getById("uid-3")).toBe(third);
+      expect(store.getByPath("/path/2")).toBe(newSecond);
+      expect(store.getById("uid-1")).toBe(sameAsFirst);
+      expect(store.getByPath("/path/1")).toBe(sameAsFirst);
     });
   });
 });

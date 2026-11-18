@@ -13,6 +13,7 @@ import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
 import { kubeObjectStoreInjectionToken } from "../../../common/k8s-api/api-manager/kube-object-store-token";
 import clusterFrameContextForClusterScopedResourcesInjectable from "../../cluster-frame-context/for-cluster-scoped-resources.injectable";
+import watchReconnectInjectable from "../../k8s/watch-reconnect/watch-reconnect.injectable";
 import { PodSecurityPolicyStore } from "./store";
 
 const podSecurityPolicyStoreInjectable = getInjectable({
@@ -28,6 +29,7 @@ const podSecurityPolicyStoreInjectable = getInjectable({
     return new PodSecurityPolicyStore(
       {
         context: di.inject(clusterFrameContextForClusterScopedResourcesInjectable),
+        watchReconnect: di.inject(watchReconnectInjectable),
         logger: di.inject(loggerInjectionToken),
       },
       api,

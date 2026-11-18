@@ -46,9 +46,14 @@ own container.
 only an extension that names it needs it installed.
 
 Everything else this package depends on — `chart.js`, `react-select`, `conf`,
-`immer`, `rfc6902`, `type-fest` — is free to bundle. `react-select` requires
+`immer`, `rfc6902` — is free to bundle. `react-select` requires
 `react` and `react-dom` as peers, so a React is installed in your tree even if
 you import none; mark the host-provided modules external all the same.
+
+The package does not depend on `type-fest`: the helper types its signatures
+use, such as `PartialDeep` for a patch, are exported in `Common.Types`. An
+extension that imports `type-fest` itself declares it in its own
+`devDependencies`.
 
 ## Documentation
 
@@ -59,18 +64,17 @@ you import none; mark the host-provided modules external all the same.
   the reference template for building, type-checking, testing and releasing an
   extension
 
-The template also ships two agent skills, in the
-[Agent Skills](https://agentskills.io/specification) format that coding agents
-read:
+The skills for coding agents are the `freelens` plugin of
+[Claude Code](https://code.claude.com/docs/en/plugins) in the Freelens
+repository, in the [Agent Skills](https://agentskills.io/specification) format
+that other agents read too:
 
-- [`create-freelens-extension`](https://github.com/freelensapp/freelens-example-extension/blob/main/skills/create-freelens-extension/SKILL.md)
+- [`create-extension`](https://github.com/freelensapp/freelens/blob/main/plugins/freelens/skills/create-extension/SKILL.md)
   starts a new extension from a copy of the template.
-- [`port-freelens-extension-to-v2`](https://github.com/freelensapp/freelens-example-extension/blob/main/skills/port-freelens-extension-to-v2/SKILL.md)
+- [`port-extension-to-v2`](https://github.com/freelensapp/freelens/blob/main/plugins/freelens/skills/port-extension-to-v2/SKILL.md)
   ports a v1 extension to this API.
 
-Install them into the extension's repository, both or one by name:
-
 ```sh
-npx skills add freelensapp/freelens-example-extension
-npx skills add freelensapp/freelens-example-extension --skill port-freelens-extension-to-v2
+claude plugin marketplace add freelensapp/freelens --sparse .claude-plugin plugins
+claude plugin install freelens@freelens
 ```
