@@ -407,7 +407,7 @@ exports[`opening dock tab for installing helm chart > given application is start
               aria-live="assertive"
               id="DndLiveRegion-0"
               role="status"
-              style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+              style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px 0px 0px 0px); clip-path: inset(100%); white-space: nowrap;"
             />
           </div>
         </div>
@@ -1105,7 +1105,7 @@ exports[`opening dock tab for installing helm chart > given application is start
               aria-live="assertive"
               id="DndLiveRegion-2"
               role="status"
-              style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+              style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px 0px 0px 0px); clip-path: inset(100%); white-space: nowrap;"
             />
           </div>
         </div>
@@ -1971,7 +1971,7 @@ exports[`opening dock tab for installing helm chart > given application is start
               aria-live="assertive"
               id="DndLiveRegion-3"
               role="status"
-              style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+              style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px 0px 0px 0px); clip-path: inset(100%); white-space: nowrap;"
             />
           </div>
         </div>
@@ -2894,7 +2894,7 @@ exports[`opening dock tab for installing helm chart > given application is start
               aria-live="assertive"
               id="DndLiveRegion-8"
               role="status"
-              style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+              style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px 0px 0px 0px); clip-path: inset(100%); white-space: nowrap;"
             />
           </div>
         </div>
@@ -3966,7 +3966,7 @@ exports[`opening dock tab for installing helm chart > given application is start
               aria-live="assertive"
               id="DndLiveRegion-11"
               role="status"
-              style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+              style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px 0px 0px 0px); clip-path: inset(100%); white-space: nowrap;"
             />
           </div>
         </div>
@@ -5048,7 +5048,7 @@ exports[`opening dock tab for installing helm chart > given application is start
               aria-live="assertive"
               id="DndLiveRegion-13"
               role="status"
-              style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+              style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px 0px 0px 0px); clip-path: inset(100%); white-space: nowrap;"
             />
           </div>
         </div>
@@ -6120,7 +6120,7 @@ exports[`opening dock tab for installing helm chart > given application is start
               aria-live="assertive"
               id="DndLiveRegion-18"
               role="status"
-              style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+              style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px 0px 0px 0px); clip-path: inset(100%); white-space: nowrap;"
             />
           </div>
         </div>
@@ -7196,7 +7196,7 @@ exports[`opening dock tab for installing helm chart > given application is start
               aria-live="assertive"
               id="DndLiveRegion-16"
               role="status"
-              style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+              style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px 0px 0px 0px); clip-path: inset(100%); white-space: nowrap;"
             />
           </div>
         </div>
@@ -8278,7 +8278,7 @@ exports[`opening dock tab for installing helm chart > given application is start
               aria-live="assertive"
               id="DndLiveRegion-19"
               role="status"
-              style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+              style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px 0px 0px 0px); clip-path: inset(100%); white-space: nowrap;"
             />
           </div>
         </div>

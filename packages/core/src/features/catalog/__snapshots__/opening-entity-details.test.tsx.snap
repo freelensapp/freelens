@@ -375,7 +375,7 @@ exports[`opening catalog entity details panel > renders 1`] = `
             aria-live="assertive"
             id="DndLiveRegion-0"
             role="status"
-            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px 0px 0px 0px); clip-path: inset(100%); white-space: nowrap;"
           />
         </div>
         <div
@@ -1373,7 +1373,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
             aria-live="assertive"
             id="DndLiveRegion-2"
             role="status"
-            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px 0px 0px 0px); clip-path: inset(100%); white-space: nowrap;"
           />
         </div>
         <div
@@ -2371,7 +2371,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
             aria-live="assertive"
             id="DndLiveRegion-5"
             role="status"
-            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px 0px 0px 0px); clip-path: inset(100%); white-space: nowrap;"
           />
         </div>
         <div
@@ -3401,7 +3401,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
             aria-live="assertive"
             id="DndLiveRegion-8"
             role="status"
-            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px 0px 0px 0px); clip-path: inset(100%); white-space: nowrap;"
           />
         </div>
         <div
@@ -4683,7 +4683,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
             aria-live="assertive"
             id="DndLiveRegion-9"
             role="status"
-            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px 0px 0px 0px); clip-path: inset(100%); white-space: nowrap;"
           />
         </div>
         <div
@@ -5933,7 +5933,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
             aria-live="assertive"
             id="DndLiveRegion-12"
             role="status"
-            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px 0px 0px 0px); clip-path: inset(100%); white-space: nowrap;"
           />
         </div>
         <div
@@ -6951,7 +6951,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
             aria-live="assertive"
             id="DndLiveRegion-15"
             role="status"
-            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px 0px 0px 0px); clip-path: inset(100%); white-space: nowrap;"
           />
         </div>
         <div
@@ -8140,7 +8140,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
             aria-live="assertive"
             id="DndLiveRegion-16"
             role="status"
-            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px 0px 0px 0px); clip-path: inset(100%); white-space: nowrap;"
           />
         </div>
         <div
@@ -8765,7 +8765,7 @@ exports[`opening catalog entity details panel > when not navigated to the catalo
             aria-live="assertive"
             id="DndLiveRegion-20"
             role="status"
-            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px 0px 0px 0px); clip-path: inset(100%); white-space: nowrap;"
           />
         </div>
         <div
