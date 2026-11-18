@@ -3,10 +3,24 @@ name: Automated npm version
 on:
   workflow_dispatch:
     inputs:
-      newversion:
-        description: New version (X.Y.Z | major | minor | patch | premajor | preminor | prepatch | prerelease)
-        required: true
+      bump:
+        description: The bump of pnpm version. prerelease is the next pre-release, as 2.1.0-1 after 2.1.0-0; prepatch,
+          preminor and premajor the first pre-release of the next version, as 2.1.1-0; patch, minor and major a
+          release, as 2.1.0 after 2.1.0-0; manual takes the version below
+        type: choice
+        options:
+          - prerelease
+          - prepatch
+          - preminor
+          - premajor
+          - patch
+          - minor
+          - major
+          - manual
         default: prerelease
+      version:
+        description: The version of the bump manual, as "2.1.0"
+        required: false
   release:
     types:
       - released
@@ -78,12 +92,24 @@ jobs:
       - name: Set version
         run: |
           set -eo pipefail
+          if [[ $BUMP == manual ]]; then
+            if [[ -z $VERSION ]]; then
+              echo "::error::The bump manual needs a version" >&2
+              exit 1
+            fi
+            newversion=$VERSION
+          else
+            newversion=$BUMP
+          fi
+          echo "newversion=$newversion" >> "$GITHUB_ENV"
           pnpm bump-version "$newversion" | tee .github/update.log
           yq -pj -oy -r .version freelens/package.json > .github/version.log
           sed -e 's/\x1b\[[0-9;]*m//g' .github/update.log > .github/pr_body.log
           sed -i 's/<release version="[^"]*" date="[^"]*">/<release version="'"$(cat .github/version.log)"'" date="'$(LC_ALL=C date +%Y-%m-%d)'">/' freelens/build/metainfo.xml
         env:
-          newversion: ${{ github.event.inputs.newversion || 'prerelease' }}
+          # A release runs it without inputs.
+          BUMP: ${{ inputs.bump || 'prerelease' }}
+          VERSION: ${{ inputs.version }}
 
       - name: Update pnpm dependencies
         id: update-pnpm
@@ -108,7 +134,7 @@ jobs:
         with:
           github_token: ${{ secrets.GH_TOKEN }}
           default_author: github_actions
-          message: Automated npm version ${{ github.event.inputs.newversion || 'prerelease' }}
+          message: Automated npm version ${{ env.newversion }}
           new_branch: automated/npm-version
           fetch: false
           push: origin automated/npm-version --set-upstream --force
