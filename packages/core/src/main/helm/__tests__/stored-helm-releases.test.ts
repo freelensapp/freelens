@@ -8,7 +8,9 @@ import { loggerInjectionToken } from "@freelensapp/logger";
 import { describe, expect, it, vi } from "vitest";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import k8sRequestInjectable from "../../k8s-request.injectable";
-import { coalesceValues } from "../helm-service/get-helm-release-values.injectable";
+import getClusterHelmReleaseValuesInjectable, {
+  coalesceValues,
+} from "../helm-service/get-helm-release-values.injectable";
 import requestStoredHelmReleasesInjectable from "../request-stored-helm-releases.injectable";
 
 const helmEncode = (release: object, gzip = true) => {
@@ -163,5 +165,29 @@ describe("reading helm releases from their secrets and configmaps", () => {
       list: [1],
       extra: true,
     });
+  });
+
+  it("prints the values as helm get values -o yaml does: sorted keys, no folded lines", async () => {
+    const di = getDiForUnitTesting();
+    const long = "a value long enough to be folded".repeat(4);
+
+    di.override(requestStoredHelmReleasesInjectable, () => async () => [
+      {
+        name: "a",
+        namespace: "ns",
+        version: 1,
+        info: {} as never,
+        manifest: "",
+        config: { zeta: 1, alpha: { beta: long, aleph: true } },
+        chart: { metadata: { name: "c", version: "1.0.0" }, values: {} },
+      },
+    ]);
+
+    const values = await di.inject(getClusterHelmReleaseValuesInjectable)({ id: "some-cluster" } as never, {
+      name: "a",
+      namespace: "ns",
+    });
+
+    expect(values).toBe(`alpha:\n  aleph: true\n  beta: ${long}\nzeta: 1\n`);
   });
 });

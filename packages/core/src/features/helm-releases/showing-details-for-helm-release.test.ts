@@ -684,6 +684,24 @@ describe("showing details for helm release", () => {
           });
         });
       });
+
+      describe("when releases resolve but there is none, and the list reloads", () => {
+        beforeEach(async () => {
+          await listClusterHelmReleasesMock.resolve({ callWasSuccessful: true, response: [] });
+          await listClusterHelmReleasesMock.resolve({ callWasSuccessful: true, response: [] });
+
+          builder.namespaces.select("some-third-namespace");
+        });
+
+        it("asks for the releases again, now of all the namespaces", () => {
+          expect(listClusterHelmReleasesMock).toBeCalledTimes(3);
+          expect(listClusterHelmReleasesMock.mock.calls[2][1]).toBeUndefined();
+        });
+
+        it("does not show the spinner again", () => {
+          expect(rendered.queryByTestId("helm-releases-spinner")).not.toBeInTheDocument();
+        });
+      });
     });
   });
 });
