@@ -5,7 +5,7 @@
  */
 
 import { loggerInjectionToken } from "@freelensapp/logger";
-import { isRequestError, object } from "@freelensapp/utilities";
+import { isDefined, isRequestError, object } from "@freelensapp/utilities";
 import { isObject } from "es-toolkit/compat";
 import { runInAction } from "mobx";
 import { ClusterMetadataKey, initialFilesystemMountpoints } from "../../../common/cluster-types";
@@ -18,6 +18,19 @@ import { getRouteInjectable } from "../../router/router.injectable";
 import type { Cluster } from "../../../common/cluster/cluster";
 import type { ClusterPrometheusMetadata } from "../../../common/cluster-types";
 import type { GetMetrics } from "../../get-metrics.injectable";
+
+/**
+ * The answer for a query the provider has no metric for: what Prometheus returns for a query without series, so
+ * the views show it the same way.
+ */
+const emptyMetricResult = () => ({ status: "success", data: { resultType: "matrix", result: [] } });
+
+/**
+ * The parameters of a range query that the route passes on to Prometheus. A client can send others, as the renderer
+ * sends `kubernetes_namespace`, which nothing reads: Prometheus ignores an unknown parameter, but the API of Google
+ * Cloud Managed Service for Prometheus rejects the whole query with 400 INVALID_ARGUMENT.
+ */
+const rangeQueryParams = ["start", "end", "step"] as const;
 
 // This is used for backoff retry tracking.
 const ATTEMPTS = [false, false, false, false, true];
@@ -121,13 +134,23 @@ const addMetricsRouteInjectable = getRouteInjectable({
       method: "post",
       path: `${apiPrefix}/metrics`,
     })(async ({ cluster, payload, query }) => {
-      const queryParams: Partial<Record<string, string>> = Object.fromEntries(query.entries());
+      const queryParams: Partial<Record<string, string>> = Object.fromEntries(
+        rangeQueryParams.flatMap((name) => {
+          const value = query.get(name);
+
+          return value === null ? [] : [[name, value]];
+        }),
+      );
       const prometheusMetadata: ClusterPrometheusMetadata = {};
       const prometheusHandler = di.inject(prometheusHandlerInjectable, cluster);
       const mountpoints = cluster.preferences.filesystemMountpoints || initialFilesystemMountpoints;
 
       try {
-        const { prometheusPath, provider } = await prometheusHandler.getPrometheusDetails();
+        const {
+          prometheusPath,
+          provider,
+          queryOpts: serviceQueryOpts,
+        } = await prometheusHandler.getPrometheusDetails();
 
         prometheusMetadata.provider = provider?.kind;
         prometheusMetadata.autoDetected = !cluster.preferences.prometheusProvider?.type;
@@ -155,10 +178,21 @@ const addMetricsRouteInjectable = getRouteInjectable({
           const data = payload as Record<string, Record<string, string>>;
           const queries = object
             .entries(data)
-            .map(([queryName, queryOpts]) => provider.getQuery({ ...queryOpts, mountpoints }, queryName));
+            .map(([queryName, queryOpts]) =>
+              provider.getQuery({ ...queryOpts, mountpoints, ...serviceQueryOpts }, queryName),
+            );
+          const supportedQueries = queries.filter(isDefined);
 
-          const result = await loadMetrics(queries, cluster, prometheusPath, queryParams);
-          const response = object.fromEntries(object.keys(data).map((metricName, i) => [metricName, result[i]]));
+          const result = await loadMetrics(supportedQueries, cluster, prometheusPath, queryParams);
+          const results = new Map(supportedQueries.map((query, i) => [query, result[i]]));
+          const response = object.fromEntries(
+            object
+              .keys(data)
+              .map((metricName, i) => [
+                metricName,
+                queries[i] === undefined ? emptyMetricResult() : results.get(queries[i]),
+              ]),
+          );
 
           prometheusMetadata.success = true;
 

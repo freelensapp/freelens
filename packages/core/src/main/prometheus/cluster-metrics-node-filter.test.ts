@@ -40,6 +40,17 @@ const nodeLabelsByProviderKind: Record<string, string[]> = {
   stacklight: ["node", "instance"],
 };
 
+// The four providers have a query for every name of the cluster category.
+const queryOf = (provider: PrometheusProvider, opts: Record<string, string>, metricName: string): string => {
+  const query = provider.getQuery(opts, metricName);
+
+  if (query === undefined) {
+    throw new Error(`${provider.kind} has no query for ${metricName}`);
+  }
+
+  return query;
+};
+
 describe("cluster metrics node filter in the prometheus providers", () => {
   let providers: PrometheusProvider[];
 
@@ -70,7 +81,7 @@ describe("cluster metrics node filter in the prometheus providers", () => {
 
     it.each(clusterMetricNames)("filters %s by the node names", (metricName) => {
       for (const provider of providers) {
-        const query = provider.getQuery(opts, metricName);
+        const query = queryOf(provider, opts, metricName);
 
         expect(query, `${provider.kind}: ${query}`).toContain(`=~"worker-1|worker-2"`);
         expect(query, `${provider.kind}: ${query}`).not.toContain(`=~""`);
@@ -79,7 +90,7 @@ describe("cluster metrics node filter in the prometheus providers", () => {
 
     it.each(clusterMetricNames)("filters %s by a node label of the provider", (metricName) => {
       for (const provider of providers) {
-        const query = provider.getQuery(opts, metricName);
+        const query = queryOf(provider, opts, metricName);
         const labels = nodeLabelsByProviderKind[provider.kind];
 
         expect(
@@ -93,7 +104,7 @@ describe("cluster metrics node filter in the prometheus providers", () => {
       "joins the node-exporter series of %s with kube_pod_info in the operator provider",
       (metricName) => {
         const operator = providers.find((provider) => provider.kind === "operator")!;
-        const query = operator.getQuery(opts, metricName);
+        const query = queryOf(operator, opts, metricName);
 
         expect(query).toContain(
           `* on (pod,namespace) group_left(node) max without(pod_ip,host_ip) (kube_pod_info{node=~"worker-1|worker-2"})`,
@@ -114,7 +125,7 @@ describe("cluster metrics node filter in the prometheus providers", () => {
 
     it.each(clusterMetricNames)("does not filter %s by node at all", (metricName) => {
       for (const provider of providers) {
-        const query = provider.getQuery(opts, metricName);
+        const query = queryOf(provider, opts, metricName);
 
         expect(query, `${provider.kind}: ${query}`).not.toMatch(/(node|kubernetes_node|instance)=~/);
         expect(query, `${provider.kind}: ${query}`).not.toContain("undefined");
@@ -124,7 +135,7 @@ describe("cluster metrics node filter in the prometheus providers", () => {
 
     it.each(clusterMetricNames)("produces a query with balanced braces for %s", (metricName) => {
       for (const provider of providers) {
-        const query = provider.getQuery(opts, metricName);
+        const query = queryOf(provider, opts, metricName);
         const opening = query.split("{").length - 1;
         const closing = query.split("}").length - 1;
 

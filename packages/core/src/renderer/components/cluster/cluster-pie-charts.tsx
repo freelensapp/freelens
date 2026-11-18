@@ -181,6 +181,22 @@ const renderCharts = (defaultColor: string, lastPoints: Partial<Record<keyof Clu
   );
 };
 
+const sumPods = (nodes: Node[], field: "capacity" | "allocatable") =>
+  nodes.reduce((total, node) => total + (Number(node.status?.[field]?.pods) || 0), 0);
+
+/**
+ * Fills the pod capacity that the provider has no metric for, as the one for GKE system metrics, from the status of
+ * the nodes the metrics are for: without it, the charts of CPU and memory would not show either.
+ */
+const withPodCapacityOfNodes = (
+  lastPoints: Partial<Record<keyof ClusterMetricData, number>>,
+  nodes: Node[],
+): Partial<Record<keyof ClusterMetricData, number>> => ({
+  ...lastPoints,
+  podCapacity: lastPoints.podCapacity ?? sumPods(nodes, "capacity"),
+  podAllocatableCapacity: lastPoints.podAllocatableCapacity ?? sumPods(nodes, "allocatable"),
+});
+
 const renderContent = (
   defaultColor: string,
   overviewStyle: OverviewStylePreference,
@@ -204,7 +220,7 @@ const renderContent = (
     );
   }
 
-  const lastPoints = getMetricLastPoints(metrics);
+  const lastPoints = withPodCapacityOfNodes(getMetricLastPoints(metrics), nodes);
   const { memoryCapacity, cpuCapacity, podCapacity } = lastPoints;
 
   if (!memoryCapacity || !cpuCapacity || !podCapacity) {

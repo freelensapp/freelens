@@ -17,14 +17,32 @@ export interface PrometheusServiceInfo {
   namespace: string;
   service: string;
   port: number;
+  /**
+   * Options that the provider found with the service and that are added to the options of every query sent to it,
+   * such as the name of the cluster to filter on when a metrics backend holds the series of several clusters.
+   */
+  queryOpts?: Record<string, string>;
 }
+
+/**
+ * Builds the PromQL of a query from its options.
+ *
+ * Returns `undefined` for a query the provider knows but has no metric for: the query is not sent, and its result
+ * is empty, the same as a query whose series do not exist. A name the provider does not know throws.
+ */
+export type GetPrometheusQuery = (opts: Record<string, string>, queryName: string) => string | undefined;
 
 export interface PrometheusProvider {
   readonly kind: string;
   readonly name: string;
   readonly isConfigurable: boolean;
+  /**
+   * A fallback provider is tried by Auto Detect only after every other provider, so that it is chosen only when no
+   * other provider found a service.
+   */
+  readonly isFallback?: boolean;
 
-  getQuery(opts: Record<string, string>, queryName: string): string;
+  getQuery: GetPrometheusQuery;
   getPrometheusService(client: CoreV1Api): Promise<PrometheusService>;
 }
 
@@ -32,8 +50,9 @@ export interface CreatePrometheusProviderOpts {
   readonly kind: string;
   readonly name: string;
   readonly isConfigurable: boolean;
+  readonly isFallback?: boolean;
 
-  getQuery(opts: Record<string, string>, queryName: string): string;
+  getQuery: GetPrometheusQuery;
   getService(client: CoreV1Api): Promise<PrometheusServiceInfo>;
 }
 

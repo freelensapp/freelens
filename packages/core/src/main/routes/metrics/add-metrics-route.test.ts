@@ -58,7 +58,7 @@ describe("the metrics route", () => {
   let logger: Logger;
   let cluster: Cluster;
   let getPrometheusDetails: ClusterPrometheusHandler["getPrometheusDetails"];
-  let getMetrics: () => Promise<unknown>;
+  let getMetrics: (...args: unknown[]) => Promise<unknown>;
 
   const request = () =>
     di.inject(addMetricsRouteInjectable).handler({ cluster, payload: "up", query: new URLSearchParams() } as never);
@@ -74,7 +74,12 @@ describe("the metrics route", () => {
       setupPrometheus: () => {},
       getPrometheusDetails: () => getPrometheusDetails(),
     }));
-    di.override(getMetricsInjectable, () => () => getMetrics());
+    di.override(
+      getMetricsInjectable,
+      () =>
+        (...args) =>
+          getMetrics(...args),
+    );
 
     cluster = new Cluster({ contextName: "some-context", id: "some-cluster-id", kubeConfigPath: "/some/kubeconfig" });
   });
@@ -105,6 +110,76 @@ describe("the metrics route", () => {
       query: "up",
       status: 422,
       response: rejected,
+    });
+  });
+
+  it("passes on to Prometheus only the parameters of a range query", async () => {
+    const sentParams: unknown[] = [];
+
+    getMetrics = async (...args: unknown[]) => {
+      sentParams.push(args[2]);
+
+      return {};
+    };
+
+    await di.inject(addMetricsRouteInjectable).handler({
+      cluster,
+      payload: "up",
+      query: new URLSearchParams({ start: "100", end: "200", step: "60", kubernetes_namespace: "default" }),
+    } as never);
+
+    expect(sentParams).toEqual([{ query: "up", start: "100", end: "200", step: "60" }]);
+  });
+
+  describe("given a provider that has no query for some names", () => {
+    let sentQueries: string[];
+
+    beforeEach(() => {
+      sentQueries = [];
+
+      const partialProvider = {
+        ...provider,
+        getQuery: (opts: Record<string, string>, queryName: string) =>
+          queryName === "unsupported" ? undefined : `${queryName}{cluster="${opts.clusterName ?? ""}"}`,
+      } as PrometheusProvider;
+
+      getPrometheusDetails = async () => ({
+        prometheusPath: "gmp-public/services/frontend:9090",
+        provider: partialProvider,
+        queryOpts: { clusterName: "prod" },
+      });
+      getMetrics = async (...args: unknown[]) => {
+        const { query } = args[2] as { query: string };
+
+        sentQueries.push(query);
+
+        return { status: "success", data: { resultType: "matrix", result: [{ metric: {}, values: [[1, query]] }] } };
+      };
+    });
+
+    const requestNamed = () =>
+      di.inject(addMetricsRouteInjectable).handler({
+        cluster,
+        payload: { cpuUsage: { category: "cluster" }, unsupported: { category: "cluster" } },
+        query: new URLSearchParams(),
+      } as never);
+
+    it("sends only the queries the provider has, with the options of the service", async () => {
+      await requestNamed();
+
+      expect(sentQueries).toEqual(['cpuUsage{cluster="prod"}']);
+    });
+
+    it("answers the other names with an empty result", async () => {
+      const { response } = (await requestNamed()) as { response: Record<string, unknown> };
+
+      expect(response).toEqual({
+        cpuUsage: {
+          status: "success",
+          data: { resultType: "matrix", result: [{ metric: {}, values: [[1, 'cpuUsage{cluster="prod"}']] }] },
+        },
+        unsupported: { status: "success", data: { resultType: "matrix", result: [] } },
+      });
     });
   });
 
