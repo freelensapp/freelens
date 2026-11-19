@@ -18,6 +18,7 @@ import { observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import { SecretCertificates } from "../../../features/secret-certificates/renderer/secret-certificates";
+import { CopyToClipboardIcon } from "../copy-to-clipboard/copy-to-clipboard-icon";
 import { DrawerItem, DrawerTitle } from "../drawer";
 import { Input } from "../input";
 import secretStoreInjectable from "./store.injectable";
@@ -91,6 +92,21 @@ class NonInjectedSecretDetails extends React.Component<SecretDetailsProps & Depe
     this.data[name] = encoded ? value : base64.encode(value);
   };
 
+  /**
+   * The value to copy: the decoded one, whether or not it is shown, since the
+   * base64 form is rarely what anyone wants to paste, or the value as it is
+   * stored when it cannot be decoded.
+   */
+  getValueToCopy = (name: string) => {
+    const value = this.data[name] ?? "";
+
+    try {
+      return base64.decode(value);
+    } catch {
+      return value;
+    }
+  };
+
   renderSecret = ([name, value]: [string, string | undefined]) => {
     let decodedVal: string | undefined;
 
@@ -128,6 +144,7 @@ class NonInjectedSecretDetails extends React.Component<SecretDetailsProps & Depe
               onClick={() => toggle(this.revealSecret, name)}
             />
           )}
+          <CopyToClipboardIcon getText={() => this.getValueToCopy(name)} data-testid={`${name}-secret-copy`} />
         </div>
       </div>
     );
