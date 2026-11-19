@@ -3,12 +3,13 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import "./color-swatch.scss";
+
 import { TooltipPosition, withTooltip } from "@freelensapp/tooltip";
 import { cssNames } from "@freelensapp/utilities";
 import { useEffect, useRef, useState } from "react";
 import { HexColorInput, HexColorPicker } from "react-colorful";
 import { getTextColorOnAccent } from "../../themes/accent-colors";
-import styles from "./color-swatch.module.scss";
 
 import type { StrictReactNode } from "@freelensapp/utilities";
 
@@ -20,16 +21,24 @@ export interface ColorSwatchProps extends Omit<ButtonHTMLAttributes<HTMLButtonEl
    * choice that is not a color.
    */
   color?: string;
+  /**
+   * Whether the swatch is the chosen one, which its border and `aria-pressed` show.
+   */
   selected: boolean;
+  /**
+   * Shown above or below the swatch while the pointer is over it.
+   */
+  tooltip?: string;
   children?: StrictReactNode;
 }
 
 const SwatchButton = withTooltip(
-  ({ color, selected, className, style, children, ...buttonProps }: ColorSwatchProps) => (
+  ({ color, selected, className, style, children, ...buttonProps }: Omit<ColorSwatchProps, "tooltip">) => (
     <button
       type="button"
       aria-pressed={selected}
-      className={cssNames(styles.swatch, className, { [styles.textSwatch]: !color, [styles.selected]: selected })}
+      data-text={color ? undefined : true}
+      className={cssNames("ColorSwatch", className)}
       style={color ? { ...style, background: color } : style}
       {...buttonProps}
     >
@@ -41,15 +50,30 @@ const SwatchButton = withTooltip(
 // Above or below the swatch, as a tooltip beside it covers the swatches next to it.
 const tooltipPositions = [TooltipPosition.TOP, TooltipPosition.BOTTOM];
 
-export const ColorSwatch = ({ tooltip, ...props }: ColorSwatchProps & { tooltip?: string }) => (
+/**
+ * A button that shows a color, or a text for a choice that is not a color, among the others of a
+ * `ColorSwatchGroup`.
+ */
+export const ColorSwatch = ({ tooltip, ...props }: ColorSwatchProps) => (
   <SwatchButton
     {...props}
     tooltip={tooltip ? { children: tooltip, preferredPositions: tooltipPositions } : undefined}
   />
 );
 
-export const ColorSwatchGroup = ({ label, children }: { label: string; children: StrictReactNode }) => (
-  <div className="flex flex-wrap items-center gap-2" role="group" aria-label={label}>
+export interface ColorSwatchGroupProps {
+  /**
+   * The accessible name of the group, such as what the color is for.
+   */
+  label: string;
+  children: StrictReactNode;
+}
+
+/**
+ * Lays out swatches in a row that wraps, as one group named by its label.
+ */
+export const ColorSwatchGroup = ({ label, children }: ColorSwatchGroupProps) => (
+  <div className="ColorSwatchGroup" role="group" aria-label={label}>
     {children}
   </div>
 );
@@ -143,7 +167,7 @@ export const CustomColorSwatch = ({ value, initialColor, onChange, "data-testid"
   };
 
   return (
-    <span ref={wrapper} className="relative inline-flex">
+    <span ref={wrapper} className="CustomColorSwatch">
       <ColorSwatch
         tooltip="Pick any color from the RGB palette, or enter its hex code"
         selected={value !== undefined}
@@ -155,7 +179,7 @@ export const CustomColorSwatch = ({ value, initialColor, onChange, "data-testid"
         Custom
       </ColorSwatch>
       {open && (
-        <div className={styles.customPanel} data-testid={testId && `${testId}-panel`}>
+        <div className="CustomColorSwatch-panel" data-testid={testId && `${testId}-panel`}>
           <HexColorPicker
             color={draft}
             onChange={edit}
@@ -165,7 +189,7 @@ export const CustomColorSwatch = ({ value, initialColor, onChange, "data-testid"
             }}
           />
           <HexColorInput
-            className={styles.hexInput}
+            className="CustomColorSwatch-hex"
             color={draft}
             onChange={edit}
             onBlur={commit}

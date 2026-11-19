@@ -128,6 +128,59 @@ export type RendererCopyableInputTakesItsProps = Holds<
   Parameters<typeof Renderer.Component.CopyableInput>[0] extends RendererCopyableInputProps ? true : false
 >;
 
+// The generic components the host's views are built from. The enums of the
+// resizing anchor and its class are values and types alike, so they are named
+// as types here; the function components are values only, and their props
+// types only.
+export type RendererErrorBoundaryProps = Renderer.Component.ErrorBoundaryProps;
+export type RendererAnimateProps = Renderer.Component.AnimateProps;
+export type RendererAnimateName = Renderer.Component.AnimateName;
+export type RendererResizingAnchorProps = Renderer.Component.ResizingAnchorProps;
+export type RendererResizingAnchor = Renderer.Component.ResizingAnchor;
+export type RendererResizeDirection = Renderer.Component.ResizeDirection;
+export type RendererResizeSide = Renderer.Component.ResizeSide;
+export type RendererResizeGrowthDirection = Renderer.Component.ResizeGrowthDirection;
+export type RendererColorSwatchProps = Renderer.Component.ColorSwatchProps;
+export type RendererColorSwatchGroupProps = Renderer.Component.ColorSwatchGroupProps;
+export type RendererCustomColorSwatchProps = Renderer.Component.CustomColorSwatchProps;
+export type RendererOrderableListProps = Renderer.Component.OrderableListProps;
+export type RendererOrderableItemProps = Renderer.Component.OrderableItemProps;
+export type RendererVirtualListProps = Renderer.Component.VirtualListProps<string>;
+export type RendererVirtualListRef = Renderer.Component.VirtualListRef;
+export type RendererVirtualListAlign = Renderer.Component.VirtualListAlign;
+export type RendererErrorBoundaryTakesItsProps = Holds<
+  Parameters<typeof Renderer.Component.ErrorBoundary>[0] extends RendererErrorBoundaryProps ? true : false
+>;
+export type RendererAnimateTakesItsProps = Holds<
+  Parameters<typeof Renderer.Component.Animate>[0] extends RendererAnimateProps ? true : false
+>;
+export type RendererResizingAnchorTakesItsProps = Holds<
+  ConstructorParameters<typeof Renderer.Component.ResizingAnchor>[0] extends RendererResizingAnchorProps ? true : false
+>;
+export type RendererColorSwatchTakesItsProps = Holds<
+  Parameters<typeof Renderer.Component.ColorSwatch>[0] extends RendererColorSwatchProps ? true : false
+>;
+export type RendererColorSwatchGroupTakesItsProps = Holds<
+  Parameters<typeof Renderer.Component.ColorSwatchGroup>[0] extends RendererColorSwatchGroupProps ? true : false
+>;
+export type RendererCustomColorSwatchTakesItsProps = Holds<
+  Parameters<typeof Renderer.Component.CustomColorSwatch>[0] extends RendererCustomColorSwatchProps ? true : false
+>;
+export type RendererOrderableListTakesItsProps = Holds<
+  Parameters<typeof Renderer.Component.OrderableList>[0] extends RendererOrderableListProps ? true : false
+>;
+export type RendererOrderableItemTakesItsProps = Holds<
+  Parameters<typeof Renderer.Component.OrderableItem>[0] extends RendererOrderableItemProps ? true : false
+>;
+export type RendererVirtualListTakesItsProps = Holds<
+  Parameters<typeof Renderer.Component.VirtualList<string>>[0] extends RendererVirtualListProps ? true : false
+>;
+// What the ref scrolls with is the API's own type, not one of the library
+// that virtualizes the list.
+export type RendererVirtualListRefTakesItsAlign = Holds<
+  Parameters<RendererVirtualListRef["scrollToItem"]>[1] extends RendererVirtualListAlign ? true : false
+>;
+
 // The overview cards and their props, the contract of their own that both
 // overviews of the host render with, and the preference that chooses between
 // them and the charts.

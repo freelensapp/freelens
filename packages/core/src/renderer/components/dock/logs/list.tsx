@@ -22,10 +22,9 @@ import { VirtualList } from "../../virtual-list";
 import { ToBottom } from "./to-bottom";
 
 import type { ForwardedRef } from "react";
-import type { Align } from "react-window";
 
 import type { UserPreferencesState } from "../../../../features/user-preferences/common/state.injectable";
-import type { VirtualListRef } from "../../virtual-list";
+import type { VirtualListAlign, VirtualListRef } from "../../virtual-list";
 import type { LogTabViewModel } from "../logs/logs-view-model";
 
 export interface LogListProps {
@@ -37,7 +36,7 @@ const ansiEscapeSequenceRegex =
   /[\u001B\u009B][[\]()#;?]*(?:(?:(?:[a-zA-Z\d]*(?:;[a-zA-Z\d]*)*)?\u0007)|(?:(?:\d{1,4}(?:;\d{0,4})*)?[\dA-PR-TZcf-nq-uy=><~]))/g;
 
 export interface LogListRef {
-  scrollToItem: (index: number, align: Align) => void;
+  scrollToItem: (index: number, align: VirtualListAlign) => void;
 }
 
 interface Dependencies {
@@ -422,7 +421,7 @@ class NonForwardedLogList extends React.Component<
     }
   };
 
-  scrollToItem = (index: number, align: Align) => {
+  scrollToItem = (index: number, align: VirtualListAlign) => {
     this.virtualListRef.current?.scrollToItem(index, align);
   };
 

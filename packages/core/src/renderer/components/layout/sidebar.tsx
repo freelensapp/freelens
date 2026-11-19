@@ -16,7 +16,7 @@ import favoritesSidebarItemInjectable from "../favorites/sidebar-item.injectable
 import favoritesSidebarItemsComputedInjectable, {
   FavoriteSidebarItem,
 } from "../favorites/sidebar-items-computed.injectable";
-import OrderableList from "../orderable-list/orderable-list";
+import { OrderableList } from "../orderable-list/orderable-list";
 import styles from "./sidebar.module.scss";
 import { SidebarCluster } from "./sidebar-cluster";
 import useSidebarHook from "./sidebar-hook";

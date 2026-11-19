@@ -625,6 +625,100 @@ their own.
 `packages/core/src/extensions/__tests__/extension-api-copy-to-clipboard.test.tsx`
 covers the components as an extension reaches them.
 
+### The generic components are the ones the host's views are built from
+
+The host builds its views from a set of generic components. An extension
+renders the same ones, rather than its own copies with their own look and
+their own bugs. Each is a component of `Renderer.Component` and its props
+type, and no type of a library it is built on is part of either: the
+libraries stay an implementation detail that the host may replace.
+
+An extension renders them inside the host's React tree, as it renders any
+component of `Renderer.Component`. `ErrorBoundary` and `Animate` read the
+host's values from there, the history and the default durations, which an
+extension reaches in no other way
+([C7](#c7-the-dependency-injection-surface)). Rendered into a React root of
+the extension's own, they throw.
+
+- **`Renderer.Component.ErrorBoundary`** renders its `children` until one of
+  them throws while it renders. It then shows the error and the component
+  stack in place of the children, with a link to the issue tracker of
+  Freelens and a "Back" button that goes back in the history of the window.
+  Its props, `ErrorBoundaryProps`, are the `children` and a `resetKey`: when
+  it changes, the boundary renders the children again. Give it with the
+  children, from the same render, such as the path of the page they show.
+- **`Renderer.Component.Animate`** renders its only child with the classes of
+  an animation: `.Animate` and the `name`, and `.enter` from the frame after
+  it is shown, or `.leave` from when `enter` turns false, for the
+  `leaveDuration`, after which it renders nothing. It sets the durations as
+  the custom properties `--enter-duration` and `--leave-duration` on the
+  child. Its props, `AnimateProps`, are the `children`, the `name`
+  (`AnimateName`): `opacity`, the default, `slide-right`, `opacity-scale`, or
+  the name of an animation of the extension's own stylesheet, `enter`, which
+  is `true` by default, `enterDuration` and `leaveDuration` in milliseconds,
+  which are the host's defaults when they are not given, and `onEnter` and
+  `onLeave`.
+- **`Renderer.Component.ResizingAnchor`** is the edge the user drags to
+  resize a panel. It is positioned absolutely on the side of its parent that
+  `placement` (`ResizeSide`) and `direction` (`ResizeDirection`) say:
+  `leading` is the left or the top, `trailing` the right or the bottom. Its
+  props, `ResizingAnchorProps`, are those two, `getCurrentExtent` that returns
+  the width or the height of the panel, `onDrag` that gets the new one,
+  between `minExtent` and `maxExtent`, `growthDirection`
+  (`ResizeGrowthDirection`) for a panel that grows towards the top or the
+  left, `onStart`, `onEnd`, `onDoubleClick`, `onlyButtons` to resize with
+  some mouse buttons only, `disabled`, and the callbacks for the extent
+  crossing its limits. A `maxExtent` below the `minExtent` throws.
+- **`Renderer.Component.ColorSwatch`** is a button that shows a `color`, or
+  its `children` as text when it has no color, for a choice that is not one.
+  Its props, `ColorSwatchProps`, are those of a `<button>` but its `color`
+  and `children`, `selected`, and a `tooltip` shown above or below it.
+  **`Renderer.Component.ColorSwatchGroup`** lays out swatches in a row that
+  wraps, as a group named by its `label` (`ColorSwatchGroupProps`).
+  **`Renderer.Component.CustomColorSwatch`** is a swatch that opens a panel
+  with a picker for any color and a field for its hex code. Its props,
+  `CustomColorSwatchProps`, are the custom `value` in use, or `undefined`,
+  an `initialColor` the picker starts from, `onChange`, which gets the color
+  as `#rrggbb` when the picker is released, when the field is left or
+  confirmed, and when the panel closes, and a `data-testid` that is the
+  prefix of the test ids of the panel (`-panel`) and the field (`-hex`).
+- **`Renderer.Component.OrderableList`** is a vertical list whose items the
+  user reorders by dragging them. Its props, `OrderableListProps`, are the
+  `children`, each with a key unique in the list, a `className`, and
+  `onReorder`, which gets the index of the dragged item and the index it was
+  dropped at. The list shows the new order at once, and the order of its
+  children again when they change, so the extension keeps the order it is
+  told. It wraps each child in a **`Renderer.Component.OrderableItem`**,
+  whose props, `OrderableItemProps`, are the `item` and its `id`. Outside a
+  list an item shows its element and cannot be dragged.
+- **`Renderer.Component.VirtualList`** renders only the rows of a long list
+  that are shown. Its props, `VirtualListProps`, are the `items`, either
+  strings or objects with a `getId()`, their `rowHeights` in pixels, `getRow`,
+  which gets the index of a string item or the id of an object and returns
+  the element of its row, the `selectedItemId` it scrolls to, a `width`, a
+  `fixedHeight` instead of the height of its parent, `onScroll` with the
+  scroll event of the list, an `outerRef` to the element that scrolls, and
+  `initialOffset` and `readyOffset`, the number of rows it renders beyond
+  those shown, first and once it has rendered. The style of a row element
+  gets the position of the row. Its ref, `VirtualListRef`, has
+  `scrollToItem`, which takes the index and a `VirtualListAlign`: `start`,
+  `center`, `end`, `auto` or `smart`, and `resetAfterIndex`, which measures
+  the rows again.
+
+They have global classes an extension may restyle
+([C10](#c10-styling-and-css)): `.ErrorBoundary`; `.Animate` with the name of
+the animation, `.enter` and `.leave`; `.ResizingAnchor` with the direction,
+the placement, `.disabled` and `.resizing`, and `.resizing` on the `<body>`
+while it is dragged; `.ColorSwatch`, whose state is `aria-pressed` for the
+selected swatch and `data-text` for one without a color,
+`.ColorSwatchGroup`, `.CustomColorSwatch`, `.CustomColorSwatch-panel` and
+`.CustomColorSwatch-hex`; `.OrderableList` and `.OrderableItem`; and
+`.VirtualList`. They take every color from the theme, but the color a
+swatch shows.
+
+`packages/core/src/extensions/__tests__/extension-api-generic-components.test.tsx`
+covers the components as an extension reaches them.
+
 ---
 
 ## C6. Registration and the extension instance
@@ -941,9 +1035,9 @@ when it exists, `style.css` otherwise. Looking for a stylesheet the extension
 does not ship leaves no error in the renderer console.
 
 **Surface.** One CSS asset next to the renderer entry. The host's shared
-component classes (`.Tooltip`, `.Button`, `.CapacityCard`, `.StatusCard`, …)
-are global and part of the public API and may be targeted; they must not be
-redefined. So are the classes of the parts of the overview cards, which start
+component classes (`.Tooltip`, `.Button`, `.CapacityCard`, `.StatusCard`,
+`.ColorSwatch`, `.OrderableList`, `.VirtualList`, …) are global and part of
+the public API and may be targeted; they must not be redefined. So are the classes of the parts of the overview cards, which start
 with the name of the card (`.CapacityCard-title`, `.StatusCard-legendRow`, …). An extension's own styles
 belong in CSS Modules.
 

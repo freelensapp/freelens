@@ -15,7 +15,7 @@ import React, { useCallback, useEffect, useImperativeHandle, useRef, useState } 
 import { List } from "react-window";
 
 import type { ForwardedRef, UIEventHandler } from "react";
-import type { Align, ListImperativeAPI, RowComponentProps } from "react-window";
+import type { ListImperativeAPI, RowComponentProps } from "react-window";
 
 import type { TableRowProps } from "../table/table-row";
 
@@ -38,8 +38,21 @@ export interface VirtualListProps<T extends { getId(): string } | string> {
   fixedHeight?: number;
 }
 
+/**
+ * Where `scrollToItem` puts the item: at the `start`, the `center` or the `end` of the list, or
+ * `auto`, as little scrolling as shows it, or `smart`, which centers an item far from the rows
+ * shown.
+ */
+export type VirtualListAlign = "auto" | "center" | "end" | "smart" | "start";
+
 export interface VirtualListRef {
-  scrollToItem: (index: number, align: Align) => void;
+  /**
+   * Scrolls the list to the item at the index.
+   */
+  scrollToItem: (index: number, align: VirtualListAlign) => void;
+  /**
+   * Measures the rows again from `rowHeights`, after a height changed without the array changing.
+   */
   resetAfterIndex: (index: number) => void;
 }
 

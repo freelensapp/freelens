@@ -3,7 +3,14 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-.swatch {
+.ColorSwatchGroup {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.ColorSwatch {
   width: 24px;
   height: 24px;
   border-radius: 4px;
@@ -15,21 +22,27 @@
     outline: 2px solid var(--primary);
     outline-offset: 2px;
   }
+
+  // A swatch without a color shows its children as text.
+  &[data-text] {
+    width: auto;
+    padding: 0 8px;
+    background: transparent;
+    border-color: var(--borderColor);
+    color: var(--textColorPrimary);
+  }
+
+  &[aria-pressed="true"] {
+    border-color: var(--textColorAccent);
+  }
 }
 
-.textSwatch {
-  width: auto;
-  padding: 0 8px;
-  background: transparent;
-  border-color: var(--borderColor);
-  color: var(--textColorPrimary);
+.CustomColorSwatch {
+  position: relative;
+  display: inline-flex;
 }
 
-.selected {
-  border-color: var(--textColorAccent);
-}
-
-.customPanel {
+.CustomColorSwatch-panel {
   position: absolute;
   top: calc(100% + 8px);
   left: 0;
@@ -44,7 +57,7 @@
   box-shadow: rgb(0 0 0 / 17%) 0 6px 9px 0;
 }
 
-.hexInput {
+.CustomColorSwatch-hex {
   width: 100%;
   padding: 4px 8px;
   border: 1px solid var(--inputControlBorder);
