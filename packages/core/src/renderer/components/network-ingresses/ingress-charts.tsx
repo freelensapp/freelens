@@ -26,7 +26,7 @@ const convertIngressMetricValuesToChartData = (values: Array<[number, string]>) 
 
 const NonInjectedIngressCharts = observer(({ selectedMetricsTimeRange }: Dependencies) => {
   const { metrics, tab, object } = useContext(ResourceMetricsContext) ?? {};
-  const { start: minTime, end: maxTime } = selectedMetricsTimeRange.timestamps.get();
+  const { start: minTime, end: maxTime, step } = selectedMetricsTimeRange.timestamps.get();
 
   if (!metrics || !object || !tab) return null;
   if (isMetricsEmpty(metrics)) return <NoMetrics />;
@@ -79,6 +79,7 @@ const NonInjectedIngressCharts = observer(({ selectedMetricsTimeRange }: Depende
       data={{ datasets: datasets[tab] }}
       minTime={minTime}
       maxTime={maxTime}
+      step={step}
     />
   );
 });

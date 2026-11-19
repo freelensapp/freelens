@@ -65,7 +65,7 @@ const NonInjectedClusterMetrics = observer((props: Dependencies) => {
 
   const visibleMetrics =
     isPending && currentRangeKey !== lastResolvedRangeKeyRef.current ? undefined : clusterOverviewMetrics.value.get();
-  const { start: minTime, end: maxTime } = selectedMetricsTimeRange.timestamps.get();
+  const { start: minTime, end: maxTime, step } = selectedMetricsTimeRange.timestamps.get();
   const [plugins] = useState([new ZebraStripesPlugin()]);
   const {
     memoryCapacity,
@@ -202,6 +202,7 @@ const NonInjectedClusterMetrics = observer((props: Dependencies) => {
         className={styles.chart}
         minTime={minTime}
         maxTime={maxTime}
+        step={step}
       />
     );
   };
