@@ -11,6 +11,7 @@ import {
   debugContainerSpecError,
   parseDebugContainerQuery,
 } from "../../../features/debug-containers/common/debug-container";
+import { parsePodTerminalQuery, podTerminalTargetError } from "../../../features/pod-terminal/common/pod-terminal";
 import openShellSessionInjectable from "../../shell-session/create-shell-session.injectable";
 import { messageOfError, terminalStatusReporterFor } from "../../shell-session/send-terminal-status";
 import getClusterForRequestInjectable from "../get-cluster-for-request.injectable";
@@ -37,13 +38,37 @@ const shellApiRequestInjectable = getInjectable({
       // A terminal opened outside of a cluster session has no cluster to look
       // up, and its token is minted under its own scope.
       const isStandalone = type === "standalone";
-      const debugContainer = parseDebugContainerQuery(searchParams);
+      const podTerminal = isStandalone ? undefined : parsePodTerminalQuery(searchParams);
+      const invalidPodTerminal = podTerminal && podTerminalTargetError(podTerminal);
+      const debugContainer = isStandalone ? undefined : parseDebugContainerQuery(searchParams);
       const invalidDebugContainer = debugContainer && debugContainerSpecError(debugContainer);
       const cluster = isStandalone ? undefined : getClusterForRequest(req);
       const scope = isStandalone ? standaloneShellScope : cluster?.id;
-      const shellKind = isStandalone ? "standalone" : debugContainer ? "debug container" : nodeName ? "node" : "local";
+      const shellKind = isStandalone
+        ? "standalone"
+        : podTerminal
+          ? `pod ${podTerminal.mode}`
+          : debugContainer
+            ? "debug container"
+            : nodeName
+              ? "node"
+              : "local";
 
-      if (invalidDebugContainer || !tabId || !scope || !authenticateRequest(scope, tabId, shellToken)) {
+      if (invalidPodTerminal) {
+        logger.warn(`[SHELL-SESSION]: refused a pod terminal: ${invalidPodTerminal}`);
+      }
+
+      if (invalidDebugContainer) {
+        logger.warn(`[SHELL-SESSION]: refused a debug container: ${invalidDebugContainer}`);
+      }
+
+      if (
+        invalidPodTerminal ||
+        invalidDebugContainer ||
+        !tabId ||
+        !scope ||
+        !authenticateRequest(scope, tabId, shellToken)
+      ) {
         socket.write("Invalid shell request");
         socket.end();
       } else {
@@ -56,6 +81,7 @@ const shellApiRequestInjectable = getInjectable({
             tabId,
             // a node shell is a cluster concept by definition
             nodeName: isStandalone ? undefined : nodeName,
+            podTerminal,
             ...(debugContainer ? { debugContainer } : {}),
           }).catch((error) => {
             logger.error(`[SHELL-SESSION]: failed to open a ${shellKind} shell`, error);

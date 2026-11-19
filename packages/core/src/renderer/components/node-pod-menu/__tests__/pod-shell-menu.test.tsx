@@ -1,8 +1,6 @@
-import os from "node:os";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import createTerminalTabInjectable from "../../dock/terminal/create-terminal-tab.injectable";
-import sendCommandInjectable from "../../dock/terminal/send-command.injectable";
 import hideDetailsInjectable from "../../kube-detail-params/hide-details.injectable";
 import { type DiRender, renderFor } from "../../test-utils/renderFor";
 import { PodShellMenu } from "../pod-shell-menu";
@@ -10,16 +8,12 @@ import { PodShellMenu } from "../pod-shell-menu";
 import type { DiContainer } from "@ogre-tools/injectable";
 import type { Mock } from "vitest";
 
-vi.mock("uuid", () => ({
-  v4: vi.fn(() => "mocked-id"),
-}));
+let execShell: (container: { name: string }) => void = () => {};
 
-let execShell: (container: { name: string }) => Promise<void> = async () => {};
-
-// This mock is used to get attachToPod function from PodShellMenu
+// This mock is used to get execShell function from PodShellMenu
 vi.mock("../pod-menu-item", () => ({
   __esModule: true,
-  default: ({ onMenuItemClick }: { onMenuItemClick: (container: { name: string }) => Promise<any> }) => {
+  default: ({ onMenuItemClick }: { onMenuItemClick: (container: { name: string }) => void }) => {
     execShell = onMenuItemClick;
 
     return null;
@@ -30,18 +24,15 @@ describe("pod-shell-menu", () => {
   let di: DiContainer;
   let render: DiRender;
   let createTerminalTabMock: Mock;
-  let sendCommandMock: Mock;
   let hideDetailsMock: Mock;
 
   beforeEach(() => {
     di = getDiForUnitTesting();
 
     createTerminalTabMock = vi.fn();
-    sendCommandMock = vi.fn(() => Promise.resolve());
     hideDetailsMock = vi.fn();
 
     di.override(createTerminalTabInjectable, () => createTerminalTabMock);
-    di.override(sendCommandInjectable, () => sendCommandMock);
     di.override(hideDetailsInjectable, () => hideDetailsMock);
 
     render = renderFor(di);
@@ -85,63 +76,37 @@ describe("pod-shell-menu", () => {
     }).not.toThrow();
   });
 
-  it("execShell on non windows platform should send exec command", async () => {
-    // GIVEN
+  it("opens a pod shell tab for the container, which main runs kubectl exec in", () => {
     const object = {
       metadata: {
         name: "name",
+        namespace: "some-namespace",
         selfLink: "selfLink",
       },
     };
 
-    vi.spyOn(os, "platform").mockReturnValue("linux");
+    render(<PodShellMenu object={object} toolbar={true} />);
 
-    // WHEN
-    expect(() => {
-      render(<PodShellMenu object={object} toolbar={true} />);
-    }).not.toThrow();
+    execShell({ name: "test-container" });
 
-    // THEN
-    await expect(execShell({ name: "test-container" })).resolves.toBeUndefined();
-    expect(createTerminalTabMock).toHaveBeenCalledTimes(1);
-    expect(sendCommandMock).toHaveBeenCalledWith(
-      'exec kubectl exec -i -t -n  name -c test-container -- sh -c "clear; (bash || ash || sh)"',
-      { enter: true, tabId: "mocked-id" },
-    );
-    expect(hideDetailsMock).toHaveBeenCalledTimes(1);
-  });
-
-  it("execShell on windows platform should send exec command", async () => {
-    // GIVEN
-    const object = {
-      metadata: {
-        name: "name",
-        selfLink: "selfLink",
+    expect(createTerminalTabMock).toHaveBeenCalledWith({
+      title: "Pod: name (namespace: some-namespace)",
+      podTerminal: {
+        mode: "exec",
+        namespace: "some-namespace",
+        pod: "name",
+        container: "test-container",
+        windows: false,
       },
-    };
-
-    vi.spyOn(os, "platform").mockReturnValue("win32");
-
-    // WHEN
-    expect(() => {
-      render(<PodShellMenu object={object} toolbar={true} />);
-    }).not.toThrow();
-
-    // THEN
-    await expect(execShell({ name: "test-container" })).resolves.toBeUndefined();
-    expect(createTerminalTabMock).toHaveBeenCalledTimes(1);
-    expect(sendCommandMock).toHaveBeenCalledWith(
-      'kubectl exec -i -t -n  name -c test-container -- sh -c "clear; (bash || ash || sh)"',
-      { enter: true, tabId: "mocked-id" },
-    );
+    });
     expect(hideDetailsMock).toHaveBeenCalledTimes(1);
   });
 
-  it("execShell on windows node should send exec command", async () => {
-    // GIVEN
+  it("opens a pod shell tab that runs PowerShell for a pod on a Windows node", () => {
     const object = {
       metadata: {
         name: "name",
+        namespace: "some-namespace",
         selfLink: "selfLink",
       },
       spec: {
@@ -151,18 +116,13 @@ describe("pod-shell-menu", () => {
       },
     };
 
-    // WHEN
-    expect(() => {
-      render(<PodShellMenu object={object} toolbar={true} />);
-    }).not.toThrow();
+    render(<PodShellMenu object={object} toolbar={true} />);
 
-    // THEN
-    await expect(execShell({ name: "test-container" })).resolves.toBeUndefined();
-    expect(createTerminalTabMock).toHaveBeenCalledTimes(1);
-    expect(sendCommandMock).toHaveBeenCalledWith("kubectl exec -i -t -n  name -c test-container -- powershell", {
-      enter: true,
-      tabId: "mocked-id",
-    });
+    execShell({ name: "test-container" });
+
+    expect(createTerminalTabMock).toHaveBeenCalledWith(
+      expect.objectContaining({ podTerminal: expect.objectContaining({ mode: "exec", windows: true }) }),
+    );
     expect(hideDetailsMock).toHaveBeenCalledTimes(1);
   });
 });

@@ -134,4 +134,34 @@ describe("shell api requests", () => {
 
     expect(openShellSession).toHaveBeenCalledWith(expect.objectContaining({ nodeName: undefined }));
   });
+
+  it("opens a pod terminal for a request that names a container", () => {
+    request(
+      "/api?id=some-tab-id&type=pod-exec&namespace=default&pod=app&container=main&os=windows&shellToken=some-token",
+    );
+
+    expect(openShellSession).toHaveBeenCalledWith(
+      expect.objectContaining({
+        podTerminal: { mode: "exec", namespace: "default", pod: "app", container: "main", windows: true },
+      }),
+    );
+  });
+
+  it("opens an attach for a request of that type", () => {
+    request("/api?id=some-tab-id&type=pod-attach&namespace=default&pod=app&shellToken=some-token");
+
+    expect(openShellSession).toHaveBeenCalledWith(
+      expect.objectContaining({
+        podTerminal: { mode: "attach", namespace: "default", pod: "app", container: undefined, windows: false },
+      }),
+    );
+  });
+
+  it("rejects a pod terminal whose names kubectl could read as options", () => {
+    request("/api?id=some-tab-id&type=pod-exec&namespace=default&pod=--kubeconfig%3D%2Ftmp%2Fx&shellToken=some-token");
+
+    expect(openShellSession).not.toHaveBeenCalled();
+    expect(socket.write).toHaveBeenCalledWith("Invalid shell request");
+    expect(socket.end).toHaveBeenCalled();
+  });
 });

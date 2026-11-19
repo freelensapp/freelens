@@ -314,7 +314,9 @@ export abstract class ShellSession {
 
     const { shellProcess, resume } = this.ensureShellProcess(file, args, env, cwd);
 
-    if (resume) {
+    if (!resume) {
+      this.shellProcessStarted(shellProcess);
+    } else {
       this.send({ type: TerminalChannels.CONNECTED });
 
       const lastOutput = lastOutputs.get(shellProcess);
@@ -413,6 +415,8 @@ export abstract class ShellSession {
               error,
             );
           }
+
+          this.shellProcessStopped(shellProcess);
         }
 
         if (code !== WebSocketCloseEvent.AbnormalClosure && code !== WebSocketCloseEvent.GoingAway) {
@@ -422,6 +426,20 @@ export abstract class ShellSession {
 
     this.dependencies.emitAppEvent({ name: this.ShellType, action: "open" });
   }
+
+  /**
+   * Called for a PTY this session has just spawned, before any of its output
+   * is read, and not for one it resumes: a resumed PTY was started by an
+   * earlier session, which has seen it already.
+   */
+  protected shellProcessStarted(_shellProcess: pty.IPty): void {}
+
+  /**
+   * Called once the terminal has closed for good and its PTY has been killed
+   * while the shell was still running, so not after the shell exited on its
+   * own, nor on a reload, which keeps the PTY to resume it.
+   */
+  protected shellProcessStopped(_shellProcess: pty.IPty): void {}
 
   protected async getCachedShellEnv() {
     // Keyed by the shell too: the environment carries the shell to start as
