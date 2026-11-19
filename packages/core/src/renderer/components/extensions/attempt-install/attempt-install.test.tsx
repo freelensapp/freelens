@@ -125,17 +125,18 @@ describe("attemptInstall of an extension which is already installed", () => {
     isEnabled,
   });
 
+  // What the source vouched for: a checksum, unless a test takes it away.
+  let validated: InstallRequestValidated;
+
   const install = () =>
-    attemptInstall(
-      { fileName: validatedRequest.fileName, data: tarball, checksum: validatedRequest.checksum },
-      cleanup,
-    );
+    attemptInstall({ fileName: validated.fileName, data: tarball, checksum: validated.checksum }, cleanup);
 
   beforeEach(() => {
     const di = getDiForUnitTesting();
 
     events = [];
     installed = undefined;
+    validated = validatedRequest;
     cleanup = vi.fn();
     confirmMock = vi.fn(async () => true);
     showErrorNotificationMock = vi.fn();
@@ -160,7 +161,7 @@ describe("attemptInstall of an extension which is already installed", () => {
     );
 
     di.override(directoryForUserDataInjectable, () => "/some-directory-for-user-data");
-    di.override(createTempFilesAndValidateInjectable, () => async () => validatedRequest);
+    di.override(createTempFilesAndValidateInjectable, () => async () => validated);
     di.override(unpackExtensionInjectable, () => unpackExtensionMock);
     di.override(showErrorNotificationInjectable, () => showErrorNotificationMock);
     di.override(confirmInjectable, () => confirmMock);
@@ -244,6 +245,48 @@ describe("attemptInstall of an extension which is already installed", () => {
       expect(textOf(message)).toContain(
         `${extensionId}@2.0.0-2 is enabled and will be disabled and replaced by ${extensionId}@2.0.0-2.`,
       );
+    });
+
+    it("says in the dialog that an unverified replacement stays disabled", async () => {
+      validated = { ...validatedRequest, checksum: undefined };
+      confirmMock.mockResolvedValue(false);
+
+      await install();
+
+      const [[{ message }]] = confirmMock.mock.calls;
+
+      expect(textOf(message)).toContain(
+        `No checksum was available for this download, so ${extensionId}@2.0.0-2 stays disabled after the install`,
+      );
+    });
+
+    it("does not say so in the dialog when the replacement is verified", async () => {
+      confirmMock.mockResolvedValue(false);
+
+      await install();
+
+      const [[{ message }]] = confirmMock.mock.calls;
+
+      expect(textOf(message)).not.toContain("No checksum");
+    });
+
+    it("disables it and hands the unpacking of an unverified replacement the version it disabled", async () => {
+      validated = { ...validatedRequest, checksum: undefined };
+
+      const installing = install();
+
+      await vi.waitFor(() => expect(events).toContain("waiting for the teardown"));
+
+      finishTearingDown();
+      await installing;
+
+      // Nothing enables it again: unpacking leaves an unverified build
+      // disabled, and says why with the version it was told about.
+      expect(events).toEqual(["set-is-enabled false", "waiting for the teardown", "torn down", "unpack"]);
+      expect(unpackExtensionMock).toHaveBeenCalledWith(validated, expect.any(Function), {
+        disabledVersion: "2.0.0-1",
+        isReinstall: false,
+      });
     });
 
     it("leaves it alone when the replacement is cancelled", async () => {

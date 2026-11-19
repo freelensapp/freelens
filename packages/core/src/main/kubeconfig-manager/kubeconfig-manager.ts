@@ -7,9 +7,7 @@
 import { dumpConfigYaml } from "../../common/kube-helpers";
 
 import type { Logger } from "@freelensapp/logger";
-
-import type { KubeConfig } from "@kubernetes/client-node";
-import type { PartialDeep } from "type-fest";
+import type { PartialDeep } from "@freelensapp/type-fest";
 
 import type { SelfSignedCert } from "../../common/certificate/certificate";
 import type { Cluster } from "../../common/cluster/cluster";
@@ -18,6 +16,7 @@ import type { EnsureDirectory } from "../../common/fs/ensure-dir.injectable";
 import type { PathExists } from "../../common/fs/path-exists.injectable";
 import type { RemovePath } from "../../common/fs/remove.injectable";
 import type { WriteFile } from "../../common/fs/write-file.injectable";
+import type { KubeConfigData } from "../../common/kube-config";
 import type { GetDirnameOfPath } from "../../common/path/get-dirname.injectable";
 import type { JoinPaths } from "../../common/path/join-paths.injectable";
 import type { FreelensK8sProxyManager } from "../cluster/freelens-k8s-proxy-manager.injectable";
@@ -164,7 +163,7 @@ export class KubeconfigManager {
     const contextName = this.cluster.contextName.get();
     const tempFile = this.dependencies.joinPaths(this.directoryForProxyKubeconfig, `kubeconfig-${id}`);
     const kubeConfig = await this.dependencies.loadKubeconfig();
-    const proxyConfig: PartialDeep<KubeConfig> = {
+    const proxyConfig: PartialDeep<KubeConfigData> = {
       currentContext: contextName,
       clusters: [
         {

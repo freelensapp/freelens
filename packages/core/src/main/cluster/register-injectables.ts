@@ -9,11 +9,16 @@
 import clustersThatAreBeingDeletedInjectable from "./are-being-deleted.injectable";
 import broadcastConnectionUpdateInjectable from "./broadcast-connection-update.injectable";
 import clusterConnectionInjectable from "./cluster-connection.injectable";
+import createAuthorizationApiInjectable from "./create-authorization-api.injectable";
+import createCanIInjectable from "./create-can-i.injectable";
+import createCoreApiInjectable from "./create-core-api.injectable";
+import createRequestNamespaceListPermissionsInjectable from "./create-request-namespace-list-permissions.injectable";
 import disconnectClustersRemovedFromCatalogInjectable from "./disconnect-clusters-removed-from-catalog.injectable";
 import freelensK8sProxyManagerInjectable from "./freelens-k8s-proxy-manager.injectable";
 import freelensK8sProxyManagersInjectable from "./freelens-k8s-proxy-managers.injectable";
 import freelensProxyClusterUrlInjectable from "./freelens-proxy-cluster-url.injectable";
 import initializeClusterManagerInjectable from "./initialize-manager.injectable";
+import createListNamespacesInjectable from "./list-namespaces.injectable";
 import loadProxyKubeconfigInjectable from "./load-proxy-kubeconfig.injectable";
 import clusterManagerInjectable from "./manager.injectable";
 import { registerInjectables as registerPrometheusHandlerInjectables } from "./prometheus-handler/register-injectables";
@@ -56,6 +61,31 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(clustersThatAreBeingDeletedInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(createAuthorizationApiInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(createCanIInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(createCoreApiInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(createListNamespacesInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(createRequestNamespaceListPermissionsInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

@@ -23,6 +23,8 @@ import jobDetailItemInjectable from "./job-detail-item.injectable";
 import kubeEventDetailItemInjectable from "./kube-event-detail-item.injectable";
 import leaseDetailItemInjectable from "./lease-detail-item.injectable";
 import limitRangeDetailItemInjectable from "./limit-range-detail-item.injectable";
+import mutatingAdmissionPolicyDetailItemInjectable from "./mutating-admission-policies-details-item.injectable";
+import mutatingAdmissionPolicyBindingDetailItemInjectable from "./mutating-admission-policy-bindings-details-item.injectable";
 import mutatingWebhookConfigurationDetailItemInjectable from "./mutating-webhook-configurations-details-item.injectable";
 import namespacesDetailItemInjectable from "./namespaces-detail-item.injectable";
 import networkPolicyDetailItemInjectable from "./network-policy-detail-item.injectable";
@@ -134,6 +136,16 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(limitRangeDetailItemInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(mutatingAdmissionPolicyBindingDetailItemInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(mutatingAdmissionPolicyDetailItemInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

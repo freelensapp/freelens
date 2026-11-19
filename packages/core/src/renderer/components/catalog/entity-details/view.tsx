@@ -57,6 +57,7 @@ class NonInjectedCatalogEntityDetails<Entity extends CatalogEntity> extends Comp
           <div className={styles.entityIcon}>
             <Avatar
               title={entity.getName()}
+              shortName={entity.metadata.shortName}
               colorHash={`${entity.getName()}-${entity.getSource()}`}
               size={128}
               src={entity.spec.icon?.src}

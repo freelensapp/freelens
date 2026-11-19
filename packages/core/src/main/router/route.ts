@@ -61,6 +61,11 @@ export interface RouteHandler<TResponse, Path extends string> {
 export interface BaseRoutePaths<Path extends string> {
   path: Path;
   method: "get" | "post" | "put" | "patch" | "delete";
+  /**
+   * Served by the proxy without its token, which every other route requires.
+   * Only for what the window loads before it has the token.
+   */
+  withoutToken?: boolean;
 }
 
 export interface PayloadValidator<Payload> {

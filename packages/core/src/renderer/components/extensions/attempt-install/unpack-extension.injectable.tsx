@@ -43,6 +43,34 @@ export interface UnpackExtensionOptions {
   isReinstall?: boolean;
 }
 
+/**
+ * What an install without a checksum ends with. The build is installed and
+ * stays disabled, so the note says so, says why, and says how to run it. Over
+ * an enabled extension, which was disabled to be replaced, it also says that
+ * the extension is off now, which it was not before the install.
+ */
+const unverifiedInstallNote = (
+  name: string,
+  displayName: string,
+  { disabledVersion, isReinstall }: UnpackExtensionOptions,
+) => (
+  <div className="flex flex-col gap-2">
+    <p>
+      {"Extension "}
+      <b>{displayName}</b>
+      {
+        " is installed, but disabled: no checksum was available for this download, so nothing vouches for its integrity."
+      }
+    </p>
+    {disabledVersion && (
+      <p>
+        {`${name}@${disabledVersion} was enabled and was disabled to be ${isReinstall ? "installed again" : "replaced"}. ${name} stays disabled, because the build installed now is unverified.`}
+      </p>
+    )}
+    <p>{"Enable it on the Extensions page to run it."}</p>
+  </div>
+);
+
 export type UnpackExtension = (
   request: InstallRequestValidated,
   disposeDownloading?: Disposer,
@@ -58,6 +86,10 @@ export type UnpackExtension = (
  * tarball itself is not kept -- once extracted it has done its job, the same way
  * a `.deb` is redundant once installed -- so the digest is computed here, while
  * the bytes are still in hand.
+ *
+ * A verified build is enabled once it is installed. An unverified one, which
+ * had no checksum, stays disabled until the user enables it: nothing vouches
+ * for its code, so it does not run without their say.
  */
 const unpackExtensionInjectable = getInjectable({
   id: "unpack-extension",
@@ -105,6 +137,10 @@ const unpackExtensionInjectable = getInjectable({
       disposeDownloading?.();
 
       const displayName = extensionDisplayName(name, version);
+      // The checksum itself was checked in `attemptInstall`, before these bytes
+      // were written out or read into: by here the only thing left to say about
+      // it is whether there was one.
+      const verified = Boolean(checksum);
       // The identity of this build: over the archive bytes, not over the
       // extracted tree, whose hash depends on extraction order and filesystem.
       const digest = computeTarballDigest(data);
@@ -114,19 +150,6 @@ const unpackExtensionInjectable = getInjectable({
       logger.info(`Unpacking extension ${displayName}`, { fileName, tempFile, buildFolder });
 
       try {
-        // The checksum itself was checked in `attemptInstall`, before these
-        // bytes were written out or read into: by here the only thing left to
-        // say about it is that there was not one.
-        if (!checksum) {
-          showInfoNotification(
-            <p>
-              {"Nothing vouches for the integrity of "}
-              <b>{displayName}</b>
-              {": no checksum was available for this download. Installing it anyway."}
-            </p>,
-          );
-        }
-
         // extract to temp folder first
         await fse.remove(unpackingTempFolder).catch(noop);
         await fse.ensureDir(unpackingTempFolder);
@@ -154,22 +177,35 @@ const unpackExtensionInjectable = getInjectable({
           version,
           digest: shortenDigest(digest),
           source,
-          verified: Boolean(checksum),
+          verified,
         });
 
         // wait for the loader has actually install it
         await when(() => extensionLoader.userExtensions.get().has(id), { timeout: 10000 })
           .then(async () => {
-            // Enable installed extensions by default.
-            await extensionLoader.setIsEnabled(id, true);
+            if (verified) {
+              // Enable verified installs by default.
+              await extensionLoader.setIsEnabled(id, true);
 
-            showSuccessNotification(
-              <p>
-                {"Extension "}
-                <b>{displayName}</b>
-                {" successfully installed!"}
-              </p>,
-            );
+              return void showSuccessNotification(
+                <p>
+                  {"Extension "}
+                  <b>{displayName}</b>
+                  {" successfully installed!"}
+                </p>,
+              );
+            }
+
+            // Unverified: nothing here enables it. The build still comes up
+            // enabled when an enabled state is left over for its name, which
+            // an uninstall in an earlier version of Freelens did not reset,
+            // and it must not go on running without the user's say.
+            if (extensionLoader.userExtensions.get().get(id)?.isEnabled) {
+              logger.warn(`[EXTENSION-INSTALLATION]: ${displayName} came up enabled, disabling it as unverified`);
+              await extensionLoader.setIsEnabled(id, false);
+            }
+
+            showInfoNotification(unverifiedInstallNote(name, displayName, options));
           })
           .catch((error) => {
             // There was an error during plugin installation

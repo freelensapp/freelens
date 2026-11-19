@@ -1,0 +1,11 @@
+{
+  "name": "freelens",
+  "description": "Skills for creating Freelens extensions and porting v1 extensions to the v2 extension API",
+  "author": {
+    "name": "Freelens Authors",
+    "url": "https://github.com/freelensapp"
+  },
+  "homepage": "https://freelens.app/",
+  "repository": "https://github.com/freelensapp/freelens",
+  "license": "MIT"
+}

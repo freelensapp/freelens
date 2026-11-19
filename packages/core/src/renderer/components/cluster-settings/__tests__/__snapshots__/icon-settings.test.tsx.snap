@@ -1,57 +1,5 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Icon settings > given no external registrations for cluster settings menu injection token > renders 1`] = `
-<body>
-  <div>
-    <div>
-      <div
-        class="file-loader flex flex-row items-center"
-      >
-        <div
-          class="mr-5"
-        >
-          <div
-            class="FilePicker"
-          >
-            <label
-              class="flex gap-2 items-center"
-              for="file-upload"
-            >
-              <div
-                class="Avatar rounded"
-                style="width: 53px; height: 53px; background: rgb(110, 28, 69);"
-              >
-                skc
-              </div>
-               
-            </label>
-            <input
-              accept="image/*"
-              id="file-upload"
-              name="FilePicker"
-              type="file"
-            />
-          </div>
-        </div>
-        <i
-          class="Icon material interactive focusable"
-          data-testid="icon-for-menu-actions-for-cluster-icon-settings-for-some-entity-id"
-          id="menu-actions-for-cluster-icon-settings-for-some-entity-id"
-          tabindex="0"
-        >
-          <span
-            class="icon"
-            data-icon-name="more_horiz"
-          >
-            more_horiz
-          </span>
-        </i>
-      </div>
-    </div>
-  </div>
-</body>
-`;
-
 exports[`Icon settings > given no registrations for cluster settings component injection token > renders 1`] = `
 <body>
   <div>
@@ -60,44 +8,27 @@ exports[`Icon settings > given no registrations for cluster settings component i
         class="file-loader flex flex-row items-center"
       >
         <div
-          class="mr-5"
+          class="FilePicker"
         >
-          <div
-            class="FilePicker"
+          <label
+            class="flex gap-2 items-center"
+            for="file-upload"
           >
-            <label
-              class="flex gap-2 items-center"
-              for="file-upload"
+            <div
+              class="Avatar rounded"
+              style="width: 53px; height: 53px; background: rgb(110, 28, 69);"
             >
-              <div
-                class="Avatar rounded"
-                style="width: 53px; height: 53px; background: rgb(110, 28, 69);"
-              >
-                skc
-              </div>
-               
-            </label>
-            <input
-              accept="image/*"
-              id="file-upload"
-              name="FilePicker"
-              type="file"
-            />
-          </div>
+              skc
+            </div>
+             
+          </label>
+          <input
+            accept="image/*"
+            id="file-upload"
+            name="FilePicker"
+            type="file"
+          />
         </div>
-        <i
-          class="Icon material interactive focusable"
-          data-testid="icon-for-menu-actions-for-cluster-icon-settings-for-some-entity-id"
-          id="menu-actions-for-cluster-icon-settings-for-some-entity-id"
-          tabindex="0"
-        >
-          <span
-            class="icon"
-            data-icon-name="more_horiz"
-          >
-            more_horiz
-          </span>
-        </i>
       </div>
     </div>
   </div>

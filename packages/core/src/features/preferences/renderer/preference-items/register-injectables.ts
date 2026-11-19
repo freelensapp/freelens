@@ -13,6 +13,7 @@ import { registerInjectables as registerEditorInjectables } from "./editor/regis
 import extensionsPreferenceTabGroupInjectable from "./extensions-preference-tab-group.injectable";
 import generalPreferenceTabGroupInjectable from "./general-preference-tab-group.injectable";
 import { registerInjectables as registerKubernetesInjectables } from "./kubernetes/register-injectables";
+import { registerInjectables as registerPersonalizationInjectables } from "./personalization/register-injectables";
 import preferencesCompositeInjectable from "./preferences-composite.injectable";
 import { registerInjectables as registerProxyInjectables } from "./proxy/register-injectables";
 import { registerInjectables as registerTerminalInjectables } from "./terminal/register-injectables";
@@ -57,6 +58,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     registerKubernetesInjectables(di);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    registerPersonalizationInjectables(di);
   } catch (e) {
     /* Ignore duplicate registration */
   }

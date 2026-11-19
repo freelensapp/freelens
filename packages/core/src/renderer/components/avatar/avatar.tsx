@@ -15,6 +15,7 @@ import type { ImgHTMLAttributes, MouseEventHandler } from "react";
 
 export interface AvatarProps {
   title: string;
+  shortName?: string;
   colorHash?: string;
   size?: number;
   src?: string;
@@ -31,6 +32,7 @@ export interface AvatarProps {
 
 export const Avatar = ({
   title,
+  shortName,
   variant = "rounded",
   size = 32,
   colorHash,
@@ -65,6 +67,6 @@ export const Avatar = ({
     onClick={onClick}
     data-testid={dataTestId}
   >
-    {src ? <img src={src} {...imgProps} alt={title} /> : children || computeDefaultShortName(title)}
+    {src ? <img src={src} {...imgProps} alt={title} /> : children || shortName || computeDefaultShortName(title)}
   </div>
 );

@@ -186,8 +186,7 @@
         "react",
         "react-dom",
         "react-select",
-        "rfc6902",
-        "type-fest"
+        "rfc6902"
       ],
       "typescript": {
         "config": ["tsconfig.json", "tsconfig.dts.json"]

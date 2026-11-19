@@ -10,6 +10,7 @@ import { registerInjectables as registerFilesInjectables } from "./files/registe
 import { registerInjectables as registerHelmInjectables } from "./helm/register-injectables";
 import { registerInjectables as registerKubeconfigRouteInjectables } from "./kubeconfig-route/register-injectables";
 import { registerInjectables as registerMetricsInjectables } from "./metrics/register-injectables";
+import { registerInjectables as registerNotFoundInjectables } from "./not-found/register-injectables";
 import { registerInjectables as registerPortForwardInjectables } from "./port-forward/register-injectables";
 import { registerInjectables as registerResourceApplierInjectables } from "./resource-applier/register-injectables";
 import { registerInjectables as registerVersionsInjectables } from "./versions/register-injectables";
@@ -34,6 +35,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     registerMetricsInjectables(di);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    registerNotFoundInjectables(di);
   } catch (e) {
     /* Ignore duplicate registration */
   }

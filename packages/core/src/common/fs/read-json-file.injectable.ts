@@ -7,7 +7,7 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import fsInjectable from "./fs.injectable";
 
-import type { JsonValue } from "type-fest";
+import type { JsonValue } from "@freelensapp/type-fest";
 
 export type ReadJson = (filePath: string) => Promise<JsonValue>;
 

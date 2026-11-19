@@ -17,8 +17,10 @@ import downloadJsonViaChannelInjectable from "../../../renderer/fetch/download-j
 import confirmInjectable from "../confirm-dialog/confirm.injectable";
 import attemptInstallInjectable from "./attempt-install/attempt-install.injectable";
 import getBaseRegistryUrlInjectable from "./get-base-registry-url/get-base-registry-url.injectable";
+import { getTarballDownloadUrl } from "./get-tarball-download-url";
 
-import type { PackageJson } from "type-fest";
+import type { PackageJson } from "@freelensapp/type-fest";
+import type { ExtendableDisposer } from "@freelensapp/utilities";
 
 export interface ExtensionInfo {
   name: string;
@@ -42,6 +44,14 @@ interface NpmRegistryPackageDescriptor {
 
 export type AttemptInstallByInfo = (info: ExtensionInfo) => Promise<void>;
 
+const isValidUrl = (value: string) => {
+  try {
+    return Boolean(new URL(value));
+  } catch {
+    return false;
+  }
+};
+
 const attemptInstallByInfoInjectable = getInjectable({
   id: "attempt-install-by-info",
   instantiate: (di): AttemptInstallByInfo => {
@@ -55,12 +65,12 @@ const attemptInstallByInfoInjectable = getInjectable({
     const showErrorNotification = di.inject(showErrorNotificationInjectable);
     const logger = di.inject(loggerInjectionToken);
 
-    return async (info) => {
+    const installByInfo = async (info: ExtensionInfo, baseUrl: string, disposer: ExtendableDisposer): Promise<void> => {
       const { name, version: versionOrTagName, requireConfirmation = false } = info;
-      const disposer = extensionInstallationStateStore.startPreInstall();
-      const baseUrl = await getBaseRegistryUrl();
       const registryUrl = new URL(baseUrl);
-      registryUrl.pathname = name;
+      // keep the path of a registry served under a prefix, such as Artifactory's /artifactory/api/npm/<repo>/
+      // a scoped name is escaped the way npm does it: @scope%2fname
+      registryUrl.pathname = registryUrl.pathname.replace(/\/?$/, "/") + name.replace("/", "%2f");
       let json: NpmRegistryPackageDescriptor;
 
       try {
@@ -186,10 +196,19 @@ const attemptInstallByInfoInjectable = getInjectable({
       }
 
       const fileName = getBasenameOfPath(tarballUrl);
-      const request = await downloadBinary(tarballUrl, { timeout: 30_000 });
+      // a registry that lists the tarball of the default one is asked for it instead
+      const downloadUrl = getTarballDownloadUrl(tarballUrl, baseUrl);
+
+      if (downloadUrl !== tarballUrl) {
+        logger.info(
+          `[ATTEMPT-INSTALL-BY-INFO]: downloading ${tarballUrl} from the configured registry: ${downloadUrl}`,
+        );
+      }
+
+      const request = await downloadBinary(downloadUrl, { timeout: 30_000 });
 
       if (!request.callWasSuccessful) {
-        showErrorNotification(`Failed to download extension: ${request.error}`);
+        showErrorNotification(`Failed to download extension from ${downloadUrl}: ${request.error}`);
 
         return disposer();
       }
@@ -203,7 +222,7 @@ const attemptInstallByInfoInjectable = getInjectable({
       return attemptInstall(
         {
           fileName,
-          data: Buffer.from(request.response),
+          data: request.response,
           // The concrete version, not the tag that was asked for: a later tag
           // move must not change what counts as installed.
           source: { kind: "registry", name, version },
@@ -211,6 +230,31 @@ const attemptInstallByInfoInjectable = getInjectable({
         },
         disposer,
       );
+    };
+
+    return async (info) => {
+      const baseUrl = await getBaseRegistryUrl();
+
+      // Checked before the pre-install phase starts, so that the notification can say what to fix.
+      if (!isValidUrl(baseUrl)) {
+        showErrorNotification(
+          'The URL of the custom extension registry is not valid. Set it in the App preferences, under "Extension Install Registry".',
+        );
+
+        return;
+      }
+
+      const disposer = extensionInstallationStateStore.startPreInstall();
+
+      try {
+        await installByInfo(info, baseUrl, disposer);
+      } catch (error) {
+        // Nothing else ends the phase on a throw, and the install form would stay disabled until a restart. Ending
+        // it again after `attemptInstall` has taken it over does no harm.
+        disposer();
+
+        throw error;
+      }
     };
   },
 });

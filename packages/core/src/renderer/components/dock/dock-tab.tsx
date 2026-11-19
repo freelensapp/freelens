@@ -46,9 +46,11 @@ class NonInjectedDockTab extends React.Component<DockTabProps & Dependencies> {
   }
 
   renderMenu(tabId: string) {
-    const { closeTab, closeAllTabs, closeOtherTabs, closeTabsToTheRight, tabs, getTabIndex } = this.props.dockStore;
+    const { closeTab, closeAllTabs, closeOtherTabs, closeTabsToTheLeft, closeTabsToTheRight, tabs, getTabIndex } =
+      this.props.dockStore;
     const closeAllDisabled = tabs.length === 1;
     const closeOtherDisabled = tabs.length === 1;
+    const closeLeftDisabled = getTabIndex(tabId) === 0;
     const closeRightDisabled = getTabIndex(tabId) === tabs.length - 1;
 
     return (
@@ -67,6 +69,9 @@ class NonInjectedDockTab extends React.Component<DockTabProps & Dependencies> {
         </MenuItem>
         <MenuItem onClick={() => closeOtherTabs(tabId)} disabled={closeOtherDisabled}>
           Close other tabs
+        </MenuItem>
+        <MenuItem onClick={() => closeTabsToTheLeft(tabId)} disabled={closeLeftDisabled}>
+          Close tabs to the left
         </MenuItem>
         <MenuItem onClick={() => closeTabsToTheRight(tabId)} disabled={closeRightDisabled}>
           Close tabs to the right

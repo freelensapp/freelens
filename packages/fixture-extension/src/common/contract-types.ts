@@ -27,12 +27,46 @@ export type FixtureLogger = Common.Logger;
 export type FixtureInstalledExtension = Common.InstalledExtension;
 export type FixtureCluster = Common.Catalog.KubernetesCluster;
 export type FixtureClusterConnectionStatus = Common.Clusters.ClusterConnectionStatus;
+export type FixtureExtensionCredentials = Common.ExtensionCredentials;
+export type CredentialsForExtensionReturnsTheExportedType = Holds<
+  ReturnType<typeof Common.Credentials.forExtension> extends Common.ExtensionCredentials ? true : false
+>;
+// It takes the extension instance of either process.
+export type CredentialsForExtensionTakesAMainExtension = Holds<
+  Main.LensExtension extends Parameters<typeof Common.Credentials.forExtension>[0] ? true : false
+>;
+export type CredentialsForExtensionTakesARendererExtension = Holds<
+  Renderer.LensExtension extends Parameters<typeof Common.Credentials.forExtension>[0] ? true : false
+>;
 export type FixtureStatusBarRegistration = Common.Types.StatusBarRegistration;
 export type FixtureShellEnvModifier = Common.Types.ShellEnvModifier;
 export type FixturePageRegistration = Common.Types.PageRegistration;
 export type FixtureAppPreferenceRegistration = Common.Types.AppPreferenceRegistration;
 export type FixtureProtocolHandlerRegistration = Common.Types.ProtocolHandlerRegistration;
 export type FixtureCustomResourceRegistration = Common.Types.CustomResourceRegistration;
+
+// The helper types the signatures of the API are written in, so that an
+// extension can type what it passes to them, and the declaration names them
+// without importing a package of its own.
+export type FixtureJsonValue = Common.Types.JsonValue;
+export type FixturePodPatch = Common.Types.PartialDeep<Renderer.K8sApi.Pod>;
+export type FixturePodPatchIntoArrays = Common.Types.PartialDeep<Renderer.K8sApi.Pod, { recurseIntoArrays: true }>;
+export type FixtureReadonlyPod = Common.Types.ReadonlyDeep<Renderer.K8sApi.Pod>;
+export type FixtureRequireAtLeastOne = Common.Types.RequireAtLeastOne<{ first?: string; second?: number }>;
+export type FixtureRequireExactlyOne = Common.Types.RequireExactlyOne<{ first: string; second: number }>;
+export type FixtureSetRequired = Common.Types.SetRequired<{ optional?: string }, "optional">;
+export type FixtureValueOf = Common.Types.ValueOf<{ first: string; second: number }>;
+// The patch `KubeApi.update` takes is the one an extension names.
+type FixturePodUpdatePatch = Parameters<Renderer.K8sApi.PodApi["update"]>[1];
+export type PodUpdateTakesThePartialDeepOfCommonTypes = Holds<
+  FixturePodPatch extends FixturePodUpdatePatch ? (FixturePodUpdatePatch extends FixturePodPatch ? true : false) : false
+>;
+// The active theme is the `ReadonlyDeep` of the theme type an extension names.
+export type ActiveThemeIsTheReadonlyDeepOfLensTheme = Holds<
+  ReturnType<typeof Renderer.Theme.activeTheme.get> extends Common.Types.ReadonlyDeep<Renderer.Theme.LensTheme>
+    ? true
+    : false
+>;
 
 // The `fetch` option of a bundled library, typed with the environment's own
 // standard `fetch` types, the way the MCP SDK types its transports'.
@@ -90,6 +124,30 @@ export type FixtureRendererExtensionType = Renderer.LensExtension;
 export type FixtureRendererFetch = typeof Renderer.Util.fetch;
 export type FixtureRendererNavigate = typeof Renderer.Navigation.navigate;
 export type FixtureIconProps = Renderer.Component.IconProps;
+export type FixtureSecretCertificatesProps = Renderer.Component.SecretCertificatesProps;
+
+// The overview cards are function components, a value only, and their props
+// are types only, so no name is a pair. The props type an extension's own data
+// and have to be what the component takes.
+export type FixtureCapacityCardProps = Renderer.Component.CapacityCardProps;
+export type FixtureCapacityCardLabels = Renderer.Component.CapacityCardLabels;
+export type FixtureStatusCardProps = Renderer.Component.StatusCardProps;
+export type FixtureStatusCardStatus = Renderer.Component.StatusCardStatus;
+export type FixtureStatusCardTone = Renderer.Component.StatusCardTone;
+export type CapacityCardTakesItsProps = Holds<
+  Parameters<typeof Renderer.Component.CapacityCard>[0] extends FixtureCapacityCardProps ? true : false
+>;
+export type StatusCardTakesItsProps = Holds<
+  Parameters<typeof Renderer.Component.StatusCard>[0] extends FixtureStatusCardProps ? true : false
+>;
+export type FixtureOverviewStyle = ReturnType<typeof Common.App.Preferences.getOverviewStyle>;
+export type OverviewStyleIsCardsOrCharts = Holds<
+  FixtureOverviewStyle extends "cards" | "charts"
+    ? "cards" | "charts" extends FixtureOverviewStyle
+      ? true
+      : false
+    : false
+>;
 
 // The same pairs in `Renderer.K8sApi`.
 export type FixtureRendererKubeApi = Renderer.K8sApi.KubeApi<Renderer.K8sApi.Pod>;

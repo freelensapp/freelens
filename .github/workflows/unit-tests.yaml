@@ -33,6 +33,16 @@ jobs:
       TURBOREPO_CACHE: ${{ github.workspace }}/.turbo
 
     steps:
+      # First, so that a shard that fails before its tests still uploads the
+      # name of its job and shows up in the report as one without results.
+      - name: Prepare the report of the tests
+        shell: bash
+        env:
+          JOB: unit tests (shard ${{ matrix.shard }}/${{ strategy.job-total }})
+        run: |
+          mkdir -p "${RUNNER_TEMP}/junit"
+          printf '%s\n' "${JOB}" > "${RUNNER_TEMP}/junit/job.txt"
+
       - name: Checkout
         uses: actions/checkout@v7
 
@@ -41,7 +51,7 @@ jobs:
       - name: Set up mise
         uses: jdx/mise-action@v5
         with:
-          version: 2026.10.19 # datasource=github-releases depName=jdx/mise
+          version: 2026.11.10 # datasource=github-releases depName=jdx/mise
           install_args: yq
 
       - name: Setup node
@@ -141,8 +151,20 @@ jobs:
       # --reporter=github-actions surfaces failing tests as inline annotations
       # on the PR/commit; --includeTaskLocation gives them accurate file:line.
       # verbose keeps a full per-test log in the shard's job output.
+      # junit is the input of the report of all the shards, see "Test Reports"
+      # in AGENTS.md.
       - name: Run unit tests (shard ${{ matrix.shard }}/${{ strategy.job-total }})
-        run: pnpm --color=always test:unit --shard=${{ matrix.shard }}/${{ strategy.job-total }} --reporter=verbose --reporter=github-actions --includeTaskLocation
+        run: pnpm --color=always test:unit --shard=${{ matrix.shard }}/${{ strategy.job-total }} --reporter=verbose --reporter=github-actions --includeTaskLocation --reporter=junit --outputFile.junit="${RUNNER_TEMP}/junit/unit-tests.xml"
+
+      - name: Upload the report of the tests
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: junit-unit-tests-shard-${{ matrix.shard }}
+          path: ${{ runner.temp }}/junit/
+          retention-days: 7
+          # a re-run of the shard replaces the report of its earlier attempt
+          overwrite: true
 
       # Must run the root `clean:dist` script directly (not `--parallel`,
       # which skips the workspace root) so its dlx cache warmup stays ahead
@@ -169,3 +191,49 @@ jobs:
         run: test "${RESULT}" = success
         env:
           RESULT: ${{ needs.test-unit.result }}
+
+  # The summary of the run. The comment on a pull request comes from the Test
+  # report workflow, whose token can write on a pull request of a fork too.
+  report:
+    name: report
+
+    needs: test-unit
+    if: ${{ !cancelled() }}
+
+    runs-on: ubuntu-26.04-arm
+    timeout-minutes: 5
+
+    permissions:
+      actions: read
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+          sparse-checkout: |
+            .github/scripts
+            .nvmrc
+          sparse-checkout-cone-mode: false
+
+      - name: Setup node
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+
+      - name: Download the reports of the tests
+        uses: actions/download-artifact@v8
+        with:
+          pattern: junit-*
+          path: reports
+
+      - name: Summary of the reports
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPORT_RUN_ID: ${{ github.run_id }}
+        run: |
+          gh api --paginate "repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}/attempts/${GITHUB_RUN_ATTEMPT}/jobs" --jq '.jobs[] | [.name, .html_url] | @tsv' > jobs.tsv
+          node .github/scripts/test-report.mjs reports jobs.tsv "Unit tests" >> "${GITHUB_STEP_SUMMARY}"

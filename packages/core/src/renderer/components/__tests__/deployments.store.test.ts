@@ -19,6 +19,7 @@ import podStoreInjectable from "../workloads-pods/store.injectable";
 import type { PodSpec } from "@freelensapp/kube-object";
 
 import type { DeploymentStore } from "../workloads-deployments/store";
+import type { PodStore } from "../workloads-pods/store";
 
 const spec: PodSpec = {
   containers: [
@@ -214,6 +215,7 @@ const failedPod = new Pod({
 
 describe("Deployment Store tests", () => {
   let deploymentStore: DeploymentStore;
+  let podStore: PodStore;
 
   beforeEach(() => {
     const di = getDiForUnitTesting();
@@ -232,7 +234,7 @@ describe("Deployment Store tests", () => {
         }),
     );
 
-    const podStore = di.inject(podStoreInjectable);
+    podStore = di.inject(podStoreInjectable);
 
     // Add pods to pod store
     podStore.items = observable.array([runningPod, failedPod, pendingPod]);
@@ -275,5 +277,39 @@ describe("Deployment Store tests", () => {
       ["failed", 0],
       ["pending", 1],
     ]);
+  });
+
+  describe("getChildPods", () => {
+    const createLabelledPod = (name: string, namespace: string, labels: Record<string, string>) =>
+      new Pod({
+        apiVersion: "v1",
+        kind: "Pod",
+        metadata: {
+          name,
+          resourceVersion: "1",
+          uid: `${namespace}-${name}`,
+          labels,
+          namespace,
+          selfLink: `/api/v1/namespaces/${namespace}/pods/${name}`,
+        },
+      });
+
+    it("returns the pods of the deployment's namespace that carry every template label", () => {
+      const extraLabelPod = createLabelledPod("extra-label", "default", { name: "kube-state-metrics", tier: "x" });
+      const otherNamespacePod = createLabelledPod("other-namespace", "other", { name: "kube-state-metrics" });
+      const otherLabelPod = createLabelledPod("other-label", "default", { name: "something-else" });
+
+      podStore.items = observable.array([otherNamespacePod, runningPod, otherLabelPod, extraLabelPod]);
+
+      expect(deploymentStore.getChildPods(runningDeployment)).toEqual([runningPod, extraLabelPod]);
+    });
+
+    it("follows changes of the pods", () => {
+      expect(deploymentStore.getChildPods(runningDeployment)).toEqual([runningPod]);
+
+      podStore.items.remove(runningPod);
+
+      expect(deploymentStore.getChildPods(runningDeployment)).toEqual([]);
+    });
   });
 });

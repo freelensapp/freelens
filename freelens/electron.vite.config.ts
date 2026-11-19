@@ -308,6 +308,62 @@ function runtimeRequireExternalsPlugin() {
   };
 }
 
+// Modules of monaco-editor that Freelens does not use, replaced with empty
+// modules: the language services of TypeScript and JavaScript, CSS and HTML,
+// whose modes and workers take some 14 MB of the package, and the LSP client.
+// Syntax highlighting of those languages is a separate language definition and
+// stays. The host's Monaco is shared with extensions, so its `typescript`,
+// `css`, `html` and `lsp` are empty for them too, as the host-provided
+// singletons of docs/extensions/api.md say.
+const monacoModulesLeftOut = [
+  "esm/vs/languages/features/typescript/register.js",
+  "esm/vs/languages/features/css/register.js",
+  "esm/vs/languages/features/html/register.js",
+  "esm/external/monaco-lsp-client/out/index.js",
+];
+
+function monacoModulesLeftOutPlugin() {
+  const found = new Set<string>();
+  let isBuild = false;
+
+  const plugin = {
+    name: "freelens:monaco-modules-left-out",
+    enforce: "pre" as const,
+    load(id: string) {
+      const path = id.replace(/\?.*$/, "").replaceAll("\\", "/");
+      const module = monacoModulesLeftOut.find((suffix) => path.endsWith(`/monaco-editor/${suffix}`));
+
+      if (!module) {
+        return null;
+      }
+
+      found.add(module);
+
+      return { code: "export {};", moduleSideEffects: false };
+    },
+  };
+
+  return {
+    ...plugin,
+    config(_config: unknown, env: { command: string }) {
+      isBuild = env.command === "build";
+
+      // The dev server pre-bundles monaco-editor, which the plugins of the
+      // build do not see, so that development behaves as the build.
+      return { optimizeDeps: { rolldownOptions: { plugins: [plugin] } } };
+    },
+    buildEnd() {
+      // A newer monaco-editor may move these modules: the build fails rather
+      // than ship them again unnoticed.
+      const missing = monacoModulesLeftOut.filter((module) => !found.has(module));
+
+      if (isBuild && missing.length > 0) {
+        throw new Error(`monaco-editor no longer has ${missing.join(", ")}: update monacoModulesLeftOut`);
+      }
+    },
+  };
+}
+
 // Set the renderer's public base path for the packaged build.
 //
 // The packaged app loads the renderer from the Freelens proxy web root
@@ -376,6 +432,7 @@ export default defineConfig({
       react(),
       runtimeRequireExternalsPlugin(),
       rendererBuildBasePlugin("/build/"),
+      monacoModulesLeftOutPlugin(),
     ],
     server: {
       // Same serving architecture as the webpack dev server it replaces: the
@@ -386,7 +443,6 @@ export default defineConfig({
       host: "127.0.0.1",
       port: devServerPort,
       strictPort: true,
-      cors: true, // was Access-Control-Allow-Origin: *
       allowedHosts: [".freelens.app"],
       hmr: {
         protocol: "ws",

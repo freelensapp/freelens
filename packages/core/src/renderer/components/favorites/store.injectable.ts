@@ -5,7 +5,7 @@
 
 import { sidebarItemsInjectable } from "@freelensapp/cluster-sidebar";
 import { getInjectable } from "@ogre-tools/injectable";
-import { action, computed, IObservableValue } from "mobx";
+import { action, computed, IComputedValue, IObservableValue } from "mobx";
 import favoritesStateInjectable from "../../../features/favorites/common/state.injectable";
 import favoritesSidebarItemInjectable from "./sidebar-item.injectable";
 import { flattenSidebarItems } from "./utils";
@@ -17,7 +17,7 @@ import type { FavoriteItem, FavoritesStorageState } from "../../../features/favo
 export class FavoritesStore {
   constructor(
     private state: IObservableValue<FavoritesStorageState>,
-    private sidebarItems: IObservableValue<SidebarItemDeclaration[]>,
+    private sidebarItems: IComputedValue<SidebarItemDeclaration[]>,
   ) {}
 
   @computed get items(): FavoriteItem[] {

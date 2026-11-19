@@ -16,6 +16,12 @@ import type { AsyncResult } from "@freelensapp/utilities";
  */
 export interface DownloadBinaryOptions {
   timeout?: number;
+  /**
+   * The most bytes the body may have. A `content-length` over it fails the download before the
+   * body is read, and the body is counted as it arrives, the download aborted as soon as it passes
+   * the limit: the header may be missing or wrong.
+   */
+  maxSize?: number;
 }
 
 export interface DownloadProgress {
@@ -33,6 +39,11 @@ export interface DownloadBinaryLocalOptions extends DownloadBinaryOptions {
   /** abort when no bytes arrive for this long (headers included) */
   stallTimeout?: number;
 }
+
+/**
+ * The error of a download that passed its `maxSize`.
+ */
+export const getDownloadTooLargeError = (maxSize: number) => `The response is larger than ${maxSize} bytes`;
 
 export type DownloadBinary = (url: string, opts?: DownloadBinaryLocalOptions) => AsyncResult<Buffer, string>;
 
@@ -70,16 +81,29 @@ const downloadBinaryInjectable = getInjectable({
           };
         }
 
-        const { onProgress } = opts ?? {};
+        const { onProgress, maxSize } = opts ?? {};
+        const isTooLarge = (size: number) => maxSize !== undefined && size > maxSize;
+        const tooLarge = () => ({
+          callWasSuccessful: false as const,
+          error: getDownloadTooLargeError(maxSize ?? 0),
+        });
+        const contentLength = Number(result.headers.get("content-length"));
+        const total = Number.isFinite(contentLength) && contentLength > 0 ? contentLength : undefined;
 
-        // The body is streamed either to report progress or to re-arm the
-        // stall timer on every chunk; `arrayBuffer()` would expose neither.
-        if ((!onProgress && !stall) || !result.body) {
+        if (total !== undefined && isTooLarge(total)) {
+          await result.body?.cancel().catch(() => undefined);
+
+          return tooLarge();
+        }
+
+        // The body is streamed to report progress, to re-arm the stall timer
+        // on every chunk, or to stop at the size limit; `arrayBuffer()` would
+        // allow none of these.
+        if ((!onProgress && !stall && maxSize === undefined) || !result.body) {
           try {
-            return {
-              callWasSuccessful: true,
-              response: Buffer.from(await result.arrayBuffer()),
-            };
+            const response = Buffer.from(await result.arrayBuffer());
+
+            return isTooLarge(response.length) ? tooLarge() : { callWasSuccessful: true, response };
           } catch (error) {
             return {
               callWasSuccessful: false,
@@ -87,9 +111,6 @@ const downloadBinaryInjectable = getInjectable({
             };
           }
         }
-
-        const contentLength = Number(result.headers.get("content-length"));
-        const total = Number.isFinite(contentLength) && contentLength > 0 ? contentLength : undefined;
         const chunks: Buffer[] = [];
         let transferred = 0;
 
@@ -109,8 +130,15 @@ const downloadBinaryInjectable = getInjectable({
 
             const buffer = Buffer.from(value);
 
-            chunks.push(buffer);
             transferred += buffer.length;
+
+            if (isTooLarge(transferred)) {
+              await reader.cancel().catch(() => undefined);
+
+              return tooLarge();
+            }
+
+            chunks.push(buffer);
             stall?.progressed();
             onProgress?.({ transferred, total });
           }

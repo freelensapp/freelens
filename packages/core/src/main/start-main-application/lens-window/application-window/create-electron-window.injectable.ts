@@ -13,12 +13,13 @@ import getAbsolutePathInjectable from "../../../../common/path/get-absolute-path
 import openLinkInBrowserInjectable from "../../../../common/utils/open-link-in-browser.injectable";
 import isLinuxInjectable from "../../../../common/vars/is-linux.injectable";
 import lensResourcesDirInjectable from "../../../../common/vars/lens-resources-dir.injectable";
+import manageZoomOfWebContentsInjectable from "../../../../features/zoom/main/manage-zoom-of-web-contents.injectable";
 import applicationWindowStateInjectable from "./application-window-state.injectable";
 import { logFailedLoad } from "./log-failed-load";
 import sessionCertificateVerifierInjectable from "./session-certificate-verifier.injectable";
 import setFreelensProxyTokenCookieInjectable from "./set-freelens-proxy-token-cookie.injectable";
 
-import type { RequireExactlyOne } from "type-fest";
+import type { RequireExactlyOne } from "@freelensapp/type-fest";
 
 import type { ElectronWindow } from "./create-lens-window.injectable";
 
@@ -64,6 +65,7 @@ const createElectronWindowInjectable = getInjectable({
     const pathExistsSync = di.inject(pathExistsSyncInjectable);
     const sessionCertificateVerifier = di.inject(sessionCertificateVerifierInjectable);
     const setFreelensProxyTokenCookie = di.inject(setFreelensProxyTokenCookieInjectable);
+    const manageZoomOfWebContents = di.inject(manageZoomOfWebContentsInjectable);
 
     return (configuration) => {
       const applicationWindowState = di.inject(applicationWindowStateInjectable, {
@@ -116,6 +118,8 @@ const createElectronWindowInjectable = getInjectable({
 
       browserWindow.webContents.session.setCertificateVerifyProc(sessionCertificateVerifier);
 
+      const stopManagingZoom = manageZoomOfWebContents(browserWindow.webContents);
+
       browserWindow
         .on("focus", () => {
           configuration.onFocus?.();
@@ -124,6 +128,7 @@ const createElectronWindowInjectable = getInjectable({
           configuration.onBlur?.();
         })
         .on("closed", () => {
+          stopManagingZoom();
           configuration.onClose();
           applicationWindowState.unmanage();
         })

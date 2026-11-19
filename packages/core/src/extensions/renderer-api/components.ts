@@ -49,6 +49,13 @@ export {
 export type NotificationsStore = import("@freelensapp/notifications").NotificationsStore;
 export * from "@freelensapp/spinner";
 export * from "@freelensapp/tooltip";
+// Explicit rather than a star export: the contract is the component and its
+// props only. The parsed data and the request to the main process stay host
+// internals.
+export {
+  SecretCertificates,
+  type SecretCertificatesProps,
+} from "../../features/secret-certificates/renderer/secret-certificates";
 export * from "../../renderer/components/add-remove-buttons";
 export * from "../../renderer/components/avatar";
 export * from "../../renderer/components/badge";
@@ -102,6 +109,17 @@ export {
 } from "../../renderer/components/namespaces/namespace-select-badge";
 export * from "../../renderer/components/namespaces/namespace-select-filter";
 export * from "../../renderer/components/no-items";
+// Explicit rather than a star export: the contract is the two cards and their
+// props, whatever else the module comes to hold.
+export {
+  CapacityCard,
+  type CapacityCardLabels,
+  type CapacityCardProps,
+  StatusCard,
+  type StatusCardProps,
+  type StatusCardStatus,
+  type StatusCardTone,
+} from "../../renderer/components/overview-cards";
 export * from "../../renderer/components/path-picker";
 export * from "../../renderer/components/radio";
 export * from "../../renderer/components/render-delay";

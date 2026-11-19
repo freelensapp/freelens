@@ -25,14 +25,13 @@ import styles from "./add-cluster.module.scss";
 
 import type { ShowNotification } from "@freelensapp/notifications";
 
-import type { KubeConfig } from "@kubernetes/client-node";
-
 import type { EmitAppEvent } from "../../../common/app-event-bus/emit-event.injectable";
 import type { NavigateToCatalog } from "../../../common/front-end-routing/routes/catalog/navigate-to-catalog.injectable";
+import type { KubeConfigData } from "../../../common/kube-config";
 import type { GetDirnameOfPath } from "../../../common/path/get-dirname.injectable";
 
 interface Option {
-  config: KubeConfig;
+  config: KubeConfigData;
   error?: string;
 }
 
@@ -45,7 +44,7 @@ interface Dependencies {
   showErrorNotification: ShowNotification;
 }
 
-function getContexts(config: KubeConfig): Map<string, Option> {
+function getContexts(config: KubeConfigData): Map<string, Option> {
   return new Map(
     splitConfig(config).map(({ config, validationResult }) => [
       config.currentContext,

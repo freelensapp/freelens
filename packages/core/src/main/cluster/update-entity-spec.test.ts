@@ -162,4 +162,20 @@ describe("update-entity-spec", () => {
 
     expect(entity.spec.metrics?.prometheus?.type).toEqual("some-prometheus-provider-type");
   });
+
+  it("given cluster icon changes from an image to a color, drops the image", () => {
+    entity.spec.icon = { src: "data:image/png;base64,AAAA" };
+    cluster.preferences.icon = "hsl(215, 60%, 27%)";
+
+    updateEntitySpec(entity, cluster);
+    expect(entity.spec.icon).toEqual({ background: "hsl(215, 60%, 27%)" });
+  });
+
+  it("given cluster icon changes from a color to an image, drops the color", () => {
+    entity.spec.icon = { background: "hsl(215, 60%, 27%)" };
+    cluster.preferences.icon = "data:image/png;base64,AAAA";
+
+    updateEntitySpec(entity, cluster);
+    expect(entity.spec.icon).toEqual({ src: "data:image/png;base64,AAAA" });
+  });
 });

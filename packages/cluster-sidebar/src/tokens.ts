@@ -26,6 +26,21 @@ export interface SidebarItemRegistration {
    */
   isHiddenInTree?: IComputedValue<boolean>;
   orderNumber: number | IComputedValue<number>;
+  /**
+   * The key of the saved order of the sidebar that gives a top-level item its
+   * `orderNumber`, which a drag and drop moves. Defaults to the id of the item.
+   * The top-level items of an extension share the key of the extension, so
+   * that they move together.
+   */
+  orderKey?: string;
+  /**
+   * Orders the items that share an `orderKey` among themselves, such as the
+   * top-level items of an extension, which the order of the extension places
+   * as one block. It never moves an item out of its block. Items with the
+   * same number, and items without one, keep the order of registration; an
+   * item without one comes after the items with one.
+   */
+  orderNumberInBlock?: number;
 }
 
 export interface SidebarItemDeclaration {
@@ -41,6 +56,8 @@ export interface SidebarItemDeclaration {
    * children, whether none of its visible children is in the tree.
    */
   isHiddenInTree: IComputedValue<boolean>;
+  /** The key of the saved order that places the item, when it is not its id. */
+  orderKey?: string;
   children: SidebarItemDeclaration[];
 }
 

@@ -18,9 +18,9 @@ $font-monospace: var(--font-monospace);
 $font-size-small: var(--font-size-small);
 $font-size: var(--font-size);
 $font-size-big: var(--font-size-big);
-$font-weight-thin: var(--font-weight-thin);
-$font-weight-normal: var(--font-weight-normal);
-$font-weight-bold: var(--font-weight-bold);
+$font-weight-thin: 300;
+$font-weight-normal: 400;
+$font-weight-bold: 500;
 
 // Z-index correlations
 $zIndex-sidebar-hover: 500;

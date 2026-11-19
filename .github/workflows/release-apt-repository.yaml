@@ -46,17 +46,25 @@ jobs:
 
     # The Release run was on the tag of its release, so its head branch is the
     # tag name. A release that is missing or still a draft stops the run.
+    # Release leaves it a draft when it has no notes from the Roadmap
+    # discussion; the run after it then skips the index files, which are built
+    # by hand once the release is published.
     steps:
       - name: Set release tag
         id: release
         run: |
           set -eo pipefail
           tag=${tag:-$(gh release view --repo "$GITHUB_REPOSITORY" --json tagName --jq .tagName)}
-          echo "tag=$tag" | tee -a $GITHUB_OUTPUT
-          if [[ $(gh release view "$tag" --repo "$GITHUB_REPOSITORY" --json isDraft --jq .isDraft) != false ]]; then
+          draft=$(gh release view "$tag" --repo "$GITHUB_REPOSITORY" --json isDraft --jq .isDraft)
+          if [[ $draft == true && $GITHUB_EVENT_NAME == workflow_run ]]; then
+            echo "::notice::GitHub release $tag is still a draft: run this workflow by hand with tag $tag once it is published"
+            exit 0
+          fi
+          if [[ $draft != false ]]; then
             echo "::error::GitHub release $tag is missing or still a draft"
             exit 1
           fi
+          echo "tag=$tag" | tee -a $GITHUB_OUTPUT
         env:
           tag: ${{ github.event.workflow_run.head_branch || inputs.tag }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -69,6 +77,8 @@ jobs:
 
     needs:
       - find-release
+
+    if: needs.find-release.outputs.tag != ''
 
     runs-on: ubuntu-26.04-arm
     environment: apt-signing

@@ -107,6 +107,14 @@ uses a host API whose types name it: `Renderer.Component.MonacoEditor` takes its
 extension that renders it declares `monaco-editor`, at the host's version
 ([C11](#c11-third-party-bundled-libraries)).
 
+**The host's Monaco leaves out what Freelens does not use:** the language
+services of TypeScript and JavaScript, CSS and HTML, and the LSP client.
+`MonacoEditor.typescript`, `MonacoEditor.css`, `MonacoEditor.html` and
+`MonacoEditor.lsp` are empty, although the types of `monaco-editor` declare
+them, so an extension that uses them fails at runtime, not when it compiles.
+Those languages keep their syntax highlighting, and JSON keeps its language
+service.
+
 **Each process publishes the set it has**, which is why the third column exists.
 Main has no window, so it publishes no DOM renderer and no code editor. What it
 has is what an extension's main entry point can really share: `mobx`, where an
@@ -246,11 +254,11 @@ before the first extension loads.
 **Guarantee.** These are the members of each namespace. A symbol not listed here
 is not reachable (see [C1](#c1-packaging-and-publication)).
 
-| Namespace  | Members                                                                                                                                                                              |
-| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `Common`   | `App`, `Catalog`, `Clusters`, `EventBus`, `Proxy`, `Store`, `Types`, `Util`, `logger`; types `InstalledExtension`, `LensExtension`, `LensExtensionManifest`, `Logger`, `PackageJson` |
-| `Main`     | `Catalog`, `Ipc`, `K8s`, `K8sApi`, `LensExtension`, `Navigation`, `Power`, `Shell`, `Util`                                                                                           |
-| `Renderer` | `Catalog`, `Component`, `Ipc`, `K8s`, `K8sApi`, `LensExtension`, `Navigation`, `Theme`, `Util`                                                                                       |
+| Namespace  | Members                                                                                                                                                                                                                     |
+| ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Common`   | `App`, `Catalog`, `Clusters`, `Credentials`, `EventBus`, `Proxy`, `Store`, `Types`, `Util`, `logger`; types `ExtensionCredentials`, `InstalledExtension`, `LensExtension`, `LensExtensionManifest`, `Logger`, `PackageJson` |
+| `Main`     | `Catalog`, `Ipc`, `K8s`, `K8sApi`, `LensExtension`, `Navigation`, `Power`, `Shell`, `Util`                                                                                                                                  |
+| `Renderer` | `Catalog`, `Component`, `Ipc`, `K8s`, `K8sApi`, `LensExtension`, `Navigation`, `Theme`, `Util`                                                                                                                              |
 
 There is no `Renderer.React`, no `Renderer.ReactDOM` and no
 `Renderer.Registrations`. React reaches extensions through
@@ -341,6 +349,46 @@ add the member to the omit list and a line to the migration guide.
 at runtime in a renderer without Node — a `ReferenceError` for a global such as
 `Buffer` — and not at compile time.
 
+### `Common.Types` names the helper types of the signatures
+
+Besides the registration shapes, `Common.Types` exports the helper types the
+signatures of the API are written in, so that an extension can type what it
+passes to them:
+
+| Type                | Where the API uses it                                                                  |
+| ------------------- | -------------------------------------------------------------------------------------- |
+| `PartialDeep`       | the data of `KubeApi.create`, `update` and `patch`, of `KubeObjectStore` and `JsonApi` |
+| `ReadonlyDeep`      | `Renderer.Theme.activeTheme`, `Common.Util.readonly`                                   |
+| `RequireAtLeastOne` | `KubeObjectHandlerRegistration`                                                        |
+| `RequireExactlyOne` | the pod volumes and the ingress backends of `K8sApi`                                   |
+| `SetRequired`       | the input validators of `Renderer.Component`                                           |
+| `JsonValue`         | `JSONSchemaProps.example`                                                              |
+| `ValueOf`           | the query parameters of `JsonApi`                                                      |
+
+```ts
+import type { Common, Renderer } from "@freelensapp/extensions";
+
+const patch: Common.Types.PartialDeep<Renderer.K8sApi.Pod> = {
+  metadata: { labels: { team: "storage" } },
+};
+```
+
+**Guarantee.** Each is the type of the same name of type-fest 5.10.0, from a
+copy of its sources that the host carries in a private package, so it
+accepts and rejects the same values, with `exactOptionalPropertyTypes` on or
+off. The declaration imports nothing from `type-fest`
+([C11](#c11-third-party-bundled-libraries)), and an extension needs no
+type-fest to compile against it. Moving the copy to a type-fest that requires
+more of an extension's compiler options waits for a major
+([C14](#c14-versioning-and-compatibility)). `Common.PackageJson` is the
+`PackageJson` of the same copy, as a type alias.
+
+**Failure mode.** A type-fest type that `Common.Types` does not export is not
+reachable through the API. An extension that needs one declares `type-fest` in
+its own `devDependencies`, at any version; the types of that copy are separate
+declarations, which match the ones of the API only as far as the two versions
+agree.
+
 ### `Catalog.getAllClusters()` and `getClusterById()` are observable
 
 `Main.Catalog` and `Renderer.Catalog` both have `getAllClusters()` and
@@ -386,6 +434,156 @@ function through the API and change a cluster's status the way the host does.
 **Failure mode.** A reaction made with the extension's own copy of mobx rather
 than the host's fails silently, as [C3](#c3-host-provided-singletons)
 describes: it does not fire where it should, and nothing reports it.
+
+### `Credentials` keeps an extension's values encrypted at rest
+
+`Common.Credentials.forExtension(extension)` returns the credentials of an
+extension, typed as `Common.ExtensionCredentials`: string values under string
+keys, for the token, password or API key of a service outside the cluster. It
+works in both processes. `Common.Store.ExtensionStore` writes a plain JSON
+file, which is the wrong place for such a value.
+
+```ts
+import { Common, Main } from "@freelensapp/extensions";
+
+export default class MyExtension extends Main.LensExtension {
+  private readonly credentials = Common.Credentials.forExtension(this);
+
+  async onActivate() {
+    if (await this.credentials.isAvailable()) {
+      const token = await this.credentials.get("api-token");
+      // ...
+    }
+  }
+}
+```
+
+**Guarantee.** A value is never written to disk in clear text. It is
+encrypted with Electron's `safeStorage`, with a key that the operating
+system's secret store holds: the Keychain on macOS, DPAPI on Windows,
+libsecret or KWallet on Linux. That protects it at rest: in backups, on a
+copied disk, from other accounts of the system.
+
+**Surface.**
+
+| Member            | Does                                                                 |
+| ----------------- | -------------------------------------------------------------------- |
+| `isAvailable()`   | resolves to whether the system has a secret store to encrypt with    |
+| `get(key)`        | resolves to the value under `key`, or `undefined` when there is none |
+| `set(key, value)` | stores `value` under `key`, replacing a previous value               |
+| `delete(key)`     | removes the value under `key`; a key without a value is no error     |
+| `keys()`          | resolves to the keys that have a value, sorted                       |
+
+- **Bound to the instance.** `forExtension` takes the extension instance,
+  `this` in the `Main.LensExtension` or `Renderer.LensExtension` subclass, and
+  the host derives the scope from the instance it loaded, never from a string
+  or a property of the instance. Both processes of one extension reach the
+  same values. A field initializer, as above, is a supported place to call
+  it.
+- **Small values.** A key is 1 to 128 characters of `A-Z`, `a-z`, `0-9`,
+  `.`, `_` and `-`. A value is a string of at most 64 KiB in UTF-8.
+- **Keys are in clear text.** Only the values are encrypted; the keys are
+  written to the file as they are. A key names a value and must not hold one,
+  such as a user name or a host that should not be visible: put that in a
+  value, under a key such as `username`.
+- **One file per extension**, in the user data directory, named after the
+  extension's sanitized ID. Uninstalling the extension removes it, for a
+  managed and a development install alike; disabling the extension keeps it.
+- **Errors never contain a value**, nor a key.
+
+**Failure mode.**
+
+- When the system has no secret store, `isAvailable()` resolves to `false` and
+  every other method rejects. On Linux the check fails closed: the store is
+  available only when Electron reports the libsecret or KWallet backend
+  (`gnome_libsecret`, `kwallet`, `kwallet5`, `kwallet6`), and not for
+  `basic_text` (`--password-store=basic`, or a desktop the host does not
+  recognise), `unknown`, any other backend, or an Electron that cannot report
+  one. A session with no secret service at all therefore has no credentials,
+  even where Electron's asynchronous API offers a fallback provider. There is
+  no fallback to clear text and no in-memory substitute: an extension that
+  needs the value asks the user for it again, or tells the user why it cannot
+  keep it.
+- On a Linux desktop the host does not recognise, a user with a running
+  secret store makes it available by starting Freelens with
+  `--password-store=gnome-libsecret` for a Secret Service provider such as
+  GNOME Keyring or KeePassXC, or `--password-store=kwallet6` (or `kwallet5`)
+  for KWallet. An extension that tells the user why it cannot keep a value can
+  point to this.
+- A value that is not an extension instance the host loaded rejects every
+  method with a `TypeError`. So do a key and a value outside the limits.
+- A credentials file that cannot be read as one rejects every method of that
+  extension, and of no other, with an error that names the extension. The
+  host does not replace the file.
+
+**Not guaranteed.** The credentials are not a boundary between extensions, and
+not a protection against programs running as the same user. Extensions run in
+the host's processes and can call `safeStorage` themselves; on Windows any
+process of the user can decrypt DPAPI data, and on Linux any process of the
+session can read an unlocked keyring. Binding the credentials to the extension
+instance keeps one extension from reaching another's values by mistake, not by
+intent.
+
+`packages/core/src/features/extension-credentials/main/__tests__/extension-credentials-store.test.ts`
+covers the store, and
+`packages/core/src/extensions/__tests__/extension-api-credentials.test.ts` the
+binding to the instance through the API.
+
+### The overview cards follow the user's choice of Cards or Charts
+
+The cluster overview and the workloads overview show their numbers either as
+the ring and pie charts or as cards, by the user's choice in Preferences →
+Personalization → Overview style. An extension shows its own numbers the same
+way with the components the overviews render:
+
+- **`Renderer.Component.CapacityCard`** shows the usage of one resource on the
+  scale of what is allocatable. Its props, `CapacityCardProps`, are a
+  `title`, the `usage` and `allocatable` values, the optional `requests`,
+  `limits` and `capacity`, a `unit` or a `format` for the values and a
+  `formatHeadline` for the headline number, and `labels`
+  (`CapacityCardLabels`) for the names of the values, each of which keeps its
+  English default when it is not given. The card warns when the limits are
+  more than what is allocatable, and lists the capacity only when it differs
+  from it.
+- **`Renderer.Component.StatusCard`** shows the number of items of one kind and
+  their statuses. Its props, `StatusCardProps`, are a `title`, the `statuses`
+  in the order of the bar, an optional `total` that defaults to the sum of
+  their counts, an `emptyText` for no items and a `noStatusText` for items
+  without a status, and an `onClick` that makes the whole card a button. Each
+  `StatusCardStatus` has a `label`, a `count`, a CSS `color` and a `tone`
+  (`StatusCardTone`): `healthy` statuses make the healthy share, `failing` ones
+  the number that fail.
+- **`Common.App.Preferences.getOverviewStyle()`** returns `"charts"`, the
+  default, or `"cards"`. It is observable: an `observer` component that calls
+  it renders again when the user switches.
+
+The props are the contract, not the shape of the host's metrics or stores, and
+both are plain data with no host type in them. The cards take every color from
+the theme ([C10](#c10-styling-and-css)) apart from the `color` of a status,
+which is what the extension gives: a theme variable such as `var(--colorOk)`
+keeps the card in step with the theme. Each card is a `<section>` named by its
+title, or a `<button>` when it has an `onClick`. A `data-testid` given to a
+card is the prefix of the test ids of its parts. The cards set no width:
+the host lays them out in a grid of columns at least 200px wide, 16px apart.
+They are square panels without a border, drawn in `--contentColor` like the
+other panels of the overviews, so an extension that shows them among panels of
+its own spaces them the same way. A status card that is a button shows the
+hover with its background, tinted with `--primary`, and the focus with an
+outline.
+
+Every part of a card has a class that starts with the name of the card, such
+as `.CapacityCard-title`, `.CapacityCard-legendRow` or `.StatusCard-header`,
+and none has a generic class such as `.header` or `.title`. The styles of the
+page a card is on therefore do not reach into it, and an extension may restyle
+a part by its class ([C10](#c10-styling-and-css)). The state of a part is a
+data attribute rather than a class: `data-warning` on a legend row of a
+capacity card whose limits are more than what is allocatable, `data-swatch`
+on its legend swatches, `data-healthy` on the bar segments of a healthy
+status of a status card, and `data-failing` on its legend rows of a failing
+one.
+
+`packages/core/src/extensions/__tests__/extension-api-overview-cards.test.tsx`
+covers the components and the preference as an extension reaches them.
 
 ---
 
@@ -703,8 +901,10 @@ when it exists, `style.css` otherwise. Looking for a stylesheet the extension
 does not ship leaves no error in the renderer console.
 
 **Surface.** One CSS asset next to the renderer entry. The host's shared
-component classes (`.Tooltip`, `.Button`, …) are global and part of the public
-API and may be targeted; they must not be redefined. An extension's own styles
+component classes (`.Tooltip`, `.Button`, `.CapacityCard`, `.StatusCard`, …)
+are global and part of the public API and may be targeted; they must not be
+redefined. So are the classes of the parts of the overview cards, which start
+with the name of the card (`.CapacityCard-title`, `.StatusCard-legendRow`, …). An extension's own styles
 belong in CSS Modules.
 
 **Failure mode.** A build that splits CSS per module emits assets the host does
@@ -727,14 +927,14 @@ It splits in two:
   `mobx`, `mobx-react`, `monaco-editor`, and the `@types/react` and
   `@types/react-dom` that type the first two.
 - **Free to bundle**: `chart.js`, `react-select`, `conf`, `es-toolkit`, `immer`,
-  `rfc6902`, `type-fest`. A bundled `react-select` still gets the host's React,
+  `rfc6902`. A bundled `react-select` still gets the host's React,
   because that copy's own `import "react"` is rewritten too. `es-toolkit` is
   there only for the `DebouncedFunc` type the declaration imports from
   `es-toolkit/compat`.
 
 **Surface.** The built declaration imports these external specifiers:
-`type-fest`, `mobx`, `mobx-react`, `react`, `react/jsx-runtime`, `react-dom`,
-`conf`, `rfc6902`, `immer`, `es-toolkit/compat`, `monaco-editor`, `chart.js`,
+`mobx`, `mobx-react`, `react`, `react/jsx-runtime`, `react-dom`, `conf`,
+`rfc6902`, `immer`, `es-toolkit/compat`, `monaco-editor`, `chart.js`,
 `react-select`.
 
 This is the complement of the namespace enumeration in
@@ -782,6 +982,16 @@ members `Common.Util` leaves out
 ([C5](#util-is-freelensapputilities-minus-the-node-bound-members)) with their
 `node:` imports. `@types/node` is therefore not a dependency of the package: an
 extension whose main code needs it declares it itself.
+
+**Nothing of `type-fest` is imported.** The helper types the declaration names
+come from a copy in a private package of the host, inlined like the other
+private packages ([C5](#commontypes-names-the-helper-types-of-the-signatures)), because a
+dependency would impose the floors of each type-fest major, such as the
+TypeScript version and `exactOptionalPropertyTypes`, on every extension. The
+same config enforces it: `build:dist` fails on an import of `type-fest`, which
+a workspace source importing the package would bring back. The doc comments of
+the inlined types still name `type-fest` in their examples; they are not
+imports.
 
 **How the package declares them.** The host-provided entries are in
 `peerDependencies`, each **optional** in `peerDependenciesMeta` alongside
@@ -1095,6 +1305,19 @@ why there is no packing step and no symlink. The renderer loads from
 — one origin for all extensions, because an origin per extension would advertise
 an isolation the host cannot guarantee under `contextIsolation: false`.
 
+**Verified and unverified installs.** A tarball is installed **verified** when
+its source vouches for its bytes: the `dist.integrity` of the registry's
+package metadata, or a `.tgz.sha256` sidecar beside a tarball installed from a
+URL or from a file. A download which does not match its checksum is refused. A
+tarball with no checksum is installed **unverified**, and an unverified install
+stays **disabled** until the user enables it on the Extensions page; a verified
+install is enabled at once. Installing over an enabled extension disables it
+first, so an unverified build installed over it leaves it disabled too. A
+directory install is unverified by construction, is shown as development rather
+than unverified, and is enabled at once, because it is the development loop. A
+checksum proves transfer integrity, not authenticity: a host which can rewrite
+the tarball can rewrite its sidecar.
+
 ## The three dependency categories
 
 The contract has three, not two:
@@ -1109,10 +1332,11 @@ The contract has three, not two:
 - [`docs/extensions/binaries.md`](./binaries.md) — shipped binaries and process invocation
 - [freelens-example-extension](https://github.com/freelensapp/freelens-example-extension) —
   the reference template for building, type-checking, testing and releasing an
-  extension, which this document leaves to the author. It ships two agent
-  skills for coding agents:
-  [`create-freelens-extension`](https://github.com/freelensapp/freelens-example-extension/blob/main/skills/create-freelens-extension/SKILL.md)
+  extension, which this document leaves to the author
+- [`plugins/freelens`](../../plugins/freelens) — the skills for coding agents,
+  a plugin of Claude Code:
+  [`create-extension`](../../plugins/freelens/skills/create-extension/SKILL.md)
   starts a new extension from a copy of the template, and
-  [`port-freelens-extension-to-v2`](https://github.com/freelensapp/freelens-example-extension/blob/main/skills/port-freelens-extension-to-v2/SKILL.md)
+  [`port-extension-to-v2`](../../plugins/freelens/skills/port-extension-to-v2/SKILL.md)
   ports a v1 extension to this API
 - [`docs/styling.md`](../styling.md) — the styling model in full

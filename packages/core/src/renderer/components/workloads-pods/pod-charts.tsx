@@ -32,7 +32,7 @@ interface PodChartsProps {
 
 const NonInjectedPodCharts = observer(({ selectedMetricsTimeRange }: Dependencies & PodChartsProps) => {
   const { metrics, tab, object } = useContext(ResourceMetricsContext) ?? {};
-  const { start: minTime, end: maxTime } = selectedMetricsTimeRange.timestamps.get();
+  const { start: minTime, end: maxTime, step } = selectedMetricsTimeRange.timestamps.get();
 
   if (!metrics || !object || !tab) return null;
   if (isMetricsEmpty(metrics)) return <NoMetrics />;
@@ -110,6 +110,7 @@ const NonInjectedPodCharts = observer(({ selectedMetricsTimeRange }: Dependencie
       data={{ datasets: datasets[tab] }}
       minTime={minTime}
       maxTime={maxTime}
+      step={step}
     />
   );
 });

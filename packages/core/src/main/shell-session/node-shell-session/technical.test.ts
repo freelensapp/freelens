@@ -85,7 +85,7 @@ describe("technical unit tests for node shell sessions", () => {
   let di: DiContainer;
   let spawnPtyMock: MockedFunction<SpawnPty>;
   let closeDuring: Stage | undefined;
-  let websocket: EventEmitter & { readyState: number };
+  let websocket: EventEmitter & { readyState: number; send: MockedFunction<(data: string) => void> };
   /**
    * The pods that exist in the fake cluster.
    */
@@ -275,6 +275,39 @@ describe("technical unit tests for node shell sessions", () => {
     expect(spawnPtyMock.mock.calls[0][1]).toEqual(expect.arrayContaining(["attach", ...pods]));
     expect(pods.size).toBe(1);
     expect(watchRequests.map((request) => request.signal.aborted)).toEqual([true]);
+  });
+
+  it("runs the node shell through sh so that it falls back when the host has no bash", async () => {
+    await open();
+
+    const args = createNamespacedPod.mock.calls[0][0].body.spec?.containers[0].args;
+
+    expect(args?.slice(0, 8)).toEqual(["-t", "1", "-m", "-u", "-i", "-n", "-p", "--"]);
+    expect(args?.slice(8)).toEqual(["sh", "-c", "command -v bash >/dev/null && exec bash -l || exec sh -l"]);
+  });
+
+  it("reports the termination reason and exit code of a failed pod without a status message", async () => {
+    watch.start = async (path, query, callback) => {
+      setTimeout(() => {
+        for (const name of pods) {
+          callback("MODIFIED", {
+            metadata: { name },
+            status: {
+              phase: "Failed",
+              containerStatuses: [{ state: { terminated: { reason: "Error", exitCode: 127 } } }],
+            },
+          });
+        }
+      }, 0);
+
+      return new AbortController();
+    };
+
+    await expect(open()).rejects.toThrow("failed to create node pod");
+
+    expect(spawnPtyMock).not.toHaveBeenCalled();
+    expect(di.inject(shellSessionProcessesInjectable).size).toBe(0);
+    expect(websocket.send).toHaveBeenCalledWith(expect.stringContaining("Error (exit code 127)"));
   });
 
   it("deletes the pod when the terminal closes after the shell started", async () => {

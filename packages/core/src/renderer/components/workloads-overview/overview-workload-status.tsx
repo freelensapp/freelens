@@ -13,8 +13,9 @@ import { observer } from "mobx-react";
 import activeThemeInjectable from "../../themes/active.injectable";
 import { PieChart } from "../chart";
 
+import type { PascalCase } from "@freelensapp/type-fest";
+
 import type { IComputedValue } from "mobx";
-import type { PascalCase } from "type-fest";
 
 import type { LensTheme } from "../../themes/lens-theme";
 import type { PieChartData } from "../chart";
@@ -32,11 +33,17 @@ export interface OverviewWorkloadStatusProps {
   workload: Workload;
 }
 
+export interface WorkloadStatusChartProps {
+  /** The number of items in each status. */
+  status: WorkloadStatus;
+  "data-testid"?: string;
+}
+
 interface Dependencies {
   activeTheme: IComputedValue<LensTheme>;
 }
 
-const statusBackgroundColorMapping = {
+export const statusBackgroundColorMapping = {
   running: "colorOk",
   scheduled: "colorOk",
   pending: "colorWarning",
@@ -51,10 +58,10 @@ const statusBackgroundColorMapping = {
   complete: "colorSuccess",
 } as const;
 
-const NonInjectedOverviewWorkloadStatus = observer((props: OverviewWorkloadStatusProps & Dependencies) => {
-  const { workload, activeTheme } = props;
+const NonInjectedWorkloadStatusChart = observer((props: WorkloadStatusChartProps & Dependencies) => {
+  const { status, activeTheme, "data-testid": testId } = props;
 
-  const statusesToBeShown = object.entries(workload.status.get()).filter(([, val]) => val > 0);
+  const statusesToBeShown = object.entries(status).filter(([, val]) => val > 0);
   const theme = activeTheme.get();
 
   const emptyDataSet = {
@@ -93,15 +100,18 @@ const NonInjectedOverviewWorkloadStatus = observer((props: OverviewWorkloadStatu
               },
             },
           }}
-          data-testid={`workload-overview-status-chart-${workload.title.toLowerCase().replace(/\s+/, "-")}`}
+          data-testid={testId}
         />
       </div>
     </div>
   );
 });
 
-export const OverviewWorkloadStatus = withInjectables<Dependencies, OverviewWorkloadStatusProps>(
-  NonInjectedOverviewWorkloadStatus,
+/**
+ * The ring chart of the statuses of one kind of workload, as the workloads overview shows it with the Charts style.
+ */
+export const WorkloadStatusChart = withInjectables<Dependencies, WorkloadStatusChartProps>(
+  NonInjectedWorkloadStatusChart,
   {
     getProps: (di, props) => ({
       ...props,
@@ -109,3 +119,10 @@ export const OverviewWorkloadStatus = withInjectables<Dependencies, OverviewWork
     }),
   },
 );
+
+export const OverviewWorkloadStatus = observer(({ workload }: OverviewWorkloadStatusProps) => (
+  <WorkloadStatusChart
+    status={workload.status.get()}
+    data-testid={`workload-overview-status-chart-${workload.title.toLowerCase().replace(/\s+/, "-")}`}
+  />
+));

@@ -21,20 +21,21 @@ workflows — is
 [freelens-example-extension](https://github.com/freelensapp/freelens-example-extension).
 Start from it rather than rediscovering them.
 
-To port with a coding agent, the template ships the
-[`port-freelens-extension-to-v2`](https://github.com/freelensapp/freelens-example-extension/blob/main/skills/port-freelens-extension-to-v2/SKILL.md)
-skill, in the [Agent Skills](https://agentskills.io/specification) format.
-Install it into the extension's repository:
+To port with a coding agent, the `freelens` plugin of Claude Code in this
+repository has the
+[`port-extension-to-v2`](../../plugins/freelens/skills/port-extension-to-v2/SKILL.md)
+skill, in the [Agent Skills](https://agentskills.io/specification) format,
+which other agents read too:
 
 ```sh
-npx skills add freelensapp/freelens-example-extension --skill port-freelens-extension-to-v2
+claude plugin marketplace add freelensapp/freelens --sparse .claude-plugin plugins
+claude plugin install freelens@freelens
 ```
 
 The skill holds the workflow of the port and follows this guide, which it links
 to for every API change; it does not replace it. For a new extension, the
-template's
-[`create-freelens-extension`](https://github.com/freelensapp/freelens-example-extension/blob/main/skills/create-freelens-extension/SKILL.md)
-skill starts one from a copy of the template.
+[`create-extension`](../../plugins/freelens/skills/create-extension/SKILL.md)
+skill of the same plugin starts one from a copy of the template.
 
 ## Step one: bump `engines.freelens`
 
@@ -160,10 +161,20 @@ in your main entry point only what main publishes — the rest is `undefined`
 there, and marking it external gets you no error, only a later surprise.
 
 Everything else may be bundled freely: `chart.js`, `react-select`, `conf`,
-`immer`, `rfc6902`, `type-fest`, and a dependency-injection library of your own
+`immer`, `rfc6902`, and a dependency-injection library of your own
 (see [Dependency injection](#dependency-injection-bundle-your-own)). A bundled
 `react-select` still gets the host's React, because that copy's own
 `import "react"` is rewritten too.
+
+`@freelensapp/extensions` does not depend on `type-fest`. The helper types its
+signatures use are exported as `Common.Types.PartialDeep`, `ReadonlyDeep`,
+`RequireAtLeastOne`, `RequireExactlyOne`, `SetRequired`, `JsonValue` and
+`ValueOf` (see
+[C5](./api.md#commontypes-names-the-helper-types-of-the-signatures)); type a
+patch as `Common.Types.PartialDeep<Renderer.K8sApi.Pod>`. An extension that
+imports `type-fest` itself, for another type or because it relied on the
+package arriving with `@freelensapp/extensions`, declares it in its own
+`devDependencies`.
 
 Two ids that **leave** the v1 externals map, and both fail at runtime rather
 than at build time if you keep them:
@@ -718,11 +729,11 @@ moved between `Common`, `Main`, and `Renderer`.
 
 This is what each namespace provides in v2:
 
-| Namespace  | Members                                                                                                                                                                              |
-| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `Common`   | `App`, `Catalog`, `Clusters`, `EventBus`, `Proxy`, `Store`, `Types`, `Util`, `logger`; types `InstalledExtension`, `LensExtension`, `LensExtensionManifest`, `Logger`, `PackageJson` |
-| `Main`     | `Catalog`, `Ipc`, `K8s`, `K8sApi`, `LensExtension`, `Navigation`, `Power`, `Shell`, `Util`                                                                                           |
-| `Renderer` | `Catalog`, `Component`, `Ipc`, `K8s`, `K8sApi`, `LensExtension`, `Navigation`, `Theme`, `Util`                                                                                       |
+| Namespace  | Members                                                                                                                                                                                                                     |
+| ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Common`   | `App`, `Catalog`, `Clusters`, `Credentials`, `EventBus`, `Proxy`, `Store`, `Types`, `Util`, `logger`; types `ExtensionCredentials`, `InstalledExtension`, `LensExtension`, `LensExtensionManifest`, `Logger`, `PackageJson` |
+| `Main`     | `Catalog`, `Ipc`, `K8s`, `K8sApi`, `LensExtension`, `Navigation`, `Power`, `Shell`, `Util`                                                                                                                                  |
+| `Renderer` | `Catalog`, `Component`, `Ipc`, `K8s`, `K8sApi`, `LensExtension`, `Navigation`, `Theme`, `Util`                                                                                                                              |
 
 **If a symbol is not reachable through one of those, it is not reachable at
 all.** Every other `@freelensapp/*` package is private and is inlined into the
@@ -821,7 +832,8 @@ Each entry is marked _value_, _type_, _class_ (a value and a type) or _member_.
   `WorkspaceConfig`, `WorkspacePattern`, `YarnConfiguration` (_type_) —
   `Common.PackageJson` itself stays, but no longer carries type-fest's
   namespace of the same name. Import `PackageJson` from `type-fest` in your
-  own `devDependencies` if you need its members.
+  own `devDependencies` if you need its members. The other type-fest helpers
+  the API uses are in `Common.Types`.
 - `Common.App.slackUrl` (_value_) — it was always `""`.
 - `Common.InstalledExtension#isBundled`, `Common.LensExtension#isBundled`
   (_member_) — no replacement.
@@ -852,9 +864,9 @@ Each entry is marked _value_, _type_, _class_ (a value and a type) or _member_.
   `Renderer.Component.Dependencies` (_type_) — see
   [`NamespaceSelectBadgeNonInjected` is gone with them](#namespaceselectbadgenoninjected-is-gone-with-them).
 - `Renderer.Component.SliderProps`: the members it inherited from MUI's
-  `SliderProps` — `sx`, `slots`, `slotProps`, `marks`, `track`,
-  `valueLabelFormat` and the rest, and the HTML and ARIA attributes (_member_).
-  `SliderProps` now declares only `className`, `min`, `max`, `step`, `value`,
+  `SliderProps` — `sx`, `slots`, `slotProps`, `track`, `valueLabelFormat` and
+  the rest, and the HTML and ARIA attributes (_member_). `SliderProps` now
+  declares only `className`, `min`, `max`, `step`, `marks`, `value`,
   `disabled`, `orientation`, `valueLabelDisplay`, `onChange` and
   `onChangeCommitted`.
 - `Renderer.K8sApi` store classes (_class_): `ClusterRoleBindingStore`,
@@ -1575,7 +1587,7 @@ the renderer:
 | ---------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `node:crypto` hashing                                                                                                  | `Util.sha256Hex` (synchronous SHA-256), `Util.createReactKey` for a React `key`, or Web Crypto `crypto.subtle.digest` where asynchronous is fine |
 | `node:crypto` `randomUUID()` / `randomBytes(n)`                                                                        | `globalThis.crypto.randomUUID()` / `globalThis.crypto.getRandomValues(new Uint8Array(n))`, with no import                                        |
-| `crypto.X509Certificate`                                                                                               | main plus `Ipc`; there is no web equivalent                                                                                                      |
+| `crypto.X509Certificate`                                                                                               | `Renderer.Component.SecretCertificates` to show the certificates of a secret; otherwise main plus `Ipc`, as there is no web equivalent           |
 | `http` / `https`                                                                                                       | `fetch`                                                                                                                                          |
 | `electron` `ipcRenderer`                                                                                               | `Renderer.Ipc`                                                                                                                                   |
 | `electron` `clipboard`                                                                                                 | `navigator.clipboard.writeText()` / `readText()`, which return Promises; Electron 44 removes `clipboard` from the renderer                       |
@@ -1810,6 +1822,101 @@ unaffected and stays. It is the virtualized table the resource views use, it
 persists its sort order in the URL, and it expects items with a `getId()` /
 `getName()` shape — a different tool than `List` was, but the right one if your
 rows are Kubernetes objects.
+
+## `logTabStore.createWorkloadTab` opens a combined logs tab
+
+`Renderer.Component.logTabStore.createWorkloadTab({ workload })` keeps its
+signature and changes what it opens. In v1 the tab showed the logs of
+the first pod of the workload, with the other pods in a dropdown. In v2 it
+shows the logs of all the pods of the workload, merged in chronological order
+and tagged with the name of their pod, and it follows the workload: the pods
+are read again at every refresh, so a rollout or a scale does not leave the
+tab on pods that are gone.
+
+What to check in an extension that calls it:
+
+- The title of the tab is the workload (`Deployment my-app`), no longer its
+  first pod.
+- The tab reads at most 20 pods of the workload by default, the first ones
+  by name. The user sets the number, from 1 to 100, in Preferences >
+  Kubernetes > Logs.
+- `logTabStore.createPodTab` is unchanged, and is the one to call for the logs
+  of a single pod.
+
+## `Renderer.Component.SecretCertificates` shows the certificates of a secret
+
+An extension that shows a secret holding PEM certificates, the secret behind a
+`certSecretRef` or a `tls` section for one, renders the same certificate
+section as the host's secret details with one component, and needs no parser
+or `Ipc` of its own:
+
+```tsx
+import { Renderer } from "@freelensapp/extensions";
+
+const { SecretCertificates } = Renderer.Component;
+
+export const MyCertificates = ({ secret }: { secret: Renderer.K8sApi.Secret }) => (
+  <SecretCertificates data={secret.data} />
+);
+```
+
+- `data` is the data of the secret as the API returns it, every value base64
+  encoded, as in `Secret.data`. It is the one prop.
+- The component finds the `-----BEGIN CERTIFICATE-----` blocks in the values
+  and sends only those blocks to the host's main process, which parses them.
+  A private key or any other value next to a certificate never leaves the
+  renderer.
+- For each certificate it shows the subject, the issuer, the DNS names and IP
+  addresses, the serial number and the validity, titled with its key, or with
+  `key (n/m)` for each certificate of a chain under one key. A block that does
+  not parse is left out, and the certificates next to it are still shown.
+- It renders nothing while no value holds a certificate that parses, so it can
+  be placed unconditionally.
+- When `data` changes, it parses the certificates again only if the
+  certificate blocks changed, and a response to an older request is ignored.
+- It renders under the global class `SecretCertificates`, which a stylesheet
+  of the extension may target (see [Styling and CSS](#styling-and-css)).
+
+The props are the contract. The parsed certificate data and the request to
+main are internal to the host and are not exported.
+
+## `Common.Credentials` for tokens and passwords
+
+`Common.Store.ExtensionStore` writes its model to a plain JSON file in the user
+data directory. A token, a password or an API key kept there is on disk in
+clear text: in backups, in a copied profile, readable by other accounts with
+access to the disk. Keep such a value in the extension's credentials instead,
+which encrypts it with Electron's `safeStorage`:
+
+```ts
+import { Common, Renderer } from "@freelensapp/extensions";
+
+export default class MyExtension extends Renderer.LensExtension {
+  private readonly credentials = Common.Credentials.forExtension(this);
+
+  async saveToken(token: string) {
+    if (!(await this.credentials.isAvailable())) {
+      throw new Error("This system has no secret store to keep the token in");
+    }
+
+    await this.credentials.set("api-token", token);
+  }
+}
+```
+
+- Pass the extension instance, `this`; the host derives the scope from it.
+- The methods are asynchronous in both processes, and every one of them but
+  `isAvailable()` rejects when the system has no secret store. There is no
+  fallback to clear text, so handle `false` rather than assume the value was
+  kept.
+- The values are removed when the extension is uninstalled, and kept when it
+  is disabled.
+- A value already in an `ExtensionStore` stays there until the extension moves
+  it: read it from the store, `set` it in the credentials, and remove it from
+  the store.
+
+The guarantee, its limits and the failure modes are in
+[`Credentials` keeps an extension's values encrypted at rest](./api.md#credentials-keeps-an-extensions-values-encrypted-at-rest).
 
 ## Chart.js v4 (`Renderer.Component.BarChart` / `PieChart`)
 
@@ -2059,9 +2166,12 @@ What a reload is, so that what you have to write is clear:
 
 Three consequences to know:
 
-- An extension installed this way is **unverified by construction** and is
-  marked as such in the UI. The absence of a version-and-digest segment in its
-  path is what identifies it; there is no separate flag.
+- An extension installed this way is **unverified by construction**, and is
+  shown as development in the UI. Unlike an unverified tarball, it is enabled
+  when you register it (see
+  [Publishing a checksum](#publishing-a-checksum)). The absence of a
+  version-and-digest segment in its path is what identifies it; there is no
+  separate flag.
 - **Each reload retains the previous module graph.** A module object cannot be
   evicted from a realm's module map, so memory grows with the reload count.
   Deinitialisation still happens properly through `onDeactivate`, but a long
@@ -2108,109 +2218,137 @@ restarted once.
 ## Checklist
 
 - [ ] Replace any direct `@freelensapp/*` internal dependency with
-  `@freelensapp/extensions` (types only).
+      `@freelensapp/extensions` (types only).
 - [ ] Import stylesheets normally (side-effect or CSS-module import); drop any
-  `?inline` + `<style>` CSS workaround, and make sure your build emits a
-  single CSS asset next to the renderer entry.
+      `?inline` + `<style>` CSS workaround, and make sure your build emits a
+      single CSS asset next to the renderer entry.
 - [ ] Replace any legacy `flexbox.scss` classes (`flex`, `column`, `gaps`,
-  `box`, `grow`, `align-center`, …) with plain CSS in your own stylesheet —
-  the host no longer provides them (see
-  [Migrating off flexbox.scss](#migrating-off-flexboxscss)). For substantial
-  UI you can instead run your own Tailwind build (see
-  [Bringing your own Tailwind](#bringing-your-own-tailwind)).
+      `box`, `grow`, `align-center`, …) with plain CSS in your own stylesheet —
+      the host no longer provides them (see
+      [Migrating off flexbox.scss](#migrating-off-flexboxscss)). For substantial
+      UI you can instead run your own Tailwind build (see
+      [Bringing your own Tailwind](#bringing-your-own-tailwind)).
 - [ ] Confirm your entrypoints are ESM or CommonJS and, if ESM, that
-  `package.json` declares it.
+      `package.json` declares it.
 - [ ] Access only the process-appropriate namespace (`Main` in main,
-  `Renderer` in the renderer, `Common` in both).
+      `Renderer` in the renderer, `Common` in both).
 - [ ] Look up every v1 namespace path you use in the
-  [v1→v2 rename table](#v1v2-rename-table).
+      [v1→v2 rename table](#v1v2-rename-table).
 - [ ] Replace any `K8sApi.forRemoteCluster` usage with a direct call to the API
-  server — it was removed (see
-  [`K8sApi.forRemoteCluster` removed](#k8sapiforremotecluster-removed)).
+      server — it was removed (see
+      [`K8sApi.forRemoteCluster` removed](#k8sapiforremotecluster-removed)).
 - [ ] For HTTP to anything other than the cluster, replace any bundled HTTP
-  client, and any `globalThis.fetch` in main, with `Main.Util.fetch`, and
-  give it to a bundled library in main that takes a `fetch` option — the
-  host's client is the one that honours the user's proxy and CA settings.
-  In the renderer, use the global `fetch` (see
-  [HTTP: `Main.Util.fetch` and the renderer's `fetch`](#http-mainutilfetch-and-the-renderers-fetch)).
+      client, and any `globalThis.fetch` in main, with `Main.Util.fetch`, and
+      give it to a bundled library in main that takes a `fetch` option — the
+      host's client is the one that honours the user's proxy and CA settings.
+      In the renderer, use the global `fetch` (see
+      [HTTP: `Main.Util.fetch` and the renderer's `fetch`](#http-mainutilfetch-and-the-renderers-fetch)).
 - [ ] Replace any client of a catalog cluster built from its `kubeConfigPath`
-  — a bundled Kubernetes client, a `fetch` to the API server — with
-  `K8sApi.forCluster` / `K8sApi.KubeJsonApi.forCluster`, and run a spawned
-  `kubectl` or `helm` with the environment of
-  `Main.Shell.getEnvironment(clusterId)`. Such a client works on a plain
-  network and ignores the cluster's proxy setting (see
-  [Reaching a catalog cluster](#reaching-a-catalog-cluster)).
+      — a bundled Kubernetes client, a `fetch` to the API server — with
+      `K8sApi.forCluster` / `K8sApi.KubeJsonApi.forCluster`, and run a spawned
+      `kubectl` or `helm` with the environment of
+      `Main.Shell.getEnvironment(clusterId)`. Such a client works on a plain
+      network and ignores the cluster's proxy setting (see
+      [Reaching a catalog cluster](#reaching-a-catalog-cluster)).
 - [ ] Drop any `undici` dependency added for the `dispatcher` field of
-  `reqInit` — the field is gone and `undici` is no longer a declared type
-  dependency of `@freelensapp/extensions`.
+      `reqInit` — the field is gone and `undici` is no longer a declared type
+      dependency of `@freelensapp/extensions`.
 - [ ] Re-check anything annotated `Response` or `RequestInit` from the DOM
-  around `K8sApi.KubeJsonApi` and `reqInit`: the host's fetch types are
-  structural now, so `const r: Response = await api.getResponse(...)` no
-  longer compiles.
+      around `K8sApi.KubeJsonApi` and `reqInit`: the host's fetch types are
+      structural now, so `const r: Response = await api.getResponse(...)` no
+      longer compiles.
 - [ ] Replace any `react-router` / `react-router-dom` usage imported via the
-  Freelens bundle, a `Link` with `Renderer.Component.MaybeLink` — the
-  `ReactRouter*` re-exports were removed (see
-  [Routing: `react-router` re-exports removed](#routing-react-router-re-exports-removed)).
+      Freelens bundle, a `Link` with `Renderer.Component.MaybeLink` — the
+      `ReactRouter*` re-exports were removed (see
+      [Routing: `react-router` re-exports removed](#routing-react-router-re-exports-removed)).
 - [ ] Replace any `Renderer.Component.List` usage with your own table — it was
-  removed along with the `react-table` dependency behind it (see
-  [`Renderer.Component.List` removed](#renderercomponentlist-removed)).
+      removed along with the `react-table` dependency behind it (see
+      [`Renderer.Component.List` removed](#renderercomponentlist-removed)).
 - [ ] Replace any built-in store **class** named from `Renderer.K8sApi`
-  (`PodStore`, `CRDStore`, `HPAStore`, …) with the store singleton, with
-  `typeof` that singleton in type positions, or with
-  `KubeObjectStore<T>` as the base class for your own store (see
-  [`Renderer.K8sApi` concrete store classes removed](#rendererk8sapi-concrete-store-classes-removed)).
+      (`PodStore`, `CRDStore`, `HPAStore`, …) with the store singleton, with
+      `typeof` that singleton in type positions, or with
+      `KubeObjectStore<T>` as the base class for your own store (see
+      [`Renderer.K8sApi` concrete store classes removed](#rendererk8sapi-concrete-store-classes-removed)).
 - [ ] If you declare one `LensExtensionKubeObject` class per version of a CRD,
-  list every version in one class or pick one class yourself. In v2 every
-  class whose version the cluster serves resolves, so code that walks them
-  shows the same objects twice, and no type check catches it (see
-  [`Renderer.K8sApi` concrete store classes removed](#rendererk8sapi-concrete-store-classes-removed)).
+      list every version in one class or pick one class yourself. In v2 every
+      class whose version the cluster serves resolves, so code that walks them
+      shows the same objects twice, and no type check catches it (see
+      [`Renderer.K8sApi` concrete store classes removed](#rendererk8sapi-concrete-store-classes-removed)).
 - [ ] Replace any use of `Renderer.Component.VirtualList`, `appMenus`,
-  `trayMenus`, `Common.Types.IpcRendererEvent`,
-  `Common.Types.IpcMainEvent` or `Common.Types.IpcMainInvokeEvent` — they
-  were removed (see
-  [Unused members removed](#unused-members-removed)).
+      `trayMenus`, `Common.Types.IpcRendererEvent`,
+      `Common.Types.IpcMainEvent` or `Common.Types.IpcMainInvokeEvent` — they
+      were removed (see
+      [Unused members removed](#unused-members-removed)).
 - [ ] Move any Node or Electron use out of the renderer — `require()`, a
-  builtin import, `Buffer`, `process` — to the replacements in
-  [Node and Electron in the renderer](#node-and-electron-in-the-renderer),
-  or into main behind `Ipc`, and stop marking the builtins external in the
-  renderer build.
+      builtin import, `Buffer`, `process` — to the replacements in
+      [Node and Electron in the renderer](#node-and-electron-in-the-renderer),
+      or into main behind `Ipc`, and stop marking the builtins external in the
+      renderer build.
 - [ ] Build the main entry for Node (`platform: "node"` with Vite 8 or
-  Rolldown), so that a bundled CommonJS package can `require()` the
-  builtins (see
-  [Node and Electron in the renderer](#node-and-electron-in-the-renderer)).
+      Rolldown), so that a bundled CommonJS package can `require()` the
+      builtins (see
+      [Node and Electron in the renderer](#node-and-electron-in-the-renderer)).
 - [ ] Move mobx decorators to standard decorators: drop
-  `experimentalDecorators`, write `@observable accessor`, replace the
-  namespaced annotations and `comparer.*` with their named exports,
-  remove `makeObservable(this)`, and read `this.props` of an `@observer`
-  class component only in its `render()` (see
-  [MobX 7 and mobx-react 10](#mobx-7-and-mobx-react-10-standard-decorators-only)).
+      `experimentalDecorators`, write `@observable accessor`, replace the
+      namespaced annotations and `comparer.*` with their named exports,
+      remove `makeObservable(this)`, and read `this.props` of an `@observer`
+      class component only in its `render()` (see
+      [MobX 7 and mobx-react 10](#mobx-7-and-mobx-react-10-standard-decorators-only)).
 - [ ] Give main, renderer and common code a directory and a `tsconfig.json`
-  each, so the type check catches the next Node API in renderer code (see
-  [Source layout](#source-layout-one-tsconfig-per-runtime-environment)).
+      each, so the type check catches the next Node API in renderer code (see
+      [Source layout](#source-layout-one-tsconfig-per-runtime-environment)).
 - [ ] Write your `kubeObjectDetailItems` and `kubeObjectMenuItems` with
-  `Renderer.K8sApi.detailsFor` and `menuItemFor`, and declare the instance
-  `kind` and `apiVersion` of your model classes as literal types, so a
-  component typed for another kind or version than its registration's
-  fails the type check (see
-  [Registering things](#registering-things-declarative-fields)).
+      `Renderer.K8sApi.detailsFor` and `menuItemFor`, and declare the instance
+      `kind` and `apiVersion` of your model classes as literal types, so a
+      component typed for another kind or version than its registration's
+      fails the type check (see
+      [Registering things](#registering-things-declarative-fields)).
 - [ ] List in `customResources` the model class of every custom resource your
-  extension presents with a sidebar entry and pages of its own, so the
-  Custom Resources tree stops listing it a second time; leave out the
-  models you only decorate (see
-  [Registering things](#registering-things-declarative-fields)).
+      extension presents with a sidebar entry and pages of its own, so the
+      Custom Resources tree stops listing it a second time; leave out the
+      models you only decorate (see
+      [Registering things](#registering-things-declarative-fields)).
+- [ ] Publish your tarball with a checksum — on a registry, or with a
+      `.tgz.sha256` sidecar beside it — so that it is enabled on install (see
+      [Publishing a checksum](#publishing-a-checksum)).
 - [ ] Load your extension in a v2 build and verify its UI renders through the
-  runtime global.
+      runtime global.
 
 And the two that fail silently rather than loudly, so they need an explicit
 check rather than a smoke test:
 
 - [ ] **Bump `engines.freelens` to `^2.0.0` first** — without it the host
-  refuses the extension at discovery and nothing else you changed is
-  observable.
+      refuses the extension at discovery and nothing else you changed is
+      observable.
 - [ ] Verify you are on the **host's** React and mobx instances, not copies. A
-  second React throws `invalid hook call` when a hook runs; a second mobx
-  throws nothing at all — its reactions simply do not fire. Assert on an
-  observable the host reacts to rather than eyeballing the UI.
+      second React throws `invalid hook call` when a hook runs; a second mobx
+      throws nothing at all — its reactions simply do not fire. Assert on an
+      observable the host reacts to rather than eyeballing the UI.
+
+## Publishing a checksum
+
+An extension installed from a tarball which nothing vouches for is installed
+**unverified**, and stays **disabled** until the user enables it on the
+Extensions page. If you want yours to be enabled on install, publish a
+checksum with it:
+
+- **From a registry**, `npm publish` records `dist.integrity` in the package
+  metadata, and the host checks the download against it. There is nothing
+  more to do.
+- **From a URL**, such as a release asset, publish a sidecar at the URL of the
+  tarball with `.sha256` appended, e.g. `my-extension-2.0.0.tgz.sha256` next
+  to `my-extension-2.0.0.tgz`. It holds the SHA-256 of the tarball, either
+  bare or in the `sha256sum` format (`<hex>  my-extension-2.0.0.tgz`). A
+  combined listing of several files works too, as long as one of its lines
+  names the tarball.
+- **From a file**, the host looks for the same sidecar next to the tarball.
+
+A download which does not match its checksum is refused rather than installed
+unverified. The checksum proves that the tarball arrived as published, not who
+published it: whoever can replace the tarball can replace its sidecar as well.
+
+A directory registered for development is not affected: it is enabled when you
+register it (see [The development loop](#the-development-loop)).
 
 ## Shipping executables
 

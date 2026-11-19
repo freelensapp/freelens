@@ -13,6 +13,7 @@ import { observer } from "mobx-react";
 import activeThemeInjectable from "../../themes/active.injectable";
 import { NoMetrics } from "../resource-metrics/no-metrics";
 import { Chart, ChartKind } from "./chart";
+import { getSampleStepMs, insertGapsInTimeSeries } from "./time-series-gaps";
 import { ZebraStripesPlugin } from "./zebra-stripes.plugin";
 
 import type { ChartOptions, ScriptableContext, TooltipItem } from "chart.js";
@@ -25,6 +26,11 @@ export interface BarChartProps extends ChartProps {
   name?: string;
   minTime?: number; // Minimum timestamp (unix seconds) for x-axis
   maxTime?: number; // Maximum timestamp (unix seconds) for x-axis
+  /**
+   * Step (seconds) of the range query that returned the data, used to detect
+   * periods without samples. When missing it is inferred from the samples.
+   */
+  step?: number;
 }
 
 const getBarColor = ({ dataset }: ScriptableContext<"bar" | "line">): string =>
@@ -138,6 +144,7 @@ const NonInjectedBarChart = observer(
     className,
     minTime,
     maxTime,
+    step,
     plugins,
     options: customOptions,
     ...settings
@@ -146,9 +153,15 @@ const NonInjectedBarChart = observer(
     const { datasets: rawDatasets = [], ...rest } = data;
     const timeRangeSeconds = maxTime && minTime ? maxTime - minTime : 3600;
     const timeUnit = getBarChartTimeUnit(timeRangeSeconds);
-    const inferredStepSeconds = rawDatasets[0]?.data?.length
-      ? Math.max(Math.floor(timeRangeSeconds / rawDatasets[0].data.length), 1)
-      : 60;
+    // Without the query step, the smallest distance between samples is used: it is
+    // the step unless every sample is isolated by a gap (e.g. a few minutes of data
+    // in a long range), so callers that know the step should pass it.
+    const sampleStepMs = step && step > 0 ? step * 1000 : getSampleStepMs(rawDatasets);
+    const inferredStepSeconds = sampleStepMs
+      ? Math.max(Math.floor(sampleStepMs / 1000), 1)
+      : rawDatasets[0]?.data?.length
+        ? Math.max(Math.floor(timeRangeSeconds / rawDatasets[0].data.length), 1)
+        : 60;
     const useSteppedStyle = inferredStepSeconds >= ONE_HOUR_SECONDS || timeRangeSeconds >= ONE_DAY_SECONDS;
 
     const datasets = rawDatasets
@@ -165,6 +178,12 @@ const NonInjectedBarChart = observer(
         fill: useSteppedStyle,
         backgroundColor: useSteppedStyle ? getBarColor({ dataset: item } as never) : undefined,
         ...item,
+        data: insertGapsInTimeSeries(
+          item.data ?? [],
+          sampleStepMs,
+          useSteppedStyle,
+          maxTime ? maxTime * 1000 : undefined,
+        ),
       }));
 
     plugins ??= [
@@ -278,6 +297,11 @@ const NonInjectedBarChart = observer(
       animation: {
         duration: 0,
       },
+      // With the default `intersect` of Chart.js the values show only with the
+      // cursor on a sample: never on the stepped line, which draws no points,
+      // and not between the bars or above a short one. The chart shows the
+      // values of the time under the cursor wherever it is.
+      interaction: { mode: "index", intersect: false },
       elements: {
         bar: {
           backgroundColor: getBarColor,

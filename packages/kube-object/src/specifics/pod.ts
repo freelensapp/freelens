@@ -7,7 +7,7 @@
 import { isDefined } from "@freelensapp/utilities";
 import { KubeObject } from "../kube-object";
 
-import type { RequireExactlyOne } from "type-fest";
+import type { RequireExactlyOne } from "@freelensapp/type-fest";
 
 import type {
   Affinity,
@@ -38,6 +38,7 @@ export interface PodLogsQuery {
   sinceTime?: string; // Date.toISOString()-format
   follow?: boolean;
   previous?: boolean;
+  limitBytes?: number;
 }
 
 /**

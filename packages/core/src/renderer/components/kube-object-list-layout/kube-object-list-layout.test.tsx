@@ -10,6 +10,8 @@ import type { DiContainer } from "@ogre-tools/injectable";
 import "@testing-library/jest-dom/vitest";
 
 import { podListLayoutColumnInjectionToken } from "@freelensapp/list-layout";
+import { act } from "@testing-library/react";
+import { observable, runInAction } from "mobx";
 import appPathsStateInjectable from "../../../common/app-paths/app-paths-state.injectable";
 import directoryForKubeConfigsInjectable from "../../../common/app-paths/directory-for-kube-configs/directory-for-kube-configs.injectable";
 import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
@@ -17,6 +19,7 @@ import { Cluster } from "../../../common/cluster/cluster";
 import isTableColumnHiddenInjectable from "../../../features/user-preferences/common/is-table-column-hidden.injectable";
 import hostedClusterInjectable from "../../cluster-frame-context/hosted-cluster.injectable";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
+import watchReconnectInjectable from "../../k8s/watch-reconnect/watch-reconnect.injectable";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
 import storesAndApisCanBeCreatedInjectable from "../../stores-apis-can-be-created.injectable";
 import kubeSelectedUrlParamInjectable from "../kube-detail-params/kube-selected-url.injectable";
@@ -26,11 +29,13 @@ import podStoreInjectable from "../workloads-pods/store.injectable";
 import { KubeObjectListLayout } from "./index";
 
 import type { RenderResult } from "@testing-library/react";
+import type { IObservableValue } from "mobx";
 
 import type { DiRender } from "../test-utils/renderFor";
 import type { PodStore } from "../workloads-pods/store";
 
 describe("kube-object-list-layout", () => {
+  let unreachable: IObservableValue<boolean>;
   let di: DiContainer;
   let render: DiRender;
   let podStore: PodStore;
@@ -62,6 +67,16 @@ describe("kube-object-list-layout", () => {
     di.override(toggleKubeDetailsPaneInjectable, () => null);
     di.override(appPathsStateInjectable, () => ({
       get: () => ({}),
+    }));
+
+    unreachable = observable.box(false);
+    di.override(watchReconnectInjectable, () => ({
+      schedule: () => () => {},
+      connected: () => {},
+      wake: () => {},
+      get isClusterUnreachable() {
+        return unreachable.get();
+      },
     }));
 
     podStore = di.inject(podStoreInjectable);
@@ -106,6 +121,32 @@ describe("kube-object-list-layout", () => {
         );
 
         expect(result.getByPlaceholderText("Search My Custom Items...")).toBeInTheDocument();
+      });
+    });
+
+    describe("given the cluster does not answer", () => {
+      const renderPods = () =>
+        render(
+          <div>
+            <KubeObjectListLayout
+              className="Pods"
+              store={podStore}
+              tableId="workloads_pods"
+              renderHeaderTitle="Pods"
+              renderTableContents={(pod) => [<div key={pod.getName()}>{pod.getName()}</div>]}
+            />
+          </div>,
+        );
+
+      it("shows that the list may be out of date, and hides it once the cluster answers", () => {
+        runInAction(() => unreachable.set(true));
+        result = renderPods();
+
+        expect(result.getByTestId("kube-object-list-layout-cluster-unreachable")).toBeInTheDocument();
+
+        act(() => runInAction(() => unreachable.set(false)));
+
+        expect(result.queryByTestId("kube-object-list-layout-cluster-unreachable")).not.toBeInTheDocument();
       });
     });
   });

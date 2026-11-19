@@ -23,6 +23,9 @@ jobs:
     runs-on: ubuntu-26.04-arm
     timeout-minutes: 360
 
+    outputs:
+      release-notes: ${{ steps.discussion.outputs.found }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -32,7 +35,7 @@ jobs:
       - name: Set up mise
         uses: jdx/mise-action@v5
         with:
-          version: 2026.10.19 # datasource=github-releases depName=jdx/mise
+          version: 2026.11.10 # datasource=github-releases depName=jdx/mise
           install_args: yq
 
       - name: Check if package version matches
@@ -44,6 +47,36 @@ jobs:
             --draft \
             --title ${GITHUB_REF_NAME} \
             --generate-notes
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # The release notes are written ahead of the release, in the Roadmap
+      # discussion titled after the tag. Without such a discussion the draft
+      # keeps the generated notes and is not published: publish-github-release
+      # is skipped, and the release waits for notes written by hand.
+      - name: Find release notes discussion
+        id: discussion
+        run: |
+          set -eo pipefail
+          # The newest one, should an older discussion have the same title.
+          gh discussion list --category roadmap --state all --sort created --limit 100 \
+            --json title,url,body \
+            --jq 'first(.discussions[] | select(.title == env.GITHUB_REF_NAME)) // {}' > "$RUNNER_TEMP/discussion.json"
+          url=$(yq -pj -oy '.url // ""' "$RUNNER_TEMP/discussion.json")
+          if [[ -z "$url" ]]; then
+            echo "::notice::No Roadmap discussion titled ${GITHUB_REF_NAME}: the release stays a draft with the generated notes"
+            exit 0
+          fi
+          # A discussion edited in the browser has CRLF line endings.
+          yq -pj -oy '.body' "$RUNNER_TEMP/discussion.json" | perl -pe 's/\r$//' > "$RUNNER_TEMP/release-notes.md"
+          echo "Release notes from $url"
+          echo "found=true" >> "$GITHUB_OUTPUT"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Copy release notes from the discussion
+        if: steps.discussion.outputs.found == 'true'
+        run: gh release edit "${GITHUB_REF_NAME}" --notes-file "$RUNNER_TEMP/release-notes.md"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -105,7 +138,7 @@ jobs:
       # SBOM for the vulnerability scan). Stored without the leading "v"
       # because the Renovate manager that bumps it strips the "v" on every
       # bump; it is re-added where this is consumed.
-      SYFT_VERSION: 1.55.0 # datasource=github-releases depName=anchore/syft
+      SYFT_VERSION: 1.57.2 # datasource=github-releases depName=anchore/syft
       # A release builds everything from scratch: turbo runs every task rather
       # than restore its output from a cache, so a stale or broken cache cannot
       # reach a release, such as an unsigned Windows app directory before the
@@ -131,7 +164,7 @@ jobs:
       - name: Set up mise
         uses: jdx/mise-action@v5
         with:
-          version: 2026.10.19 # datasource=github-releases depName=jdx/mise
+          version: 2026.11.10 # datasource=github-releases depName=jdx/mise
           install_args: yq
 
       - name: Setup node
@@ -791,6 +824,18 @@ jobs:
           upload-artifact: false
           upload-release-assets: false
 
+      # The same SBOM once more as CycloneDX, for the tools that read only
+      # that format, such as Dependency-Track. Nothing here scans it.
+      - name: Create CycloneDX SBOM
+        uses: anchore/sbom-action@v0
+        with:
+          syft-version: v${{ env.SYFT_VERSION }}
+          format: cyclonedx-json
+          output-file: "freelens/dist/${{ github.event.repository.name }}-${{ matrix.os }}-${{ matrix.arch == 'x64' && 'amd64' || matrix.arch }}-sbom.cdx.json"
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          upload-artifact: false
+          upload-release-assets: false
+
       - name: Create runtime package list
         shell: bash
         run: |
@@ -814,9 +859,22 @@ jobs:
           os="${{ matrix.os }}"
           arch="${{ matrix.arch == 'x64' && 'amd64' || matrix.arch }}"
           out="freelens/dist/${{ github.event.repository.name }}-${os}-${arch}-prod-packages.json"
+          # electron is a devDependency, as nothing imports the package at
+          # runtime, so the production tree leaves it out. electron-builder packs
+          # its binary into every build all the same, and release-scan.yaml
+          # derives the Node embedded in it from this version, so it is listed
+          # too. The version is read from the installed package, so it follows
+          # every update of the catalog.
+          electron=$(cd freelens && node -p '
+            const fs = require("node:fs");
+            const path = require("node:path");
+            const dir = path.dirname(fs.realpathSync(require.resolve("electron/package.json")));
+            `electron@${require("electron/package.json").version}\t${path.relative(path.resolve(".."), dir).split(path.sep).join("/")}`
+          ')
           (
             cd "$deploy_dir"
             printf 'key\tvalue\n'
+            printf '%s\n' "$electron"
             for d in node_modules/.pnpm/*/; do
               d="${d#node_modules/.pnpm/}"
               d="${d%/}"
@@ -842,7 +900,7 @@ jobs:
           version="${GITHUB_REF_NAME#v}"
           os="${{ matrix.os }}"
           arch="${{ matrix.arch == 'x64' && 'amd64' || matrix.arch }}"
-          for f in freelens/dist/*-sbom.spdx.json freelens/dist/*-sbom.syft.json; do
+          for f in freelens/dist/*-sbom.spdx.json freelens/dist/*-sbom.syft.json freelens/dist/*-sbom.cdx.json; do
             newname="freelens/dist/Freelens-${version}-${os}-${arch}-sbom.${f##*-sbom.}"
             mv "$f" "$newname"
             if [ -f "${f}.sha256" ]; then
@@ -854,7 +912,7 @@ jobs:
         if: runner.os == 'Linux' || runner.os == 'Windows'
         shell: bash
         run: |
-          for f in freelens/dist/*-sbom.spdx.json freelens/dist/*-sbom.syft.json; do
+          for f in freelens/dist/*-sbom.spdx.json freelens/dist/*-sbom.syft.json freelens/dist/*-sbom.cdx.json; do
             pushd freelens/dist > /dev/null
             sha256sum $(basename $f) | tee $(basename $f).sha256
             popd > /dev/null
@@ -864,7 +922,7 @@ jobs:
         if: runner.os == 'macOS'
         shell: bash
         run: |
-          for f in freelens/dist/*-sbom.spdx.json freelens/dist/*-sbom.syft.json; do
+          for f in freelens/dist/*-sbom.spdx.json freelens/dist/*-sbom.syft.json freelens/dist/*-sbom.cdx.json; do
             pushd freelens/dist > /dev/null
             shasum -a 256 $(basename $f) | tee $(basename $f).sha256
             popd > /dev/null
@@ -1008,7 +1066,7 @@ jobs:
       - name: Set up mise
         uses: jdx/mise-action@v5
         with:
-          version: 2026.10.19 # datasource=github-releases depName=jdx/mise
+          version: 2026.11.10 # datasource=github-releases depName=jdx/mise
           install_args: yq
 
       - name: Download runtime package lists
@@ -1133,6 +1191,9 @@ jobs:
       - staple-pkg
       - publish-runtime-package-list
       - attest-artifacts
+
+    # Only a release whose notes came from the Roadmap discussion.
+    if: needs.make-draft-release.outputs.release-notes == 'true'
 
     runs-on: ubuntu-26.04-arm
 

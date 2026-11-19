@@ -6,22 +6,30 @@
 
 import "./ingress-details.scss";
 
+import { ingressClassApiInjectable } from "@freelensapp/kube-api-specifics";
 import { computeRuleDeclarations, Ingress } from "@freelensapp/kube-object";
 import { loggerInjectionToken } from "@freelensapp/logger";
+import { Link } from "@freelensapp/routing";
+import { stopPropagation } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
 import { DrawerItem, DrawerTitle } from "../drawer";
+import getDetailsUrlInjectable from "../kube-detail-params/get-details-url.injectable";
 import { Table, TableCell, TableHead, TableRow } from "../table";
 
+import type { IngressClassApi } from "@freelensapp/kube-api";
 import type { ILoadBalancerIngress } from "@freelensapp/kube-object";
 import type { Logger } from "@freelensapp/logger";
 
+import type { GetDetailsUrl } from "../kube-detail-params/get-details-url.injectable";
 import type { KubeObjectDetailsProps } from "../kube-object-details";
 
 export interface IngressDetailsProps extends KubeObjectDetailsProps<Ingress> {}
 
 interface Dependencies {
+  getDetailsUrl: GetDetailsUrl;
+  ingressClassApi: IngressClassApi;
   logger: Logger;
 }
 
@@ -81,7 +89,7 @@ class NonInjectedIngressDetails extends React.Component<IngressDetailsProps & De
   }
 
   render() {
-    const { object: ingress, logger } = this.props;
+    const { object: ingress, getDetailsUrl, ingressClassApi, logger } = this.props;
 
     if (!ingress) {
       return null;
@@ -94,9 +102,24 @@ class NonInjectedIngressDetails extends React.Component<IngressDetailsProps & De
     }
 
     const port = ingress.getServiceNamePort();
+    const ingressClassName = ingress.getIngressClassName();
 
     return (
       <div className="IngressDetails">
+        {ingressClassName && (
+          <DrawerItem name="Class">
+            {ingress.spec.ingressClassName ? (
+              <Link
+                to={getDetailsUrl(ingressClassApi.formatUrlForNotListing({ name: ingressClassName }))}
+                onClick={stopPropagation}
+              >
+                {ingressClassName}
+              </Link>
+            ) : (
+              ingressClassName
+            )}
+          </DrawerItem>
+        )}
         <DrawerItem name="Ports">{ingress.getPorts()}</DrawerItem>
         {ingress.spec.tls && (
           <DrawerItem name="TLS">
@@ -119,6 +142,8 @@ class NonInjectedIngressDetails extends React.Component<IngressDetailsProps & De
 export const IngressDetails = withInjectables<Dependencies, IngressDetailsProps>(NonInjectedIngressDetails, {
   getProps: (di, props) => ({
     ...props,
+    getDetailsUrl: di.inject(getDetailsUrlInjectable),
+    ingressClassApi: di.inject(ingressClassApiInjectable),
     logger: di.inject(loggerInjectionToken),
   }),
 });

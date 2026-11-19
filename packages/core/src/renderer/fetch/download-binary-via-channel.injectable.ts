@@ -11,7 +11,14 @@ import type { AsyncResult } from "@freelensapp/utilities";
 
 import type { DownloadBinaryOptions } from "../../main/fetch/download-binary.injectable";
 
-export type DownloadBinaryViaChannel = (url: string, opts?: DownloadBinaryOptions) => AsyncResult<Buffer, string>;
+/**
+ * Download over main's network stack.
+ *
+ * Main answers with a `Buffer`, but the structured clone of the IPC delivers a
+ * plain `Uint8Array`: `toString("utf-8")` on it joins the bytes with commas
+ * rather than decoding them. Decode text with a `TextDecoder`.
+ */
+export type DownloadBinaryViaChannel = (url: string, opts?: DownloadBinaryOptions) => AsyncResult<Uint8Array, string>;
 
 const downloadBinaryViaChannelInjectable: Injectable<DownloadBinaryViaChannel, unknown, void> = getInjectable({
   id: "download-binary-via-channel",

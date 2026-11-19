@@ -9,6 +9,7 @@ import { getOrInsertWith } from "@freelensapp/utilities";
 import { TerminalChannels, type TerminalMessage } from "../../common/terminal/channels";
 import { freelensProxyTokenEnvVar } from "../freelens-proxy/freelens-proxy-token";
 import { composeKubeToolsEnvironment } from "../kube-tools/kube-tools";
+import { findWindowsShell } from "./find-shell";
 import { type TerminalStatusReporter, terminalStatusReporterFor } from "./send-terminal-status";
 import { closedDuring } from "./websocket-closed";
 
@@ -301,6 +302,7 @@ export abstract class ShellSession {
 
   protected async openShellProcess(shell: string, args: string[], env: Record<string, string | undefined>) {
     const cwd = await this.getCwd(env);
+    const file = this.dependencies.isWindows ? await findWindowsShell(shell, env, this.dependencies.stat) : shell;
 
     // The `close` handler below would be attached to a socket that has already
     // closed, and nothing else would ever kill the PTY.
@@ -310,7 +312,7 @@ export abstract class ShellSession {
 
     this.status.info("Starting shell ...");
 
-    const { shellProcess, resume } = this.ensureShellProcess(shell, args, env, cwd);
+    const { shellProcess, resume } = this.ensureShellProcess(file, args, env, cwd);
 
     if (resume) {
       this.send({ type: TerminalChannels.CONNECTED });

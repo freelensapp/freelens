@@ -8,14 +8,17 @@ import { getInjectable } from "@ogre-tools/injectable";
 import { merge } from "es-toolkit/compat";
 import { observable } from "mobx";
 import kubeDirectoryPathInjectable from "../../../common/os/kube-directory-path.injectable";
-import { defaultColorThemePreference } from "../../../common/vars";
+import { defaultThemePreference, defaultThemeVariantPreference } from "../../../common/vars";
 import currentTimezoneInjectable from "../../../common/vars/current-timezone.injectable";
 import isDevelopmentInjectable from "../../../common/vars/is-development.injectable";
+import { defaultZoom, isZoomStep } from "../../zoom/common/zoom-steps";
 import {
   ClusterPageMenuOrder,
+  clampMaxCombinedLogsPods,
   defaultEditorConfig,
   defaultExtensionRegistryUrlLocation,
   defaultLogViewerPreferences,
+  defaultOverviewStylePreference,
   defaultPackageMirror,
   defaultTerminalConfig,
   getPreferenceDescriptor,
@@ -30,9 +33,12 @@ import type {
   KubeconfigSyncEntry,
   KubeconfigSyncValue,
   LogViewerPreferences,
+  OverviewStylePreference,
   PreferenceDescription,
   StoredExtensionRegistry,
   TerminalConfig,
+  TerminalThemeVariantPreference,
+  ThemeVariantPreference,
 } from "./preferences-helpers";
 
 // Written out rather than derived from the injectable: the user preferences
@@ -42,8 +48,14 @@ import type {
 export type PreferenceDescriptors = {
   readonly httpsProxy: PreferenceDescription<string | undefined>;
   readonly shell: PreferenceDescription<string | undefined>;
-  readonly colorTheme: PreferenceDescription<string>;
+  readonly theme: PreferenceDescription<string>;
+  readonly themeVariant: PreferenceDescription<ThemeVariantPreference>;
+  readonly accentColorDark: PreferenceDescription<string | undefined>;
+  readonly accentColorLight: PreferenceDescription<string | undefined>;
+  readonly overviewStyle: PreferenceDescription<OverviewStylePreference>;
+  readonly zoom: PreferenceDescription<number>;
   readonly terminalTheme: PreferenceDescription<string>;
+  readonly terminalThemeVariant: PreferenceDescription<TerminalThemeVariantPreference>;
   readonly localeTimezone: PreferenceDescription<string>;
   readonly allowUntrustedCAs: PreferenceDescription<boolean>;
   readonly allowErrorReporting: PreferenceDescription<boolean>;
@@ -87,13 +99,37 @@ const userPreferenceDescriptorsInjectable = getInjectable({
         fromStore: (val) => val,
         toStore: (val) => val || undefined,
       }),
-      colorTheme: getPreferenceDescriptor<string>({
-        fromStore: (val) => val || defaultColorThemePreference,
-        toStore: (val) => (!val || val === defaultColorThemePreference ? undefined : val),
+      theme: getPreferenceDescriptor<string>({
+        fromStore: (val) => val || defaultThemePreference,
+        toStore: (val) => (!val || val === defaultThemePreference ? undefined : val),
+      }),
+      themeVariant: getPreferenceDescriptor<ThemeVariantPreference>({
+        fromStore: (val) => (val === "dark" || val === "light" ? val : defaultThemeVariantPreference),
+        toStore: (val) => (val === "dark" || val === "light" ? val : undefined),
+      }),
+      accentColorDark: getPreferenceDescriptor<string | undefined>({
+        fromStore: (val) => val,
+        toStore: (val) => val || undefined,
+      }),
+      accentColorLight: getPreferenceDescriptor<string | undefined>({
+        fromStore: (val) => val,
+        toStore: (val) => val || undefined,
+      }),
+      overviewStyle: getPreferenceDescriptor<OverviewStylePreference>({
+        fromStore: (val) => (val === "cards" ? val : defaultOverviewStylePreference),
+        toStore: (val) => (val === "cards" ? val : undefined),
+      }),
+      zoom: getPreferenceDescriptor<number>({
+        fromStore: (val) => (isZoomStep(val) ? val : defaultZoom),
+        toStore: (val) => (isZoomStep(val) && val !== defaultZoom ? val : undefined),
       }),
       terminalTheme: getPreferenceDescriptor<string>({
         fromStore: (val) => val || "",
         toStore: (val) => val || undefined,
+      }),
+      terminalThemeVariant: getPreferenceDescriptor<TerminalThemeVariantPreference>({
+        fromStore: (val) => (val === "light" ? "light" : "dark"),
+        toStore: (val) => (val === "light" ? val : undefined),
       }),
       localeTimezone: getPreferenceDescriptor<string>({
         fromStore: (val) => val || currentTimezone,
@@ -155,13 +191,18 @@ const userPreferenceDescriptorsInjectable = getInjectable({
         fromStore: (val) => ({
           ...defaultLogViewerPreferences,
           ...val,
+          maxCombinedLogsPods: clampMaxCombinedLogsPods(val?.maxCombinedLogsPods),
         }),
         toStore: (val) => {
+          const clampedValue: LogViewerPreferences = {
+            ...val,
+            maxCombinedLogsPods: clampMaxCombinedLogsPods(val.maxCombinedLogsPods),
+          };
           const storedValue: Partial<LogViewerPreferences> = {};
 
           for (const key of Object.keys(defaultLogViewerPreferences) as (keyof LogViewerPreferences)[]) {
-            if (val[key] !== defaultLogViewerPreferences[key]) {
-              storedValue[key] = val[key];
+            if (clampedValue[key] !== defaultLogViewerPreferences[key]) {
+              (storedValue as Record<string, unknown>)[key] = clampedValue[key];
             }
           }
 

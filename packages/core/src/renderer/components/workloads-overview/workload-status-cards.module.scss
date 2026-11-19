@@ -1,0 +1,16 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
+@use "../vars" as *;
+
+// The grid of the status cards in the workloads overview. The cards style themselves, in
+// `../overview-cards/status-card.scss`. The cards are spaced as the header and the events of
+// the overview are, 16px apart, so the grid lines up with them.
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: $margin * 2;
+}

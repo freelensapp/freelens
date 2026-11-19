@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { Primitive } from "type-fest";
+import type { Primitive } from "@freelensapp/type-fest";
 
 const separators = /[-_]/g;
 
