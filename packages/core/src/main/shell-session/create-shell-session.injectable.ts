@@ -5,6 +5,7 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
+import openPodTerminalSessionInjectable from "../../features/pod-terminal/main/open.injectable";
 import openLocalShellSessionInjectable from "./local-shell-session/open.injectable";
 import openNodeShellSessionInjectable from "./node-shell-session/open.injectable";
 import openStandaloneShellSessionInjectable from "./standalone-shell-session/open.injectable";
@@ -12,6 +13,7 @@ import openStandaloneShellSessionInjectable from "./standalone-shell-session/ope
 import type WebSocket from "ws";
 
 import type { Cluster } from "../../common/cluster/cluster";
+import type { PodTerminalTarget } from "../../features/pod-terminal/common/pod-terminal";
 
 export interface OpenShellSessionArgs {
   websocket: WebSocket;
@@ -21,6 +23,10 @@ export interface OpenShellSessionArgs {
   cluster?: Cluster;
   tabId: string;
   nodeName?: string;
+  /**
+   * The container of a pod terminal, for a `kubectl exec` or `kubectl attach`.
+   */
+  podTerminal?: PodTerminalTarget;
 }
 
 export type OpenShellSession = (args: OpenShellSessionArgs) => Promise<void>;
@@ -32,10 +38,15 @@ const openShellSessionInjectable = getInjectable({
     const openLocalShellSession = di.inject(openLocalShellSessionInjectable);
     const openNodeShellSession = di.inject(openNodeShellSessionInjectable);
     const openStandaloneShellSession = di.inject(openStandaloneShellSessionInjectable);
+    const openPodTerminalSession = di.inject(openPodTerminalSessionInjectable);
 
-    return ({ cluster, nodeName, ...args }) => {
+    return ({ cluster, nodeName, podTerminal, ...args }) => {
       if (!cluster) {
         return openStandaloneShellSession(args);
+      }
+
+      if (podTerminal) {
+        return openPodTerminalSession({ cluster, target: podTerminal, ...args });
       }
 
       return nodeName

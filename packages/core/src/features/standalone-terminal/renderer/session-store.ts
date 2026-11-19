@@ -4,7 +4,6 @@
  */
 
 import { action, observable } from "mobx";
-import { TerminalChannels } from "../../../common/terminal/channels";
 import { WebSocketApiState } from "../../../renderer/api/websocket-api";
 
 import type { CreateStandaloneTerminalApi } from "../../../renderer/api/create-standalone-terminal-api.injectable";
@@ -47,13 +46,6 @@ export class StandaloneTerminalSessionStore {
   destroy(tabId: string) {
     const terminal = this.terminals.get(tabId);
     const terminalApi = this.connections.get(tabId);
-
-    if (terminalApi?.isReady) {
-      terminalApi.sendMessage({
-        type: TerminalChannels.STDIN,
-        data: "exit\r",
-      });
-    }
 
     terminal?.destroy();
     terminalApi?.destroy();
