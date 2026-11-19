@@ -183,6 +183,66 @@ describe("the metrics route", () => {
     });
   });
 
+  describe("given a view whose queries Prometheus partly rejects", () => {
+    const rejected = JSON.stringify({ status: "error", errorType: "execution", error: "some-execution-error" });
+    const result = (query: string) => ({
+      status: "success",
+      data: { resultType: "matrix", result: [{ metric: {}, values: [[1, query]] }] },
+    });
+
+    beforeEach(() => {
+      getPrometheusDetails = async () => ({
+        prometheusPath: "monitoring/services/prometheus-operated:9090",
+        provider: { ...provider, getQuery: (_opts: unknown, queryName: string) => queryName } as PrometheusProvider,
+      });
+    });
+
+    const requestNamed = (...names: string[]) =>
+      di.inject(addMetricsRouteInjectable).handler({
+        cluster,
+        payload: Object.fromEntries(names.map((name) => [name, { category: "nodes" }])),
+        query: new URLSearchParams(),
+      } as never) as Promise<{ response: Record<string, unknown> }>;
+
+    it("answers the others, and the rejected ones with an empty result", async () => {
+      getMetrics = async (...args: unknown[]) => {
+        const { query } = args[2] as { query: string };
+
+        if (query === "workloadMemoryUsage") {
+          throw await requestError(422, rejected);
+        }
+
+        return result(query);
+      };
+
+      const { response } = await requestNamed("fsUsage", "workloadMemoryUsage", "fsSize");
+
+      expect(response).toEqual({
+        fsUsage: result("fsUsage"),
+        workloadMemoryUsage: { status: "success", data: { resultType: "matrix", result: [] } },
+        fsSize: result("fsSize"),
+      });
+      expect(cluster.metadata.prometheus).toMatchObject({ success: true });
+      expect(logger.warn).toHaveBeenCalledWith("[METRICS-ROUTE]: query failed for clusterId=some-cluster-id", {
+        query: "workloadMemoryUsage",
+        status: 422,
+        response: rejected,
+      });
+    });
+
+    it("answers with no metrics when every query fails", async () => {
+      getMetrics = async () => {
+        throw await requestError(403, forbidden);
+      };
+
+      const { response } = await requestNamed("fsUsage", "fsSize");
+
+      expect(response).toEqual({});
+      expect(cluster.metadata.prometheus).toMatchObject({ success: false });
+      expect(logger.warn).toHaveBeenCalledTimes(1);
+    });
+  });
+
   it("logs no details of the providers when no Prometheus service was found", async () => {
     getPrometheusDetails = async () => {
       throw new Error("No Prometheus service found", {
