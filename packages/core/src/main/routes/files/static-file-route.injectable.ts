@@ -19,6 +19,7 @@ const staticFileRouteInjectable = getRouteInjectable({
     return route({
       method: "get",
       path: `/{path*}`,
+      withoutToken: true,
     })(
       isDevelopment ? di.inject(devStaticFileRouteHandlerInjectable) : di.inject(prodStaticFileRouteHandlerInjectable),
     );

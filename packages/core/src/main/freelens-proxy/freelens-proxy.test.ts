@@ -85,11 +85,11 @@ const withAuth = (headers: http.OutgoingHttpHeaders): http.OutgoingHttpHeaders =
   ...headers,
 });
 
-const getHttp1 = (port: number, path: string, headers: http.OutgoingHttpHeaders = {}) =>
+const getHttp1 = (port: number, path: string, headers: http.OutgoingHttpHeaders = {}, method = "GET") =>
   new Promise<{ statusCode?: number; body: string }>((resolve, reject) => {
     https
-      .get(
-        { host: "127.0.0.1", port, path, agent: false, rejectUnauthorized: false, headers: withAuth(headers) },
+      .request(
+        { host: "127.0.0.1", port, path, method, agent: false, rejectUnauthorized: false, headers: withAuth(headers) },
         (res) => {
           let body = "";
 
@@ -98,7 +98,8 @@ const getHttp1 = (port: number, path: string, headers: http.OutgoingHttpHeaders 
           res.on("end", () => resolve({ statusCode: res.statusCode, body }));
         },
       )
-      .on("error", reject);
+      .on("error", reject)
+      .end();
   });
 
 const getHttp2 = (session: http2.ClientHttp2Session, path: string, headers: http2.OutgoingHttpHeaders = {}) =>
@@ -211,6 +212,8 @@ describe("closing the Freelens proxy", () => {
       routerInjectable,
       () =>
         ({
+          // As the real router does for the paths of these tests
+          isServedWithoutToken: (_method: string, url: string) => !url.startsWith("/api"),
           route: (_cluster: Cluster | undefined, req: ServerIncomingMessage, res: ServerResponse) => {
             if (req.url === answeredPath) {
               res.end();
@@ -354,6 +357,8 @@ describe("Freelens proxy protocols", () => {
       routerInjectable,
       () =>
         ({
+          // As the real router does for the paths of these tests
+          isServedWithoutToken: (_method: string, url: string) => !url.startsWith("/api"),
           route: async (_cluster: Cluster | undefined, req: ServerIncomingMessage, res: ServerResponse) => {
             // A response whose headers have gone out and whose body has not
             // ended yet, which is what the client then cancels
@@ -620,15 +625,39 @@ describe("Freelens proxy kube api requests", () => {
   const afterTheAbort = () => new Promise((resolve) => setTimeout(resolve, 50));
 
   it.each([
-    ["a kube api request", "/api-kube/api/v1/pods"],
-    ["a request to the local router api", "/api/v2/releases"],
-    ["the /<clusterId>/ path of kubectl and helm", "/some-cluster-id/api/v1/pods"],
-  ])("answers 403 without a valid token, for %s", async (_name, path) => {
-    expect(await getHttp1(port, path, { authorization: "Bearer not-the-token" })).toEqual({
+    ["a kube api request", "GET", "/api-kube/api/v1/pods"],
+    ["a request to the local router api", "GET", "/api/v2/charts"],
+    ["the /<clusterId>/ path of kubectl and helm", "GET", "/some-cluster-id/api/v1/pods"],
+    ["a dot segment before the local router api", "POST", "/./api/stack"],
+    ["a parent segment before the local router api", "POST", "/some-segment/../api/stack"],
+    ["an encoded dot segment before the local router api", "POST", "/%2e/api/stack"],
+    ["an empty first segment before the local router api", "GET", "//some-host/api/v2/charts"],
+    ["an absolute-form target of the local router api", "GET", "http://some-host/api/v2/charts"],
+    ["a request that no route answers", "PUT", "/some-path"],
+  ])("answers 403 without a valid token, for %s", async (_name, method, path) => {
+    expect(await getHttp1(port, path, { authorization: "Bearer not-the-token" }, method)).toEqual({
       statusCode: 403,
       body: "Forbidden",
     });
     expect(targetReceived).toEqual([]);
+  });
+
+  it.each(["/./api/v2/charts", "/%2e/api/v2/charts"])(
+    "answers 403 without a valid token over HTTP/2, for %s",
+    async (path) => {
+      const session = await connectSession();
+
+      expect(await getHttp2(session, path, { authorization: "Bearer not-the-token" })).toEqual({
+        statusCode: 403,
+        body: "Forbidden",
+      });
+    },
+  );
+
+  // What answers them is beside the point here: the build version is not
+  // initialized in this container, and there are no renderer files.
+  it.each(["/version", "/some-page.js"])("lets %s through to the router without a token", async (path) => {
+    expect((await getHttp1(port, path, { authorization: "Bearer not-the-token" })).statusCode).not.toBe(403);
   });
 
   it("tells the client not to store a kube api response over HTTP/1.1, whatever the cluster says", async () => {
@@ -1127,7 +1156,7 @@ describe("Freelens proxy kube api requests to a refused target", () => {
     di.override(shellApiRequestInjectable, () => vi.fn());
     di.override(kubeApiUpgradeRequestInjectable, () => vi.fn());
     di.override(freelensK8sProxyManagerInjectable, () => ({ getApiTarget }) as unknown as FreelensK8sProxyManager);
-    di.override(routerInjectable, () => ({ route }) as unknown as Router);
+    di.override(routerInjectable, () => ({ isServedWithoutToken: () => false, route }) as unknown as Router);
 
     proxy = di.inject(freelensProxyInjectable);
     proxyToken = di.inject(freelensProxyTokenInjectable).value;
@@ -1208,7 +1237,7 @@ describe("Freelens proxy kube api requests whose cluster proxy cannot start", ()
           },
         }) as unknown as FreelensK8sProxyManager,
     );
-    di.override(routerInjectable, () => ({ route }) as unknown as Router);
+    di.override(routerInjectable, () => ({ isServedWithoutToken: () => false, route }) as unknown as Router);
     di.override(loggerInjectionToken, () => ({
       warn: vi.fn(),
       debug: vi.fn(),

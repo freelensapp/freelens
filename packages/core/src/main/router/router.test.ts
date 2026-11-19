@@ -302,4 +302,32 @@ describe("router", () => {
       });
     });
   });
+
+  describe("which routes are served without the token", () => {
+    it.each([
+      ["get", "/version"],
+      ["get", "/some-page.js"],
+      ["get", "/some-page"],
+      ["get", "/"],
+    ])("serves %s %s without it", (method, url) => {
+      expect(router.isServedWithoutToken(method, url)).toBe(true);
+    });
+
+    it.each([
+      ["get", "/some-path"],
+      ["get", "/./some-path"],
+      ["post", "/api/stack"],
+      ["post", "/./api/stack"],
+      ["post", "/some-segment/../api/stack"],
+      ["post", "/%2e/api/stack"],
+      ["post", "//some-host/api/stack"],
+      ["post", "http://some-host/api/stack"],
+      ["get", "/./api/kubeconfig/service-account/default/default"],
+      ["get", "/./api/v2/charts"],
+      ["put", "/some-page"],
+      ["get", "http://["],
+    ])("requires it for %s %s", (method, url) => {
+      expect(router.isServedWithoutToken(method, url)).toBe(false);
+    });
+  });
 });

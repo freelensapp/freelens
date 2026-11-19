@@ -79,18 +79,6 @@ export function isLongRunningRequest(reqUrl: string) {
 }
 
 /**
- * Whether a request reaches a cluster or the main process's own API and so has
- * to carry the token: the kube api (`/api-kube`), the local router api
- * (`/api`, which serves helm, the service-account kubeconfig, port-forward,
- * metrics and the resource applier), and the internal upgrade (`/api?…`).
- * `apiKubePrefix` begins with `apiPrefix`, so the one test covers both. Serving
- * the renderer and `/version` need no token, so the window loads without one.
- */
-export function requiresToken(reqUrl: string) {
-  return reqUrl.startsWith(apiPrefix);
-}
-
-/**
  * API responses are not meant to be reused, so the client is told not to
  * store them. The Kubernetes API server answers with `no-cache, private`,
  * which is weaker, so the proxy replaces it.
@@ -448,11 +436,14 @@ export class FreelensProxy {
     const requestedUrl = req.url;
     const cluster = this.dependencies.getClusterForRequest(req);
 
-    // Requires the token on the kube api and the local router api, on the URL
-    // as the lookup has rewritten it, so the `/<clusterId>/…` path of kubectl
-    // and helm is covered. The renderer and `/version` are served without a
-    // token. The host and origin are checked first, behind the token.
-    if (requiresToken(req.url)) {
+    // Every request needs the token, except one for a route the router serves
+    // without it: the renderer's files and `/version`, which the window loads
+    // before it has the token. The router decides on the path it routes by.
+    // The kube api goes to the cluster rather than the router, and is judged on
+    // the URL as the lookup has rewritten it, so the `/<clusterId>/…` path of
+    // kubectl and helm is covered. The host and origin are checked first,
+    // behind the token.
+    if (req.url.startsWith(apiKubePrefix) || !this.dependencies.router.isServedWithoutToken(req.method, req.url)) {
       // An API response, whatever answers it. The renderer's own files may
       // still be cached.
       res.setHeader("Cache-Control", noStore);
