@@ -31,7 +31,7 @@ export const getHelmLikeQueryFor =
           case "memoryRequests":
             return `sum(kube_pod_container_resource_requests{resource="memory"${nodeFilterAdditive(opts, "node")}} * on (namespace, pod) group_left() max by (namespace, pod) (kube_pod_status_phase{phase=~"Pending|Running"} == 1)) by (component)`;
           case "memoryLimits":
-            return `sum(kube_pod_container_resource_limits{resource="memory"${nodeFilterAdditive(opts, "node")}}) by (component)`;
+            return `sum(kube_pod_container_resource_limits{resource="memory"${nodeFilterAdditive(opts, "node")}} * on (namespace, pod) group_left() max by (namespace, pod) (kube_pod_status_phase{phase=~"Pending|Running"} == 1)) by (component)`;
           case "memoryCapacity":
             return `sum(kube_node_status_capacity{resource="memory"${nodeFilterAdditive(opts, "node")}}) by (component)`;
           case "memoryAllocatableCapacity":
@@ -41,7 +41,7 @@ export const getHelmLikeQueryFor =
           case "cpuRequests":
             return `sum(kube_pod_container_resource_requests{resource="cpu"${nodeFilterAdditive(opts, "node")}} * on (namespace, pod) group_left() max by (namespace, pod) (kube_pod_status_phase{phase=~"Pending|Running"} == 1)) by (component)`;
           case "cpuLimits":
-            return `sum(kube_pod_container_resource_limits{resource="cpu"${nodeFilterAdditive(opts, "node")}}) by (component)`;
+            return `sum(kube_pod_container_resource_limits{resource="cpu"${nodeFilterAdditive(opts, "node")}} * on (namespace, pod) group_left() max by (namespace, pod) (kube_pod_status_phase{phase=~"Pending|Running"} == 1)) by (component)`;
           case "cpuCapacity":
             return `sum(kube_node_status_capacity{resource="cpu"${nodeFilterAdditive(opts, "node")}}) by (component)`;
           case "cpuAllocatableCapacity":
