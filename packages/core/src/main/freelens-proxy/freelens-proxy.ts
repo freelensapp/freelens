@@ -149,6 +149,12 @@ export class FreelensProxy {
    */
   protected readonly clusterRoutes = new WeakMap<object, Omit<ClusterRouteRedirect, "location">>();
 
+  /**
+   * The cluster of every kube api request on its way to the cluster, which a
+   * failure of the request is reported for.
+   */
+  protected readonly requestClusters = new WeakMap<object, Cluster>();
+
   constructor(private readonly dependencies: Dependencies) {
     this.configureProxy(dependencies.proxy);
 
@@ -388,9 +394,18 @@ export class FreelensProxy {
         return;
       }
 
-      this.dependencies.logger.error(`[FREELENS-PROXY]: http proxy errored for cluster: ${describeError(error)}`, {
-        url: req.url,
-      });
+      // A disconnect stops the proxy of the cluster, which fails the requests
+      // still on their way, such as those of a refresh of its accessibility.
+      if (this.requestClusters.get(req)?.disconnected.get()) {
+        this.dependencies.logger.debug(
+          `[FREELENS-PROXY]: request of a disconnected cluster failed: ${describeError(error)}`,
+          { url: req.url },
+        );
+      } else {
+        this.dependencies.logger.error(`[FREELENS-PROXY]: http proxy errored for cluster: ${describeError(error)}`, {
+          url: req.url,
+        });
+      }
 
       if (target) {
         this.dependencies.logger.debug(`Failed proxy to target: ${JSON.stringify(target, null, 2)}`);
@@ -511,6 +526,8 @@ export class FreelensProxy {
 
       if (proxyTarget) {
         const { apiUrl } = freelensK8sProxyManager;
+
+        this.requestClusters.set(req, cluster);
 
         if (apiUrl) {
           this.clusterRoutes.set(req, {

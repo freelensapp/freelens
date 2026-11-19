@@ -133,6 +133,14 @@ class ClusterConnection {
    */
   private isRefreshing = false;
 
+  /**
+   * Counts the disconnects. A refresh of the accessibility that started before
+   * the latest one belongs to a connection that has ended: its requests fail as
+   * the proxy stops, and its results would refill the state the disconnect
+   * cleared.
+   */
+  private disconnects = 0;
+
   constructor(
     private readonly dependencies: Dependencies,
     private readonly cluster: Cluster,
@@ -395,6 +403,7 @@ class ClusterConnection {
       this.cluster.accessible.set(false);
       this.cluster.ready.set(false);
       this.activated = false;
+      this.disconnects += 1;
       this.cluster.allowedNamespaces.clear();
       this.dependencies.logger.info(`[CLUSTER]: disconnected`, { id: this.cluster.id });
     });
@@ -414,6 +423,11 @@ class ClusterConnection {
     }
 
     await this.refreshAccessibility();
+
+    if (this.cluster.disconnected.get()) {
+      return;
+    }
+
     await this.refreshMetadata();
   }
 
@@ -428,12 +442,21 @@ class ClusterConnection {
 
   private async refreshAccessibility(): Promise<void> {
     this.dependencies.logger.info(`[CLUSTER]: refreshAccessibility`, this.cluster.getMeta());
+    const disconnects = this.disconnects;
+    const isCanceled = () => this.disconnects !== disconnects;
+    const cancel = () => {
+      this.dependencies.logger.debug(
+        `[CLUSTER]: dropped the refresh of a disconnected cluster`,
+        this.cluster.getMeta(),
+      );
+    };
     const proxyConfig = await this.dependencies.loadProxyKubeconfig();
     const api = this.dependencies.createAuthorizationApi(proxyConfig);
-    const canI = this.dependencies.createCanI(api);
-    const requestNamespaceListPermissions = this.cluster.preferences.skipNamespaceAuthorizationCheck
+    const canI = this.dependencies.createCanI(api, { isCanceled });
+    const requestNamespaceListPermissions: RequestNamespaceListPermissions = this.cluster.preferences
+      .skipNamespaceAuthorizationCheck
       ? async () => () => true
-      : this.dependencies.createRequestNamespaceListPermissions(api);
+      : this.dependencies.createRequestNamespaceListPermissions(api, { isCanceled });
 
     const isAdmin = await canI({
       namespace: "kube-system",
@@ -444,12 +467,22 @@ class ClusterConnection {
       verb: "watch",
       resource: "*",
     });
+
+    if (isCanceled()) {
+      return cancel();
+    }
+
     const allowedNamespaces = await this.requestAllowedNamespaces(proxyConfig);
+
+    if (isCanceled()) {
+      return cancel();
+    }
+
     const knownResources = await (async () => {
       const result = await this.dependencies.requestApiResources(this.cluster);
 
-      if (result.callWasSuccessful) {
-        return result.response;
+      if (result.callWasSuccessful || isCanceled()) {
+        return result.callWasSuccessful ? result.response : [];
       }
 
       if (this.cluster.knownResources.length > 0) {
@@ -468,11 +501,20 @@ class ClusterConnection {
 
       return [];
     })();
-    const resourcesToShow = await this.getResourcesToShow(
-      allowedNamespaces,
-      knownResources,
-      requestNamespaceListPermissions,
+
+    if (isCanceled()) {
+      return cancel();
+    }
+
+    // The namespaces not reviewed yet when the cluster disconnects are not
+    // reviewed at all.
+    const resourcesToShow = await this.getResourcesToShow(allowedNamespaces, knownResources, async (namespace) =>
+      isCanceled() ? () => false : requestNamespaceListPermissions(namespace),
     );
+
+    if (isCanceled()) {
+      return cancel();
+    }
 
     runInAction(() => {
       this.cluster.isAdmin.set(isAdmin);
