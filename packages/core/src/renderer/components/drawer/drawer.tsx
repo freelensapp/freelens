@@ -14,6 +14,7 @@ import { cssNames, noop } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import React from "react";
 import { createPortal } from "react-dom";
+import { CopyToClipboardIcon } from "../copy-to-clipboard/copy-to-clipboard-icon";
 import drawerStorageInjectable, { defaultDrawerWidth } from "./drawer-storage/drawer-storage.injectable";
 
 import type { AnimateName } from "@freelensapp/animate";
@@ -54,7 +55,6 @@ const defaultProps = {
 };
 
 interface State {
-  isCopied: boolean;
   width: number;
 }
 
@@ -83,7 +83,6 @@ class NonInjectedDrawer extends React.Component<DrawerProps & Dependencies & typ
   });
 
   public state = {
-    isCopied: false,
     width: this.props.drawerStorage.get().width,
   };
 
@@ -180,16 +179,10 @@ class NonInjectedDrawer extends React.Component<DrawerProps & Dependencies & typ
     if (open) onClose();
   };
 
-  copyTitle = (title: string) => {
+  getTitleToCopy = (title: string) => {
     const itemName = title.split(":").splice(1).join(":") || title; // copy whole if no :
 
-    // A refused write leaves the "Copy" tooltip in place, which is the feedback.
-    navigator.clipboard.writeText(itemName.trim()).then(() => {
-      this.setState({ isCopied: true });
-      setTimeout(() => {
-        this.setState({ isCopied: false });
-      }, 3000);
-    }, noop);
+    return itemName.trim();
   };
 
   render() {
@@ -207,9 +200,7 @@ class NonInjectedDrawer extends React.Component<DrawerProps & Dependencies & typ
       "data-testid": testId,
       testIdForClose,
     } = this.props;
-    const { isCopied, width } = this.state;
-    const copyTooltip = isCopied ? "Copied!" : "Copy";
-    const copyIcon = isCopied ? "done" : "content_copy";
+    const { width } = this.state;
     const canCopyTitle = typeof title === "string" && title.length > 0;
     const [direction, placement, growthDirection] = resizingAnchorProps[position];
     const drawerSize = size || `${width}px`;
@@ -228,9 +219,7 @@ class NonInjectedDrawer extends React.Component<DrawerProps & Dependencies & typ
             <div className="drawer-title flex items-center">
               <div className="drawer-title-text flex gap-2 items-center">
                 {title}
-                {canCopyTitle && (
-                  <Icon material={copyIcon} tooltip={copyTooltip} onClick={() => this.copyTitle(title)} />
-                )}
+                {canCopyTitle && <CopyToClipboardIcon getText={() => this.getTitleToCopy(title)} />}
               </div>
               {toolbar}
               <Icon material="close" tooltip="Close" onClick={this.close} data-testid={testIdForClose} />
