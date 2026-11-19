@@ -141,6 +141,59 @@ export type CopyableInputTakesItsProps = Holds<
   Parameters<typeof Renderer.Component.CopyableInput>[0] extends FixtureCopyableInputProps ? true : false
 >;
 
+// The generic components the host's views are built from. The enums of the
+// resizing anchor and its class are values and types alike, so they are named
+// as types here; the function components are values only, and their props
+// types only.
+export type FixtureErrorBoundaryProps = Renderer.Component.ErrorBoundaryProps;
+export type FixtureAnimateProps = Renderer.Component.AnimateProps;
+export type FixtureAnimateName = Renderer.Component.AnimateName;
+export type FixtureResizingAnchorProps = Renderer.Component.ResizingAnchorProps;
+export type FixtureResizingAnchor = Renderer.Component.ResizingAnchor;
+export type FixtureResizeDirection = Renderer.Component.ResizeDirection;
+export type FixtureResizeSide = Renderer.Component.ResizeSide;
+export type FixtureResizeGrowthDirection = Renderer.Component.ResizeGrowthDirection;
+export type FixtureColorSwatchProps = Renderer.Component.ColorSwatchProps;
+export type FixtureColorSwatchGroupProps = Renderer.Component.ColorSwatchGroupProps;
+export type FixtureCustomColorSwatchProps = Renderer.Component.CustomColorSwatchProps;
+export type FixtureOrderableListProps = Renderer.Component.OrderableListProps;
+export type FixtureOrderableItemProps = Renderer.Component.OrderableItemProps;
+export type FixtureVirtualListProps = Renderer.Component.VirtualListProps<string>;
+export type FixtureVirtualListRef = Renderer.Component.VirtualListRef;
+export type FixtureVirtualListAlign = Renderer.Component.VirtualListAlign;
+export type ErrorBoundaryTakesItsProps = Holds<
+  Parameters<typeof Renderer.Component.ErrorBoundary>[0] extends FixtureErrorBoundaryProps ? true : false
+>;
+export type AnimateTakesItsProps = Holds<
+  Parameters<typeof Renderer.Component.Animate>[0] extends FixtureAnimateProps ? true : false
+>;
+export type ResizingAnchorTakesItsProps = Holds<
+  ConstructorParameters<typeof Renderer.Component.ResizingAnchor>[0] extends FixtureResizingAnchorProps ? true : false
+>;
+export type ColorSwatchTakesItsProps = Holds<
+  Parameters<typeof Renderer.Component.ColorSwatch>[0] extends FixtureColorSwatchProps ? true : false
+>;
+export type ColorSwatchGroupTakesItsProps = Holds<
+  Parameters<typeof Renderer.Component.ColorSwatchGroup>[0] extends FixtureColorSwatchGroupProps ? true : false
+>;
+export type CustomColorSwatchTakesItsProps = Holds<
+  Parameters<typeof Renderer.Component.CustomColorSwatch>[0] extends FixtureCustomColorSwatchProps ? true : false
+>;
+export type OrderableListTakesItsProps = Holds<
+  Parameters<typeof Renderer.Component.OrderableList>[0] extends FixtureOrderableListProps ? true : false
+>;
+export type OrderableItemTakesItsProps = Holds<
+  Parameters<typeof Renderer.Component.OrderableItem>[0] extends FixtureOrderableItemProps ? true : false
+>;
+export type VirtualListTakesItsProps = Holds<
+  Parameters<typeof Renderer.Component.VirtualList<string>>[0] extends FixtureVirtualListProps ? true : false
+>;
+// What the ref scrolls with is the API's own type, not one of the library
+// that virtualizes the list.
+export type VirtualListRefTakesItsAlign = Holds<
+  Parameters<FixtureVirtualListRef["scrollToItem"]>[1] extends FixtureVirtualListAlign ? true : false
+>;
+
 // The overview cards are function components, a value only, and their props
 // are types only, so no name is a pair. The props type an extension's own data
 // and have to be what the component takes.

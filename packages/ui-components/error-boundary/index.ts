@@ -5,3 +5,5 @@
  */
 
 export { ErrorBoundary } from "./src/error-boundary";
+
+export type { ErrorBoundaryProps } from "./src/error-boundary";

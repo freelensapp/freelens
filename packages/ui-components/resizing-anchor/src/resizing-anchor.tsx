@@ -151,13 +151,13 @@ function directionDelta(P1: number, P2: number, M: number): number | false {
 
 @observer
 export class ResizingAnchor extends React.PureComponent<ResizingAnchorProps> {
-  @observable accessor lastMouseEvent: MouseEvent | undefined;
+  @observable private accessor lastMouseEvent: MouseEvent | undefined;
 
-  ref = React.createRef<HTMLDivElement>();
+  private ref = React.createRef<HTMLDivElement>();
 
-  @observable accessor isDragging = false;
+  @observable private accessor isDragging = false;
 
-  @observable accessor wasDragging = false;
+  @observable private accessor wasDragging = false;
 
   static defaultProps = {
     onStart: noop,
@@ -198,7 +198,7 @@ export class ResizingAnchor extends React.PureComponent<ResizingAnchorProps> {
     document.removeEventListener("mouseup", this.onDragEnd);
   }
 
-  onDragInit = action((event: React.MouseEvent) => {
+  private onDragInit = action((event: React.MouseEvent) => {
     const { onStart, onlyButtons } = this.props;
 
     if (typeof onlyButtons === "number" && onlyButtons !== event.buttons) {
@@ -214,7 +214,7 @@ export class ResizingAnchor extends React.PureComponent<ResizingAnchorProps> {
     onStart();
   });
 
-  calculateDelta(from: Position, to: Position): number | false {
+  private calculateDelta(from: Position, to: Position): number | false {
     const node = this.ref.current;
 
     if (!node) {
@@ -235,7 +235,7 @@ export class ResizingAnchor extends React.PureComponent<ResizingAnchorProps> {
     }
   }
 
-  onDrag = throttle((event: MouseEvent) => {
+  private onDrag = throttle((event: MouseEvent) => {
     /**
      * Some notes to help understand the following:
      *  - A browser's origin point is in the top left of the screen
@@ -295,7 +295,7 @@ export class ResizingAnchor extends React.PureComponent<ResizingAnchorProps> {
     }
   }, 100);
 
-  onDragEnd = action(() => {
+  private onDragEnd = action(() => {
     this.props.onEnd();
     document.removeEventListener("mousemove", this.onDrag);
     document.removeEventListener("mouseup", this.onDragEnd);

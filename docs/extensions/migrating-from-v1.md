@@ -857,8 +857,7 @@ Each entry is marked _value_, _type_, _class_ (a value and a type) or _member_.
 
 - `Renderer.Component.List` (_value_), `ListProps`, `SearchFilter` (_type_) —
   see [`Renderer.Component.List` removed](#renderercomponentlist-removed).
-- `Renderer.Component.VirtualList` (_value_), `VirtualListProps`,
-  `VirtualListRef`, `RowProps` (_type_) — see
+- `Renderer.Component.RowProps` (_type_) — see
   [Unused members removed](#unused-members-removed).
 - `Renderer.Component.NamespaceSelectBadgeNonInjected` (_value_),
   `Renderer.Component.Dependencies` (_type_) — see
@@ -1510,9 +1509,9 @@ These members are gone from v2. No extension is known to use them, and keeping
 them meant publishing `react-window` or Electron's own types as part of the API,
 the latter in `Common`, which renderer code reads too.
 
-- **`Renderer.Component.VirtualList`** and its types — render a plain list, or
-  bundle a virtualizer of your own (`react-window` included) if the list is long
-  enough to need one.
+- **`Renderer.Component.RowProps`** — the props of a row of `VirtualList` were
+  `react-window`'s. `getRow` returns the element of a row, as before, and its
+  `style` gets the position of the row.
 - **`appMenus` and `trayMenus`** on `LensMainExtension`, with
   `Common.Types.MenuRegistration` and `Common.Types.TrayMenuRegistration` — no
   replacement. The application menu and the tray belong to the host.
@@ -1523,6 +1522,16 @@ the latter in `Common`, which renderer code reads too.
   an inline handler needs no annotation. Where you name the type yourself,
   import it from `electron` (`import type { IpcMainEvent } from "electron"`) in
   your main code.
+
+**`Renderer.Component.VirtualList`** stays, with `VirtualListProps` and
+`VirtualListRef`, but none of its types is `react-window`'s any more:
+
+- `VirtualListRef.scrollToItem` takes a `VirtualListAlign`, which has the
+  values of `react-window`'s `Align`. Replace an import of `Align` from
+  `react-window` with it.
+- `onScroll` gets the scroll event of the element that scrolls, not
+  `react-window`'s `ListOnScrollProps`. Read the offset from
+  `event.currentTarget.scrollTop`.
 
 ## Node and Electron in the renderer
 
@@ -2274,10 +2283,11 @@ restarted once.
       class whose version the cluster serves resolves, so code that walks them
       shows the same objects twice, and no type check catches it (see
       [`Renderer.K8sApi` concrete store classes removed](#rendererk8sapi-concrete-store-classes-removed)).
-- [ ] Replace any use of `Renderer.Component.VirtualList`, `appMenus`,
+- [ ] Replace any use of `Renderer.Component.RowProps`, `appMenus`,
       `trayMenus`, `Common.Types.IpcRendererEvent`,
       `Common.Types.IpcMainEvent` or `Common.Types.IpcMainInvokeEvent` — they
-      were removed (see
+      were removed — and type `Renderer.Component.VirtualList` with its own
+      `VirtualListAlign` and the scroll event its `onScroll` gets (see
       [Unused members removed](#unused-members-removed)).
 - [ ] Move any Node or Electron use out of the renderer — `require()`, a
       builtin import, `Buffer`, `process` — to the replacements in

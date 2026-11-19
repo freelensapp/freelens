@@ -10,7 +10,7 @@ import { observer } from "mobx-react";
 import { FavoriteItem } from "../../../../features/favorites/common/storage.injectable";
 import { Checkbox } from "../../checkbox";
 import { TabLayout } from "../../layout/tab-layout";
-import OrderableList from "../../orderable-list/orderable-list";
+import { OrderableList } from "../../orderable-list/orderable-list";
 import favoritesSidebarItemsComputedInjectable, { FavoriteSidebarItem } from "../sidebar-items-computed.injectable";
 import favoritesStoreInjectable, { FavoritesStore } from "../store.injectable";
 import styles from "./overview.module.scss";
