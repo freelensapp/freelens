@@ -27,30 +27,61 @@ interface Dependencies {
   readonly routes: Route<unknown, string>[];
 }
 
+interface RouteEntry {
+  handler: RouteHandler;
+  withoutToken: boolean;
+}
+
 export class Router {
-  private readonly router = new Call.Router<RouteHandler>();
+  private readonly router = new Call.Router<RouteEntry>();
 
   constructor(private readonly dependencies: Dependencies) {
     for (const route of this.dependencies.routes) {
-      this.router.add({ method: route.method, path: route.path }, this.dependencies.createHandlerForRoute(route));
+      this.router.add(
+        { method: route.method, path: route.path },
+        { handler: this.dependencies.createHandlerForRoute(route), withoutToken: route.withoutToken === true },
+      );
+    }
+  }
+
+  /**
+   * Whether the route that `route` runs for this request is served without
+   * the proxy's token. It matches the same normalized path as `route`, so no
+   * spelling of a guarded path, such as `/./api/…`, reaches its route
+   * unguarded. A request that matches no route, or whose target does not
+   * parse, needs the token.
+   */
+  public isServedWithoutToken(method: string, reqUrl: string): boolean {
+    try {
+      return this.match(method, reqUrl)?.route.withoutToken === true;
+    } catch {
+      return false;
     }
   }
 
   public async route(cluster: Cluster | undefined, req: ServerIncomingMessage, res: ServerResponse): Promise<boolean> {
-    const url = new URL(req.url, "http://localhost");
-    const path = url.pathname;
-    const method = req.method.toLowerCase();
-    const matchingRoute = this.router.route(method, path);
+    const match = this.match(req.method, req.url);
 
-    if (matchingRoute instanceof Error) {
+    if (!match) {
       return false;
     }
 
-    const request = await this.getRequest({ req, res, cluster, url, params: matchingRoute.params });
+    const request = await this.getRequest({ req, res, cluster, url: match.url, params: match.params });
 
-    await matchingRoute.route(request, res);
+    await match.route.handler(request, res);
 
     return true;
+  }
+
+  private match(method: string, reqUrl: string) {
+    const url = new URL(reqUrl, "http://localhost");
+    const matchingRoute = this.router.route(method.toLowerCase(), url.pathname);
+
+    if (matchingRoute instanceof Error) {
+      return undefined;
+    }
+
+    return { url, route: matchingRoute.route, params: matchingRoute.params };
   }
 
   protected async getRequest(opts: RouterRequestOpts): Promise<LensApiRequest<string>> {
