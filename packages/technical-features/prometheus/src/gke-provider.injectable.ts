@@ -79,11 +79,15 @@ const rate = (expr: string) => `rate(${expr}[${rateAccuracy}])`;
  * among them, carry no node name in their metadata, so a filter or a sum by it would leave out what they request and
  * use. The node is taken from the container of the pod that started last, so that a pod that moved to another node
  * within the window joins one node, not two, which would fail the whole query. `nodeMatcher` selects the nodes.
+ *
+ * `expr` is summed by pod first, so the result has one series for each pod. Under `sum by` of the node, a range query
+ * of GMP fails on the series of the containers of one pod with "grouping labels must ensure unique matches", which an
+ * instant query and the bare join do not.
  */
 const withNodeOfPod = (opts: Record<string, string>, expr: string, nodeMatcher: string): string => {
   const uptime = series(opts, "container_uptime", "k8s_container", [nodeMatcher]);
 
-  return `${expr} * on (namespace_name, pod_name) group_left (${metadataNodeNameLabel}) (0 * bottomk by (namespace_name, pod_name) (1, ${uptime}) + 1)`;
+  return `sum by (namespace_name, pod_name) (${expr}) * on (namespace_name, pod_name) group_left (${metadataNodeNameLabel}) (0 * bottomk by (namespace_name, pod_name) (1, ${uptime}) + 1)`;
 };
 
 const parseSelector = (selector: string | undefined): string[] =>
