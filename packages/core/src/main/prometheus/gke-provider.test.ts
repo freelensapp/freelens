@@ -66,7 +66,7 @@ describe("the GKE prometheus provider", () => {
 
     it("filters the container series of the cluster on the node of their pod, so the sidecars count too", () => {
       expect(getGkeQuery({ ...clusterOpts, nodes: "n1|n2" }, "cpuRequests")).toBe(
-        `sum(kubernetes_io:container_cpu_request_cores{monitored_resource="k8s_container"}${nodeOfPod('metadata_system_node_name=~"n1|n2"')})`,
+        `sum(sum by (namespace_name, pod_name) (kubernetes_io:container_cpu_request_cores{monitored_resource="k8s_container"})${nodeOfPod('metadata_system_node_name=~"n1|n2"')})`,
       );
     });
 
@@ -93,7 +93,7 @@ describe("the GKE prometheus provider", () => {
       ],
       [
         "workloadMemoryUsage",
-        `sum by (node) (label_replace(sum by (metadata_system_node_name) (kubernetes_io:container_memory_used_bytes{monitored_resource="k8s_container",memory_type="non-evictable"} * on (namespace_name, pod_name) group_left (metadata_system_node_name) (0 * bottomk by (namespace_name, pod_name) (1, kubernetes_io:container_uptime{monitored_resource="k8s_container",metadata_system_node_name!=""}) + 1)), "node", "$1", "metadata_system_node_name", "(.*)"))`,
+        `sum by (node) (label_replace(sum by (metadata_system_node_name) (sum by (namespace_name, pod_name) (kubernetes_io:container_memory_used_bytes{monitored_resource="k8s_container",memory_type="non-evictable"}) * on (namespace_name, pod_name) group_left (metadata_system_node_name) (0 * bottomk by (namespace_name, pod_name) (1, kubernetes_io:container_uptime{monitored_resource="k8s_container",metadata_system_node_name!=""}) + 1)), "node", "$1", "metadata_system_node_name", "(.*)"))`,
       ],
       ["memoryCapacity", byNode('kubernetes_io:node_memory_total_bytes{monitored_resource="k8s_node"}')],
       [
