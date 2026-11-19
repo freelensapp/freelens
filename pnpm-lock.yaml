@@ -342,8 +342,8 @@ catalogs:
       specifier: 3.4.18
       version: 3.4.18
     electron:
-      specifier: 44.11.4
-      version: 44.11.4
+      specifier: 44.11.5
+      version: 44.11.5
     electron-builder:
       specifier: 26.18.0
       version: 26.18.0
@@ -816,7 +816,7 @@ importers:
         version: 6.3.0(vite@8.3.8(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
       electron:
         specifier: 'catalog:'
-        version: 44.11.4(supports-color@8.1.1)
+        version: 44.11.5(supports-color@8.1.1)
       electron-builder:
         specifier: 'catalog:'
         version: 26.18.0(electron-builder-squirrel-windows@26.18.0)(supports-color@8.1.1)
@@ -1276,7 +1276,7 @@ importers:
         version: 8.20.0
       electron:
         specifier: 'catalog:'
-        version: 44.11.4(supports-color@8.1.1)
+        version: 44.11.5(supports-color@8.1.1)
       jsdom:
         specifier: 'catalog:'
         version: 31.0.1(@noble/hashes@2.4.0)
@@ -1404,7 +1404,7 @@ importers:
         version: link:../core
       electron:
         specifier: 'catalog:'
-        version: 44.11.4(supports-color@8.1.1)
+        version: 44.11.5(supports-color@8.1.1)
       rolldown:
         specifier: 'catalog:'
         version: 1.2.19
@@ -1741,7 +1741,7 @@ importers:
         version: 27.0.0
       electron:
         specifier: 'catalog:'
-        version: 44.11.4(supports-color@8.1.1)
+        version: 44.11.5(supports-color@8.1.1)
       typescript:
         specifier: 'catalog:'
         version: 7.0.2
@@ -1932,7 +1932,7 @@ importers:
         version: link:../../../infrastructure/typescript
       electron:
         specifier: 'catalog:'
-        version: 44.11.4(supports-color@8.1.1)
+        version: 44.11.5(supports-color@8.1.1)
       typescript:
         specifier: 'catalog:'
         version: 7.0.2
@@ -1966,7 +1966,7 @@ importers:
         version: 27.0.0(@ogre-tools/fp@27.0.0)(@ogre-tools/injectable@27.0.0(@ogre-tools/fp@27.0.0))(mobx@7.1.7)
       electron:
         specifier: 'catalog:'
-        version: 44.11.4(supports-color@8.1.1)
+        version: 44.11.5(supports-color@8.1.1)
       mobx:
         specifier: 'catalog:'
         version: 7.1.7
@@ -5194,8 +5194,8 @@ packages:
     resolution: {integrity: sha512-bO3y10YikuUwUuDUQRM4KfwNkKhnpVO7IPdbsrejwN9/AABJzzTQ4GeHwyzNSrVO+tEH3/Np255a3sVZpZDjvg==}
     engines: {node: '>=8.0.0'}
 
-  electron@44.11.4:
-    resolution: {integrity: sha512-AJRr0b0F+Kt+iqmdFGLNUhluVHhcNUfFCm6AFXY/l9TmUr+fE6hW4HWVaaJGdhKkZiiVJ7ZgbAo2vQqWJ1C4jQ==}
+  electron@44.11.5:
+    resolution: {integrity: sha512-FgtBBAgWRyT/k2LbXDvlnHQRtc35sfp4UaWjYvktsh2HWWYSnfA/DnYGEOxQUZXpcp4EELj37x5zSSrh585nwg==}
     engines: {node: '>= 22.12.0'}
     hasBin: true
 
@@ -9739,7 +9739,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  electron@44.11.4(supports-color@8.1.1):
+  electron@44.11.5(supports-color@8.1.1):
     dependencies:
       '@electron-internal/extract-zip': 1.0.3
       '@electron/get': 5.0.0(supports-color@8.1.1)
