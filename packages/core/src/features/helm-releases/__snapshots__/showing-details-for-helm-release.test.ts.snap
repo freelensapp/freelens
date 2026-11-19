@@ -3422,6 +3422,7 @@ exports[`showing details for helm release > given application is started > when 
         >
           some-name
           <i
+            aria-label="Copy"
             class="Icon material interactive focusable"
             tabindex="0"
           >
@@ -4711,6 +4712,7 @@ exports[`showing details for helm release > given application is started > when 
         >
           some-name
           <i
+            aria-label="Copy"
             class="Icon material interactive focusable"
             tabindex="0"
           >
@@ -6001,6 +6003,7 @@ exports[`showing details for helm release > given application is started > when 
         >
           some-name
           <i
+            aria-label="Copy"
             class="Icon material interactive focusable"
             tabindex="0"
           >
@@ -6215,11 +6218,30 @@ exports[`showing details for helm release > given application is started > when 
                   User-supplied values only
                 </span>
               </label>
-              <textarea
-                data-testid="monaco-editor-for-helm-release-configuration-some-namespace/some-name"
+              <div
+                class="flex items-start gap-1"
               >
-                some-configuration
-              </textarea>
+                <textarea
+                  data-testid="monaco-editor-for-helm-release-configuration-some-namespace/some-name"
+                >
+                  some-configuration
+                </textarea>
+                <i
+                  aria-label="Copy"
+                  class="Icon material interactive focusable"
+                  tabindex="0"
+                >
+                  <span
+                    class="icon"
+                    data-icon-name="content_copy"
+                  >
+                    content_copy
+                  </span>
+                </i>
+                <div>
+                  Copy
+                </div>
+              </div>
               <button
                 class="Button primary"
                 data-testid="helm-release-configuration-save-button"
@@ -7539,6 +7561,7 @@ exports[`showing details for helm release > given application is started > when 
         >
           some-name
           <i
+            aria-label="Copy"
             class="Icon material interactive focusable"
             tabindex="0"
           >
@@ -7753,11 +7776,30 @@ exports[`showing details for helm release > given application is started > when 
                   User-supplied values only
                 </span>
               </label>
-              <textarea
-                data-testid="monaco-editor-for-helm-release-configuration-some-namespace/some-name"
+              <div
+                class="flex items-start gap-1"
               >
-                some-new-configuration
-              </textarea>
+                <textarea
+                  data-testid="monaco-editor-for-helm-release-configuration-some-namespace/some-name"
+                >
+                  some-new-configuration
+                </textarea>
+                <i
+                  aria-label="Copy"
+                  class="Icon material interactive focusable"
+                  tabindex="0"
+                >
+                  <span
+                    class="icon"
+                    data-icon-name="content_copy"
+                  >
+                    content_copy
+                  </span>
+                </i>
+                <div>
+                  Copy
+                </div>
+              </div>
               <button
                 class="Button primary"
                 data-testid="helm-release-configuration-save-button"
@@ -9077,6 +9119,7 @@ exports[`showing details for helm release > given application is started > when 
         >
           some-name
           <i
+            aria-label="Copy"
             class="Icon material interactive focusable"
             tabindex="0"
           >
@@ -9291,11 +9334,30 @@ exports[`showing details for helm release > given application is started > when 
                   User-supplied values only
                 </span>
               </label>
-              <textarea
-                data-testid="monaco-editor-for-helm-release-configuration-some-namespace/some-name"
+              <div
+                class="flex items-start gap-1"
               >
-                some-new-configuration
-              </textarea>
+                <textarea
+                  data-testid="monaco-editor-for-helm-release-configuration-some-namespace/some-name"
+                >
+                  some-new-configuration
+                </textarea>
+                <i
+                  aria-label="Copy"
+                  class="Icon material interactive focusable"
+                  tabindex="0"
+                >
+                  <span
+                    class="icon"
+                    data-icon-name="content_copy"
+                  >
+                    content_copy
+                  </span>
+                </i>
+                <div>
+                  Copy
+                </div>
+              </div>
               <button
                 class="Button waiting primary"
                 data-testid="helm-release-configuration-save-button"
@@ -10615,6 +10677,7 @@ exports[`showing details for helm release > given application is started > when 
         >
           some-name
           <i
+            aria-label="Copy"
             class="Icon material interactive focusable"
             tabindex="0"
           >
@@ -10829,11 +10892,30 @@ exports[`showing details for helm release > given application is started > when 
                   User-supplied values only
                 </span>
               </label>
-              <textarea
-                data-testid="monaco-editor-for-helm-release-configuration-some-namespace/some-name"
+              <div
+                class="flex items-start gap-1"
               >
-                some-new-configuration
-              </textarea>
+                <textarea
+                  data-testid="monaco-editor-for-helm-release-configuration-some-namespace/some-name"
+                >
+                  some-new-configuration
+                </textarea>
+                <i
+                  aria-label="Copy"
+                  class="Icon material interactive focusable"
+                  tabindex="0"
+                >
+                  <span
+                    class="icon"
+                    data-icon-name="content_copy"
+                  >
+                    content_copy
+                  </span>
+                </i>
+                <div>
+                  Copy
+                </div>
+              </div>
               <button
                 class="Button primary"
                 data-testid="helm-release-configuration-save-button"
@@ -12153,6 +12235,7 @@ exports[`showing details for helm release > given application is started > when 
         >
           some-name
           <i
+            aria-label="Copy"
             class="Icon material interactive focusable"
             tabindex="0"
           >
@@ -12368,11 +12451,30 @@ exports[`showing details for helm release > given application is started > when 
                   User-supplied values only
                 </span>
               </label>
-              <textarea
-                data-testid="monaco-editor-for-helm-release-configuration-some-namespace/some-name"
+              <div
+                class="flex items-start gap-1"
               >
-                some-new-configuration
-              </textarea>
+                <textarea
+                  data-testid="monaco-editor-for-helm-release-configuration-some-namespace/some-name"
+                >
+                  some-new-configuration
+                </textarea>
+                <i
+                  aria-label="Copy"
+                  class="Icon material interactive focusable"
+                  tabindex="0"
+                >
+                  <span
+                    class="icon"
+                    data-icon-name="content_copy"
+                  >
+                    content_copy
+                  </span>
+                </i>
+                <div>
+                  Copy
+                </div>
+              </div>
               <button
                 class="Button primary"
                 data-testid="helm-release-configuration-save-button"
@@ -13693,6 +13795,7 @@ exports[`showing details for helm release > given application is started > when 
         >
           some-name
           <i
+            aria-label="Copy"
             class="Icon material interactive focusable"
             tabindex="0"
           >
@@ -13907,11 +14010,30 @@ exports[`showing details for helm release > given application is started > when 
                   User-supplied values only
                 </span>
               </label>
-              <textarea
-                data-testid="monaco-editor-for-helm-release-configuration-some-namespace/some-name"
+              <div
+                class="flex items-start gap-1"
               >
-                some-other-configuration
-              </textarea>
+                <textarea
+                  data-testid="monaco-editor-for-helm-release-configuration-some-namespace/some-name"
+                >
+                  some-other-configuration
+                </textarea>
+                <i
+                  aria-label="Copy"
+                  class="Icon material interactive focusable"
+                  tabindex="0"
+                >
+                  <span
+                    class="icon"
+                    data-icon-name="content_copy"
+                  >
+                    content_copy
+                  </span>
+                </i>
+                <div>
+                  Copy
+                </div>
+              </div>
               <button
                 class="Button primary"
                 data-testid="helm-release-configuration-save-button"
@@ -16519,6 +16641,7 @@ exports[`showing details for helm release > given application is started > when 
         >
           some-name
           <i
+            aria-label="Copy"
             class="Icon material interactive focusable"
             tabindex="0"
           >
@@ -19038,6 +19161,7 @@ exports[`showing details for helm release > given application is started > when 
         >
           some-name
           <i
+            aria-label="Copy"
             class="Icon material interactive focusable"
             tabindex="0"
           >
@@ -20327,6 +20451,7 @@ exports[`showing details for helm release > given application is started > when 
         >
           some-other-name
           <i
+            aria-label="Copy"
             class="Icon material interactive focusable"
             tabindex="0"
           >
@@ -21616,6 +21741,7 @@ exports[`showing details for helm release > given application is started > when 
         >
           some-other-name
           <i
+            aria-label="Copy"
             class="Icon material interactive focusable"
             tabindex="0"
           >
@@ -22906,6 +23032,7 @@ exports[`showing details for helm release > given application is started > when 
         >
           some-other-name
           <i
+            aria-label="Copy"
             class="Icon material interactive focusable"
             tabindex="0"
           >
@@ -23120,11 +23247,30 @@ exports[`showing details for helm release > given application is started > when 
                   User-supplied values only
                 </span>
               </label>
-              <textarea
-                data-testid="monaco-editor-for-helm-release-configuration-some-namespace/some-name"
+              <div
+                class="flex items-start gap-1"
               >
-                some-other-configuration
-              </textarea>
+                <textarea
+                  data-testid="monaco-editor-for-helm-release-configuration-some-namespace/some-name"
+                >
+                  some-other-configuration
+                </textarea>
+                <i
+                  aria-label="Copy"
+                  class="Icon material interactive focusable"
+                  tabindex="0"
+                >
+                  <span
+                    class="icon"
+                    data-icon-name="content_copy"
+                  >
+                    content_copy
+                  </span>
+                </i>
+                <div>
+                  Copy
+                </div>
+              </div>
               <button
                 class="Button primary"
                 data-testid="helm-release-configuration-save-button"

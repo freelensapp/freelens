@@ -3506,6 +3506,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
         >
           KubernetesCluster: some-kubernetes-cluster
           <i
+            aria-label="Copy"
             class="Icon material interactive focusable"
             tabindex="0"
           >
@@ -4756,6 +4757,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
         >
           KubernetesCluster: some-kubernetes-cluster
           <i
+            aria-label="Copy"
             class="Icon material interactive focusable"
             tabindex="0"
           >
@@ -7043,6 +7045,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
         >
           WebLink: some-weblink
           <i
+            aria-label="Copy"
             class="Icon material interactive focusable"
             tabindex="0"
           >
@@ -8232,6 +8235,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
         >
           WebLink: some-weblink
           <i
+            aria-label="Copy"
             class="Icon material interactive focusable"
             tabindex="0"
           >
@@ -8837,6 +8841,7 @@ exports[`opening catalog entity details panel > when not navigated to the catalo
         >
           WebLink: some-weblink
           <i
+            aria-label="Copy"
             class="Icon material interactive focusable"
             tabindex="0"
           >
