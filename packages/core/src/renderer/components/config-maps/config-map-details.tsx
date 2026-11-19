@@ -15,8 +15,8 @@ import { isEqual } from "es-toolkit";
 import { observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
+import { CopyableMonacoEditor } from "../copyable-monaco-editor/copyable-monaco-editor";
 import { DrawerTitle } from "../drawer";
-import { MonacoEditor } from "../monaco-editor";
 import configMapStoreInjectable from "./store.injectable";
 
 import type { Logger } from "@freelensapp/logger";
@@ -113,7 +113,7 @@ class NonInjectedConfigMapDetails extends React.Component<ConfigMapDetailsProps 
             {data.map(([name, value = ""]) => (
               <div key={name} className="data">
                 <div className="name">{name}</div>
-                <MonacoEditor
+                <CopyableMonacoEditor
                   id={`config-map-data-${name}`}
                   style={{
                     resize: "vertical",

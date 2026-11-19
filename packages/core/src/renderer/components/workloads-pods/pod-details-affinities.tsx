@@ -7,8 +7,8 @@
 import * as yaml from "js-yaml";
 import React from "react";
 import { defaultYamlDumpOptions } from "../../../common/kube-helpers";
+import { CopyableMonacoEditor } from "../copyable-monaco-editor/copyable-monaco-editor";
 import { DrawerItem, DrawerParamToggler } from "../drawer";
-import { MonacoEditor } from "../monaco-editor";
 
 import type { DaemonSet, Deployment, Job, Pod, ReplicaSet, StatefulSet } from "@freelensapp/kube-object";
 
@@ -27,7 +27,11 @@ export class PodDetailsAffinities extends React.Component<PodDetailsAffinitiesPr
     return (
       <DrawerItem name="Affinities" className="PodDetailsAffinities">
         <DrawerParamToggler label={affinitiesNum}>
-          <MonacoEditor readOnly style={{ height: 200 }} value={yaml.dump(affinities, defaultYamlDumpOptions)} />
+          <CopyableMonacoEditor
+            readOnly
+            style={{ height: 200 }}
+            value={yaml.dump(affinities, defaultYamlDumpOptions)}
+          />
         </DrawerParamToggler>
       </DrawerItem>
     );
