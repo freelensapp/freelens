@@ -15,11 +15,12 @@ interface ZoomMenuItem {
   label: string;
   keyboardShortcut: string;
   getZoom: (current: number) => number;
+  visible?: false;
 }
 
 // The items change the zoom preference rather than the zoom of the focused window, as Electron's own roles would:
 // main applies the preference to every window, and it survives a restart.
-const getZoomMenuItemInjectable = ({ id, orderNumber, label, keyboardShortcut, getZoom }: ZoomMenuItem) =>
+const getZoomMenuItemInjectable = ({ id, orderNumber, label, keyboardShortcut, getZoom, visible }: ZoomMenuItem) =>
   getInjectable({
     id: `${id}-menu-item`,
 
@@ -33,6 +34,7 @@ const getZoomMenuItemInjectable = ({ id, orderNumber, label, keyboardShortcut, g
         orderNumber,
         label,
         keyboardShortcut,
+        ...(visible === false ? { visible } : {}),
 
         onClick: () => {
           runInAction(() => {
@@ -61,10 +63,41 @@ export const zoomInMenuItemInjectable = getZoomMenuItemInjectable({
   getZoom: getNextZoomStep,
 });
 
+// Electron resolves "Plus" to Shift and the "=/+" key, which only produces "+" where it is the shifted "=", as on US
+// keyboards. On layouts with a key of its own for "+" (German, Italian and others), and on the numeric keypad, that
+// combination never comes, so zooming in did not work from the keyboard while zooming out did. Hidden items add the
+// missing shortcuts without a second entry in the menu: Electron registers the shortcut of a hidden item all the same.
+export const zoomInWithEqualsSignMenuItemInjectable = getZoomMenuItemInjectable({
+  id: "zoom-in-with-equals-sign",
+  orderNumber: 101,
+  label: "Zoom In",
+  keyboardShortcut: "CmdOrCtrl+=",
+  getZoom: getNextZoomStep,
+  visible: false,
+});
+
+export const zoomInWithNumpadPlusMenuItemInjectable = getZoomMenuItemInjectable({
+  id: "zoom-in-with-numpad-plus",
+  orderNumber: 102,
+  label: "Zoom In",
+  keyboardShortcut: "CmdOrCtrl+numadd",
+  getZoom: getNextZoomStep,
+  visible: false,
+});
+
 export const zoomOutMenuItemInjectable = getZoomMenuItemInjectable({
   id: "zoom-out",
   orderNumber: 110,
   label: "Zoom Out",
   keyboardShortcut: "CmdOrCtrl+-",
   getZoom: getPreviousZoomStep,
+});
+
+export const zoomOutWithNumpadMinusMenuItemInjectable = getZoomMenuItemInjectable({
+  id: "zoom-out-with-numpad-minus",
+  orderNumber: 111,
+  label: "Zoom Out",
+  keyboardShortcut: "CmdOrCtrl+numsub",
+  getZoom: getPreviousZoomStep,
+  visible: false,
 });
