@@ -443,7 +443,6 @@ export default defineConfig({
       host: "127.0.0.1",
       port: devServerPort,
       strictPort: true,
-      cors: true, // was Access-Control-Allow-Origin: *
       allowedHosts: [".freelens.app"],
       hmr: {
         protocol: "ws",
