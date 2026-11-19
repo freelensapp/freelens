@@ -5,6 +5,7 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
+import openDebugContainerShellInjectable from "../../features/debug-containers/main/open-shell.injectable";
 import openPodTerminalSessionInjectable from "../../features/pod-terminal/main/open.injectable";
 import openLocalShellSessionInjectable from "./local-shell-session/open.injectable";
 import openNodeShellSessionInjectable from "./node-shell-session/open.injectable";
@@ -13,6 +14,7 @@ import openStandaloneShellSessionInjectable from "./standalone-shell-session/ope
 import type WebSocket from "ws";
 
 import type { Cluster } from "../../common/cluster/cluster";
+import type { DebugContainerSpec } from "../../features/debug-containers/common/debug-container";
 import type { PodTerminalTarget } from "../../features/pod-terminal/common/pod-terminal";
 
 export interface OpenShellSessionArgs {
@@ -27,6 +29,10 @@ export interface OpenShellSessionArgs {
    * The container of a pod terminal, for a `kubectl exec` or `kubectl attach`.
    */
   podTerminal?: PodTerminalTarget;
+  /**
+   * The ephemeral container of a debug terminal, which it adds and attaches to.
+   */
+  debugContainer?: DebugContainerSpec;
 }
 
 export type OpenShellSession = (args: OpenShellSessionArgs) => Promise<void>;
@@ -39,14 +45,19 @@ const openShellSessionInjectable = getInjectable({
     const openNodeShellSession = di.inject(openNodeShellSessionInjectable);
     const openStandaloneShellSession = di.inject(openStandaloneShellSessionInjectable);
     const openPodTerminalSession = di.inject(openPodTerminalSessionInjectable);
+    const openDebugContainerShell = di.inject(openDebugContainerShellInjectable);
 
-    return ({ cluster, nodeName, podTerminal, ...args }) => {
+    return ({ cluster, nodeName, podTerminal, debugContainer, ...args }) => {
       if (!cluster) {
         return openStandaloneShellSession(args);
       }
 
       if (podTerminal) {
         return openPodTerminalSession({ cluster, target: podTerminal, ...args });
+      }
+
+      if (debugContainer) {
+        return openDebugContainerShell({ cluster, debugContainer, ...args });
       }
 
       return nodeName

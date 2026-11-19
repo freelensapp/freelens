@@ -94,6 +94,41 @@ describe("shell api requests", () => {
     expect(socket.end).toHaveBeenCalled();
   });
 
+  it("authenticates a debugger against its cluster and passes its pod identity", () => {
+    request(
+      "/api?id=tab&type=debug-container&shellToken=token&namespace=default&pod=app&podUid=uid&container=freelens-debug-123&image=alpine&target=app&profile=netadmin&env=A%3D1&env=B%3Dx%20y",
+    );
+    expect(authenticate).toHaveBeenCalledWith("some-cluster-id", "tab", "token");
+    expect(openShellSession).toHaveBeenCalledWith(
+      expect.objectContaining({
+        debugContainer: {
+          namespace: "default",
+          pod: "app",
+          podUid: "uid",
+          container: "freelens-debug-123",
+          image: "alpine",
+          target: "app",
+          profile: "netadmin",
+          env: ["A=1", "B=x y"],
+          custom: undefined,
+        },
+      }),
+    );
+  });
+
+  it.each([
+    ["the original pod UID", "namespace=default&pod=app&container=freelens-debug-123&image=alpine&target=app"],
+    ["a valid image", "namespace=default&pod=app&podUid=uid&container=freelens-debug-123&image=--help&target=app"],
+    [
+      "a known profile",
+      "namespace=default&pod=app&podUid=uid&container=freelens-debug-123&image=alpine&target=app&profile=root",
+    ],
+  ])("rejects a debugger request without %s", (_, query) => {
+    request(`/api?id=tab&type=debug-container&shellToken=token&${query}`);
+    expect(openShellSession).not.toHaveBeenCalled();
+    expect(socket.end).toHaveBeenCalled();
+  });
+
   it("ignores a node name on a standalone request, since a node shell needs a cluster", () => {
     request("/api?id=some-tab-id&type=standalone&node=some-node&shellToken=some-token");
 

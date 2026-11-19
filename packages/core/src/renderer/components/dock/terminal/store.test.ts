@@ -73,4 +73,29 @@ describe("TerminalStore", () => {
 
     expect(terminalApi.sendMessage).not.toHaveBeenCalled();
   });
+
+  it("asks main for a debug container for a debug tab", () => {
+    const { store, terminalApi, createTerminalApi } = createStore({ isReady: true });
+
+    store.connect({
+      id: tabId,
+      kind: TabKind.TERMINAL,
+      title: "Debug",
+      pinned: false,
+      debugContainer: {
+        namespace: "default",
+        pod: "app",
+        podUid: "pod-uid",
+        container: "freelens-debug-123",
+        image: "alpine",
+        target: "app",
+      },
+    });
+    expect(createTerminalApi).toHaveBeenCalledWith(expect.objectContaining({ type: "debug-container", pod: "app" }));
+
+    store.destroy(tabId);
+
+    expect(terminalApi.sendMessage).not.toHaveBeenCalled();
+    expect(terminalApi.destroy).toHaveBeenCalled();
+  });
 });

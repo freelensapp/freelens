@@ -5,9 +5,11 @@
  */
 
 import { action, observable } from "mobx";
+import { debugContainerQuery } from "../../../../features/debug-containers/common/debug-container";
 import { podTerminalQuery } from "../../../../features/pod-terminal/common/pod-terminal";
 import { WebSocketApiState } from "../../../api/websocket-api";
 
+import type { DebugContainerSpec } from "../../../../features/debug-containers/common/debug-container";
 import type { PodTerminalTarget } from "../../../../features/pod-terminal/common/pod-terminal";
 import type { CreateTerminalApi } from "../../../api/create-terminal-api.injectable";
 import type { TerminalApi } from "../../../api/terminal-api";
@@ -22,6 +24,10 @@ export interface ITerminalTab extends DockTab {
    * of a pod.
    */
   podTerminal?: PodTerminalTarget;
+  /**
+   * The ephemeral container of a tab opened by the Debug menu of a pod.
+   */
+  debugContainer?: DebugContainerSpec;
 }
 
 interface Dependencies {
@@ -44,6 +50,7 @@ export class TerminalStore {
       id: tab.id,
       node: tab.node,
       ...(tab.podTerminal ? podTerminalQuery(tab.podTerminal) : {}),
+      ...(tab.debugContainer ? debugContainerQuery(tab.debugContainer) : {}),
     });
     const terminal = this.dependencies.createTerminal(tab.id, api);
 

@@ -613,7 +613,7 @@ exports[`Showing correct entity settings > when navigating to local cluster enti
                   <div
                     class="label"
                   >
-                    Node Shell
+                    Node Shell and Debug
                   </div>
                 </div>
               </div>
@@ -1007,7 +1007,7 @@ exports[`Showing correct entity settings > when navigating to non-local cluster 
                   <div
                     class="label"
                   >
-                    Node Shell
+                    Node Shell and Debug
                   </div>
                 </div>
               </div>
