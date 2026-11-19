@@ -186,9 +186,9 @@ describe("BarChart", () => {
   });
 
   /**
-   * The stepped line of a range of a day or more draws no points: with the
-   * default `intersect` of Chart.js its values showed only with the cursor
-   * exactly on a sample (#2928).
+   * With the default `intersect` of Chart.js the values showed only with the
+   * cursor on a sample: never on the stepped line of a range of a day or more,
+   * which draws no points, and not between the bars or above a short one.
    */
   describe("the values under the cursor", () => {
     const renderRange = (minTime: number, maxTime: number) => {
@@ -232,19 +232,15 @@ describe("BarChart", () => {
       return chartMock.mock.calls[0][0];
     };
 
-    it("show at the time under the cursor on the stepped line of a range of a day or more", () => {
-      const { type, options } = renderRange(1_704_067_200, 1_704_067_200 + 2 * 86_400);
+    it.each([
+      ["the stepped line of a range of a day or more", 2 * 86_400, "line"],
+      ["the bars of a shorter range", 3_600, "bar"],
+    ])("show at the time under the cursor on %s", (_name, range, chartType) => {
+      const { type, options } = renderRange(1_704_067_200, 1_704_067_200 + range);
 
-      expect(type).toBe("line");
+      expect(type).toBe(chartType);
       expect(options.interaction).toEqual({ mode: "index", intersect: false });
       expect(options.plugins.tooltip.mode).toBe("index");
-    });
-
-    it("stay on the bars of a shorter range", () => {
-      const { type, options } = renderRange(1_704_067_200, 1_704_067_200 + 3_600);
-
-      expect(type).toBe("bar");
-      expect(options).not.toHaveProperty("interaction");
     });
   });
 });
