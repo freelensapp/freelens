@@ -349,59 +349,119 @@ describe("Pod Store tests", () => {
   });
 
   describe("loadKubeMetrics", () => {
+    const forbidden = { kind: "Status", apiVersion: "v1", status: "Failure", reason: "Forbidden", code: 403 };
+    let clusterError: unknown;
+
     beforeEach(() => {
+      clusterError = undefined;
       podMetricsApi.list.mockImplementation(async ({ namespace } = {}) => {
-        if (!namespace || namespace === "team-b") {
-          throw new Error("forbidden");
+        if (!namespace) {
+          if (clusterError) {
+            throw clusterError;
+          }
+
+          return [createPodMetrics("default", "foobar"), createPodMetrics("team-a", "foobar")];
+        }
+
+        if (namespace === "team-b") {
+          throw forbidden;
         }
 
         return [createPodMetrics(namespace, "foobar")];
       });
     });
 
-    it("lists pod metrics per selected namespace", async () => {
-      contextNamespaces = ["team-a"];
+    const loadedIds = () => podStore.kubeMetrics.map((metrics) => metrics.getId());
 
-      await podStore.loadKubeMetrics();
-
-      expect(podMetricsApi.list.mock.calls).toEqual([[{ namespace: "team-a" }]]);
-      expect(podStore.kubeMetrics.map((metrics) => metrics.getId())).toEqual(["team-a/foobar"]);
-    });
-
-    it("lists pod metrics at the cluster scope when all namespaces are selected", async () => {
-      podMetricsApi.list.mockResolvedValue([createPodMetrics("default", "foobar")]);
-      contextNamespaces = ["default", "team-a", "team-b"];
-      isLoadingAll = true;
+    it("lists the pod metrics of the cluster in one request when it may, whatever namespaces are selected", async () => {
+      contextNamespaces = ["default", "team-a"];
 
       await podStore.loadKubeMetrics();
 
       expect(podMetricsApi.list.mock.calls).toEqual([[{ namespace: undefined }]]);
-      expect(podStore.kubeMetrics.map((metrics) => metrics.getId())).toEqual(["default/foobar"]);
+      expect(loadedIds()).toEqual(["default/foobar", "team-a/foobar"]);
+      expect(podStore.kubeMetricsRefreshSeconds).toBe(10);
     });
 
-    it("lists pod metrics of the given namespace only", async () => {
-      isLoadingAll = true;
+    describe("given the pod metrics of the cluster are forbidden", () => {
+      beforeEach(() => {
+        clusterError = forbidden;
+      });
+
+      it("lists them per selected namespace", async () => {
+        contextNamespaces = ["team-a"];
+
+        await podStore.loadKubeMetrics();
+
+        expect(podMetricsApi.list.mock.calls).toEqual([[{ namespace: undefined }], [{ namespace: "team-a" }]]);
+        expect(loadedIds()).toEqual(["team-a/foobar"]);
+      });
+
+      it("does not ask for the cluster again", async () => {
+        contextNamespaces = ["team-a"];
+
+        await podStore.loadKubeMetrics();
+        podMetricsApi.list.mockClear();
+        await podStore.loadKubeMetrics();
+
+        expect(podMetricsApi.list.mock.calls).toEqual([[{ namespace: "team-a" }]]);
+      });
+
+      it("keeps the pod metrics of the namespaces that could be listed", async () => {
+        contextNamespaces = ["default", "team-b"];
+
+        await podStore.loadKubeMetrics();
+
+        expect(loadedIds()).toEqual(["default/foobar"]);
+      });
+
+      it("keeps the previous pod metrics when no namespace could be listed", async () => {
+        await podStore.loadKubeMetrics();
+        contextNamespaces = ["team-b"];
+
+        await podStore.loadKubeMetrics();
+
+        expect(loadedIds()).toEqual(["default/foobar"]);
+      });
+
+      it("refreshes them at most one request a second", async () => {
+        contextNamespaces = Array.from({ length: 25 }, (_, i) => `team-${i}`);
+
+        expect(podStore.kubeMetricsRefreshSeconds).toBe(10);
+
+        await podStore.loadKubeMetrics();
+
+        expect(podStore.kubeMetricsRefreshSeconds).toBe(25);
+      });
+
+      it("keeps one request for the cluster when all namespaces are selected", async () => {
+        contextNamespaces = ["default", "team-a", "team-b"];
+        isLoadingAll = true;
+
+        await podStore.loadKubeMetrics();
+
+        expect(podMetricsApi.list.mock.calls).toEqual([[{ namespace: undefined }]]);
+        expect(podStore.kubeMetricsRefreshSeconds).toBe(10);
+      });
+    });
+
+    it("does not list per namespace when the cluster fails for another reason", async () => {
+      clusterError = new Error("some-error");
+      contextNamespaces = ["team-a"];
+
+      await podStore.loadKubeMetrics();
+
+      expect(podMetricsApi.list.mock.calls).toEqual([[{ namespace: undefined }]]);
+      expect(podStore.kubeMetricsRefreshSeconds).toBe(10);
+    });
+
+    it("lists the pod metrics of the given namespace only", async () => {
+      clusterError = forbidden;
 
       await podStore.loadKubeMetrics("team-a");
 
       expect(podMetricsApi.list.mock.calls).toEqual([[{ namespace: "team-a" }]]);
-    });
-
-    it("keeps the pod metrics of the namespaces that could be listed", async () => {
-      contextNamespaces = ["default", "team-b"];
-
-      await podStore.loadKubeMetrics();
-
-      expect(podStore.kubeMetrics.map((metrics) => metrics.getId())).toEqual(["default/foobar"]);
-    });
-
-    it("keeps the previous pod metrics when no namespace could be listed", async () => {
-      await podStore.loadKubeMetrics();
-      contextNamespaces = ["team-b"];
-
-      await podStore.loadKubeMetrics();
-
-      expect(podStore.kubeMetrics.map((metrics) => metrics.getId())).toEqual(["default/foobar"]);
+      expect(loadedIds()).toEqual(["team-a/foobar"]);
     });
   });
 });

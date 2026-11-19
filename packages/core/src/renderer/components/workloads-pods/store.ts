@@ -24,6 +24,15 @@ export interface PodStoreDependencies extends KubeObjectStoreDependencies {
   readonly podMetricsApi: PodMetricsApi;
 }
 
+const kubeMetricsRefreshSeconds = 10;
+
+/**
+ * A GET that the API server refuses with 403 rejects with its `Status` rather
+ * than an error.
+ */
+const isForbidden = (error: unknown) =>
+  typeof error === "object" && error !== null && (error as { code?: unknown }).code === 403;
+
 interface PodIndexes {
   readonly byOwnerId: Map<string, Pod[]>;
   readonly byNode: Map<string, Pod[]>;
@@ -103,11 +112,53 @@ export class PodStore extends KubeObjectStore<Pod, PodApi> {
     return map;
   }
 
+  /**
+   * Whether the metrics of the pods of the whole cluster were refused. A user
+   * who may read them only in some namespaces then gets them for each selected
+   * namespace, one request each.
+   */
+  private kubeMetricsForbiddenInCluster = false;
+
+  private loadsKubeMetricsPerNamespace() {
+    const { context } = this.dependencies;
+
+    return this.kubeMetricsForbiddenInCluster && !context.isLoadingAll(context.contextNamespaces);
+  }
+
+  /**
+   * How often the pod list loads the metrics: every 10 seconds, or, when it
+   * sends a request for each selected namespace, at most one request a second.
+   */
+  get kubeMetricsRefreshSeconds(): number {
+    return this.loadsKubeMetricsPerNamespace()
+      ? Math.max(kubeMetricsRefreshSeconds, this.dependencies.context.contextNamespaces.length)
+      : kubeMetricsRefreshSeconds;
+  }
+
   async loadKubeMetrics(namespace?: string) {
     const { context, podMetricsApi } = this.dependencies;
-    const namespaces =
-      namespace || context.isLoadingAll(context.contextNamespaces) ? [namespace] : context.contextNamespaces;
-    const results = await Promise.allSettled(namespaces.map((ns) => podMetricsApi.list({ namespace: ns })));
+
+    // One request for the cluster, unless it was refused: more requests only
+    // for a user who may not read the metrics of the whole cluster.
+    if (namespace || !this.loadsKubeMetricsPerNamespace()) {
+      try {
+        this.kubeMetrics.replace((await podMetricsApi.list({ namespace })) ?? []);
+
+        return;
+      } catch (error) {
+        if (namespace || !isForbidden(error) || context.isLoadingAll(context.contextNamespaces)) {
+          console.warn("loadKubeMetrics failed", error);
+
+          return;
+        }
+
+        this.kubeMetricsForbiddenInCluster = true;
+      }
+    }
+
+    const results = await Promise.allSettled(
+      context.contextNamespaces.map((ns) => podMetricsApi.list({ namespace: ns })),
+    );
     const metrics: PodMetrics[] = [];
 
     for (const result of results) {
