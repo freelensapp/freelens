@@ -3,6 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import "./copyable-monaco-editor.scss";
+
 import { cssNames } from "@freelensapp/utilities";
 import { useEffect, useRef } from "react";
 import { CopyToClipboardIcon } from "../copy-to-clipboard/copy-to-clipboard-icon";
@@ -36,10 +38,10 @@ export const CopyableMonacoEditor = ({
   }, [props.value]);
 
   return (
-    <div className="flex items-start gap-1" data-testid={testId}>
+    <div className="CopyableMonacoEditor" data-testid={testId}>
       <MonacoEditor
         {...props}
-        className={cssNames("min-w-0", className)}
+        className={cssNames("CopyableMonacoEditor-editor", className)}
         onChange={(value, event) => {
           content.current = value;
           onChange?.(value, event);

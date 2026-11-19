@@ -3423,7 +3423,7 @@ exports[`showing details for helm release > given application is started > when 
           some-name
           <i
             aria-label="Copy"
-            class="Icon material interactive focusable"
+            class="Icon CopyToClipboardIcon material interactive focusable"
             tabindex="0"
           >
             <span
@@ -4713,7 +4713,7 @@ exports[`showing details for helm release > given application is started > when 
           some-name
           <i
             aria-label="Copy"
-            class="Icon material interactive focusable"
+            class="Icon CopyToClipboardIcon material interactive focusable"
             tabindex="0"
           >
             <span
@@ -6004,7 +6004,7 @@ exports[`showing details for helm release > given application is started > when 
           some-name
           <i
             aria-label="Copy"
-            class="Icon material interactive focusable"
+            class="Icon CopyToClipboardIcon material interactive focusable"
             tabindex="0"
           >
             <span
@@ -6219,7 +6219,7 @@ exports[`showing details for helm release > given application is started > when 
                 </span>
               </label>
               <div
-                class="flex items-start gap-1"
+                class="CopyableMonacoEditor"
               >
                 <textarea
                   data-testid="monaco-editor-for-helm-release-configuration-some-namespace/some-name"
@@ -6228,7 +6228,7 @@ exports[`showing details for helm release > given application is started > when 
                 </textarea>
                 <i
                   aria-label="Copy"
-                  class="Icon material interactive focusable"
+                  class="Icon CopyToClipboardIcon material interactive focusable"
                   tabindex="0"
                 >
                   <span
@@ -7562,7 +7562,7 @@ exports[`showing details for helm release > given application is started > when 
           some-name
           <i
             aria-label="Copy"
-            class="Icon material interactive focusable"
+            class="Icon CopyToClipboardIcon material interactive focusable"
             tabindex="0"
           >
             <span
@@ -7777,7 +7777,7 @@ exports[`showing details for helm release > given application is started > when 
                 </span>
               </label>
               <div
-                class="flex items-start gap-1"
+                class="CopyableMonacoEditor"
               >
                 <textarea
                   data-testid="monaco-editor-for-helm-release-configuration-some-namespace/some-name"
@@ -7786,7 +7786,7 @@ exports[`showing details for helm release > given application is started > when 
                 </textarea>
                 <i
                   aria-label="Copy"
-                  class="Icon material interactive focusable"
+                  class="Icon CopyToClipboardIcon material interactive focusable"
                   tabindex="0"
                 >
                   <span
@@ -9120,7 +9120,7 @@ exports[`showing details for helm release > given application is started > when 
           some-name
           <i
             aria-label="Copy"
-            class="Icon material interactive focusable"
+            class="Icon CopyToClipboardIcon material interactive focusable"
             tabindex="0"
           >
             <span
@@ -9335,7 +9335,7 @@ exports[`showing details for helm release > given application is started > when 
                 </span>
               </label>
               <div
-                class="flex items-start gap-1"
+                class="CopyableMonacoEditor"
               >
                 <textarea
                   data-testid="monaco-editor-for-helm-release-configuration-some-namespace/some-name"
@@ -9344,7 +9344,7 @@ exports[`showing details for helm release > given application is started > when 
                 </textarea>
                 <i
                   aria-label="Copy"
-                  class="Icon material interactive focusable"
+                  class="Icon CopyToClipboardIcon material interactive focusable"
                   tabindex="0"
                 >
                   <span
@@ -10678,7 +10678,7 @@ exports[`showing details for helm release > given application is started > when 
           some-name
           <i
             aria-label="Copy"
-            class="Icon material interactive focusable"
+            class="Icon CopyToClipboardIcon material interactive focusable"
             tabindex="0"
           >
             <span
@@ -10893,7 +10893,7 @@ exports[`showing details for helm release > given application is started > when 
                 </span>
               </label>
               <div
-                class="flex items-start gap-1"
+                class="CopyableMonacoEditor"
               >
                 <textarea
                   data-testid="monaco-editor-for-helm-release-configuration-some-namespace/some-name"
@@ -10902,7 +10902,7 @@ exports[`showing details for helm release > given application is started > when 
                 </textarea>
                 <i
                   aria-label="Copy"
-                  class="Icon material interactive focusable"
+                  class="Icon CopyToClipboardIcon material interactive focusable"
                   tabindex="0"
                 >
                   <span
@@ -12236,7 +12236,7 @@ exports[`showing details for helm release > given application is started > when 
           some-name
           <i
             aria-label="Copy"
-            class="Icon material interactive focusable"
+            class="Icon CopyToClipboardIcon material interactive focusable"
             tabindex="0"
           >
             <span
@@ -12452,7 +12452,7 @@ exports[`showing details for helm release > given application is started > when 
                 </span>
               </label>
               <div
-                class="flex items-start gap-1"
+                class="CopyableMonacoEditor"
               >
                 <textarea
                   data-testid="monaco-editor-for-helm-release-configuration-some-namespace/some-name"
@@ -12461,7 +12461,7 @@ exports[`showing details for helm release > given application is started > when 
                 </textarea>
                 <i
                   aria-label="Copy"
-                  class="Icon material interactive focusable"
+                  class="Icon CopyToClipboardIcon material interactive focusable"
                   tabindex="0"
                 >
                   <span
@@ -13796,7 +13796,7 @@ exports[`showing details for helm release > given application is started > when 
           some-name
           <i
             aria-label="Copy"
-            class="Icon material interactive focusable"
+            class="Icon CopyToClipboardIcon material interactive focusable"
             tabindex="0"
           >
             <span
@@ -14011,7 +14011,7 @@ exports[`showing details for helm release > given application is started > when 
                 </span>
               </label>
               <div
-                class="flex items-start gap-1"
+                class="CopyableMonacoEditor"
               >
                 <textarea
                   data-testid="monaco-editor-for-helm-release-configuration-some-namespace/some-name"
@@ -14020,7 +14020,7 @@ exports[`showing details for helm release > given application is started > when 
                 </textarea>
                 <i
                   aria-label="Copy"
-                  class="Icon material interactive focusable"
+                  class="Icon CopyToClipboardIcon material interactive focusable"
                   tabindex="0"
                 >
                   <span
@@ -16642,7 +16642,7 @@ exports[`showing details for helm release > given application is started > when 
           some-name
           <i
             aria-label="Copy"
-            class="Icon material interactive focusable"
+            class="Icon CopyToClipboardIcon material interactive focusable"
             tabindex="0"
           >
             <span
@@ -19162,7 +19162,7 @@ exports[`showing details for helm release > given application is started > when 
           some-name
           <i
             aria-label="Copy"
-            class="Icon material interactive focusable"
+            class="Icon CopyToClipboardIcon material interactive focusable"
             tabindex="0"
           >
             <span
@@ -20452,7 +20452,7 @@ exports[`showing details for helm release > given application is started > when 
           some-other-name
           <i
             aria-label="Copy"
-            class="Icon material interactive focusable"
+            class="Icon CopyToClipboardIcon material interactive focusable"
             tabindex="0"
           >
             <span
@@ -21742,7 +21742,7 @@ exports[`showing details for helm release > given application is started > when 
           some-other-name
           <i
             aria-label="Copy"
-            class="Icon material interactive focusable"
+            class="Icon CopyToClipboardIcon material interactive focusable"
             tabindex="0"
           >
             <span
@@ -23033,7 +23033,7 @@ exports[`showing details for helm release > given application is started > when 
           some-other-name
           <i
             aria-label="Copy"
-            class="Icon material interactive focusable"
+            class="Icon CopyToClipboardIcon material interactive focusable"
             tabindex="0"
           >
             <span
@@ -23248,7 +23248,7 @@ exports[`showing details for helm release > given application is started > when 
                 </span>
               </label>
               <div
-                class="flex items-start gap-1"
+                class="CopyableMonacoEditor"
               >
                 <textarea
                   data-testid="monaco-editor-for-helm-release-configuration-some-namespace/some-name"
@@ -23257,7 +23257,7 @@ exports[`showing details for helm release > given application is started > when 
                 </textarea>
                 <i
                   aria-label="Copy"
-                  class="Icon material interactive focusable"
+                  class="Icon CopyToClipboardIcon material interactive focusable"
                   tabindex="0"
                 >
                   <span

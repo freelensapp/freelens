@@ -2443,7 +2443,7 @@ exports[`opening dock tab for installing helm chart > given application is start
           Chart: some-repository/some-name
           <i
             aria-label="Copy"
-            class="Icon material interactive focusable"
+            class="Icon CopyToClipboardIcon material interactive focusable"
             tabindex="0"
           >
             <span
@@ -3367,7 +3367,7 @@ exports[`opening dock tab for installing helm chart > given application is start
           Chart: some-repository/some-name
           <i
             aria-label="Copy"
-            class="Icon material interactive focusable"
+            class="Icon CopyToClipboardIcon material interactive focusable"
             tabindex="0"
           >
             <span
@@ -4440,7 +4440,7 @@ exports[`opening dock tab for installing helm chart > given application is start
           Chart: some-repository/some-name
           <i
             aria-label="Copy"
-            class="Icon material interactive focusable"
+            class="Icon CopyToClipboardIcon material interactive focusable"
             tabindex="0"
           >
             <span
@@ -5523,7 +5523,7 @@ exports[`opening dock tab for installing helm chart > given application is start
           Chart: some-repository/some-name
           <i
             aria-label="Copy"
-            class="Icon material interactive focusable"
+            class="Icon CopyToClipboardIcon material interactive focusable"
             tabindex="0"
           >
             <span
@@ -6596,7 +6596,7 @@ exports[`opening dock tab for installing helm chart > given application is start
           Chart: some-repository/some-name
           <i
             aria-label="Copy"
-            class="Icon material interactive focusable"
+            class="Icon CopyToClipboardIcon material interactive focusable"
             tabindex="0"
           >
             <span
@@ -7673,7 +7673,7 @@ exports[`opening dock tab for installing helm chart > given application is start
           Chart: some-repository/some-name
           <i
             aria-label="Copy"
-            class="Icon material interactive focusable"
+            class="Icon CopyToClipboardIcon material interactive focusable"
             tabindex="0"
           >
             <span

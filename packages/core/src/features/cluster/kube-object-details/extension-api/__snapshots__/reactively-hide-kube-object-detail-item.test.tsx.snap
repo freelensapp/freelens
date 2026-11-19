@@ -23,7 +23,7 @@ exports[`reactively hide kube object detail item > renders 1`] = `
             some-kind: some-name
             <i
               aria-label="Copy"
-              class="Icon material interactive focusable"
+              class="Icon CopyToClipboardIcon material interactive focusable"
               tabindex="0"
             >
               <span
@@ -816,7 +816,7 @@ exports[`reactively hide kube object detail item > when the item is shown > rend
             some-kind: some-name
             <i
               aria-label="Copy"
-              class="Icon material interactive focusable"
+              class="Icon CopyToClipboardIcon material interactive focusable"
               tabindex="0"
             >
               <span

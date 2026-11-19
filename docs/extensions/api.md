@@ -585,6 +585,46 @@ one.
 `packages/core/src/extensions/__tests__/extension-api-overview-cards.test.tsx`
 covers the components and the preference as an extension reaches them.
 
+### The copy controls copy what a view shows
+
+The details views of the host copy a value to the clipboard in one click. An
+extension does the same with the components they render:
+
+- **`Renderer.Component.CopyToClipboardIcon`** copies the text its `getText`
+  returns, and calls it on each click, so the text is the one of that moment.
+  It shows the `content_copy` icon with the tooltip and the `aria-label`
+  "Copy", and `done` with "Copied!" for a few seconds after the write
+  succeeds. A write the clipboard refuses leaves "Copy" in place and shows no
+  notification. Its props, `CopyToClipboardIconProps`, are `getText`, a
+  `className` and a `data-testid`.
+- **`Renderer.Component.CopyableMonacoEditor`** is a `MonacoEditor` with the
+  icon next to its top-right corner, outside the editor, so that it covers
+  neither the text, the minimap nor the scrollbar. Its props,
+  `CopyableMonacoEditorProps`, are those of `MonacoEditor` and a
+  `data-testid`.
+- **`Renderer.Component.CopyableInput`** is an `Input` with the icon after
+  it. Its props, `CopyableInputProps`, are those of `Input`, a
+  `getTextToCopy` that turns what the input shows into the text to copy, as
+  the details of a secret decode its value, `children` that are shown between
+  the input and the icon, such as more icons of the input, and a
+  `data-testid`.
+
+The editor and the input copy what they show: the last value they were given,
+or the last edit made in them, whichever came later. An unsaved edit is
+therefore copied, and `onChange` still gets every edit. A `data-testid` given
+to either is the test id of the whole, and the same with `-copy` the one of
+its icon.
+
+The parts have global classes an extension may restyle
+([C10](#c10-styling-and-css)): `.CopyToClipboardIcon` next to `.Icon` on the
+icon, `.CopyableMonacoEditor` on the wrapper of the editor and
+`.CopyableMonacoEditor-editor` on the editor, `.CopyableInput` on the wrapper
+of the input and `.CopyableInput-input` on the input. They take no color of
+their own.
+
+`packages/core/src/extensions/__tests__/extension-api-copy-to-clipboard.test.tsx`
+covers the components as an extension reaches them.
+
 ---
 
 ## C6. Registration and the extension instance

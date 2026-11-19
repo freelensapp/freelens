@@ -1,0 +1,16 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
+.CopyableInput {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+// Takes the width the icons leave, and may shrink next to them.
+.CopyableInput-input {
+  flex: 1 1 0;
+  min-width: 0;
+}

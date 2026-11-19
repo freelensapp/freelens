@@ -1,0 +1,15 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
+.CopyableMonacoEditor {
+  display: flex;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+// Lets the editor shrink next to the icon rather than push it out.
+.CopyableMonacoEditor-editor {
+  min-width: 0;
+}

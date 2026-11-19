@@ -4,7 +4,7 @@
  */
 
 import { Icon } from "@freelensapp/icon";
-import { noop } from "@freelensapp/utilities";
+import { cssNames, noop } from "@freelensapp/utilities";
 import { useEffect, useRef, useState } from "react";
 
 export interface CopyToClipboardIconProps {
@@ -57,7 +57,7 @@ export const CopyToClipboardIcon = ({ getText, className, "data-testid": testId 
 
   return (
     <Icon
-      className={className}
+      className={cssNames("CopyToClipboardIcon", className)}
       material={isCopied ? "done" : "content_copy"}
       tooltip={label}
       aria-label={label}

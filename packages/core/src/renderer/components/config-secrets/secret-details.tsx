@@ -18,9 +18,8 @@ import { observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import { SecretCertificates } from "../../../features/secret-certificates/renderer/secret-certificates";
-import { CopyToClipboardIcon } from "../copy-to-clipboard/copy-to-clipboard-icon";
+import { CopyableInput } from "../copyable-input/copyable-input";
 import { DrawerItem, DrawerTitle } from "../drawer";
-import { Input } from "../input";
 import secretStoreInjectable from "./store.injectable";
 
 import type { Logger } from "@freelensapp/logger";
@@ -129,14 +128,14 @@ class NonInjectedSecretDetails extends React.Component<SecretDetailsProps & Depe
     return (
       <div key={name} className="data" data-testid={`${name}-secret-entry`}>
         <div className="name">{name}</div>
-        <div className="flex gap-2 items-center">
-          <Input
-            multiLine
-            theme="round-black"
-            className="grow shrink-0 basis-0"
-            value={value || ""}
-            onChange={(value) => this.editData(name, value, !revealSecret)}
-          />
+        <CopyableInput
+          multiLine
+          theme="round-black"
+          value={value || ""}
+          onChange={(value) => this.editData(name, value, !revealSecret)}
+          getTextToCopy={() => this.getValueToCopy(name)}
+          data-testid={`${name}-secret`}
+        >
           {typeof decodedVal === "string" && (
             <Icon
               material={revealSecret ? "visibility" : "visibility_off"}
@@ -144,8 +143,7 @@ class NonInjectedSecretDetails extends React.Component<SecretDetailsProps & Depe
               onClick={() => toggle(this.revealSecret, name)}
             />
           )}
-          <CopyToClipboardIcon getText={() => this.getValueToCopy(name)} data-testid={`${name}-secret-copy`} />
-        </div>
+        </CopyableInput>
       </div>
     );
   };

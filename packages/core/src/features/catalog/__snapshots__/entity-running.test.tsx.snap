@@ -1722,7 +1722,7 @@ exports[`entity running technical tests > when navigated to catalog > when detai
           Mock: a catalog entity
           <i
             aria-label="Copy"
-            class="Icon material interactive focusable"
+            class="Icon CopyToClipboardIcon material interactive focusable"
             tabindex="0"
           >
             <span

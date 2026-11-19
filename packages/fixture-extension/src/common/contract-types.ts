@@ -126,6 +126,21 @@ export type FixtureRendererNavigate = typeof Renderer.Navigation.navigate;
 export type FixtureIconProps = Renderer.Component.IconProps;
 export type FixtureSecretCertificatesProps = Renderer.Component.SecretCertificatesProps;
 
+// The copy controls are function components and their props types only, as
+// the overview cards below.
+export type FixtureCopyToClipboardIconProps = Renderer.Component.CopyToClipboardIconProps;
+export type FixtureCopyableMonacoEditorProps = Renderer.Component.CopyableMonacoEditorProps;
+export type FixtureCopyableInputProps = Renderer.Component.CopyableInputProps;
+export type CopyToClipboardIconTakesItsProps = Holds<
+  Parameters<typeof Renderer.Component.CopyToClipboardIcon>[0] extends FixtureCopyToClipboardIconProps ? true : false
+>;
+export type CopyableMonacoEditorTakesItsProps = Holds<
+  Parameters<typeof Renderer.Component.CopyableMonacoEditor>[0] extends FixtureCopyableMonacoEditorProps ? true : false
+>;
+export type CopyableInputTakesItsProps = Holds<
+  Parameters<typeof Renderer.Component.CopyableInput>[0] extends FixtureCopyableInputProps ? true : false
+>;
+
 // The overview cards are function components, a value only, and their props
 // are types only, so no name is a pair. The props type an extension's own data
 // and have to be what the component takes.

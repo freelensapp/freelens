@@ -1478,7 +1478,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
           Chart: some-repository/some-name
           <i
             aria-label="Copy"
-            class="Icon material interactive focusable"
+            class="Icon CopyToClipboardIcon material interactive focusable"
             tabindex="0"
           >
             <span
@@ -14157,7 +14157,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
           some-release
           <i
             aria-label="Copy"
-            class="Icon material interactive focusable"
+            class="Icon CopyToClipboardIcon material interactive focusable"
             tabindex="0"
           >
             <span
@@ -16495,7 +16495,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
           Chart: some-repository/some-other-name
           <i
             aria-label="Copy"
-            class="Icon material interactive focusable"
+            class="Icon CopyToClipboardIcon material interactive focusable"
             tabindex="0"
           >
             <span
