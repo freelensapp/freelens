@@ -278,6 +278,11 @@ const NonInjectedBarChart = observer(
       animation: {
         duration: 0,
       },
+      // With the default `intersect` of Chart.js the values show only with the
+      // cursor on a sample: never on the stepped line, which draws no points,
+      // and not between the bars or above a short one. The chart shows the
+      // values of the time under the cursor wherever it is.
+      interaction: { mode: "index", intersect: false },
       elements: {
         bar: {
           backgroundColor: getBarColor,
