@@ -289,4 +289,13 @@ describe("ClusterConnection activation", () => {
       expect(restartMock).toHaveBeenCalledTimes(2);
     });
   });
+
+  describe("a refresh of accessibility and metadata", () => {
+    it("is skipped for a cluster that is disconnected", async () => {
+      await clusterConnection.refreshAccessibilityAndMetadata();
+
+      expect(countOf("[CLUSTER]: refreshAccessibility")).toBe(0);
+      expect(countOf("[CLUSTER]: refreshMetadata")).toBe(0);
+    });
+  });
 });

@@ -142,6 +142,8 @@ describe("Refresh Cluster Accessibility Technical Tests", () => {
         kubeConfigPath: "/some-kube-config-path",
       });
       clusterConnection = mainDi.inject(clusterConnectionInjectable, cluster);
+      // A refresh is only asked of a connected cluster: a disconnected one skips it.
+      cluster.disconnected.set(false);
       refreshPromise = clusterConnection.refreshAccessibilityAndMetadata();
     });
 
