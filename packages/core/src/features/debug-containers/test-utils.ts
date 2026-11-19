@@ -7,13 +7,16 @@ import { Pod } from "@freelensapp/kube-object";
 
 import type { ContainerState } from "@freelensapp/kube-object";
 
-export const debugRequest = {
+import type { DebugContainerSpec } from "./common/debug-container";
+
+export const debugSpec: DebugContainerSpec = {
   namespace: "default",
-  name: "app",
-  uid: "pod-uid",
-  containerName: "freelens-debug-123",
+  pod: "app",
+  podUid: "pod-uid",
+  container: "freelens-debug-123",
   image: "alpine:latest",
-  targetContainerName: "app",
+  target: "app",
+  env: [],
 };
 
 export function debugTestPod(state?: ContainerState, metadata: Partial<Pod["metadata"]> = {}): Pod {
@@ -28,7 +31,12 @@ export function debugTestPod(state?: ContainerState, metadata: Partial<Pod["meta
       selfLink: "/api/v1/namespaces/default/pods/app",
       ...metadata,
     },
-    spec: { nodeName: "node", os: { name: "linux" }, containers: [{ name: "app", image: "app" }] },
+    spec: {
+      nodeName: "node",
+      os: { name: "linux" },
+      containers: [{ name: "app", image: "app" }],
+      ephemeralContainers: state ? [{ name: debugSpec.container, image: debugSpec.image }] : [],
+    },
     status: {
       phase: "Running",
       conditions: [],
@@ -37,7 +45,7 @@ export function debugTestPod(state?: ContainerState, metadata: Partial<Pod["meta
       ephemeralContainerStatuses: state
         ? [
             {
-              name: debugRequest.containerName,
+              name: debugSpec.container,
               state,
               ready: false,
               restartCount: 0,

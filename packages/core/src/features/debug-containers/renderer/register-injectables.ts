@@ -6,18 +6,12 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import debugContainerClientInjectable from "./client.injectable";
 import debugContainerDialogStateInjectable from "./dialog-state.injectable";
 import { debugContainerDialogRegistrationInjectable, debugContainerMenuInjectable } from "./registration.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(debugContainerClientInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
   try {
     di.register(debugContainerDialogRegistrationInjectable);
   } catch (e) {

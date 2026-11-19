@@ -7,7 +7,10 @@
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
 import { WebSocketServer } from "ws";
-import { debugContainerRequestValidator } from "../../../features/debug-containers/main/route.injectable";
+import {
+  debugContainerSpecError,
+  parseDebugContainerQuery,
+} from "../../../features/debug-containers/common/debug-container";
 import openShellSessionInjectable from "../../shell-session/create-shell-session.injectable";
 import { messageOfError, terminalStatusReporterFor } from "../../shell-session/send-terminal-status";
 import getClusterForRequestInjectable from "../get-cluster-for-request.injectable";
@@ -34,20 +37,11 @@ const shellApiRequestInjectable = getInjectable({
       // A terminal opened outside of a cluster session has no cluster to look
       // up, and its token is minted under its own scope.
       const isStandalone = type === "standalone";
-      const debugContainer =
-        type === "debug-container"
-          ? {
-              namespace: searchParams.get("namespace") ?? "",
-              name: searchParams.get("pod") ?? "",
-              uid: searchParams.get("podUid") ?? "",
-              containerName: searchParams.get("container") ?? "",
-            }
-          : undefined;
-      const invalidDebugContainer =
-        debugContainer && debugContainerRequestValidator.validate({ action: "stop", ...debugContainer }).error;
+      const debugContainer = parseDebugContainerQuery(searchParams);
+      const invalidDebugContainer = debugContainer && debugContainerSpecError(debugContainer);
       const cluster = isStandalone ? undefined : getClusterForRequest(req);
       const scope = isStandalone ? standaloneShellScope : cluster?.id;
-      const shellKind = isStandalone ? "standalone" : nodeName ? "node" : "local";
+      const shellKind = isStandalone ? "standalone" : debugContainer ? "debug container" : nodeName ? "node" : "local";
 
       if (invalidDebugContainer || !tabId || !scope || !authenticateRequest(scope, tabId, shellToken)) {
         socket.write("Invalid shell request");

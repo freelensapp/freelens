@@ -107,6 +107,7 @@ export interface ClusterPreferences extends ClusterPrometheusPreferences {
   nodeShellImage?: string;
   nodeShellWindowsImage?: string;
   imagePullSecret?: string;
+  debugContainerImage?: string;
   defaultNamespace?: string;
   skipNamespaceAuthorizationCheck?: boolean;
 }
@@ -196,6 +197,11 @@ export const initialNodeShellImage = "docker.io/library/alpine";
  * The default node shell image for Windows
  */
 export const initialNodeShellWindowsImage = "mcr.microsoft.com/powershell";
+
+/**
+ * The default image of a debug container
+ */
+export const initialDebugContainerImage = "docker.io/library/alpine";
 
 /**
  * The data representing a cluster's state, for passing between main and renderer

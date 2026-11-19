@@ -7,20 +7,58 @@ import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import { Dialog } from "../../../renderer/components/dialog";
 import { Input } from "../../../renderer/components/input";
+import { MonacoEditor } from "../../../renderer/components/monaco-editor";
 import { Select } from "../../../renderer/components/select";
 import { Wizard, WizardStep } from "../../../renderer/components/wizard";
+import { debugProfiles } from "../common/debug-container";
 import debugContainerDialogStateInjectable from "./dialog-state.injectable";
 
 import type { DebugContainerDialogState } from "./dialog-state";
+
+interface YamlEditorProps {
+  id: string;
+  value: string;
+  onChange: (value: string) => void;
+  height?: number;
+}
+
+// The wizard submits its step on an Enter that no field has handled, and the editor does not mark
+// the Enter that adds a line as handled.
+const YamlEditor = ({ id, value, onChange, height = 80 }: YamlEditorProps) => (
+  <div
+    onKeyDown={(event) => {
+      if (event.key === "Enter") event.stopPropagation();
+    }}
+  >
+    <MonacoEditor
+      id={id}
+      language="yaml"
+      style={{
+        height,
+        resize: "vertical",
+        overflow: "hidden",
+        border: "1px solid var(--borderFaintColor)",
+        borderRadius: "4px",
+      }}
+      options={{ lineNumbers: "off", minimap: { enabled: false }, scrollBeyondLastLine: false }}
+      value={value}
+      onChange={onChange}
+    />
+  </div>
+);
+
+const profileOptions = [
+  { value: "" as const, label: "kubectl default" },
+  ...debugProfiles.map((profile) => ({ value: profile, label: profile })),
+];
 
 export const DebugContainerDialogContent = observer(({ state }: { state: DebugContainerDialogState }) => (
   <Wizard header={<h5>Debug {state.pod?.getName()}</h5>} done={state.close}>
     <WizardStep
       contentClass="flex flex-col gap-4"
-      nextLabel={state.submitted ? "Retry connection" : "Start debugging"}
+      nextLabel="Start debugging"
       next={state.start}
-      disabledNext={state.busy || Boolean(state.disabledReason)}
-      waiting={state.busy}
+      disabledNext={Boolean(state.error)}
     >
       <label htmlFor="debug-target">Target container</label>
       <Select
@@ -28,30 +66,46 @@ export const DebugContainerDialogContent = observer(({ state }: { state: DebugCo
         inputId="debug-target"
         aria-label="Target container"
         options={state.pod?.getContainers().map(({ name }) => ({ value: name, label: name })) ?? []}
-        value={state.targetContainerName}
+        value={state.target}
         onChange={(option) => {
-          state.setTargetContainer(option?.value ?? "");
+          state.set("target", option?.value ?? "");
         }}
-        isDisabled={state.submitted}
       />
-      <label htmlFor="debug-image">Debug image</label>
+      <label htmlFor="debug-image">Image</label>
       <Input
         id="debug-image"
-        aria-label="Debug image"
+        aria-label="Image"
         value={state.image}
         required
-        trim
-        disabled={state.submitted}
         onChange={(value) => {
-          state.setImage(value);
+          state.set("image", value);
         }}
       />
-      <p>The debug image needs sh, sleep, and a writable /tmp. It runs without privileged mode.</p>
-      <p>Closing the terminal leaves the debug container running. Stop it from Ephemeral Containers when finished.</p>
-      <p>Stopped containers remain listed until the pod is deleted. Added containers cannot be edited.</p>
-      {state.disabledReason && <p role="status">{state.disabledReason}</p>}
-      {state.status && <p role="status">{state.status}</p>}
-      {state.error && <p role="alert">{state.error}</p>}
+      <label htmlFor="debug-profile">Profile</label>
+      <Select
+        id="debug-profile"
+        inputId="debug-profile"
+        aria-label="Profile"
+        options={profileOptions}
+        value={state.profile}
+        onChange={(option) => {
+          state.set("profile", option?.value ?? "");
+        }}
+      />
+      <span>Environment variables</span>
+      <YamlEditor id="debug-container-env" value={state.env} onChange={(value) => state.set("env", value)} />
+      <span>Custom container spec</span>
+      <YamlEditor
+        id="debug-container-custom"
+        value={state.custom}
+        onChange={(value) => state.set("custom", value)}
+        height={140}
+      />
+      <p>
+        Runs <code>kubectl debug</code> in a new terminal tab. The ephemeral container stays in the pod until the pod is
+        deleted. While it runs, Attach in its details connects to it again.
+      </p>
+      {state.error && <p role="status">{state.error}</p>}
     </WizardStep>
   </Wizard>
 ));

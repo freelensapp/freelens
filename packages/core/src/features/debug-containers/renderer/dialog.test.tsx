@@ -14,28 +14,44 @@ import { debugTestPod } from "../test-utils";
 import { DebugContainerDialogContent } from "./dialog";
 import { DebugContainerDialogState } from "./dialog-state";
 
-it("lets the user choose an image and explains the persistent lifecycle", async () => {
-  const create = vi.fn().mockRejectedValue(new Error("admission denied"));
+const renderDialog = () => {
+  const openTerminal = vi.fn();
   const state = new DebugContainerDialogState({
-    client: { permissions: async () => ({ create: true, exec: true }), create, stop: vi.fn() },
-    podApi: { get: vi.fn() },
+    getDefaultImage: () => "alpine:latest",
     randomId: () => "123",
-    openShell: vi.fn(),
-    delay: vi.fn(),
+    openTerminal,
   });
-  await state.open(debugTestPod());
+
+  state.open(debugTestPod());
   const di = getDiForUnitTesting();
+
   di.override(directoryForUserDataInjectable, () => "/test-user-data");
   di.override(rendererExtensionsInjectable, () => computed(() => []));
   renderFor(di)(<DebugContainerDialogContent state={state} />);
-  expect(screen.getByText(/Closing the terminal leaves the debug container running/)).toBeInTheDocument();
-  fireEvent.change(screen.getByRole("textbox", { name: "Debug image" }), { target: { value: "busybox:latest" } });
+
+  return openTerminal;
+};
+
+it("starts kubectl debug with the image the user chose", async () => {
+  const openTerminal = renderDialog();
+
+  expect(screen.getByRole("textbox", { name: "Image" })).toHaveValue("alpine:latest");
+  fireEvent.change(screen.getByRole("textbox", { name: "Image" }), { target: { value: "busybox:latest" } });
   fireEvent.click(screen.getByRole("button", { name: "Start debugging" }));
   await waitFor(() =>
-    expect(create).toHaveBeenCalledWith(
-      expect.objectContaining({ image: "busybox:latest", targetContainerName: "app" }),
-    ),
+    expect(openTerminal).toHaveBeenCalledWith(expect.objectContaining({ image: "busybox:latest", target: "app" })),
   );
-  expect(await screen.findByRole("alert")).toHaveTextContent("admission denied");
-  expect(screen.getByRole("button", { name: "Retry connection" })).toBeEnabled();
+});
+
+it("adds a line rather than starting when Enter is pressed in an editor", async () => {
+  const openTerminal = renderDialog();
+  const env = screen.getByTestId("monaco-editor-for-debug-container-env");
+
+  fireEvent.change(env, { target: { value: "A: 1\nB: 2" } });
+  fireEvent.keyDown(env, { key: "Enter" });
+  await new Promise((resolve) => setTimeout(resolve, 100));
+  expect(openTerminal).not.toHaveBeenCalled();
+
+  fireEvent.click(screen.getByRole("button", { name: "Start debugging" }));
+  await waitFor(() => expect(openTerminal).toHaveBeenCalledWith(expect.objectContaining({ env: ["A=1", "B=2"] })));
 });

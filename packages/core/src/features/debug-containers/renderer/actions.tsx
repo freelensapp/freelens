@@ -6,18 +6,15 @@
 import { Button } from "@freelensapp/button";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import apiBaseInjectable from "../../../common/k8s-api/api-base.injectable";
 import openConfirmDialogInjectable from "../../../renderer/components/confirm-dialog/open.injectable";
-import createTerminalTabInjectable from "../../../renderer/components/dock/terminal/create-terminal-tab.injectable";
-import { debugPodReference, isManagedDebugContainer } from "../common/debug-container";
-import debugContainerClientInjectable from "./client.injectable";
-import { errorMessage } from "./dialog-state";
+import debugContainerDialogStateInjectable from "./dialog-state.injectable";
 
 import type { EphemeralContainer, Pod } from "@freelensapp/kube-object";
 
 import type { OpenConfirmDialog } from "../../../renderer/components/confirm-dialog/open.injectable";
 import type { DebugContainerReference } from "../common/debug-container";
-import type { DebugContainerClient } from "./client.injectable";
 
 interface Props {
   pod: Pod;
@@ -25,58 +22,38 @@ interface Props {
 }
 
 interface Dependencies {
-  client: DebugContainerClient;
+  attach: (pod: Pod, container: EphemeralContainer) => void;
+  stop: (reference: DebugContainerReference) => Promise<unknown>;
   confirm: OpenConfirmDialog;
-  openShell: (reference: DebugContainerReference) => void;
 }
 
+const errorMessage = (error: unknown) =>
+  error instanceof Error ? error.message : String((error as { message?: string })?.message ?? error);
+
 export const DebugContainerActionsContent = observer(
-  ({ pod, container, client, confirm, openShell }: Props & Dependencies) => {
-    const [canExec, setCanExec] = useState<boolean>();
+  ({ pod, container, attach, stop, confirm }: Props & Dependencies) => {
     const [stopping, setStopping] = useState(false);
     const [error, setError] = useState("");
-    const namespace = pod.getNs();
-    const managed = isManagedDebugContainer(container);
-    const status = pod.status?.ephemeralContainerStatuses?.find((candidate) => candidate.name === container.name);
+    const status = pod.status?.ephemeralContainerStatuses?.find(({ name }) => name === container.name);
 
-    useEffect(() => {
-      let active = true;
-
-      setCanExec(undefined);
-      if (managed)
-        client.permissions(namespace).then(
-          (permissions) => {
-            if (active) setCanExec(permissions.exec);
-          },
-          (error) => {
-            if (active) setError(errorMessage(error));
-          },
-        );
-      return () => {
-        active = false;
-      };
-    }, [client, namespace, managed]);
-
-    if (!managed || status?.state?.terminated) return null;
-    const reference = { ...debugPodReference(pod), containerName: container.name };
-    const disabled = !canExec || !status?.state?.running || stopping;
+    if (!status?.state?.running) return null;
 
     return (
       <div className="flex flex-col gap-2 mb-4">
         <div className="flex gap-2">
-          <Button label="Open debug shell" disabled={disabled} onClick={() => openShell(reference)} />
+          <Button label="Attach" disabled={stopping} onClick={() => attach(pod, container)} />
           <Button
-            label={stopping ? "Stopping..." : "Stop debugging"}
-            disabled={disabled}
+            label={stopping ? "Stopping..." : "Stop"}
+            disabled={stopping}
             onClick={() =>
               confirm({
-                labelOk: "Stop debugging",
-                message: `Stop ${container.name}? Its terminal sessions will end. The stopped container remains listed until the pod is deleted.`,
+                labelOk: "Stop",
+                message: `Stop ${container.name}? Its terminal sessions end, and the stopped container stays listed until the pod is deleted. Stopping needs sh, readlink and kill in its image.`,
                 ok: async () => {
                   setStopping(true);
                   setError("");
                   try {
-                    await client.stop(reference);
+                    await stop({ namespace: pod.getNs(), pod: pod.getName(), container: container.name });
                   } catch (error) {
                     setError(errorMessage(error));
                   } finally {
@@ -87,8 +64,6 @@ export const DebugContainerActionsContent = observer(
             }
           />
         </div>
-        {canExec === false && <p>Opening or stopping a debugger requires permission to execute commands in pods.</p>}
-        {!status?.state?.running && <p>Waiting for the debug container to start. Check its status below.</p>}
         {error && <p role="alert">{error}</p>}
       </div>
     );
@@ -97,17 +72,14 @@ export const DebugContainerActionsContent = observer(
 
 export const DebugContainerActions = withInjectables<Dependencies, Props>(DebugContainerActionsContent, {
   getProps: (di, props) => {
-    const createTerminalTab = di.inject(createTerminalTabInjectable);
+    const apiBase = di.inject(apiBaseInjectable);
+    const dialogState = di.inject(debugContainerDialogStateInjectable);
 
     return {
       ...props,
-      client: di.inject(debugContainerClientInjectable),
+      attach: dialogState.attach,
+      stop: (reference) => apiBase.post("/debug-containers/stop", { data: reference }),
       confirm: di.inject(openConfirmDialogInjectable),
-      openShell: (reference) =>
-        createTerminalTab({
-          title: `Debug: ${reference.name} / ${reference.containerName}`,
-          debugContainer: reference,
-        }),
     };
   },
 });

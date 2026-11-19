@@ -32,7 +32,7 @@ enum TerminalColor {
  */
 export const eraseTerminalLine = "\u001b[2K\r";
 
-export interface TerminalApiQuery extends Record<string, string | undefined> {
+export interface TerminalApiQuery extends Record<string, string | string[] | undefined> {
   id: string;
   node?: string;
   type?: string;

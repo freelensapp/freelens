@@ -13,7 +13,7 @@ import openStandaloneShellSessionInjectable from "./standalone-shell-session/ope
 import type WebSocket from "ws";
 
 import type { Cluster } from "../../common/cluster/cluster";
-import type { DebugContainerReference } from "../../features/debug-containers/common/debug-container";
+import type { DebugContainerSpec } from "../../features/debug-containers/common/debug-container";
 
 export interface OpenShellSessionArgs {
   websocket: WebSocket;
@@ -23,7 +23,7 @@ export interface OpenShellSessionArgs {
   cluster?: Cluster;
   tabId: string;
   nodeName?: string;
-  debugContainer?: DebugContainerReference;
+  debugContainer?: DebugContainerSpec;
 }
 
 export type OpenShellSession = (args: OpenShellSessionArgs) => Promise<void>;

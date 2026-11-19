@@ -3,70 +3,51 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act, fireEvent, render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { buildDebugContainer } from "../common/debug-container";
-import { debugRequest, debugTestPod } from "../test-utils";
+import { debugSpec, debugTestPod } from "../test-utils";
 import { DebugContainerActionsContent } from "./actions";
 
+import type { ContainerState } from "@freelensapp/kube-object";
+
 describe("debug container controls", () => {
-  const client = { permissions: vi.fn(), create: vi.fn(), stop: vi.fn() };
-  const openShell = vi.fn();
+  const attach = vi.fn();
+  const stop = vi.fn();
   const confirm = vi.fn();
+  const container = { name: debugSpec.container, image: debugSpec.image };
 
-  beforeEach(() => {
-    vi.resetAllMocks();
-    client.permissions.mockResolvedValue({ create: false, exec: true });
-  });
+  beforeEach(() => vi.resetAllMocks());
 
-  const renderControls = (container = buildDebugContainer(debugRequest)) =>
+  const renderControls = (state: ContainerState = { running: { startedAt: "now" } }) => {
+    const pod = debugTestPod(state);
+
     render(
-      <DebugContainerActionsContent
-        pod={debugTestPod({ running: { startedAt: "now" } })}
-        container={container}
-        client={client}
-        openShell={openShell}
-        confirm={confirm}
-      />,
+      <DebugContainerActionsContent pod={pod} container={container} attach={attach} stop={stop} confirm={confirm} />,
     );
 
-  it("reconnects to a persisted debugger with exec permission even without creation permission", async () => {
-    renderControls();
-    await waitFor(() => expect(screen.getByRole("button", { name: "Open debug shell" })).toBeEnabled());
-    fireEvent.click(screen.getByRole("button", { name: "Open debug shell" }));
-    expect(openShell).toHaveBeenCalledWith({
-      namespace: "default",
-      name: "app",
-      uid: "pod-uid",
-      containerName: "freelens-debug-123",
-    });
-    expect(client.create).not.toHaveBeenCalled();
+    return pod;
+  };
+
+  it("attaches to a running container", () => {
+    const pod = renderControls();
+
+    fireEvent.click(screen.getByRole("button", { name: "Attach" }));
+    expect(attach).toHaveBeenCalledWith(pod, container);
   });
 
-  it("stops only after confirmation and displays a retryable error", async () => {
-    client.stop.mockRejectedValue(new Error("permission revoked"));
+  it("stops only after confirmation and shows why it failed", async () => {
+    stop.mockRejectedValue(new Error("sh: not found"));
     renderControls();
-    await waitFor(() => expect(screen.getByRole("button", { name: "Stop debugging" })).toBeEnabled());
-    fireEvent.click(screen.getByRole("button", { name: "Stop debugging" }));
-    expect(client.stop).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByRole("button", { name: "Stop" }));
+    expect(stop).not.toHaveBeenCalled();
     await act(async () => confirm.mock.calls[0][0].ok());
-    expect(client.stop).toHaveBeenCalledWith(
-      expect.objectContaining({ uid: "pod-uid", containerName: "freelens-debug-123" }),
-    );
-    expect(screen.getByRole("alert")).toHaveTextContent("permission revoked");
-    expect(screen.getByRole("button", { name: "Stop debugging" })).toBeEnabled();
+    expect(stop).toHaveBeenCalledWith({ namespace: "default", pod: "app", container: debugSpec.container });
+    expect(screen.getByRole("alert")).toHaveTextContent("sh: not found");
+    expect(screen.getByRole("button", { name: "Stop" })).toBeEnabled();
   });
 
-  it("does not stop on unmount", async () => {
-    const { unmount } = renderControls();
-    await waitFor(() => expect(screen.getByRole("button", { name: "Open debug shell" })).toBeEnabled());
-    unmount();
-    expect(client.stop).not.toHaveBeenCalled();
-  });
-
-  it("does not offer lifecycle controls for an unrelated ephemeral container", () => {
-    renderControls({ name: "manual-debugger", image: "alpine" });
+  it("offers nothing for a container that does not run", () => {
+    renderControls({ terminated: { exitCode: 0, reason: "Completed", startedAt: "then", finishedAt: "now" } });
     expect(screen.queryByRole("button")).not.toBeInTheDocument();
-    expect(client.permissions).not.toHaveBeenCalled();
   });
 });
