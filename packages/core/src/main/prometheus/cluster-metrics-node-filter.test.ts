@@ -145,4 +145,24 @@ describe("cluster metrics node filter in the prometheus providers", () => {
       }
     });
   });
+
+  // A finished pod keeps its request and limit series in kube-state-metrics, while `kubectl describe node` leaves it
+  // out of the allocated resources.
+  describe.each([
+    ["given a list of node names", { category: "cluster", nodes: "worker-1|worker-2", mountpoints: "/" }],
+    ["given no node names", { category: "cluster", mountpoints: "/" }],
+  ])("%s", (_name, opts) => {
+    it.each(["memoryRequests", "memoryLimits", "cpuRequests", "cpuLimits"])(
+      "counts %s of the pending and running pods only",
+      (metricName) => {
+        for (const provider of providers) {
+          const query = queryOf(provider, opts, metricName);
+
+          expect(query, `${provider.kind}: ${query}`).toContain(
+            '* on (namespace, pod) group_left() max by (namespace, pod) (kube_pod_status_phase{phase=~"Pending|Running"} == 1)',
+          );
+        }
+      },
+    );
+  });
 });
