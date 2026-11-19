@@ -527,7 +527,9 @@ export class FreelensProxy {
     res.setHeader("Content-Security-Policy", this.dependencies.contentSecurityPolicy);
 
     try {
-      await this.dependencies.router.route(cluster, req, res);
+      if (!(await this.dependencies.router.route(cluster, req, res))) {
+        this.respondWithError(res, 404, "Not Found");
+      }
     } catch (error) {
       this.dependencies.logger.error("[FREELENS-PROXY]: failed to route request", { url: req.url, error });
       this.respondWithError(res, 500, `Oops, something went wrong.\n${error}`);

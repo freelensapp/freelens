@@ -326,6 +326,9 @@ describe("router", () => {
       ["get", "/./api/v2/charts"],
       ["put", "/some-page"],
       ["get", "http://["],
+      ["get", "/api/stack"],
+      ["get", "/./api/some-unknown-route"],
+      ["get", "/api-kube/api/v1/pods"],
     ])("requires it for %s %s", (method, url) => {
       expect(router.isServedWithoutToken(method, url)).toBe(false);
     });

@@ -218,12 +218,12 @@ describe("closing the Freelens proxy", () => {
             if (req.url === answeredPath) {
               res.end();
 
-              return Promise.resolve();
+              return Promise.resolve(true);
             }
 
             requestReceived();
 
-            return new Promise<void>(() => {});
+            return new Promise<boolean>(() => {});
           },
         }) as unknown as Router,
     );
@@ -365,10 +365,12 @@ describe("Freelens proxy protocols", () => {
             if (req.url === "/some-open-response" && res instanceof http2.Http2ServerResponse) {
               res.writeHead(200).write("some-start");
 
-              return;
+              return true;
             }
 
             res.end(`some-response-over-${req.httpVersion}`);
+
+            return true;
           },
         }) as unknown as Router,
     );
@@ -658,6 +660,14 @@ describe("Freelens proxy kube api requests", () => {
   // initialized in this container, and there are no renderer files.
   it.each(["/version", "/some-page.js"])("lets %s through to the router without a token", async (path) => {
     expect((await getHttp1(port, path, { authorization: "Bearer not-the-token" })).statusCode).not.toBe(403);
+  });
+
+  it.each([
+    ["a GET below the local router api that no route answers", "GET", "/api/some-unknown-route"],
+    ["a GET of a local router api route that takes another method", "GET", "/api/stack"],
+    ["a method that no route answers", "PUT", "/some-path"],
+  ])("answers 404 with a valid token, for %s", async (_name, method, path) => {
+    expect((await getHttp1(port, path, {}, method)).statusCode).toBe(404);
   });
 
   it("tells the client not to store a kube api response over HTTP/1.1, whatever the cluster says", async () => {
