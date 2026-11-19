@@ -68,10 +68,9 @@ export type ClickableMenuItem = ApplicationMenuItemType<"clickable-menu-item"> &
 export type OsActionMenuItem = ApplicationMenuItemType<"os-action-menu-item"> &
   MenuItem &
   MaybeLabeled &
-  MayBeHiddenFromMenu &
   TriggersElectronAction;
 
-type MenuItem = ChildOfParentComposite & MayHaveKeyboardShortcut;
+type MenuItem = ChildOfParentComposite & MayHaveKeyboardShortcut & MayBeHiddenFromMenu;
 
 interface TriggersElectronAction {
   actionName: ElectronRoles;

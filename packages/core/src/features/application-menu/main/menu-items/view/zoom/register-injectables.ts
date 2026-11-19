@@ -9,7 +9,10 @@
 import {
   resetZoomMenuItemInjectable,
   zoomInMenuItemInjectable,
+  zoomInWithEqualsSignMenuItemInjectable,
+  zoomInWithNumpadPlusMenuItemInjectable,
   zoomOutMenuItemInjectable,
+  zoomOutWithNumpadMinusMenuItemInjectable,
 } from "./zoom-menu-items.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
@@ -26,7 +29,22 @@ export function registerInjectables(di: DiContainerForInjection): void {
     /* Ignore duplicate registration */
   }
   try {
+    di.register(zoomInWithEqualsSignMenuItemInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(zoomInWithNumpadPlusMenuItemInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
     di.register(zoomOutMenuItemInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(zoomOutWithNumpadMinusMenuItemInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }
