@@ -83,4 +83,37 @@ describe("TerminalStore", () => {
     expect(store.getTerminalApi(tabId)).toBeUndefined();
     expect(store.getTerminal(tabId)).toBeUndefined();
   });
+
+  it("does not send exit to a debug container, which closing its tab leaves running", () => {
+    const sendMessage = vi.fn();
+    const apiDestroy = vi.fn();
+    const createTerminalApi = vi.fn(
+      () => ({ isReady: true, connect: vi.fn(), sendMessage, destroy: apiDestroy }) as any,
+    );
+    const store = new TerminalStore({
+      createTerminalApi,
+      createTerminal: vi.fn(() => ({ destroy: vi.fn() }) as any),
+    });
+
+    store.connect({
+      id: tabId,
+      kind: TabKind.TERMINAL,
+      title: "Debug",
+      pinned: false,
+      debugContainer: {
+        namespace: "default",
+        pod: "app",
+        podUid: "pod-uid",
+        container: "freelens-debug-123",
+        image: "alpine",
+        target: "app",
+      },
+    });
+    expect(createTerminalApi).toHaveBeenCalledWith(expect.objectContaining({ type: "debug-container", pod: "app" }));
+
+    store.destroy(tabId);
+
+    expect(sendMessage).not.toHaveBeenCalled();
+    expect(apiDestroy).toHaveBeenCalled();
+  });
 });

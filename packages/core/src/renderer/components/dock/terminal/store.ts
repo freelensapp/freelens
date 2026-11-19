@@ -29,6 +29,11 @@ interface Dependencies {
 export class TerminalStore {
   protected terminals = new Map<TabId, Terminal>();
   protected connections = observable.map<TabId, TerminalApi>();
+  /**
+   * The tabs whose shell runs in a debug container, which closing the tab leaves running: the
+   * `exit` that ends a local shell would end the container.
+   */
+  protected detachOnClose = new Set<TabId>();
 
   constructor(private dependencies: Dependencies) {}
 
@@ -47,6 +52,10 @@ export class TerminalStore {
     this.connections.set(tab.id, api);
     this.terminals.set(tab.id, terminal);
 
+    if (tab.debugContainer) {
+      this.detachOnClose.add(tab.id);
+    }
+
     api.connect();
   }
 
@@ -55,7 +64,7 @@ export class TerminalStore {
     const terminal = this.terminals.get(tabId);
     const terminalApi = this.connections.get(tabId);
 
-    if (terminalApi?.isReady) {
+    if (terminalApi?.isReady && !this.detachOnClose.has(tabId)) {
       terminalApi.sendMessage({
         type: TerminalChannels.STDIN,
         data: "exit\r",
@@ -66,6 +75,7 @@ export class TerminalStore {
     terminalApi?.destroy();
     this.connections.delete(tabId);
     this.terminals.delete(tabId);
+    this.detachOnClose.delete(tabId);
   }
 
   /**
