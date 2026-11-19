@@ -6,10 +6,10 @@
 import { NodeApi, PodApi } from "@freelensapp/kube-api";
 import { AuthorizationV1Api } from "@kubernetes/client-node";
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
-import createCanIInjectable from "../../../common/cluster/create-can-i.injectable";
 import execFileInjectable from "../../../common/fs/exec-file.injectable";
 import createKubeApiInjectable from "../../../common/k8s-api/create-kube-api.injectable";
 import createKubeJsonApiForClusterInjectable from "../../../common/k8s-api/create-kube-json-api-for-cluster.injectable";
+import createCanIInjectable from "../../../main/cluster/create-can-i.injectable";
 import loadProxyKubeconfigInjectable from "../../../main/cluster/load-proxy-kubeconfig.injectable";
 import withFreelensProxyCredentialEnvInjectable from "../../../main/freelens-proxy/with-freelens-proxy-credential-env.injectable";
 import kubeconfigManagerInjectable from "../../../main/kubeconfig-manager/kubeconfig-manager.injectable";

@@ -13,7 +13,7 @@ import {
 
 import type { NodeApi, PodApi } from "@freelensapp/kube-api";
 
-import type { CanI } from "../../../common/cluster/create-can-i.injectable";
+import type { CanI } from "../../../main/cluster/create-can-i.injectable";
 import type {
   CreateDebugContainer,
   DebugContainerPermissions,
