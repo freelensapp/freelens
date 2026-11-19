@@ -450,8 +450,8 @@ catalogs:
       specifier: 2.5.3
       version: 2.5.3
     rfc6902:
-      specifier: 5.4.0
-      version: 5.4.0
+      specifier: 5.5.0
+      version: 5.5.0
     rolldown:
       specifier: 1.2.19
       version: 1.2.19
@@ -568,8 +568,8 @@ catalogs:
       specifier: ^5.10.2
       version: 5.10.2
     rfc6902:
-      specifier: ^5.4.0
-      version: 5.4.0
+      specifier: ^5.5.0
+      version: 5.5.0
 
 overrides:
   '@kubernetes/client-node>@types/node': 24.19.2
@@ -1173,7 +1173,7 @@ importers:
         version: 2.5.3(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       rfc6902:
         specifier: 'catalog:'
-        version: 5.4.0
+        version: 5.5.0
       selfsigned:
         specifier: 'catalog:'
         version: 5.5.0
@@ -1397,7 +1397,7 @@ importers:
         version: 5.10.2(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(supports-color@8.1.1)
       rfc6902:
         specifier: catalog:extensions
-        version: 5.4.0
+        version: 5.5.0
     devDependencies:
       '@freelensapp/core':
         specifier: workspace:^
@@ -2448,7 +2448,7 @@ importers:
         version: 24.19.2
       rfc6902:
         specifier: 'catalog:'
-        version: 5.4.0
+        version: 5.5.0
 
   packages/utility-features/kube-api:
     dependencies:
@@ -2491,7 +2491,7 @@ importers:
         version: link:../../infrastructure/typescript
       rfc6902:
         specifier: 'catalog:'
-        version: 5.4.0
+        version: 5.5.0
       typescript:
         specifier: 'catalog:'
         version: 7.0.2
@@ -6457,8 +6457,8 @@ packages:
   rfc4648@1.5.4:
     resolution: {integrity: sha512-rRg/6Lb+IGfJqO05HZkN50UtY7K/JhxJag1kP23+zyMfrvoB0B7RWv06MbOzoc79RgCdNTiUaNsTT1AJZ7Z+cg==}
 
-  rfc6902@5.4.0:
-    resolution: {integrity: sha512-GT16EIVrrcGvyDkey5Fqa36lzx4X+VF0IwGIRkSW5WVKZYQyDTYTC4wfuCr7nDfs5vzUpiIxtIpSTJY1aZMBZQ==}
+  rfc6902@5.5.0:
+    resolution: {integrity: sha512-YB4sZ1yAb66eler5izrC0Y8RKE43HWViKhlYJDNRAj6JDep+Tq88llap1uJr1FUR09+Nj46pne8z/LYcTr/2eA==}
 
   rimraf@2.6.3:
     resolution: {integrity: sha512-mwqeW5XsA2qAejG46gYdENaxXjx9onRNCfn7L0duuP4hCuTIi/QO7PDK07KJfp1d+izWPrzEJDcSqBa0OZQriA==}
@@ -11039,7 +11039,7 @@ snapshots:
 
   rfc4648@1.5.4: {}
 
-  rfc6902@5.4.0: {}
+  rfc6902@5.5.0: {}
 
   rimraf@2.6.3:
     dependencies:
