@@ -30,6 +30,7 @@ import type { Logger } from "@freelensapp/logger";
 
 import type { Mock } from "vitest";
 
+import type { Cluster } from "../../common/cluster/cluster";
 import type { KubeconfigManager } from "../kubeconfig-manager/kubeconfig-manager";
 import type { ClusterConnection } from "./cluster-connection.injectable";
 import type { FreelensK8sProxyManager } from "./freelens-k8s-proxy-manager.injectable";
@@ -39,6 +40,8 @@ describe("ClusterConnection activation", () => {
   let restartMock: Mock<() => Promise<void>>;
   let events: string[];
   let pendingRestarts: { resolve: () => void; reject: (error: Error) => void }[];
+  let listNamespaces: () => Promise<string[]>;
+  let cluster: Cluster;
 
   const countOf = (event: string) => events.filter((each) => each === event).length;
 
@@ -72,6 +75,7 @@ describe("ClusterConnection activation", () => {
 
     events = [];
     pendingRestarts = [];
+    listNamespaces = () => Promise.resolve(["default"]);
 
     di.override(directoryForUserDataInjectable, () => "some-directory-for-user-data");
     di.override(directoryForTempInjectable, () => "some-directory-for-temp");
@@ -99,8 +103,12 @@ describe("ClusterConnection activation", () => {
     });
 
     di.override(createCanIInjectable, () => () => () => Promise.resolve(true));
-    di.override(createRequestNamespaceListPermissionsInjectable, () => () => async () => () => true);
-    di.override(createListNamespacesInjectable, () => () => () => Promise.resolve(["default"]));
+    di.override(createRequestNamespaceListPermissionsInjectable, () => () => async () => {
+      record("requestNamespaceListPermissions");
+
+      return () => true;
+    });
+    di.override(createListNamespacesInjectable, () => () => () => listNamespaces());
     di.override(requestApiResourcesInjectable, () => async () => ({
       callWasSuccessful: true,
       response: [{ apiName: "pods", kind: "Pod", group: "", version: "v1", namespaced: true }],
@@ -156,7 +164,7 @@ describe("ClusterConnection activation", () => {
 
     vi.spyOn(Kubectl.prototype, "ensureKubectl").mockReturnValue(Promise.resolve(true));
 
-    const cluster = di.inject(addClusterInjectable)({
+    cluster = di.inject(addClusterInjectable)({
       id: "test-cluster-id",
       contextName: "test-cluster",
       kubeConfigPath: "/test-kubeconfig.yml",
@@ -296,6 +304,23 @@ describe("ClusterConnection activation", () => {
 
       expect(countOf("[CLUSTER]: refreshAccessibility")).toBe(0);
       expect(countOf("[CLUSTER]: refreshMetadata")).toBe(0);
+    });
+
+    it("drops a refresh that the cluster disconnects during, and reviews no more namespaces", async () => {
+      cluster.disconnected.set(false);
+      listNamespaces = async () => {
+        clusterConnection.disconnect();
+
+        return ["default"];
+      };
+
+      await clusterConnection.refreshAccessibilityAndMetadata();
+
+      expect(countOf("[CLUSTER]: refreshAccessibility")).toBe(1);
+      expect(countOf("requestNamespaceListPermissions")).toBe(0);
+      expect(countOf("[CLUSTER]: refreshMetadata")).toBe(0);
+      expect(cluster.allowedNamespaces.length).toBe(0);
+      expect(cluster.ready.get()).toBe(false);
     });
   });
 });

@@ -965,6 +965,24 @@ describe("Freelens proxy kube api requests", () => {
     expect(logError).not.toHaveBeenCalled();
   });
 
+  it.each([
+    ["logs at error level the failure of a request of a connected cluster", false, 1],
+    ["logs at debug level the failure of a request of a cluster disconnected meanwhile", true, 0],
+  ])("%s", async (_name, disconnect, errors) => {
+    const response = getHttp1(port, "/api-kube/api/v1/pods/pending");
+
+    await pendingReceived;
+    // A disconnect stops the proxy of the cluster, as the target going away does here.
+    clusterDisconnected = disconnect;
+
+    for (const session of targetSessions) {
+      session.destroy();
+    }
+
+    expect((await response).statusCode).toBe(500);
+    expect(logError).toHaveBeenCalledTimes(errors);
+  });
+
   it("ends an HTTP/2 request once it has been idle for the timeout of its target, and not the session", async () => {
     timeout = 100;
 

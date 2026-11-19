@@ -16,14 +16,22 @@ import type { AuthorizationV1Api, V1ResourceAttributes } from "@kubernetes/clien
  */
 export type CanI = (resourceAttributes: V1ResourceAttributes) => Promise<boolean>;
 
-export type CreateCanI = (api: AuthorizationV1Api) => CanI;
+export interface AccessReviewOptions {
+  /**
+   * Whether the review is no longer wanted, as when its cluster was disconnected while it ran.
+   * Its failure is then expected, and logged only at debug level.
+   */
+  isCanceled?: () => boolean;
+}
+
+export type CreateCanI = (api: AuthorizationV1Api, options?: AccessReviewOptions) => CanI;
 
 const createCanIInjectable = getInjectable({
   id: "create-can-i",
   instantiate: (di): CreateCanI => {
     const logger = di.inject(loggerInjectionToken);
 
-    return (api) =>
+    return (api, { isCanceled } = {}) =>
       async (resourceAttributes: V1ResourceAttributes): Promise<boolean> => {
         try {
           const body = await api.createSelfSubjectAccessReview({
@@ -36,6 +44,12 @@ const createCanIInjectable = getInjectable({
 
           return body.status?.allowed ?? false;
         } catch (error) {
+          if (isCanceled?.()) {
+            logger.debug(`[AUTHORIZATION-REVIEW]: canceled access review failed: ${error}`, { resourceAttributes });
+
+            return false;
+          }
+
           logger.error(`[AUTHORIZATION-REVIEW]: failed to create access review: ${error}`, { resourceAttributes });
 
           return false;
