@@ -28,6 +28,8 @@ const dockStoreInjectable = getInjectable({
         [TabKind.EDIT_RESOURCE]: di.inject(clearEditResourceTabDataInjectable),
         [TabKind.INSTALL_CHART]: di.inject(clearInstallChartTabDataInjectable),
         [TabKind.TERMINAL]: di.inject(clearTerminalTabDataInjectable),
+        // Extension tabs keep their JSON parameters in the tab itself.
+        [TabKind.EXTENSION]: () => {},
       },
       tabDataValidator: {
         [TabKind.POD_LOGS]: di.inject(isLogsTabDataValidInjectable),

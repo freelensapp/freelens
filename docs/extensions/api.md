@@ -258,7 +258,7 @@ is not reachable (see [C1](#c1-packaging-and-publication)).
 | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `Common`   | `App`, `Catalog`, `Clusters`, `Credentials`, `EventBus`, `Proxy`, `Store`, `Types`, `Util`, `logger`; types `ExtensionCredentials`, `InstalledExtension`, `LensExtension`, `LensExtensionManifest`, `Logger`, `PackageJson` |
 | `Main`     | `Catalog`, `Ipc`, `K8s`, `K8sApi`, `LensExtension`, `Navigation`, `Power`, `Shell`, `Util`                                                                                                                                  |
-| `Renderer` | `Catalog`, `Component`, `Ipc`, `K8s`, `K8sApi`, `LensExtension`, `Navigation`, `Theme`, `Util`                                                                                                                              |
+| `Renderer` | `Catalog`, `Component`, `Ipc`, `K8s`, `K8sApi`, `LensExtension`, `Navigation`, `Theme`, `Util`; types `DockTabParam`, `DockTabParams`, `DockTabRegistration`, `ExtensionDockTabProps`, `OpenDockTabOptions`                 |
 
 There is no `Renderer.React`, no `Renderer.ReactDOM` and no
 `Renderer.Registrations`. React reaches extensions through
@@ -640,7 +640,57 @@ injectables, scoped to the extension and torn down with it.
 `appPreferenceTabs`, `entitySettings`, `statusBarItems`, `kubeObjectDetailItems`,
 `kubeObjectMenuItems`, `kubeWorkloadsOverviewItems`, `commands`, `welcomeMenus`,
 `catalogEntityDetailItems`, `topBarItems`, `additionalCategoryColumns`,
-`customCategoryViews`, `kubeObjectHandlers`, `customResources`.
+`customCategoryViews`, `kubeObjectHandlers`, `customResources`, `dockTabs`.
+
+`dockTabs` registers React content types for the cluster's bottom dock,
+beside Terminal and Pod Logs. A `Renderer.DockTabRegistration` has a nonempty
+`id` unique within the extension, a default `title`, optional mobx computed
+`enabled`, and `components.Tab`. The component takes exactly
+`Renderer.ExtensionDockTabProps`: `tabId`, deeply read-only JSON `params`, and
+`close()`. A component needing the extension instance receives it through its
+registration, as with pages.
+
+`LensRendererExtension#openDockTab(typeId, options?)` opens one of that
+instance's own registered types from a cluster frame, selects the new tab,
+expands the dock and synchronously returns its new ID. Every call creates an
+independent, closable instance. `Renderer.OpenDockTabOptions` supplies optional
+`title` and `params`, with params typed as `Renderer.DockTabParams` and its
+recursive values as `Renderer.DockTabParam`. The host supplies the native
+extension icon, title, selection, close actions and sizing. Target-aware
+extension actions open instances; registration adds no entry to the dock's
+new-tab menu.
+
+The host persists a versioned JSON descriptor in the existing per-cluster dock
+storage, identified by the exact extension package name and local type ID.
+Neither the installation path nor transient React state is persisted as an
+identity. The host gives the component a detached, deeply frozen parameter
+snapshot and keeps `params` and `close` stable throughout each visible mount.
+Functions, class instances, cycles, undefined and nonfinite numbers are
+rejected. Extensions validate their own parameter schema and resource
+identity and keep credentials and large records out of these descriptors.
+
+A missing, disabled or not-yet-loaded contribution leaves the saved tab in
+place, with an unavailable view and working native close actions. Loading or
+enabling it restores content reactively. Malformed descriptors and unknown
+descriptor versions show an invalid-parameters view and remain closable.
+Content mounts only while selected, expanded, enabled, the hosting cluster is
+active in the catalog, and the document is visible. Unknown cluster visibility
+suspends it. Each visible mount owns its React state and error boundary;
+leaving it unmounts content, and returning starts a fresh mount. Extensions
+must release timers, subscriptions and watches and suppress stale async
+results in cleanup. This does not cancel work started outside the component.
+
+Opening throws before creating a tab from a root frame, for an unknown or
+disabled type, while asynchronous cluster eligibility is pending or false, or
+for an invalid title or parameters. Titles must be strings. A saved tab with
+a malformed title receives a fallback title and stays closable. Eligibility
+starts when the host registers the dock contribution in a cluster frame, so
+an eligible extension needs no other contribution to start that check before
+its first command opens a tab. A rejected eligibility check is logged and
+the contribution is unavailable in that cluster. Duplicate or blank type IDs
+reject the field's registration. The host retains its dock store and DI
+container; neither is extension API. See
+[`dock-tabs.md`](./dock-tabs.md) for a complete example and lifetime guidance.
 
 Every component in a renderer registration is typed with the props the host
 renders it with and nothing more, so a component that requires another prop

@@ -97,6 +97,12 @@ export type MainKubeObjectStatus = Main.K8sApi.KubeObjectStatus;
 // --- Renderer ----------------------------------------------------------------
 
 export type RendererExtension = Renderer.LensExtension;
+export type RendererDockTabParam = Renderer.DockTabParam;
+export type RendererDockTabParams = Renderer.DockTabParams;
+export type RendererDockTabRegistration = Renderer.DockTabRegistration;
+export type RendererExtensionDockTabProps = Renderer.ExtensionDockTabProps;
+export type RendererOpenDockTabOptions = Renderer.OpenDockTabOptions;
+export type RendererOpenDockTab = RendererExtension["openDockTab"];
 // The renderer's HTTP client is its global `fetch` (C12).
 // @ts-expect-error `Renderer.Util` has no `fetch`
 export type RendererFetch = typeof Renderer.Util.fetch;
