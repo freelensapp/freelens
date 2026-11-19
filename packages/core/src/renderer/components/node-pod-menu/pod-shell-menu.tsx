@@ -3,19 +3,16 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import os from "node:os";
 import { Pod } from "@freelensapp/kube-object";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import React from "react";
-import { v4 as uuidv4 } from "uuid";
-import { App } from "../../../extensions/common-api";
 import createTerminalTabInjectable from "../dock/terminal/create-terminal-tab.injectable";
-import sendCommandInjectable, { type SendCommand } from "../dock/terminal/send-command.injectable";
 import hideDetailsInjectable, { type HideDetails } from "../kube-detail-params/hide-details.injectable";
 import PodMenuItem from "./pod-menu-item";
 
 import type { Container, EphemeralContainer } from "@freelensapp/kube-object";
 
+import type { PodTerminalTarget } from "../../../features/pod-terminal/common/pod-terminal";
 import type { DockTabCreateSpecific } from "../dock/dock/store";
 
 export interface PodShellMenuProps {
@@ -25,12 +22,11 @@ export interface PodShellMenuProps {
 
 interface Dependencies {
   createTerminalTab: (tabParams: DockTabCreateSpecific) => void;
-  sendCommand: SendCommand;
   hideDetails: HideDetails;
 }
 
 const NonInjectablePodShellMenu: React.FC<PodShellMenuProps & Dependencies> = (props) => {
-  const { object, toolbar, createTerminalTab, sendCommand, hideDetails } = props;
+  const { object, toolbar, createTerminalTab, hideDetails } = props;
 
   if (!object) return null;
   let pod: Pod;
@@ -47,38 +43,20 @@ const NonInjectablePodShellMenu: React.FC<PodShellMenuProps & Dependencies> = (p
   const statuses = pod.getContainerStatuses();
   const annotations = pod.metadata.annotations;
 
-  const execShell = async (container: Container | EphemeralContainer) => {
-    const containerName = container.name;
-    const kubectlPath = App.Preferences.getKubectlPath() || "kubectl";
-    const commandParts = [kubectlPath, "exec", "-i", "-t", "-n", pod.getNs(), pod.getName()];
-
-    if (os.platform() !== "win32") {
-      commandParts.unshift("exec");
-    }
-
-    if (containerName) {
-      commandParts.push("-c", containerName);
-    }
-
-    commandParts.push("--");
-
-    if (pod.getSelectedNodeOs() === "windows") {
-      commandParts.push("powershell");
-    } else {
-      commandParts.push('sh -c "clear; (bash || ash || sh)"');
-    }
-
-    const shellId = uuidv4();
+  const execShell = (container: Container | EphemeralContainer) => {
+    const podTerminal: PodTerminalTarget = {
+      mode: "exec",
+      namespace: pod.getNs(),
+      pod: pod.getName(),
+      container: container.name || undefined,
+      windows: pod.getSelectedNodeOs() === "windows",
+    };
 
     createTerminalTab({
       title: `Pod: ${pod.getName()} (namespace: ${pod.getNs()})`,
-      id: shellId,
+      podTerminal,
     });
-
-    sendCommand(commandParts.join(" "), {
-      enter: true,
-      tabId: shellId,
-    }).then(hideDetails);
+    hideDetails();
   };
 
   return (
@@ -99,7 +77,6 @@ export const PodShellMenu = withInjectables<Dependencies, PodShellMenuProps>(Non
   getProps: (di, props) => ({
     ...props,
     createTerminalTab: di.inject(createTerminalTabInjectable),
-    sendCommand: di.inject(sendCommandInjectable),
     hideDetails: di.inject(hideDetailsInjectable),
   }),
 });

@@ -333,8 +333,6 @@
         "**/packages/core/src/renderer/components/network-ingresses/ingress-store.injectable.ts",
         "**/packages/core/src/renderer/components/network-policies/store.injectable.ts",
         "**/packages/core/src/renderer/components/network-services/store.injectable.ts",
-        "**/packages/core/src/renderer/components/node-pod-menu/pod-attach-menu.tsx",
-        "**/packages/core/src/renderer/components/node-pod-menu/pod-shell-menu.tsx",
         "**/packages/core/src/renderer/components/nodes/store.injectable.ts",
         "**/packages/core/src/renderer/components/pod-security-policies/store.injectable.ts",
         "**/packages/core/src/renderer/components/slider/slider.tsx",
