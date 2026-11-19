@@ -418,17 +418,20 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
 
   renderDiskUsage(node: Node) {
     const [usage, capacity] = this.getLastMetricValues(node, ["fsUsage", "fsSize"]);
-    const tooltipLines =
-      usage !== undefined && capacity
-        ? [`Disk: ${((usage * 100) / capacity).toFixed(2)}%, ${bytesToUnits(usage, { precision: 3 })}`]
-        : [];
+    const hasMetrics = usage !== undefined && Number.isFinite(usage) && !!capacity;
 
     return this.renderUsage({
       node,
       title: "Disk",
       usage,
       capacity,
-      tooltipLines,
+      usageText: hasMetrics ? `${bytesToUnitsAligned(usage)} / ${bytesToUnitsAligned(capacity)}` : undefined,
+      tooltipLines: hasMetrics
+        ? [
+            `Disk: ${((usage * 100) / capacity).toFixed(2)}%, ${bytesToUnits(usage, { precision: 3 })}`,
+            `Size: ${bytesToUnits(capacity, { precision: 3 })}`,
+          ]
+        : [],
     });
   }
 
