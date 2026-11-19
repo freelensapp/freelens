@@ -23,6 +23,9 @@ jobs:
     runs-on: ubuntu-26.04-arm
     timeout-minutes: 360
 
+    outputs:
+      release-notes: ${{ steps.discussion.outputs.found }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -49,7 +52,8 @@ jobs:
 
       # The release notes are written ahead of the release, in the Roadmap
       # discussion titled after the tag. Without such a discussion the draft
-      # keeps the generated notes.
+      # keeps the generated notes and is not published: publish-github-release
+      # is skipped, and the release waits for notes written by hand.
       - name: Find release notes discussion
         id: discussion
         run: |
@@ -60,7 +64,7 @@ jobs:
             --jq 'first(.discussions[] | select(.title == env.GITHUB_REF_NAME)) // {}' > "$RUNNER_TEMP/discussion.json"
           url=$(yq -pj -oy '.url // ""' "$RUNNER_TEMP/discussion.json")
           if [[ -z "$url" ]]; then
-            echo "No Roadmap discussion titled ${GITHUB_REF_NAME}: the draft keeps the generated notes"
+            echo "::notice::No Roadmap discussion titled ${GITHUB_REF_NAME}: the release stays a draft with the generated notes"
             exit 0
           fi
           # A discussion edited in the browser has CRLF line endings.
@@ -1175,6 +1179,9 @@ jobs:
       - staple-pkg
       - publish-runtime-package-list
       - attest-artifacts
+
+    # Only a release whose notes came from the Roadmap discussion.
+    if: needs.make-draft-release.outputs.release-notes == 'true'
 
     runs-on: ubuntu-26.04-arm
 
