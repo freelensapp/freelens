@@ -61,6 +61,17 @@ export * from "../../renderer/components/avatar";
 export * from "../../renderer/components/badge";
 export * from "../../renderer/components/chart";
 export * from "../../renderer/components/checkbox";
+// Explicit rather than a star export: the contract is the component and its
+// props, not how long it shows that the text was copied.
+export {
+  CopyToClipboardIcon,
+  type CopyToClipboardIconProps,
+} from "../../renderer/components/copy-to-clipboard/copy-to-clipboard-icon";
+export { CopyableInput, type CopyableInputProps } from "../../renderer/components/copyable-input/copyable-input";
+export {
+  CopyableMonacoEditor,
+  type CopyableMonacoEditorProps,
+} from "../../renderer/components/copyable-monaco-editor/copyable-monaco-editor";
 export * from "../../renderer/components/countdown";
 export * from "../../renderer/components/dialog";
 export * from "../../renderer/components/drawer";

@@ -7,7 +7,7 @@
 import { Secret, SecretType } from "@freelensapp/kube-object";
 import { base64 } from "@freelensapp/utilities";
 import { act, fireEvent } from "@testing-library/react";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import directoryForKubeConfigsInjectable from "../../../../common/app-paths/directory-for-kube-configs/directory-for-kube-configs.injectable";
 import directoryForUserDataInjectable from "../../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import { Cluster } from "../../../../common/cluster/cluster";
@@ -142,6 +142,70 @@ describe("SecretDetails tests", () => {
 
     expect(result.getByTestId("password-secret-entry").querySelector("textarea")).toHaveValue(base64.encode("hunter3"));
     expect(result.getByTestId("user-secret-entry").querySelector("textarea")).toHaveValue(base64.encode("admin"));
+  });
+
+  describe("copying a value", () => {
+    let writeTextMock: Mock<(text: string) => Promise<void>>;
+
+    beforeEach(() => {
+      writeTextMock = vi.fn(async () => {});
+
+      // jsdom has no Clipboard API.
+      Object.defineProperty(navigator, "clipboard", {
+        configurable: true,
+        value: { writeText: writeTextMock },
+      });
+    });
+
+    afterEach(() => {
+      Reflect.deleteProperty(navigator, "clipboard");
+    });
+
+    it("copies the decoded value while it is hidden", async () => {
+      const result = render(
+        <SecretDetails object={getSecret(SecretType.Opaque, { password: base64.encode("hunter2") })} />,
+      );
+
+      await act(async () => result.getByTestId("password-secret-copy").click());
+
+      expect(writeTextMock).toHaveBeenCalledWith("hunter2");
+      expect(result.getByTestId("password-secret-copy")).toHaveAttribute("aria-label", "Copied!");
+    });
+
+    it("copies the decoded value while it is shown", async () => {
+      const result = render(
+        <SecretDetails object={getSecret(SecretType.Opaque, { password: base64.encode("hunter2") })} />,
+      );
+
+      fireEvent.click(result.getByTestId("password-secret-entry").querySelector(".Icon") as HTMLElement);
+      expect(result.getByTestId("password-secret-entry").querySelector("textarea")).toHaveValue("hunter2");
+
+      await act(async () => result.getByTestId("password-secret-copy").click());
+
+      expect(writeTextMock).toHaveBeenCalledWith("hunter2");
+    });
+
+    it("copies an unsaved edit", async () => {
+      const result = render(
+        <SecretDetails object={getSecret(SecretType.Opaque, { password: base64.encode("hunter2") })} />,
+      );
+
+      fireEvent.change(result.getByTestId("password-secret-entry").querySelector("textarea") as HTMLTextAreaElement, {
+        target: { value: base64.encode("edited") },
+      });
+
+      await act(async () => result.getByTestId("password-secret-copy").click());
+
+      expect(writeTextMock).toHaveBeenCalledWith("edited");
+    });
+
+    it("copies a value that cannot be decoded as it is stored", async () => {
+      const result = render(<SecretDetails object={getSecret(SecretType.Opaque, { password: "not base64!" })} />);
+
+      await act(async () => result.getByTestId("password-secret-copy").click());
+
+      expect(writeTextMock).toHaveBeenCalledWith("not base64!");
+    });
   });
 
   it("shows what is in a certificate stored in the secret", async () => {

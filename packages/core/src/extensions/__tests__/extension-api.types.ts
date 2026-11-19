@@ -114,6 +114,20 @@ export type RendererTableOrderBy = Renderer.Component.TableOrderBy;
 export type RendererPieChartData = Renderer.Component.PieChartData;
 export type RendererSecretCertificatesProps = Renderer.Component.SecretCertificatesProps;
 
+// The copy controls of the details views, whose props name what they copy.
+export type RendererCopyToClipboardIconProps = Renderer.Component.CopyToClipboardIconProps;
+export type RendererCopyableMonacoEditorProps = Renderer.Component.CopyableMonacoEditorProps;
+export type RendererCopyableInputProps = Renderer.Component.CopyableInputProps;
+export type RendererCopyToClipboardIconTakesItsProps = Holds<
+  Parameters<typeof Renderer.Component.CopyToClipboardIcon>[0] extends RendererCopyToClipboardIconProps ? true : false
+>;
+export type RendererCopyableMonacoEditorTakesItsProps = Holds<
+  Parameters<typeof Renderer.Component.CopyableMonacoEditor>[0] extends RendererCopyableMonacoEditorProps ? true : false
+>;
+export type RendererCopyableInputTakesItsProps = Holds<
+  Parameters<typeof Renderer.Component.CopyableInput>[0] extends RendererCopyableInputProps ? true : false
+>;
+
 // The overview cards and their props, the contract of their own that both
 // overviews of the host render with, and the preference that chooses between
 // them and the charts.

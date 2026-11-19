@@ -12,13 +12,13 @@ import * as yaml from "js-yaml";
 import { observer } from "mobx-react";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
 import { defaultYamlDumpOptions } from "../../../common/kube-helpers";
+import { CopyableMonacoEditor } from "../copyable-monaco-editor/copyable-monaco-editor";
 import { DrawerItem, DrawerItemLabels, DrawerParamToggler } from "../drawer";
 import { DurationAbsoluteTimestamp } from "../events";
 import getDetailsUrlInjectable from "../kube-detail-params/get-details-url.injectable";
 import { KubeObjectAge } from "../kube-object/age";
 import { LinkToNamespace } from "../kube-object-link";
 import { LocaleDate } from "../locale-date";
-import { MonacoEditor } from "../monaco-editor";
 import { WithTooltip } from "../with-tooltip";
 
 import type { KubeMetaField } from "@freelensapp/kube-object";
@@ -145,7 +145,7 @@ const NonInjectedKubeObjectMeta = observer((props: Dependencies & KubeObjectMeta
       {lastAppliedConfiguration !== undefined && (
         <DrawerItem name="Last Applied Configuration" hidden={isHidden("annotations")}>
           <DrawerParamToggler label={lastAppliedConfigurationAnnotation}>
-            <MonacoEditor
+            <CopyableMonacoEditor
               readOnly
               style={{ height: 200 }}
               value={formatLastAppliedConfiguration(lastAppliedConfiguration)}
@@ -175,7 +175,7 @@ const NonInjectedKubeObjectMeta = observer((props: Dependencies & KubeObjectMeta
               label={<ManagedFieldEntryLabel entry={entry} />}
               key={`${entry.manager}-${entry.operation}-${entry.apiVersion ?? ""}-${entry.subresource ?? ""}`}
             >
-              <MonacoEditor
+              <CopyableMonacoEditor
                 readOnly
                 style={{ height: 200 }}
                 value={yaml.dump(entry.fieldsV1, defaultYamlDumpOptions)}

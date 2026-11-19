@@ -22,7 +22,8 @@ exports[`disable kube object detail items when cluster is not relevant > given e
           >
             some-kind: some-name
             <i
-              class="Icon material interactive focusable"
+              aria-label="Copy"
+              class="Icon CopyToClipboardIcon material interactive focusable"
               tabindex="0"
             >
               <span
@@ -819,7 +820,8 @@ exports[`disable kube object detail items when cluster is not relevant > given e
           >
             some-kind: some-name
             <i
-              class="Icon material interactive focusable"
+              aria-label="Copy"
+              class="Icon CopyToClipboardIcon material interactive focusable"
               tabindex="0"
             >
               <span
@@ -1611,7 +1613,8 @@ exports[`disable kube object detail items when cluster is not relevant > given n
           >
             some-kind: some-name
             <i
-              class="Icon material interactive focusable"
+              aria-label="Copy"
+              class="Icon CopyToClipboardIcon material interactive focusable"
               tabindex="0"
             >
               <span
