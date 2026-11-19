@@ -117,6 +117,39 @@ describe("starting freelens-k8s-proxy", () => {
     expect(spawnMock).toHaveBeenCalledTimes(1);
   });
 
+  describe("when the proxy writes to stderr after it serves", () => {
+    const stderrUpdates = () =>
+      broadcastMessageMock.mock.calls.filter(
+        ([channel, update]) => channel === "cluster:some-cluster-id:connection-update" && update.level === "error",
+      );
+
+    beforeEach(async () => {
+      await freelensK8sProxy.run();
+    });
+
+    it("does not report a request that the client canceled as an error", () => {
+      processes[0].stderr.emit(
+        "data",
+        Buffer.from(
+          "E1028 20:09:58.336402   52916 proxy_server.go:147] Error while proxying request: context canceled\n",
+        ),
+      );
+
+      expect(stderrUpdates()).toEqual([]);
+    });
+
+    it("still reports any other line, also next to a canceled request", () => {
+      processes[0].stderr.emit(
+        "data",
+        Buffer.from(
+          "E1028 20:09:58.336402   52916 proxy_server.go:147] Error while proxying request: context canceled\nE1028 20:09:59.1 1 proxy_server.go:147] Error while proxying request: connection refused\n",
+        ),
+      );
+
+      expect(stderrUpdates()).toHaveLength(1);
+    });
+  });
+
   it("starts the proxy with the kubeconfig file, and the cluster and the certificate in its environment", async () => {
     await freelensK8sProxy.run();
 

@@ -22,6 +22,16 @@ import type { ChildProcess } from "node:child_process";
 import type { SelfSignedCert } from "../../common/certificate/certificate";
 import type { Cluster } from "../../common/cluster/cluster";
 
+/**
+ * The kubectl proxy code logs a proxied request whose client went away, such as
+ * a view that unmounted before its list arrived. Nothing failed.
+ */
+const isOnlyCanceledRequests = (output: string) => {
+  const lines = output.split("\n").filter((line) => line.trim() !== "");
+
+  return lines.length > 0 && lines.every((line) => /Error while proxying request: context canceled\s*$/.test(line));
+};
+
 export interface FreelensK8sProxy {
   readonly apiPrefix: string;
   readonly port: number;
@@ -216,7 +226,7 @@ const createFreelensK8sProxyInjectable = getInjectable({
         assert(proxyProcess.stdout);
 
         proxyProcess.stderr.on("data", (data: Buffer) => {
-          if (data.includes("http: TLS handshake error")) {
+          if (data.includes("http: TLS handshake error") || isOnlyCanceledRequests(data.toString())) {
             return;
           }
 
