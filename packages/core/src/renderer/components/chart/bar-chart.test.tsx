@@ -8,7 +8,8 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import activeThemeInjectable from "../../themes/active.injectable";
 import { renderFor } from "../test-utils/renderFor";
-import { BarChart, insertGapsInTimeSeries } from "./bar-chart";
+import { BarChart } from "./bar-chart";
+import { insertGapsInTimeSeries } from "./time-series-gaps";
 
 const chartMock = vi.fn();
 
