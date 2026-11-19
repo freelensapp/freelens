@@ -479,7 +479,7 @@ class ClusterConnection {
     }
 
     const knownResources = await (async () => {
-      const result = await this.dependencies.requestApiResources(this.cluster);
+      const result = await this.dependencies.requestApiResources(this.cluster, { isCanceled });
 
       if (result.callWasSuccessful || isCanceled()) {
         return result.callWasSuccessful ? result.response : [];
