@@ -95,6 +95,26 @@ export interface PodContainerStatus {
   imageID: string;
   containerID?: string;
   started?: boolean;
+  volumeMounts?: VolumeMountStatus[];
+}
+
+export interface VolumeMountStatus {
+  name: string;
+  mountPath: string;
+  readOnly?: boolean;
+  recursiveReadOnly?: "Disabled" | "Enabled";
+  volumeStatus?: VolumeStatus;
+}
+
+export interface VolumeStatus {
+  image?: ImageVolumeStatus;
+}
+
+export interface ImageVolumeStatus {
+  /**
+   * The digest of the image the volume was made from, like the `imageID` of a container.
+   */
+  imageRef: string;
 }
 
 export interface AwsElasticBlockStoreSource {

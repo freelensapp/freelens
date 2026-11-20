@@ -128,6 +128,20 @@ export type RendererCopyableInputTakesItsProps = Holds<
   Parameters<typeof Renderer.Component.CopyableInput>[0] extends RendererCopyableInputProps ? true : false
 >;
 
+// The badge of an image, and the status of a container that gives the digest
+// of an image volume.
+export type RendererImageReferenceProps = Renderer.Component.ImageReferenceProps;
+export type RendererImageReferenceTakesItsProps = Holds<
+  Parameters<typeof Renderer.Component.ImageReference>[0] extends RendererImageReferenceProps ? true : false
+>;
+export type K8sApiImageVolumeDigest = Holds<
+  NonNullable<
+    NonNullable<NonNullable<Renderer.K8sApi.PodContainerStatus["volumeMounts"]>[number]["volumeStatus"]>["image"]
+  >["imageRef"] extends string
+    ? true
+    : false
+>;
+
 // The generic components the host's views are built from. The enums of the
 // resizing anchor and its class are values and types alike, so they are named
 // as types here; the function components are values only, and their props
