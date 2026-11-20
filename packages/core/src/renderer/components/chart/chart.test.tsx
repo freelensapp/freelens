@@ -68,6 +68,21 @@ describe("Chart", () => {
     expect(chart.getDatasetMeta(0).controller === controller, "the dataset has the same controller").toBe(true);
   });
 
+  it("drops the fields that the new data of a dataset does not have", () => {
+    // A ring of the workloads overview with a status, and then with no object left.
+    const withStatus: ChartData = {
+      datasets: [{ label: "Status", data: [1], backgroundColor: ["green"], tooltipLabels: [() => "Succeeded: 100%"] }],
+    };
+    const empty: ChartData = { datasets: [{ label: "Empty", data: [1], backgroundColor: ["grey"] }] };
+    const { container, rerender } = render(<Chart data={withStatus} showLegend={false} />);
+    const chart = chartOf(container);
+
+    rerender(<Chart data={empty} showLegend={false} />);
+
+    expect(Object.keys(chart.data.datasets[0]).sort()).toEqual(["backgroundColor", "data", "label"]);
+    expect(chart.data.datasets[0]).toEqual({ label: "Empty", data: [1], backgroundColor: ["grey"] });
+  });
+
   it("keeps the elements that stay when a dataset gets one value more", () => {
     const { container, rerender } = render(<Chart data={statuses([3])} showLegend={false} />);
     const chart = chartOf(container);

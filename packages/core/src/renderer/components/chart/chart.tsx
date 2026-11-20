@@ -186,13 +186,22 @@ export class Chart extends React.Component<ChartProps> {
           data[dataIndex] = nextData[dataIndex];
         }
 
-        // Merge other fields into the dataset Chart.js already has. Chart.js
+        // Give the dataset Chart.js already has the other fields of the new
+        // one, and only those: a field the new one lacks, such as the tooltip
+        // labels of a ring that has no status left, must not stay. Chart.js
         // finds the controller and the elements of a dataset by the identity of
         // the dataset object: another object is a new dataset to it, and a new
         // dataset is drawn from its start, with the opening animation.
         const { data: _data, ...props } = next;
+        const dataset = datasets[index];
 
-        Object.assign(datasets[index], props);
+        for (const key of Object.keys(dataset)) {
+          if (key !== "data" && !(key in props)) {
+            delete dataset[key];
+          }
+        }
+
+        Object.assign(dataset, props);
       } else {
         datasets[datasetIndex] = next;
       }
