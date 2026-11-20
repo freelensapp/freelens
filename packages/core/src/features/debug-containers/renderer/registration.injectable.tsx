@@ -36,7 +36,7 @@ export const debugContainerMenuInjectable = getInjectable({
         return (
           <MenuItem disabled={Boolean(reason)} onClick={() => state.open(pod)}>
             <Icon material="bug_report" interactive={toolbar} tooltip={reason || "Debug pod"} />
-            <span>Debug...</span>
+            <span className="title">Debug...</span>
           </MenuItem>
         );
       },
