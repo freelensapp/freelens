@@ -87,7 +87,7 @@ class NonInjectedPodDetails extends React.Component<PodDetailsProps & Dependenci
             <Badge key={label} label={label} />
           ))}
         </DrawerItem>
-        <DrawerItem name="Service Account">
+        <DrawerItem name="Service Account" hidden={serviceAccountName === ""}>
           <LinkToServiceAccount name={serviceAccountName} namespace={namespace} />
         </DrawerItem>
         <DrawerItem name="Priority Class" hidden={priorityClassName === ""}>
