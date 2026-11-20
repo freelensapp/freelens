@@ -18,6 +18,7 @@ import { Badge } from "../badge";
 import { findOptimalDefaultContainerOfPod } from "../dock/logs/default-container-helper";
 import { DrawerItem } from "../drawer";
 import { DurationAbsoluteTimestamp } from "../events";
+import { ImageReference } from "../image-reference";
 import { StatusBrick } from "../status-brick";
 import { containerStatusClassName } from "./container-status-class-name";
 import { ContainerEnvironment } from "./pod-container-env";
@@ -135,9 +136,7 @@ class NonInjectedPodDetailsContainer extends React.Component<PodDetailsContainer
         )}
         {status && <DrawerItem name="Status">{this.renderStatus(container, status)}</DrawerItem>}
         {lastState && <DrawerItem name="Last Status">{this.renderLastState(lastState, status)}</DrawerItem>}
-        <DrawerItem name="Image">
-          <Badge label={image} tooltip={imageId} />
-        </DrawerItem>
+        <DrawerItem name="Image">{image && <ImageReference reference={image} digest={imageId} />}</DrawerItem>
         {imagePullPolicy && imagePullPolicy !== "IfNotPresent" && (
           <DrawerItem name="ImagePullPolicy">{imagePullPolicy}</DrawerItem>
         )}

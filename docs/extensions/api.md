@@ -625,6 +625,27 @@ their own.
 `packages/core/src/extensions/__tests__/extension-api-copy-to-clipboard.test.tsx`
 covers the components as an extension reaches them.
 
+### An image shows the image the node pulled for it
+
+The details of a pod show the image of a container, and the reference of an
+image volume, as a badge whose tooltip is the image the node pulled for it. An
+extension shows an image the same way with
+**`Renderer.Component.ImageReference`**. Its props, `ImageReferenceProps`, are
+the `reference`, the image as the object names it, which is the label of the
+badge, the `digest`, the image the node pulled, which is its tooltip, a
+`className` and a `data-testid`. Without a `digest`, or with an empty one, the badge has no
+tooltip. The host takes the `digest` of a container from the `imageID` of its
+status, and the one of an image volume from the `volumeStatus.image.imageRef`
+of the mount of the volume in the status of a container, which `K8sApi` types
+as `PodContainerStatus.volumeMounts`. A cluster that does not report the
+digest of an image volume leaves its badge without a tooltip.
+
+The badge has the global class `.ImageReference`, which an extension may
+restyle ([C10](#c10-styling-and-css)). It takes no color of its own.
+
+`packages/core/src/extensions/__tests__/extension-api-image-reference.test.tsx`
+covers the component as an extension reaches it.
+
 ### The generic components are the ones the host's views are built from
 
 The host builds its views from a set of generic components. An extension
