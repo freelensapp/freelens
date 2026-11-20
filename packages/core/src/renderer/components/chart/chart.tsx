@@ -92,8 +92,8 @@ export class Chart extends React.Component<ChartProps> {
 
   private canvas = React.createRef<HTMLCanvasElement>();
   private chart: ChartJS | null = null;
-  // ChartJS adds _meta field to any data object passed to it.
-  // We clone new data prop into currentChartData to compare props and prevProps
+  // Chart.js gets copies of the datasets of the data prop, never the objects
+  // of the caller. An update changes the copy the chart already has in place.
   private currentChartData?: ChartData;
 
   componentDidMount() {
@@ -186,13 +186,13 @@ export class Chart extends React.Component<ChartProps> {
           data[dataIndex] = nextData[dataIndex];
         }
 
-        // Merge other fields
+        // Merge other fields into the dataset Chart.js already has. Chart.js
+        // finds the controller and the elements of a dataset by the identity of
+        // the dataset object: another object is a new dataset to it, and a new
+        // dataset is drawn from its start, with the opening animation.
         const { data: _data, ...props } = next;
 
-        datasets[index] = {
-          ...datasets[index],
-          ...props,
-        };
+        Object.assign(datasets[index], props);
       } else {
         datasets[datasetIndex] = next;
       }
