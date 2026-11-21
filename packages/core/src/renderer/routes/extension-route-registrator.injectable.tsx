@@ -11,6 +11,7 @@ import { frontEndRouteInjectionToken } from "../../common/front-end-routing/fron
 import { extensionRegistratorInjectionToken } from "../../extensions/extension-loader/extension-registrator-injection-token";
 import { SiblingsInTabLayout } from "../components/layout/siblings-in-tab-layout";
 import extensionShouldBeEnabledForClusterFrameInjectable from "../extension-loader/extension-should-be-enabled-for-cluster-frame.injectable";
+import guardExtensionComponentsInjectable from "../extension-loader/guard-extension-components.injectable";
 import extensionPageParametersInjectable from "./extension-page-parameters.injectable";
 import { getExtensionRoutePath } from "./for-extension";
 import { routeSpecificComponentInjectionToken } from "./route-specific-component-injection-token";
@@ -36,13 +37,13 @@ const extensionRouteRegistratorInjectable = getInjectable({
 
       return [
         ...extension.globalPages.map(
-          toRouteInjectable(false, (registration) =>
+          toRouteInjectable("globalPages", false, (registration) =>
             computed(() => (registration.enabled ? registration.enabled.get() : true)),
           ),
         ),
 
         ...extension.clusterPages.map(
-          toRouteInjectable(true, (registration) =>
+          toRouteInjectable("clusterPages", true, (registration) =>
             computed(() => {
               if (!extensionShouldBeEnabledForClusterFrame.value.get()) {
                 return false;
@@ -63,7 +64,11 @@ export default extensionRouteRegistratorInjectable;
 
 const toRouteInjectableFor =
   (di: DiContainerForInjection, extension: LensRendererExtension) =>
-  (clusterFrame: boolean, getIsEnabled: (registration: PageRegistration) => IComputedValue<boolean>) =>
+  (
+    field: "globalPages" | "clusterPages",
+    clusterFrame: boolean,
+    getIsEnabled: (registration: PageRegistration) => IComputedValue<boolean>,
+  ) =>
   (registration: PageRegistration) => {
     const routeInjectable = getInjectable({
       id: `route-${registration.id}-for-extension-${extension.sanitizedExtensionId}`,
@@ -91,7 +96,9 @@ const toRouteInjectableFor =
       ? extension.clusterPageMenus.filter((menu) => menu.parentId === currentSidebarRegistration.parentId)
       : [];
 
-    const ObserverPage = observer(registration.components.Page);
+    const ObserverPage = di
+      .inject(guardExtensionComponentsInjectable)(extension, field)
+      .component(observer(registration.components.Page), { fallback: "view" });
 
     const Component = () => {
       if (siblingRegistrations.length === 0) {

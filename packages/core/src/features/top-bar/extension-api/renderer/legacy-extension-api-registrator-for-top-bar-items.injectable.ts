@@ -8,14 +8,16 @@ import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
 import { extensionRegistratorInjectionToken } from "../../../../extensions/extension-loader/extension-registrator-injection-token";
 import { topBarItemOnRightSideInjectionToken } from "../../../../renderer/components/layout/top-bar/top-bar-items/top-bar-item-injection-token";
+import guardExtensionComponentsInjectable from "../../../../renderer/extension-loader/guard-extension-components.injectable";
 
 import type { LensRendererExtension } from "../../../../extensions/lens-renderer-extension";
 
 const legacyExtensionApiRegistratorForTopBarItemsInjectable = getInjectable({
   id: "legacy-extension-api-registrator-for-top-bar-items",
 
-  instantiate: () => (ext) => {
+  instantiate: (di) => (ext) => {
     const extension = ext as LensRendererExtension;
+    const guard = di.inject(guardExtensionComponentsInjectable)(extension, "topBarItems");
 
     return extension.topBarItems
       .filter((registration) => !!registration?.components?.Item)
@@ -32,7 +34,7 @@ const legacyExtensionApiRegistratorForTopBarItemsInjectable = getInjectable({
             isShown: computed(() => true),
             // Note: legacy extension-API does not specify order of top-bar items, and therefore an arbitrary number is used. This makes items originating from extension appear in volatile order between each other.
             orderNumber: 100,
-            Component: registration.components.Item,
+            Component: guard.component(registration.components.Item, { fallback: "nothing" }),
           }),
         });
       });

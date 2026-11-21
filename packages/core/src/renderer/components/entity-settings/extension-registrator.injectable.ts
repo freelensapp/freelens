@@ -6,10 +6,12 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import { extensionRegistratorInjectionToken } from "../../../extensions/extension-loader/extension-registrator-injection-token";
+import guardExtensionComponentsInjectable from "../../extension-loader/guard-extension-components.injectable";
 import { entitySettingInjectionToken } from "./token";
 
 import type { LensRendererExtension } from "../../../extensions/lens-renderer-extension";
 import type { CatalogEntity } from "../../api/catalog-entity";
+import type { ExtensionComponentGuard } from "../../extension-loader/guard-extension-components.injectable";
 
 export interface EntitySettingViewProps {
   entity: CatalogEntity;
@@ -43,10 +45,15 @@ export interface RegisteredEntitySetting {
 
 const entitySettingExtensionRegistratorInjectable = getInjectable({
   id: "entity-setting-extension-registrator",
-  instantiate: () => (ext) => {
-    const extension = ext as LensRendererExtension;
+  instantiate: (di) => {
+    const guardExtensionComponents = di.inject(guardExtensionComponentsInjectable);
 
-    return extension.entitySettings.map(getInjectableForEntitySettingRegistrationFor(extension));
+    return (ext) => {
+      const extension = ext as LensRendererExtension;
+      const guard = guardExtensionComponents(extension, "entitySettings");
+
+      return extension.entitySettings.map(getInjectableForEntitySettingRegistrationFor(extension, guard));
+    };
   },
   injectionToken: extensionRegistratorInjectionToken,
 });
@@ -54,7 +61,7 @@ const entitySettingExtensionRegistratorInjectable = getInjectable({
 export default entitySettingExtensionRegistratorInjectable;
 
 const getInjectableForEntitySettingRegistrationFor =
-  (extension: LensRendererExtension) =>
+  (extension: LensRendererExtension, guard: ExtensionComponentGuard) =>
   ({
     apiVersions,
     components,
@@ -69,7 +76,10 @@ const getInjectableForEntitySettingRegistrationFor =
       id: `${extension.manifest.name}:${group}/${kind}:${id}`,
       instantiate: () => ({
         apiVersions: new Set(apiVersions),
-        components,
+        components: {
+          ...components,
+          View: guard.component(components.View, { fallback: "view", resetKey: ({ entity }) => entity }),
+        },
         id,
         kind,
         orderNumber: priority ?? 50,

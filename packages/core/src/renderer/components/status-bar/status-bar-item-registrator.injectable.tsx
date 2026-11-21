@@ -10,6 +10,7 @@ import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
 import React from "react";
 import { extensionRegistratorInjectionToken } from "../../../extensions/extension-loader/extension-registrator-injection-token";
+import guardExtensionComponentsInjectable from "../../extension-loader/guard-extension-components.injectable";
 import { statusBarItemInjectionToken } from "./status-bar-item-injection-token";
 
 import type { Logger } from "@freelensapp/logger";
@@ -17,6 +18,7 @@ import type { Logger } from "@freelensapp/logger";
 import type { Injectable } from "@ogre-tools/injectable";
 
 import type { LensRendererExtension } from "../../../extensions/lens-renderer-extension";
+import type { ExtensionComponentGuard } from "../../extension-loader/guard-extension-components.injectable";
 import type { StatusBarItem } from "./status-bar-item-injection-token";
 import type { StatusBarRegistration } from "./status-bar-registration";
 
@@ -27,8 +29,9 @@ const statusBarItemRegistratorInjectable = getInjectable({
     const rendererExtension = extension as LensRendererExtension;
     const getRandomId = di.inject(getRandomIdInjectionToken);
     const logger = di.inject(loggerInjectionToken);
+    const guard = di.inject(guardExtensionComponentsInjectable)(rendererExtension, "statusBarItems");
 
-    return rendererExtension.statusBarItems.flatMap(toItemInjectableFor(rendererExtension, getRandomId, logger));
+    return rendererExtension.statusBarItems.flatMap(toItemInjectableFor(rendererExtension, getRandomId, logger, guard));
   },
 
   injectionToken: extensionRegistratorInjectionToken,
@@ -36,7 +39,12 @@ const statusBarItemRegistratorInjectable = getInjectable({
 
 export default statusBarItemRegistratorInjectable;
 
-const toItemInjectableFor = (extension: LensRendererExtension, getRandomId: () => string, logger: Logger) => {
+const toItemInjectableFor = (
+  extension: LensRendererExtension,
+  getRandomId: () => string,
+  logger: Logger,
+  guard: ExtensionComponentGuard,
+) => {
   return (registration: StatusBarRegistration): Injectable<StatusBarItem, StatusBarItem, void>[] => {
     const id = `${getRandomId()}-status-bar-item-for-extension-${extension.sanitizedExtensionId}`;
     let component: React.ComponentType;
@@ -68,7 +76,7 @@ const toItemInjectableFor = (extension: LensRendererExtension, getRandomId: () =
 
         instantiate: () => ({
           origin: extension.sanitizedExtensionId,
-          component,
+          component: guard.component(component, { fallback: "nothing" }),
           position,
           visible: registration?.visible ?? computed(() => true),
         }),

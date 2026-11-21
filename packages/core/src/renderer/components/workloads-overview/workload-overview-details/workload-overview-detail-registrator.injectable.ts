@@ -9,6 +9,7 @@ import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
 import { extensionRegistratorInjectionToken } from "../../../../extensions/extension-loader/extension-registrator-injection-token";
 import extensionShouldBeEnabledForClusterFrameInjectable from "../../../extension-loader/extension-should-be-enabled-for-cluster-frame.injectable";
+import guardExtensionComponentsInjectable from "../../../extension-loader/guard-extension-components.injectable";
 import { workloadOverviewDetailInjectionToken } from "./workload-overview-detail-injection-token";
 
 import type { LensRendererExtension } from "../../../../extensions/lens-renderer-extension";
@@ -18,6 +19,7 @@ const workloadOverviewDetailRegistratorInjectable = getInjectable({
 
   instantiate: (di) => {
     const getRandomId = di.inject(getRandomIdInjectionToken);
+    const guardExtensionComponents = di.inject(guardExtensionComponentsInjectable);
 
     return (ext) => {
       const extension = ext as LensRendererExtension;
@@ -25,13 +27,14 @@ const workloadOverviewDetailRegistratorInjectable = getInjectable({
         extensionShouldBeEnabledForClusterFrameInjectable,
         extension,
       );
+      const guard = guardExtensionComponents(extension, "kubeWorkloadsOverviewItems");
 
       return extension.kubeWorkloadsOverviewItems.map((registration) =>
         getInjectable({
           id: `workload-overview-detail-from-${extension.sanitizedExtensionId}-${getRandomId()}`,
 
           instantiate: () => ({
-            Component: registration.components.Details,
+            Component: guard.component(registration.components.Details, { fallback: "view" }),
 
             enabled: computed(() => {
               if (!extensionShouldBeEnabledForClusterFrame.value.get()) {

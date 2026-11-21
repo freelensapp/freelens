@@ -12,6 +12,7 @@ import { extensionRegistratorInjectionToken } from "../../../extensions/extensio
 import { getExtensionId, sanitizeExtensionName } from "../../../extensions/lens-extension";
 import { getClusterPageMenuOrderInjectable } from "../../../features/user-preferences/common/cluster-page-menu-order.injectable";
 import extensionShouldBeEnabledForClusterFrameInjectable from "../../extension-loader/extension-should-be-enabled-for-cluster-frame.injectable";
+import guardExtensionComponentsInjectable from "../../extension-loader/guard-extension-components.injectable";
 import { getExtensionRoutePath } from "../../routes/for-extension";
 import routeIsActiveInjectable from "../../routes/route-is-active.injectable";
 import routesInjectable from "../../routes/routes.injectable";
@@ -31,6 +32,7 @@ const extensionSidebarItemRegistratorInjectable = getInjectable({
       extension,
     );
     const extensionRoutes = computed(() => routes.get().filter((route) => route.extension === extension));
+    const guard = di.inject(guardExtensionComponentsInjectable)(extension, "clusterPageMenus");
 
     return computed(() =>
       extension.clusterPageMenus.map((registration) => {
@@ -54,6 +56,7 @@ const extensionSidebarItemRegistratorInjectable = getInjectable({
         const orderNumberInBlock = orderKey ? declaredOrderNumber : undefined;
         const targetRoutePath = getExtensionRoutePath(extension, target?.pageId);
         const targetRoute = computed(() => extensionRoutes.get().find((route) => route.path === targetRoutePath));
+        const Icon = components.Icon && guard.component(components.Icon, { fallback: "nothing" });
 
         return getInjectable({
           id,
@@ -64,7 +67,7 @@ const extensionSidebarItemRegistratorInjectable = getInjectable({
             parentId,
             isVisible: computed(() => extensionShouldBeEnabledForClusterFrame.value.get() && (visible?.get() ?? true)),
             title,
-            getIcon: () => components.Icon && <components.Icon />,
+            getIcon: () => Icon && <Icon />,
             onClick: () => {
               const route = targetRoute.get();
 

@@ -6,17 +6,24 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import { extensionRegistratorInjectionToken } from "../../../../extensions/extension-loader/extension-registrator-injection-token";
+import guardExtensionComponentsInjectable from "../../../extension-loader/guard-extension-components.injectable";
 import { customCatalogCategoryColumnInjectionToken } from "./custom-token";
 
 import type { LensRendererExtension } from "../../../../extensions/lens-renderer-extension";
+import type { ExtensionComponentGuard } from "../../../extension-loader/guard-extension-components.injectable";
 import type { AdditionalCategoryColumnRegistration } from "../custom-category-columns";
 
 const customCategoryColumnsRegistratorInjectable = getInjectable({
   id: "custom-category-columns-registrator",
-  instantiate: () => (ext) => {
-    const extension = ext as LensRendererExtension;
+  instantiate: (di) => {
+    const guardExtensionComponents = di.inject(guardExtensionComponentsInjectable);
 
-    return extension.additionalCategoryColumns.map(getInjectableForColumnRegistrationFor(extension));
+    return (ext) => {
+      const extension = ext as LensRendererExtension;
+      const guard = guardExtensionComponents(extension, "additionalCategoryColumns");
+
+      return extension.additionalCategoryColumns.map(getInjectableForColumnRegistrationFor(extension, guard));
+    };
   },
   injectionToken: extensionRegistratorInjectionToken,
 });
@@ -24,7 +31,7 @@ const customCategoryColumnsRegistratorInjectable = getInjectable({
 export default customCategoryColumnsRegistratorInjectable;
 
 const getInjectableForColumnRegistrationFor =
-  (extension: LensRendererExtension) =>
+  (extension: LensRendererExtension, guard: ExtensionComponentGuard) =>
   ({
     group,
     id,
@@ -41,7 +48,8 @@ const getInjectableForColumnRegistrationFor =
         group,
         kind,
         registration: {
-          renderCell,
+          // The table calls it from its own render, so what it throws would reach the boundary of the catalog.
+          renderCell: guard.render(renderCell),
           priority,
           id,
           titleProps: {

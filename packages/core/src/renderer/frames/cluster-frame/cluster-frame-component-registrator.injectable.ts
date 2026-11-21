@@ -7,6 +7,7 @@
 import { clusterFrameChildComponentInjectionToken } from "@freelensapp/react-application";
 import { getInjectable } from "@ogre-tools/injectable";
 import { extensionRegistratorInjectionToken } from "../../../extensions/extension-loader/extension-registrator-injection-token";
+import guardExtensionComponentsInjectable from "../../extension-loader/guard-extension-components.injectable";
 
 import type { ExtensionRegistrator } from "../../../extensions/extension-loader/extension-registrator-injection-token";
 import type { LensRendererExtension } from "../../../extensions/lens-renderer-extension";
@@ -14,12 +15,16 @@ import type { LensRendererExtension } from "../../../extensions/lens-renderer-ex
 const clusterFrameComponentRegistratorInjectable = getInjectable({
   id: "cluster-frame-component-registrator",
 
-  instantiate: (): ExtensionRegistrator => {
+  instantiate: (di): ExtensionRegistrator => {
+    const guardExtensionComponents = di.inject(guardExtensionComponentsInjectable);
+
     return (ext) => {
       const extension = ext as LensRendererExtension;
+      const guard = guardExtensionComponents(extension, "clusterFrameComponents");
 
       return extension.clusterFrameComponents.map((clusterFrameComponentRegistration) => {
         const id = `${extension.sanitizedExtensionId}-${clusterFrameComponentRegistration.id}`;
+        const Component = guard.component(clusterFrameComponentRegistration.Component, { fallback: "nothing" });
 
         return getInjectable({
           id,
@@ -27,7 +32,7 @@ const clusterFrameComponentRegistratorInjectable = getInjectable({
           instantiate: () => ({
             id,
             shouldRender: clusterFrameComponentRegistration.shouldRender,
-            Component: clusterFrameComponentRegistration.Component,
+            Component,
           }),
         });
       });

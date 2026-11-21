@@ -9,6 +9,7 @@ import { computed } from "mobx";
 import React from "react";
 import { extensionRegistratorInjectionToken } from "../../../../extensions/extension-loader/extension-registrator-injection-token";
 import { HorizontalLine } from "../../../../renderer/components/horizontal-line/horizontal-line";
+import guardExtensionComponentsInjectable from "../../../../renderer/extension-loader/guard-extension-components.injectable";
 import { preferenceItemInjectionToken } from "../preference-items/preference-item-injection-token";
 import { PreferencePageComponent } from "../preference-page-component";
 import { ExtensionPreferenceBlock } from "./extension-preference-block";
@@ -18,8 +19,9 @@ import type { LensRendererExtension } from "../../../../extensions/lens-renderer
 const registratorForPreferenceItemsInjectable = getInjectable({
   id: "registrator-for-preference-items",
 
-  instantiate: () => (ext) => {
+  instantiate: (di) => (ext) => {
     const extension = ext as LensRendererExtension;
+    const guard = di.inject(guardExtensionComponentsInjectable)(extension, "appPreferences");
 
     const commonId = `preference-item-for-extension-${extension.sanitizedExtensionId}`;
 
@@ -109,6 +111,14 @@ const registratorForPreferenceItemsInjectable = getInjectable({
       const itemIsInSpecialTab =
         registration.showInPreferencesTab && ["application"].includes(registration.showInPreferencesTab);
 
+      const guardedRegistration = {
+        ...registration,
+        components: {
+          Input: guard.component(registration.components.Input, { fallback: "nothing" }),
+          Hint: guard.component(registration.components.Hint, { fallback: "nothing" }),
+        },
+      };
+
       return getInjectable({
         id: itemId,
 
@@ -125,7 +135,7 @@ const registratorForPreferenceItemsInjectable = getInjectable({
 
           orderNumber: i * 10 + (itemIsInSpecialTab ? 1000 : 0),
 
-          Component: () => <ExtensionPreferenceBlock registration={registration} />,
+          Component: () => <ExtensionPreferenceBlock registration={guardedRegistration} />,
 
           childSeparator: () => <HorizontalLine />,
         }),

@@ -9,6 +9,7 @@ import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
 import { extensionRegistratorInjectionToken } from "../../../../extensions/extension-loader/extension-registrator-injection-token";
 import extensionShouldBeEnabledForClusterFrameInjectable from "../../../extension-loader/extension-should-be-enabled-for-cluster-frame.injectable";
+import guardExtensionComponentsInjectable from "../../../extension-loader/guard-extension-components.injectable";
 import currentKubeObjectInDetailsInjectable from "../current-kube-object-in-details.injectable";
 import { kubeObjectDetailItemInjectionToken } from "./kube-object-detail-item-injection-token";
 import { kubeObjectMatchesToKindAndApiVersion } from "./kube-object-matches-to-kind-and-api-version";
@@ -20,6 +21,7 @@ const kubeObjectDetailItemRegistratorInjectable = getInjectable({
 
   instantiate: (di) => {
     const getRandomId = di.inject(getRandomIdInjectionToken);
+    const guardExtensionComponents = di.inject(guardExtensionComponentsInjectable);
 
     const getExtensionShouldBeEnabledForClusterFrame = (extension: LensRendererExtension) =>
       di.inject(extensionShouldBeEnabledForClusterFrameInjectable, extension);
@@ -28,9 +30,14 @@ const kubeObjectDetailItemRegistratorInjectable = getInjectable({
       const extension = ext as LensRendererExtension;
 
       const extensionShouldBeEnabledForClusterFrame = getExtensionShouldBeEnabledForClusterFrame(extension);
+      const guard = guardExtensionComponents(extension, "kubeObjectDetailItems");
 
       return extension.kubeObjectDetailItems.map((registration) => {
         const id = `kube-object-detail-item-registration-from-${extension.sanitizedExtensionId}-${getRandomId()}`;
+        const Details = guard.component(registration.components.Details, {
+          fallback: "view",
+          resetKey: ({ object }) => object,
+        });
 
         const isRelevantKubeObject = kubeObjectMatchesToKindAndApiVersion(registration.kind, registration.apiVersions);
 
@@ -43,7 +50,7 @@ const kubeObjectDetailItemRegistratorInjectable = getInjectable({
             return {
               kind: registration.kind,
               apiVersions: registration.apiVersions,
-              Component: registration.components.Details,
+              Component: Details,
 
               enabled: computed(() => {
                 if (!extensionShouldBeEnabledForClusterFrame.value.get()) {
