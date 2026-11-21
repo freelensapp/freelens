@@ -7,6 +7,7 @@
  */
 
 import navigateToApplicationPreferencesInjectable from "./navigate-to-application-preferences.injectable";
+import navigateToCrdPreferencesInjectable from "./navigate-to-crd-preferences.injectable";
 import navigateToEditorPreferencesInjectable from "./navigate-to-editor-preferences.injectable";
 import navigateToKubernetesPreferencesInjectable from "./navigate-to-kubernetes-preferences.injectable";
 import navigateToPreferencesInjectable from "./navigate-to-preferences.injectable";
@@ -21,6 +22,11 @@ import type { DiContainerForInjection } from "@ogre-tools/injectable";
 export function registerInjectables(di: DiContainerForInjection): void {
   try {
     di.register(navigateToApplicationPreferencesInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(navigateToCrdPreferencesInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

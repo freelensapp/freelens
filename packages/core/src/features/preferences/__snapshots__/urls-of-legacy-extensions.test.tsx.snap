@@ -192,6 +192,18 @@ exports[`preferences: URLs of legacy extensions > given extension with both cust
                       Terminal
                     </div>
                   </div>
+                  <div
+                    class="Tab flex gap-2 items-center"
+                    data-preference-tab-link-test="crd"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      CRDs
+                    </div>
+                  </div>
                 </div>
                 <div
                   class="TabSeparator"
@@ -675,6 +687,18 @@ exports[`preferences: URLs of legacy extensions > given extension with both cust
                       class="label"
                     >
                       Terminal
+                    </div>
+                  </div>
+                  <div
+                    class="Tab flex gap-2 items-center"
+                    data-preference-tab-link-test="crd"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      CRDs
                     </div>
                   </div>
                 </div>
@@ -1162,6 +1186,18 @@ exports[`preferences: URLs of legacy extensions > given extension with custom pr
                       Terminal
                     </div>
                   </div>
+                  <div
+                    class="Tab flex gap-2 items-center"
+                    data-preference-tab-link-test="crd"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      CRDs
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1609,6 +1645,18 @@ exports[`preferences: URLs of legacy extensions > given extension with custom pr
                       Terminal
                     </div>
                   </div>
+                  <div
+                    class="Tab flex gap-2 items-center"
+                    data-preference-tab-link-test="crd"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      CRDs
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -2004,6 +2052,18 @@ exports[`preferences: URLs of legacy extensions > given extension with custom pr
                       class="label"
                     >
                       Terminal
+                    </div>
+                  </div>
+                  <div
+                    class="Tab flex gap-2 items-center"
+                    data-preference-tab-link-test="crd"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      CRDs
                     </div>
                   </div>
                 </div>
