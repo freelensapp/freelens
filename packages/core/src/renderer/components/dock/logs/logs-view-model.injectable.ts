@@ -11,6 +11,7 @@ import getPodByIdInjectable from "../../workloads-pods/get-pod-by-id.injectable"
 import getPodsByOwnerIdInjectable from "../../workloads-pods/get-pods-by-owner-id.injectable";
 import renameTabInjectable from "../dock/rename-tab.injectable";
 import areLogsPresentInjectable from "./are-logs-present.injectable";
+import clearVisibleLogsInjectable from "./clear-visible-logs.injectable";
 import downloadAllLogsInjectable from "./download-all-logs.injectable";
 import downloadAllLogsForPodsInjectable from "./download-all-logs-for-pods.injectable";
 import downloadLogsInjectable from "./download-logs.injectable";
@@ -45,6 +46,7 @@ const logsViewModelInjectable = getInjectable({
       loadLogs: di.inject(loadLogsInjectable),
       renameTab: di.inject(renameTabInjectable),
       stopLoadingLogs: di.inject(stopLoadingLogsInjectable),
+      clearVisibleLogs: di.inject(clearVisibleLogsInjectable),
       areLogsPresent: di.inject(areLogsPresentInjectable),
       getPodById: di.inject(getPodByIdInjectable),
       getPodsByOwnerId: di.inject(getPodsByOwnerIdInjectable),

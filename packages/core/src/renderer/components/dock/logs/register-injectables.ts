@@ -9,6 +9,7 @@
 import areLogsPresentInjectable from "./are-logs-present.injectable";
 import callForLogsInjectable from "./call-for-logs.injectable";
 import clearLogTabDataInjectable from "./clear-log-tab-data.injectable";
+import clearVisibleLogsInjectable from "./clear-visible-logs.injectable";
 import createLogsTabInjectable from "./create-logs-tab.injectable";
 import createPodLogsTabInjectable from "./create-pod-logs-tab.injectable";
 import createWorkloadLogsTabInjectable from "./create-workload-logs-tab.injectable";
@@ -145,6 +146,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(stopLoadingLogsInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(clearVisibleLogsInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

@@ -43,6 +43,7 @@ export interface LogTabViewModelDependencies {
   ) => Promise<void>;
   renameTab: (tabId: TabId, title: string) => void;
   stopLoadingLogs: (tabId: TabId) => void;
+  clearVisibleLogs: (tabId: TabId) => void;
   getPodById: GetPodById;
   getPodsByOwnerId: GetPodsByOwnerId;
   getWorkloadPods: GetWorkloadPods;
@@ -186,6 +187,7 @@ export class LogTabViewModel {
   reloadLogs = () => this.dependencies.reloadLogs(this.tabId, this.logSourcePods, this.logTabData);
   renameTab = (title: string) => this.dependencies.renameTab(this.tabId, title);
   stopLoadingLogs = () => this.dependencies.stopLoadingLogs(this.tabId);
+  clearVisibleLogs = () => this.dependencies.clearVisibleLogs(this.tabId);
 
   downloadLogs = () => {
     const tabData = this.logTabData.get();
