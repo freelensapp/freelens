@@ -4,7 +4,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { DiContextProvider } from "@ogre-tools/injectable-react";
+import { render } from "@testing-library/react";
 import { computed } from "mobx";
+import React from "react";
 import { beforeEach, describe, expect, it } from "vitest";
 import rendererExtensionsInjectable from "../../../../extensions/renderer-extensions.injectable";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
@@ -14,11 +17,28 @@ import type { StrictReactNode } from "@freelensapp/utilities";
 
 import type { DiContainer } from "@ogre-tools/injectable";
 
+import type { CatalogCategory } from "../../../../common/catalog";
 import type { LensRendererExtension } from "../../../../extensions/lens-renderer-extension";
-import type { CustomCategoryViewRegistration } from "../custom-views";
+import type { CustomCategoryViewComponents, CustomCategoryViewRegistration } from "../custom-views";
 
 describe("Custom Category Views", () => {
   let di: DiContainer;
+
+  // The host wraps every view of an extension in an error boundary, so a view is told apart by what it renders.
+  const renderView = ({ View }: CustomCategoryViewComponents) => {
+    const { container, unmount } = render(
+      React.createElement(
+        DiContextProvider,
+        { value: di },
+        React.createElement(View, { category: {} as CatalogCategory }),
+      ),
+    );
+    const text = container.textContent;
+
+    unmount();
+
+    return text;
+  };
 
   beforeEach(() => {
     try {
@@ -30,8 +50,8 @@ describe("Custom Category Views", () => {
   });
 
   it("should order items correctly over all extensions", () => {
-    const component1 = (): StrictReactNode => null;
-    const component2 = (): StrictReactNode => null;
+    const component1 = (): StrictReactNode => "component1";
+    const component2 = (): StrictReactNode => "component2";
 
     di.override(rendererExtensionsInjectable, () =>
       computed(
@@ -68,13 +88,12 @@ describe("Custom Category Views", () => {
     const customCategoryViews = di.inject(customCategoryViewsInjectable);
     const { after = [] } = customCategoryViews.get().get("foo")?.get("bar") ?? {};
 
-    expect(after[0].View).toBe(component2);
-    expect(after[1].View).toBe(component1);
+    expect(after.map(renderView)).toEqual(["component2", "component1"]);
   });
 
   it("should put put priority < 50 items in before", () => {
-    const component1 = (): StrictReactNode => null;
-    const component2 = (): StrictReactNode => null;
+    const component1 = (): StrictReactNode => "component1";
+    const component2 = (): StrictReactNode => "component2";
 
     di.override(rendererExtensionsInjectable, () =>
       computed(
@@ -111,6 +130,6 @@ describe("Custom Category Views", () => {
     const customCategoryViews = di.inject(customCategoryViewsInjectable);
     const { before = [] } = customCategoryViews.get().get("foo")?.get("bar") ?? {};
 
-    expect(before[0].View).toBe(component1);
+    expect(before.map(renderView)).toEqual(["component1"]);
   });
 });

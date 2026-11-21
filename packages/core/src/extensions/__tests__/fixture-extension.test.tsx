@@ -42,6 +42,7 @@ import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { existsSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { DiContextProvider } from "@ogre-tools/injectable-react";
 import { fireEvent, render } from "@testing-library/react";
 import * as Mobx from "mobx";
 import { autorun, observable, runInAction } from "mobx";
@@ -287,8 +288,16 @@ describe("extension contract, against the built fixture extension", () => {
       expect(registered).toBeDefined();
 
       // Two React instances make every hook in this component throw
-      // "invalid hook call" right here.
-      const result = render(React.createElement(registered?.component ?? (() => null)));
+      // "invalid hook call" right here. The host wraps the component in an
+      // error boundary, which reads the history of the window from the
+      // host's container, so it renders in the context of the container.
+      const result = render(
+        React.createElement(
+          DiContextProvider,
+          { value: di },
+          React.createElement(registered?.component ?? (() => null)),
+        ),
+      );
       const item = result.getByTestId("fixture-status-bar-item");
 
       expect(item).toHaveTextContent("fixture:0");
