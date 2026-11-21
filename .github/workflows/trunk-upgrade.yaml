@@ -65,8 +65,13 @@ jobs:
           node-version-file: .nvmrc
           package-manager-cache: false
 
-      - name: Setup pnpm
-        run: corepack enable
+      # pnpm comes from mise, as Node no longer bundles Corepack from version 26.
+      # mise verifies the download against mise.lock.
+      - name: Set up mise
+        uses: jdx/mise-action@v5
+        with:
+          version: 2026.11.11 # datasource=github-releases depName=jdx/mise
+          install_args: pnpm
 
       - name: Get pnpm cache directory
         shell: bash

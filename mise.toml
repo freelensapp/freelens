@@ -1,6 +1,7 @@
 [tools]
 cosign = "3.1.4"
 node = "24.22.3"
+pnpm = "12.21.0"
 yq = "4.54.3"
 
 [settings]
