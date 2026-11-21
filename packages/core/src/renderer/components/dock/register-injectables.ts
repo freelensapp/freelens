@@ -10,6 +10,7 @@ import { registerInjectables as registerCreateResourceInjectables } from "./crea
 import { registerInjectables as registerDockInjectables } from "./dock/register-injectables";
 import { registerInjectables as registerDockTabStoreInjectables } from "./dock-tab-store/register-injectables";
 import { registerInjectables as registerEditResourceInjectables } from "./edit-resource/register-injectables";
+import { registerInjectables as registerExtensionInjectables } from "./extension/register-injectables";
 import { registerInjectables as registerInstallChartInjectables } from "./install-chart/register-injectables";
 import { registerInjectables as registerLogsInjectables } from "./logs/register-injectables";
 import { registerInjectables as registerTerminalInjectables } from "./terminal/register-injectables";
@@ -35,6 +36,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     registerEditResourceInjectables(di);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    registerExtensionInjectables(di);
   } catch (e) {
     /* Ignore duplicate registration */
   }

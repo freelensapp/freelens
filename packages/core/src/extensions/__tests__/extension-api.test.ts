@@ -168,6 +168,10 @@ describe("extensions API surface", () => {
     expect(Object.keys(extensions.Renderer).sort()).toEqual(rendererNames);
   });
 
+  it("exposes the owner-bound dock opener on the renderer extension", () => {
+    expect(extensions.Renderer.LensExtension.prototype.openDockTab).toBeTypeOf("function");
+  });
+
   it("keeps the Common sub-namespaces populated and anchored", () => {
     expect(inspect(extensions.Common, commonAnchors)).toEqual(intact);
   });

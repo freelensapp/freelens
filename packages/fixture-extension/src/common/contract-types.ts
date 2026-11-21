@@ -119,6 +119,42 @@ export type FixtureMainPersistentVolumeClaimsApi = Main.K8sApi.PersistentVolumeC
 // --- Renderer --------------------------------------------------------------
 
 export type FixtureRendererExtensionType = Renderer.LensExtension;
+export type FixtureDockTabParam = Renderer.DockTabParam;
+export type FixtureDockTabParams = Renderer.DockTabParams;
+export type FixtureDockTabRegistration = Renderer.DockTabRegistration;
+export type FixtureExtensionDockTabProps = Renderer.ExtensionDockTabProps;
+export type FixtureOpenDockTabOptions = Renderer.OpenDockTabOptions;
+export type FixtureOpenDockTab = FixtureRendererExtensionType["openDockTab"];
+export type DockOpeningReturnsTheNativeTabId = Holds<ReturnType<FixtureOpenDockTab> extends string ? true : false>;
+export type DockOpeningTakesOnlyItsPublicOptions = Holds<
+  Parameters<FixtureOpenDockTab> extends [typeId: string, options?: Renderer.OpenDockTabOptions] ? true : false
+>;
+export type DockParametersRejectCallbacks = Holds<
+  // @ts-expect-error callbacks cannot survive JSON persistence
+  { callback: () => void } extends Renderer.DockTabParams ? true : false
+>;
+export type DockContentReceivesOnlyItsPublicProps = Holds<
+  ((props: Renderer.ExtensionDockTabProps) => null) extends Renderer.DockTabRegistration["components"]["Tab"]
+    ? true
+    : false
+>;
+type DockContentArray = Extract<FixtureExtensionDockTabProps["params"][string], readonly unknown[]>;
+export type DockContentArraysAreReadonly = Holds<"push" extends keyof DockContentArray ? false : true>;
+type DockOptionsArray = Extract<FixtureDockTabParams[string], unknown[]>;
+export type DockOptionsArraysStayMutable = Holds<"push" extends keyof DockOptionsArray ? true : false>;
+export type DockContentRequiringExtraPropsIsRejected = Holds<
+  // @ts-expect-error the host does not supply an extension instance to dock content
+  ((
+    props: Renderer.ExtensionDockTabProps & { extension: FixtureRendererExtensionType },
+  ) => null) extends Renderer.DockTabRegistration["components"]["Tab"]
+    ? true
+    : false
+>;
+// The host's dock implementation and DI remain private at the published boundary.
+// @ts-expect-error no raw dock store is part of the public Renderer namespace
+export type FixtureCannotReachDockStore = Renderer.DockStore;
+// @ts-expect-error host registration tokens are not extension API
+export type FixtureCannotReachDockRegistrations = typeof Renderer.registeredDockTabInjectionToken;
 // The renderer's HTTP client is its global `fetch`, so the namespace has none.
 // @ts-expect-error `Renderer.Util` has no `fetch`
 export type FixtureRendererFetch = typeof Renderer.Util.fetch;
