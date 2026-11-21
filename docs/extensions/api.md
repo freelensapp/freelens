@@ -834,6 +834,49 @@ fields (`kind!: "Example"`) under standard class-field semantics
 after the base constructor has assigned the object's data, and reset `kind` and
 `apiVersion` to `undefined`.
 
+The host puts an error boundary around every component it takes from these
+fields, and around none of its own, so an error a component throws while React
+renders it replaces that component alone and the host's UI around it stays.
+The boundary logs the error with the extension's name, the field and the
+component stack:
+`[EXTENSIONS]: <name>: a component of "<field>" failed to render and is replaced`.
+In place of the component it renders:
+
+- the host's error view, the one of `Renderer.Component.ErrorBoundary`, for a
+  page or a panel: the `Page` of `globalPages` and `clusterPages`, the `View`
+  of `entitySettings` and `customCategoryViews`, and the `Details` of
+  `catalogEntityDetailItems`, `kubeWorkloadsOverviewItems` and
+  `kubeObjectDetailItems`;
+- nothing, in a slot too small for the view: the `MenuItem` of
+  `kubeObjectMenuItems`, the `Item` (and the deprecated `item`) of
+  `statusBarItems`, the `Item` of `topBarItems`, the `Icon` of
+  `clusterPageMenus`, the `Input` and the `Hint` of `appPreferences`, each on
+  its own, the `Component` of `clusterFrameComponents`, and the element the
+  `renderCell` of `additionalCategoryColumns` returns.
+
+`renderCell` is a callback the catalog's table calls from its own render: an
+error the call throws leaves the cell empty, and is logged the same way, as
+`a render callback of "additionalCategoryColumns" threw and is skipped`, with
+no component stack, since no component of the extension has rendered yet.
+
+A component that failed renders again when what it shows changes: the `object`
+of a `kubeObjectDetailItems` `Details` or a `kubeObjectMenuItems` `MenuItem`,
+compared by identity, so a new version of the same object from a watch counts,
+and the `entity` of a `catalogEntityDetailItems` `Details` or an
+`entitySettings` `View`. Any other one renders again when the host mounts it
+anew, such as after a navigation away and back, or after the "Back" button of
+the error view.
+
+The boundary catches what React catches: an error thrown while the component
+renders, in a lifecycle method or in an effect. An error in an event handler or
+in asynchronous code does not reach it, and stays the extension's to handle.
+An extension needs no boundary of its own around a registered component. One it
+keeps still works and catches first, so the host's boundary sees nothing; an
+extension whose `engines.freelens` range admits a host without these boundaries
+keeps its own for that host. The fields without components,
+`appPreferenceTabs`, `commands`, `welcomeMenus`, `kubeObjectHandlers` and
+`customResources`, have no boundary.
+
 `customResources` takes the model classes of the custom resources the extension
 presents with pages of its own, typed `Common.Types.CustomResourceRegistration`:
 
@@ -904,7 +947,9 @@ and keeps the others, and the rejected resource stays in the Custom Resources
 tree. A `customResources` that is not an array is rejected whole: the host logs
 one error with the extension's name and what the field holds, and registers
 none of it. The field is read once, when the extension is registered, so a
-class assigned to it later is not seen.
+class assigned to it later is not seen. A registered component that throws
+while it renders is replaced by the host's error view or by nothing, as
+described above, and logged with the extension's name and the component stack.
 
 ---
 

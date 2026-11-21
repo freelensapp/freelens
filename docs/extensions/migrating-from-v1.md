@@ -914,6 +914,17 @@ On both: `protocolHandlers`, plus the `onActivate()` / `onDeactivate()` hooks.
 A field you leave at its default contributes nothing, silently, so a
 registration that never appears is usually a typo in a field name.
 
+The host guards every component you register. An error one throws while it
+renders replaces that component alone, with the host's error view for a page or
+a panel and with nothing for a menu item, an icon, a status-bar or top-bar item,
+a preference input or hint, a cluster frame component or a table cell, and the
+host logs it with your extension's name, the field and the component stack. In
+v1 the same error took down the whole window or the whole cluster view. You
+need no error boundary of your own around a registered component; keep yours
+while your `engines.freelens` range admits a host without this guard. Which
+component gets which, and when it renders again, is in
+[C6 of the API contracts](./api.md#c6-registration-and-the-extension-instance).
+
 A registered component is typed with the props the host renders it with. A
 page component receives only `params` (`Common.Types.PageComponentProps`), a
 `kubeObjectMenuItems` `MenuItem` only `object` and `toolbar`, and the
