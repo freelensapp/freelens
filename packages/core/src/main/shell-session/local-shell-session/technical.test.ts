@@ -27,6 +27,7 @@ import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import kubeconfigManagerInjectable from "../../kubeconfig-manager/kubeconfig-manager.injectable";
 import createKubectlInjectable from "../../kubectl/create-kubectl.injectable";
 import shellSessionProcessesInjectable from "../processes.injectable";
+import modifyTerminalShellEnvInjectable from "../shell-env-modifier/modify-terminal-shell-env.injectable";
 import spawnPtyInjectable from "../spawn-pty.injectable";
 import openLocalShellSessionInjectable from "./open.injectable";
 import type { Stats } from "node:fs";
@@ -735,6 +736,91 @@ describe("technical unit tests for local shell sessions", () => {
           expect(di.inject(shellSessionProcessesInjectable).size).toBe(0);
         },
       );
+    });
+
+    /**
+     * The Flatpak package sets the default shell to `/app/bin/host-spawn`, which
+     * runs the shell on the host and forwards only the environment variables
+     * named in its `-env` option (`TERM` and `PWD` by default). Unless the
+     * session's variables are named there, everything it computed — the proxy
+     * `KUBECONFIG`, the proxy token, a kubeconfig exec plugin's `AWS_PROFILE` —
+     * is dropped at the sandbox boundary and host processes such as the aws cli
+     * break (#1702).
+     */
+    describe("when the shell is the Flatpak host-spawn helper", () => {
+      beforeEach(() => {
+        di.override(computeShellEnvironmentInjectable, () => async () => ({
+          callWasSuccessful: true as const,
+          response: {
+            PATH: "/app/bin:/usr/bin:/bin",
+            HOME: "/home/some-user/.var/app/app.freelens.Freelens",
+            KUBECONFIG: "/home/some-user/.kube/config",
+            AWS_PROFILE: "customers",
+          },
+        }));
+      });
+
+      it("names the session's environment variables in the -env option, so host-spawn forwards them to the host process", async () => {
+        const { file, args } = await openWithShell("/app/bin/host-spawn");
+
+        expect(file).toBe("/app/bin/host-spawn");
+        expect(args[0]).toBe("-env");
+
+        const forwarded = args[1].split(",");
+
+        expect(forwarded).toContain("AWS_PROFILE");
+        expect(forwarded).toContain("KUBECONFIG");
+        expect(forwarded).toContain("FREELENS_PROXY_TOKEN");
+        expect(forwarded).toContain("PWD");
+        expect(forwarded).toContain("TERM");
+      });
+
+      it("does not name the sandbox-only variables, whose values would break a host process", async () => {
+        const { args } = await openWithShell("/app/bin/host-spawn");
+        const forwarded = args[1].split(",");
+
+        expect(forwarded).not.toContain("PATH");
+        expect(forwarded).not.toContain("HOME");
+        expect(forwarded).not.toContain("FLATPAK_SANDBOX_DIR");
+      });
+
+      it("passes the environment variables, PATH entries included, in the env of the spawn options", async () => {
+        const { env } = await openWithShell("/app/bin/host-spawn");
+
+        expect(env.AWS_PROFILE).toBe("customers");
+        expect(env.KUBECONFIG).toBe("/some-proxy-kubeconfig-file");
+        expect(env.KUBECACHEDIR).toBe("/some-proxy-kubeconfig-cache-directory");
+        expect((env.PATH ?? "").split(":")).toEqual([
+          "/some-kubectl-binary-dir",
+          "/app/bin",
+          "/usr/bin",
+          "/bin",
+          "/some-bundled-binaries-directory",
+        ]);
+      });
+
+      it("forwards a custom environment override as well, with its value", async () => {
+        di.override(modifyTerminalShellEnvInjectable, () => (clusterId, env) => ({
+          ...env,
+          CUSTOM_ENV_VAR: "custom-value",
+          AWS_PROFILE: "overridden-profile",
+        }));
+
+        const { args, env } = await openWithShell("/app/bin/host-spawn");
+        const forwarded = args[1].split(",");
+
+        expect(forwarded).toContain("CUSTOM_ENV_VAR");
+        expect(forwarded).toContain("AWS_PROFILE");
+        expect(env.CUSTOM_ENV_VAR).toBe("custom-value");
+        expect(env.AWS_PROFILE).toBe("overridden-profile");
+      });
+
+      it("leaves the arguments of a shell that is not host-spawn unchanged", async () => {
+        const { file, args } = await openWithShell("/bin/bash");
+
+        expect(file).toBe("/bin/bash");
+        expect(args).toEqual(["--init-file", "/some-kubectl-binary-dir/.bash_set_path"]);
+      });
     });
   });
 });

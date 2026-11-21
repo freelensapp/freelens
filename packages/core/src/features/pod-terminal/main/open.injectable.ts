@@ -12,6 +12,7 @@ import appNameInjectable from "../../../common/vars/app-name.injectable";
 import isMacInjectable from "../../../common/vars/is-mac.injectable";
 import isWindowsInjectable from "../../../common/vars/is-windows.injectable";
 import freelensProxyTokenInjectable from "../../../main/freelens-proxy/freelens-proxy-token.injectable";
+import hostSpawnInjectable from "../../../main/host-spawn/host-spawn.injectable";
 import computeUserShellEnvironmentInjectable from "../../../main/kube-tools/compute-user-shell-environment.injectable";
 import getUserShellInjectable from "../../../main/kube-tools/get-user-shell.injectable";
 import resolveKubeToolsInjectable from "../../../main/kube-tools/resolve-kube-tools.injectable";
@@ -61,6 +62,7 @@ const openPodTerminalSessionInjectable = getInjectable({
       computeUserShellEnvironment: di.inject(computeUserShellEnvironmentInjectable),
       getUserShell: di.inject(getUserShellInjectable),
       spawnPty: di.inject(spawnPtyInjectable),
+      hostSpawn: di.inject(hostSpawnInjectable),
       emitAppEvent: di.inject(emitAppEventInjectable),
       stat: di.inject(statInjectable),
       execFile: di.inject(execFileInjectable),

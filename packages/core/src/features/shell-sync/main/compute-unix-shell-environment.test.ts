@@ -690,6 +690,46 @@ describe("computeUnixShellEnvironment technical tests", () => {
     },
   );
 
+  describe("when the shell is the Flatpak host-spawn helper", () => {
+    const shellPath = "/app/bin/host-spawn";
+
+    beforeEach(async () => {
+      unixShellEnv = computeUnixShellEnvironment(shellPath, { signal: new AbortController().signal });
+      await flushPromises();
+    });
+
+    it("should name the environment variables in the -env option, so that host-spawn forwards them to the host process", () => {
+      const args = spawnMock.mock.calls[0][1] as string[];
+      const forwarded = args[1].split(",");
+
+      expect(args[0]).toBe("-env");
+      expect(forwarded).toEqual(
+        expect.arrayContaining([
+          "SOME_ENV_VAR",
+          "SOME_THIRD_NON_UNDEFINED_VALUE",
+          "TERM",
+          "PWD",
+          "ITERM_SHELL_INTEGRATION_INSTALLED",
+          "VSCODE_SHELL_INTEGRATION",
+        ]),
+      );
+      // The shell's own arguments follow the -env option.
+      expect(args.slice(2)).toEqual(["-l", "-i", "-c", command]);
+    });
+
+    it("should pass process.env into the env of the spawn options", () => {
+      const { env } = spawnMock.mock.calls[0][2] as { env: Record<string, string> };
+
+      expect(env.SOME_ENV_VAR).toBe("some-env-value");
+      expect(env.SOME_THIRD_NON_UNDEFINED_VALUE).toBe("");
+    });
+
+    it("should spawn the helper itself, detached and without a signal", () => {
+      expect(spawnMock).toBeCalledWith(shellPath, expect.any(Array), expect.objectContaining({ detached: true }));
+      expect(spawnMock.mock.calls[0][2]).not.toHaveProperty("signal");
+    });
+  });
+
   describe.each(["/usr/local/bin/pwsh", "/usr/local/bin/pwsh-preview"])("when shell %s is spawned", (shellPath) => {
     beforeEach(async () => {
       unixShellEnv = computeUnixShellEnvironment(shellPath, { signal: new AbortController().signal });

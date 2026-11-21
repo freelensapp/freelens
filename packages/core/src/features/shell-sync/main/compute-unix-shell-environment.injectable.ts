@@ -11,6 +11,7 @@ import getBasenameOfPathInjectable from "../../../common/path/get-basename.injec
 import killProcessGroupInjectable from "../../../main/child-process/kill-process-group.injectable";
 import spawnInjectable from "../../../main/child-process/spawn.injectable";
 import randomUUIDInjectable from "../../../main/crypto/random-uuid.injectable";
+import hostSpawnInjectable from "../../../main/host-spawn/host-spawn.injectable";
 import processEnvInjectable from "./env.injectable";
 import processExecPathInjectable from "./execPath.injectable";
 
@@ -106,6 +107,7 @@ const computeUnixShellEnvironmentInjectable = getInjectable({
     const randomUUID = di.inject(randomUUIDInjectable);
     const processExecPath = di.inject(processExecPathInjectable);
     const processEnv = di.inject(processEnvInjectable);
+    const hostSpawn = di.inject(hostSpawnInjectable);
 
     const getShellSpecifics = (shellName: string): ShellSpecifics => {
       const mark = randomUUID().replace(/-/g, "");
@@ -160,8 +162,12 @@ const computeUnixShellEnvironmentInjectable = getInjectable({
       const shellName = getBasenameOfPath(shellPath);
       const { shellArgs, stdin, overrides, parseOutput } = getShellSpecifics(shellName);
       const { resetEnvPairs, env } = getResetProcessEnv(processEnv, overrides);
+      // When the shell is the Flatpak `host-spawn` helper, name the
+      // environment variables in its `-env` option, so that they are forwarded
+      // to the host process instead of being dropped at the sandbox boundary.
+      const spawnOptions = hostSpawn.spawnOptionsFor(shellPath, shellArgs, env);
 
-      logger.info(`[UNIX-SHELL-ENV]: running against ${shellPath}`, { shellArgs, stdin });
+      logger.info(`[UNIX-SHELL-ENV]: running against ${shellPath}`, { shellArgs: spawnOptions.args, stdin });
 
       return new Promise((resolve) => {
         // `detached: true` runs the shell in a new session (`setsid()`), which does two things:
@@ -174,9 +180,9 @@ const computeUnixShellEnvironmentInjectable = getInjectable({
         //
         // The abort is not passed to `spawn` as `signal`: Node would send `SIGTERM` to the
         // shell alone, which an interactive shell ignores.
-        const shellProcess = spawn(shellPath, shellArgs, {
+        const shellProcess = spawn(shellPath, spawnOptions.args, {
           detached: true,
-          env,
+          env: spawnOptions.env,
         });
         const stdout: Buffer[] = [];
         const stderr: Buffer[] = [];

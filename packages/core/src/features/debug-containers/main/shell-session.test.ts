@@ -46,6 +46,10 @@ describe("debugger terminal lifecycle", () => {
           return { shell: "sh", environment: { PATH: "/usr/bin" } };
         }),
         spawnPty,
+        hostSpawn: {
+          isHostSpawn: () => false,
+          spawnOptionsFor: (_file, args, env) => ({ args: [...args], env: { ...env } }),
+        },
         emitAppEvent: vi.fn(),
         stat: vi.fn(),
       };

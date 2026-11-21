@@ -4,6 +4,7 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
+import flatpakHostSpawnPathInjectable from "./flatpak-host-spawn-path.injectable";
 import isFlatpakPackageInjectable from "./is-flatpak-package.injectable";
 import isLinuxInjectable from "./is-linux.injectable";
 import isMacInjectable from "./is-mac.injectable";
@@ -14,12 +15,13 @@ const defaultShellInjectable = getInjectable({
 
   instantiate: (di) => {
     const isFlatpakPackage = di.inject(isFlatpakPackageInjectable);
+    const flatpakHostSpawnPath = di.inject(flatpakHostSpawnPathInjectable);
     const isLinux = di.inject(isLinuxInjectable);
     const isMac = di.inject(isMacInjectable);
     const isWindows = di.inject(isWindowsInjectable);
 
     if (isFlatpakPackage) {
-      return "/app/bin/host-spawn";
+      return flatpakHostSpawnPath;
     }
 
     if (process.env.SHELL) {

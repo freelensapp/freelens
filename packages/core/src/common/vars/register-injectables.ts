@@ -16,6 +16,7 @@ import contentSecurityPolicyInjectable from "./content-security-policy.injectabl
 import currentTimezoneInjectable from "./current-timezone.injectable";
 import defaultShellInjectable from "./default-shell.injectable";
 import extensionApiVersionInjectable from "./extension-api-version.injectable";
+import flatpakHostSpawnPathInjectable from "./flatpak-host-spawn-path.injectable";
 import isDebuggingInjectable from "./is-debugging.injectable";
 import isDevelopmentInjectable from "./is-development.injectable";
 import isFlatpakPackageInjectable from "./is-flatpak-package.injectable";
@@ -85,6 +86,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(extensionApiVersionInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(flatpakHostSpawnPathInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

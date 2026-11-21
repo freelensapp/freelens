@@ -16,6 +16,7 @@ import isWindowsInjectable from "../../../common/vars/is-windows.injectable";
 import { buildVersionInitializable } from "../../../features/vars/build-version/common/token";
 import loadProxyKubeconfigInjectable from "../../cluster/load-proxy-kubeconfig.injectable";
 import freelensProxyTokenInjectable from "../../freelens-proxy/freelens-proxy-token.injectable";
+import hostSpawnInjectable from "../../host-spawn/host-spawn.injectable";
 import computeUserShellEnvironmentInjectable from "../../kube-tools/compute-user-shell-environment.injectable";
 import getUserShellInjectable from "../../kube-tools/get-user-shell.injectable";
 import resolveKubeToolsInjectable from "../../kube-tools/resolve-kube-tools.injectable";
@@ -62,6 +63,7 @@ const openNodeShellSessionInjectable = getInjectable({
       computeUserShellEnvironment: di.inject(computeUserShellEnvironmentInjectable),
       getUserShell: di.inject(getUserShellInjectable),
       spawnPty: di.inject(spawnPtyInjectable),
+      hostSpawn: di.inject(hostSpawnInjectable),
       emitAppEvent: di.inject(emitAppEventInjectable),
       stat: di.inject(statInjectable),
       createKubeApi: di.inject(createKubeApiInjectable),

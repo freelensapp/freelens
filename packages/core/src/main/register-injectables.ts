@@ -23,6 +23,7 @@ import { registerInjectables as registerFreelensK8sProxyInjectables } from "./fr
 import { registerInjectables as registerFreelensProxyInjectables } from "./freelens-proxy/register-injectables";
 import getMetricsInjectable from "./get-metrics.injectable";
 import { registerInjectables as registerHelmInjectables } from "./helm/register-injectables";
+import { registerInjectables as registerHostSpawnInjectables } from "./host-spawn/register-injectables";
 import { registerInjectables as registerIpcInjectables } from "./ipc/register-injectables";
 import { registerInjectables as registerK8sInjectables } from "./k8s/register-injectables";
 import k8sRequestInjectable from "./k8s-request.injectable";
@@ -141,6 +142,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     registerHelmInjectables(di);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    registerHostSpawnInjectables(di);
   } catch (e) {
     /* Ignore duplicate registration */
   }

@@ -22,6 +22,7 @@ import type WebSocket from "ws";
 import type { EmitAppEvent } from "../../common/app-event-bus/emit-event.injectable";
 import type { Cluster } from "../../common/cluster/cluster";
 import type { Stat } from "../../common/fs/stat.injectable";
+import type { HostSpawn } from "../host-spawn/host-spawn.injectable";
 import type { ComputeUserShellEnvironment } from "../kube-tools/compute-user-shell-environment.injectable";
 import type { GetUserShell } from "../kube-tools/get-user-shell.injectable";
 import type { KubeTools } from "../kube-tools/kube-tools";
@@ -153,6 +154,13 @@ export interface ShellSessionDependencies {
   computeUserShellEnvironment: ComputeUserShellEnvironment;
   getUserShell: GetUserShell;
   spawnPty: SpawnPty;
+  /**
+   * Applies the `host-spawn` specifics when the shell to start is the Flatpak
+   * `host-spawn` helper: the environment variables of the session are named in
+   * its `-env` option, so that they are forwarded to the host process instead
+   * of being dropped at the sandbox boundary.
+   */
+  hostSpawn: HostSpawn;
   emitAppEvent: EmitAppEvent;
   stat: Stat;
 }
@@ -208,12 +216,17 @@ export abstract class ShellSession {
     cwd: string,
   ): { shellProcess: pty.IPty; resume: boolean } {
     const resume = this.dependencies.shellSessionProcesses.has(this.terminalId);
+    // When the shell is the Flatpak `host-spawn` helper, the environment has to
+    // reach the host process through it: `host-spawn` forwards only the
+    // variables named in its `-env` option, so they are named here and the
+    // values are put into the spawn options' `env` for it to read.
+    const spawn = this.dependencies.hostSpawn.spawnOptionsFor(shell, args, env);
     const shellProcess = getOrInsertWith(this.dependencies.shellSessionProcesses, this.terminalId, () =>
-      this.dependencies.spawnPty(shell, args, {
+      this.dependencies.spawnPty(shell, spawn.args, {
         rows: 30,
         cols: 80,
         cwd,
-        env,
+        env: spawn.env,
         name: "xterm-256color",
         // Windows only: run on node-pty's bundled, Microsoft-signed conpty.dll
         // and OpenConsole.exe rather than the system ConPTY. With the system

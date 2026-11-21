@@ -20,6 +20,7 @@ import isMacInjectable from "../../../common/vars/is-mac.injectable";
 import isWindowsInjectable from "../../../common/vars/is-windows.injectable";
 import freelensProxyTokenInjectable from "../../../main/freelens-proxy/freelens-proxy-token.injectable";
 import withFreelensProxyCredentialEnvInjectable from "../../../main/freelens-proxy/with-freelens-proxy-credential-env.injectable";
+import hostSpawnInjectable from "../../../main/host-spawn/host-spawn.injectable";
 import computeUserShellEnvironmentInjectable from "../../../main/kube-tools/compute-user-shell-environment.injectable";
 import getUserShellInjectable from "../../../main/kube-tools/get-user-shell.injectable";
 import resolveKubeToolsInjectable from "../../../main/kube-tools/resolve-kube-tools.injectable";
@@ -78,6 +79,7 @@ const openDebugContainerShellInjectable = getInjectable({
       getUserShell: di.inject(getUserShellInjectable),
       freelensProxyToken: di.inject(freelensProxyTokenInjectable).value,
       spawnPty: di.inject(spawnPtyInjectable),
+      hostSpawn: di.inject(hostSpawnInjectable),
       emitAppEvent: di.inject(emitAppEventInjectable),
       stat: di.inject(statInjectable),
     };
