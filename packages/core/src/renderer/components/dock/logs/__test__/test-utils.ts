@@ -45,6 +45,7 @@ export function createMockLogTabViewModel(
     reloadLogs: vi.fn(),
     renameTab: vi.fn(),
     stopLoadingLogs: vi.fn(),
+    clearVisibleLogs: vi.fn(),
     getPodById: vi.fn(),
     getPodsByOwnerId: vi.fn(),
     getWorkloadPods: vi.fn(() => []),

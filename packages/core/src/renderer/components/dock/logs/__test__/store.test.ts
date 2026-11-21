@@ -234,6 +234,32 @@ describe("LogStore request lifecycle", () => {
     expect(callForLogs.mock.calls[2][1]?.tailLines).toBe(501);
   });
 
+  it("shows only the lines that come after a clear, and does not load the cleared ones again", async () => {
+    await store.load(tabId, computedPods, computedTabData);
+    store.clearVisibleLogs(tabId);
+    expect(store.getLogs(tabId)).toEqual([]);
+
+    // The refresh asks again for the second of the last line, so the API sends it back.
+    callForLogs.mockResolvedValue(`${initialLog}\n${nextLog}`);
+    await vi.advanceTimersByTimeAsync(10_000);
+    expect(store.getLogs(tabId)).toEqual([nextLog]);
+    expect(callForLogs.mock.calls[1][1]?.sinceTime).toBeDefined();
+
+    const callsBeforeScroll = callForLogs.mock.calls.length;
+    await store.load(tabId, computedPods, computedTabData);
+    expect(callForLogs.mock.calls.length).toBe(callsBeforeScroll);
+    expect(store.getLogs(tabId)).toEqual([nextLog]);
+  });
+
+  it("loads all the lines again when a cleared tab is reloaded", async () => {
+    await store.load(tabId, computedPods, computedTabData);
+    store.clearVisibleLogs(tabId);
+
+    await store.reload(tabId, computedPods, computedTabData);
+
+    expect(store.getLogs(tabId)).toEqual([initialLog]);
+  });
+
   it("keeps polling a tab that loaded without any line, and shows the first ones when they come", async () => {
     callForLogs.mockResolvedValue("");
     await store.load(tabId, computedPods, computedTabData);

@@ -66,6 +66,8 @@ export class LogStore {
   private readonly podColors = new Map<TabId, Map<string, string>>();
   // How many lines every pod has in the tab, by pod id.
   private readonly lineCounts = new Map<TabId, Map<string, number>>();
+  // The tabs that were cleared: they show only the lines that came after it.
+  private readonly cleared = new Set<TabId>();
 
   constructor(private dependencies: Dependencies) {}
 
@@ -94,8 +96,9 @@ export class LogStore {
     logTabData: IComputedValue<LogTabData | undefined>,
   ): Promise<void> {
     // A full tab holds no older line: asking for them would only fetch the
-    // lines it shows again. Its refresh goes on.
-    if ((this.podLogs.get(tabId)?.length ?? 0) >= maxLogLines) {
+    // lines it shows again. A cleared tab does not bring back the lines it
+    // cleared. The refresh of both goes on.
+    if (this.cleared.has(tabId) || (this.podLogs.get(tabId)?.length ?? 0) >= maxLogLines) {
       return;
     }
 
@@ -533,8 +536,23 @@ export class LogStore {
     return logs.replace(timestampsAndSeparator, "");
   }
 
+  /**
+   * Empties the lines of a loaded tab and keeps following its pods from where
+   * they are: the tab shows only the lines that come after it, until it is
+   * reloaded.
+   */
+  clearVisibleLogs(tabId: TabId): void {
+    if (!this.podLogs.has(tabId)) {
+      return;
+    }
+
+    this.cleared.add(tabId);
+    this.podLogs.set(tabId, []);
+  }
+
   clearLogs(tabId: TabId): void {
     this.stopLoadingLogs(tabId);
+    this.cleared.delete(tabId);
     this.podLogs.delete(tabId);
     this.cursors.delete(tabId);
     this.podColors.delete(tabId);
