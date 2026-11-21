@@ -8,6 +8,7 @@
 
 import extensionEntryPointNameInjectable from "./entry-point-name.injectable";
 import extensionShouldBeEnabledForClusterFrameInjectable from "./extension-should-be-enabled-for-cluster-frame.injectable";
+import guardExtensionComponentsInjectable from "./guard-extension-components.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
@@ -19,6 +20,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(extensionShouldBeEnabledForClusterFrameInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(guardExtensionComponentsInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }
