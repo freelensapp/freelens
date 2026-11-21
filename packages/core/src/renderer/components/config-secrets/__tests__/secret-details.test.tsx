@@ -112,6 +112,18 @@ describe("SecretDetails tests", () => {
     expect(result.getByTestId("user-secret-entry").querySelector("textarea")).toHaveValue(base64.encode("admin"));
   });
 
+  it("does not mutate the secret object in place when editing data", () => {
+    const data = { password: base64.encode("hunter2") };
+    const secret = getSecret(SecretType.Opaque, data);
+    const result = render(<SecretDetails object={secret} />);
+
+    fireEvent.change(result.getByTestId("password-secret-entry").querySelector("textarea") as HTMLTextAreaElement, {
+      target: { value: base64.encode("edited") },
+    });
+
+    expect(secret.data.password).toBe(base64.encode("hunter2"));
+  });
+
   it("keeps an unsaved edit and the shown values when only the metadata of the secret changes in the cluster", () => {
     const data = { password: base64.encode("hunter2"), user: base64.encode("admin") };
     const result = render(<SecretDetails object={getSecret(SecretType.Opaque, data)} />);

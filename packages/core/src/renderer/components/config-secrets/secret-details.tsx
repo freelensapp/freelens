@@ -66,7 +66,7 @@ class NonInjectedSecretDetails extends React.Component<SecretDetailsProps & Depe
     const { object: secret } = this.props;
 
     if (secret) {
-      this.data = secret.data;
+      this.data = { ...secret.data };
       this.revealSecret.clear();
     }
   }
@@ -88,7 +88,10 @@ class NonInjectedSecretDetails extends React.Component<SecretDetailsProps & Depe
   };
 
   editData = (name: string, value: string, encoded: boolean) => {
-    this.data[name] = encoded ? value : base64.encode(value);
+    this.data = {
+      ...this.data,
+      [name]: encoded ? value : base64.encode(value),
+    };
   };
 
   /**
