@@ -17,7 +17,7 @@ import userEvent from "@testing-library/user-event";
 import { observable, runInAction } from "mobx";
 import { observer } from "mobx-react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { ErrorBoundary } from "./error-boundary";
+import { ErrorBoundary, ReportingErrorBoundary, SilentErrorBoundary } from "./error-boundary";
 
 import type { HistoryAdapter, ObservableHistory } from "@freelensapp/routing";
 import type { StrictReactNode } from "@freelensapp/utilities";
@@ -263,5 +263,77 @@ describe("<ErrorBoundary>", () => {
     await user.click(result.getByText("Back"));
 
     expect(result.getByText("Tab logs")).toBeInTheDocument();
+  });
+});
+
+describe("<ReportingErrorBoundary> and <SilentErrorBoundary>", () => {
+  // Throws for the object named "broken", as a details panel of an extension can for one object.
+  const Details = ({ object }: { object: { name: string } }) => {
+    if (object.name === "broken") {
+      throw new Error("Details failed");
+    }
+
+    return <p>{`Details of ${object.name}`}</p>;
+  };
+
+  const renderWith = (Boundary: typeof ReportingErrorBoundary, onError = vi.fn()) => {
+    const shown = observable.box({ name: "broken" }, { deep: false });
+
+    const { result } = setup(["/pods"], () =>
+      observer(() => (
+        <div data-testid="host">
+          <Boundary resetKey={shown.get()} onError={onError}>
+            <Details object={shown.get()} />
+          </Boundary>
+        </div>
+      )),
+    );
+
+    const show = (object: { name: string }) => act(() => runInAction(() => shown.set(object)));
+
+    return { result, show, onError };
+  };
+
+  beforeEach(() => {
+    vi.spyOn(console, "error").mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it("shows the error view in place of the children, and reports the error with the component stack", () => {
+    const { result, onError } = renderWith(ReportingErrorBoundary);
+
+    expect(result.getByText("App crash at")).toBeInTheDocument();
+    expect(result.getByTestId("host")).toBeInTheDocument();
+    expect(onError).toHaveBeenCalledTimes(1);
+    expect(onError).toHaveBeenCalledWith(
+      expect.objectContaining({ message: "Details failed" }),
+      expect.objectContaining({ componentStack: expect.stringContaining("Details") }),
+    );
+  });
+
+  it("renders nothing in place of the children, and reports the error", () => {
+    const { result, onError } = renderWith(SilentErrorBoundary);
+
+    expect(result.getByTestId("host")).toBeEmptyDOMElement();
+    expect(onError).toHaveBeenCalledWith(expect.objectContaining({ message: "Details failed" }), expect.anything());
+  });
+
+  it("renders the children again for a new key, compared by identity", () => {
+    const { result, show } = renderWith(SilentErrorBoundary);
+
+    show({ name: "other" });
+
+    expect(result.getByText("Details of other")).toBeInTheDocument();
+  });
+
+  it("reports the error again when the children throw for the new key too", () => {
+    const { show, onError } = renderWith(SilentErrorBoundary);
+
+    show({ name: "broken" });
+
+    expect(onError).toHaveBeenCalledTimes(2);
   });
 });

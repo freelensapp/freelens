@@ -4,6 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-export { ErrorBoundary } from "./src/error-boundary";
+export { ErrorBoundary, ReportingErrorBoundary, SilentErrorBoundary } from "./src/error-boundary";
 
-export type { ErrorBoundaryProps } from "./src/error-boundary";
+export type { ErrorBoundaryProps, ReportingErrorBoundaryProps } from "./src/error-boundary";
