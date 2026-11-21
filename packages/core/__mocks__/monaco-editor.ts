@@ -13,6 +13,7 @@ import { vi } from "vitest";
 
 export const editor = {
   create: vi.fn(),
+  createDiffEditor: vi.fn(),
   defineTheme: vi.fn(),
   setTheme: vi.fn(),
   getModel: vi.fn(),

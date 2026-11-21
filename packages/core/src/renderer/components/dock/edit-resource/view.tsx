@@ -9,11 +9,15 @@ import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import { Badge } from "../../badge";
 import { Checkbox } from "../../checkbox";
+import openConfirmDialogInjectable from "../../confirm-dialog/open.injectable";
 import { Notice } from "../../extensions/notice";
+import { MonacoDiffEditor } from "../../monaco-editor/monaco-diff-editor";
 import { EditorPanel } from "../editor-panel";
 import { InfoPanel } from "../info-panel";
 import editResourceModelInjectable from "./edit-resource-model/edit-resource-model.injectable";
+import { EditorDiffToolbar, handleEditorDiffShortcut } from "./toolbar";
 
+import type { OpenConfirmDialog } from "../../confirm-dialog/open.injectable";
 import type { EditResourceModel } from "./edit-resource-model/edit-resource-model.injectable";
 
 export interface EditResourceProps {
@@ -22,10 +26,14 @@ export interface EditResourceProps {
 
 interface Dependencies {
   model: EditResourceModel;
+  openConfirmDialog: OpenConfirmDialog;
 }
 
-const NonInjectedEditResource = observer(({ model, tabId }: EditResourceProps & Dependencies) => (
-  <div className="EditResource flex flex-col">
+const NonInjectedEditResource = observer(({ model, tabId, openConfirmDialog }: EditResourceProps & Dependencies) => (
+  <div
+    className="EditResource flex flex-col"
+    onKeyDownCapture={(event) => handleEditorDiffShortcut(event, model.toggleDiff)}
+  >
     {model.shouldShowErrorAboutNoResource ? (
       <Notice>Resource not found</Notice>
     ) : (
@@ -58,12 +66,24 @@ const NonInjectedEditResource = observer(({ model, tabId }: EditResourceProps & 
             </div>
           }
         />
-        <EditorPanel
-          tabId={tabId}
-          value={model.configuration.value.get()}
-          onChange={model.configuration.onChange}
-          onError={model.configuration.error.onChange}
-        />
+        <EditorDiffToolbar model={model} openConfirmDialog={openConfirmDialog} />
+        {model.diffVisible.get() ? (
+          <MonacoDiffEditor
+            id={tabId}
+            original={model.comparisonYaml}
+            value={model.configuration.value.get()}
+            sideBySide={model.sideBySide.get()}
+            onChange={model.configuration.onChange}
+            onError={model.configuration.error.onChange}
+          />
+        ) : (
+          <EditorPanel
+            tabId={tabId}
+            value={model.configuration.value.get()}
+            onChange={model.configuration.onChange}
+            onError={model.configuration.error.onChange}
+          />
+        )}
       </>
     )}
   </div>
@@ -73,6 +93,7 @@ export const EditResource = withInjectables<Dependencies, EditResourceProps>(Non
   getPlaceholder: () => <Spinner center data-testid="edit-resource-tab-spinner" />,
   getProps: async (di, props) => ({
     ...props,
+    openConfirmDialog: di.inject(openConfirmDialogInjectable),
     model: await di.inject(editResourceModelInjectable, props.tabId),
   }),
 });
