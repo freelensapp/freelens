@@ -5,6 +5,7 @@
  */
 
 import { sidebarItemInjectionToken } from "@freelensapp/cluster-sidebar";
+import { getOrInsertWith } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
 import { navigateToRouteInjectionToken } from "../../../common/front-end-routing/navigate-to-route-injection-token";
@@ -16,6 +17,10 @@ import guardExtensionComponentsInjectable from "../../extension-loader/guard-ext
 import { getExtensionRoutePath } from "../../routes/for-extension";
 import routeIsActiveInjectable from "../../routes/route-is-active.injectable";
 import routesInjectable from "../../routes/routes.injectable";
+
+import type { IconProps } from "@freelensapp/icon";
+
+import type React from "react";
 
 import type { LensRendererExtension } from "../../../extensions/lens-renderer-extension";
 
@@ -33,6 +38,10 @@ const extensionSidebarItemRegistratorInjectable = getInjectable({
     );
     const extensionRoutes = computed(() => routes.get().filter((route) => route.extension === extension));
     const guard = di.inject(guardExtensionComponentsInjectable)(extension, "clusterPageMenus");
+    // The items are computed again when the saved order changes; the guarded icons are kept, so that React keeps them.
+    const guardedIcons = new WeakMap<React.ComponentType<IconProps>, React.ComponentType<IconProps>>();
+    const guardIcon = (Icon: React.ComponentType<IconProps>) =>
+      getOrInsertWith(guardedIcons, Icon, () => guard.component(Icon, { fallback: "nothing" }));
 
     return computed(() =>
       extension.clusterPageMenus.map((registration) => {
@@ -56,7 +65,7 @@ const extensionSidebarItemRegistratorInjectable = getInjectable({
         const orderNumberInBlock = orderKey ? declaredOrderNumber : undefined;
         const targetRoutePath = getExtensionRoutePath(extension, target?.pageId);
         const targetRoute = computed(() => extensionRoutes.get().find((route) => route.path === targetRoutePath));
-        const Icon = components.Icon && guard.component(components.Icon, { fallback: "nothing" });
+        const Icon = components.Icon && guardIcon(components.Icon);
 
         return getInjectable({
           id,
