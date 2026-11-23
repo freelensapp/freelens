@@ -459,14 +459,8 @@ describe("Freelens proxy kube api requests", () => {
   let port: number;
   let target: http2.Http2SecureServer;
   let targetSessions: http2.ServerHttp2Session[];
-  let targetReceived: {
-    url?: string;
-    host?: string;
-    authorization?: string;
-    origin?: string;
-    userAgent?: string;
-    httpVersion: string;
-  }[];
+  let targetReceived: { url?: string; host?: string; authorization?: string; origin?: string; httpVersion: string }[];
+  let userAgentsReceived: (string | undefined)[];
   let watchReceived: Promise<http2.Http2ServerRequest>;
   let pendingReceived: Promise<http2.Http2ServerRequest>;
   let timeout: number | undefined;
@@ -492,6 +486,7 @@ describe("Freelens proxy kube api requests", () => {
     let receivePending: (req: http2.Http2ServerRequest) => void;
 
     targetReceived = [];
+    userAgentsReceived = [];
     targetSessions = [];
     watchReceived = new Promise((resolve) => {
       receiveWatch = resolve;
@@ -508,9 +503,9 @@ describe("Freelens proxy kube api requests", () => {
           host: req.headers[":authority"] ?? req.headers.host,
           authorization: req.headers.authorization,
           origin: req.headers.origin,
-          userAgent: req.headers["user-agent"],
           httpVersion: req.httpVersion,
         });
+        userAgentsReceived.push(req.headers["user-agent"]);
 
         // A request the target has not answered yet, not even with its headers.
         if (req.url.endsWith("/pending")) {
@@ -750,8 +745,7 @@ describe("Freelens proxy kube api requests", () => {
     );
 
     expect(response.statusCode).toBe(200);
-    expect(targetReceived).toHaveLength(1);
-    expect(targetReceived[0].userAgent).toBe(freelensUserAgent);
+    expect(userAgentsReceived).toEqual([freelensUserAgent]);
   });
 
   it.each(["kubectl/v1.34.0 (linux/amd64) kubernetes/abcdef0", "Helm/3.19.0", freelensUserAgent])(
@@ -760,8 +754,7 @@ describe("Freelens proxy kube api requests", () => {
       const response = await getHttp1(port, "/api-kube/api/v1/pods", { "user-agent": userAgent });
 
       expect(response.statusCode).toBe(200);
-      expect(targetReceived).toHaveLength(1);
-      expect(targetReceived[0].userAgent).toBe(userAgent);
+      expect(userAgentsReceived).toEqual([userAgent]);
     },
   );
 
