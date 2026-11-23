@@ -43,6 +43,7 @@ export function createMockLogTabViewModel(
     setLogTabData: vi.fn(),
     loadLogs: vi.fn(),
     reloadLogs: vi.fn(),
+    showLogs: vi.fn(),
     renameTab: vi.fn(),
     stopLoadingLogs: vi.fn(),
     clearVisibleLogs: vi.fn(),

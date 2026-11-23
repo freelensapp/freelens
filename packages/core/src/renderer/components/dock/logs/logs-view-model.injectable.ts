@@ -24,6 +24,7 @@ import loadLogsInjectable from "./load-logs.injectable";
 import { LogTabViewModel } from "./logs-view-model";
 import reloadLogsInjectable from "./reload-logs.injectable";
 import setLogTabDataInjectable from "./set-log-tab-data.injectable";
+import showLogsInjectable from "./show-logs.injectable";
 import stopLoadingLogsInjectable from "./stop-loading-logs.injectable";
 
 import type { TabId } from "../dock/store";
@@ -41,6 +42,7 @@ const logsViewModelInjectable = getInjectable({
       getLogsWithoutTimestamps: di.inject(getLogsWithoutTimestampsInjectable),
       getTimestampSplitLogs: di.inject(getTimestampSplitLogsInjectable),
       reloadLogs: di.inject(reloadLogsInjectable),
+      showLogs: di.inject(showLogsInjectable),
       getLogTabData: di.inject(getLogTabDataInjectable),
       setLogTabData: di.inject(setLogTabDataInjectable),
       loadLogs: di.inject(loadLogsInjectable),

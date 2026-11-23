@@ -79,6 +79,7 @@ export class LogStore {
     const message = [`Failed to load logs: ${error.message}`, `Reason: ${error.reason} (${error.code})`];
 
     this.stopLoadingLogs(tabId);
+    this.cleared.delete(tabId);
     this.podLogs.set(tabId, message);
   }
 
@@ -113,6 +114,14 @@ export class LogStore {
       logTabData,
       (pod, podCount) => ({ tailLines: this.getTailLines(lineCounts?.get(pod.getId()) ?? 0, podCount) }),
       (logsOfPods, tagged) => {
+        // A tab cleared while the older lines were loading stays empty. It
+        // goes on following its pods from where it was.
+        if (this.cleared.has(tabId)) {
+          this.getRefresher(tabId, computedPods, logTabData).start();
+
+          return;
+        }
+
         const oldLogs = this.podLogs.get(tabId) ?? [];
         const oldCursors = this.cursors.get(tabId);
         const cursors = new Map<string, PodLogsCursor>();
@@ -567,5 +576,25 @@ export class LogStore {
     this.clearLogs(tabId);
 
     return this.load(tabId, computedPods, logTabData);
+  }
+
+  /**
+   * Loads a tab that is shown again, as when its dock tab is selected. A
+   * cleared tab is not reloaded, so the lines it cleared do not come back: it
+   * goes on following its pods from where it was.
+   */
+  show(
+    tabId: TabId,
+    computedPods: IComputedValue<Pod[]>,
+    logTabData: IComputedValue<LogTabData | undefined>,
+  ): Promise<void> {
+    if (!this.cleared.has(tabId) || !this.podLogs.has(tabId)) {
+      return this.reload(tabId, computedPods, logTabData);
+    }
+
+    this.stopLoadingLogs(tabId);
+    this.getRefresher(tabId, computedPods, logTabData).start();
+
+    return this.loadMore(tabId, computedPods, logTabData);
   }
 }

@@ -41,6 +41,11 @@ export interface LogTabViewModelDependencies {
     pods: IComputedValue<Pod[]>,
     logTabData: IComputedValue<LogTabData | undefined>,
   ) => Promise<void>;
+  showLogs: (
+    tabId: TabId,
+    pods: IComputedValue<Pod[]>,
+    logTabData: IComputedValue<LogTabData | undefined>,
+  ) => Promise<void>;
   renameTab: (tabId: TabId, title: string) => void;
   stopLoadingLogs: (tabId: TabId) => void;
   clearVisibleLogs: (tabId: TabId) => void;
@@ -185,6 +190,7 @@ export class LogTabViewModel {
 
   loadLogs = () => this.dependencies.loadLogs(this.tabId, this.logSourcePods, this.logTabData);
   reloadLogs = () => this.dependencies.reloadLogs(this.tabId, this.logSourcePods, this.logTabData);
+  showLogs = () => this.dependencies.showLogs(this.tabId, this.logSourcePods, this.logTabData);
   renameTab = (title: string) => this.dependencies.renameTab(this.tabId, title);
   stopLoadingLogs = () => this.dependencies.stopLoadingLogs(this.tabId);
   clearVisibleLogs = () => this.dependencies.clearVisibleLogs(this.tabId);
