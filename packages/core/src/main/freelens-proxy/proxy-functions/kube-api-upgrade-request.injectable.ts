@@ -12,6 +12,7 @@ import { apiKubePrefix } from "../../../common/vars";
 import clusterApiUrlInjectable from "../../../features/cluster/connections/main/api-url.injectable";
 import freelensK8sProxyManagerInjectable from "../../cluster/freelens-k8s-proxy-manager.injectable";
 import freelensK8sProxyCertificateInjectable from "../../freelens-k8s-proxy/freelens-k8s-proxy-certificate.injectable";
+import { userAgentForCluster } from "../user-agent";
 import type { ConnectionOptions } from "node:tls";
 
 import type { FreelensProxyApiRequest } from "../freelens-proxy";
@@ -60,7 +61,9 @@ const kubeApiUpgradeRequestInjectable = getInjectable({
             continue;
           }
 
-          proxySocket.write(`${key}: ${value}\r\n`);
+          const forwarded = key.toLowerCase() === "user-agent" ? userAgentForCluster(value) : value;
+
+          proxySocket.write(`${key}: ${forwarded}\r\n`);
         }
 
         proxySocket.write("\r\n");

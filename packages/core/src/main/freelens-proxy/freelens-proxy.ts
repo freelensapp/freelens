@@ -13,6 +13,7 @@ import { abortFetchWhenClientCloses, isClientGone } from "./abort-when-client-cl
 import { hasAllowedHost, hasAllowedOrigin } from "./allowed-request";
 import { toClusterRoute } from "./cluster-route-redirect";
 import { stripToken, tokenFromHeaders } from "./freelens-proxy-token";
+import { userAgentForCluster } from "./user-agent";
 import type http from "node:http";
 
 import type { Logger } from "@freelensapp/logger";
@@ -485,6 +486,15 @@ export class FreelensProxy {
       // gateway such as the GitLab agent server refuses an origin it does not
       // know, so it is not forwarded.
       delete req.headers.origin;
+
+      // The renderer cannot set its `User-Agent`, and the cluster would name
+      // the field manager of its writes after the browser's
+      const userAgent = req.headers["user-agent"];
+
+      if (userAgent !== undefined) {
+        req.headers["user-agent"] = userAgentForCluster(userAgent);
+      }
+
       req.url = req.url.replace(apiKubePrefix, "");
 
       // A cluster the user has not connected gets no proxy process started for
