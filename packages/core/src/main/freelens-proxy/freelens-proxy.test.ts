@@ -27,6 +27,7 @@ import freelensProxyTokenInjectable from "./freelens-proxy-token.injectable";
 import getClusterForRequestInjectable from "./get-cluster-for-request.injectable";
 import kubeApiUpgradeRequestInjectable from "./proxy-functions/kube-api-upgrade-request.injectable";
 import shellApiRequestInjectable from "./proxy-functions/shell-api-request.injectable";
+import { freelensUserAgent } from "./user-agent";
 import type net from "node:net";
 
 import type { DiContainer } from "@ogre-tools/injectable";
@@ -459,6 +460,7 @@ describe("Freelens proxy kube api requests", () => {
   let target: http2.Http2SecureServer;
   let targetSessions: http2.ServerHttp2Session[];
   let targetReceived: { url?: string; host?: string; authorization?: string; origin?: string; httpVersion: string }[];
+  let userAgentsReceived: (string | undefined)[];
   let watchReceived: Promise<http2.Http2ServerRequest>;
   let pendingReceived: Promise<http2.Http2ServerRequest>;
   let timeout: number | undefined;
@@ -484,6 +486,7 @@ describe("Freelens proxy kube api requests", () => {
     let receivePending: (req: http2.Http2ServerRequest) => void;
 
     targetReceived = [];
+    userAgentsReceived = [];
     targetSessions = [];
     watchReceived = new Promise((resolve) => {
       receiveWatch = resolve;
@@ -502,6 +505,7 @@ describe("Freelens proxy kube api requests", () => {
           origin: req.headers.origin,
           httpVersion: req.httpVersion,
         });
+        userAgentsReceived.push(req.headers["user-agent"]);
 
         // A request the target has not answered yet, not even with its headers.
         if (req.url.endsWith("/pending")) {
@@ -728,6 +732,31 @@ describe("Freelens proxy kube api requests", () => {
     expect(targetReceived).toHaveLength(1);
     expect(targetReceived[0].origin).toBeUndefined();
   });
+
+  it("forwards the User-Agent of the browser as Freelens', for the field manager of a write", async () => {
+    const response = await getHttp1(
+      port,
+      "/api-kube/api/v1/namespaces/default/pods",
+      {
+        "user-agent":
+          "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Freelens/2.1.0 Chrome/142.0.0.0 Electron/39.0.0 Safari/537.36",
+      },
+      "POST",
+    );
+
+    expect(response.statusCode).toBe(200);
+    expect(userAgentsReceived).toEqual([freelensUserAgent]);
+  });
+
+  it.each(["kubectl/v1.34.0 (linux/amd64) kubernetes/abcdef0", "Helm/3.19.0", freelensUserAgent])(
+    "keeps a User-Agent that is not a browser's, %s",
+    async (userAgent) => {
+      const response = await getHttp1(port, "/api-kube/api/v1/pods", { "user-agent": userAgent });
+
+      expect(response.statusCode).toBe(200);
+      expect(userAgentsReceived).toEqual([userAgent]);
+    },
+  );
 
   it("forwards the request below the path of the target over HTTP/2, as a request for the target", async () => {
     const response = await getHttp1(port, "/api-kube/api/v1/pods");

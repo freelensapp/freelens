@@ -13,6 +13,7 @@ import { testCertificate } from "../../../test-utils/test-certificate";
 import freelensK8sProxyManagerInjectable from "../../cluster/freelens-k8s-proxy-manager.injectable";
 import freelensK8sProxyCertificateInjectable from "../../freelens-k8s-proxy/freelens-k8s-proxy-certificate.injectable";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
+import { freelensUserAgent } from "../user-agent";
 import kubeApiUpgradeRequestInjectable from "./kube-api-upgrade-request.injectable";
 import type net from "node:net";
 
@@ -148,5 +149,53 @@ describe("kube api upgrade requests", () => {
     expect(request.toLowerCase()).not.toMatch(/\r\nauthorization:/);
     expect(request.toLowerCase()).not.toMatch(/\r\norigin:/);
     expect(request).toContain("Connection: Upgrade");
+  });
+
+  const forwardedRequestFor = async (rawHeaders: string[]) => {
+    await kubeApiUpgradeRequest({
+      req: {
+        method: "GET",
+        url: "/api-kube/api/v1/namespaces/default/pods/some-pod/exec",
+        httpVersion: "1.1",
+        rawHeaders,
+      } as ProxyApiRequestArgs["req"],
+      socket: client as unknown as net.Socket,
+      head: Buffer.from([]),
+      cluster,
+    });
+
+    const connection = await targetConnection;
+    let request = "";
+
+    while (!request.includes("\r\n\r\n")) {
+      const [chunk] = (await once(connection, "data")) as [Buffer];
+
+      request += chunk.toString();
+    }
+
+    return request;
+  };
+
+  it("forwards the User-Agent of the browser as Freelens'", async () => {
+    const request = await forwardedRequestFor([
+      "User-Agent",
+      "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "Connection",
+      "Upgrade",
+    ]);
+
+    expect(request).toContain(`\r\nUser-Agent: ${freelensUserAgent}\r\n`);
+    expect(request).not.toContain("Mozilla/");
+  });
+
+  it("keeps a User-Agent that is not a browser's", async () => {
+    const request = await forwardedRequestFor([
+      "User-Agent",
+      "kubectl/v1.34.0 (linux/amd64) kubernetes/abcdef0",
+      "Connection",
+      "Upgrade",
+    ]);
+
+    expect(request).toContain("\r\nUser-Agent: kubectl/v1.34.0 (linux/amd64) kubernetes/abcdef0\r\n");
   });
 });
