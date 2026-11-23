@@ -19,6 +19,7 @@ import { KubeObjectConditionsDrawer } from "../kube-object-conditions";
 import loadPodsFromAllNamespacesInjectable from "../workloads-pods/load-pods-from-all-namespaces.injectable";
 import { PodDetailsList } from "../workloads-pods/pod-details-list";
 import podStoreInjectable from "../workloads-pods/store.injectable";
+import { NodeDetailsImages } from "./details-images";
 import { NodeDetailsResources } from "./details-resources";
 
 import type { Logger } from "@freelensapp/logger";
@@ -101,6 +102,7 @@ class NonInjectedNodeDetails extends React.Component<NodeDetailsProps & Dependen
         <NodeDetailsResources node={node} type="capacity" />
         <DrawerTitle>Allocatable</DrawerTitle>
         <NodeDetailsResources node={node} type="allocatable" />
+        <NodeDetailsImages key={node.getId()} node={node} />
         <PodDetailsList
           pods={childPods}
           owner={node}
