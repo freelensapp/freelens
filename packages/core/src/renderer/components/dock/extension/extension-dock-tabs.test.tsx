@@ -28,6 +28,7 @@ import dockStoreInjectable from "../dock/store.injectable";
 import dockTabRegistratorInjectable from "./dock-tab-registrator.injectable";
 import { copyDockTabParams, readExtensionDockTabData } from "./params";
 import registeredDockTabsInjectable from "./registered-dock-tabs.injectable";
+import { mockDocumentVisibility } from "./test-utils/mock-document-visibility";
 
 import type { DiContainer, Injectable } from "@ogre-tools/injectable";
 
@@ -42,7 +43,7 @@ describe("extension dock tabs", () => {
   let extension: LensRendererExtension;
   let registrations: Injectable<any, any, any>[];
   let registrationDisposers: (() => void)[];
-  let clusterVisible: { active: boolean };
+  let clusterStatus: { active: boolean };
   const enabled = observable.box(true);
   const cleanup = vi.fn();
 
@@ -86,9 +87,9 @@ describe("extension dock tabs", () => {
     di.override(extensionShouldBeEnabledForClusterFrameInjectable, () =>
       asyncComputed({ getValueFromObservedPromise: async () => true, valueWhenPending: true }),
     );
-    clusterVisible = observable({ active: true });
+    clusterStatus = observable({ active: true });
     vi.spyOn(di.inject(catalogEntityRegistryInjectable), "getById").mockReturnValue({
-      status: clusterVisible,
+      status: clusterStatus,
     } as CatalogEntity);
 
     extension = getExtensionFakeForRenderer({
@@ -225,7 +226,7 @@ describe("extension dock tabs", () => {
     expect(view.getByText("Count 0")).toBeInTheDocument();
   });
 
-  it("unmounts content on minimize and hidden cluster, then remounts when visible", () => {
+  it("unmounts content when the dock collapses or the cluster goes inactive, then remounts when eligible", () => {
     const id = extension.openDockTab("readable-logs", { params: { pod: "first" } });
     const store = di.inject(dockStoreInjectable);
     const view = renderDock();
@@ -237,11 +238,11 @@ describe("extension dock tabs", () => {
     expect(view.getByText("first")).toBeInTheDocument();
 
     act(() => {
-      clusterVisible.active = false;
+      clusterStatus.active = false;
     });
     expect(view.queryByText("first")).not.toBeInTheDocument();
     act(() => {
-      clusterVisible.active = true;
+      clusterStatus.active = true;
     });
     expect(view.getByText("first")).toBeInTheDocument();
   });
@@ -294,21 +295,18 @@ describe("extension dock tabs", () => {
 
   it("preserves selected tab state without cleanup when the document is hidden and shown", () => {
     const id = extension.openDockTab("readable-logs", { params: { pod: "first" } });
-    const hidden = vi.spyOn(document, "hidden", "get").mockReturnValue(false);
+    const visibility = mockDocumentVisibility();
 
     try {
       const view = renderDock();
       fireEvent.click(view.getByRole("button", { name: "Count 0" }));
 
-      hidden.mockReturnValue(true);
-      fireEvent(document, new Event("visibilitychange"));
-
-      hidden.mockReturnValue(false);
-      fireEvent(document, new Event("visibilitychange"));
+      visibility.setState("hidden");
+      visibility.setState("visible");
       expect(view.getByRole("button", { name: "Count 1" })).toBeInTheDocument();
       expect(cleanup).not.toHaveBeenCalledWith(id);
     } finally {
-      hidden.mockRestore();
+      visibility.restore();
     }
   });
 

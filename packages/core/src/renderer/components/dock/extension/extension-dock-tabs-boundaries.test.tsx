@@ -22,6 +22,7 @@ import dockStorageInjectable from "../dock/dock-storage.injectable";
 import { TabKind } from "../dock/store";
 import dockStoreInjectable from "../dock/store.injectable";
 import * as paramsCodec from "./params";
+import { mockDocumentVisibility } from "./test-utils/mock-document-visibility";
 
 import type { DiContainer } from "@ogre-tools/injectable";
 
@@ -34,7 +35,7 @@ import type { DockTabParams, DockTabRegistration, ExtensionDockTabProps } from "
 describe("extension dock lifetime and ownership boundaries", () => {
   let di: DiContainer;
   let registrations: Extension[];
-  let visible: { active: boolean };
+  let clusterStatus: { active: boolean };
 
   const register = async (extension: LensRendererExtension) => {
     const registration = di.inject(extensionInjectable, extension);
@@ -57,18 +58,6 @@ describe("extension dock lifetime and ownership boundaries", () => {
       </DiContextProvider>,
     );
 
-  const mockDocumentVisibility = (initiallyHidden: boolean) => {
-    const hidden = vi.spyOn(document, "hidden", "get").mockReturnValue(initiallyHidden);
-
-    return {
-      setHidden(next: boolean) {
-        hidden.mockReturnValue(next);
-        fireEvent(document, new Event("visibilitychange"));
-      },
-      restore: () => hidden.mockRestore(),
-    };
-  };
-
   beforeEach(() => {
     registrations = [];
     di = getDiForUnitTesting();
@@ -78,9 +67,9 @@ describe("extension dock lifetime and ownership boundaries", () => {
     di.override(activeKubernetesClusterInjectable, () =>
       computed(() => ({ getId: () => "boundary-cluster" }) as KubernetesCluster),
     );
-    visible = observable({ active: true });
+    clusterStatus = observable({ active: true });
     vi.spyOn(di.inject(catalogEntityRegistryInjectable), "getById").mockReturnValue({
-      status: visible,
+      status: clusterStatus,
     } as CatalogEntity);
     Element.prototype.scrollIntoView = vi.fn();
   });
@@ -298,7 +287,7 @@ describe("extension dock lifetime and ownership boundaries", () => {
             unsubscribe = undefined;
           };
           const sync = () => {
-            if (document.hidden) stop();
+            if (document.visibilityState === "hidden") stop();
             else unsubscribe ??= subscribe();
           };
 
@@ -313,7 +302,7 @@ describe("extension dock lifetime and ownership boundaries", () => {
 
         return <input aria-label="Draft" value={draft} onChange={(event) => setDraft(event.target.value)} />;
       };
-      const visibility = mockDocumentVisibility(initial === "hidden");
+      const visibility = mockDocumentVisibility(initial);
 
       try {
         const extension = makeExtension("/subscription/package.json", [
@@ -328,14 +317,14 @@ describe("extension dock lifetime and ownership boundaries", () => {
         fireEvent.change(view.getByRole("textbox", { name: "Draft" }), { target: { value: "Unsaved filter" } });
 
         if (initial === "hidden") {
-          visibility.setHidden(false);
+          visibility.setState("visible");
           expect(activeSubscriptions).toBe(1);
         }
 
         for (let cycle = 0; cycle < 2; cycle++) {
-          visibility.setHidden(true);
+          visibility.setState("hidden");
           expect(activeSubscriptions).toBe(0);
-          visibility.setHidden(false);
+          visibility.setState("visible");
           expect(activeSubscriptions).toBe(1);
           expect(view.getByRole("textbox", { name: "Draft" })).toHaveValue("Unsaved filter");
         }
@@ -350,8 +339,8 @@ describe("extension dock lifetime and ownership boundaries", () => {
         expect(view.queryByRole("textbox", { name: "Draft" })).not.toBeInTheDocument();
         expect(activeSubscriptions).toBe(0);
 
-        visibility.setHidden(true);
-        visibility.setHidden(false);
+        visibility.setState("hidden");
+        visibility.setState("visible");
         expect(activeSubscriptions).toBe(0);
       } finally {
         visibility.restore();
@@ -362,7 +351,7 @@ describe("extension dock lifetime and ownership boundaries", () => {
   it("lets an in-flight fetch finish while hidden without aborting or restarting it", async () => {
     const request = Promise.withResolvers<Response>();
     const fetchMock = vi.spyOn(globalThis, "fetch").mockReturnValue(request.promise);
-    const visibility = mockDocumentVisibility(false);
+    const visibility = mockDocumentVisibility();
     const Content = () => {
       const [result, setResult] = useState("Loading summary");
       useEffect(() => {
@@ -393,10 +382,10 @@ describe("extension dock lifetime and ownership boundaries", () => {
       expect(fetchMock).toHaveBeenCalledTimes(1);
       const signal = fetchMock.mock.calls[0][1]?.signal;
 
-      visibility.setHidden(true);
+      visibility.setState("hidden");
       expect(signal?.aborted).toBe(false);
       await act(async () => request.resolve(new Response("Summary received")));
-      visibility.setHidden(false);
+      visibility.setState("visible");
 
       expect(view.getByText("Summary received")).toBeInTheDocument();
       expect(fetchMock).toHaveBeenCalledTimes(1);
@@ -407,8 +396,8 @@ describe("extension dock lifetime and ownership boundaries", () => {
     }
   });
 
-  it.each(["minimize", "cluster", "selection", "disable"] as const)(
-    "stops component interval work on %s and starts a fresh visible lifetime",
+  it.each(["dock collapse", "cluster inactivity", "selection", "disable"] as const)(
+    "stops component interval work on %s and starts a fresh mount when eligible again",
     async (reason) => {
       const tick = vi.fn();
       const mounted = vi.fn();
@@ -438,8 +427,8 @@ describe("extension dock lifetime and ownership boundaries", () => {
       expect(tick).toHaveBeenCalledTimes(3);
 
       await act(async () => {
-        if (reason === "minimize") store.close();
-        if (reason === "cluster") visible.active = false;
+        if (reason === "dock collapse") store.close();
+        if (reason === "cluster inactivity") clusterStatus.active = false;
         if (reason === "selection") extension.openDockTab("idle");
         if (reason === "disable") await extension.disable();
       });
@@ -449,8 +438,8 @@ describe("extension dock lifetime and ownership boundaries", () => {
       expect(tick).toHaveBeenCalledTimes(3);
 
       await act(async () => {
-        if (reason === "minimize") store.open();
-        if (reason === "cluster") visible.active = true;
+        if (reason === "dock collapse") store.open();
+        if (reason === "cluster inactivity") clusterStatus.active = true;
         if (reason === "selection") store.selectTab(selected);
         if (reason === "disable") await extension.enable();
       });
@@ -465,7 +454,7 @@ describe("extension dock lifetime and ownership boundaries", () => {
     },
   );
 
-  it("uses the native dock keyboard selection, close, and minimize actions for extension tabs", async () => {
+  it("uses native dock keyboard actions for selection, closing tabs, and collapsing the dock", async () => {
     const extension = makeExtension("/keyboard/package.json", [
       {
         id: "resource",

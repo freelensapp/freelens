@@ -23,6 +23,7 @@ import createResourceTemplatesInjectable from "../create-resource/create-resourc
 import { Dock } from "../dock";
 import { TabKind } from "../dock/store";
 import dockStoreInjectable from "../dock/store.injectable";
+import { mockDocumentVisibility } from "./test-utils/mock-document-visibility";
 
 import type { DiContainer } from "@ogre-tools/injectable";
 
@@ -34,7 +35,7 @@ import type { DockTabRegistration, ExtensionDockTabProps } from "./dock-tab-regi
 describe("extension dock error isolation", () => {
   let di: DiContainer;
   let registrations: Extension[];
-  let visible: { active: boolean };
+  let clusterStatus: { active: boolean };
 
   const register = async (name: string, dockTabs: DockTabRegistration[]) => {
     const extension = getExtensionFakeForRenderer({
@@ -73,9 +74,9 @@ describe("extension dock error isolation", () => {
     di.override(activeKubernetesClusterInjectable, () =>
       computed(() => ({ getId: () => "isolation-cluster" }) as KubernetesCluster),
     );
-    visible = observable({ active: true });
+    clusterStatus = observable({ active: true });
     vi.spyOn(di.inject(catalogEntityRegistryInjectable), "getById").mockReturnValue({
-      status: visible,
+      status: clusterStatus,
     } as CatalogEntity);
     Element.prototype.scrollIntoView = vi.fn();
     di.inject(dockStoreInjectable).tabs = [];
@@ -175,15 +176,13 @@ describe("extension dock error isolation", () => {
     const selected = broken.openDockTab("broken");
     const store = di.inject(dockStoreInjectable);
     vi.spyOn(console, "error").mockImplementation(() => {});
-    const hidden = vi.spyOn(document, "hidden", "get").mockReturnValue(false);
+    const visibility = mockDocumentVisibility();
     const view = renderDock();
     expect(view.getByRole("alert")).toHaveTextContent("First mount failed");
 
     fail = false;
-    hidden.mockReturnValue(true);
-    fireEvent(document, new Event("visibilitychange"));
-    hidden.mockReturnValue(false);
-    fireEvent(document, new Event("visibilitychange"));
+    visibility.setState("hidden");
+    visibility.setState("visible");
     expect(view.getByRole("alert")).toHaveTextContent("First mount failed");
 
     act(() => store.selectTab(neighbor));
@@ -193,15 +192,17 @@ describe("extension dock error isolation", () => {
   });
 
   it.each([
-    ...(["selection", "close", "minimize", "cluster", "extension close", "disable"] as const).map((reason) => ({
-      reason,
-      cleanup: "effect" as const,
-    })),
+    ...(["selection", "close", "dock collapse", "cluster inactivity", "extension close", "disable"] as const).map(
+      (reason) => ({
+        reason,
+        cleanup: "effect" as const,
+      }),
+    ),
     ...(["layout", "class"] as const).flatMap((cleanup) =>
-      (["selection", "close", "minimize"] as const).map((reason) => ({ reason, cleanup })),
+      (["selection", "close", "dock collapse"] as const).map((reason) => ({ reason, cleanup })),
     ),
   ])(
-    "isolates throwing $cleanup cleanup on $reason and gives the next visible mount a fresh boundary",
+    "isolates throwing $cleanup cleanup on $reason and gives the next mount a fresh boundary",
     async ({ reason, cleanup }) => {
       const mounted = vi.fn();
       const cleaned = vi.fn();
@@ -260,8 +261,8 @@ describe("extension dock error isolation", () => {
         await act(async () => {
           if (reason === "selection") store.selectTab(neighbor);
           if (reason === "close") store.closeTab(selected);
-          if (reason === "minimize") store.close();
-          if (reason === "cluster") visible.active = false;
+          if (reason === "dock collapse") store.close();
+          if (reason === "cluster inactivity") clusterStatus.active = false;
           if (reason === "extension close") {
             fireEvent.click(view.getByRole("button", { name: "Close from extension" }));
           }
@@ -276,7 +277,7 @@ describe("extension dock error isolation", () => {
         await act(async () => {
           store.selectTab(neighbor);
           store.open();
-          visible.active = true;
+          clusterStatus.active = true;
           if (reason === "disable") await broken.enable();
         });
         expect(view.getByText("Healthy content")).toBeInTheDocument();
