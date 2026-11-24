@@ -13,6 +13,7 @@ import lensPrometheusProviderInjectable from "./lens-provider.injectable";
 import openshiftPrometheusProviderInjectable from "./openshift-provider.injectable";
 import operatorPrometheusProviderInjectable from "./operator-provider.injectable";
 import stacklightPrometheusProviderInjectable from "./stacklight-provider.injectable";
+import thanosPrometheusProviderInjectable from "./thanos-provider.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
@@ -49,6 +50,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(stacklightPrometheusProviderInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(thanosPrometheusProviderInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }
