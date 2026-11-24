@@ -6,7 +6,7 @@
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { computed } from "mobx";
 import { observer } from "mobx-react";
-import React, { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import catalogEntityRegistryInjectable from "../../../api/catalog/entity/registry.injectable";
 import hostedClusterIdInjectable from "../../../cluster-frame-context/hosted-cluster-id.injectable";
 import { TabKind } from "../dock/store";
@@ -22,7 +22,7 @@ import type { RegisteredDockTab } from "./registered-dock-tabs.injectable";
 interface Props {
   tab: DockTab;
   active: boolean;
-  visible: boolean;
+  clusterIsActive: boolean;
   height: number;
   registrations: IComputedValue<RegisteredDockTab[]>;
   dockStore: DockStore;
@@ -31,7 +31,7 @@ interface Props {
 interface Dependencies {
   registrations: IComputedValue<RegisteredDockTab[]>;
   dockStore: DockStore;
-  clusterIsVisible: IComputedValue<boolean>;
+  clusterIsActive: IComputedValue<boolean>;
 }
 
 const ThrowError = ({ error }: { error: unknown }): never => {
@@ -82,7 +82,7 @@ class ExtensionDockTabBoundary extends React.Component<BoundaryProps, BoundarySt
   }
 }
 
-const ExtensionDockTab = observer(({ tab, active, visible, height, registrations, dockStore }: Props) => {
+const ExtensionDockTab = observer(({ tab, active, clusterIsActive, height, registrations, dockStore }: Props) => {
   const { id } = tab;
   const savedDescriptor = active ? tab.extensionTab : undefined;
   const descriptor = useMemo(() => {
@@ -125,7 +125,7 @@ const ExtensionDockTab = observer(({ tab, active, visible, height, registrations
               This tab's extension is unavailable or disabled. You can close the tab or enable its extension.
             </div>
           );
-        } else if (visible) {
+        } else if (clusterIsActive) {
           const Component = registration.components.Tab;
 
           mounted = true;
@@ -160,18 +160,9 @@ const ExtensionDockTab = observer(({ tab, active, visible, height, registrations
   );
 });
 
-const getDocumentVisibility = () => !document.hidden;
-
-const subscribeToDocumentVisibility = (onChange: () => void) => {
-  document.addEventListener("visibilitychange", onChange);
-
-  return () => document.removeEventListener("visibilitychange", onChange);
-};
-
-const NonInjectedExtensionDockTabs = observer(({ registrations, dockStore, clusterIsVisible }: Dependencies) => {
+const NonInjectedExtensionDockTabs = observer(({ registrations, dockStore, clusterIsActive }: Dependencies) => {
   const tabs = dockStore.tabs.filter((tab) => tab.kind === TabKind.EXTENSION);
   const [retainedTabs, setRetainedTabs] = useState(tabs);
-  const documentVisible = useSyncExternalStore(subscribeToDocumentVisibility, getDocumentVisibility);
   const currentIds = new Set(tabs.map((tab) => tab.id));
   const retiringTabs = retainedTabs.filter((tab) => !currentIds.has(tab.id));
 
@@ -188,7 +179,7 @@ const NonInjectedExtensionDockTabs = observer(({ registrations, dockStore, clust
       key={tab.id}
       tab={tab}
       active={currentIds.has(tab.id) && dockStore.isOpen && dockStore.selectedTabId === tab.id}
-      visible={clusterIsVisible.get() && documentVisible}
+      clusterIsActive={clusterIsActive.get()}
       height={dockStore.height}
       registrations={registrations}
       dockStore={dockStore}
@@ -205,9 +196,9 @@ export const ExtensionDockTabs = withInjectables<Dependencies>(NonInjectedExtens
       ...props,
       registrations: di.inject(registeredDockTabsInjectable),
       dockStore: di.inject(dockStoreInjectable),
-      // Root frame reports visibility through main's catalog synchronization.
-      // A retained cluster iframe's own activeEntity is not a visibility signal.
-      clusterIsVisible: computed(() => !!clusterId && catalogEntityRegistry.getById(clusterId)?.status.active === true),
+      // Cluster activity comes from catalog synchronization, not window visibility
+      // or the retained cluster iframe's own activeEntity.
+      clusterIsActive: computed(() => !!clusterId && catalogEntityRegistry.getById(clusterId)?.status.active === true),
     };
   },
 });

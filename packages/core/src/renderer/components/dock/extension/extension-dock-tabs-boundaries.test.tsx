@@ -6,7 +6,7 @@
 import { DiContextProvider } from "@ogre-tools/injectable-react";
 import { act, fireEvent, render } from "@testing-library/react";
 import { computed, observable } from "mobx";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import directoryForUserDataInjectable from "../../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import extensionInjectable from "../../../../extensions/extension-loader/extension/extension.injectable";
@@ -56,6 +56,18 @@ describe("extension dock lifetime and ownership boundaries", () => {
         <Dock />
       </DiContextProvider>,
     );
+
+  const mockDocumentVisibility = (initiallyHidden: boolean) => {
+    const hidden = vi.spyOn(document, "hidden", "get").mockReturnValue(initiallyHidden);
+
+    return {
+      setHidden(next: boolean) {
+        hidden.mockReturnValue(next);
+        fireEvent(document, new Event("visibilitychange"));
+      },
+      restore: () => hidden.mockRestore(),
+    };
+  };
 
   beforeEach(() => {
     registrations = [];
@@ -262,40 +274,140 @@ describe("extension dock lifetime and ownership boundaries", () => {
     expect(cleaned).not.toHaveBeenCalled();
   });
 
-  it("resamples document visibility when it changes between render and subscription", async () => {
-    const hidden = vi.spyOn(document, "hidden", "get").mockReturnValue(false);
-    const hideDuringCommit = vi.fn().mockImplementationOnce(() => {
-      hidden.mockReturnValue(true);
-      fireEvent(document, new Event("visibilitychange"));
-    });
-    const cleaned = vi.fn();
+  it.each([
+    { initial: "visible", end: "close" },
+    { initial: "hidden", end: "disable" },
+  ] as const)(
+    "preserves the draft and pauses one subscription from an initially $initial document, then cleans up on $end",
+    async ({ initial, end }) => {
+      let activeSubscriptions = 0;
+      let peakSubscriptions = 0;
+      const subscribe = () => {
+        activeSubscriptions++;
+        peakSubscriptions = Math.max(peakSubscriptions, activeSubscriptions);
+        return () => {
+          activeSubscriptions--;
+        };
+      };
+      const Content = () => {
+        const [draft, setDraft] = useState("");
+        useEffect(() => {
+          let unsubscribe: (() => void) | undefined;
+          const stop = () => {
+            unsubscribe?.();
+            unsubscribe = undefined;
+          };
+          const sync = () => {
+            if (document.hidden) stop();
+            else unsubscribe ??= subscribe();
+          };
+
+          document.addEventListener("visibilitychange", sync);
+          sync();
+
+          return () => {
+            document.removeEventListener("visibilitychange", sync);
+            stop();
+          };
+        }, []);
+
+        return <input aria-label="Draft" value={draft} onChange={(event) => setDraft(event.target.value)} />;
+      };
+      const visibility = mockDocumentVisibility(initial === "hidden");
+
+      try {
+        const extension = makeExtension("/subscription/package.json", [
+          { id: "resource", title: "Resource", components: { Tab: Content } },
+        ]);
+        await register(extension);
+        di.inject(dockStoreInjectable).tabs = [];
+        const tabId = extension.openDockTab("resource");
+        const view = renderDock();
+
+        expect(activeSubscriptions).toBe(initial === "hidden" ? 0 : 1);
+        fireEvent.change(view.getByRole("textbox", { name: "Draft" }), { target: { value: "Unsaved filter" } });
+
+        if (initial === "hidden") {
+          visibility.setHidden(false);
+          expect(activeSubscriptions).toBe(1);
+        }
+
+        for (let cycle = 0; cycle < 2; cycle++) {
+          visibility.setHidden(true);
+          expect(activeSubscriptions).toBe(0);
+          visibility.setHidden(false);
+          expect(activeSubscriptions).toBe(1);
+          expect(view.getByRole("textbox", { name: "Draft" })).toHaveValue("Unsaved filter");
+        }
+        expect(peakSubscriptions).toBe(1);
+
+        if (end === "disable") {
+          await act(async () => extension.disable());
+          expect(view.getByText(/extension is unavailable or disabled/)).toBeInTheDocument();
+        } else {
+          fireEvent.click(view.getByTestId(`dock-tab-close-for-${tabId}`));
+        }
+        expect(view.queryByRole("textbox", { name: "Draft" })).not.toBeInTheDocument();
+        expect(activeSubscriptions).toBe(0);
+
+        visibility.setHidden(true);
+        visibility.setHidden(false);
+        expect(activeSubscriptions).toBe(0);
+      } finally {
+        visibility.restore();
+      }
+    },
+  );
+
+  it("lets an in-flight fetch finish while hidden without aborting or restarting it", async () => {
+    const request = Promise.withResolvers<Response>();
+    const fetchMock = vi.spyOn(globalThis, "fetch").mockReturnValue(request.promise);
+    const visibility = mockDocumentVisibility(false);
     const Content = () => {
-      useLayoutEffect(() => {
-        hideDuringCommit();
-        return () => cleaned();
+      const [result, setResult] = useState("Loading summary");
+      useEffect(() => {
+        const controller = new AbortController();
+
+        void globalThis
+          .fetch("https://example.com/summary", { signal: controller.signal })
+          .then((response) => response.text())
+          .then((summary) => {
+            if (!controller.signal.aborted) setResult(summary);
+          });
+
+        return () => controller.abort();
       }, []);
-      return <span>Visibility-sensitive content</span>;
+
+      return <span>{result}</span>;
     };
+
     try {
-      const extension = makeExtension("/visibility-gap/package.json", [
-        { id: "resource", title: "Resource", components: { Tab: Content } },
+      const extension = makeExtension("/request/package.json", [
+        { id: "summary", title: "Summary", components: { Tab: Content } },
       ]);
       await register(extension);
       di.inject(dockStoreInjectable).tabs = [];
-      extension.openDockTab("resource");
+      extension.openDockTab("summary");
       const view = renderDock();
-      expect(hideDuringCommit).toHaveBeenCalledTimes(1);
-      expect(cleaned).toHaveBeenCalledTimes(1);
-      expect(view.queryByText("Visibility-sensitive content")).not.toBeInTheDocument();
-      hidden.mockReturnValue(false);
-      fireEvent(document, new Event("visibilitychange"));
-      expect(view.getByText("Visibility-sensitive content")).toBeInTheDocument();
+      expect(view.getByText("Loading summary")).toBeInTheDocument();
+      expect(fetchMock).toHaveBeenCalledTimes(1);
+      const signal = fetchMock.mock.calls[0][1]?.signal;
+
+      visibility.setHidden(true);
+      expect(signal?.aborted).toBe(false);
+      await act(async () => request.resolve(new Response("Summary received")));
+      visibility.setHidden(false);
+
+      expect(view.getByText("Summary received")).toBeInTheDocument();
+      expect(fetchMock).toHaveBeenCalledTimes(1);
+      expect(signal?.aborted).toBe(false);
     } finally {
-      hidden.mockRestore();
+      visibility.restore();
+      fetchMock.mockRestore();
     }
   });
 
-  it.each(["minimize", "cluster", "document", "selection", "disable"] as const)(
+  it.each(["minimize", "cluster", "selection", "disable"] as const)(
     "stops component interval work on %s and starts a fresh visible lifetime",
     async (reason) => {
       const tick = vi.fn();
@@ -324,45 +436,32 @@ describe("extension dock lifetime and ownership boundaries", () => {
       const view = renderDock();
       act(() => vi.advanceTimersByTime(300));
       expect(tick).toHaveBeenCalledTimes(3);
-      const hidden = vi.spyOn(document, "hidden", "get");
 
-      try {
-        await act(async () => {
-          if (reason === "minimize") store.close();
-          if (reason === "cluster") visible.active = false;
-          if (reason === "document") {
-            hidden.mockReturnValue(true);
-            fireEvent(document, new Event("visibilitychange"));
-          }
-          if (reason === "selection") extension.openDockTab("idle");
-          if (reason === "disable") await extension.disable();
-        });
-        expect(view.queryByText("Live content")).not.toBeInTheDocument();
-        expect(cleaned).toHaveBeenCalledTimes(1);
-        act(() => vi.advanceTimersByTime(500));
-        expect(tick).toHaveBeenCalledTimes(3);
+      await act(async () => {
+        if (reason === "minimize") store.close();
+        if (reason === "cluster") visible.active = false;
+        if (reason === "selection") extension.openDockTab("idle");
+        if (reason === "disable") await extension.disable();
+      });
+      expect(view.queryByText("Live content")).not.toBeInTheDocument();
+      expect(cleaned).toHaveBeenCalledTimes(1);
+      act(() => vi.advanceTimersByTime(500));
+      expect(tick).toHaveBeenCalledTimes(3);
 
-        await act(async () => {
-          if (reason === "minimize") store.open();
-          if (reason === "cluster") visible.active = true;
-          if (reason === "document") {
-            hidden.mockReturnValue(false);
-            fireEvent(document, new Event("visibilitychange"));
-          }
-          if (reason === "selection") store.selectTab(selected);
-          if (reason === "disable") await extension.enable();
-        });
-        expect(view.getByText("Live content")).toBeInTheDocument();
-        expect(mounted).toHaveBeenCalledTimes(2);
-        act(() => vi.advanceTimersByTime(100));
-        expect(tick).toHaveBeenCalledTimes(4);
-        view.unmount();
-        expect(cleaned).toHaveBeenCalledTimes(2);
-        act(() => vi.advanceTimersByTime(100));
-        expect(tick).toHaveBeenCalledTimes(4);
-      } finally {
-        hidden.mockRestore();
-      }
+      await act(async () => {
+        if (reason === "minimize") store.open();
+        if (reason === "cluster") visible.active = true;
+        if (reason === "selection") store.selectTab(selected);
+        if (reason === "disable") await extension.enable();
+      });
+      expect(view.getByText("Live content")).toBeInTheDocument();
+      expect(mounted).toHaveBeenCalledTimes(2);
+      act(() => vi.advanceTimersByTime(100));
+      expect(tick).toHaveBeenCalledTimes(4);
+      view.unmount();
+      expect(cleaned).toHaveBeenCalledTimes(2);
+      act(() => vi.advanceTimersByTime(100));
+      expect(tick).toHaveBeenCalledTimes(4);
     },
   );
 

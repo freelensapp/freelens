@@ -33,7 +33,11 @@ export interface DockTabRegistration {
   title: string;
   enabled?: IComputedValue<boolean>;
   components: {
-    /** Mounted only while selected, expanded, and visible. Clean up work on unmount. */
+    /**
+     * Mounted while the tab is selected, the dock is expanded, the contribution
+     * is enabled, and the hosting cluster is active. Hiding the window does
+     * not unmount the view. Clean up work on unmount.
+     */
     Tab: ComponentType<ExtensionDockTabProps>;
   };
 }

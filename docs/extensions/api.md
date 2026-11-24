@@ -664,7 +664,7 @@ The host persists a versioned JSON descriptor in the existing per-cluster dock
 storage, identified by the exact extension package name and local type ID.
 Neither the installation path nor transient React state is persisted as an
 identity. The host gives the component a detached, deeply frozen parameter
-snapshot and keeps `params` and `close` stable throughout each visible mount.
+snapshot and keeps `params` and `close` stable throughout each mount.
 Functions, class instances, cycles, undefined and nonfinite numbers are
 rejected. Extensions validate their own parameter schema and resource
 identity and keep credentials and large records out of these descriptors.
@@ -673,12 +673,19 @@ A missing, disabled or not-yet-loaded contribution leaves the saved tab in
 place, with an unavailable view and working native close actions. Loading or
 enabling it restores content reactively. Malformed descriptors and unknown
 descriptor versions show an invalid-parameters view and remain closable.
-Content mounts only while selected, expanded, enabled, the hosting cluster is
-active in the catalog, and the document is visible. Unknown cluster visibility
-suspends it. Each visible mount owns its React state and error boundary;
-leaving it unmounts content, and returning starts a fresh mount. Extensions
-must release timers, subscriptions and watches and suppress stale async
-results in cleanup. This does not cancel work started outside the component.
+Content mounts only while the tab is selected, the dock is expanded, the
+contribution is enabled, and the hosting cluster is active in the catalog.
+Unknown cluster activity prevents mounting. Closing the tab or losing one of
+those conditions unmounts the content. The next mount starts with fresh React
+state and an error boundary. Extensions must release timers, subscriptions and
+watches and suppress stale async results in cleanup. This does not cancel work
+started outside the component.
+
+Changing document visibility alone does not mount, unmount, or retry a tab.
+An eligible view keeps its state when the window is hidden. Extensions can
+read `document.visibilityState` and listen for `visibilitychange` to pause
+work they own without discarding the view. No extra registration option is
+needed to continue work, but Electron can throttle timers in a hidden window.
 
 Opening throws before creating a tab from a root frame, for an unknown or
 disabled type, while asynchronous cluster eligibility is pending or false, or

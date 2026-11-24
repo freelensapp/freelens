@@ -161,8 +161,39 @@ describe("extension dock error isolation", () => {
     },
   );
 
+  it("keeps a failed tab on hide and show, then retries it after switching tabs", async () => {
+    let fail = true;
+    const Content = () => {
+      if (fail) throw new Error("First mount failed");
+      return <span>Recovered content</span>;
+    };
+    const broken = await register("@example/failed-render", [
+      { id: "broken", title: "Broken", components: { Tab: Content } },
+    ]);
+    const healthy = await registerHealthy();
+    const neighbor = healthy.openDockTab("healthy");
+    const selected = broken.openDockTab("broken");
+    const store = di.inject(dockStoreInjectable);
+    vi.spyOn(console, "error").mockImplementation(() => {});
+    const hidden = vi.spyOn(document, "hidden", "get").mockReturnValue(false);
+    const view = renderDock();
+    expect(view.getByRole("alert")).toHaveTextContent("First mount failed");
+
+    fail = false;
+    hidden.mockReturnValue(true);
+    fireEvent(document, new Event("visibilitychange"));
+    hidden.mockReturnValue(false);
+    fireEvent(document, new Event("visibilitychange"));
+    expect(view.getByRole("alert")).toHaveTextContent("First mount failed");
+
+    act(() => store.selectTab(neighbor));
+    expect(view.getByText("Healthy content")).toBeInTheDocument();
+    act(() => store.selectTab(selected));
+    expect(view.getByText("Recovered content")).toBeInTheDocument();
+  });
+
   it.each([
-    ...(["selection", "close", "minimize", "cluster", "document", "disable"] as const).map((reason) => ({
+    ...(["selection", "close", "minimize", "cluster", "extension close", "disable"] as const).map((reason) => ({
       reason,
       cleanup: "effect" as const,
     })),
@@ -185,9 +216,16 @@ describe("extension dock error isolation", () => {
         };
       };
       const useCleanupEffect = cleanup === "layout" ? useLayoutEffect : useEffect;
-      const EffectContent = () => {
+      const EffectContent = ({ close }: ExtensionDockTabProps) => {
         useCleanupEffect(start, []);
-        return <span>Cleanup content</span>;
+        return (
+          <>
+            <span>Cleanup content</span>
+            <button type="button" onClick={close}>
+              Close from extension
+            </button>
+          </>
+        );
       };
       class ClassContent extends Component<ExtensionDockTabProps> {
         private cleanup?: () => void;
@@ -213,7 +251,6 @@ describe("extension dock error isolation", () => {
       const selected = broken.openDockTab("broken");
       const store = di.inject(dockStoreInjectable);
       const log = vi.spyOn(console, "error").mockImplementation(() => {});
-      const hidden = vi.spyOn(document, "hidden", "get");
       vi.useFakeTimers({ toFake: ["setInterval", "clearInterval"] });
       const view = renderDock();
 
@@ -225,9 +262,8 @@ describe("extension dock error isolation", () => {
           if (reason === "close") store.closeTab(selected);
           if (reason === "minimize") store.close();
           if (reason === "cluster") visible.active = false;
-          if (reason === "document") {
-            hidden.mockReturnValue(true);
-            fireEvent(document, new Event("visibilitychange"));
+          if (reason === "extension close") {
+            fireEvent.click(view.getByRole("button", { name: "Close from extension" }));
           }
           if (reason === "disable") await broken.disable();
         });
@@ -241,12 +277,10 @@ describe("extension dock error isolation", () => {
           store.selectTab(neighbor);
           store.open();
           visible.active = true;
-          hidden.mockReturnValue(false);
-          fireEvent(document, new Event("visibilitychange"));
           if (reason === "disable") await broken.enable();
         });
         expect(view.getByText("Healthy content")).toBeInTheDocument();
-        if (reason !== "close") {
+        if (reason !== "close" && reason !== "extension close") {
           act(() => store.selectTab(selected));
           expect(view.getByText("Cleanup content")).toBeInTheDocument();
           expect(mounted).toHaveBeenCalledTimes(2);
@@ -256,7 +290,6 @@ describe("extension dock error isolation", () => {
         }
         view.unmount();
       } finally {
-        hidden.mockRestore();
         log.mockRestore();
         vi.useRealTimers();
       }

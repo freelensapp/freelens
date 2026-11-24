@@ -8,16 +8,9 @@ Setting `engines.freelens` alone does not add the API to a host without it.
 
 ```tsx
 import { Renderer } from "@freelensapp/extensions";
-import React, { useEffect } from "react";
+import React from "react";
 
-function TargetSummary({ tabId, params, close }: Renderer.ExtensionDockTabProps) {
-  useEffect(() => {
-    // Start work for this visible mount, after validating your target schema.
-    return () => {
-      // Stop timers, subscriptions and watches; ignore stale async results.
-    };
-  }, [tabId]);
-
+function TargetSummary({ params, close }: Renderer.ExtensionDockTabProps) {
   return (
     <div>
       {String(params.pod)} <button onClick={close}>Close</button>
@@ -59,16 +52,57 @@ recovers reactively when its contribution returns. An invalid descriptor or
 unknown descriptor version displays an invalid-parameters message. Both views
 retain native close actions.
 
-Freelens mounts content only while selected, the dock is expanded, the type is
-enabled, the hosting cluster's catalog status is active, and the document is
-visible. Switching tabs or clusters, minimizing the dock or window, or
-disabling the contribution ends that mount. Catalog visibility synchronization
-is asynchronous. Local React state resets on the next mount; keep durable view
-state in your own store keyed by `tabId` when necessary. The host isolates a
-throwing instance with an error boundary, so other tabs remain usable.
+Freelens mounts content while the tab is selected, the dock is expanded, the
+contribution is enabled, and the hosting cluster's catalog status is active.
+Closing or deselecting the tab, collapsing the dock, switching away from its
+cluster, and disabling the contribution end that mount. Catalog activity updates
+are asynchronous. Local React state resets on the next mount. If state needs to
+last across mounts, keep it in your own store keyed by `tabId`. The host isolates
+a throwing instance with an error boundary, so other tabs remain usable.
 
-Effect cleanup owns work started by that mount. The host cannot cancel timers
-or requests started elsewhere by your extension. Keep credentials out of saved
-parameters and clean up extension-wide work in `onDeactivate`.
+Hiding or minimizing the Freelens window does not end that mount. Draft text,
+filters, and scroll position can stay where you left them. Nothing extra is
+needed to let a request continue. [Electron can throttle timers in hidden
+windows](https://www.electronjs.org/docs/latest/api/browser-window#page-visibility),
+so don't rely on a dock view for work that must run on a strict schedule.
+
+To pause a particular subscription while hidden, use the
+[Page Visibility API](https://html.spec.whatwg.org/multipage/interaction.html#page-visibility).
+Pass a stable `subscribe` function that starts the subscription and returns its
+cleanup. The effect reads the initial state, then stops or starts only that
+subscription as visibility changes. It leaves the view's React state alone.
+
+```tsx
+import { useEffect } from "react";
+
+function useVisibleSubscription(subscribe: () => () => void) {
+  useEffect(() => {
+    let unsubscribe: (() => void) | undefined;
+
+    const stop = () => {
+      unsubscribe?.();
+      unsubscribe = undefined;
+    };
+
+    const sync = () => {
+      if (document.hidden) stop();
+      else unsubscribe ??= subscribe();
+    };
+
+    document.addEventListener("visibilitychange", sync);
+    sync();
+
+    return () => {
+      document.removeEventListener("visibilitychange", sync);
+      stop();
+    };
+  }, [subscribe]);
+}
+```
+
+On unmount, clean up work the view started and ignore stale async results. The
+host cannot cancel timers or requests started elsewhere by your extension.
+Keep credentials out of saved parameters and clean up extension-wide work in
+`onDeactivate`.
 
 The full public contract is [C6](./api.md#c6-registration-and-the-extension-instance).

@@ -292,20 +292,21 @@ describe("extension dock tabs", () => {
     expect(di.inject(dockStoreInjectable).tabs).toHaveLength(0);
   });
 
-  it("suspends content when the document is hidden", () => {
+  it("preserves selected tab state without cleanup when the document is hidden and shown", () => {
     const id = extension.openDockTab("readable-logs", { params: { pod: "first" } });
-    const view = renderDock();
-    const hidden = vi.spyOn(document, "hidden", "get");
+    const hidden = vi.spyOn(document, "hidden", "get").mockReturnValue(false);
 
     try {
+      const view = renderDock();
+      fireEvent.click(view.getByRole("button", { name: "Count 0" }));
+
       hidden.mockReturnValue(true);
       fireEvent(document, new Event("visibilitychange"));
-      expect(view.queryByText("first")).not.toBeInTheDocument();
-      expect(cleanup).toHaveBeenCalledWith(id);
 
       hidden.mockReturnValue(false);
       fireEvent(document, new Event("visibilitychange"));
-      expect(view.getByText("first")).toBeInTheDocument();
+      expect(view.getByRole("button", { name: "Count 1" })).toBeInTheDocument();
+      expect(cleanup).not.toHaveBeenCalledWith(id);
     } finally {
       hidden.mockRestore();
     }
