@@ -463,6 +463,32 @@
       "sha256": "1fb97750cddc10590666f7bc4ee7f670b9ab122b385c950cd56bd81c6ae4aae0"
     }
   },
+  "1.35.11": {
+    "darwin/x64": {
+      "url": "https://dl.k8s.io/release/v1.35.11/bin/darwin/amd64/kubectl",
+      "sha256": "528798e1517180416df80b800ba520c3a33077d9fb7ce8999b75cebd4fc8fd01"
+    },
+    "darwin/arm64": {
+      "url": "https://dl.k8s.io/release/v1.35.11/bin/darwin/arm64/kubectl",
+      "sha256": "2eb5ac1342e3f5e18b95536e40691940995a9923e72c031b763ff3acbd7107b9"
+    },
+    "linux/x64": {
+      "url": "https://dl.k8s.io/release/v1.35.11/bin/linux/amd64/kubectl",
+      "sha256": "eeddea383a302f9a633a292af1d886054c7cf152fb407f827f12bfe286dc46d6"
+    },
+    "linux/arm64": {
+      "url": "https://dl.k8s.io/release/v1.35.11/bin/linux/arm64/kubectl",
+      "sha256": "e69973a0b8c23412f2f6bba6a91b98579a1787c4d731fb4cb5987ba273763318"
+    },
+    "windows/x64": {
+      "url": "https://dl.k8s.io/release/v1.35.11/bin/windows/amd64/kubectl.exe",
+      "sha256": "5716da856ab16cf7d14a3b3b05582d531e8a324c3f4a21f844fdeb8bfd80b77f"
+    },
+    "windows/arm64": {
+      "url": "https://dl.k8s.io/release/v1.35.11/bin/windows/arm64/kubectl.exe",
+      "sha256": "dc5bdca6cab70e96964b9d3a528748a86adf37152aba29a68aa578da27d21e1b"
+    }
+  },
   "1.36.3": {
     "darwin/x64": {
       "url": "https://dl.k8s.io/release/v1.36.3/bin/darwin/amd64/kubectl",
@@ -541,6 +567,32 @@
       "sha256": "6ead75492b6a3376de2e92fb2a96fd1f1df2d463a078d43e9c71928c3802b607"
     }
   },
+  "1.36.7": {
+    "darwin/x64": {
+      "url": "https://dl.k8s.io/release/v1.36.7/bin/darwin/amd64/kubectl",
+      "sha256": "ca582ece9c1156578698c903ea6c3da015da753b3206e1274cbaa2be86d1545b"
+    },
+    "darwin/arm64": {
+      "url": "https://dl.k8s.io/release/v1.36.7/bin/darwin/arm64/kubectl",
+      "sha256": "a6d4cd1d1b3806b152595637d3925f9cf349ce40e1809298829aba7670f6d4e9"
+    },
+    "linux/x64": {
+      "url": "https://dl.k8s.io/release/v1.36.7/bin/linux/amd64/kubectl",
+      "sha256": "b08f96b43904747897fe569b3c51056b00ddfc67847f6db1bf9fe0c9583a2d26"
+    },
+    "linux/arm64": {
+      "url": "https://dl.k8s.io/release/v1.36.7/bin/linux/arm64/kubectl",
+      "sha256": "4e83edb4cc75beae9dc7cfb42be71899d5397a7b6a2384fbe1ae163d4f544aaf"
+    },
+    "windows/x64": {
+      "url": "https://dl.k8s.io/release/v1.36.7/bin/windows/amd64/kubectl.exe",
+      "sha256": "68d9e76bca751214a5757a6903b24e490e448f6510fc8a47906b787c98823e0a"
+    },
+    "windows/arm64": {
+      "url": "https://dl.k8s.io/release/v1.36.7/bin/windows/arm64/kubectl.exe",
+      "sha256": "fbc845c34172a15df5ccb97888534ed3c3348f081b51ef6f0ca005a415ee168c"
+    }
+  },
   "1.37.1": {
     "darwin/x64": {
       "url": "https://dl.k8s.io/release/v1.37.1/bin/darwin/amd64/kubectl",
@@ -591,6 +643,32 @@
     "windows/arm64": {
       "url": "https://dl.k8s.io/release/v1.37.2/bin/windows/arm64/kubectl.exe",
       "sha256": "0f5965e47e4d864cf3409d8a744560b335a7c8244d0cab25e5bbba38738ef9ae"
+    }
+  },
+  "1.37.3": {
+    "darwin/x64": {
+      "url": "https://dl.k8s.io/release/v1.37.3/bin/darwin/amd64/kubectl",
+      "sha256": "82db1bc2b466e9f46ed36d609d8c10523a425664e6e648a666df252b9502fe9e"
+    },
+    "darwin/arm64": {
+      "url": "https://dl.k8s.io/release/v1.37.3/bin/darwin/arm64/kubectl",
+      "sha256": "7ac1234e7731e902e5ab2153e2ed29bbe7abddd7b0be5ffd94afb7df47da8f27"
+    },
+    "linux/x64": {
+      "url": "https://dl.k8s.io/release/v1.37.3/bin/linux/amd64/kubectl",
+      "sha256": "9a1b55af2795b25dd288dbef62387db9b5530087ab918d28c6ad067f2e3cb07c"
+    },
+    "linux/arm64": {
+      "url": "https://dl.k8s.io/release/v1.37.3/bin/linux/arm64/kubectl",
+      "sha256": "da160b41491cc5c5e575d78bb665810fb900f70fad666d834094b24ec56d304f"
+    },
+    "windows/x64": {
+      "url": "https://dl.k8s.io/release/v1.37.3/bin/windows/amd64/kubectl.exe",
+      "sha256": "98ee2ce86421b2e2ff24b4d3c081883487694371b8ca2e40e125f413677a5337"
+    },
+    "windows/arm64": {
+      "url": "https://dl.k8s.io/release/v1.37.3/bin/windows/arm64/kubectl.exe",
+      "sha256": "bf55dc93d14e9a49a57224e78088b6bb387564ff94c69090ac0ed22120f7f1f3"
     }
   }
 }
