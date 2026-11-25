@@ -15,7 +15,7 @@
 
 .selected {
   background-color: var(--blue);
-  color: white;
+  color: var(--textColorOnPrimary);
   border-radius: 2px;
   width: 100%;
 }
@@ -41,7 +41,7 @@
 }
 
 .selected {
-  color: white;
+  color: var(--textColorOnPrimary);
   background-color: var(--blue);
 }
 

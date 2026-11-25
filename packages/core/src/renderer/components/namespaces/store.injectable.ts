@@ -12,6 +12,7 @@ import { kubeObjectStoreInjectionToken } from "../../../common/k8s-api/api-manag
 import selectedNamespacesStorageInjectable from "../../../features/namespace-filtering/renderer/storage.injectable";
 import clusterConfiguredAccessibleNamespacesInjectable from "../../cluster/accessible-namespaces.injectable";
 import clusterFrameContextForClusterScopedResourcesInjectable from "../../cluster-frame-context/for-cluster-scoped-resources.injectable";
+import watchReconnectInjectable from "../../k8s/watch-reconnect/watch-reconnect.injectable";
 import { NamespaceStore } from "./store";
 
 const namespaceStoreInjectable = getInjectable({
@@ -28,6 +29,7 @@ const namespaceStoreInjectable = getInjectable({
     return new NamespaceStore(
       {
         context: di.inject(clusterFrameContextForClusterScopedResourcesInjectable),
+        watchReconnect: di.inject(watchReconnectInjectable),
         storage: di.inject(selectedNamespacesStorageInjectable),
         clusterConfiguredAccessibleNamespaces: di.inject(clusterConfiguredAccessibleNamespacesInjectable),
         logger: di.inject(loggerInjectionToken),

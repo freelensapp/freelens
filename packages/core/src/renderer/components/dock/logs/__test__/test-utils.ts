@@ -3,6 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { vi } from "vitest";
 import { defaultLogViewerPreferences } from "../../../../../features/user-preferences/common/preferences-helpers";
 import { SearchStore } from "../../../../search-store/search-store";
 import { LogTabViewModel } from "../logs-view-model";
@@ -23,7 +24,8 @@ export function getDefaultOnePodLogTabData(overrides: Partial<LogTabData> = {}):
     selectedContainer: dockerPod.getContainers()[0].name,
     namespace: dockerPod.getNs(),
     showPrevious: false,
-    ...defaultLogViewerPreferences,
+    showTimestamps: defaultLogViewerPreferences.showTimestamps,
+    showWordWrap: defaultLogViewerPreferences.showWordWrap,
     ...overrides,
   };
 }
@@ -45,10 +47,12 @@ export function createMockLogTabViewModel(
     stopLoadingLogs: vi.fn(),
     getPodById: vi.fn(),
     getPodsByOwnerId: vi.fn(),
+    getWorkloadPods: vi.fn(() => []),
     areLogsPresent: vi.fn(() => false),
     searchStore: new SearchStore(),
     downloadLogs: vi.fn(),
     downloadAllLogs: vi.fn(),
+    downloadAllLogsForPods: vi.fn(),
     userPreferencesState,
     ...deps,
   });

@@ -11,7 +11,7 @@ import { getRandomIdInjectionToken } from "@freelensapp/random";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import autoBindReact from "auto-bind/react";
-import { makeObservable, observable, reaction } from "mobx";
+import { observable, reaction } from "mobx";
 import { observer } from "mobx-react";
 import React, { isValidElement } from "react";
 import openConfirmDialogInjectable from "../confirm-dialog/open.injectable";
@@ -67,14 +67,13 @@ class NonInjectedMenuActions extends React.Component<MenuActionsProps & Dependen
 
   private readonly disposers: (() => void)[] = [];
 
-  @observable isOpen = !!this.props.toolbar;
-  @observable openedViaCursor = false;
-  @observable cursorPosition: { x: number; y: number } | null = null;
-  @observable contextTarget: HTMLElement | null = null;
+  @observable accessor isOpen = !!this.props.toolbar;
+  @observable accessor openedViaCursor = false;
+  @observable accessor cursorPosition: { x: number; y: number } | null = null;
+  @observable accessor contextTarget: HTMLElement | null = null;
 
   constructor(props: MenuActionsProps & Dependencies) {
     super(props);
-    makeObservable(this);
     autoBindReact(this);
   }
 

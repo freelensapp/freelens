@@ -4,9 +4,14 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import "@testing-library/jest-dom";
-import { fireEvent, screen, waitFor, within } from "@testing-library/react";
-import { observable, runInAction, when } from "mobx";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+
+import type { MockedFunction } from "vitest";
+
+import "@testing-library/jest-dom/vitest";
+import assert from "node:assert";
+import { fireEvent, screen, waitFor } from "@testing-library/react";
+import { observable, when } from "mobx";
 import directoryForDownloadsInjectable from "../../../../common/app-paths/directory-for-downloads/directory-for-downloads.injectable";
 import directoryForUserDataInjectable from "../../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import removePathInjectable from "../../../../common/fs/remove.injectable";
@@ -87,9 +92,11 @@ describe("Extensions", () => {
           engines: { freelens: "^0.1.0" },
         },
         absolutePath: "/absolute/path",
-        manifestPath: "/symlinked/path/package.json",
+        manifestPath: "/absolute/path/package.json",
         isEnabled: true,
         isCompatible: true,
+        isManaged: true,
+        isVerified: true,
       });
 
       extensionDiscovery.uninstallExtension = vi.fn(() => Promise.resolve());
@@ -145,7 +152,7 @@ describe("Extensions", () => {
     });
 
     fireEvent.change(
-      await screen.findByPlaceholderText("File path or URL", {
+      await screen.findByPlaceholderText("URL, or path to a package or directory", {
         exact: false,
       }),
       {
@@ -187,179 +194,108 @@ describe("Extensions", () => {
     expect(container.querySelector(".Spinner")).not.toBeInTheDocument();
   });
 
-  it("shows Update button in the marketplace when a newer version is available", async () => {
-    render(<Extensions />);
+  describe("the status column", () => {
+    const testExtension = {
+      id: "extensionId",
+      manifest: { name: "test", version: "1.2.3", engines: { freelens: "^0.1.0" } },
+      absolutePath: "/absolute/path",
+      manifestPath: "/absolute/path/package.json",
+      isEnabled: true,
+      isCompatible: true,
+      isManaged: true,
+      isVerified: true,
+    };
 
-    fireEvent.click(await screen.findByText("Marketplace"));
+    const statusCell = async () => {
+      const table = await screen.findByTestId("extensions-table");
+      const cell = table.querySelector("tbody tr td:nth-child(3) > div");
 
-    const updateButton = await screen.findByRole("button", { name: /update/i });
-    expect(updateButton).toBeInTheDocument();
-  });
+      assert(cell);
 
-  it("installs the new version when Update is clicked in the marketplace", async () => {
-    installExtensionFromInput.mockImplementation(async () => {});
+      return cell;
+    };
 
-    render(<Extensions />);
-
-    fireEvent.click(await screen.findByText("Marketplace"));
-
-    fireEvent.click(await screen.findByRole("button", { name: /update/i }));
-
-    await waitFor(() => {
-      expect(installExtensionFromInput).toHaveBeenCalledWith("test@2.0.0");
+    beforeEach(() => {
+      extensionDiscovery.isLoaded = true;
     });
 
-    // complete the update so the pending update tracking settles
-    runInAction(() => {
-      extensionLoader.addExtension({
-        id: "extensionId",
-        manifest: {
-          name: "test",
-          version: "2.0.0",
-          engines: { freelens: "^0.1.0" },
-        },
-        absolutePath: "/absolute/path",
-        manifestPath: "/symlinked/path/package.json",
-        isBundled: false,
-        isEnabled: true,
-        isCompatible: true,
-      });
-    });
-  });
+    it("shows Enabled for an enabled extension which loaded", async () => {
+      render(<Extensions />);
 
-  it("keeps showing the Update spinner while the update is in progress and shows Uninstall when it completes", async () => {
-    installExtensionFromInput.mockImplementation(async () => {});
+      const cell = await statusCell();
 
-    render(<Extensions />);
-
-    fireEvent.click(await screen.findByText("Marketplace"));
-
-    fireEvent.click(await screen.findByRole("button", { name: /update/i }));
-
-    // simulate the uninstall phase of the update: the extension is removed from the loader
-    runInAction(() => {
-      extensionLoader.removeExtension("extensionId");
+      expect(cell).toHaveTextContent("Enabled");
+      expect(cell).not.toHaveAttribute("title");
     });
 
-    const card = await screen.findByTestId("marketplace-extension-card");
-    const button = within(card).getByRole("button");
+    it("shows Disabled for a disabled extension", async () => {
+      extensionLoader.addExtension({ ...testExtension, isEnabled: false });
+      render(<Extensions />);
 
-    expect(button).toBeDisabled();
-    expect(button.querySelector(".Spinner")).toBeInTheDocument();
-    expect(within(card).queryByRole("button", { name: /install/i })).not.toBeInTheDocument();
-    expect(within(card).queryByRole("button", { name: /update/i })).not.toBeInTheDocument();
-
-    // simulate the reinstall phase: the extension is back at the new version
-    runInAction(() => {
-      extensionLoader.addExtension({
-        id: "extensionId",
-        manifest: {
-          name: "test",
-          version: "2.0.0",
-          engines: { freelens: "^0.1.0" },
-        },
-        absolutePath: "/absolute/path",
-        manifestPath: "/symlinked/path/package.json",
-        isBundled: false,
-        isEnabled: true,
-        isCompatible: true,
-      });
+      expect(await statusCell()).toHaveTextContent("Disabled");
     });
 
-    const uninstallButton = await within(await screen.findByTestId("installed-extension-card")).findByRole("button", {
-      name: /uninstall/i,
-    });
-    expect(uninstallButton).toBeInTheDocument();
-  });
+    it("shows Incompatible for an extension built for another version", async () => {
+      extensionLoader.addExtension({ ...testExtension, isCompatible: false });
+      render(<Extensions />);
 
-  it("renders the package title as a link when the marketplace extension has a repository", async () => {
-    di.override(requestMarketplaceExtensionsInjectable, () => async () => [
-      marketplaceMockExtension({ repository: "https://github.com/foo/bar" }),
-    ]);
-
-    render(<Extensions />);
-
-    fireEvent.click(await screen.findByText("Marketplace"));
-
-    expect(await screen.findByTestId("extension-package-title-link")).toBeInTheDocument();
-  });
-
-  it("stays on the marketplace tab after uninstalling an extension from the marketplace", async () => {
-    di.override(requestMarketplaceExtensionsInjectable, () => async () => [
-      marketplaceMockExtension({ version: "1.2.3" }),
-    ]);
-
-    render(
-      <>
-        <Extensions />
-        <ConfirmDialog />
-      </>,
-    );
-
-    fireEvent.click(await screen.findByText("Marketplace"));
-
-    fireEvent.click(await screen.findByRole("button", { name: /uninstall/i }));
-    fireEvent.click(await screen.findByText("Yes"));
-
-    // complete the uninstall by removing the extension from the loader
-    runInAction(() => {
-      extensionLoader.removeExtension("extensionId");
+      expect(await statusCell()).toHaveTextContent("Incompatible");
     });
 
-    await waitFor(() => {
-      expect(screen.getByPlaceholderText("Search Extensions...")).toBeInTheDocument();
+    it("shows Failed to load for an enabled extension which failed, with where and why in the tooltip", async () => {
+      vi.spyOn(extensionLoader, "getLoadFailures").mockReturnValue([
+        { process: "main", stage: "activate", message: "no activating today" },
+        { process: "renderer", stage: "import", message: "Failed to fetch dynamically imported module" },
+      ]);
+      render(<Extensions />);
+
+      const cell = await statusCell();
+
+      expect(cell).toHaveTextContent("Failed to load");
+      expect(cell).toHaveAttribute(
+        "title",
+        "Failed in the main process while running onActivate: no activating today\n" +
+          "Failed in the renderer process while importing its entry point: Failed to fetch dynamically imported module",
+      );
     });
-  });
 
-  it("stays on the marketplace tab after the Extensions page remounts", async () => {
-    const { unmount } = render(<Extensions />);
+    it("keeps Disable and Uninstall available for an extension which failed to load", async () => {
+      vi.spyOn(extensionLoader, "getLoadFailures").mockReturnValue([
+        { process: "renderer", stage: "import", message: "missing" },
+      ]);
+      render(<Extensions />);
 
-    fireEvent.click(await screen.findByText("Marketplace"));
+      const table = await screen.findByTestId("extensions-table");
+      const menuTrigger = table.querySelector("tbody tr td:last-child .Icon");
 
-    await screen.findByPlaceholderText("Search Extensions...");
+      assert(menuTrigger);
+      fireEvent.click(menuTrigger);
 
-    unmount();
-
-    render(<Extensions />);
-
-    expect(await screen.findByPlaceholderText("Search Extensions...")).toBeInTheDocument();
-  });
-
-  it("allows uninstalling an extension with an available update from the card menu", async () => {
-    render(
-      <>
-        <Extensions />
-        <ConfirmDialog />
-      </>,
-    );
-
-    fireEvent.click(await screen.findByText("Marketplace"));
-
-    const card = await screen.findByTestId("installed-extension-card");
-    const menuTrigger = within(card).getByText("more_vert");
-
-    fireEvent.click(menuTrigger);
-
-    fireEvent.click(await screen.findByText("Uninstall"));
-
-    fireEvent.click(await screen.findByText("Yes"));
-
-    await waitFor(() => {
-      expect(extensionDiscovery.uninstallExtension).toHaveBeenCalledWith("extensionId");
+      expect(await screen.findByText("Disable")).toHaveAttribute("aria-disabled", "false");
+      expect(await screen.findByText("Uninstall")).toHaveAttribute("aria-disabled", "false");
     });
-  });
 
-  it("shows Uninstall button in the marketplace when the installed version is up to date", async () => {
-    di.override(requestMarketplaceExtensionsInjectable, () => async () => [
-      marketplaceMockExtension({ version: "1.2.3" }),
-    ]);
+    it("offers Enable in the menu of a disabled extension", async () => {
+      extensionLoader.addExtension({ ...testExtension, isEnabled: false });
+      render(<Extensions />);
 
-    render(<Extensions />);
+      const table = await screen.findByTestId("extensions-table");
+      const menuTrigger = table.querySelector("tbody tr td:last-child .Icon");
 
-    fireEvent.click(await screen.findByText("Marketplace"));
+      assert(menuTrigger);
+      fireEvent.click(menuTrigger);
 
-    const uninstallButton = await screen.findByRole("button", { name: /uninstall/i });
-    expect(uninstallButton).toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: /update/i })).not.toBeInTheDocument();
+      expect(await screen.findByText("Enable")).toHaveAttribute("aria-disabled", "false");
+    });
+
+    it("shows Disabled, not Failed to load, once a failed extension is disabled", async () => {
+      vi.spyOn(extensionLoader, "getLoadFailures").mockReturnValue([
+        { process: "main", stage: "import", message: "missing" },
+      ]);
+      extensionLoader.addExtension({ ...testExtension, isEnabled: false });
+      render(<Extensions />);
+
+      expect(await statusCell()).toHaveTextContent("Disabled");
+    });
   });
 });

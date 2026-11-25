@@ -4,6 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { beforeEach, describe, expect, it } from "vitest";
 import welcomeRouteInjectable from "../../common/front-end-routing/routes/welcome/welcome-route.injectable";
 import welcomeRouteConfigInjectable from "../../common/front-end-routing/routes/welcome/welcome-route-config.injectable";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";

@@ -7,7 +7,7 @@
  */
 
 import caCertificatesInjectable from "./ca-certificates.injectable";
-import lensProxyCertificateInjectable from "./lens-proxy-certificate.injectable";
+import freelensProxyCertificateInjectable from "./freelens-proxy-certificate.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
@@ -18,7 +18,7 @@ export function registerInjectables(di: DiContainerForInjection): void {
     /* Ignore duplicate registration */
   }
   try {
-    di.register(lensProxyCertificateInjectable);
+    di.register(freelensProxyCertificateInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

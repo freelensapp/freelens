@@ -11,6 +11,7 @@ import { registerInjectables as registerNavigateToWelcomeInjectables } from "./n
 import { registerInjectables as registerOpenDocumentationInjectables } from "./open-documentation/register-injectables";
 import { registerInjectables as registerOpenLicensesInjectables } from "./open-licenses/register-injectables";
 import { registerInjectables as registerOpenSupportInjectables } from "./open-support/register-injectables";
+import { registerInjectables as registerOpenWhatsNewInjectables } from "./open-whats-new/register-injectables";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
@@ -37,6 +38,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     registerOpenSupportInjectables(di);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    registerOpenWhatsNewInjectables(di);
   } catch (e) {
     /* Ignore duplicate registration */
   }

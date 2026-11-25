@@ -45,9 +45,15 @@ export async function mapWithConcurrency<T, R>(items: T[], limit: number, task: 
  * it, and returns the digest of the bytes that arrived.
  *
  * Nothing survives the call but the digest: the download is removed either way,
- * so peak disk stays at roughly one artifact per concurrent caller.
+ * so peak disk stays at roughly one artifact per concurrent caller. A caller
+ * that needs more out of the verified download, such as the digest of a binary
+ * inside an archive, gets it from `inspect` before the removal.
  */
-export async function pinArtifact(artifact: Artifact, label?: string): Promise<string> {
+export async function pinArtifact(
+  artifact: Artifact,
+  label?: string,
+  inspect?: (artifactPath: string) => Promise<void>,
+): Promise<string> {
   const workDir = await mkdtemp(path.join(tmpdir(), "freelens-pin-"));
 
   try {
@@ -63,6 +69,8 @@ export async function pinArtifact(artifact: Artifact, label?: string): Promise<s
 
     // Only pin a digest whose provenance we could establish.
     const verifiedBy = await verifyArtifact(artifact, actual, artifactPath, workDir);
+
+    await inspect?.(artifactPath);
 
     console.log(`  ${label ?? `${artifact.tool} ${artifactKey(artifact)}`} ${actual}\n    verified: ${verifiedBy}`);
 

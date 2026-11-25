@@ -6,6 +6,7 @@
 
 import { getInjectionToken } from "@ogre-tools/injectable";
 
+import type { SetOptional } from "@freelensapp/type-fest";
 import type { Orderable } from "@freelensapp/utilities";
 
 import type {
@@ -15,7 +16,6 @@ import type {
   KeyboardEvent,
   MenuItemConstructorOptions,
 } from "electron";
-import type { SetOptional } from "type-fest";
 
 import type { Discriminable } from "../../../../common/utils/composable-responsibilities/discriminable/discriminable";
 import type { MaybeShowable } from "../../../../common/utils/composable-responsibilities/showable/showable";
@@ -23,6 +23,13 @@ import type { ChildOfParentComposite, ParentOfChildComposite } from "../../../..
 
 export interface MayHaveKeyboardShortcut {
   keyboardShortcut?: string;
+}
+
+export interface MayBeHiddenFromMenu {
+  // Note: a menu item which is hidden is still part of the menu, so its keyboard
+  // shortcut keeps working. This allows registering alternative shortcuts for an
+  // action without showing duplicate items in the menu.
+  visible?: boolean;
 }
 
 export interface ElectronClickable {
@@ -63,7 +70,7 @@ export type OsActionMenuItem = ApplicationMenuItemType<"os-action-menu-item"> &
   MaybeLabeled &
   TriggersElectronAction;
 
-type MenuItem = ChildOfParentComposite & MayHaveKeyboardShortcut;
+type MenuItem = ChildOfParentComposite & MayHaveKeyboardShortcut & MayBeHiddenFromMenu;
 
 interface TriggersElectronAction {
   actionName: ElectronRoles;

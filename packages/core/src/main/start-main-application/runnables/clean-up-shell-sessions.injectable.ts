@@ -20,6 +20,12 @@ const cleanUpShellSessionsInjectable = getInjectable({
       logger.info("Killing all remaining shell sessions");
 
       for (const { pid } of shellSessionProcesses.values()) {
+        // On Windows node-pty reports 0 until ConPTY has connected, and
+        // process.kill(0) would signal Freelens' own process group elsewhere.
+        if (pid <= 0) {
+          continue;
+        }
+
         try {
           process.kill(pid);
         } catch {

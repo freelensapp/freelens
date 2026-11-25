@@ -15,8 +15,10 @@ import { ClusterMetricsResourceType } from "../../../common/cluster-types";
 import enabledMetricsInjectable from "../../api/catalog/entity/metrics-enabled.injectable";
 import portForwardStoreInjectable from "../../port-forward/port-forward-store/port-forward-store.injectable";
 import { Badge } from "../badge";
+import { findOptimalDefaultContainerOfPod } from "../dock/logs/default-container-helper";
 import { DrawerItem } from "../drawer";
 import { DurationAbsoluteTimestamp } from "../events";
+import { ImageReference } from "../image-reference";
 import { StatusBrick } from "../status-brick";
 import { containerStatusClassName } from "./container-status-class-name";
 import { ContainerEnvironment } from "./pod-container-env";
@@ -32,6 +34,7 @@ import type { PortForwardStore } from "../../port-forward";
 export interface PodDetailsContainerProps {
   pod: Pod;
   container: ContainerWithType | EphemeralContainerWithType;
+  children?: React.ReactNode;
 }
 
 interface Dependencies {
@@ -109,13 +112,16 @@ class NonInjectedPodDetailsContainer extends React.Component<PodDetailsContainer
     const isMetricVisible = containerMetricsVisible.get();
     const requests = Object.entries(resources?.requests ?? {});
     const limits = Object.entries(resources?.limits ?? {});
+    const isDefaultContainer = findOptimalDefaultContainerOfPod(pod)?.name === name;
 
     return (
       <div className="PodDetailsContainer">
         <div className="pod-container-title" id={id}>
           <StatusBrick className={containerStatusClassName(container, status)} />
           {name}
+          {isDefaultContainer && <span className="text-secondary font-normal">{" (default)"}</span>}
         </div>
+        {this.props.children}
         {isMetricVisible && containersType === "containers" && (
           <>
             {containerMetrics.map((ContainerMetrics) => (
@@ -130,9 +136,7 @@ class NonInjectedPodDetailsContainer extends React.Component<PodDetailsContainer
         )}
         {status && <DrawerItem name="Status">{this.renderStatus(container, status)}</DrawerItem>}
         {lastState && <DrawerItem name="Last Status">{this.renderLastState(lastState, status)}</DrawerItem>}
-        <DrawerItem name="Image">
-          <Badge label={image} tooltip={imageId} />
-        </DrawerItem>
+        <DrawerItem name="Image">{image && <ImageReference reference={image} digest={imageId} />}</DrawerItem>
         {imagePullPolicy && imagePullPolicy !== "IfNotPresent" && (
           <DrawerItem name="ImagePullPolicy">{imagePullPolicy}</DrawerItem>
         )}

@@ -6,7 +6,11 @@
 
 import path from "node:path";
 import { loggerInjectionToken } from "@freelensapp/logger";
-import { showErrorNotificationInjectable, showInfoNotificationInjectable } from "@freelensapp/notifications";
+import {
+  showErrorNotificationInjectable,
+  showInfoNotificationInjectable,
+  showSuccessNotificationInjectable,
+} from "@freelensapp/notifications";
 import { noop } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import fse from "fs-extra";
@@ -14,43 +18,118 @@ import { when } from "mobx";
 import extractTarInjectable from "../../../../common/fs/extract-tar.injectable";
 import extensionInstallationStateStoreInjectable from "../../../../extensions/extension-installation-state-store/extension-installation-state-store.injectable";
 import extensionLoaderInjectable from "../../../../extensions/extension-loader/extension-loader.injectable";
-import { extensionDisplayName } from "../../../../extensions/lens-extension";
+import { extensionDisplayName, sanitizeExtensionName } from "../../../../extensions/lens-extension";
+import activateInstalledBuildInjectable from "../../../../features/extensions/installer/common/activate-installed-build.injectable";
+import { computeTarballDigest, shortenDigest } from "../../../../features/extensions/installer/common/checksums";
+import extensionsRootInjectable from "../../../../features/extensions/installer/common/extensions-root.injectable";
+import { versionDirectoryName } from "../../../../features/extensions/installer/common/version-directory";
 import { getMessageFromError } from "../get-message-from-error/get-message-from-error";
-import getExtensionDestFolderInjectable from "./get-extension-dest-folder.injectable";
+import { disabledForReinstallNote, installFailureSubject } from "./disabled-for-reinstall";
 
 import type { Disposer } from "@freelensapp/utilities";
 
 import type { InstallRequestValidated } from "./create-temp-files-and-validate.injectable";
 
-export type UnpackExtension = (request: InstallRequestValidated, disposeDownloading?: Disposer) => Promise<void>;
+export interface UnpackExtensionOptions {
+  /**
+   * The version of the extension which was running and was disabled to make
+   * way for this install. A failure says that it stays disabled.
+   */
+  disabledVersion?: string;
+  /**
+   * Whether this install is the same build again, the same version from the
+   * same kind of source, rather than a replacement of it.
+   */
+  isReinstall?: boolean;
+}
 
+/**
+ * What an install without a checksum ends with. The build is installed and
+ * stays disabled, so the note says so, says why, and says how to run it. Over
+ * an enabled extension, which was disabled to be replaced, it also says that
+ * the extension is off now, which it was not before the install.
+ */
+const unverifiedInstallNote = (
+  name: string,
+  displayName: string,
+  { disabledVersion, isReinstall }: UnpackExtensionOptions,
+) => (
+  <div className="flex flex-col gap-2">
+    <p>
+      {"Extension "}
+      <b>{displayName}</b>
+      {
+        " is installed, but disabled: no checksum was available for this download, so nothing vouches for its integrity."
+      }
+    </p>
+    {disabledVersion && (
+      <p>
+        {`${name}@${disabledVersion} was enabled and was disabled to be ${isReinstall ? "installed again" : "replaced"}. ${name} stays disabled, because the build installed now is unverified.`}
+      </p>
+    )}
+    <p>{"Enable it on the Extensions page to run it."}</p>
+  </div>
+);
+
+export type UnpackExtension = (
+  request: InstallRequestValidated,
+  disposeDownloading?: Disposer,
+  options?: UnpackExtensionOptions,
+) => Promise<void>;
+
+/**
+ * Turn a validated tarball into a managed install.
+ *
+ * Everything in the tarball is extracted, not only the code: a partial
+ * extraction would give one extension's files two access paths, and an
+ * extension then has a real directory to read its own resources from. The
+ * tarball itself is not kept -- once extracted it has done its job, the same way
+ * a `.deb` is redundant once installed -- so the digest is computed here, while
+ * the bytes are still in hand.
+ *
+ * A verified build is enabled once it is installed. An unverified one, which
+ * had no checksum, stays disabled until the user enables it: nothing vouches
+ * for its code, so it does not run without their say.
+ */
 const unpackExtensionInjectable = getInjectable({
   id: "unpack-extension",
   instantiate: (di): UnpackExtension => {
     const extensionLoader = di.inject(extensionLoaderInjectable);
-    const getExtensionDestFolder = di.inject(getExtensionDestFolderInjectable);
+    const extensionsRoot = di.inject(extensionsRootInjectable);
+    const activateInstalledBuild = di.inject(activateInstalledBuildInjectable);
     const extensionInstallationStateStore = di.inject(extensionInstallationStateStoreInjectable);
     const extractTar = di.inject(extractTarInjectable);
     const logger = di.inject(loggerInjectionToken);
     const showInfoNotification = di.inject(showInfoNotificationInjectable);
+    const showSuccessNotification = di.inject(showSuccessNotificationInjectable);
     const showErrorNotification = di.inject(showErrorNotificationInjectable);
 
-    const displayErrorMessage = (message: string, displayName: string) => {
+    const displayErrorMessage = (
+      message: string,
+      name: string,
+      version: string,
+      { disabledVersion, isReinstall }: UnpackExtensionOptions,
+    ) => {
       showErrorNotification(
-        <p>
-          {"Installing extension "}
-          <b>{displayName}</b>
-          {" has failed: "}
-          <em>{message}</em>
-        </p>,
+        <div className="flex flex-col gap-2">
+          <p>
+            {installFailureSubject(name, version, disabledVersion, isReinstall)}
+            {" has failed: "}
+            <em>{message}</em>
+          </p>
+          {disabledVersion && <p>{disabledForReinstallNote(name, disabledVersion)}</p>}
+        </div>,
       );
     };
 
-    return async (request, disposeDownloading) => {
+    return async (request, disposeDownloading, options = {}) => {
       const {
         id,
         fileName,
         tempFile,
+        data,
+        source,
+        checksum,
         manifest: { name, version },
       } = request;
 
@@ -58,10 +137,17 @@ const unpackExtensionInjectable = getInjectable({
       disposeDownloading?.();
 
       const displayName = extensionDisplayName(name, version);
-      const extensionFolder = getExtensionDestFolder(name);
+      // The checksum itself was checked in `attemptInstall`, before these bytes
+      // were written out or read into: by here the only thing left to say about
+      // it is whether there was one.
+      const verified = Boolean(checksum);
+      // The identity of this build: over the archive bytes, not over the
+      // extracted tree, whose hash depends on extraction order and filesystem.
+      const digest = computeTarballDigest(data);
+      const buildFolder = path.join(extensionsRoot, sanitizeExtensionName(name), versionDirectoryName(version, digest));
       const unpackingTempFolder = path.join(path.dirname(tempFile), `${path.basename(tempFile)}-unpacked`);
 
-      logger.info(`Unpacking extension ${displayName}`, { fileName, tempFile });
+      logger.info(`Unpacking extension ${displayName}`, { fileName, tempFile, buildFolder });
 
       try {
         // extract to temp folder first
@@ -69,7 +155,7 @@ const unpackExtensionInjectable = getInjectable({
         await fse.ensureDir(unpackingTempFolder);
         await extractTar(tempFile, { cwd: unpackingTempFolder });
 
-        // move contents to extensions folder
+        // move contents to the build folder
         const unpackedFiles = await fse.readdir(unpackingTempFolder);
         let unpackedRootFolder = unpackingTempFolder;
 
@@ -79,33 +165,58 @@ const unpackExtensionInjectable = getInjectable({
           unpackedRootFolder = path.join(unpackingTempFolder, unpackedFiles[0]);
         }
 
-        await fse.ensureDir(extensionFolder);
-        await fse.move(unpackedRootFolder, extensionFolder, { overwrite: true });
+        // Reinstalling the identical tarball lands on the same path, so the
+        // previous content of it goes rather than being merged with.
+        await fse.remove(buildFolder).catch(noop);
+        await fse.ensureDir(path.dirname(buildFolder));
+        await fse.move(unpackedRootFolder, buildFolder, { overwrite: true });
+
+        await activateInstalledBuild({
+          name,
+          path: buildFolder,
+          version,
+          digest: shortenDigest(digest),
+          source,
+          verified,
+        });
 
         // wait for the loader has actually install it
         await when(() => extensionLoader.userExtensions.get().has(id), { timeout: 10000 })
-          .then(() => {
-            // Enable installed extensions by default.
-            extensionLoader.setIsEnabled(id, true);
+          .then(async () => {
+            if (verified) {
+              // Enable verified installs by default.
+              await extensionLoader.setIsEnabled(id, true);
 
-            showInfoNotification(
-              <p>
-                {"Extension "}
-                <b>{displayName}</b>
-                {" successfully installed!"}
-              </p>,
-            );
+              return void showSuccessNotification(
+                <p>
+                  {"Extension "}
+                  <b>{displayName}</b>
+                  {" successfully installed!"}
+                </p>,
+              );
+            }
+
+            // Unverified: nothing here enables it. The build still comes up
+            // enabled when an enabled state is left over for its name, which
+            // an uninstall in an earlier version of Freelens did not reset,
+            // and it must not go on running without the user's say.
+            if (extensionLoader.userExtensions.get().get(id)?.isEnabled) {
+              logger.warn(`[EXTENSION-INSTALLATION]: ${displayName} came up enabled, disabling it as unverified`);
+              await extensionLoader.setIsEnabled(id, false);
+            }
+
+            showInfoNotification(unverifiedInstallNote(name, displayName, options));
           })
           .catch((error) => {
             // There was an error during plugin installation
             logger.info(`[EXTENSION-INSTALLATION]: installing ${request.fileName} has failed due a timeout`, { error });
-            displayErrorMessage("There was an error during the installation", displayName);
+            displayErrorMessage("There was an error during the installation", name, version, options);
           });
       } catch (error) {
         const message = getMessageFromError(error);
 
         logger.info(`[EXTENSION-INSTALLATION]: installing ${request.fileName} has failed: ${message}`, { error });
-        displayErrorMessage(message, displayName);
+        displayErrorMessage(message, name, version, options);
       } finally {
         // Remove install state once finished
         extensionInstallationStateStore.clearInstalling(id);

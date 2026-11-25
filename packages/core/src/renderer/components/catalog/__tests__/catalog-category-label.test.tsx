@@ -5,6 +5,7 @@
  */
 
 import { render, screen } from "@testing-library/react";
+import { describe, expect, it } from "vitest";
 import "@testing-library/jest-dom/vitest";
 
 import { CatalogCategory } from "../../../../common/catalog";

@@ -119,8 +119,11 @@ class NonInjectedDock extends React.Component<DockProps & Dependencies> {
         return <InstallChart key={tab.id} tabId={tab.id} />;
       case TabKind.UPGRADE_CHART:
         return <UpgradeChart key={tab.id} tab={tab} />;
+      // The log list wires its reactions to the model of its tab when it
+      // mounts: fed the model of another tab, it would keep following the
+      // first one, and never scroll the new tab to its last lines.
       case TabKind.POD_LOGS:
-        return <LogsDockTab tab={tab} />;
+        return <LogsDockTab key={tab.id} tab={tab} />;
       case TabKind.TERMINAL:
         return <TerminalWindow tab={tab} />;
     }

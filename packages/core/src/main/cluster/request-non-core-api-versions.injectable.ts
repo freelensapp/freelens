@@ -28,6 +28,7 @@ const requestNonCoreApiVersionsInjectable = getInjectable({
               .flatMap((group) =>
                 group.versions.map((version) => ({
                   group: group.name,
+                  version: version.version,
                   path: `/apis/${version.groupVersion}`,
                 })),
               )

@@ -5,6 +5,7 @@
  */
 
 import { act, render, screen } from "@testing-library/react";
+import { describe, expect, it } from "vitest";
 import { HelmChartIcon } from "../icon";
 
 const mainImageSrc = "https://example.com/main-picture.jpg";
@@ -13,11 +14,14 @@ const invalidImageSrc = "file://invalid-image-url.png";
 const svgImageSrc = "https://example.com/main-picture.svg";
 
 describe("HelmChartIcon", () => {
+  // The placeholder comes from the imageNotLoaded class of the CSS module,
+  // not from an inline style.
   it("renders the placeholder image by default", () => {
     render(<HelmChartIcon />);
     const imageContainer = screen.getByTestId("image-container");
 
-    expect(imageContainer.style.backgroundImage).toContain("data:image/svg+xml");
+    expect(imageContainer).toHaveClass("imageNotLoaded");
+    expect(imageContainer.style.backgroundImage).toBe("");
   });
 
   // The <img> is decorative (alt=""), so its ARIA role is "presentation", not

@@ -13,7 +13,7 @@ import { AnsiUp } from "ansi_up";
 import autoBindReact from "auto-bind/react";
 import DOMPurify from "dompurify";
 import { debounce } from "es-toolkit/compat";
-import { action, makeObservable, observable, reaction } from "mobx";
+import { action, observable, observableRef, reaction } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import userPreferencesStateInjectable from "../../../../features/user-preferences/common/state.injectable";
@@ -22,10 +22,9 @@ import { VirtualList } from "../../virtual-list";
 import { ToBottom } from "./to-bottom";
 
 import type { ForwardedRef } from "react";
-import type { Align } from "react-window";
 
 import type { UserPreferencesState } from "../../../../features/user-preferences/common/state.injectable";
-import type { VirtualListRef } from "../../virtual-list";
+import type { VirtualListAlign, VirtualListRef } from "../../virtual-list";
 import type { LogTabViewModel } from "../logs/logs-view-model";
 
 export interface LogListProps {
@@ -37,7 +36,7 @@ const ansiEscapeSequenceRegex =
   /[\u001B\u009B][[\]()#;?]*(?:(?:(?:[a-zA-Z\d]*(?:;[a-zA-Z\d]*)*)?\u0007)|(?:(?:\d{1,4}(?:;\d{0,4})*)?[\dA-PR-TZcf-nq-uy=><~]))/g;
 
 export interface LogListRef {
-  scrollToItem: (index: number, align: Align) => void;
+  scrollToItem: (index: number, align: VirtualListAlign) => void;
 }
 
 interface Dependencies {
@@ -49,17 +48,17 @@ class NonForwardedLogList extends React.Component<
   Dependencies & LogListProps & { innerRef: ForwardedRef<LogListRef> }
 > {
   private readonly disposers: (() => void)[] = [];
-  @observable isJumpButtonVisible = false;
-  @observable isLastLineVisible = true;
-  @observable.ref private containerWidth = 0;
-  @observable private overlapVersion = 0;
+  @observable accessor isJumpButtonVisible = false;
+  @observable accessor isLastLineVisible = true;
+  @observableRef private accessor containerWidth = 0;
+  @observable private accessor overlapVersion = 0;
 
   // mobx-react 9 forbids reading this.props inside a derivation. getLogRow is
   // invoked from the VirtualList row renderer (a derivation other than this
   // component's own render), so it — and the logs/showWordWrap getters it calls —
   // read props from this observable snapshot, refreshed on every update, instead
   // of this.props.
-  @observable.ref private observableProps: Readonly<
+  @observableRef private accessor observableProps: Readonly<
     Dependencies & LogListProps & { innerRef: ForwardedRef<LogListRef> }
   >;
 
@@ -67,6 +66,7 @@ class NonForwardedLogList extends React.Component<
   private resizeObserver: ResizeObserver | null = null;
   private virtualListRef = React.createRef<VirtualListRef>(); // A reference for VirtualList component
   private measuredRowHeights = new Map<number, number>();
+  private formattedLogs: { source: string[]; timezone: string; logs: string[] } | undefined;
   private pendingResetFromIndex: number | null = null;
   private pendingResetFrame: number | null = null;
   private lineHeight = 18;
@@ -131,7 +131,6 @@ class NonForwardedLogList extends React.Component<
   constructor(props: any) {
     super(props);
     this.observableProps = props;
-    makeObservable(this);
     autoBindReact(this);
   }
 
@@ -204,6 +203,7 @@ class NonForwardedLogList extends React.Component<
     this.bindInnerRef({
       scrollToItem: this.scrollToItem,
     });
+    this.keepLastLineVisible();
   }
 
   componentWillUnmount() {
@@ -266,7 +266,10 @@ class NonForwardedLogList extends React.Component<
   onLogsUpdate() {
     if (this.isLastLineVisible) {
       setTimeout(() => {
-        this.scrollToBottom();
+        // The user may have scrolled up in the meantime.
+        if (this.isLastLineVisible) {
+          this.scrollToBottom();
+        }
       }, 500); // Giving some time to VirtualList to prepare its outerRef (this.virtualListDiv) element
     }
   }
@@ -302,9 +305,23 @@ class NonForwardedLogList extends React.Component<
       return model.logsWithoutTimestamps.get();
     }
 
-    return model.timestampSplitLogs
-      .get()
-      .map(([logTimestamp, log]) => `${logTimestamp && formatInTimeZone(logTimestamp, state.localeTimezone)}${log}`);
+    const source = model.logs.get();
+    const timezone = state.localeTimezone;
+
+    // This getter is read for every row the list renders, and formatting the
+    // timestamps of all the lines is the expensive part: they are formatted
+    // once for every change of the logs or of the time zone.
+    if (this.formattedLogs?.source !== source || this.formattedLogs.timezone !== timezone) {
+      this.formattedLogs = {
+        source,
+        timezone,
+        logs: model.timestampSplitLogs
+          .get()
+          .map(([logTimestamp, log]) => `${logTimestamp && formatInTimeZone(logTimestamp, timezone)}${log}`),
+      };
+    }
+
+    return this.formattedLogs.logs;
   }
 
   get showWordWrap(): boolean {
@@ -367,8 +384,25 @@ class NonForwardedLogList extends React.Component<
     const el = this.virtualListDivElement;
 
     if (!el) return;
-    this.isLastLineVisible = el.clientHeight + el.scrollTop === el.scrollHeight;
+    this.isLastLineVisible = this.isScrolledToBottom(el);
   });
+
+  private isScrolledToBottom(el: HTMLDivElement) {
+    // A pixel of slack: on scaled displays the scroll position can stop a fraction of a pixel short of the bottom.
+    return el.scrollHeight - el.clientHeight - el.scrollTop <= 1;
+  }
+
+  /**
+   * While the list follows the logs, keeps its last line in view when the rows change: when new lines arrive, and when
+   * word wrap measures the rows the list just scrolled to and they turn out taller or shorter than estimated.
+   */
+  private keepLastLineVisible() {
+    const el = this.virtualListDivElement;
+
+    if (el && this.isLastLineVisible && !this.isScrolledToBottom(el)) {
+      this.scrollToBottom();
+    }
+  }
 
   /**
    * Check if user scrolled to top and new logs should be loaded
@@ -387,19 +421,20 @@ class NonForwardedLogList extends React.Component<
     }
   };
 
-  scrollToItem = (index: number, align: Align) => {
+  scrollToItem = (index: number, align: VirtualListAlign) => {
     this.virtualListRef.current?.scrollToItem(index, align);
   };
 
   onScroll = () => {
-    this.isLastLineVisible = false;
+    // Decided at every scroll, not once the list settles: the rows measured right after the scroll to the last line
+    // would leave the list short of its new bottom and stop the following for good, while scrolling up stops it at once.
+    this.setLastLineVisibility();
     this.onScrollDebounced();
   };
 
   onScrollDebounced = debounce(() => {
     if (this.virtualListDivElement) {
       this.setButtonVisibility();
-      this.setLastLineVisibility();
       this.checkLoadIntent();
     }
   }, 700); // Increasing performance and giving some time for virtual list to settle down

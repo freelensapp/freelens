@@ -7,6 +7,7 @@
 import { discoverFor } from "@freelensapp/react-testing-library-discovery";
 import { getInjectable } from "@ogre-tools/injectable";
 import { runInAction } from "mobx";
+import { beforeEach, describe, expect, it } from "vitest";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { preferenceItemInjectionToken } from "./renderer/preference-items/preference-item-injection-token";
 

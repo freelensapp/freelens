@@ -10,7 +10,7 @@ import { isDefined, iter } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { debounce } from "es-toolkit/compat";
 import fse from "fs-extra";
-import { action, computed, makeObservable, observable } from "mobx";
+import { action, computed, observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import * as uuid from "uuid";
@@ -25,14 +25,13 @@ import styles from "./add-cluster.module.scss";
 
 import type { ShowNotification } from "@freelensapp/notifications";
 
-import type { KubeConfig } from "@kubernetes/client-node";
-
 import type { EmitAppEvent } from "../../../common/app-event-bus/emit-event.injectable";
 import type { NavigateToCatalog } from "../../../common/front-end-routing/routes/catalog/navigate-to-catalog.injectable";
+import type { KubeConfigData } from "../../../common/kube-config";
 import type { GetDirnameOfPath } from "../../../common/path/get-dirname.injectable";
 
 interface Option {
-  config: KubeConfig;
+  config: KubeConfigData;
   error?: string;
 }
 
@@ -45,7 +44,7 @@ interface Dependencies {
   showErrorNotification: ShowNotification;
 }
 
-function getContexts(config: KubeConfig): Map<string, Option> {
+function getContexts(config: KubeConfigData): Map<string, Option> {
   return new Map(
     splitConfig(config).map(({ config, validationResult }) => [
       config.currentContext,
@@ -59,14 +58,13 @@ function getContexts(config: KubeConfig): Map<string, Option> {
 
 @observer
 class NonInjectedAddCluster extends React.Component<Dependencies> {
-  @observable kubeContexts = observable.map<string, Option>();
-  @observable customConfig = "";
-  @observable isWaiting = false;
-  @observable errors: string[] = [];
+  @observable accessor kubeContexts = observable.map<string, Option>();
+  @observable accessor customConfig = "";
+  @observable accessor isWaiting = false;
+  @observable accessor errors: string[] = [];
 
   constructor(props: Dependencies) {
     super(props);
-    makeObservable(this);
   }
 
   componentDidMount() {

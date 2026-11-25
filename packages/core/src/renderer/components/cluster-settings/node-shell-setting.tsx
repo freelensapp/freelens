@@ -5,10 +5,14 @@
  */
 
 import { Icon } from "@freelensapp/icon";
-import { makeObservable, observable, runInAction } from "mobx";
+import { observable, runInAction } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
-import { initialNodeShellImage, initialNodeShellWindowsImage } from "../../../common/cluster-types";
+import {
+  initialDebugContainerImage,
+  initialNodeShellImage,
+  initialNodeShellWindowsImage,
+} from "../../../common/cluster-types";
 import { Gutter } from "../gutter";
 import { Input } from "../input";
 import { SubTitle } from "../layout/sub-title";
@@ -21,13 +25,13 @@ export interface ClusterNodeShellSettingProps {
 
 @observer
 export class ClusterNodeShellSetting extends React.Component<ClusterNodeShellSettingProps> {
-  @observable nodeShellImage = this.props.cluster.preferences?.nodeShellImage || "";
-  @observable nodeShellWindowsImage = this.props.cluster.preferences?.nodeShellWindowsImage || "";
-  @observable imagePullSecret = this.props.cluster.preferences?.imagePullSecret || "";
+  @observable accessor nodeShellImage = this.props.cluster.preferences?.nodeShellImage || "";
+  @observable accessor nodeShellWindowsImage = this.props.cluster.preferences?.nodeShellWindowsImage || "";
+  @observable accessor imagePullSecret = this.props.cluster.preferences?.imagePullSecret || "";
+  @observable accessor debugContainerImage = this.props.cluster.preferences?.debugContainerImage || "";
 
   constructor(props: ClusterNodeShellSettingProps) {
     super(props);
-    makeObservable(this);
   }
 
   componentWillUnmount() {
@@ -35,6 +39,7 @@ export class ClusterNodeShellSetting extends React.Component<ClusterNodeShellSet
       this.props.cluster.preferences.nodeShellImage = this.nodeShellImage || undefined;
       this.props.cluster.preferences.nodeShellWindowsImage = this.nodeShellWindowsImage || undefined;
       this.props.cluster.preferences.imagePullSecret = this.imagePullSecret || undefined;
+      this.props.cluster.preferences.debugContainerImage = this.debugContainerImage || undefined;
     });
   }
 
@@ -89,6 +94,24 @@ export class ClusterNodeShellSetting extends React.Component<ClusterNodeShellSet
           <small className="hint">
             Name of a pre-existing secret in the kube-system namespace. An optional setting. Used for pulling image from
             a private registry.
+          </small>
+        </section>
+        <Gutter />
+        <section>
+          <SubTitle title="Debug container image" id="debug-container-image" />
+          <Input
+            theme="round-black"
+            placeholder={`Default image: ${initialDebugContainerImage}`}
+            value={this.debugContainerImage}
+            onChange={(value) => (this.debugContainerImage = value)}
+            iconRight={
+              this.debugContainerImage ? (
+                <Icon smallest material="close" onClick={() => (this.debugContainerImage = "")} tooltip="Reset" />
+              ) : undefined
+            }
+          />
+          <small className="hint">
+            Image that the dialog for debugging a pod suggests for its ephemeral container. It can be changed there.
           </small>
         </section>
       </>

@@ -5,6 +5,7 @@
  */
 
 import { runInAction } from "mobx";
+import { beforeEach, describe, expect, it } from "vitest";
 import fsInjectable from "../../common/fs/fs.injectable";
 import getHashInjectable from "../../extensions/extension-loader/file-system-provisioner-store/get-hash.injectable";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";

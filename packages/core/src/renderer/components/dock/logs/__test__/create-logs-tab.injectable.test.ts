@@ -3,6 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { beforeEach, describe, expect, it } from "vitest";
 import userPreferencesStateInjectable from "../../../../../features/user-preferences/common/state.injectable";
 import { getDiForUnitTesting } from "../../../../getDiForUnitTesting";
 import createLogsTabInjectable from "../create-logs-tab.injectable";
@@ -28,6 +29,7 @@ describe("create logs tab", () => {
     userPreferencesState.logViewerPreferences = {
       showTimestamps: true,
       showWordWrap: false,
+      maxCombinedLogsPods: 20,
     };
 
     const createLogsTab = di.inject(createLogsTabInjectable);
@@ -51,6 +53,7 @@ describe("create logs tab", () => {
     userPreferencesState.logViewerPreferences = {
       showTimestamps: true,
       showWordWrap: false,
+      maxCombinedLogsPods: 20,
     };
 
     const createLogsTab = di.inject(createLogsTabInjectable);
@@ -64,5 +67,23 @@ describe("create logs tab", () => {
     expect(getLogTabData(tabId)).toMatchObject({
       showPrevious: false,
     });
+  });
+
+  it("keeps the preferences that are not tab data out of the tab data", () => {
+    userPreferencesState.logViewerPreferences = {
+      showTimestamps: false,
+      showWordWrap: true,
+      maxCombinedLogsPods: 50,
+    };
+
+    const createLogsTab = di.inject(createLogsTabInjectable);
+    const getLogTabData = di.inject(getLogTabDataInjectable);
+    const tabId = createLogsTab("Pod some-pod", {
+      namespace: "default",
+      selectedPodId: "pod-1",
+      selectedContainer: "container-1",
+    });
+
+    expect(getLogTabData(tabId)).not.toHaveProperty("maxCombinedLogsPods");
   });
 });

@@ -12,9 +12,9 @@ import { ResizeDirection, ResizeGrowthDirection, ResizeSide, ResizingAnchor } fr
 import { historyInjectionToken } from "@freelensapp/routing";
 import { cssNames, noop } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { clipboard } from "electron";
 import React from "react";
 import { createPortal } from "react-dom";
+import { CopyToClipboardIcon } from "../copy-to-clipboard/copy-to-clipboard-icon";
 import drawerStorageInjectable, { defaultDrawerWidth } from "./drawer-storage/drawer-storage.injectable";
 
 import type { AnimateName } from "@freelensapp/animate";
@@ -55,7 +55,6 @@ const defaultProps = {
 };
 
 interface State {
-  isCopied: boolean;
   width: number;
 }
 
@@ -84,7 +83,6 @@ class NonInjectedDrawer extends React.Component<DrawerProps & Dependencies & typ
   });
 
   public state = {
-    isCopied: false,
     width: this.props.drawerStorage.get().width,
   };
 
@@ -159,7 +157,9 @@ class NonInjectedDrawer extends React.Component<DrawerProps & Dependencies & typ
       return;
     }
     const clickedElem = evt.target as HTMLElement;
-    const isOutsideAnyDrawer = !clickedElem.closest(".Drawer");
+    // A click that re-rendered its target before reaching window, such as one
+    // opening details, leaves it detached, so where it was is no longer known.
+    const isOutsideAnyDrawer = clickedElem.isConnected && !clickedElem.closest(".Drawer");
 
     if (isOutsideAnyDrawer) {
       close();
@@ -179,14 +179,10 @@ class NonInjectedDrawer extends React.Component<DrawerProps & Dependencies & typ
     if (open) onClose();
   };
 
-  copyTitle = (title: string) => {
+  getTitleToCopy = (title: string) => {
     const itemName = title.split(":").splice(1).join(":") || title; // copy whole if no :
 
-    clipboard.writeText(itemName.trim());
-    this.setState({ isCopied: true });
-    setTimeout(() => {
-      this.setState({ isCopied: false });
-    }, 3000);
+    return itemName.trim();
   };
 
   render() {
@@ -204,9 +200,7 @@ class NonInjectedDrawer extends React.Component<DrawerProps & Dependencies & typ
       "data-testid": testId,
       testIdForClose,
     } = this.props;
-    const { isCopied, width } = this.state;
-    const copyTooltip = isCopied ? "Copied!" : "Copy";
-    const copyIcon = isCopied ? "done" : "content_copy";
+    const { width } = this.state;
     const canCopyTitle = typeof title === "string" && title.length > 0;
     const [direction, placement, growthDirection] = resizingAnchorProps[position];
     const drawerSize = size || `${width}px`;
@@ -225,9 +219,7 @@ class NonInjectedDrawer extends React.Component<DrawerProps & Dependencies & typ
             <div className="drawer-title flex items-center">
               <div className="drawer-title-text flex gap-2 items-center">
                 {title}
-                {canCopyTitle && (
-                  <Icon material={copyIcon} tooltip={copyTooltip} onClick={() => this.copyTitle(title)} />
-                )}
+                {canCopyTitle && <CopyToClipboardIcon getText={() => this.getTitleToCopy(title)} />}
               </div>
               {toolbar}
               <Icon material="close" tooltip="Close" onClick={this.close} data-testid={testIdForClose} />

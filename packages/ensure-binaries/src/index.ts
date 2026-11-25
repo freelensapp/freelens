@@ -7,8 +7,8 @@
  */
 
 import { createHash } from "node:crypto";
-import { constants, type WriteStream } from "node:fs";
-import { access, type FileHandle, mkdir, open, readFile, unlink, writeFile } from "node:fs/promises";
+import { constants, createReadStream, type WriteStream } from "node:fs";
+import { type FileHandle, mkdir, open, unlink } from "node:fs/promises";
 import path from "node:path";
 import { arch } from "node:process";
 import { pipeline as _pipeline, Readable, Transform, Writable } from "node:stream";
@@ -20,15 +20,15 @@ import { extract } from "tar-stream";
 import { fetch } from "undici";
 import {
   type Artifact,
-  CHECKSUM_SUFFIX,
   describeArtifact,
+  isArchived,
   normalizePlatform,
   readToolVersions,
   type SupportedArch,
   toolNames,
 } from "./artifacts.js";
 import { setTimeoutFor } from "./download.js";
-import { assertLockMatchesVersions, readLock, resolvePinnedChecksum } from "./lock.js";
+import { assertLockMatchesVersions, type PinnedDigests, readLock, resolvePinnedDigests } from "./lock.js";
 
 import type { SingleBar } from "cli-progress";
 
@@ -69,6 +69,17 @@ const pathToLock = joinWithInitCwd(
 
 const pipeline = promisify(_pipeline);
 
+async function digestOfFile(file: string): Promise<string> {
+  const hash = createHash("sha256");
+
+  await pipeline(createReadStream(file), hash);
+
+  return hash.digest("hex");
+}
+
+/** What {@link BinaryDownloader.ensureBinary} did, reported once the bars are gone. */
+type Outcome = "skipped" | "up to date" | "downloaded";
+
 class BinaryDownloader {
   protected readonly bar: SingleBar;
   protected readonly target: string;
@@ -80,7 +91,7 @@ class BinaryDownloader {
 
   constructor(
     public readonly artifact: Artifact,
-    protected readonly expectedChecksum: string,
+    protected readonly digests: PinnedDigests,
     baseDir: string,
     multiBar: MultiBar,
   ) {
@@ -89,43 +100,38 @@ class BinaryDownloader {
     this.url = artifact.url;
   }
 
-  private get checksumSidecar(): string {
-    return `${this.target}${CHECKSUM_SUFFIX}`;
-  }
-
   /**
-   * Returns `true` when the binary is already present and matches the pinned
-   * checksum, based on what the sidecar recorded during the previous successful
-   * download. This avoids re-downloading unchanged binaries.
+   * Returns `true` when the binary is already in place with the pinned digest.
+   * The file is hashed on every run rather than trusting a record left next to
+   * it: the directory may come from a CI cache, and whoever could write the
+   * binary there could write such a record too.
    */
-  private async isUpToDate(expectedChecksum: string): Promise<boolean> {
+  private async isUpToDate(): Promise<boolean> {
     try {
-      await access(this.target, constants.F_OK);
-      const recorded = (await readFile(this.checksumSidecar, "utf-8")).trim().toLowerCase();
-
-      return recorded === expectedChecksum;
+      return (await digestOfFile(this.target)) === this.digests.binary;
     } catch {
       return false;
     }
   }
 
-  async ensureBinary(): Promise<void> {
-    if (process.env.LENS_SKIP_DOWNLOAD_BINARIES === "true") {
-      return;
+  async ensureBinary(): Promise<Outcome> {
+    if (process.env.FREELENS_SKIP_DOWNLOAD_BINARIES === "true") {
+      return "skipped";
     }
 
     const bar = this.bar;
 
-    // The pinned checksum covers the downloaded artifact bytes (the binary for
-    // kubectl / freelens-k8s-proxy, the archive for helm). It comes from the
-    // committed lock rather than from the vendor, so a build never has to trust
-    // a checksum served by the same origin as the artifact it describes.
-    const expectedChecksum = this.expectedChecksum;
+    // The pinned digests come from the committed lock rather than from the
+    // vendor, so a build never has to trust a checksum served by the same origin
+    // as the artifact it describes. One covers the downloaded bytes (the binary
+    // for kubectl / freelens-k8s-proxy, the archive for helm), the other the
+    // binary as it is stored.
+    const { artifact: expectedChecksum, binary: expectedBinaryChecksum } = this.digests;
 
-    if (await this.isUpToDate(expectedChecksum)) {
+    if (await this.isUpToDate()) {
       bar.setTotal(1);
       bar.increment(1); // already downloaded, mark as finished
-      return;
+      return "up to date";
     }
 
     const controller = new AbortController();
@@ -159,16 +165,13 @@ class BinaryDownloader {
     const hash = createHash("sha256");
 
     try {
-      // Remove existing file and its stale checksum sidecar to ensure we
-      // download the new version cleanly.
-      for (const file of [this.target, this.checksumSidecar]) {
-        try {
-          await unlink(file);
-        } catch (error) {
-          // Ignore ENOENT errors (file doesn't exist)
-          if ((error as any)?.code !== "ENOENT") {
-            throw error;
-          }
+      // Remove the existing file to ensure we download the new version cleanly.
+      try {
+        await unlink(this.target);
+      } catch (error) {
+        // Ignore ENOENT errors (file doesn't exist)
+        if ((error as any)?.code !== "ENOENT") {
+          throw error;
         }
       }
 
@@ -214,10 +217,15 @@ class BinaryDownloader {
       await fileHandle.close();
       fileHandle = undefined;
 
-      // Record the verified checksum next to the binary so subsequent runs can
-      // skip the download. Not referenced by electron-builder, so it stays out
-      // of the packaged application.
-      await writeFile(this.checksumSidecar, `${expectedChecksum}\n`, { mode: 0o644 });
+      // The archive matched its pin, so this checks the extraction; for a binary
+      // downloaded as is, it only rereads what was just written.
+      const actualBinaryChecksum = await digestOfFile(this.target);
+
+      if (actualBinaryChecksum !== expectedBinaryChecksum) {
+        throw new Error(
+          `checksum mismatch for ${this.artifact.binaryName} from ${this.url}: expected ${expectedBinaryChecksum}, got ${actualBinaryChecksum}`,
+        );
+      }
     } catch (error) {
       await fileHandle?.close();
       // Never leave a binary behind that failed verification, was truncated, or
@@ -225,6 +233,8 @@ class BinaryDownloader {
       await unlink(this.target).catch(() => {});
       throw error;
     }
+
+    return "downloaded";
   }
 }
 
@@ -234,9 +244,7 @@ class BinaryDownloader {
  */
 class HelmDownloader extends BinaryDownloader {
   protected override getTransformStreams(file: WriteStream) {
-    const extracting = extract({
-      allowUnknownFormat: false,
-    });
+    const extracting = extract();
 
     extracting.on("entry", (headers, stream, next) => {
       if (headers.name.endsWith(this.artifact.binaryName)) {
@@ -256,13 +264,13 @@ class HelmDownloader extends BinaryDownloader {
 
 function createDownloader(
   artifact: Artifact,
-  expectedChecksum: string,
+  digests: PinnedDigests,
   baseDir: string,
   multiBar: MultiBar,
 ): BinaryDownloader {
-  return artifact.tool === "helm"
-    ? new HelmDownloader(artifact, expectedChecksum, baseDir, multiBar)
-    : new BinaryDownloader(artifact, expectedChecksum, baseDir, multiBar);
+  return isArchived(artifact)
+    ? new HelmDownloader(artifact, digests, baseDir, multiBar)
+    : new BinaryDownloader(artifact, digests, baseDir, multiBar);
 }
 
 const versions = await readToolVersions(pathToPackage);
@@ -291,7 +299,7 @@ async function prepareDownloaders(): Promise<BinaryDownloader[]> {
     toolNames.map((tool) => {
       const artifact = describeArtifact({ tool, version: versions[tool], platform, arch: targetArch });
 
-      return createDownloader(artifact, resolvePinnedChecksum(lock, artifact), pathToBaseDir, multiBar);
+      return createDownloader(artifact, resolvePinnedDigests(lock, artifact), pathToBaseDir, multiBar);
     });
 
   if (process.env.DOWNLOAD_ALL_ARCHITECTURES === "true") {
@@ -318,6 +326,17 @@ const settledResults = await Promise.allSettled(
 );
 
 multiBar.stop();
+
+// The bars end at 100% either way, so say which binaries were fetched.
+downloaders.forEach((downloader, index) => {
+  const result = settledResults[index];
+  const { binaryName, platform, arch } = downloader.artifact;
+
+  if (result?.status === "fulfilled") {
+    console.log(`${binaryName} for ${platform}/${arch}: ${result.value}`);
+  }
+});
+
 const errorResults = settledResults.filter((res) => res.status === "rejected");
 
 if (errorResults.length > 0) {

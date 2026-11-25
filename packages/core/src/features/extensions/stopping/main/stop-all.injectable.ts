@@ -7,6 +7,7 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import extensionInjectable from "../../../../extensions/extension-loader/extension/extension.injectable";
 import extensionsInjectable from "../../../../extensions/extensions.injectable";
+import stopDisconnectingClustersRemovedFromCatalogInjectable from "../../../../main/cluster/stop-disconnecting-clusters-removed-from-catalog.injectable";
 import { onQuitOfBackEndInjectionToken } from "../../../../main/start-main-application/runnable-tokens/phases";
 
 const stopAllExtensionsOnQuitInjectable = getInjectable({
@@ -22,6 +23,8 @@ const stopAllExtensionsOnQuitInjectable = getInjectable({
         extension.deregister();
       }
     },
+    // Disabling an extension removes its catalog sources
+    runAfter: stopDisconnectingClustersRemovedFromCatalogInjectable,
   }),
   injectionToken: onQuitOfBackEndInjectionToken,
 });

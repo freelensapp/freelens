@@ -193,10 +193,10 @@ export class EditResourceModel {
   constructor(protected readonly dependencies: Dependencies) {}
 
   // Store the managed fields when they're removed so we can restore them
-  @observable private savedManagedFields: any = null;
+  @observable private accessor savedManagedFields: any = null;
 
   // Store the unsorted YAML when sort is enabled so we can restore it
-  @observable private savedUnsortedYaml: string | null = null;
+  @observable private accessor savedUnsortedYaml: string | null = null;
 
   readonly managedFields = {
     value: observable.box(false),
@@ -233,7 +233,7 @@ export class EditResourceModel {
     },
   };
 
-  @observable private _resource: KubeObject | undefined;
+  @observable private accessor _resource: KubeObject | undefined;
 
   @computed get shouldShowErrorAboutNoResource() {
     // Also treat a missing store entry as "no resource": when the dock tab is

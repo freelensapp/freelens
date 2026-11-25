@@ -69,7 +69,12 @@ const NonInjectedKubeObjectDetails = observer((props: Dependencies) => {
       {currentKubeObject?.object && (
         <>
           {detailComponents.get().map((Component, index) => (
-            <Component key={index} object={currentKubeObject.object} />
+            // The object id is part of the key so that switching to another
+            // object remounts the detail components: otherwise React keeps the
+            // same instances and every local state of the details (revealed
+            // secrets, loaded references, expanded sections) leaks from one
+            // object to the next (#2416).
+            <Component key={`${currentKubeObject.object.getId()}-${index}`} object={currentKubeObject.object} />
           ))}
         </>
       )}

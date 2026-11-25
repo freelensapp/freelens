@@ -4,16 +4,17 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import directoryForTempInjectable from "../../common/app-paths/directory-for-temp/directory-for-temp.injectable";
 import directoryForUserDataInjectable from "../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
-import createCanIInjectable from "../../common/cluster/create-can-i.injectable";
-import createRequestNamespaceListPermissionsInjectable from "../../common/cluster/create-request-namespace-list-permissions.injectable";
-import createListNamespacesInjectable from "../../common/cluster/list-namespaces.injectable";
 import writeJsonSyncInjectable from "../../common/fs/write-json-sync.injectable";
 import normalizedPlatformInjectable from "../../common/vars/normalized-platform.injectable";
 import addClusterInjectable from "../../features/cluster/storage/common/add.injectable";
 import broadcastConnectionUpdateInjectable from "../cluster/broadcast-connection-update.injectable";
 import clusterConnectionInjectable from "../cluster/cluster-connection.injectable";
+import createCanIInjectable from "../cluster/create-can-i.injectable";
+import createRequestNamespaceListPermissionsInjectable from "../cluster/create-request-namespace-list-permissions.injectable";
+import createListNamespacesInjectable from "../cluster/list-namespaces.injectable";
 import prometheusHandlerInjectable from "../cluster/prometheus-handler/prometheus-handler.injectable";
 import { getDiForUnitTesting } from "../getDiForUnitTesting";
 import kubeconfigManagerInjectable from "../kubeconfig-manager/kubeconfig-manager.injectable";

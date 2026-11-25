@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { action, computed, makeObservable } from "mobx";
+import { action, computed } from "mobx";
 
 import type { StorageLayer } from "../../../renderer/utils/storage-helper";
 
@@ -29,9 +29,7 @@ interface Dependencies {
  * the main process for as long as their PTY lives.
  */
 export class StandaloneTerminalTabsStore {
-  constructor(private readonly dependencies: Dependencies) {
-    makeObservable(this);
-  }
+  constructor(private readonly dependencies: Dependencies) {}
 
   @computed get tabs(): StandaloneTerminalTab[] {
     return this.dependencies.storage.get().tabs;

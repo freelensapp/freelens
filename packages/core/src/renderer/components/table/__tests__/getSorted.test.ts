@@ -5,6 +5,7 @@
  */
 
 import { cloneDeep } from "es-toolkit";
+import { describe, expect, it } from "vitest";
 import { getSorted } from "../sorting";
 
 describe("Table tests", () => {
@@ -32,6 +33,12 @@ describe("Table tests", () => {
 
       expect(getSorted(i, (v) => v)).toStrictEqual([1, 2, 3, 4]);
       expect(i).toStrictEqual([1, 2, 4, 3]);
+    });
+
+    it("should sort strings with numbers naturally", () => {
+      const i = ["job10", "job5", "job12", "job1"];
+
+      expect(getSorted(i, (v) => v, "asc")).toStrictEqual(["job1", "job5", "job10", "job12"]);
     });
 
     describe("multi-part", () => {

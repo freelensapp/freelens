@@ -1,0 +1,82 @@
+name: Automated npm dedupe for Renovate
+
+# Renovate updates pnpm-lock.yaml for the dependency it bumps, and leaves the
+# rest of the tree as it was, so a bump often leaves duplicates behind that
+# Automated npm dedupe then picks up on main in a PR of its own. This dedupes
+# the Renovate branch itself instead, so the update lands already deduplicated.
+# Nothing waits for it: the PR's checks run on Renovate's commit as usual, and
+# again on the commit made here.
+on:
+  push:
+    branches:
+      - renovate/**
+    paths:
+      - "**/package.json"
+      - pnpm-lock.yaml
+      - pnpm-workspace.yaml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  npm-dedupe:
+    name: npm dedupe
+
+    # Never on a fork: it has no GH_TOKEN secret, so the job could only fail.
+    if: github.repository_owner == 'freelensapp'
+
+    runs-on: ubuntu-26.04-arm
+    environment: automated
+    timeout-minutes: 10
+
+    env:
+      DO_NOT_TRACK: "1"
+
+    steps:
+      # GH_TOKEN rather than GITHUB_TOKEN, so that the pushed commit triggers
+      # the checks on the PR again.
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+
+      - name: Setup node
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+
+      - name: Setup pnpm
+        run: corepack enable
+
+      # Only the lockfile: nothing is downloaded into node_modules and no
+      # script of the dependencies the branch bumps runs, while the checkout
+      # holds a token that can push.
+      - name: Run pnpm dedupe
+        run: timeout 300 pnpm dedupe --color=always --lockfile-only
+
+      - name: Check for changes
+        run: |
+          if git diff --exit-code --stat; then
+            echo "changes=false" | tee -a $GITHUB_ENV
+          else
+            echo "changes=true" | tee -a $GITHUB_ENV
+          fi
+
+      # The author is listed in gitIgnoredAuthors in .renovaterc.json, so
+      # Renovate keeps treating the branch as unmodified and still rebases and
+      # updates it. A rebase drops this commit, and the push it makes runs
+      # this workflow again.
+      - name: Commit and push to branch
+        if: env.changes == 'true'
+        uses: EndBug/add-and-commit@v11
+        with:
+          github_token: ${{ secrets.GH_TOKEN }}
+          default_author: github_actions
+          add: pnpm-lock.yaml
+          message: Automated npm dedupe
+          fetch: false

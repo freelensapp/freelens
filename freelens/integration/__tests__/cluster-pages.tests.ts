@@ -5,6 +5,7 @@
  */
 
 import { describeIf } from "@freelensapp/test-utils";
+import { afterEach, beforeEach, it } from "vitest";
 import { kindReady } from "../helpers/kind";
 /*
   Cluster tests are run if there is a pre-existing kind cluster. Before running cluster tests the TEST_NAMESPACE
@@ -391,6 +392,18 @@ const scenarios = [
     expectedSelector: "h5.title",
     parentSidebarItemTestId: "link-for-sidebar-item-config",
     sidebarItemTestId: "link-for-sidebar-item-validating-admission-policy-bindings",
+  },
+
+  {
+    expectedSelector: "h5.title",
+    parentSidebarItemTestId: "link-for-sidebar-item-config",
+    sidebarItemTestId: "link-for-sidebar-item-mutating-admission-policies",
+  },
+
+  {
+    expectedSelector: "h5.title",
+    parentSidebarItemTestId: "link-for-sidebar-item-config",
+    sidebarItemTestId: "link-for-sidebar-item-mutating-admission-policy-bindings",
   },
 ];
 

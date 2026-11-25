@@ -7,6 +7,7 @@
 import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import { waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { Cluster } from "../../../../common/cluster/cluster";
 import loadKubeconfigInjectable from "../../../../common/cluster/load-kubeconfig.injectable";
 import statInjectable from "../../../../common/fs/stat.injectable";

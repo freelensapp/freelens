@@ -27,7 +27,7 @@ const clusterApiUrlInjectable = getInjectable({
     return async () => {
       const stats = await stat(cluster.kubeConfigPath.get());
 
-      if (!state || state.lastReadMtimeMs >= stats.mtimeMs) {
+      if (!state || stats.mtimeMs > state.lastReadMtimeMs) {
         const result = await loadValidatedClusterConfig(cluster);
 
         if (result.error) {

@@ -5,15 +5,12 @@
  */
 
 import { loggerInjectionToken } from "@freelensapp/logger";
-import { disposer, isDefined, isRequestError, withConcurrencyLimit } from "@freelensapp/utilities";
+import { disposer, isDefined, isRequestError } from "@freelensapp/utilities";
 import { ApiException, type KubeConfig } from "@kubernetes/client-node";
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
-import { comparer, reaction, runInAction } from "mobx";
-import createAuthorizationApiInjectable from "../../common/cluster/create-authorization-api.injectable";
-import createCanIInjectable from "../../common/cluster/create-can-i.injectable";
-import createCoreApiInjectable from "../../common/cluster/create-core-api.injectable";
-import createRequestNamespaceListPermissionsInjectable from "../../common/cluster/create-request-namespace-list-permissions.injectable";
-import createListNamespacesInjectable from "../../common/cluster/list-namespaces.injectable";
+import { limitAsync } from "es-toolkit";
+import { compareStructural, reaction, runInAction } from "mobx";
+import loadKubeconfigInjectable from "../../common/cluster/load-kubeconfig.injectable";
 import { ClusterMetadataKey, ClusterStatus } from "../../common/cluster-types";
 import broadcastMessageInjectable from "../../common/ipc/broadcast-message.injectable";
 import { clusterListNamespaceForbiddenChannel } from "../../common/ipc/cluster";
@@ -22,7 +19,12 @@ import { replaceObservableObject } from "../../common/utils/replace-observable-o
 import clusterVersionDetectorInjectable from "../cluster-detectors/cluster-version-detector.injectable";
 import detectClusterMetadataInjectable from "../cluster-detectors/detect-cluster-metadata.injectable";
 import broadcastConnectionUpdateInjectable from "./broadcast-connection-update.injectable";
-import kubeAuthProxyServerInjectable from "./kube-auth-proxy-server.injectable";
+import createAuthorizationApiInjectable from "./create-authorization-api.injectable";
+import createCanIInjectable from "./create-can-i.injectable";
+import createCoreApiInjectable from "./create-core-api.injectable";
+import createRequestNamespaceListPermissionsInjectable from "./create-request-namespace-list-permissions.injectable";
+import freelensK8sProxyManagerInjectable from "./freelens-k8s-proxy-manager.injectable";
+import createListNamespacesInjectable from "./list-namespaces.injectable";
 import loadProxyKubeconfigInjectable from "./load-proxy-kubeconfig.injectable";
 import prometheusHandlerInjectable from "./prometheus-handler/prometheus-handler.injectable";
 import removeProxyKubeconfigInjectable from "./remove-proxy-kubeconfig.injectable";
@@ -31,20 +33,21 @@ import requestApiResourcesInjectable from "./request-api-resources.injectable";
 import type { Logger } from "@freelensapp/logger";
 
 import type { Cluster } from "../../common/cluster/cluster";
-import type { CreateAuthorizationApi } from "../../common/cluster/create-authorization-api.injectable";
-import type { CreateCanI } from "../../common/cluster/create-can-i.injectable";
-import type { CreateCoreApi } from "../../common/cluster/create-core-api.injectable";
-import type {
-  CreateRequestNamespaceListPermissions,
-  RequestNamespaceListPermissions,
-} from "../../common/cluster/create-request-namespace-list-permissions.injectable";
-import type { CreateListNamespaces } from "../../common/cluster/list-namespaces.injectable";
+import type { LoadKubeconfig } from "../../common/cluster/load-kubeconfig.injectable";
 import type { BroadcastMessage } from "../../common/ipc/broadcast-message.injectable";
 import type { KubeApiResource } from "../../common/rbac";
 import type { DetectClusterMetadata } from "../cluster-detectors/detect-cluster-metadata.injectable";
 import type { FallibleOnlyClusterMetadataDetector } from "../cluster-detectors/token";
 import type { BroadcastConnectionUpdate } from "./broadcast-connection-update.injectable";
-import type { KubeAuthProxyServer } from "./kube-auth-proxy-server.injectable";
+import type { CreateAuthorizationApi } from "./create-authorization-api.injectable";
+import type { CreateCanI } from "./create-can-i.injectable";
+import type { CreateCoreApi } from "./create-core-api.injectable";
+import type {
+  CreateRequestNamespaceListPermissions,
+  RequestNamespaceListPermissions,
+} from "./create-request-namespace-list-permissions.injectable";
+import type { FreelensK8sProxyManager } from "./freelens-k8s-proxy-manager.injectable";
+import type { CreateListNamespaces } from "./list-namespaces.injectable";
 import type { LoadProxyKubeconfig } from "./load-proxy-kubeconfig.injectable";
 import type { ClusterPrometheusHandler } from "./prometheus-handler/prometheus-handler";
 import type { RemoveProxyKubeconfig } from "./remove-proxy-kubeconfig.injectable";
@@ -53,7 +56,7 @@ import type { RequestApiResources } from "./request-api-resources.injectable";
 interface Dependencies {
   readonly logger: Logger;
   readonly prometheusHandler: ClusterPrometheusHandler;
-  readonly kubeAuthProxyServer: KubeAuthProxyServer;
+  readonly freelensK8sProxyManager: FreelensK8sProxyManager;
   readonly clusterVersionDetector: FallibleOnlyClusterMetadataDetector;
   createCanI: CreateCanI;
   requestApiResources: RequestApiResources;
@@ -66,6 +69,43 @@ interface Dependencies {
   broadcastConnectionUpdate: BroadcastConnectionUpdate;
   loadProxyKubeconfig: LoadProxyKubeconfig;
   removeProxyKubeconfig: RemoveProxyKubeconfig;
+  loadKubeconfig: LoadKubeconfig;
+}
+
+/**
+ * Automatic refreshes stop after this many consecutive authentication failures,
+ * until the user reconnects: exec credential plugins (kubelogin, oidc-login...)
+ * may open a browser tab at every attempt, and the 30s refresh timer would
+ * otherwise pile up tabs while the user is away.
+ */
+const maxAutoAuthRetries = 3;
+
+/** Delay before the next automatic attempt after the n-th consecutive failure: 1 min, then 5 min. */
+const authBackoffIntervalsMs = [60_000, 300_000];
+
+/**
+ * The proxy reports a credential plugin failure with the client-go wording,
+ * e.g. "getting credentials: exec: executable kubelogin failed with exit code 1".
+ */
+const credentialPluginErrorPatterns = [/getting credentials/i, /exec plugin/i, /credential plugin/i];
+
+function isCredentialPluginError(message: string): boolean {
+  return credentialPluginErrorPatterns.some((pattern) => pattern.test(message));
+}
+
+/**
+ * A request cut by the k8sRequest timeout rejects with the abort reason string
+ * ("Operation timed out: ..."), or with an AbortError when aborted without a reason.
+ */
+function isTimeoutError(error: unknown): boolean {
+  if (typeof error === "string") {
+    return /timed out|aborted/i.test(error);
+  }
+
+  return (
+    error instanceof Error &&
+    (error.name === "AbortError" || error.name === "TimeoutError" || /timed out/i.test(error.message))
+  );
 }
 
 export type { ClusterConnection };
@@ -75,15 +115,133 @@ class ClusterConnection {
 
   protected activated = false;
 
+  /**
+   * The activation in progress. Concurrent calls join it, or wait for it when
+   * forced, so that two of them never restart freelens-k8s-proxy at once.
+   */
+  private activation: Promise<void> | undefined;
+
+  /** Consecutive authentication failures of the automatic refresh, see maxAutoAuthRetries. */
+  private consecutiveAuthFailures = 0;
+
+  /** Timestamp (ms) before which the refresh timer must not try again. */
+  private nextRefreshAllowedAt = 0;
+
+  /**
+   * Prevents overlapping connection status checks: while a credential plugin
+   * waits for an interactive login, no other caller must start another attempt.
+   */
+  private isRefreshing = false;
+
+  /**
+   * Counts the disconnects. A refresh of the accessibility that started before
+   * the latest one belongs to a connection that has ended: its requests fail as
+   * the proxy stops, and its results would refill the state the disconnect
+   * cleared.
+   */
+  private disconnects = 0;
+
   constructor(
     private readonly dependencies: Dependencies,
     private readonly cluster: Cluster,
   ) {}
 
+  private shouldAttemptAutoRefresh(): boolean {
+    if (this.consecutiveAuthFailures >= maxAutoAuthRetries) {
+      return false;
+    }
+
+    return this.consecutiveAuthFailures === 0 || Date.now() >= this.nextRefreshAllowedAt;
+  }
+
+  /**
+   * Called after broadcasting an authentication failure of the status check:
+   * schedules the next automatic attempt, or pauses them at the last retry.
+   */
+  private onAuthFailure(): void {
+    this.consecutiveAuthFailures++;
+
+    const backoffMs =
+      authBackoffIntervalsMs[Math.min(this.consecutiveAuthFailures - 1, authBackoffIntervalsMs.length - 1)];
+
+    this.nextRefreshAllowedAt = Date.now() + backoffMs;
+
+    if (this.consecutiveAuthFailures >= maxAutoAuthRetries) {
+      this.dependencies.logger.warn(
+        `[CLUSTER]: authentication failed ${this.consecutiveAuthFailures} times for "${this.cluster.contextName.get()}", pausing automatic refresh until reconnect`,
+      );
+      this.dependencies.broadcastConnectionUpdate({
+        level: "error",
+        message: `Authentication failed ${this.consecutiveAuthFailures} times, automatic reconnection paused: reconnect to try again`,
+      });
+    } else {
+      this.dependencies.logger.warn(
+        `[CLUSTER]: authentication failure #${this.consecutiveAuthFailures} for "${this.cluster.contextName.get()}", next automatic attempt in ${backoffMs / 1000}s`,
+      );
+    }
+  }
+
+  private onAuthSuccess(): void {
+    if (this.consecutiveAuthFailures > 0) {
+      this.dependencies.logger.info(
+        `[CLUSTER]: authentication succeeded after ${this.consecutiveAuthFailures} consecutive failure(s)`,
+        this.cluster.getMeta(),
+      );
+    }
+
+    this.resetAuthFailureTracking();
+  }
+
+  /** Called on reconnect and disconnect, so that a manual action always gets a fresh attempt. */
+  private resetAuthFailureTracking(): void {
+    this.consecutiveAuthFailures = 0;
+    this.nextRefreshAllowedAt = 0;
+  }
+
+  /**
+   * Whether the user of this cluster authenticates through an exec credential
+   * plugin. A timeout of the status check on such a cluster most likely means
+   * the plugin is waiting for an interactive login, so it counts as an
+   * authentication failure for the backoff instead of a network problem.
+   */
+  private async usesExecCredentialPlugin(): Promise<boolean> {
+    try {
+      const kubeConfig = await this.dependencies.loadKubeconfig();
+      const context = kubeConfig.getContextObject(this.cluster.contextName.get());
+      const user = context ? kubeConfig.getUser(context.user) : null;
+
+      return Boolean(user?.exec);
+    } catch (error) {
+      this.dependencies.logger.warn(
+        `[CLUSTER]: failed to read the kubeconfig user of "${this.cluster.contextName.get()}"`,
+        error,
+      );
+
+      return false;
+    }
+  }
+
+  private async onConnectionTimeout(): Promise<ClusterStatus> {
+    if (await this.usesExecCredentialPlugin()) {
+      this.dependencies.broadcastConnectionUpdate({
+        level: "error",
+        message: "Connection timed out, the credential plugin may be waiting for an interactive login",
+      });
+      this.onAuthFailure();
+    } else {
+      this.dependencies.broadcastConnectionUpdate({
+        level: "error",
+        message: "Connection timed out",
+      });
+    }
+
+    return ClusterStatus.Offline;
+  }
+
   private bindEvents() {
     this.dependencies.logger.info(`[CLUSTER]: bind events`, this.cluster.getMeta());
     const refreshTimer = setInterval(() => {
-      if (!this.cluster.disconnected.get()) {
+      if (!this.cluster.disconnected.get() && this.shouldAttemptAutoRefresh()) {
         this.refresh();
       }
     }, 30_000); // every 30s
@@ -97,7 +255,7 @@ class ClusterConnection {
       reaction(
         () => this.cluster.prometheusPreferences.get(),
         (preferences) => this.dependencies.prometheusHandler.setupPrometheus(preferences),
-        { equals: comparer.structural },
+        { equals: compareStructural },
       ),
       () => clearInterval(refreshTimer),
       () => clearInterval(refreshMetadataTimer),
@@ -122,11 +280,36 @@ class ClusterConnection {
   /**
    * @param force force activation
    */
-  async activate(force = false) {
+  activate(force = false): Promise<void> {
     if (this.activated && !force) {
-      return;
+      return Promise.resolve();
     }
 
+    const inFlight = this.activation;
+
+    if (inFlight && !force) {
+      return inFlight;
+    }
+
+    // A forced activation starts only once the one in flight has settled: its
+    // reconnect would otherwise restart the proxy the other one waits for.
+    const activation = (async () => {
+      await inFlight?.catch(() => {});
+      await this.runActivation();
+    })();
+    const clear = () => {
+      if (this.activation === activation) {
+        this.activation = undefined;
+      }
+    };
+
+    this.activation = activation;
+    activation.then(clear, clear);
+
+    return activation;
+  }
+
+  private async runActivation() {
     this.dependencies.logger.info(`[CLUSTER]: activate`, this.cluster.getMeta());
 
     if (!this.eventsDisposer.length) {
@@ -191,7 +374,8 @@ class ClusterConnection {
 
   async reconnect() {
     this.dependencies.logger.info(`[CLUSTER]: reconnect`, this.cluster.getMeta());
-    await this.dependencies.kubeAuthProxyServer?.restart();
+    this.resetAuthFailureTracking();
+    await this.dependencies.freelensK8sProxyManager?.restart();
 
     runInAction(() => {
       this.cluster.disconnected.set(false);
@@ -200,18 +384,26 @@ class ClusterConnection {
 
   disconnect() {
     if (this.cluster.disconnected.get()) {
+      // A request through freelens-proxy and a user of the proxy kubeconfig
+      // start the proxy whether the cluster is connected or not, so a
+      // disconnected cluster can still hold a running one.
+      this.dependencies.freelensK8sProxyManager?.stop();
+
       return this.dependencies.logger.debug("[CLUSTER]: already disconnected", { id: this.cluster.id });
     }
+
+    this.resetAuthFailureTracking();
 
     runInAction(() => {
       this.dependencies.logger.info(`[CLUSTER]: disconnecting`, { id: this.cluster.id });
       this.eventsDisposer();
-      this.dependencies.kubeAuthProxyServer?.stop();
+      this.dependencies.freelensK8sProxyManager?.stop();
       this.cluster.disconnected.set(true);
       this.cluster.online.set(false);
       this.cluster.accessible.set(false);
       this.cluster.ready.set(false);
       this.activated = false;
+      this.disconnects += 1;
       this.cluster.allowedNamespaces.clear();
       this.dependencies.logger.info(`[CLUSTER]: disconnected`, { id: this.cluster.id });
     });
@@ -223,7 +415,19 @@ class ClusterConnection {
   }
 
   async refreshAccessibilityAndMetadata() {
+    // The access reviews go through the proxy, which answers 503 once the
+    // cluster is disconnected. The renderer asks for a refresh when its CRD
+    // list changes, which happens as the watches end on a disconnect.
+    if (this.cluster.disconnected.get()) {
+      return;
+    }
+
     await this.refreshAccessibility();
+
+    if (this.cluster.disconnected.get()) {
+      return;
+    }
+
     await this.refreshMetadata();
   }
 
@@ -238,12 +442,21 @@ class ClusterConnection {
 
   private async refreshAccessibility(): Promise<void> {
     this.dependencies.logger.info(`[CLUSTER]: refreshAccessibility`, this.cluster.getMeta());
+    const disconnects = this.disconnects;
+    const isCanceled = () => this.disconnects !== disconnects;
+    const cancel = () => {
+      this.dependencies.logger.debug(
+        `[CLUSTER]: dropped the refresh of a disconnected cluster`,
+        this.cluster.getMeta(),
+      );
+    };
     const proxyConfig = await this.dependencies.loadProxyKubeconfig();
     const api = this.dependencies.createAuthorizationApi(proxyConfig);
-    const canI = this.dependencies.createCanI(api);
-    const requestNamespaceListPermissions = this.cluster.preferences.skipNamespaceAuthorizationCheck
+    const canI = this.dependencies.createCanI(api, { isCanceled });
+    const requestNamespaceListPermissions: RequestNamespaceListPermissions = this.cluster.preferences
+      .skipNamespaceAuthorizationCheck
       ? async () => () => true
-      : this.dependencies.createRequestNamespaceListPermissions(api);
+      : this.dependencies.createRequestNamespaceListPermissions(api, { isCanceled });
 
     const isAdmin = await canI({
       namespace: "kube-system",
@@ -254,12 +467,22 @@ class ClusterConnection {
       verb: "watch",
       resource: "*",
     });
-    const allowedNamespaces = await this.requestAllowedNamespaces(proxyConfig);
-    const knownResources = await (async () => {
-      const result = await this.dependencies.requestApiResources(this.cluster);
 
-      if (result.callWasSuccessful) {
-        return result.response;
+    if (isCanceled()) {
+      return cancel();
+    }
+
+    const allowedNamespaces = await this.requestAllowedNamespaces(proxyConfig);
+
+    if (isCanceled()) {
+      return cancel();
+    }
+
+    const knownResources = await (async () => {
+      const result = await this.dependencies.requestApiResources(this.cluster, { isCanceled });
+
+      if (result.callWasSuccessful || isCanceled()) {
+        return result.callWasSuccessful ? result.response : [];
       }
 
       if (this.cluster.knownResources.length > 0) {
@@ -278,11 +501,20 @@ class ClusterConnection {
 
       return [];
     })();
-    const resourcesToShow = await this.getResourcesToShow(
-      allowedNamespaces,
-      knownResources,
-      requestNamespaceListPermissions,
+
+    if (isCanceled()) {
+      return cancel();
+    }
+
+    // The namespaces not reviewed yet when the cluster disconnects are not
+    // reviewed at all.
+    const resourcesToShow = await this.getResourcesToShow(allowedNamespaces, knownResources, async (namespace) =>
+      isCanceled() ? () => false : requestNamespaceListPermissions(namespace),
     );
+
+    if (isCanceled()) {
+      return cancel();
+    }
 
     runInAction(() => {
       this.cluster.isAdmin.set(isAdmin);
@@ -297,12 +529,29 @@ class ClusterConnection {
   }
 
   async refreshConnectionStatus() {
-    const connectionStatus = await this.getConnectionStatus();
+    // activate(), the refresh timer and the network events all end up here: a
+    // check still waiting for a credential plugin must not be doubled.
+    if (this.isRefreshing) {
+      this.dependencies.logger.debug(
+        `[CLUSTER]: skipping refresh, previous refresh still in progress`,
+        this.cluster.getMeta(),
+      );
 
-    runInAction(() => {
-      this.cluster.online.set(connectionStatus > ClusterStatus.Offline);
-      this.cluster.accessible.set(connectionStatus == ClusterStatus.AccessGranted);
-    });
+      return;
+    }
+
+    this.isRefreshing = true;
+
+    try {
+      const connectionStatus = await this.getConnectionStatus();
+
+      runInAction(() => {
+        this.cluster.online.set(connectionStatus > ClusterStatus.Offline);
+        this.cluster.accessible.set(connectionStatus == ClusterStatus.AccessGranted);
+      });
+    } finally {
+      this.isRefreshing = false;
+    }
   }
 
   protected async getConnectionStatus(): Promise<ClusterStatus> {
@@ -313,6 +562,8 @@ class ClusterConnection {
         this.cluster.metadata.version = versionData.value;
         this.cluster.metadata[ClusterMetadataKey.LAST_SEEN] = new Date().toJSON();
       });
+
+      this.onAuthSuccess();
 
       return ClusterStatus.AccessGranted;
     } catch (error) {
@@ -325,11 +576,22 @@ class ClusterConnection {
               level: "error",
               message: "Invalid credentials",
             });
+            this.onAuthFailure();
 
             return ClusterStatus.AccessDenied;
           }
 
           const message = String(error.error || error.message) || String(error);
+
+          if (isCredentialPluginError(message)) {
+            this.dependencies.broadcastConnectionUpdate({
+              level: "error",
+              message: `Failed to fetch credentials: ${message}`,
+            });
+            this.onAuthFailure();
+
+            return ClusterStatus.AccessDenied;
+          }
 
           this.dependencies.broadcastConnectionUpdate({
             level: "error",
@@ -341,20 +603,20 @@ class ClusterConnection {
 
         if (error.failed === true) {
           if (error.timedOut === true) {
-            this.dependencies.broadcastConnectionUpdate({
-              level: "error",
-              message: "Connection timed out",
-            });
-
-            return ClusterStatus.Offline;
+            return this.onConnectionTimeout();
           }
 
           this.dependencies.broadcastConnectionUpdate({
             level: "error",
             message: "Failed to fetch credentials",
           });
+          this.onAuthFailure();
 
           return ClusterStatus.AccessDenied;
+        }
+
+        if (isTimeoutError(error)) {
+          return this.onConnectionTimeout();
         }
 
         const message = String(error.error || error.message) || String(error);
@@ -364,6 +626,10 @@ class ClusterConnection {
           message,
         });
       } else if (error instanceof Error || typeof error === "string") {
+        if (isTimeoutError(error)) {
+          return this.onConnectionTimeout();
+        }
+
         this.dependencies.broadcastConnectionUpdate({
           level: "error",
           message: `${error}`,
@@ -416,7 +682,7 @@ class ClusterConnection {
       return [];
     }
 
-    const requestNamespaceListPermissions = withConcurrencyLimit(5)(req);
+    const requestNamespaceListPermissions = limitAsync(req, 5);
     const namespaceListPermissions = allowedNamespaces.map(requestNamespaceListPermissions);
     const canListResources = await Promise.all(namespaceListPermissions);
 
@@ -430,7 +696,7 @@ const clusterConnectionInjectable = getInjectable({
     new ClusterConnection(
       {
         clusterVersionDetector: di.inject(clusterVersionDetectorInjectable),
-        kubeAuthProxyServer: di.inject(kubeAuthProxyServerInjectable, cluster),
+        freelensK8sProxyManager: di.inject(freelensK8sProxyManagerInjectable, cluster),
         logger: di.inject(loggerInjectionToken),
         prometheusHandler: di.inject(prometheusHandlerInjectable, cluster),
         broadcastConnectionUpdate: di.inject(broadcastConnectionUpdateInjectable, cluster),
@@ -438,6 +704,7 @@ const clusterConnectionInjectable = getInjectable({
         createListNamespaces: di.inject(createListNamespacesInjectable),
         detectClusterMetadata: di.inject(detectClusterMetadataInjectable),
         loadProxyKubeconfig: di.inject(loadProxyKubeconfigInjectable, cluster),
+        loadKubeconfig: di.inject(loadKubeconfigInjectable, cluster),
         removeProxyKubeconfig: di.inject(removeProxyKubeconfigInjectable, cluster),
         requestApiResources: di.inject(requestApiResourcesInjectable),
         createAuthorizationApi: di.inject(createAuthorizationApiInjectable),

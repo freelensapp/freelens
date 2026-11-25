@@ -3,6 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { describe, expect, test } from "vitest";
 import { lowerAndPluralize } from "./lowerAndPluralize";
 
 // ...existing code...
@@ -53,6 +54,8 @@ describe("lowerAndPluralize tests", () => {
     ["Lease", "leases"],
     ["LimitRange", "limitranges"],
     ["LocalSubjectAccessReview", "localsubjectaccessreviews"],
+    ["MutatingAdmissionPolicy", "mutatingadmissionpolicies"],
+    ["MutatingAdmissionPolicyBinding", "mutatingadmissionpolicybindings"],
     ["MutatingWebhookConfiguration", "mutatingwebhookconfigurations"],
     ["Namespace", "namespaces"],
     ["NetworkPolicy", "networkpolicies"],

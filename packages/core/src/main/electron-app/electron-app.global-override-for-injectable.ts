@@ -127,9 +127,6 @@ export default getGlobalOverride(electronAppInjectable, () => {
     isSecureKeyboardEntryEnabled(): boolean {
       throw new Error("Method not implemented.");
     }
-    isUnityRunning(): boolean {
-      throw new Error("Method not implemented.");
-    }
     moveToApplicationsFolder(options?: Electron.MoveToApplicationsFolderOptions | undefined): boolean {
       void options;
       throw new Error("Method not implemented.");
@@ -221,6 +218,13 @@ export default getGlobalOverride(electronAppInjectable, () => {
       void bookmarkData;
       throw new Error("Method not implemented.");
     }
+    startAppShimServer(options?: Electron.StartAppShimServerOptions | undefined): void {
+      void options;
+      throw new Error("Method not implemented.");
+    }
+    stopAppShimServer(): void {
+      throw new Error("Method not implemented.");
+    }
     updateCurrentActivity(type: string, userInfo: any): void {
       void type;
       void userInfo;
@@ -306,10 +310,7 @@ export default getGlobalOverride(electronAppInjectable, () => {
       return {
         executableWillLaunchAtLogin: false,
         openAtLogin: false,
-        openAsHidden: false,
         wasOpenedAtLogin: false,
-        wasOpenedAsHidden: false,
-        restoreState: false,
         launchItems: [],
         status: "not-found" as const,
       };

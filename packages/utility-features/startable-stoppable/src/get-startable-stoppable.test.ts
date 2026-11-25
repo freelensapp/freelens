@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { getStartableStoppable } from "./get-startable-stoppable";
 
 import type { MockedFunction } from "vitest";

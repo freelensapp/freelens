@@ -3,6 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import createKubeJsonApiInjectable from "../../../../../common/k8s-api/create-kube-json-api.injectable";
 import loadProxyKubeconfigInjectable from "../../../../../main/cluster/load-proxy-kubeconfig.injectable";
 import { getDiForUnitTesting } from "../../../../../main/getDiForUnitTesting";

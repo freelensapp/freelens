@@ -48,9 +48,10 @@
       "@freelensapp/startable-stoppable": ["./packages/utility-features/startable-stoppable/index.ts"],
       "@freelensapp/test-utils": ["./packages/utility-features/test-utils/index.ts"],
       "@freelensapp/tooltip": ["./packages/ui-components/tooltip/src/index.ts"],
+      "@freelensapp/type-fest": ["./packages/utility-features/type-fest/index.ts"],
       "@freelensapp/utilities": ["./packages/utility-features/utilities/index.ts"]
     },
-    "types": ["node", "vitest/globals"]
+    "types": ["node"]
   },
   "include": [
     "packages/**/*.ts",
@@ -60,5 +61,12 @@
     "freelens/integration/**/*.ts",
     "freelens/vitest.integration.config.ts"
   ],
-  "exclude": ["**/node_modules/**", "**/dist/**", "**/dist-types/**", "**/static/**", "**/binaries/**"]
+  "exclude": [
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/dist-types/**",
+    "**/static/**",
+    "**/binaries/**",
+    "packages/fixture-extension/**"
+  ]
 }

@@ -6,6 +6,7 @@
 
 import { act, fireEvent } from "@testing-library/react";
 import { isEmpty } from "es-toolkit/compat";
+import { beforeEach, describe, expect, it } from "vitest";
 import { getApplicationBuilder } from "../renderer/components/test-utils/get-application-builder";
 import currentPathInjectable from "../renderer/routes/current-path.injectable";
 import queryParametersInjectable from "../renderer/routes/query-parameters.injectable";

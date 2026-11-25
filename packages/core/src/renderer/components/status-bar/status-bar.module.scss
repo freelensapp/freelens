@@ -5,7 +5,7 @@
  */
 
 .StatusBar {
-  color: white;
+  color: var(--textColorOnPrimary);
 
   grid-area: status-bar;
   height: var(--status-bar-height);
@@ -17,10 +17,12 @@
 
   &.status-warning {
     background-color: var(--colorWarning);
+    color: white;
   }
 
   &.status-error {
     background-color: var(--colorError);
+    color: white;
   }
 }
 

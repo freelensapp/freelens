@@ -8,7 +8,7 @@ import "./resizing-anchor.scss";
 
 import { cssNames, noop } from "@freelensapp/utilities";
 import { throttle } from "es-toolkit";
-import { action, makeObservable, observable } from "mobx";
+import { action, observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 
@@ -151,13 +151,13 @@ function directionDelta(P1: number, P2: number, M: number): number | false {
 
 @observer
 export class ResizingAnchor extends React.PureComponent<ResizingAnchorProps> {
-  @observable lastMouseEvent?: MouseEvent;
+  @observable private accessor lastMouseEvent: MouseEvent | undefined;
 
-  ref = React.createRef<HTMLDivElement>();
+  private ref = React.createRef<HTMLDivElement>();
 
-  @observable isDragging = false;
+  @observable private accessor isDragging = false;
 
-  @observable wasDragging = false;
+  @observable private accessor wasDragging = false;
 
   static defaultProps = {
     onStart: noop,
@@ -180,8 +180,6 @@ export class ResizingAnchor extends React.PureComponent<ResizingAnchorProps> {
   constructor(props: ResizingAnchorProps) {
     super(props);
 
-    makeObservable(this);
-
     if (props.maxExtent < props.minExtent) {
       throw new Error("maxExtent must be >= minExtent");
     }
@@ -200,7 +198,7 @@ export class ResizingAnchor extends React.PureComponent<ResizingAnchorProps> {
     document.removeEventListener("mouseup", this.onDragEnd);
   }
 
-  onDragInit = action((event: React.MouseEvent) => {
+  private onDragInit = action((event: React.MouseEvent) => {
     const { onStart, onlyButtons } = this.props;
 
     if (typeof onlyButtons === "number" && onlyButtons !== event.buttons) {
@@ -216,7 +214,7 @@ export class ResizingAnchor extends React.PureComponent<ResizingAnchorProps> {
     onStart();
   });
 
-  calculateDelta(from: Position, to: Position): number | false {
+  private calculateDelta(from: Position, to: Position): number | false {
     const node = this.ref.current;
 
     if (!node) {
@@ -237,7 +235,7 @@ export class ResizingAnchor extends React.PureComponent<ResizingAnchorProps> {
     }
   }
 
-  onDrag = throttle((event: MouseEvent) => {
+  private onDrag = throttle((event: MouseEvent) => {
     /**
      * Some notes to help understand the following:
      *  - A browser's origin point is in the top left of the screen
@@ -297,7 +295,7 @@ export class ResizingAnchor extends React.PureComponent<ResizingAnchorProps> {
     }
   }, 100);
 
-  onDragEnd = action(() => {
+  private onDragEnd = action(() => {
     this.props.onEnd();
     document.removeEventListener("mousemove", this.onDrag);
     document.removeEventListener("mouseup", this.onDragEnd);

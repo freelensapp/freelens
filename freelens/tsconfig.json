@@ -1,12 +1,5 @@
 {
   "extends": "../tsconfig.json",
-  "compilerOptions": {
-    "plugins": [
-      {
-        "name": "typescript-plugin-css-modules"
-      }
-    ]
-  },
   "include": ["src/**/*", "../packages/core/types/*.d.ts"],
   "exclude": ["out", "dist", "coverage", "binaries", "static"]
 }

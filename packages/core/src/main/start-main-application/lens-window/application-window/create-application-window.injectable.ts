@@ -9,7 +9,7 @@ import { runInAction } from "mobx";
 import emitAppEventInjectable from "../../../../common/app-event-bus/emit-event.injectable";
 import appNameInjectable from "../../../../common/vars/app-name.injectable";
 import isMacInjectable from "../../../../common/vars/is-mac.injectable";
-import lensProxyPortInjectable from "../../../lens-proxy/lens-proxy-port.injectable";
+import freelensProxyPortInjectable from "../../../freelens-proxy/freelens-proxy-port.injectable";
 import { applicationWindowInjectionToken } from "./application-window-injection-token";
 import createLensWindowInjectable from "./create-lens-window.injectable";
 import waitUntilBundledExtensionsAreLoadedInjectable from "./wait-until-bundled-extensions-are-loaded.injectable";
@@ -26,7 +26,7 @@ const createApplicationWindowInjectable = getInjectable({
         const isMac = di.inject(isMacInjectable);
         const applicationName = di.inject(appNameInjectable);
         const waitUntilBundledExtensionsAreLoaded = di.inject(waitUntilBundledExtensionsAreLoadedInjectable);
-        const lensProxyPort = di.inject(lensProxyPortInjectable);
+        const freelensProxyPort = di.inject(freelensProxyPortInjectable);
         const emitAppEvent = di.inject(emitAppEventInjectable);
 
         return createLensWindow({
@@ -35,7 +35,7 @@ const createApplicationWindowInjectable = getInjectable({
           defaultHeight: 900,
           defaultWidth: 1440,
           getContentSource: () => ({
-            url: `https://renderer.freelens.app:${lensProxyPort.get()}`,
+            url: `https://renderer.freelens.app:${freelensProxyPort.get()}`,
           }),
           resizable: true,
           windowFrameUtilitiesAreShown: isMac,

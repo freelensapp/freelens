@@ -21,7 +21,8 @@ export interface RuntimeClassData extends KubeJsonApiData<KubeObjectMetadata<Kub
 }
 
 export interface RuntimeClassOverhead {
-  podFixed?: string;
+  /** The resources that a pod of the class uses on top of its containers, as `{ cpu: "250m", memory: "160Mi" }`. */
+  podFixed?: Partial<Record<string, string>>;
 }
 
 export interface RuntimeClassScheduling {
@@ -53,8 +54,12 @@ export class RuntimeClass extends KubeObject<ClusterScopedMetadata, void, void> 
     return this.handler;
   }
 
+  /** The fixed overhead of a pod, as `cpu: 250m, memory: 160Mi`, or an empty string when the class has none. */
   getPodFixed() {
-    return this.overhead?.podFixed ?? "";
+    return Object.entries(this.overhead?.podFixed ?? {})
+      .filter(([, quantity]) => quantity !== undefined)
+      .map(([resource, quantity]) => `${resource}: ${quantity}`)
+      .join(", ");
   }
 
   getNodeSelectors(): string[] {

@@ -7,6 +7,7 @@
 import asyncFn, { type AsyncFnMock } from "@async-fn/vitest";
 import { flushPromises } from "@freelensapp/test-utils";
 import { act, fireEvent } from "@testing-library/react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import appEventBusInjectable from "../../common/app-event-bus/app-event-bus.injectable";
 import { CatalogCategory, CatalogEntity, categoryVersion } from "../../common/catalog";
 import catalogCategoryRegistryInjectable from "../../common/catalog/category-registry.injectable";

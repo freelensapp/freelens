@@ -11,7 +11,7 @@ import { Icon } from "@freelensapp/icon";
 import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import { cssNames, noop, prevDefault } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { makeObservable, observable } from "mobx";
+import { observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import { Dialog } from "../dialog";
@@ -56,11 +56,10 @@ const defaultParams = {
 
 @observer
 class NonInjectedConfirmDialog extends React.Component<ConfirmDialogProps & Dependencies> {
-  @observable isSaving = false;
+  @observable accessor isSaving = false;
 
   constructor(props: ConfirmDialogProps & Dependencies) {
     super(props);
-    makeObservable(this);
   }
 
   // Plain getter (not @computed): reads this.props, which mobx-react 9 forbids

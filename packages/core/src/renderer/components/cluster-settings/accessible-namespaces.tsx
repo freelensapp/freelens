@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { makeObservable, observable } from "mobx";
+import { observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import { EditableList } from "../editable-list";
@@ -19,11 +19,10 @@ export interface ClusterAccessibleNamespacesProps {
 
 @observer
 export class ClusterAccessibleNamespaces extends React.Component<ClusterAccessibleNamespacesProps> {
-  @observable namespaces = new Set(this.props.cluster.accessibleNamespaces);
+  @observable accessor namespaces = new Set(this.props.cluster.accessibleNamespaces);
 
   constructor(props: ClusterAccessibleNamespacesProps) {
     super(props);
-    makeObservable(this);
   }
 
   render() {

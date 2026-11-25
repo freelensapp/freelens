@@ -4,7 +4,7 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import { action, computed, makeObservable, observable } from "mobx";
+import { action, computed, observable } from "mobx";
 import userPreferencesStateInjectable from "../../../features/user-preferences/common/state.injectable";
 
 import type { UserPreferencesState } from "../../../features/user-preferences/common/state.injectable";
@@ -14,11 +14,9 @@ import type { UserPreferencesState } from "../../../features/user-preferences/co
  * Search values are stored per-namespace and only in memory (session-only).
  */
 class PersistentSearchStore {
-  @observable private searchValuesByNamespace = new Map<string, string>();
+  @observable private accessor searchValuesByNamespace = new Map<string, string>();
 
-  constructor(private readonly userPreferencesState: UserPreferencesState) {
-    makeObservable(this);
-  }
+  constructor(private readonly userPreferencesState: UserPreferencesState) {}
 
   @computed
   get isEnabled(): boolean {

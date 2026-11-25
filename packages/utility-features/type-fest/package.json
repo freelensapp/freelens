@@ -1,0 +1,25 @@
+{
+  "name": "@freelensapp/type-fest",
+  "version": "2.1.1-0",
+  "private": true,
+  "description": "A copy of the types of type-fest that Freelens uses",
+  "homepage": "https://freelens.app",
+  "bugs": {
+    "url": "https://github.com/freelensapp/freelens/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/freelensapp/freelens.git"
+  },
+  "license": "MIT",
+  "type": "module",
+  "author": {
+    "name": "Freelens Authors",
+    "email": "freelens@freelens.app"
+  },
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "devDependencies": {
+    "@freelensapp/typescript": "workspace:^"
+  }
+}

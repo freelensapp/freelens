@@ -4,6 +4,7 @@
  */
 
 import { _adapters } from "chart.js";
+import { describe, expect, it } from "vitest";
 
 import "./chartjs-adapter-native";
 

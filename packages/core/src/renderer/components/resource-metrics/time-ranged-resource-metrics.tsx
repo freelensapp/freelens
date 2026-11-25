@@ -4,7 +4,7 @@
  */
 
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { observer } from "mobx-react-lite";
+import { observer } from "mobx-react";
 import { MetricsTimeRangeSelector } from "../cluster/metrics-time-range-selector";
 import selectedMetricsTimeRangeInjectable, {
   type SelectedMetricsTimeRange,

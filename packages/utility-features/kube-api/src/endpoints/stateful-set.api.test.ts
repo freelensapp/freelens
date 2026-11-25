@@ -6,6 +6,7 @@
 
 import asyncFn from "@async-fn/vitest";
 import { flushPromises } from "@freelensapp/test-utils";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { KubeJsonApi } from "../kube-json-api";
 import { StatefulSetApi } from "./stateful-set.api";
 

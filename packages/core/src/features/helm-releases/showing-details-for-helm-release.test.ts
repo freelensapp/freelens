@@ -7,6 +7,7 @@
 import { showCheckedErrorNotificationInjectable, showSuccessNotificationInjectable } from "@freelensapp/notifications";
 import { asyncFn } from "@freelensapp/test-utils";
 import { fireEvent } from "@testing-library/react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { anyObject } from "vitest-mock-extended";
 import navigateToHelmReleasesInjectable from "../../common/front-end-routing/routes/cluster/helm/releases/navigate-to-helm-releases.injectable";
 import { HelmChart } from "../../common/k8s-api/endpoints/helm-charts.api";
@@ -264,6 +265,15 @@ describe("showing details for helm release", () => {
                     }),
 
                     details: {
+                      listed: {
+                        app_version: "some-app-version",
+                        chart: "some-chart-1.0.0",
+                        status: "some-status",
+                        updated: "2025-01-01T00:00:00+0000",
+                        revision: "some-revision",
+                        name: "some-other-name",
+                        namespace: "some-other-namespace",
+                      },
                       name: "some-other-name",
                       namespace: "some-other-namespace",
                       version: 1,
@@ -376,8 +386,8 @@ describe("showing details for helm release", () => {
               expect(rendered.getByTestId("helm-release-detail-error")).toBeInTheDocument();
             });
 
-            it("does not call for release configuration", () => {
-              expect(requestHelmReleaseConfigurationMock).not.toHaveBeenCalled();
+            it("has already called for release configuration in parallel", () => {
+              expect(requestHelmReleaseConfigurationMock).toHaveBeenCalledWith("some-name", "some-namespace", true);
             });
           });
 
@@ -397,6 +407,15 @@ describe("showing details for helm release", () => {
                   }),
 
                   details: {
+                    listed: {
+                      app_version: "some-app-version",
+                      chart: "some-chart-1.0.0",
+                      status: "some-status",
+                      updated: "2025-01-01T00:00:00+0000",
+                      revision: "some-revision",
+                      name: "some-name",
+                      namespace: "some-namespace",
+                    },
                     name: "some-name",
                     namespace: "some-namespace",
                     version: 1,
@@ -681,6 +700,24 @@ describe("showing details for helm release", () => {
               });
             });
           });
+        });
+      });
+
+      describe("when releases resolve but there is none, and the list reloads", () => {
+        beforeEach(async () => {
+          await listClusterHelmReleasesMock.resolve({ callWasSuccessful: true, response: [] });
+          await listClusterHelmReleasesMock.resolve({ callWasSuccessful: true, response: [] });
+
+          builder.namespaces.select("some-third-namespace");
+        });
+
+        it("asks for the releases again, now of all the namespaces", () => {
+          expect(listClusterHelmReleasesMock).toBeCalledTimes(3);
+          expect(listClusterHelmReleasesMock.mock.calls[2][1]).toBeUndefined();
+        });
+
+        it("does not show the spinner again", () => {
+          expect(rendered.queryByTestId("helm-releases-spinner")).not.toBeInTheDocument();
         });
       });
     });

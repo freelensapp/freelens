@@ -8,6 +8,7 @@ import asyncFn from "@async-fn/vitest";
 import { getInjectable } from "@ogre-tools/injectable";
 import { runInAction } from "mobx";
 import { Request } from "mock-http";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import directoryForUserDataInjectable from "../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import normalizedPlatformInjectable from "../../common/vars/normalized-platform.injectable";
 import { getDiForUnitTesting } from "../getDiForUnitTesting";
@@ -17,8 +18,9 @@ import parseRequestInjectable from "./parse-request.injectable";
 import routerInjectable, { routeInjectionToken } from "./router.injectable";
 import { contentTypes } from "./router-content-types";
 
+import type { SetRequired } from "@freelensapp/type-fest";
+
 import type { AsyncFnMock } from "@async-fn/vitest";
-import type { SetRequired } from "type-fest";
 
 import type { Cluster } from "../../common/cluster/cluster";
 import type { Route } from "./route";
@@ -298,6 +300,37 @@ describe("router", () => {
           expect(responseStub.end.mock.calls[0]).toEqual([]);
         });
       });
+    });
+  });
+
+  describe("which routes are served without the token", () => {
+    it.each([
+      ["get", "/version"],
+      ["get", "/some-page.js"],
+      ["get", "/some-page"],
+      ["get", "/"],
+    ])("serves %s %s without it", (method, url) => {
+      expect(router.isServedWithoutToken(method, url)).toBe(true);
+    });
+
+    it.each([
+      ["get", "/some-path"],
+      ["get", "/./some-path"],
+      ["post", "/api/stack"],
+      ["post", "/./api/stack"],
+      ["post", "/some-segment/../api/stack"],
+      ["post", "/%2e/api/stack"],
+      ["post", "//some-host/api/stack"],
+      ["post", "http://some-host/api/stack"],
+      ["get", "/./api/kubeconfig/service-account/default/default"],
+      ["get", "/./api/v2/charts"],
+      ["put", "/some-page"],
+      ["get", "http://["],
+      ["get", "/api/stack"],
+      ["get", "/./api/some-unknown-route"],
+      ["get", "/api-kube/api/v1/pods"],
+    ])("requires it for %s %s", (method, url) => {
+      expect(router.isServedWithoutToken(method, url)).toBe(false);
     });
   });
 });

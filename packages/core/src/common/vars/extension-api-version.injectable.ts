@@ -5,13 +5,13 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import { SemVer } from "semver";
+import * as verkit from "verkit";
 import packageJson from "../../../package.json";
 
 const extensionApiVersionInjectable = getInjectable({
   id: "extension-api-version",
   instantiate: () => {
-    const { major, minor, patch } = new SemVer(packageJson.version);
+    const { major, minor, patch } = verkit.parse(packageJson.version);
 
     return `${major}.${minor}.${patch}`;
   },

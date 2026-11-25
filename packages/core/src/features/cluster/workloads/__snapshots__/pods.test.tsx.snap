@@ -31,12 +31,13 @@ exports[`workloads / pods > when navigating to workloads / pods view > given a n
             />
           </div>
           <div
-            class="container sidebarNav sidebar-active-status"
+            class="OrderableList sidebarNav sidebar-active-status"
           >
             <div
               aria-describedby="DndDescribedBy-4"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -82,6 +83,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given a n
               aria-describedby="DndDescribedBy-4"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -90,6 +92,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given a n
               aria-describedby="DndDescribedBy-4"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -98,6 +101,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given a n
               aria-describedby="DndDescribedBy-4"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -198,6 +202,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given a n
               aria-describedby="DndDescribedBy-4"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -206,6 +211,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given a n
               aria-describedby="DndDescribedBy-4"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -251,6 +257,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given a n
               aria-describedby="DndDescribedBy-4"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -259,6 +266,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given a n
               aria-describedby="DndDescribedBy-4"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -267,6 +275,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given a n
               aria-describedby="DndDescribedBy-4"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -275,6 +284,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given a n
               aria-describedby="DndDescribedBy-4"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -380,6 +390,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given a n
               aria-describedby="DndDescribedBy-4"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -388,6 +399,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given a n
               aria-describedby="DndDescribedBy-4"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -407,7 +419,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given a n
               aria-live="assertive"
               id="DndLiveRegion-4"
               role="status"
-              style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+              style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px 0px 0px 0px); clip-path: inset(100%); white-space: nowrap;"
             />
           </div>
         </div>
@@ -714,6 +726,29 @@ exports[`workloads / pods > when navigating to workloads / pods view > given a n
                       />
                     </div>
                     <div
+                      class="TableCell ports nowrap sorting"
+                      id="ports"
+                    >
+                      <div
+                        class="content"
+                      >
+                        Ports
+                      </div>
+                      <i
+                        class="Icon sortIcon material focusable"
+                      >
+                        <span
+                          class="icon"
+                          data-icon-name="arrow_drop_down"
+                        >
+                          arrow_drop_down
+                        </span>
+                      </i>
+                      <div
+                        class="resize-handle"
+                      />
+                    </div>
+                    <div
                       class="TableCell cpu nowrap sorting"
                       id="cpuUsage"
                     >
@@ -897,7 +932,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given a n
                     <div
                       class="list"
                       role="list"
-                      style="position: relative; max-height: 100%; flex-grow: 1; overflow-y: auto; width: 100%; height: 100%;"
+                      style="position: relative; flex-grow: 1; max-height: 100%; overflow-y: auto; width: 100%; height: 100%;"
                     >
                       <div
                         data-react-window-index="0"
@@ -962,6 +997,15 @@ exports[`workloads / pods > when navigating to workloads / pods view > given a n
                               class="StatusBrick"
                             />
                             <div />
+                          </div>
+                          <div
+                            class="TableCell ports"
+                          >
+                            <span
+                              class="PodPortsCell none"
+                            >
+                              -
+                            </span>
                           </div>
                           <div
                             class="TableCell cpu"
@@ -1044,6 +1088,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given a n
                       </div>
                       <div
                         aria-hidden="true"
+                        data-react-window-sizer=""
                         style="height: 33px; width: 100%; z-index: -1;"
                       />
                     </div>
@@ -1221,12 +1266,13 @@ exports[`workloads / pods > when navigating to workloads / pods view > given no 
             />
           </div>
           <div
-            class="container sidebarNav sidebar-active-status"
+            class="OrderableList sidebarNav sidebar-active-status"
           >
             <div
               aria-describedby="DndDescribedBy-2"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -1272,6 +1318,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given no 
               aria-describedby="DndDescribedBy-2"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -1280,6 +1327,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given no 
               aria-describedby="DndDescribedBy-2"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -1288,6 +1336,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given no 
               aria-describedby="DndDescribedBy-2"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -1388,6 +1437,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given no 
               aria-describedby="DndDescribedBy-2"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -1396,6 +1446,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given no 
               aria-describedby="DndDescribedBy-2"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -1441,6 +1492,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given no 
               aria-describedby="DndDescribedBy-2"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -1449,6 +1501,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given no 
               aria-describedby="DndDescribedBy-2"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -1457,6 +1510,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given no 
               aria-describedby="DndDescribedBy-2"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -1465,6 +1519,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given no 
               aria-describedby="DndDescribedBy-2"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -1570,6 +1625,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given no 
               aria-describedby="DndDescribedBy-2"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -1578,6 +1634,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given no 
               aria-describedby="DndDescribedBy-2"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -1597,7 +1654,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given no 
               aria-live="assertive"
               id="DndLiveRegion-2"
               role="status"
-              style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+              style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px 0px 0px 0px); clip-path: inset(100%); white-space: nowrap;"
             />
           </div>
         </div>
@@ -1888,6 +1945,29 @@ exports[`workloads / pods > when navigating to workloads / pods view > given no 
                         class="content"
                       >
                         Containers
+                      </div>
+                      <i
+                        class="Icon sortIcon material focusable"
+                      >
+                        <span
+                          class="icon"
+                          data-icon-name="arrow_drop_down"
+                        >
+                          arrow_drop_down
+                        </span>
+                      </i>
+                      <div
+                        class="resize-handle"
+                      />
+                    </div>
+                    <div
+                      class="TableCell ports nowrap sorting"
+                      id="ports"
+                    >
+                      <div
+                        class="content"
+                      >
+                        Ports
                       </div>
                       <i
                         class="Icon sortIcon material focusable"
@@ -2263,12 +2343,13 @@ exports[`workloads / pods > when navigating to workloads / pods view > given pod
             />
           </div>
           <div
-            class="container sidebarNav sidebar-active-status"
+            class="OrderableList sidebarNav sidebar-active-status"
           >
             <div
               aria-describedby="DndDescribedBy-0"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -2314,6 +2395,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given pod
               aria-describedby="DndDescribedBy-0"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -2322,6 +2404,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given pod
               aria-describedby="DndDescribedBy-0"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -2330,6 +2413,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given pod
               aria-describedby="DndDescribedBy-0"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -2430,6 +2514,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given pod
               aria-describedby="DndDescribedBy-0"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -2438,6 +2523,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given pod
               aria-describedby="DndDescribedBy-0"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -2483,6 +2569,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given pod
               aria-describedby="DndDescribedBy-0"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -2491,6 +2578,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given pod
               aria-describedby="DndDescribedBy-0"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -2499,6 +2587,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given pod
               aria-describedby="DndDescribedBy-0"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -2507,6 +2596,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given pod
               aria-describedby="DndDescribedBy-0"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -2612,6 +2702,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given pod
               aria-describedby="DndDescribedBy-0"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -2620,6 +2711,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given pod
               aria-describedby="DndDescribedBy-0"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -2639,7 +2731,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given pod
               aria-live="assertive"
               id="DndLiveRegion-0"
               role="status"
-              style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+              style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px 0px 0px 0px); clip-path: inset(100%); white-space: nowrap;"
             />
           </div>
         </div>
@@ -2930,6 +3022,29 @@ exports[`workloads / pods > when navigating to workloads / pods view > given pod
                         class="content"
                       >
                         Containers
+                      </div>
+                      <i
+                        class="Icon sortIcon material focusable"
+                      >
+                        <span
+                          class="icon"
+                          data-icon-name="arrow_drop_down"
+                        >
+                          arrow_drop_down
+                        </span>
+                      </i>
+                      <div
+                        class="resize-handle"
+                      />
+                    </div>
+                    <div
+                      class="TableCell ports nowrap sorting"
+                      id="ports"
+                    >
+                      <div
+                        class="content"
+                      >
+                        Ports
                       </div>
                       <i
                         class="Icon sortIcon material focusable"

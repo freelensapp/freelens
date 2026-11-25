@@ -5,6 +5,7 @@
  */
 
 import { act, fireEvent } from "@testing-library/react";
+import { beforeEach, describe, expect, it } from "vitest";
 import { CatalogCategory, type CatalogCategorySpec, type CategoryColumnRegistration } from "../../common/catalog";
 import catalogCategoryRegistryInjectable from "../../common/catalog/category-registry.injectable";
 import navigateToCatalogInjectable from "../../common/front-end-routing/routes/catalog/navigate-to-catalog.injectable";

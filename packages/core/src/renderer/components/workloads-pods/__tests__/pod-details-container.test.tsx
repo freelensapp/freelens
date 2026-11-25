@@ -6,6 +6,7 @@
 import { Pod } from "@freelensapp/kube-object";
 import { disposer } from "@freelensapp/utilities";
 import { screen } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import portForwardStoreInjectable from "../../../port-forward/port-forward-store/port-forward-store.injectable";
 import { renderFor } from "../../test-utils/renderFor";
@@ -61,5 +62,50 @@ describe("pod-details-container", () => {
     expect(screen.getByText("Resize Policy")).toBeInTheDocument();
     expect(screen.getByText("cpu=NotRequired")).toBeInTheDocument();
     expect(screen.getByText("memory=RestartContainer")).toBeInTheDocument();
+  });
+
+  describe("default container marker", () => {
+    const renderContainer = (containerName: string) => {
+      const di = getDiForUnitTesting();
+
+      di.override(portForwardStoreInjectable, () => ({
+        watch: () => disposer(),
+      }));
+
+      const render = renderFor(di);
+      const pod = new Pod({
+        apiVersion: "v1",
+        kind: "Pod",
+        metadata: {
+          name: "test-pod",
+          namespace: "default",
+          resourceVersion: "1",
+          selfLink: "/api/v1/namespaces/default/pods/test-pod",
+          uid: "pod-uid",
+          annotations: {
+            "kubectl.kubernetes.io/default-container": "sidecar",
+          },
+        },
+        spec: {
+          containers: [{ name: "main" }, { name: "sidecar" }],
+        },
+        status: {} as PodStatus,
+      });
+      const container = pod.getContainersWithType().find(({ name }) => name === containerName);
+
+      return render(<PodDetailsContainer pod={pod} container={container!} />);
+    };
+
+    it("marks the container named by the annotation", () => {
+      const { container } = renderContainer("sidecar");
+
+      expect(container.querySelector(".pod-container-title")).toHaveTextContent("sidecar (default)");
+    });
+
+    it("does not mark another container", () => {
+      const { container } = renderContainer("main");
+
+      expect(container.querySelector(".pod-container-title")).toHaveTextContent(/^main$/);
+    });
   });
 });

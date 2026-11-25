@@ -375,7 +375,7 @@ exports[`opening catalog entity details panel > renders 1`] = `
             aria-live="assertive"
             id="DndLiveRegion-0"
             role="status"
-            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px 0px 0px 0px); clip-path: inset(100%); white-space: nowrap;"
           />
         </div>
         <div
@@ -970,7 +970,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                       <div
                         class="list"
                         role="list"
-                        style="position: relative; max-height: 100%; flex-grow: 1; overflow-y: auto; width: 100%; height: 100%;"
+                        style="position: relative; flex-grow: 1; max-height: 100%; overflow-y: auto; width: 100%; height: 100%;"
                       >
                         <div
                           data-react-window-index="0"
@@ -1244,6 +1244,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                         </div>
                         <div
                           aria-hidden="true"
+                          data-react-window-sizer=""
                           style="height: 108px; width: 100%; z-index: -1;"
                         />
                       </div>
@@ -1372,7 +1373,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
             aria-live="assertive"
             id="DndLiveRegion-2"
             role="status"
-            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px 0px 0px 0px); clip-path: inset(100%); white-space: nowrap;"
           />
         </div>
         <div
@@ -1967,7 +1968,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                       <div
                         class="list"
                         role="list"
-                        style="position: relative; max-height: 100%; flex-grow: 1; overflow-y: auto; width: 100%; height: 100%;"
+                        style="position: relative; flex-grow: 1; max-height: 100%; overflow-y: auto; width: 100%; height: 100%;"
                       >
                         <div
                           data-react-window-index="0"
@@ -2241,6 +2242,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                         </div>
                         <div
                           aria-hidden="true"
+                          data-react-window-sizer=""
                           style="height: 108px; width: 100%; z-index: -1;"
                         />
                       </div>
@@ -2369,7 +2371,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
             aria-live="assertive"
             id="DndLiveRegion-5"
             role="status"
-            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px 0px 0px 0px); clip-path: inset(100%); white-space: nowrap;"
           />
         </div>
         <div
@@ -2996,7 +2998,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                       <div
                         class="list"
                         role="list"
-                        style="position: relative; max-height: 100%; flex-grow: 1; overflow-y: auto; width: 100%; height: 100%;"
+                        style="position: relative; flex-grow: 1; max-height: 100%; overflow-y: auto; width: 100%; height: 100%;"
                       >
                         <div
                           data-react-window-index="0"
@@ -3270,6 +3272,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                         </div>
                         <div
                           aria-hidden="true"
+                          data-react-window-sizer=""
                           style="height: 108px; width: 100%; z-index: -1;"
                         />
                       </div>
@@ -3398,7 +3401,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
             aria-live="assertive"
             id="DndLiveRegion-8"
             role="status"
-            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px 0px 0px 0px); clip-path: inset(100%); white-space: nowrap;"
           />
         </div>
         <div
@@ -3503,7 +3506,8 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
         >
           KubernetesCluster: some-kubernetes-cluster
           <i
-            class="Icon material interactive focusable"
+            aria-label="Copy"
+            class="Icon CopyToClipboardIcon material interactive focusable"
             tabindex="0"
           >
             <span
@@ -4277,7 +4281,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                       <div
                         class="list"
                         role="list"
-                        style="position: relative; max-height: 100%; flex-grow: 1; overflow-y: auto; width: 100%; height: 100%;"
+                        style="position: relative; flex-grow: 1; max-height: 100%; overflow-y: auto; width: 100%; height: 100%;"
                       >
                         <div
                           data-react-window-index="0"
@@ -4551,6 +4555,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                         </div>
                         <div
                           aria-hidden="true"
+                          data-react-window-sizer=""
                           style="height: 108px; width: 100%; z-index: -1;"
                         />
                       </div>
@@ -4679,7 +4684,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
             aria-live="assertive"
             id="DndLiveRegion-9"
             role="status"
-            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px 0px 0px 0px); clip-path: inset(100%); white-space: nowrap;"
           />
         </div>
         <div
@@ -4752,7 +4757,8 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
         >
           KubernetesCluster: some-kubernetes-cluster
           <i
-            class="Icon material interactive focusable"
+            aria-label="Copy"
+            class="Icon CopyToClipboardIcon material interactive focusable"
             tabindex="0"
           >
             <span
@@ -5526,7 +5532,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                       <div
                         class="list"
                         role="list"
-                        style="position: relative; max-height: 100%; flex-grow: 1; overflow-y: auto; width: 100%; height: 100%;"
+                        style="position: relative; flex-grow: 1; max-height: 100%; overflow-y: auto; width: 100%; height: 100%;"
                       >
                         <div
                           data-react-window-index="0"
@@ -5800,6 +5806,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                         </div>
                         <div
                           aria-hidden="true"
+                          data-react-window-sizer=""
                           style="height: 108px; width: 100%; z-index: -1;"
                         />
                       </div>
@@ -5928,7 +5935,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
             aria-live="assertive"
             id="DndLiveRegion-12"
             role="status"
-            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px 0px 0px 0px); clip-path: inset(100%); white-space: nowrap;"
           />
         </div>
         <div
@@ -6543,7 +6550,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                       <div
                         class="list"
                         role="list"
-                        style="position: relative; max-height: 100%; flex-grow: 1; overflow-y: auto; width: 100%; height: 100%;"
+                        style="position: relative; flex-grow: 1; max-height: 100%; overflow-y: auto; width: 100%; height: 100%;"
                       >
                         <div
                           data-react-window-index="0"
@@ -6817,6 +6824,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                         </div>
                         <div
                           aria-hidden="true"
+                          data-react-window-sizer=""
                           style="height: 108px; width: 100%; z-index: -1;"
                         />
                       </div>
@@ -6945,7 +6953,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
             aria-live="assertive"
             id="DndLiveRegion-15"
             role="status"
-            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px 0px 0px 0px); clip-path: inset(100%); white-space: nowrap;"
           />
         </div>
         <div
@@ -7037,7 +7045,8 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
         >
           WebLink: some-weblink
           <i
-            class="Icon material interactive focusable"
+            aria-label="Copy"
+            class="Icon CopyToClipboardIcon material interactive focusable"
             tabindex="0"
           >
             <span
@@ -7731,7 +7740,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                       <div
                         class="list"
                         role="list"
-                        style="position: relative; max-height: 100%; flex-grow: 1; overflow-y: auto; width: 100%; height: 100%;"
+                        style="position: relative; flex-grow: 1; max-height: 100%; overflow-y: auto; width: 100%; height: 100%;"
                       >
                         <div
                           data-react-window-index="0"
@@ -8005,6 +8014,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                         </div>
                         <div
                           aria-hidden="true"
+                          data-react-window-sizer=""
                           style="height: 108px; width: 100%; z-index: -1;"
                         />
                       </div>
@@ -8133,7 +8143,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
             aria-live="assertive"
             id="DndLiveRegion-16"
             role="status"
-            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px 0px 0px 0px); clip-path: inset(100%); white-space: nowrap;"
           />
         </div>
         <div
@@ -8225,7 +8235,8 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
         >
           WebLink: some-weblink
           <i
-            class="Icon material interactive focusable"
+            aria-label="Copy"
+            class="Icon CopyToClipboardIcon material interactive focusable"
             tabindex="0"
           >
             <span
@@ -8758,7 +8769,7 @@ exports[`opening catalog entity details panel > when not navigated to the catalo
             aria-live="assertive"
             id="DndLiveRegion-20"
             role="status"
-            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px 0px 0px 0px); clip-path: inset(100%); white-space: nowrap;"
           />
         </div>
         <div
@@ -8830,7 +8841,8 @@ exports[`opening catalog entity details panel > when not navigated to the catalo
         >
           WebLink: some-weblink
           <i
-            class="Icon material interactive focusable"
+            aria-label="Copy"
+            class="Icon CopyToClipboardIcon material interactive focusable"
             tabindex="0"
           >
             <span

@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import createPodLogsTabInjectable from "../../dock/logs/create-pod-logs-tab.injectable";
 import hideDetailsInjectable from "../../kube-detail-params/hide-details.injectable";

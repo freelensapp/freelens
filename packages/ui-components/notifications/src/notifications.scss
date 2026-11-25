@@ -59,14 +59,7 @@ $color-white: rgb(255, 255, 255);
       }
     }
 
-    @each $status,
-      $color
-        in (
-          ok: var(--colorOk),
-          error: var(--colorError),
-          info: var(--colorInfo)
-        )
-    {
+    @each $status, $color in (ok: var(--colorOk), error: var(--colorError), info: var(--colorInfo)) {
       &.#{$status} {
         background: $color;
         color: $color-white;

@@ -69,6 +69,8 @@ export const getOverrideFsWithFakes = () => {
       stat: root.promises.stat as any,
       unlink: root.promises.unlink,
       rename: root.promises.rename,
+      realpath: root.promises.realpath as any,
+      chmod: root.promises.chmod as any,
     }));
   };
 };

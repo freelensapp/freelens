@@ -4,6 +4,7 @@
  */
 
 import { action, observable } from "mobx";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import metricsTimeRangeStorageInjectable from "./metrics-time-range-storage.injectable";
 import selectedMetricsTimeRangeInjectable from "./selected-metrics-time-range.injectable";
 
@@ -42,6 +43,16 @@ describe("selectedMetricsTimeRangeInjectable", () => {
     vi.advanceTimersByTime(60 * 1000);
 
     expect(selectedMetricsTimeRange.timestamps.get()).toEqual(initial);
+  });
+
+  it.each([
+    { timeRange: { duration: 3600 }, step: 60 },
+    { timeRange: { duration: 86400 }, step: 600 },
+    { timeRange: { duration: null, customStart: 0, customEnd: 25 * 60 * 60 }, step: 60 * 60 },
+  ] as const)("gives the step metric requests use for the range ($step s)", ({ timeRange, step }) => {
+    const { selectedMetricsTimeRange } = instantiateWithStorage(timeRange);
+
+    expect(selectedMetricsTimeRange.timestamps.get().step).toBe(step);
   });
 
   it.each([

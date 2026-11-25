@@ -4,6 +4,7 @@
  */
 
 import { ValidatingAdmissionPolicyBinding } from "@freelensapp/kube-object";
+import { beforeEach, describe, expect, it } from "vitest";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import { renderFor } from "../test-utils/renderFor";
 import { ValidatingAdmissionPolicyBindingDetails } from "./validating-admission-policy-bindings-details";
@@ -70,6 +71,26 @@ describe("ValidatingAdmissionPolicyBindingDetails", () => {
     result = render(<ValidatingAdmissionPolicyBindingDetails object={binding} />);
 
     expect(result.baseElement).toMatchSnapshot();
+  });
+
+  it("renders match resource selectors", () => {
+    const binding = new ValidatingAdmissionPolicyBinding({
+      ...validatingAdmissionPolicyBinding,
+      spec: {
+        ...validatingAdmissionPolicyBinding.spec,
+        matchResources: {
+          namespaceSelector: { matchLabels: { environment: "production" } },
+          objectSelector: { matchExpressions: [{ key: "injected", operator: "DoesNotExist" }] },
+        },
+      },
+    });
+
+    result = render(<ValidatingAdmissionPolicyBindingDetails object={binding} />);
+
+    expect(result.getByText("Namespace Selector")).toBeInTheDocument();
+    expect(result.getByText("environment=production")).toBeInTheDocument();
+    expect(result.getByText("Object Selector")).toBeInTheDocument();
+    expect(result.getByText("!injected")).toBeInTheDocument();
   });
 
   it("renders with no param ref", () => {

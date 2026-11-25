@@ -8,7 +8,7 @@ import { Icon } from "@freelensapp/icon";
 import { Spinner } from "@freelensapp/spinner";
 import { cssNames, prevDefault } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { makeObservable, observable } from "mobx";
+import { observableRef } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
@@ -70,12 +70,11 @@ class NonInjectedClusterIssues extends React.Component<ClusterIssuesProps & Depe
   // invoked from the Table/virtual-list row renderer — a derivation other than this
   // component's own render — so it (and the warnings getter it calls) reads props
   // from this observable snapshot, refreshed on every update, instead of this.props.
-  @observable.ref private observableProps: Readonly<ClusterIssuesProps & Dependencies>;
+  @observableRef private accessor observableProps: Readonly<ClusterIssuesProps & Dependencies>;
 
   constructor(props: ClusterIssuesProps & Dependencies) {
     super(props);
     this.observableProps = props;
-    makeObservable(this);
   }
 
   async componentDidMount() {

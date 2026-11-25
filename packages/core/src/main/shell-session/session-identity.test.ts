@@ -4,6 +4,7 @@
  */
 
 import { computed } from "mobx";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import directoryForTempInjectable from "../../common/app-paths/directory-for-temp/directory-for-temp.injectable";
 import directoryForUserDataInjectable from "../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import { Cluster } from "../../common/cluster/cluster";
@@ -12,14 +13,15 @@ import pathExistsSyncInjectable from "../../common/fs/path-exists-sync.injectabl
 import readJsonSyncInjectable from "../../common/fs/read-json-sync.injectable";
 import statInjectable from "../../common/fs/stat.injectable";
 import writeJsonSyncInjectable from "../../common/fs/write-json-sync.injectable";
+import { TerminalChannels } from "../../common/terminal/channels";
 import platformInjectable from "../../common/vars/platform.injectable";
 import computeShellEnvironmentInjectable from "../../features/shell-sync/main/compute-shell-environment.injectable";
 import userShellSettingInjectable from "../../features/user-preferences/common/shell-setting.injectable";
 import { buildVersionStateInjectable } from "../../features/vars/build-version/main/init.injectable";
+import freelensProxyPortInjectable from "../freelens-proxy/freelens-proxy-port.injectable";
 import { getDiForUnitTesting } from "../getDiForUnitTesting";
 import kubeconfigManagerInjectable from "../kubeconfig-manager/kubeconfig-manager.injectable";
 import createKubectlInjectable from "../kubectl/create-kubectl.injectable";
-import lensProxyPortInjectable from "../lens-proxy/lens-proxy-port.injectable";
 import openLocalShellSessionInjectable from "./local-shell-session/open.injectable";
 import shellSessionProcessesInjectable from "./processes.injectable";
 import spawnPtyInjectable from "./spawn-pty.injectable";
@@ -95,7 +97,7 @@ describe("the identity of a shell session's PTY", () => {
     di.override(statInjectable, () => () => {
       throw new Error("tried call stat without override");
     });
-    di.inject(lensProxyPortInjectable).set(1111);
+    di.inject(freelensProxyPortInjectable).set(1111);
 
     di.override(userShellSettingInjectable, () => computed(() => "/bin/bash"));
     di.override(computeShellEnvironmentInjectable, () => async () => ({
@@ -108,15 +110,19 @@ describe("the identity of a shell session's PTY", () => {
       () => () =>
         ({
           kubectlVersion: "1.33.4",
-          binDir: async () => "/some-kubectl-binary-dir",
-          getBundledPath: () => "/some-bundled-kubectl-path",
+          getPath: async () => "/some-kubectl-binary-dir/kubectl",
+          getVersionMatchedPath: () => "/some-kubectl-binary-dir/kubectl",
+          writeInitScripts: async () => "/some-kubectl-binary-dir",
         }) as Partial<Kubectl> as Kubectl,
     );
     di.override(
       kubeconfigManagerInjectable,
       () =>
         ({
-          ensurePath: async () => "/some-proxy-kubeconfig-file",
+          ensurePaths: async () => ({
+            kubeconfigPath: "/some-proxy-kubeconfig-file",
+            cacheDirectoryPath: "/some-proxy-kubeconfig-cache-directory",
+          }),
         }) as Partial<KubeconfigManager> as KubeconfigManager,
     );
 
@@ -163,5 +169,49 @@ describe("the identity of a shell session's PTY", () => {
 
     expect(spawnPtyMock).toHaveBeenCalledTimes(2);
     expect(runningProcesses().size).toBe(2);
+  });
+
+  describe("when a renderer reconnects to a running shell", () => {
+    const sentMessages = (socket: WebSocket) =>
+      vi.mocked(socket.send).mock.calls.map(([message]) => JSON.parse(message as string));
+
+    const emitOutput = (data: string) => {
+      const shellProcess = spawnPtyMock.mock.results[0].value as IPty;
+
+      for (const [listener] of vi.mocked(shellProcess.onData).mock.calls) {
+        listener(data);
+      }
+    };
+
+    it("sends the last output of the shell again, right after it is connected", async () => {
+      await openStandaloneSession();
+      emitOutput("some-earlier-output");
+      emitOutput("some-last-output");
+
+      const socket = websocket();
+
+      await di.inject(openStandaloneShellSessionInjectable)({ tabId, websocket: socket });
+
+      expect(sentMessages(socket)).toEqual(
+        expect.arrayContaining([
+          { type: TerminalChannels.CONNECTED },
+          { type: TerminalChannels.STDOUT, data: "some-last-output" },
+        ]),
+      );
+
+      const types = sentMessages(socket).map(({ type }) => type);
+
+      expect(types.indexOf(TerminalChannels.STDOUT)).toBe(types.indexOf(TerminalChannels.CONNECTED) + 1);
+    });
+
+    it("sends no output of a shell that has not written any", async () => {
+      await openStandaloneSession();
+
+      const socket = websocket();
+
+      await di.inject(openStandaloneShellSessionInjectable)({ tabId, websocket: socket });
+
+      expect(sentMessages(socket).map(({ type }) => type)).not.toContain(TerminalChannels.STDOUT);
+    });
   });
 });

@@ -10,7 +10,7 @@ import fsInjectable from "./fs.injectable";
 
 import type { WriteFileOptions } from "fs-extra";
 
-export type WriteFile = (filePath: string, content: string | Buffer, opts?: WriteFileOptions) => Promise<void>;
+export type WriteFile = (filePath: string, content: string | Uint8Array, opts?: WriteFileOptions) => Promise<void>;
 
 const writeFileInjectable = getInjectable({
   id: "write-file",

@@ -37,9 +37,17 @@ const k8sRequestInjectable = getInjectable({
       });
 
       if (response.status < 200 || response.status >= 300) {
-        throw new Error(
-          `Failed to ${init.method ?? "get"} ${pathnameAndQuery} for clusterId=${cluster.id}: ${response.statusText}`,
-          { cause: response },
+        // The proxy explains transport failures in the body, e.g. a failing
+        // credential plugin: keep it, and expose the status so that the callers
+        // can classify the failure (see isRequestError).
+        const body = (await response.text().catch(() => "")).trim();
+        const reason = body || response.statusText;
+
+        throw Object.assign(
+          new Error(`Failed to ${init.method ?? "get"} ${pathnameAndQuery} for clusterId=${cluster.id}: ${reason}`, {
+            cause: response,
+          }),
+          { statusCode: response.status, error: reason },
         );
       }
 

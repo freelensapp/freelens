@@ -4,6 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { describe, expect, it } from "vitest";
 import { clearKubeconfigEnvVars } from "../utils/clear-kube-env-vars";
 
 describe("clearKubeconfigEnvVars tests", () => {

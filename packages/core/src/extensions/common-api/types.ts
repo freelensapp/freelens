@@ -4,16 +4,24 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-export type IpcMainInvokeEvent = Electron.IpcMainInvokeEvent;
-export type IpcRendererEvent = Electron.IpcRendererEvent;
-export type IpcMainEvent = Electron.IpcMainEvent;
+// The helper types that the signatures of the API are written in, from the
+// copy of type-fest in @freelensapp/type-fest, so that an extension can name
+// them: `Common.Types.PartialDeep<Pod>` for a patch, for one.
+export type {
+  JsonValue,
+  PartialDeep,
+  ReadonlyDeep,
+  RequireAtLeastOne,
+  RequireExactlyOne,
+  SetRequired,
+  ValueOf,
+} from "@freelensapp/type-fest";
 
 export type {
   ProtocolHandlerRegistration,
   RouteHandler as ProtocolRouteHandler,
   RouteParams as ProtocolRouteParams,
 } from "../../common/protocol-handler/registration";
-export type { MenuRegistration } from "../../features/application-menu/main/menu-registration";
 export type {
   AppPreferenceComponents,
   AppPreferenceRegistration,
@@ -22,12 +30,12 @@ export type {
   ShellEnvContext,
   ShellEnvModifier,
 } from "../../main/shell-session/shell-env-modifier/shell-env-modifier-registration";
-export type { TrayMenuRegistration } from "../../main/tray/tray-menu-registration";
 export type {
   CustomCategoryViewComponents,
   CustomCategoryViewProps,
   CustomCategoryViewRegistration,
 } from "../../renderer/components/catalog/custom-views";
+export type { CustomResourceRegistration } from "../../renderer/components/custom-resource-definitions/custom-resource-registration";
 export type {
   KubeObjectDetailComponents,
   KubeObjectDetailRegistration,

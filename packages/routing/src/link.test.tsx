@@ -10,6 +10,7 @@ import { DiContextProvider } from "@ogre-tools/injectable-react";
 import { render, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import React, { createRef } from "react";
+import { describe, expect, it, vi } from "vitest";
 import { routingFeature } from "./feature";
 import { historyInjectable } from "./history.injectable";
 import { Link, NavLink } from "./link";

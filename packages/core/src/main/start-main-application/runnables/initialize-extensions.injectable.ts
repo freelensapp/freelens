@@ -41,6 +41,17 @@ const initializeExtensionsInjectable = getInjectable({
           })
           .on("remove", (lensExtensionId) => {
             extensionLoader.removeExtension(lensExtensionId);
+          })
+          // A development extension was rebuilt under us. Its path did not
+          // change, so this is neither a remove nor an add: the same extension
+          // has to be torn down and imported again, in both processes.
+          .on("rebuild", (extension) => {
+            void extensionLoader.reloadDevelopmentExtension(extension.id);
+          })
+          // The same build was installed again, with a checksum it lacked
+          // before or without one: the code is the same, only the flag moves.
+          .on("verify", (extension) => {
+            extensionLoader.setIsVerified(extension.id, extension.isVerified);
           });
 
         extensionLoader.initExtensions(extensions);

@@ -6,12 +6,12 @@
 
 import autoBind from "auto-bind";
 import { uniqueId } from "es-toolkit/compat";
-import { action, makeObservable, observable } from "mobx";
+import { action, observable } from "mobx";
 
 import type { JsonApiErrorParsed } from "@freelensapp/json-api";
+import type { SetRequired } from "@freelensapp/type-fest";
 
 import type React from "react";
-import type { SetRequired } from "type-fest";
 
 export type NotificationId = string | number;
 export type NotificationMessage = string | React.ReactElement | React.ReactElement[] | JsonApiErrorParsed | Error;
@@ -42,7 +42,6 @@ export class NotificationsStore {
   protected autoHideTimers = new Map<NotificationId, number>();
 
   constructor() {
-    makeObservable(this);
     autoBind(this);
   }
 

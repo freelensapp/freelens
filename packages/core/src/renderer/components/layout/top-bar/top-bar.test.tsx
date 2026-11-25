@@ -5,6 +5,7 @@
  */
 
 import { fireEvent } from "@testing-library/react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import type { MockedFunction } from "vitest";
 import "@testing-library/jest-dom/vitest";

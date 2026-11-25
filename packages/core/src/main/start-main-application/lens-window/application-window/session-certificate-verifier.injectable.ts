@@ -6,7 +6,7 @@
 
 import { timingSafeEqual, X509Certificate } from "node:crypto";
 import { getInjectable } from "@ogre-tools/injectable";
-import lensProxyCertificateInjectable from "../../../../common/certificate/lens-proxy-certificate.injectable";
+import freelensProxyCertificateInjectable from "../../../../common/certificate/freelens-proxy-certificate.injectable";
 
 import type { Request } from "electron";
 
@@ -22,14 +22,14 @@ export type CertificateVerificationCallback = (error: ChromiumNetError) => void;
 const sessionCertificateVerifierInjectable = getInjectable({
   id: "session-certificate-verifier",
   instantiate: (di) => {
-    const lensProxyCertificate = di.inject(lensProxyCertificateInjectable).get();
-    const lensProxyX509Cert = new X509Certificate(lensProxyCertificate.cert);
+    const freelensProxyCertificate = di.inject(freelensProxyCertificateInjectable).get();
+    const freelensProxyX509Cert = new X509Certificate(freelensProxyCertificate.cert);
 
     return (request: Request, shouldBeTrusted: CertificateVerificationCallback) => {
       const { certificate } = request;
       const cert = new X509Certificate(certificate.data);
       const shouldTrustCert =
-        cert.raw.length === lensProxyX509Cert.raw.length && timingSafeEqual(cert.raw, lensProxyX509Cert.raw);
+        cert.raw.length === freelensProxyX509Cert.raw.length && timingSafeEqual(cert.raw, freelensProxyX509Cert.raw);
 
       shouldBeTrusted(shouldTrustCert ? ChromiumNetError.SUCCESS : ChromiumNetError.RESULT_FROM_CHROMIUM);
     };

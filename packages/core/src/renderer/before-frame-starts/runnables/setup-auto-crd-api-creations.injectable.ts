@@ -19,23 +19,34 @@ import dependencyInjectionContainerInjectable from "../../../common/dependency-i
 import { customResourceDefinitionApiInjectionToken } from "../../../common/k8s-api/api-manager/crd-api-token";
 import { injectableDifferencingRegistratorWith } from "../../../common/utils/registrator-helper";
 import customResourceDefinitionStoreInjectable from "../../components/custom-resource-definitions/store.injectable";
+import discoveredCustomResourcesInjectable, {
+  getDiscoveredApiBase,
+} from "../../components/custom-resources/discovered-custom-resources.injectable";
 import { beforeClusterFrameStartsSecondInjectionToken } from "../tokens";
 
 import type { CustomResourceDefinition } from "@freelensapp/kube-object";
+
+import type { KubeApiResource } from "../../../common/rbac";
 
 const setupAutoCrdApiCreationsInjectable = getInjectable({
   id: "setup-auto-crd-api-creations",
   instantiate: (di) => ({
     run: () => {
       const customResourceDefinitionStore = di.inject(customResourceDefinitionStoreInjectable);
+      const discoveredCustomResources = di.inject(discoveredCustomResourcesInjectable);
       // Register against the root container so the CRD api ids stay bare (not
       // namespaced under this registrator by @ogre-tools 23).
       const injectableDifferencingRegistrator = injectableDifferencingRegistratorWith(
         di.inject(dependencyInjectionContainerInjectable),
       );
 
+      // A user who may not list the definitions still gets the APIs of the
+      // custom resources, from the discovery of the cluster.
       reaction(
-        () => customResourceDefinitionStore.getItems().map(toCrdApiInjectable),
+        () =>
+          customResourceDefinitionStore.failedLoading
+            ? discoveredCustomResources.get().map(toDiscoveredApiInjectable)
+            : customResourceDefinitionStore.getItems().flatMap(toCrdApiInjectables),
         injectableDifferencingRegistrator,
         {
           fireImmediately: true,
@@ -48,14 +59,45 @@ const setupAutoCrdApiCreationsInjectable = getInjectable({
 
 export default setupAutoCrdApiCreationsInjectable;
 
-const toCrdApiInjectable = (crd: CustomResourceDefinition) =>
+// One API for every served version, so that an object of any of them, or an
+// extension that names one, finds its API. The preferred version always gets
+// one, served or not: the custom resources view reads through it, and says so
+// when it is not served.
+const toCrdApiInjectables = (crd: CustomResourceDefinition) => {
+  const versions = new Set([crd.getVersion(), ...crd.getServedVersions().map((version) => version.name)]);
+
+  return [...versions].map((version) =>
+    toCustomResourceApiInjectable({
+      kind: crd.getResourceKind(),
+      namespaced: crd.isNamespaced(),
+      apiBase: crd.getResourceApiBase(version),
+    }),
+  );
+};
+
+// The same id as the API of a definition for the same version, so that the API
+// and its store stay when the definitions can be listed again.
+const toDiscoveredApiInjectable = (resource: KubeApiResource) =>
+  toCustomResourceApiInjectable({
+    kind: resource.kind,
+    namespaced: resource.namespaced,
+    apiBase: getDiscoveredApiBase(resource),
+  });
+
+interface CustomResourceApiDescriptor {
+  kind: string;
+  namespaced: boolean;
+  apiBase: string;
+}
+
+const toCustomResourceApiInjectable = ({ kind, namespaced, apiBase }: CustomResourceApiDescriptor) =>
   getInjectable({
-    id: `default-kube-api-for-custom-resource-definition-${crd.getResourceApiBase()}`,
+    id: `default-kube-api-for-custom-resource-definition-${apiBase}`,
     instantiate: (di) => {
       const objectConstructor = class extends KubeObject {
-        static readonly kind = crd.getResourceKind();
-        static readonly namespaced = crd.isNamespaced();
-        static readonly apiBase = crd.getResourceApiBase();
+        static readonly kind = kind;
+        static readonly namespaced = namespaced;
+        static readonly apiBase = apiBase;
       };
 
       return new KubeApi(

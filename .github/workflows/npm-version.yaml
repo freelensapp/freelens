@@ -3,10 +3,24 @@ name: Automated npm version
 on:
   workflow_dispatch:
     inputs:
-      newversion:
-        description: New version (X.Y.Z | major | minor | patch | premajor | preminor | prepatch | prerelease)
-        required: true
+      bump:
+        description: The bump of pnpm version. prerelease is the next pre-release, as 2.1.0-1 after 2.1.0-0; prepatch,
+          preminor and premajor the first pre-release of the next version, as 2.1.1-0; patch, minor and major a
+          release, as 2.1.0 after 2.1.0-0; manual takes the version below
+        type: choice
+        options:
+          - prerelease
+          - prepatch
+          - preminor
+          - premajor
+          - patch
+          - minor
+          - major
+          - manual
         default: prerelease
+      version:
+        description: The version of the bump manual, as "2.1.0"
+        required: false
   release:
     types:
       - released
@@ -19,14 +33,10 @@ jobs:
   npm-version:
     name: npm version
 
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - runs-on: ubuntu-24.04-arm
-            arch: arm64
+    # Never on a fork: it has no GH_TOKEN secret, so the job could only fail.
+    if: github.repository_owner == 'freelensapp'
 
-    runs-on: ${{ matrix.runs-on }}
+    runs-on: ubuntu-26.04-arm
     environment: automated
     timeout-minutes: 10
 
@@ -42,9 +52,9 @@ jobs:
       # yq comes from mise so that its version has a single source (mise.toml)
       # and the download is verified against mise.lock.
       - name: Set up mise
-        uses: jdx/mise-action@v4
+        uses: jdx/mise-action@v5
         with:
-          version: 2026.8.0 # datasource=github-releases depName=jdx/mise
+          version: 2026.11.11 # datasource=github-releases depName=jdx/mise
           install_args: yq
 
       - name: Setup node
@@ -66,9 +76,9 @@ jobs:
         uses: actions/cache@v6
         with:
           path: ${{ env.pnpm_cache_dir }}
-          key: ${{ matrix.runs-on }}-${{ matrix.arch }}-node-${{ hashFiles('pnpm-lock.yaml') }}
+          key: ubuntu-26.04-arm-arm64-node-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ matrix.runs-on }}-${{ matrix.arch }}-node-
+            ubuntu-26.04-arm-arm64-node-
 
       - name: Install pnpm dependencies
         id: install-pnpm
@@ -82,12 +92,24 @@ jobs:
       - name: Set version
         run: |
           set -eo pipefail
+          if [[ $BUMP == manual ]]; then
+            if [[ -z $VERSION ]]; then
+              echo "::error::The bump manual needs a version" >&2
+              exit 1
+            fi
+            newversion=$VERSION
+          else
+            newversion=$BUMP
+          fi
+          echo "newversion=$newversion" >> "$GITHUB_ENV"
           pnpm bump-version "$newversion" | tee .github/update.log
           yq -pj -oy -r .version freelens/package.json > .github/version.log
           sed -e 's/\x1b\[[0-9;]*m//g' .github/update.log > .github/pr_body.log
           sed -i 's/<release version="[^"]*" date="[^"]*">/<release version="'"$(cat .github/version.log)"'" date="'$(LC_ALL=C date +%Y-%m-%d)'">/' freelens/build/metainfo.xml
         env:
-          newversion: ${{ github.event.inputs.newversion || 'prerelease' }}
+          # A release runs it without inputs.
+          BUMP: ${{ inputs.bump || 'prerelease' }}
+          VERSION: ${{ inputs.version }}
 
       - name: Update pnpm dependencies
         id: update-pnpm
@@ -108,11 +130,11 @@ jobs:
 
       - name: Commit and push to branch
         if: env.changes == 'true'
-        uses: EndBug/add-and-commit@v10
+        uses: EndBug/add-and-commit@v11
         with:
           github_token: ${{ secrets.GH_TOKEN }}
           default_author: github_actions
-          message: Automated npm version ${{ github.event.inputs.newversion || 'prerelease' }}
+          message: Automated npm version ${{ env.newversion }}
           new_branch: automated/npm-version
           fetch: false
           push: origin automated/npm-version --set-upstream --force

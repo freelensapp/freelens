@@ -12,7 +12,7 @@ import { Spinner } from "@freelensapp/spinner";
 import { sum } from "es-toolkit";
 import { orderBy } from "es-toolkit/compat";
 import fse from "fs-extra";
-import { makeObservable, observable } from "mobx";
+import { observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 
@@ -87,12 +87,11 @@ const defaultProps = {
 class DefaultedFilePicker extends React.Component<FilePickerProps & typeof defaultProps> {
   static defaultProps = defaultProps as object;
 
-  @observable status = FileInputStatus.CLEAR;
-  @observable errorText?: string;
+  @observable accessor status = FileInputStatus.CLEAR;
+  @observable accessor errorText: string | undefined;
 
   constructor(props: FilePickerProps & typeof defaultProps) {
     super(props);
-    makeObservable(this);
   }
 
   handleFileCount(files: File[]): File[] {

@@ -7,7 +7,7 @@
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { iter } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
-import { action, comparer } from "mobx";
+import { action, compareStructural } from "mobx";
 import { Cluster } from "../../../../common/cluster/cluster";
 import storeMigrationVersionInjectable from "../../../../common/vars/store-migration-version.injectable";
 import createPersistentStorageInjectable from "../../../persistent-storage/common/create.injectable";
@@ -32,7 +32,7 @@ const clustersPersistentStorageInjectable = getInjectable({
       configName: "lens-cluster-store",
       accessPropertiesByDotNotation: false, // To make dots safe in cluster context names
       syncOptions: {
-        equals: comparer.structural,
+        equals: compareStructural,
       },
       projectVersion: di.inject(storeMigrationVersionInjectable),
       migrations: di.inject(persistentStorageMigrationsInjectable, clusterStoreMigrationInjectionToken),

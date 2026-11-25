@@ -7,6 +7,7 @@
 import { Namespace } from "@freelensapp/kube-object";
 import { asyncFn } from "@freelensapp/test-utils";
 import { act } from "@testing-library/react";
+import { beforeEach, describe, expect, it } from "vitest";
 import directoryForLensLocalStorageInjectable from "../../../common/directory-for-lens-local-storage/directory-for-lens-local-storage.injectable";
 import writeJsonFileInjectable from "../../../common/fs/write-json-file.injectable";
 import { TabKind } from "../../../renderer/components/dock/dock/store";

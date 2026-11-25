@@ -5,6 +5,7 @@
 
 import { noop } from "es-toolkit";
 import { computed, type IObservableValue, observable } from "mobx";
+import { beforeEach, describe, expect, it } from "vitest";
 import { FavoritesStore } from "./store.injectable";
 
 import type { SidebarItemDeclaration } from "@freelensapp/cluster-sidebar";
@@ -17,6 +18,7 @@ const makeSidebarItem = (overrides: Partial<SidebarItemDeclaration> & { id: stri
   onClick: noop,
   isActive: computed(() => false),
   isVisible: computed(() => true),
+  isHiddenInTree: computed(() => false),
   children: [],
   ...overrides,
 });

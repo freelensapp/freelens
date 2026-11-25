@@ -7,19 +7,21 @@
 import { ShellSession } from "../shell-session";
 
 import type { GetBasenameOfPath } from "../../../common/path/get-basename.injectable";
-import type { GetDirnameOfPath } from "../../../common/path/get-dirname.injectable";
 import type { JoinPaths } from "../../../common/path/join-paths.injectable";
-import type { UserPreferencesState } from "../../../features/user-preferences/common/state.injectable";
 import type { ModifyTerminalShellEnv } from "../shell-env-modifier/modify-terminal-shell-env.injectable";
-import type { ShellSessionArgs, ShellSessionDependencies } from "../shell-session";
+import type { ShellEnvOptions, ShellSessionArgs, ShellSessionDependencies } from "../shell-session";
 
 export interface LocalShellSessionDependencies extends ShellSessionDependencies {
-  readonly directoryForBinaries: string;
-  readonly baseBundledBinariesDirectory: string;
-  readonly state: UserPreferencesState;
+  /**
+   * The directory holding the init scripts of a cluster shell, which put
+   * {@link ShellSessionDependencies.kubeTools}' `PATH` entries back around the
+   * user's `PATH` from inside the shell's own startup files. A session without
+   * a cluster has none, and so has a cluster session whose scripts could not be
+   * written.
+   */
+  readonly shellInitDirectory?: string;
   modifyTerminalShellEnv: ModifyTerminalShellEnv;
   joinPaths: JoinPaths;
-  getDirnameOfPath: GetDirnameOfPath;
   getBasenameOfPath: GetBasenameOfPath;
 }
 
@@ -33,12 +35,33 @@ export class LocalShellSession extends ShellSession {
     super(dependencies, args);
   }
 
-  protected getPathEntries(): string[] {
-    return [this.dependencies.directoryForBinaries];
-  }
-
   protected get cwd(): string | undefined {
     return this.cluster?.preferences?.terminalCWD;
+  }
+
+  protected getShellName(shell: string): string {
+    return this.dependencies
+      .getBasenameOfPath(shell)
+      .replace(/\.exe$/i, "")
+      .toLowerCase();
+  }
+
+  protected async getShellEnv(options?: ShellEnvOptions) {
+    const env = await super.getShellEnv(options);
+    const { shellInitDirectory } = this.dependencies;
+
+    /**
+     * Redirecting `ZDOTDIR` re-implements the user's own zsh startup, which is
+     * only acceptable because a cluster session has to re-prepend its kubectl
+     * directory from inside the shell. Without one, zsh reads its own files.
+     */
+    if (shellInitDirectory !== undefined && this.getShellName(env.PTYSHELL ?? "") === "zsh") {
+      env.OLD_ZDOTDIR = env.ZDOTDIR || env.HOME;
+      env.ZDOTDIR = shellInitDirectory;
+      env.DISABLE_AUTO_UPDATE = "true";
+    }
+
+    return env;
   }
 
   public async open() {
@@ -57,18 +80,15 @@ export class LocalShellSession extends ShellSession {
   }
 
   protected async getShellArgs(shell: string): Promise<string[]> {
-    const { directoryContainingKubectl } = this.dependencies;
-    const shellName = this.dependencies
-      .getBasenameOfPath(shell)
-      .replace(/\.exe$/i, "")
-      .toLowerCase();
+    const { shellInitDirectory, kubeTools } = this.dependencies;
+    const shellName = this.getShellName(shell);
 
-    if (directoryContainingKubectl === undefined) {
+    if (this.cluster === undefined) {
       // A session without a cluster is meant to be the user's own shell: no
       // init file, no ZDOTDIR and no PATH-forcing argument, so every shell
-      // reads its own rc files the way a normal terminal emulator would. Its
-      // fallback binaries are appended to PATH by `pathSuffixEntries`, and
-      // forcing PATH here would undo exactly that.
+      // reads its own rc files the way a normal terminal emulator would. The
+      // bundled binaries directory is appended to PATH by
+      // `kubeTools.pathSuffix`, as a fallback the user's own tools win over.
       switch (shellName) {
         case "powershell":
           return ["-NoExit"];
@@ -81,33 +101,24 @@ export class LocalShellSession extends ShellSession {
       }
     }
 
-    const pathFromPreferences = this.dependencies.state.kubectlBinariesPath || this.kubectl?.getBundledPath();
-    const kubectlPathDir =
-      this.dependencies.state.downloadKubectlBinaries || !pathFromPreferences
-        ? directoryContainingKubectl
-        : this.dependencies.getDirnameOfPath(pathFromPreferences);
-
-    // The bundled binaries directory (e.g. resources/<arch>) holds the
-    // kubectl shipped with the app. The bash/zsh init scripts already append
-    // it as a fallback, so include it here as well for PowerShell and fish.
-    // Otherwise, when the downloaded kubectl directory is empty (e.g. a failed
-    // download), Windows PowerShell has no kubectl on PATH at all.
-    const bundledBinariesDir = this.dependencies.baseBundledBinariesDirectory;
+    // The same directories, in the same places, as the environment's PATH and
+    // the bash and zsh init scripts: Freelens' own, around the user's PATH.
+    const { pathPrefix, pathSuffix } = kubeTools;
 
     switch (shellName) {
       case "powershell":
-        return [
-          "-NoExit",
-          "-command",
-          `& {$Env:PATH="${kubectlPathDir};${this.dependencies.directoryForBinaries};${bundledBinariesDir};$Env:PATH"}`,
-        ];
+        return ["-NoExit", "-command", `& {$Env:PATH="${[...pathPrefix, "$Env:PATH", ...pathSuffix].join(";")}"}`];
       case "bash":
-        return ["--init-file", this.dependencies.joinPaths(directoryContainingKubectl, ".bash_set_path")];
+        // Without its init file, bash reads no rc file either, so the
+        // environment's PATH and KUBECONFIG stay as the session set them.
+        return shellInitDirectory === undefined
+          ? ["--norc"]
+          : ["--init-file", this.dependencies.joinPaths(shellInitDirectory, ".bash_set_path")];
       case "fish":
         return [
           "--login",
           "--init-command",
-          `export PATH="${kubectlPathDir}:${this.dependencies.directoryForBinaries}:${bundledBinariesDir}:$PATH"; export KUBECONFIG="${await this.dependencies.proxyKubeconfigPath}"`,
+          `export PATH="${[...pathPrefix, "$PATH", ...pathSuffix].join(":")}"; export KUBECONFIG="${this.dependencies.proxyKubeconfigPath}"; export KUBECACHEDIR="${this.dependencies.proxyCacheDirectoryPath}"`,
         ];
       case "zsh":
         return ["--login"];

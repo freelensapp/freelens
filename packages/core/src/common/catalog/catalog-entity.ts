@@ -4,12 +4,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import EventEmitter from "node:events";
-import { iter } from "@freelensapp/utilities";
+import { iter, TypedEmitter } from "@freelensapp/utilities";
 import { once } from "es-toolkit";
 import { makeObservable, observable } from "mobx";
 
-import type { Disposer, StrictReactNode, TypedEventEmitter } from "@freelensapp/utilities";
+import type { Disposer, StrictReactNode } from "@freelensapp/utilities";
 
 import type {
   CategoryColumnRegistration,
@@ -138,7 +137,7 @@ export function categoryVersion<
   };
 }
 
-export abstract class CatalogCategory extends (EventEmitter as new () => TypedEventEmitter<CatalogCategoryEvents>) {
+export abstract class CatalogCategory extends TypedEmitter<CatalogCategoryEvents> {
   /**
    * The version of category that you are wanting to declare.
    *
@@ -355,12 +354,19 @@ export abstract class CatalogEntity<
    */
   public abstract readonly kind: string;
 
-  @observable metadata: Metadata;
-  @observable status: Status;
-  @observable spec: Spec;
+  // Annotated in the constructor rather than decorated: a decorated field is an
+  // accessor on the prototype, which toJS() and structured cloning skip, and
+  // the entity crosses IPC as toJS(entity).
+  metadata: Metadata;
+  status: Status;
+  spec: Spec;
 
   constructor({ metadata, status, spec }: CatalogEntityData<Metadata, Status, Spec>) {
-    makeObservable(this);
+    makeObservable(this, {
+      metadata: observable,
+      status: observable,
+      spec: observable,
+    });
 
     if (!metadata || typeof metadata !== "object") {
       throw new TypeError("CatalogEntity's metadata must be a defined object");

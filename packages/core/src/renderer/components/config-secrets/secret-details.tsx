@@ -13,11 +13,13 @@ import { loggerInjectionToken } from "@freelensapp/logger";
 import { showCheckedErrorNotificationInjectable, showSuccessNotificationInjectable } from "@freelensapp/notifications";
 import { base64, toggle } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { autorun, makeObservable, observable } from "mobx";
+import { isEqual } from "es-toolkit";
+import { observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
+import { SecretCertificates } from "../../../features/secret-certificates/renderer/secret-certificates";
+import { CopyableInput } from "../copyable-input/copyable-input";
 import { DrawerItem, DrawerTitle } from "../drawer";
-import { Input } from "../input";
 import secretStoreInjectable from "./store.injectable";
 
 import type { Logger } from "@freelensapp/logger";
@@ -37,33 +39,36 @@ interface Dependencies {
 
 @observer
 class NonInjectedSecretDetails extends React.Component<SecretDetailsProps & Dependencies> {
-  private readonly disposers: (() => void)[] = [];
-  @observable isSaving = false;
-  @observable data: Partial<Record<string, string>> = {};
-  @observable revealSecret = observable.set<string>();
+  @observable accessor isSaving = false;
+  @observable accessor data: Partial<Record<string, string>> = {};
+  @observable accessor revealSecret = observable.set<string>();
 
   constructor(props: SecretDetailsProps & Dependencies) {
     super(props);
-    makeObservable(this);
   }
 
   componentDidMount() {
-    // Capture the object before the autorun: mobx-react 9 forbids reading
-    // this.props inside a derivation (the autorun below).
-    const { object: secret } = this.props;
-
-    this.disposers.push(
-      autorun(() => {
-        if (secret) {
-          this.data = secret.data;
-          this.revealSecret.clear();
-        }
-      }),
-    );
+    this.showData();
   }
 
-  componentWillUnmount() {
-    this.disposers.forEach((dispose) => dispose());
+  componentDidUpdate(prevProps: SecretDetailsProps & Dependencies) {
+    // The store builds a new object for every change of the secret in the
+    // cluster, a change of its metadata only included, while the drawer keeps
+    // this component. Show the newest data, with every value hidden again, when
+    // the data changed, and keep the unsaved edits and the shown values when it
+    // did not.
+    if (!isEqual(prevProps.object?.data, this.props.object?.data)) {
+      this.showData();
+    }
+  }
+
+  private showData() {
+    const { object: secret } = this.props;
+
+    if (secret) {
+      this.data = secret.data;
+      this.revealSecret.clear();
+    }
   }
 
   saveSecret = () => {
@@ -84,6 +89,21 @@ class NonInjectedSecretDetails extends React.Component<SecretDetailsProps & Depe
 
   editData = (name: string, value: string, encoded: boolean) => {
     this.data[name] = encoded ? value : base64.encode(value);
+  };
+
+  /**
+   * The value to copy: the decoded one, whether or not it is shown, since the
+   * base64 form is rarely what anyone wants to paste, or the value as it is
+   * stored when it cannot be decoded.
+   */
+  getValueToCopy = (name: string) => {
+    const value = this.data[name] ?? "";
+
+    try {
+      return base64.decode(value);
+    } catch {
+      return value;
+    }
   };
 
   renderSecret = ([name, value]: [string, string | undefined]) => {
@@ -108,14 +128,14 @@ class NonInjectedSecretDetails extends React.Component<SecretDetailsProps & Depe
     return (
       <div key={name} className="data" data-testid={`${name}-secret-entry`}>
         <div className="name">{name}</div>
-        <div className="flex gap-2 items-center">
-          <Input
-            multiLine
-            theme="round-black"
-            className="grow shrink-0 basis-0"
-            value={value || ""}
-            onChange={(value) => this.editData(name, value, !revealSecret)}
-          />
+        <CopyableInput
+          multiLine
+          theme="round-black"
+          value={value || ""}
+          onChange={(value) => this.editData(name, value, !revealSecret)}
+          getTextToCopy={() => this.getValueToCopy(name)}
+          data-testid={`${name}-secret`}
+        >
           {typeof decodedVal === "string" && (
             <Icon
               material={revealSecret ? "visibility" : "visibility_off"}
@@ -123,7 +143,7 @@ class NonInjectedSecretDetails extends React.Component<SecretDetailsProps & Depe
               onClick={() => toggle(this.revealSecret, name)}
             />
           )}
-        </div>
+        </CopyableInput>
       </div>
     );
   };
@@ -161,6 +181,7 @@ class NonInjectedSecretDetails extends React.Component<SecretDetailsProps & Depe
       <div className="SecretDetails">
         <DrawerItem name="Type">{secret.type}</DrawerItem>
         {this.renderData()}
+        <SecretCertificates data={this.data} />
       </div>
     );
   }

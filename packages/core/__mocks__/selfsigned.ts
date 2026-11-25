@@ -8,7 +8,7 @@
 // (core runs on `pool: "threads"`) is torn down at end of a test file while
 // such a job is still in flight, Node aborts the worker with
 // `Assertion failed: try_catch.CanContinue()` (exit code 129) in
-// crypto_keygen.h. Because the startup runnable `setup-lens-proxy-certificate`
+// crypto_keygen.h. Because the startup runnable `setup-freelens-proxy-certificate`
 // fires this keygen for every test that bootstraps the full main-app DI, and
 // the failing shard depends on how files are distributed, this surfaces as a
 // non-deterministic (flaky) crash.

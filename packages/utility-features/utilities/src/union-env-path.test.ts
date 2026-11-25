@@ -5,6 +5,7 @@
  */
 
 import path from "node:path";
+import { describe, expect, it } from "vitest";
 import { unionPATHs } from "./union-env-path";
 
 describe("unionPATHs", () => {

@@ -1,6 +1,6 @@
 # @freelensapp/tooltip
 
-This package contains stuff related to creating Lens-applications. 
+This package contains stuff related to creating Lens-applications.
 
 ## Usage
 
@@ -14,7 +14,6 @@ import { withTooltip } from "@freelensapp/tooltip";
 
 import type { TooltipProps } from "@freelensapp/tooltip";
 import type { TooltipDecoratorProps } from "@freelensapp/tooltip";
-
 ```
 
 ## Extendability

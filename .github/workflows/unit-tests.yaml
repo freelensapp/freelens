@@ -24,7 +24,7 @@ jobs:
         # denominator is derived from strategy.job-total to stay in sync.
         shard: [1, 2, 3, 4]
 
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
     timeout-minutes: 60
 
     env:
@@ -33,15 +33,25 @@ jobs:
       TURBOREPO_CACHE: ${{ github.workspace }}/.turbo
 
     steps:
+      # First, so that a shard that fails before its tests still uploads the
+      # name of its job and shows up in the report as one without results.
+      - name: Prepare the report of the tests
+        shell: bash
+        env:
+          JOB: unit tests (shard ${{ matrix.shard }}/${{ strategy.job-total }})
+        run: |
+          mkdir -p "${RUNNER_TEMP}/junit"
+          printf '%s\n' "${JOB}" > "${RUNNER_TEMP}/junit/job.txt"
+
       - name: Checkout
         uses: actions/checkout@v7
 
       # yq comes from mise so that its version has a single source (mise.toml)
       # and the download is verified against mise.lock.
       - name: Set up mise
-        uses: jdx/mise-action@v4
+        uses: jdx/mise-action@v5
         with:
-          version: 2026.8.0 # datasource=github-releases depName=jdx/mise
+          version: 2026.11.11 # datasource=github-releases depName=jdx/mise
           install_args: yq
 
       - name: Setup node
@@ -63,27 +73,43 @@ jobs:
         uses: actions/cache@v6
         with:
           path: ${{ env.pnpm_cache_dir }}
-          key: ubuntu-24.04-arm-arm64-node-${{ hashFiles('pnpm-lock.yaml') }}
+          key: ubuntu-26.04-arm-arm64-node-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: |
-            ubuntu-24.04-arm-arm64-node-
+            ubuntu-26.04-arm-arm64-node-
 
       - name: Use Turborepo cache
         uses: actions/cache@v6
         with:
           path: ${{ env.TURBOREPO_CACHE }}
-          key: ubuntu-24.04-arm-arm64-turborepo-${{ hashFiles('package.json', 'freelens/package.json', 'packages/**/package.json', 'pnpm-lock.yaml','turbo.json','tsconfig*.json','packages/infrastructure/typescript/config/*.json') }}
+          key: ubuntu-26.04-arm-arm64-turborepo-${{ hashFiles('package.json', 'freelens/package.json', 'packages/**/package.json', 'pnpm-lock.yaml','turbo.json','tsconfig*.json','packages/infrastructure/typescript/config/*.json') }}
           restore-keys: |
-            ubuntu-24.04-arm-arm64-turborepo-
+            ubuntu-26.04-arm-arm64-turborepo-
+
+      # Turborepo does not cache the binaries, see "Bundled Binary Versions"
+      # in AGENTS.md. Saved right after the build.
+      - name: Restore bundled binaries cache
+        id: binaries-cache-restore
+        uses: actions/cache/restore@v6
+        with:
+          path: freelens/binaries
+          key: ${{ runner.os }}-${{ runner.arch }}-binaries-${{ hashFiles('freelens/binaries.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ runner.arch }}-binaries-
 
       - name: Get Electron version
         shell: bash
-        run: echo "electron_version=$(yq -py -oy -r .importers.freelens.devDependencies.electron.version pnpm-lock.yaml | sed 's/(.*)//')" | tee -a ${GITHUB_ENV}
+        # pnpm-lock.yaml holds several YAML documents (pnpm 12 puts packageManagerDependencies
+        # in a document of its own), so evaluate them all and take the one that has the importer.
+        # The version carries a peer suffix, e.g. 1.2.3(supports-color@8.1.1), which split drops.
+        run: |
+          electron_version=$(yq ea -r '[.importers.freelens.devDependencies.electron.version | select(. != null)] | .[0] // error("electron not found in pnpm-lock.yaml") | split("(") | .[0]' pnpm-lock.yaml)
+          echo "electron_version=${electron_version}" | tee -a "${GITHUB_ENV}"
 
       - name: Use Electron cache
         uses: actions/cache@v6
         with:
           path: ${{ env.ELECTRON_CACHE }}
-          key: ubuntu-24.04-arm-arm64-electron-${{ env.electron_version }}
+          key: ubuntu-26.04-arm-arm64-electron-${{ env.electron_version }}
 
       - name: Install pnpm dependencies
         id: install-pnpm
@@ -111,6 +137,13 @@ jobs:
       - name: Build packages
         run: pnpm --color=always --stream build
 
+      - name: Save bundled binaries cache
+        if: steps.binaries-cache-restore.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v6
+        with:
+          path: freelens/binaries
+          key: ${{ steps.binaries-cache-restore.outputs.cache-primary-key }}
+
       # All package projects are sharded together through the root Vitest
       # config, which declares every package as a project. Vitest splits the
       # full set of collected test files across shards, so no project is
@@ -118,8 +151,20 @@ jobs:
       # --reporter=github-actions surfaces failing tests as inline annotations
       # on the PR/commit; --includeTaskLocation gives them accurate file:line.
       # verbose keeps a full per-test log in the shard's job output.
+      # junit is the input of the report of all the shards, see "Test Reports"
+      # in AGENTS.md.
       - name: Run unit tests (shard ${{ matrix.shard }}/${{ strategy.job-total }})
-        run: pnpm --color=always test:unit --shard=${{ matrix.shard }}/${{ strategy.job-total }} --reporter=verbose --reporter=github-actions --includeTaskLocation
+        run: pnpm --color=always test:unit --shard=${{ matrix.shard }}/${{ strategy.job-total }} --reporter=verbose --reporter=github-actions --includeTaskLocation --reporter=junit --outputFile.junit="${RUNNER_TEMP}/junit/unit-tests.xml"
+
+      - name: Upload the report of the tests
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: junit-unit-tests-shard-${{ matrix.shard }}
+          path: ${{ runner.temp }}/junit/
+          retention-days: 7
+          # a re-run of the shard replaces the report of its earlier attempt
+          overwrite: true
 
       # Must run the root `clean:dist` script directly (not `--parallel`,
       # which skips the workspace root) so its dlx cache warmup stays ahead
@@ -131,3 +176,64 @@ jobs:
       - name: Check untracked files
         shell: bash
         run: for f in $(git ls-files --others --exclude-standard); do git diff --no-index --stat --exit-code /dev/null $f; done
+
+  unit-tests:
+    name: unit tests
+
+    needs: test-unit
+    if: always()
+
+    runs-on: ubuntu-26.04-arm
+    timeout-minutes: 5
+
+    steps:
+      - name: Check the result of the matrix
+        run: test "${RESULT}" = success
+        env:
+          RESULT: ${{ needs.test-unit.result }}
+
+  # The summary of the run. The comment on a pull request comes from the Test
+  # report workflow, whose token can write on a pull request of a fork too.
+  report:
+    name: report
+
+    needs: test-unit
+    if: ${{ !cancelled() }}
+
+    runs-on: ubuntu-26.04-arm
+    timeout-minutes: 5
+
+    permissions:
+      actions: read
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+          sparse-checkout: |
+            .github/scripts
+            .nvmrc
+          sparse-checkout-cone-mode: false
+
+      - name: Setup node
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+
+      - name: Download the reports of the tests
+        uses: actions/download-artifact@v8
+        with:
+          pattern: junit-*
+          path: reports
+
+      - name: Summary of the reports
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPORT_RUN_ID: ${{ github.run_id }}
+        run: |
+          gh api --paginate "repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}/attempts/${GITHUB_RUN_ATTEMPT}/jobs" --jq '.jobs[] | [.name, .html_url] | @tsv' > jobs.tsv
+          node .github/scripts/test-report.mjs reports jobs.tsv "Unit tests" >> "${GITHUB_STEP_SUMMARY}"

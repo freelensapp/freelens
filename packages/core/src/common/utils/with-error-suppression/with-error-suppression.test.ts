@@ -6,6 +6,7 @@
 
 import asyncFn from "@async-fn/vitest";
 import { getPromiseStatus } from "@freelensapp/test-utils";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { withErrorSuppression } from "./with-error-suppression";
 
 import type { AsyncFnMock } from "@async-fn/vitest";

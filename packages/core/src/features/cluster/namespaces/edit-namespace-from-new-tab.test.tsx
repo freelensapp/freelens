@@ -9,6 +9,7 @@ import { Namespace } from "@freelensapp/kube-object";
 import { showErrorNotificationInjectable, showSuccessNotificationInjectable } from "@freelensapp/notifications";
 import { asyncFn } from "@freelensapp/test-utils";
 import { act, fireEvent } from "@testing-library/react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import directoryForLensLocalStorageInjectable from "../../../common/directory-for-lens-local-storage/directory-for-lens-local-storage.injectable";
 import navigateToNamespacesInjectable from "../../../common/front-end-routing/routes/cluster/namespaces/navigate-to-namespaces.injectable";
 import readJsonFileInjectable from "../../../common/fs/read-json-file.injectable";
@@ -498,7 +499,7 @@ metadata:
 `);
               });
 
-              it("stores the changed configuration", async () => {
+              it("stores the changed configuration, without the configuration of the cluster", async () => {
                 const readJsonFile = windowDi.inject(readJsonFileInjectable);
 
                 const actual = (await readJsonFile(
@@ -507,16 +508,6 @@ metadata:
 
                 expect(actual.edit_resource_store["some-first-tab-id"]).toEqual({
                   resource: "/api/some-api-version/namespaces/some-uid",
-                  firstDraft: `apiVersion: some-api-version
-kind: Namespace
-metadata:
-  uid: some-uid
-  name: some-name
-  resourceVersion: some-resource-version
-  somePropertyToBeRemoved: some-value
-  somePropertyToBeChanged: some-old-value
-  selfLink: /api/some-api-version/namespaces/some-uid
-`,
                   draft: `apiVersion: some-api-version
 kind: Namespace
 metadata:

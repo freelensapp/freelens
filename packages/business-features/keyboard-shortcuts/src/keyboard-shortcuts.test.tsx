@@ -7,6 +7,7 @@ import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
 import { render } from "@testing-library/react";
 import userEvent, { UserEvent } from "@testing-library/user-event";
 import { computed, runInAction } from "mobx";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { keyboardShortcutsFeature } from "./feature";
 import { keyboardShortcutInjectionToken } from "./keyboard-shortcut-injection-token";
 import { KeyboardShortcutScope } from "./keyboard-shortcut-scope";

@@ -9,7 +9,7 @@ import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
 import packageJson from "../../../package.json";
 import fetchInjectable from "../fetch/fetch.injectable";
-import { lensProxyDispatcherInjectionToken } from "../fetch/lens-proxy-dispatcher-injection-token";
+import { freelensProxyDispatcherInjectionToken } from "../fetch/freelens-proxy-dispatcher-injection-token";
 
 import type { FetchRequestInit, JsonApiConfig, JsonApiDependencies } from "@freelensapp/json-api";
 
@@ -24,12 +24,12 @@ const createKubeJsonApiInjectable = getInjectable({
       fetch: di.inject(fetchInjectable),
       logger: di.inject(loggerInjectionToken),
     };
-    const lensProxyDispatcher = di.inject(lensProxyDispatcherInjectionToken);
+    const freelensProxyDispatcher = di.inject(freelensProxyDispatcherInjectionToken);
 
     return (config, reqInit) => {
       if (!config.getRequestOptions) {
         config.getRequestOptions = async (): Promise<MainFetchRequestInit> => {
-          const dispatcher = lensProxyDispatcher();
+          const dispatcher = freelensProxyDispatcher();
 
           // `User-Agent` is a forbidden header name in the renderer, where
           // Chromium sets its own; only main gets to send this one.

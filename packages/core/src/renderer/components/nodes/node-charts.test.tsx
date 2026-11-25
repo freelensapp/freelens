@@ -3,7 +3,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { Node } from "@freelensapp/kube-object";
 import { computed } from "mobx";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import activeThemeInjectable from "../../themes/active.injectable";
 import selectedMetricsTimeRangeInjectable from "../cluster/overview/selected-metrics-time-range.injectable";
@@ -71,7 +73,7 @@ describe("NodeCharts", () => {
     );
     di.override(selectedMetricsTimeRangeInjectable, () => ({
       timestamps: {
-        get: () => ({ start: 100, end: 200, range: 100 }),
+        get: () => ({ start: 100, end: 200, range: 100, step: 60 }),
       },
     }));
 
@@ -92,6 +94,7 @@ describe("NodeCharts", () => {
       expect.objectContaining({
         minTime: 100,
         maxTime: 200,
+        step: 60,
       }),
     );
 
@@ -99,5 +102,41 @@ describe("NodeCharts", () => {
     const firstDatasetPoint = barChartProps.data.datasets[0].data[0];
 
     expect(firstDatasetPoint.x).toBe(1_710_000_000_000);
+  });
+
+  it("takes the pod capacity from the status of the node when the provider has no metric of it", () => {
+    const di = getDiForUnitTesting();
+    const render = renderFor(di);
+    const node = new Node({
+      apiVersion: "v1",
+      kind: "Node",
+      metadata: { name: "node-name", uid: "node-id", resourceVersion: "1", selfLink: "/api/v1/nodes/node-name" },
+      status: { capacity: { pods: "110" } },
+    });
+
+    di.override(activeThemeInjectable, () => computed(() => ({ colors: { chartCapacityColor: "#123456" } }) as never));
+    di.override(selectedMetricsTimeRangeInjectable, () => ({
+      timestamps: { get: () => ({ start: 100, end: 200, range: 100 }) },
+    }));
+
+    render(
+      <ResourceMetricsContext.Provider
+        value={{
+          metrics: {
+            ...metrics,
+            podCapacity: { ...metric, data: { ...metric.data, result: [{ values: [] }] } },
+          } as never,
+          tab: "Pods",
+          object: node,
+          isPending: false,
+        }}
+      >
+        <NodeCharts />
+      </ResourceMetricsContext.Provider>,
+    );
+
+    const [, capacity] = barChartMock.mock.calls[0][0].data.datasets;
+
+    expect(capacity.data).toEqual([{ x: 1_710_000_000_000, y: "110" }]);
   });
 });

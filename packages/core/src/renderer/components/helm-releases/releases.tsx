@@ -44,10 +44,16 @@ interface Dependencies {
   releases: IComputedValue<RemovableHelmRelease[]>;
   releasesArePending: IComputedValue<boolean>;
   namespace: IComputedValue<string>;
+  name: IComputedValue<string>;
   navigateToHelmReleases: NavigateToHelmReleases;
 }
 
 class NonInjectedHelmReleases extends Component<Dependencies> {
+  // Whether the first list has arrived. A refresh keeps the previous list, empty
+  // or not, so the spinner is only for the first load. A plain field, set from
+  // the store below: it remembers, it does not need to be observed.
+  private hasLoaded = false;
+
   onDetails = (item: HelmRelease) => {
     this.showDetails(item);
   };
@@ -79,11 +85,16 @@ class NonInjectedHelmReleases extends Component<Dependencies> {
   render() {
     const releases = this.props.releases;
     const releasesArePending = this.props.releasesArePending;
+    const view = this;
 
     // TODO: Implement ItemListLayout without stateful stores
     const legacyReleaseStore: ItemListStore<RemovableHelmRelease, false> = {
       get isLoaded() {
-        return !releasesArePending.get();
+        if (!releasesArePending.get()) {
+          view.hasLoaded = true;
+        }
+
+        return view.hasLoaded;
       },
 
       failedLoading: false,
@@ -122,8 +133,10 @@ class NonInjectedHelmReleases extends Component<Dependencies> {
       pickOnlySelected: (releases) => releases.filter((release) => release.isSelected),
     };
 
+    // One page serves every path of the route, so the path parameters key the crash of its content: another path
+    // renders it again.
     return (
-      <SiblingsInTabLayout>
+      <SiblingsInTabLayout resetKey={[this.props.namespace.get(), this.props.name.get()].join("/")}>
         <ItemListLayout<RemovableHelmRelease, false>
           store={legacyReleaseStore}
           getItems={() => releases.get()}

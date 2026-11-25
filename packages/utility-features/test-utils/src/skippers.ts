@@ -4,6 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { describe, it } from "vitest";
+
 /**
  * Conditionally run a test
  */

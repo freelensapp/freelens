@@ -34,7 +34,8 @@ Tooltip.positioners.cursor = (_elements, eventPosition) => eventPosition;
 // The wrapper accepts loosely typed data and casts it to the strict v4
 // ChartData at the ChartJS boundary (see renderChart). Chart.js v4 parses data
 // internally, so string/number-y point values are tolerated at runtime.
-export type ChartDataPoint = number | { x: number | string; y: number | string } | null | undefined;
+// A `null` y marks a gap: the line (and its fill) is broken at that point.
+export type ChartDataPoint = number | { x: number | string; y: number | string | null } | null | undefined;
 
 export interface ChartDataSets {
   id?: string;
@@ -91,8 +92,8 @@ export class Chart extends React.Component<ChartProps> {
 
   private canvas = React.createRef<HTMLCanvasElement>();
   private chart: ChartJS | null = null;
-  // ChartJS adds _meta field to any data object passed to it.
-  // We clone new data prop into currentChartData to compare props and prevProps
+  // Chart.js gets copies of the datasets of the data prop, never the objects
+  // of the caller. An update changes the copy the chart already has in place.
   private currentChartData?: ChartData;
 
   componentDidMount() {
@@ -185,13 +186,22 @@ export class Chart extends React.Component<ChartProps> {
           data[dataIndex] = nextData[dataIndex];
         }
 
-        // Merge other fields
+        // Give the dataset Chart.js already has the other fields of the new
+        // one, and only those: a field the new one lacks, such as the tooltip
+        // labels of a ring that has no status left, must not stay. Chart.js
+        // finds the controller and the elements of a dataset by the identity of
+        // the dataset object: another object is a new dataset to it, and a new
+        // dataset is drawn from its start, with the opening animation.
         const { data: _data, ...props } = next;
+        const dataset = datasets[index];
 
-        datasets[index] = {
-          ...datasets[index],
-          ...props,
-        };
+        for (const key of Object.keys(dataset)) {
+          if (key !== "data" && !(key in props)) {
+            delete dataset[key];
+          }
+        }
+
+        Object.assign(dataset, props);
       } else {
         datasets[datasetIndex] = next;
       }

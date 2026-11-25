@@ -14,10 +14,10 @@ import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
 import { Badge } from "../badge";
+import { CopyableMonacoEditor } from "../copyable-monaco-editor/copyable-monaco-editor";
 import { DrawerItem, DrawerTitle } from "../drawer";
 import { Input } from "../input";
 import { KubeObjectConditionsDrawer } from "../kube-object-conditions";
-import { MonacoEditor } from "../monaco-editor";
 import { Table, TableCell, TableHead, TableRow } from "../table";
 import { WithTooltip } from "../with-tooltip";
 
@@ -142,7 +142,7 @@ class NonInjectedCustomResourceDefinitionDetails extends React.Component<
         {validation && (
           <>
             <DrawerTitle>Validation</DrawerTitle>
-            <MonacoEditor readOnly value={validation} style={{ height: 400 }} />
+            <CopyableMonacoEditor readOnly value={validation} style={{ height: 400 }} />
           </>
         )}
       </div>

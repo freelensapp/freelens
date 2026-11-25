@@ -8,7 +8,7 @@ import assert from "node:assert";
 import path from "node:path";
 import { getGlobalOverride } from "@freelensapp/test-utils";
 import { get, has, set } from "es-toolkit/compat";
-import semver from "semver";
+import * as verkit from "verkit";
 import readJsonSyncInjectable from "../fs/read-json-sync.injectable";
 import writeJsonSyncInjectable from "../fs/write-json-sync.injectable";
 import getConfigurationFileModelInjectable from "./get-configuration-file-model.injectable";
@@ -18,7 +18,7 @@ import type Config from "conf";
 const MIGRATION_KEY = `__internal__.migrations.version`;
 
 const _isVersionInRangeFormat = (version: string) => {
-  return semver.clean(version) === null;
+  return verkit.clean(version) === null;
 };
 
 const _shouldPerformMigration = (
@@ -27,18 +27,18 @@ const _shouldPerformMigration = (
   versionToMigrate: string,
 ) => {
   if (_isVersionInRangeFormat(candidateVersion)) {
-    if (previousMigratedVersion !== "0.0.0" && semver.satisfies(previousMigratedVersion, candidateVersion)) {
+    if (previousMigratedVersion !== "0.0.0" && verkit.satisfies(previousMigratedVersion, candidateVersion)) {
       return false;
     }
 
-    return semver.satisfies(versionToMigrate, candidateVersion);
+    return verkit.satisfies(versionToMigrate, candidateVersion);
   }
 
-  if (semver.lte(candidateVersion, previousMigratedVersion)) {
+  if (verkit.isLessThanOrEqual(candidateVersion, previousMigratedVersion)) {
     return false;
   }
 
-  if (semver.gt(candidateVersion, versionToMigrate)) {
+  if (verkit.isGreaterThan(candidateVersion, versionToMigrate)) {
     return false;
   }
 
@@ -69,7 +69,8 @@ export default getGlobalOverride(getConfigurationFileModelInjectable, (di) => {
       },
       path: configFilePath,
       get: (key: string) => get(store, key),
-      set: (key: string, value: unknown) => {
+      // Both forms of conf: `set(key, value)` and `set(object)`.
+      set: (key: string | Record<string, unknown>, value?: unknown) => {
         let currentState: Partial<Record<string, unknown>>;
 
         try {
@@ -80,7 +81,7 @@ export default getGlobalOverride(getConfigurationFileModelInjectable, (di) => {
 
         writeJsonSync(configFilePath, {
           ...currentState,
-          [key]: value,
+          ...(typeof key === "string" ? { [key]: value } : key),
         });
         store = readJsonSync(configFilePath);
       },
@@ -130,7 +131,10 @@ export default getGlobalOverride(getConfigurationFileModelInjectable, (di) => {
         }
       }
 
-      if (_isVersionInRangeFormat(previousMigratedVersion) || !semver.eq(previousMigratedVersion, versionToMigrate)) {
+      if (
+        _isVersionInRangeFormat(previousMigratedVersion) ||
+        !verkit.isEqual(previousMigratedVersion, versionToMigrate)
+      ) {
         set(store, MIGRATION_KEY, versionToMigrate);
       }
     }

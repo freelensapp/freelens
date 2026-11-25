@@ -5,14 +5,17 @@
  */
 
 import { isDefined } from "@freelensapp/utilities";
-import { KubeConfig } from "@kubernetes/client-node";
 import { newClusters, newContexts, newUsers } from "@kubernetes/client-node/dist/config_types.js";
 import Joi from "joi";
 import * as yaml from "js-yaml";
+import { KubeConfigData } from "./kube-config";
+
+import type { PartialDeep } from "@freelensapp/type-fest";
 
 import type { Cluster, Context, User } from "@kubernetes/client-node";
 import type { DumpOptions } from "js-yaml";
-import type { PartialDeep } from "type-fest";
+
+import type { KubeConfigOptions } from "./kube-config";
 
 const clusterSchema = Joi.object({
   name: Joi.string().min(1).required(),
@@ -39,13 +42,6 @@ const kubeConfigSchema = Joi.object({
   contexts: Joi.array().items(contextSchema).optional(),
   "current-context": Joi.string().min(1).failover("default"),
 }).required();
-
-interface KubeConfigOptions {
-  clusters: Cluster[];
-  users: User[];
-  contexts: Context[];
-  currentContext: string;
-}
 
 interface OptionsResult {
   options: KubeConfigOptions;
@@ -82,17 +78,12 @@ function loadToOptions(rawYaml: string): OptionsResult {
   };
 }
 
-export function loadFromOptions(options: KubeConfigOptions): KubeConfig {
-  const kc = new KubeConfig();
-
-  // need to load using the kubernetes client to generate a kubeconfig object
-  kc.loadFromOptions(options);
-
-  return kc;
+export function loadFromOptions(options: KubeConfigOptions): KubeConfigData {
+  return new KubeConfigData(options);
 }
 
 export interface ConfigResult {
-  config: KubeConfig;
+  config: KubeConfigData;
   error: Joi.ValidationError | undefined;
 }
 
@@ -116,16 +107,16 @@ export function loadValidatedConfig(content: string, contextName: string): Valid
 }
 
 export interface SplitConfigEntry {
-  config: KubeConfig;
+  config: KubeConfigData;
   validationResult: ValidateKubeConfigResult;
 }
 
 /**
  * Breaks kube config into several configs. Each context as it own KubeConfig object
  */
-export function splitConfig(kubeConfig: KubeConfig): SplitConfigEntry[] {
+export function splitConfig(kubeConfig: KubeConfigData): SplitConfigEntry[] {
   return kubeConfig.getContexts().map((ctx) => {
-    const config = new KubeConfig();
+    const config = new KubeConfigData();
     const cluster = kubeConfig.getCluster(ctx.cluster);
     const user = kubeConfig.getUser(ctx.user);
     const context = kubeConfig.getContextObject(ctx.name);
@@ -163,7 +154,7 @@ export const defaultYamlDumpOptions: DumpOptions = {
  * @param kubeConfig The kubeconfig object to format as pretty yaml
  * @returns The yaml representation of the kubeconfig object
  */
-export function dumpConfigYaml(kubeConfig: PartialDeep<KubeConfig>): string {
+export function dumpConfigYaml(kubeConfig: PartialDeep<KubeConfigData>): string {
   const clusters = kubeConfig.clusters?.filter(isDefined).map((cluster) => ({
     name: cluster.name,
     cluster: {
@@ -228,7 +219,7 @@ export type ValidateKubeConfigResult =
  *
  * Note: This function returns an error instead of throwing it, returning `undefined` if the validation passes
  */
-export function validateKubeConfig(config: KubeConfig, contextName: string): ValidateKubeConfigResult {
+export function validateKubeConfig(config: KubeConfigData, contextName: string): ValidateKubeConfigResult {
   const context = config.getContextObject(contextName);
 
   if (!context) {

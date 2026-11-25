@@ -3,6 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { beforeEach, describe, expect, it } from "vitest";
 import directoryForUserDataInjectable from "../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import writeJsonSyncInjectable from "../../common/fs/write-json-sync.injectable";
 import storeMigrationVersionInjectable from "../../common/vars/store-migration-version.injectable";

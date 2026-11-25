@@ -4,13 +4,23 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import {
+  gkeClusterNameAnnotation,
+  gkePrometheusProviderKind,
+  gmpFrontendAppLabels,
+  gmpFrontendDocumentationUrl,
+  gmpFrontendImage,
+  gmpFrontendNamespaces,
+  gmpFrontendServiceNames,
+} from "@freelensapp/prometheus";
 import { Spinner } from "@freelensapp/spinner";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { autorun, computed, makeObservable, observable } from "mobx";
+import { autorun, computed, observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import { initialFilesystemMountpoints } from "../../../common/cluster-types";
 import requestMetricsProvidersInjectable from "../../../common/k8s-api/endpoints/metrics.api/request-providers.injectable";
+import openLinkInBrowserInjectable from "../../../common/utils/open-link-in-browser.injectable";
 import productNameInjectable from "../../../common/vars/product-name.injectable";
 import { Checkbox } from "../checkbox";
 import { Input } from "../input";
@@ -23,6 +33,7 @@ import type {
   MetricProviderInfo,
   RequestMetricsProviders,
 } from "../../../common/k8s-api/endpoints/metrics.api/request-providers.injectable";
+import type { OpenLinkInBrowser } from "../../../common/utils/open-link-in-browser.injectable";
 import type { SelectOption } from "../select";
 
 type PrometheusConfig = NonNullable<ClusterPrometheusPreferences["prometheus"]>;
@@ -57,6 +68,7 @@ type ProviderValue = typeof autoDetectPrometheus | string;
 interface Dependencies {
   productName: string;
   requestMetricsProviders: RequestMetricsProviders;
+  openLinkInBrowser: OpenLinkInBrowser;
 }
 
 const requestMethodOptions: SelectOption<PrometheusRequestMethod>[] = [
@@ -76,15 +88,15 @@ const requestMethodOptions: SelectOption<PrometheusRequestMethod>[] = [
 class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometheusSettingProps & Dependencies> {
   private readonly disposers: (() => void)[] = [];
 
-  @observable mountpoints = "";
-  @observable path = ""; // <namespace>/<service>:<port>
-  @observable customPrefix = ""; // e.g. "/prometheus"
-  @observable useHttps = false; // whether to use https scheme for service proxy
-  @observable directUrl = ""; // direct URL to Prometheus (bypasses K8s service proxy)
-  @observable bearerToken = ""; // bearer token for Prometheus authentication
-  @observable requestMethod: PrometheusRequestMethod = "POST";
-  @observable selectedOption: ProviderValue = autoDetectPrometheus;
-  @observable loading = true;
+  @observable accessor mountpoints = "";
+  @observable accessor path = ""; // <namespace>/<service>:<port>
+  @observable accessor customPrefix = ""; // e.g. "/prometheus"
+  @observable accessor useHttps = false; // whether to use https scheme for service proxy
+  @observable accessor directUrl = ""; // direct URL to Prometheus (bypasses K8s service proxy)
+  @observable accessor bearerToken = ""; // bearer token for Prometheus authentication
+  @observable accessor requestMethod: PrometheusRequestMethod = "POST";
+  @observable accessor selectedOption: ProviderValue = autoDetectPrometheus;
+  @observable accessor loading = true;
   readonly initialFilesystemMountpoints = initialFilesystemMountpoints;
   readonly loadedOptions = observable.map<string, MetricProviderInfo>();
 
@@ -105,7 +117,6 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
 
   constructor(props: ClusterPrometheusSettingProps & Dependencies) {
     super(props);
-    makeObservable(this);
   }
 
   @computed get canEditPrometheusPath(): boolean {
@@ -118,6 +129,10 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
 
   @computed get isOpenShift(): boolean {
     return this.selectedOption === "openshift";
+  }
+
+  @computed get isGke(): boolean {
+    return this.selectedOption === gkePrometheusProviderKind;
   }
 
   componentDidMount() {
@@ -222,6 +237,27 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
     this.props.cluster.preferences.prometheusRequestMethod = this.requestMethod;
   };
 
+  renderGkeHint() {
+    const { openLinkInBrowser, productName } = this.props;
+
+    return (
+      <span data-testid="cluster-prometheus-gke-hint">
+        {`An address to the Google Managed Prometheus frontend (<namespace>/<service>:<port>), the query proxy that reads the GKE system metrics of the project. If left empty, ${productName} looks for a service named ${gmpFrontendServiceNames.join(" or ")} in the namespaces ${gmpFrontendNamespaces.join(", ")}, then for a service labeled app=${gmpFrontendAppLabels.join(" or app=")} in any namespace, and uses the first one whose pods run ${gmpFrontendImage}, on its port named "web" or else its first port. The metrics of every cluster of the project are shown unless that service has the annotation ${gkeClusterNameAnnotation} with the name of the GKE cluster. `}
+        {"The frontend has to be deployed in the cluster with a Google service account that can read the metrics: see "}
+        <a
+          href={gmpFrontendDocumentationUrl}
+          onClick={(event) => {
+            event.preventDefault();
+            void openLinkInBrowser(gmpFrontendDocumentationUrl);
+          }}
+        >
+          the Google Cloud documentation
+        </a>
+        .
+      </span>
+    );
+  }
+
   render() {
     return (
       <>
@@ -263,7 +299,9 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
               <small className="hint">
                 {this.isOpenShift
                   ? `An address to the Prometheus service (<namespace>/<service>:<port>). For OpenShift this is typically openshift-monitoring/prometheus-k8s:9091. Can be left empty when using a Prometheus ingress/route.`
-                  : `An address to an existing Prometheus installation (<namespace>/<service>:<port>). ${this.props.productName} tries to auto-detect address if left empty.`}
+                  : this.isGke
+                    ? this.renderGkeHint()
+                    : `An address to an existing Prometheus installation (<namespace>/<service>:<port>). ${this.props.productName} tries to auto-detect address if left empty.`}
               </small>
             </section>
             <hr />
@@ -387,6 +425,7 @@ export const ClusterPrometheusSetting = withInjectables<Dependencies, ClusterPro
       ...props,
       productName: di.inject(productNameInjectable),
       requestMetricsProviders: di.inject(requestMetricsProvidersInjectable),
+      openLinkInBrowser: di.inject(openLinkInBrowserInjectable),
     }),
   },
 );

@@ -5,6 +5,7 @@
  */
 
 import { MutatingWebhookConfiguration } from "@freelensapp/kube-object";
+import { beforeEach, describe, expect, it } from "vitest";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import { renderFor } from "../test-utils/renderFor";
 import { MutatingWebhookDetails } from "./mutating-webhook-configurations-details";

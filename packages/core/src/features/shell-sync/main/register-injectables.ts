@@ -9,9 +9,11 @@
 import computeShellEnvironmentInjectable from "./compute-shell-environment.injectable";
 import computeUnixShellEnvironmentInjectable from "./compute-unix-shell-environment.injectable";
 import emitShellSyncFailedInjectable from "./emit-failure.injectable";
+import emitShellSyncStartupFailureInjectable from "./emit-startup-failure.injectable";
 import processEnvInjectable from "./env.injectable";
 import processExecPathInjectable from "./execPath.injectable";
 import setupShellInjectable from "./setup-shell.injectable";
+import shellSyncStartupFailureInjectable from "./startup-failure.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
@@ -32,6 +34,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
     /* Ignore duplicate registration */
   }
   try {
+    di.register(emitShellSyncStartupFailureInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
     di.register(processEnvInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
@@ -43,6 +50,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(setupShellInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(shellSyncStartupFailureInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

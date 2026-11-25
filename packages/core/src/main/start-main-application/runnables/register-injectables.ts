@@ -7,17 +7,19 @@
  */
 
 import cleanUpShellSessionsInjectable from "./clean-up-shell-sessions.injectable";
+import clearHttpCacheInjectable from "./clear-http-cache.injectable";
+import clearLocalStorageInjectable from "./clear-local-storage.injectable";
 import emitCloseToEventBusInjectable from "./emit-close-to-event-bus.injectable";
 import emitServiceStartToEventBusInjectable from "./emit-service-start-to-event-bus.injectable";
 import { registerInjectables as registerFlagRendererInjectables } from "./flag-renderer/register-injectables";
 import initializeExtensionsInjectable from "./initialize-extensions.injectable";
 import { registerInjectables as registerKubeConfigSyncInjectables } from "./kube-config-sync/register-injectables";
 import { registerInjectables as registerRootFrameHasRenderedInjectables } from "./root-frame-has-rendered/register-injectables";
+import setupFreelensProxyInjectable from "./setup-freelens-proxy.injectable";
+import setupFreelensProxyCertificateInjectable from "./setup-freelens-proxy-certificate.injectable";
 import setupHardwareAccelerationInjectable from "./setup-hardware-acceleration.injectable";
 import setupHostnamesInjectable from "./setup-hostnames.injectable";
 import setupImmerInjectable from "./setup-immer.injectable";
-import setupLensProxyInjectable from "./setup-lens-proxy.injectable";
-import setupLensProxyCertificateInjectable from "./setup-lens-proxy-certificate.injectable";
 import setupMobxInjectable from "./setup-mobx.injectable";
 import setupProxyEnvInjectable from "./setup-proxy-env.injectable";
 import setupSessionProxyBypassInjectable from "./setup-session-proxy-bypass.injectable";
@@ -30,6 +32,16 @@ import type { DiContainerForInjection } from "@ogre-tools/injectable";
 export function registerInjectables(di: DiContainerForInjection): void {
   try {
     di.register(cleanUpShellSessionsInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(clearHttpCacheInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(clearLocalStorageInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }
@@ -49,6 +61,16 @@ export function registerInjectables(di: DiContainerForInjection): void {
     /* Ignore duplicate registration */
   }
   try {
+    di.register(setupFreelensProxyCertificateInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(setupFreelensProxyInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
     di.register(setupHardwareAccelerationInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
@@ -60,16 +82,6 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(setupImmerInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(setupLensProxyCertificateInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(setupLensProxyInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

@@ -16,6 +16,7 @@ import { getPromiseStatus } from "@freelensapp/test-utils";
 import { createContainer, DiContainer, Injectable } from "@ogre-tools/injectable";
 import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
 import { runInAction } from "mobx";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { getMessageBridgeFake } from "./get-message-bridge-fake";
 
 import type { Mock } from "vitest";

@@ -4,6 +4,7 @@
  */
 
 import { observable } from "mobx";
+import { describe, expect, it } from "vitest";
 import { LensKubernetesClusterStatus } from "../../../../../common/catalog-entities/kubernetes-cluster";
 import catalogEntityRegistryInjectable from "../../../../../main/catalog/entity-registry.injectable";
 import { getDiForUnitTesting } from "../../../../../main/getDiForUnitTesting";

@@ -1,0 +1,3 @@
+{
+  "extends": "@freelensapp/typescript/config/base.json"
+}

@@ -9,6 +9,7 @@ import { loggerInjectionToken } from "@freelensapp/logger";
 import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import { noop } from "@freelensapp/utilities";
 import { type RenderResult, waitFor } from "@testing-library/react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import execFileInjectable, { type ExecFile } from "../../common/fs/exec-file.injectable";
 import readYamlFileInjectable from "../../common/fs/read-yaml-file.injectable";
 import helmBinaryPathInjectable from "../../main/helm/helm-binary-path.injectable";

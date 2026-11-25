@@ -21,9 +21,9 @@ const reloadLogsInjectable = getInjectable({
 
     return (
       tabId: string,
-      pod: IComputedValue<Pod | undefined>,
+      pods: IComputedValue<Pod[]>,
       logTabData: IComputedValue<LogTabData | undefined>,
-    ): Promise<void> => logStore.reload(tabId, pod, logTabData);
+    ): Promise<void> => logStore.reload(tabId, pods, logTabData);
   },
 });
 

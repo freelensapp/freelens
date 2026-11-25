@@ -93,6 +93,54 @@ export interface CustomResourceDefinitionStatus {
   storedVersions: string[];
 }
 
+const kubeVersionPattern = /^v(\d+)(?:(alpha|beta)(\d+))?$/;
+const kubeVersionStability = { alpha: 0, beta: 1, ga: 2 } as const;
+
+const parseKubeVersion = (name: string) => {
+  const match = kubeVersionPattern.exec(name);
+
+  if (!match) {
+    return undefined;
+  }
+
+  const [, major, stability, minor] = match;
+
+  return {
+    stability: kubeVersionStability[(stability as "alpha" | "beta" | undefined) ?? "ga"],
+    major: Number(major),
+    minor: minor === undefined ? 0 : Number(minor),
+  };
+};
+
+/**
+ * Orders version names by Kubernetes version priority, highest first, as
+ * Kubernetes orders the versions of a CRD: names of the form `v1`, `v1beta2` or
+ * `v1alpha3` come first, GA before beta before alpha, then by major and by minor
+ * version, both descending. Any other name comes after them, alphabetically.
+ */
+const compareByKubeVersionPriority = (left: string, right: string) => {
+  const leftVersion = parseKubeVersion(left);
+  const rightVersion = parseKubeVersion(right);
+
+  if (leftVersion && rightVersion) {
+    return (
+      rightVersion.stability - leftVersion.stability ||
+      rightVersion.major - leftVersion.major ||
+      rightVersion.minor - leftVersion.minor
+    );
+  }
+
+  if (leftVersion) {
+    return -1;
+  }
+
+  if (rightVersion) {
+    return 1;
+  }
+
+  return left < right ? -1 : left > right ? 1 : 0;
+};
+
 export class CustomResourceDefinition extends KubeObject<
   ClusterScopedMetadata,
   CustomResourceDefinitionStatus,
@@ -114,10 +162,14 @@ export class CustomResourceDefinition extends KubeObject<
     });
   }
 
-  getResourceApiBase() {
+  /**
+   * @param version The version to read the resources through, the preferred
+   * version by default.
+   */
+  getResourceApiBase(version = this.getVersion()) {
     const { group } = this.spec;
 
-    return `/apis/${group}/${this.getVersion()}/${this.getPluralName()}`;
+    return `/apis/${group}/${version}/${this.getPluralName()}`;
   }
 
   getPluralName() {
@@ -142,17 +194,34 @@ export class CustomResourceDefinition extends KubeObject<
     return this.spec.scope;
   }
 
+  /**
+   * The version the host reads the custom resources through: the storage
+   * version when it is served, otherwise the served version with the highest
+   * Kubernetes version priority. When no version is served, there is nothing to
+   * read through, and the storage version is returned so that its schema and
+   * printer columns still describe the resources.
+   */
   getPreferredVersion(): CustomResourceDefinitionVersion {
     const { apiVersion } = this;
 
     switch (apiVersion) {
-      case "apiextensions.k8s.io/v1":
-        for (const version of this.spec.versions ?? []) {
-          if (version.storage) {
-            return version;
-          }
+      case "apiextensions.k8s.io/v1": {
+        const versions = this.spec.versions ?? [];
+        const storageVersion = versions.find((version) => version.storage);
+
+        if (storageVersion?.served) {
+          return storageVersion;
         }
+
+        const [servedVersion] = this.getServedVersions();
+        const preferredVersion = servedVersion ?? storageVersion;
+
+        if (preferredVersion) {
+          return preferredVersion;
+        }
+
         break;
+      }
 
       case "apiextensions.k8s.io/v1beta1": {
         const { additionalPrinterColumns: apc } = this.spec;
@@ -186,6 +255,15 @@ export class CustomResourceDefinition extends KubeObject<
 
   getVersions() {
     return this.spec.versions?.map((version) => version.name);
+  }
+
+  /**
+   * The versions marked as served, highest Kubernetes version priority first.
+   */
+  getServedVersions(): CustomResourceDefinitionVersion[] {
+    return (this.spec.versions ?? [])
+      .filter((version) => version.served)
+      .sort((left, right) => compareByKubeVersionPriority(left.name, right.name));
   }
 
   isNamespaced() {

@@ -7,7 +7,7 @@
 // Base class for building all kubernetes apis
 
 import assert from "node:assert";
-import { stringify } from "node:querystring";
+import { stringifyQuery } from "@freelensapp/json-api";
 import {
   isJsonApiData,
   isJsonApiDataList,
@@ -17,10 +17,10 @@ import {
 } from "@freelensapp/kube-object";
 import { isDefined, noop, WrappedAbortController } from "@freelensapp/utilities";
 import { matches, merge } from "es-toolkit/compat";
-import { makeObservable, observable } from "mobx";
+import { observable } from "mobx";
 import { createKubeApiURL, parseKubeApi } from "./kube-api-parse";
 
-import type { FetchRequestInit as RequestInit, FetchResponse as Response } from "@freelensapp/json-api";
+import type { QueryParams, FetchRequestInit as RequestInit, FetchResponse as Response } from "@freelensapp/json-api";
 import type {
   KubeJsonApiData,
   KubeJsonApiDataFor,
@@ -32,10 +32,10 @@ import type {
   ScaleCreateOptions,
 } from "@freelensapp/kube-object";
 import type { LogFunction } from "@freelensapp/logger";
+import type { PartialDeep } from "@freelensapp/type-fest";
 import type { Disposer } from "@freelensapp/utilities";
 
 import type { Patch } from "rfc6902";
-import type { PartialDeep } from "type-fest";
 
 import type { KubeJsonApi } from "./kube-json-api";
 import type { IKubeWatchEvent } from "./kube-watch-event";
@@ -270,6 +270,13 @@ export interface KubeApiWatchOptions<Object extends KubeObject, Data extends Kub
    * timeout in seconds
    */
   timeout?: number;
+
+  /**
+   * Called each time the watch request is accepted, including the requests
+   * that restart it: the connection works, even before the first event, which
+   * a resource that seldom changes may not send for a long time.
+   */
+  onConnect?: () => void;
 }
 
 export type KubeApiPatchType = "merge" | "json" | "strategic";
@@ -349,7 +356,7 @@ export class KubeApi<
 
   readonly apiVersion: string;
 
-  @observable apiBase: string;
+  @observable accessor apiBase: string;
 
   apiPrefix: string;
 
@@ -422,7 +429,6 @@ export class KubeApi<
     this.apiResource = resource;
     this.request = request;
     this.objectConstructor = objectConstructor;
-    makeObservable(this);
   }
 
   get apiVersionWithGroup() {
@@ -523,7 +529,9 @@ export class KubeApi<
       namespace: this.isNamespaced ? (namespace ?? "default") : undefined,
     });
 
-    return resourcePath + (query ? `?${stringify(this.normalizeQuery(query))}` : "");
+    const queryString = query ? stringifyQuery(this.normalizeQuery(query) as QueryParams) : "";
+
+    return resourcePath + (queryString ? `?${queryString}` : "");
   }
 
   /**
@@ -818,6 +826,7 @@ export class KubeApi<
       retry = false,
       timeout = 600,
       watchId = `${this.kind.toLowerCase()}-${this.watchId++}`,
+      onConnect,
     } = opts ?? {};
 
     // Create AbortController for this request
@@ -848,6 +857,8 @@ export class KubeApi<
 
           return callback(null, response);
         }
+
+        onConnect?.();
 
         // Add mechanism to retry in case timeoutSeconds is set but the watch wasn't timed out.
         // This can happen if e.g. network is offline and AWS NLB is used.

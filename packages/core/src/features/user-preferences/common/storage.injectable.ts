@@ -11,6 +11,7 @@ import { toJS } from "../../../common/utils";
 import storeMigrationVersionInjectable from "../../../common/vars/store-migration-version.injectable";
 import createPersistentStorageInjectable from "../../persistent-storage/common/create.injectable";
 import persistentStorageMigrationsInjectable from "../../persistent-storage/common/migrations.injectable";
+import { migrateLegacyThemePreferences } from "./migrate-legacy-theme-preferences";
 import { userPreferencesMigrationInjectionToken } from "./migrations-token";
 import userPreferenceDescriptorsInjectable from "./preference-descriptors.injectable";
 import userPreferencesStateInjectable from "./state.injectable";
@@ -33,12 +34,19 @@ const userPreferencesPersistentStorageInjectable = getInjectable({
       configName: "lens-user-store",
       projectVersion: di.inject(storeMigrationVersionInjectable),
       migrations: di.inject(persistentStorageMigrationsInjectable, userPreferencesMigrationInjectionToken),
-      fromStore: action(({ preferences = {} }) => {
-        logger.debug("fromStore()", { preferences });
+      fromStore: action(({ preferences: storedPreferences = {} }) => {
+        logger.debug("fromStore()", { preferences: storedPreferences });
+
+        const preferences = migrateLegacyThemePreferences(storedPreferences);
 
         state.allowErrorReporting = descriptors.allowErrorReporting.fromStore(preferences.allowErrorReporting);
         state.allowUntrustedCAs = descriptors.allowUntrustedCAs.fromStore(preferences.allowUntrustedCAs);
-        state.colorTheme = descriptors.colorTheme.fromStore(preferences.colorTheme);
+        state.theme = descriptors.theme.fromStore(preferences.theme);
+        state.themeVariant = descriptors.themeVariant.fromStore(preferences.themeVariant);
+        state.accentColorDark = descriptors.accentColorDark.fromStore(preferences.accentColorDark);
+        state.accentColorLight = descriptors.accentColorLight.fromStore(preferences.accentColorLight);
+        state.overviewStyle = descriptors.overviewStyle.fromStore(preferences.overviewStyle);
+        state.zoom = descriptors.zoom.fromStore(preferences.zoom);
         state.downloadBinariesPath = descriptors.downloadBinariesPath.fromStore(preferences.downloadBinariesPath);
         state.downloadKubectlBinaries = descriptors.downloadKubectlBinaries.fromStore(
           preferences.downloadKubectlBinaries,
@@ -63,6 +71,7 @@ const userPreferencesPersistentStorageInjectable = getInjectable({
         state.terminalConfig = descriptors.terminalConfig.fromStore(preferences.terminalConfig);
         state.terminalCopyOnSelect = descriptors.terminalCopyOnSelect.fromStore(preferences.terminalCopyOnSelect);
         state.terminalTheme = descriptors.terminalTheme.fromStore(preferences.terminalTheme);
+        state.terminalThemeVariant = descriptors.terminalThemeVariant.fromStore(preferences.terminalThemeVariant);
         state.clusterPageMenuOrder = descriptors.clusterPageMenuOrder.fromStore(preferences.clusterPageMenuOrder);
       }),
       toJSON: () =>
@@ -70,7 +79,12 @@ const userPreferencesPersistentStorageInjectable = getInjectable({
           preferences: {
             allowErrorReporting: descriptors.allowErrorReporting.toStore(state.allowErrorReporting),
             allowUntrustedCAs: descriptors.allowUntrustedCAs.toStore(state.allowUntrustedCAs),
-            colorTheme: descriptors.colorTheme.toStore(state.colorTheme),
+            theme: descriptors.theme.toStore(state.theme),
+            themeVariant: descriptors.themeVariant.toStore(state.themeVariant),
+            accentColorDark: descriptors.accentColorDark.toStore(state.accentColorDark),
+            accentColorLight: descriptors.accentColorLight.toStore(state.accentColorLight),
+            overviewStyle: descriptors.overviewStyle.toStore(state.overviewStyle),
+            zoom: descriptors.zoom.toStore(state.zoom),
             downloadBinariesPath: descriptors.downloadBinariesPath.toStore(state.downloadBinariesPath),
             downloadKubectlBinaries: descriptors.downloadKubectlBinaries.toStore(state.downloadKubectlBinaries),
             downloadMirror: descriptors.downloadMirror.toStore(state.downloadMirror),
@@ -93,6 +107,7 @@ const userPreferencesPersistentStorageInjectable = getInjectable({
             terminalConfig: descriptors.terminalConfig.toStore(state.terminalConfig),
             terminalCopyOnSelect: descriptors.terminalCopyOnSelect.toStore(state.terminalCopyOnSelect),
             terminalTheme: descriptors.terminalTheme.toStore(state.terminalTheme),
+            terminalThemeVariant: descriptors.terminalThemeVariant.toStore(state.terminalThemeVariant),
             clusterPageMenuOrder: descriptors.clusterPageMenuOrder.toStore(state.clusterPageMenuOrder),
           },
         }),

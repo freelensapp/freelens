@@ -168,7 +168,7 @@ exports[`MutatingWebhookConfigsDetails > renders 1`] = `
           <div>
             <div>
               API Groups: 
-              , apps, extensions
+              core, apps, extensions
             </div>
             <div>
               API Versions: 

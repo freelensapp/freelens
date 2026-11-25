@@ -10,7 +10,7 @@ import { Icon } from "@freelensapp/icon";
 import { Link } from "@freelensapp/routing";
 import { iter, stopPropagation } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { makeObservable, observable } from "mobx";
+import { observableRef } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import { KubeObjectAge } from "../kube-object/age";
@@ -47,12 +47,11 @@ class NonInjectedCustomResourceDefinitions extends React.Component<Dependencies>
   // KubeObjectListLayout invokes during its own render — a derivation other than this
   // component's — so they read props from this observable snapshot, refreshed on every
   // update, instead of this.props.
-  @observable.ref private observableProps: Readonly<Dependencies>;
+  @observableRef private accessor observableProps: Readonly<Dependencies>;
 
   constructor(props: Dependencies) {
     super(props);
     this.observableProps = props;
-    makeObservable(this);
   }
 
   componentDidUpdate() {

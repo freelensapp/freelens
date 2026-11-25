@@ -7,6 +7,7 @@
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
 import clusterFrameContextForNamespacedResourcesInjectable from "../../../renderer/cluster-frame-context/for-namespaced-resources.injectable";
+import watchReconnectInjectable from "../../../renderer/k8s/watch-reconnect/watch-reconnect.injectable";
 import { CustomResourceStore } from "./resource.store";
 
 import type { KubeApi } from "@freelensapp/kube-api";
@@ -21,6 +22,7 @@ const createCustomResourceStoreInjectable = getInjectable({
   instantiate: (di): CreateCustomResourceStore => {
     const deps: KubeObjectStoreDependencies = {
       context: di.inject(clusterFrameContextForNamespacedResourcesInjectable),
+      watchReconnect: di.inject(watchReconnectInjectable),
       logger: di.inject(loggerInjectionToken),
     };
 

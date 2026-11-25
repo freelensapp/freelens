@@ -4,6 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { beforeEach, describe, expect, it } from "vitest";
 import directoryForUserDataInjectable from "../../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import hostedClusterIdInjectable from "../../../cluster-frame-context/hosted-cluster-id.injectable";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
@@ -74,5 +75,37 @@ describe("DockStore", () => {
     dockStore.closeTab("install");
 
     expect(dockStore.selectedTabId).toBe("terminal");
+  });
+
+  it("closes the tabs to the left of a tab and keeps the selected one", () => {
+    dockStore.tabs = initialTabs;
+    dockStore.selectTab("install");
+    dockStore.closeTabsToTheLeft("edit");
+
+    expect(dockStore.tabs.map((tab) => tab.id)).toEqual(["edit", "install", "logs"]);
+    expect(dockStore.selectedTabId).toBe("install");
+  });
+
+  it("closes the tabs to the left of a tab and selects a remaining one when the selected tab was closed", () => {
+    dockStore.tabs = initialTabs;
+    dockStore.selectTab("terminal");
+    dockStore.closeTabsToTheLeft("install");
+
+    expect(dockStore.tabs.map((tab) => tab.id)).toEqual(["install", "logs"]);
+    expect(dockStore.selectedTabId).toBe("install");
+  });
+
+  it("keeps the pinned tabs when closing the tabs to the left", () => {
+    dockStore.tabs = [{ ...initialTabs[0], pinned: true }, ...initialTabs.slice(1)];
+    dockStore.closeTabsToTheLeft("install");
+
+    expect(dockStore.tabs.map((tab) => tab.id)).toEqual(["terminal", "install", "logs"]);
+  });
+
+  it("closes nothing to the left of the first tab", () => {
+    dockStore.tabs = initialTabs;
+    dockStore.closeTabsToTheLeft("terminal");
+
+    expect(dockStore.tabs.map((tab) => tab.id)).toEqual(["terminal", "create", "edit", "install", "logs"]);
   });
 });

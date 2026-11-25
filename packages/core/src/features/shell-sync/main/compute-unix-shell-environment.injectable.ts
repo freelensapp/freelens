@@ -8,6 +8,7 @@ import { loggerInjectionToken } from "@freelensapp/logger";
 import { object } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import getBasenameOfPathInjectable from "../../../common/path/get-basename.injectable";
+import killProcessGroupInjectable from "../../../main/child-process/kill-process-group.injectable";
 import spawnInjectable from "../../../main/child-process/spawn.injectable";
 import randomUUIDInjectable from "../../../main/crypto/random-uuid.injectable";
 import processEnvInjectable from "./env.injectable";
@@ -57,6 +58,40 @@ const getResetProcessEnv = (
   };
 };
 
+interface ShellSpecifics {
+  shellArgs: string[];
+  stdin: string;
+  overrides: Partial<Record<string, string>>;
+  parseOutput: (output: string) => Partial<Record<string, string>> | undefined;
+}
+
+// The shell is interactive and runs the user's rc files, whatever the command is
+const shellOverrides = {
+  ITERM_SHELL_INTEGRATION_INSTALLED: "1", // ITerm2 shell integration breaks output
+  TERM: "screen-256color-bce", // required for fish
+  VSCODE_SHELL_INTEGRATION: "1", // VS Code shell integration breaks output
+};
+
+/**
+ * Parses the output of `env -0`: records separated by NUL, each split on its first `=`. Values may contain newlines
+ * and `=`. A record without `=` is skipped.
+ */
+const parseNulSeparatedEnv = (output: string): Partial<Record<string, string>> => {
+  const env: Partial<Record<string, string>> = {};
+
+  for (const record of output.split("\0")) {
+    const separator = record.indexOf("=");
+
+    if (separator <= 0) {
+      continue;
+    }
+
+    env[record.slice(0, separator)] = record.slice(separator + 1);
+  }
+
+  return env;
+};
+
 const computeUnixShellEnvironmentInjectable = getInjectable({
   id: "compute-unix-shell-environment",
   instantiate: (di): ComputeUnixShellEnvironment => {
@@ -66,58 +101,80 @@ const computeUnixShellEnvironmentInjectable = getInjectable({
 
     const getBasenameOfPath = di.inject(getBasenameOfPathInjectable);
     const spawn = di.inject(spawnInjectable);
+    const killProcessGroup = di.inject(killProcessGroupInjectable);
     const logger = di.inject(loggerInjectionToken);
     const randomUUID = di.inject(randomUUIDInjectable);
     const processExecPath = di.inject(processExecPathInjectable);
     const processEnv = di.inject(processEnvInjectable);
 
-    const getShellSpecifics = (shellName: string) => {
+    const getShellSpecifics = (shellName: string): ShellSpecifics => {
       const mark = randomUUID().replace(/-/g, "");
-      const regex = new RegExp(`${mark}(\\{.*\\})${mark}`);
 
       if (powerShellName.test(shellName)) {
+        const regex = new RegExp(`${mark}(\\{.*\\})${mark}`);
+
         // Older versions of PowerShell removes double quotes sometimes so we use "double single quotes" which is how
         // you escape single quotes inside of a single quoted string.
         return {
-          command: `Command '${processExecPath}' -e 'process.stdout.write(\\"${mark}\\" + JSON.stringify(process.env) + \\"${mark}\\")'`,
           shellArgs: ["-Login"],
-          regex,
+          stdin: `Command '${processExecPath}' -e 'process.stdout.write(\\"${mark}\\" + JSON.stringify(process.env) + \\"${mark}\\")'`,
+          overrides: {
+            ...shellOverrides,
+            ELECTRON_RUN_AS_NODE: "1",
+            ELECTRON_NO_ATTACH_CONSOLE: "1",
+          },
+          parseOutput: (output) => {
+            const matchedOutput = regex.exec(output)?.[1];
+
+            return matchedOutput ? (JSON.parse(matchedOutput) as Partial<Record<string, string>>) : undefined;
+          },
         };
       }
 
-      let command = `'${processExecPath}' -e 'process.stdout.write("${mark}" + JSON.stringify(process.env) + "${mark}")'`;
-      const shellArgs = ["-l"];
+      // The marker is hex only, so it needs no quoting, and the command is valid in sh, bash, zsh, ksh, dash, fish
+      // and csh alike. `env` is called by its absolute path because `-i` enables aliases, so a bare `env` could be an
+      // alias or a function from the user's rc files.
+      const command = `printf '%s' ${mark}; /usr/bin/env -0; printf '%s' ${mark}`;
+      const regex = new RegExp(`${mark}([\\s\\S]*)${mark}`);
+      const parseOutput = (output: string) => {
+        const matchedOutput = regex.exec(output)?.[1];
+
+        return matchedOutput ? parseNulSeparatedEnv(matchedOutput) : undefined;
+      };
 
       if (fishLikeShellName.test(shellName)) {
-        shellArgs.push("-c", command);
-        command = "";
-      } else if (!cshLikeShellName.test(shellName)) {
-        // zsh (at least, maybe others) don't load RC files when in non-interactive mode, even when using -l (login) option
-        shellArgs.push("-i");
-        command = ` ${command}`; // This prevents the command from being added to the history
-      } else {
-        // Some shells don't support any other options when providing the -l (login) shell option
+        return { shellArgs: ["-l", "-c", command], stdin: "", overrides: shellOverrides, parseOutput };
       }
 
-      return { command, shellArgs, regex };
+      if (cshLikeShellName.test(shellName)) {
+        // Some shells don't support any other options when providing the -l (login) shell option
+        return { shellArgs: ["-l"], stdin: command, overrides: shellOverrides, parseOutput };
+      }
+
+      // zsh (at least, maybe others) don't load RC files when in non-interactive mode, even when using -l (login) option.
+      // A command passed with -c is not added to the history.
+      return { shellArgs: ["-l", "-i", "-c", command], stdin: "", overrides: shellOverrides, parseOutput };
     };
 
     return async (shellPath, opts) => {
-      const { resetEnvPairs, env } = getResetProcessEnv(processEnv, {
-        ELECTRON_RUN_AS_NODE: "1",
-        ELECTRON_NO_ATTACH_CONSOLE: "1",
-        ITERM_SHELL_INTEGRATION_INSTALLED: "1", // ITerm2 shell integration breaks output
-        TERM: "screen-256color-bce", // required for fish
-        VSCODE_SHELL_INTEGRATION: "1", // VS Code shell integration breaks output
-      });
       const shellName = getBasenameOfPath(shellPath);
-      const { command, shellArgs, regex } = getShellSpecifics(shellName);
+      const { shellArgs, stdin, overrides, parseOutput } = getShellSpecifics(shellName);
+      const { resetEnvPairs, env } = getResetProcessEnv(processEnv, overrides);
 
-      logger.info(`[UNIX-SHELL-ENV]: running against ${shellPath}`, { command, shellArgs });
+      logger.info(`[UNIX-SHELL-ENV]: running against ${shellPath}`, { shellArgs, stdin });
 
       return new Promise((resolve) => {
+        // `detached: true` runs the shell in a new session (`setsid()`), which does two things:
+        //
+        // - The shell has no controlling terminal. When Freelens is started from a terminal, an
+        //   interactive shell would otherwise take over that terminal, putting itself in its
+        //   foreground and reading commands from it instead of from stdin, so it would hang.
+        // - The shell and everything its rc files start share a process group of their own,
+        //   which the abort handler below kills as a whole.
+        //
+        // The abort is not passed to `spawn` as `signal`: Node would send `SIGTERM` to the
+        // shell alone, which an interactive shell ignores.
         const shellProcess = spawn(shellPath, shellArgs, {
-          signal: opts.signal,
           detached: true,
           env,
         });
@@ -137,20 +194,34 @@ const computeUnixShellEnvironmentInjectable = getInjectable({
         shellProcess.stdout.on("data", (b) => stdout.push(b));
         shellProcess.stderr.on("data", (b) => stderr.push(b));
 
-        shellProcess.on("error", (error) => {
-          if (opts.signal.aborted) {
-            resolve({
-              callWasSuccessful: false,
-              error: `timeout: ${getErrorContext()}`,
-            });
-          } else {
-            resolve({
-              callWasSuccessful: false,
-              error: `Failed to spawn ${shellPath}: ${getErrorContext({ error: String(error) })}`,
-            });
+        const onAbort = () => {
+          resolve({
+            callWasSuccessful: false,
+            error: `timeout: ${getErrorContext()}`,
+          });
+
+          if (shellProcess.pid === undefined) {
+            return;
           }
+
+          try {
+            killProcessGroup(shellProcess.pid);
+          } catch (error) {
+            logger.warn(`[UNIX-SHELL-ENV]: failed to kill the process group of ${shellPath}`, { error });
+          }
+        };
+        const stopWatchingAbort = () => opts.signal.removeEventListener("abort", onAbort);
+
+        shellProcess.on("error", (error) => {
+          stopWatchingAbort();
+          resolve({
+            callWasSuccessful: false,
+            error: `Failed to spawn ${shellPath}: ${getErrorContext({ error: String(error) })}`,
+          });
         });
         shellProcess.on("close", (code, signal) => {
+          stopWatchingAbort();
+
           if (code || signal) {
             return resolve({
               callWasSuccessful: false,
@@ -163,16 +234,14 @@ const computeUnixShellEnvironmentInjectable = getInjectable({
 
             logger.silly(`[UNIX-SHELL-ENV]: got the following output`, { rawOutput });
 
-            const matchedOutput = regex.exec(rawOutput)?.[1];
+            const resolvedEnv = parseOutput(rawOutput);
 
-            if (!matchedOutput) {
+            if (!resolvedEnv) {
               return resolve({
                 callWasSuccessful: false,
                 error: "Something has blocked the shell from producing the environment variables",
               });
             }
-
-            const resolvedEnv = JSON.parse(matchedOutput) as Partial<Record<string, string>>;
 
             resetEnvPairs(resolvedEnv);
             resolve({
@@ -187,7 +256,14 @@ const computeUnixShellEnvironmentInjectable = getInjectable({
           }
         });
 
-        shellProcess.stdin.end(command);
+        if (opts.signal.aborted) {
+          onAbort();
+
+          return;
+        }
+
+        opts.signal.addEventListener("abort", onAbort, { once: true });
+        shellProcess.stdin.end(stdin);
       });
     };
   },

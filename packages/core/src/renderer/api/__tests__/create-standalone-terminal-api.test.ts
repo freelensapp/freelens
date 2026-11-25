@@ -3,6 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { describe, expect, it, vi } from "vitest";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import createStandaloneTerminalApiInjectable from "../create-standalone-terminal-api.injectable";
 import requestStandaloneShellTokenInjectable from "../request-standalone-shell-token.injectable";

@@ -9,16 +9,17 @@
 import configureImmerInjectable from "./configure-immer.injectable";
 import configureMobxInjectable from "./configure-mobx.injectable";
 import listenUnloadInjectable from "./listen-unload.injectable";
-import loadMonacoThemesInjectable from "./load-monaco-themes.injectable";
 import refreshAccessibilityOnCrdChangesInjectable from "./refresh-accessibility-on-crd-changes.injectable";
+import registerMonacoYamlFoldingInjectable from "./register-monaco-yaml-folding.injectable";
 import setupAutoCrdApiCreationsInjectable from "./setup-auto-crd-api-creations.injectable";
 import setupAutoRegistrationInjectable from "./setup-auto-registration.injectable";
 import setupCurrentClusterBroadcastInjectable from "./setup-current-cluster-broadcast.injectable";
+import setupFreelensProxyCertificateInjectable from "./setup-freelens-proxy-certificate.injectable";
 import setupKubernetesClusterCatalogAddMenuListenerInjectable from "./setup-kubernetes-cluster-catalog-add-menu.injectable";
 import setupKubernetesClusterContextMenuOpenInjectable from "./setup-kubernetes-cluster-context-menu-open.injectable";
-import setupLensProxyCertificateInjectable from "./setup-lens-proxy-certificate.injectable";
 import setupRootMacClassnameInjectable from "./setup-root-mac-class.injectable";
 import setupWeblinkContextMenuOpenInjectable from "./setup-weblink-context-menu-open.injectable";
+import wakeWatchReconnectInjectable from "./wake-watch-reconnect.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
@@ -39,12 +40,12 @@ export function registerInjectables(di: DiContainerForInjection): void {
     /* Ignore duplicate registration */
   }
   try {
-    di.register(loadMonacoThemesInjectable);
+    di.register(refreshAccessibilityOnCrdChangesInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }
   try {
-    di.register(refreshAccessibilityOnCrdChangesInjectable);
+    di.register(registerMonacoYamlFoldingInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }
@@ -64,6 +65,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
     /* Ignore duplicate registration */
   }
   try {
+    di.register(setupFreelensProxyCertificateInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
     di.register(setupKubernetesClusterCatalogAddMenuListenerInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
@@ -74,17 +80,17 @@ export function registerInjectables(di: DiContainerForInjection): void {
     /* Ignore duplicate registration */
   }
   try {
-    di.register(setupLensProxyCertificateInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
     di.register(setupRootMacClassnameInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }
   try {
     di.register(setupWeblinkContextMenuOpenInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(wakeWatchReconnectInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

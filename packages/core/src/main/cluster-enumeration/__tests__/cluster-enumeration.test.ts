@@ -4,6 +4,7 @@
  */
 
 import { observable, reaction } from "mobx";
+import { beforeEach, describe, expect, it } from "vitest";
 import { KubernetesCluster, LensKubernetesClusterStatus } from "../../../common/catalog-entities/kubernetes-cluster";
 import { ClusterConnectionStatus } from "../../../extensions/common-api/cluster-types";
 import { createTestCluster } from "../../../features/cluster/enumeration/common/test-utils";

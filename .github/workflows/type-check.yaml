@@ -16,7 +16,7 @@ jobs:
   type-check:
     name: type check
 
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
     timeout-minutes: 30
 
     env:
@@ -45,9 +45,9 @@ jobs:
         uses: actions/cache@v6
         with:
           path: ${{ env.pnpm_cache_dir }}
-          key: ubuntu-24.04-arm-arm64-node-${{ hashFiles('pnpm-lock.yaml') }}
+          key: ubuntu-26.04-arm-arm64-node-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: |
-            ubuntu-24.04-arm-arm64-node-
+            ubuntu-26.04-arm-arm64-node-
 
       - name: Install pnpm dependencies
         id: install-pnpm

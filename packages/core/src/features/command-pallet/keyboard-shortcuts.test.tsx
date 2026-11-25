@@ -5,6 +5,7 @@
  */
 
 import userEvent from "@testing-library/user-event";
+import { beforeEach, describe, expect, it } from "vitest";
 import platformInjectable from "../../common/vars/platform.injectable";
 import {
   type ApplicationBuilder,

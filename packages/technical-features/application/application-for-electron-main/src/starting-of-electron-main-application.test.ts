@@ -2,6 +2,7 @@ import asyncFn, { AsyncFnMock } from "@async-fn/vitest";
 import { beforeApplicationIsLoadingInjectionToken, startApplicationInjectionToken } from "@freelensapp/application";
 import { registerFeature } from "@freelensapp/feature-core";
 import { createContainer, DiContainer, getInjectable } from "@ogre-tools/injectable";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { applicationFeatureForElectronMain } from "./feature";
 import * as timeSlots from "./start-application/time-slots";
 import whenAppIsReadyInjectable from "./start-application/when-app-is-ready.injectable";

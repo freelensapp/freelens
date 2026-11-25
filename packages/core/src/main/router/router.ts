@@ -8,14 +8,14 @@ import Call from "@hapi/call";
 import type http from "node:http";
 
 import type { Cluster } from "../../common/cluster/cluster";
-import type { ServerIncomingMessage } from "../lens-proxy/lens-proxy";
+import type { ServerIncomingMessage, ServerRequest, ServerResponse } from "../freelens-proxy/freelens-proxy";
 import type { CreateHandlerForRoute, RouteHandler } from "./create-handler-for-route.injectable";
 import type { ParseRequest } from "./parse-request.injectable";
 import type { LensApiRequest, Route } from "./route";
 
 export interface RouterRequestOpts {
-  req: http.IncomingMessage;
-  res: http.ServerResponse;
+  req: ServerRequest;
+  res: ServerResponse;
   cluster: Cluster | undefined;
   params: Partial<Record<string, string>>;
   url: URL;
@@ -27,39 +27,68 @@ interface Dependencies {
   readonly routes: Route<unknown, string>[];
 }
 
+interface RouteEntry {
+  handler: RouteHandler;
+  withoutToken: boolean;
+}
+
 export class Router {
-  private readonly router = new Call.Router<RouteHandler>();
+  private readonly router = new Call.Router<RouteEntry>();
 
   constructor(private readonly dependencies: Dependencies) {
     for (const route of this.dependencies.routes) {
-      this.router.add({ method: route.method, path: route.path }, this.dependencies.createHandlerForRoute(route));
+      this.router.add(
+        { method: route.method, path: route.path },
+        { handler: this.dependencies.createHandlerForRoute(route), withoutToken: route.withoutToken === true },
+      );
     }
   }
 
-  public async route(
-    cluster: Cluster | undefined,
-    req: ServerIncomingMessage,
-    res: http.ServerResponse,
-  ): Promise<boolean> {
-    const url = new URL(req.url, "http://localhost");
-    const path = url.pathname;
-    const method = req.method.toLowerCase();
-    const matchingRoute = this.router.route(method, path);
+  /**
+   * Whether the route that `route` runs for this request is served without
+   * the proxy's token. It matches the same normalized path as `route`, so no
+   * spelling of a guarded path, such as `/./api/…`, reaches its route
+   * unguarded. A request that matches no route, or whose target does not
+   * parse, needs the token.
+   */
+  public isServedWithoutToken(method: string, reqUrl: string): boolean {
+    try {
+      return this.match(method, reqUrl)?.route.withoutToken === true;
+    } catch {
+      return false;
+    }
+  }
 
-    if (matchingRoute instanceof Error) {
+  public async route(cluster: Cluster | undefined, req: ServerIncomingMessage, res: ServerResponse): Promise<boolean> {
+    const match = this.match(req.method, req.url);
+
+    if (!match) {
       return false;
     }
 
-    const request = await this.getRequest({ req, res, cluster, url, params: matchingRoute.params });
+    const request = await this.getRequest({ req, res, cluster, url: match.url, params: match.params });
 
-    await matchingRoute.route(request, res);
+    await match.route.handler(request, res);
 
     return true;
   }
 
+  private match(method: string, reqUrl: string) {
+    const url = new URL(reqUrl, "http://localhost");
+    const matchingRoute = this.router.route(method.toLowerCase(), url.pathname);
+
+    if (matchingRoute instanceof Error) {
+      return undefined;
+    }
+
+    return { url, route: matchingRoute.route, params: matchingRoute.params };
+  }
+
   protected async getRequest(opts: RouterRequestOpts): Promise<LensApiRequest<string>> {
     const { req, res, url, cluster, params } = opts;
-    const { payload } = await this.dependencies.parseRequest(req, null, {
+    // Subtext reads the headers and the body stream, which the `http2`
+    // compatibility request has as well, but its types only name the `http` one
+    const { payload } = await this.dependencies.parseRequest(req as http.IncomingMessage, null, {
       parse: true,
       output: "data",
     });

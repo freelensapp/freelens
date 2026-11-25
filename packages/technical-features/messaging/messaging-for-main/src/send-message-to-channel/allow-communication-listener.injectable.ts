@@ -1,5 +1,5 @@
 import { getMessageChannel, getMessageChannelListenerInjectable } from "@freelensapp/messaging";
-import frameIdsInjectable from "./frameIds.injectable";
+import frameIdsInjectable, { toFrameIdKey } from "./frameIds.injectable";
 
 const frameCommunicationAdminChannel = getMessageChannel<undefined>("frame-communication-admin-channel");
 
@@ -14,7 +14,7 @@ const allowCommunicationListenerInjectable = getMessageChannelListenerInjectable
       if (data) {
         const { frameId, processId } = data;
 
-        frameIds.add({ frameId, processId });
+        frameIds.set(toFrameIdKey({ frameId, processId }), { frameId, processId });
       }
     };
   },

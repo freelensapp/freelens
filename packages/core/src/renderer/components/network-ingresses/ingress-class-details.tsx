@@ -7,7 +7,6 @@
 import { Link } from "@freelensapp/routing";
 import { stopPropagation } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { makeObservable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
@@ -32,7 +31,6 @@ interface Dependencies {
 class NonInjectedIngressDetails extends React.Component<IngressClassDetailsProps & Dependencies> {
   constructor(props: IngressClassDetailsProps & Dependencies) {
     super(props);
-    makeObservable(this);
   }
 
   renderParameters() {

@@ -7,7 +7,7 @@
 import { Namespace } from "@freelensapp/kube-object";
 import { noop, toggle } from "@freelensapp/utilities";
 import autoBind from "auto-bind";
-import { action, comparer, computed, makeObservable, reaction } from "mobx";
+import { action, compareShallow, computed, reaction } from "mobx";
 import { KubeObjectStore } from "../../../common/k8s-api/kube-object.store";
 
 import type { NamespaceApi } from "@freelensapp/kube-api";
@@ -31,7 +31,6 @@ export class NamespaceStore extends KubeObjectStore<Namespace, NamespaceApi> {
     api: NamespaceApi,
   ) {
     super(dependencies, api);
-    makeObservable(this);
     autoBind(this);
   }
 
@@ -41,7 +40,7 @@ export class NamespaceStore extends KubeObjectStore<Namespace, NamespaceApi> {
   ): IReactionDisposer {
     return reaction(() => Array.from(this.contextNamespaces), callback, {
       fireImmediately: opts.fireImmediately,
-      equals: comparer.shallow,
+      equals: compareShallow,
     });
   }
 

@@ -3,6 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { describe, expect, it } from "vitest";
+import { iconColors } from "./icon-colors";
 import { seededColor } from "./seeded-color";
 
 const parseHsl = (color: string) => {
@@ -78,5 +80,15 @@ describe("seededColor", () => {
     const worst = Math.min(...Array.from({ length: 360 }, (_, hue) => contrastWithWhite(`hsl(${hue}, 60%, 27%)`)));
 
     expect(worst).toBeGreaterThanOrEqual(4.5);
+  });
+});
+
+describe("iconColors", () => {
+  it.each(iconColors)("keeps white text legible on $name", ({ value }) => {
+    expect(contrastWithWhite(value)).toBeGreaterThanOrEqual(4.5);
+  });
+
+  it("has no duplicate colors", () => {
+    expect(new Set(iconColors.map(({ value }) => value)).size).toBe(iconColors.length);
   });
 });

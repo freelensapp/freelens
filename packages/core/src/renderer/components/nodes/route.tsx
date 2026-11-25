@@ -10,7 +10,7 @@ import { formatNodeTaint } from "@freelensapp/kube-object";
 import { Tooltip, TooltipPosition } from "@freelensapp/tooltip";
 import { bytesToUnits, cpuUnitsToNumber, interval, unitsToBytes } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { makeObservable, observable } from "mobx";
+import { observable, observableRef } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import requestAllNodeMetricsInjectable from "../../../common/k8s-api/endpoints/metrics.api/request-metrics-for-all-nodes.injectable";
@@ -50,6 +50,7 @@ enum columnId {
   taints = "taints",
   roles = "roles",
   version = "version",
+  kernelVersion = "kernelVersion",
   internalIp = "internalIp",
   age = "age",
   schedulable = "schedulable",
@@ -98,6 +99,7 @@ function getNodeGroup(node: Node): string {
     labels["karpenter.k8s.aws/ec2nodeclass"] ?? // Karpenter AWS
     labels["cloud.google.com/gke-nodepool"] ?? // GKE
     labels["kubernetes.azure.com/agentpool"] ?? // AKS
+    labels["kops.k8s.io/instancegroup"] ?? // kops
     labels["agentpool"] ?? // AKS (legacy)
     ""
   );
@@ -155,7 +157,7 @@ function formatCores(cores: number): string {
 class NonInjectedNodesRoute extends React.Component<Dependencies> {
   private readonly disposers: (() => void)[] = [];
 
-  @observable metrics: NodeMetricData | null = null;
+  @observable accessor metrics: NodeMetricData | null = null;
 
   // mobx-react 9 forbids reading this.props inside a derivation. The row/cell
   // renderers and sorting callbacks (renderTableContents, renderCpuUsage,
@@ -163,7 +165,7 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
   // Table/KubeObjectListLayout render — a derivation other than this
   // component's own render — so they read props from this observable snapshot,
   // refreshed on every update, instead of this.props.
-  @observable.ref private observableProps: Readonly<Dependencies>;
+  @observableRef private accessor observableProps: Readonly<Dependencies>;
 
   private metricsWatcher = interval(30, () => {
     void (async () => {
@@ -175,7 +177,6 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
   constructor(props: Dependencies) {
     super(props);
     this.observableProps = props;
-    makeObservable(this);
   }
 
   componentDidMount() {
@@ -417,17 +418,20 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
 
   renderDiskUsage(node: Node) {
     const [usage, capacity] = this.getLastMetricValues(node, ["fsUsage", "fsSize"]);
-    const tooltipLines =
-      usage !== undefined && capacity
-        ? [`Disk: ${((usage * 100) / capacity).toFixed(2)}%, ${bytesToUnits(usage, { precision: 3 })}`]
-        : [];
+    const hasMetrics = usage !== undefined && Number.isFinite(usage) && !!capacity;
 
     return this.renderUsage({
       node,
       title: "Disk",
       usage,
       capacity,
-      tooltipLines,
+      usageText: hasMetrics ? `${bytesToUnitsAligned(usage)} / ${bytesToUnitsAligned(capacity)}` : undefined,
+      tooltipLines: hasMetrics
+        ? [
+            `Disk: ${((usage * 100) / capacity).toFixed(2)}%, ${bytesToUnits(usage, { precision: 3 })}`,
+            `Size: ${bytesToUnits(capacity, { precision: 3 })}`,
+          ]
+        : [],
     });
   }
 
@@ -438,7 +442,13 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
       <TabLayout>
         <KubeObjectListLayout
           isConfigurable
-          defaultHiddenTableColumns={[columnId.pods, columnId.instanceType, columnId.nodeGroup, columnId.capacityType]}
+          defaultHiddenTableColumns={[
+            columnId.pods,
+            columnId.instanceType,
+            columnId.nodeGroup,
+            columnId.capacityType,
+            columnId.kernelVersion,
+          ]}
           tableId="nodes"
           className="Nodes"
           store={nodeStore}
@@ -457,6 +467,7 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
             [columnId.taints]: (node) => node.getTaints().length,
             [columnId.roles]: (node) => node.getRoleLabels(),
             [columnId.version]: (node) => node.getKubeletVersion(),
+            [columnId.kernelVersion]: (node) => node.getKernelVersion(),
             [columnId.internalIp]: (node) => node.getInternalIP(),
             [columnId.age]: (node) => -node.getCreationTimestamp(),
             [columnId.schedulable]: (node) => (node.isUnschedulable() ? "False" : "True"),
@@ -466,6 +477,7 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
             (node) => node.getSearchFields(),
             (node) => node.getRoleLabels(),
             (node) => node.getKubeletVersion(),
+            (node) => node.getKernelVersion(),
             (node) => node.getNodeConditionText(),
             (node) => node.getInternalIP(),
             (node) => node.getExternalIP(),
@@ -501,6 +513,12 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
             { title: "Roles", className: "roles", sortBy: columnId.roles, id: columnId.roles },
             { title: "Taints", className: "taints", sortBy: columnId.taints, id: columnId.taints },
             { title: "Version", className: "version", sortBy: columnId.version, id: columnId.version },
+            {
+              title: "Kernel Version",
+              className: "kernelVersion",
+              sortBy: columnId.kernelVersion,
+              id: columnId.kernelVersion,
+            },
             { title: "Internal IP", className: "internalIp", sortBy: columnId.internalIp, id: columnId.internalIp },
             { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
             { title: "Schedulable", className: "schedulable", sortBy: columnId.schedulable, id: columnId.schedulable },
@@ -532,6 +550,7 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
                 </Tooltip>
               </>,
               <WithTooltip>{node.getKubeletVersion()}</WithTooltip>,
+              <WithTooltip>{node.getKernelVersion()}</WithTooltip>,
               <WithTooltip>{node.getInternalIP()}</WithTooltip>,
               <KubeObjectAge key="age" object={node} />,
               <BadgeBoolean value={!node.isUnschedulable()} />,

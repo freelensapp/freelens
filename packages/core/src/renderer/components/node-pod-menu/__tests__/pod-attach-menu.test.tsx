@@ -1,7 +1,6 @@
-import os from "node:os";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import createTerminalTabInjectable from "../../dock/terminal/create-terminal-tab.injectable";
-import sendCommandInjectable from "../../dock/terminal/send-command.injectable";
 import hideDetailsInjectable from "../../kube-detail-params/hide-details.injectable";
 import { type DiRender, renderFor } from "../../test-utils/renderFor";
 import { PodAttachMenu } from "../pod-attach-menu";
@@ -9,16 +8,12 @@ import { PodAttachMenu } from "../pod-attach-menu";
 import type { DiContainer } from "@ogre-tools/injectable";
 import type { Mock } from "vitest";
 
-vi.mock("uuid", () => ({
-  v4: vi.fn(() => "mocked-id"),
-}));
-
-let attachToPod: (container: { name: string }) => Promise<void> = async () => {};
+let attachToPod: (container: { name: string }) => void = () => {};
 
 // This mock is used to get attachToPod function from PodAttachMenu
 vi.mock("../pod-menu-item", () => ({
   __esModule: true,
-  default: ({ onMenuItemClick }: { onMenuItemClick: (container: { name: string }) => Promise<any> }) => {
+  default: ({ onMenuItemClick }: { onMenuItemClick: (container: { name: string }) => void }) => {
     attachToPod = onMenuItemClick;
 
     return null;
@@ -29,18 +24,15 @@ describe("pod-attach-menu", () => {
   let di: DiContainer;
   let render: DiRender;
   let createTerminalTabMock: Mock;
-  let sendCommandMock: Mock;
   let hideDetailsMock: Mock;
 
   beforeEach(() => {
     di = getDiForUnitTesting();
 
     createTerminalTabMock = vi.fn();
-    sendCommandMock = vi.fn(() => Promise.resolve());
     hideDetailsMock = vi.fn();
 
     di.override(createTerminalTabInjectable, () => createTerminalTabMock);
-    di.override(sendCommandInjectable, () => sendCommandMock);
     di.override(hideDetailsInjectable, () => hideDetailsMock);
 
     render = renderFor(di);
@@ -84,54 +76,22 @@ describe("pod-attach-menu", () => {
     }).not.toThrow();
   });
 
-  it("on attach pod on non windows platform should send exec command", async () => {
-    // GIVEN
+  it("opens a pod attach tab for the container, which main runs kubectl attach in", () => {
     const object = {
       metadata: {
         name: "name",
+        namespace: "some-namespace",
         selfLink: "selfLink",
       },
     };
 
-    vi.spyOn(os, "platform").mockReturnValue("linux");
+    render(<PodAttachMenu object={object} toolbar={true} />);
 
-    // WHEN
-    expect(() => {
-      render(<PodAttachMenu object={object} toolbar={true} />);
-    }).not.toThrow();
+    attachToPod({ name: "test-container" });
 
-    // THEN
-    await expect(attachToPod({ name: "test-container" })).resolves.toBeUndefined();
-    expect(createTerminalTabMock).toHaveBeenCalledTimes(1);
-    expect(sendCommandMock).toHaveBeenCalledWith("exec kubectl attach -i -t -n  name -c test-container", {
-      enter: true,
-      tabId: "mocked-id",
-    });
-    expect(hideDetailsMock).toHaveBeenCalledTimes(1);
-  });
-
-  it("on attach pod on windows platform should send exec command", async () => {
-    // GIVEN
-    const object = {
-      metadata: {
-        name: "name",
-        selfLink: "selfLink",
-      },
-    };
-
-    vi.spyOn(os, "platform").mockReturnValue("win32");
-
-    // WHEN
-    expect(() => {
-      render(<PodAttachMenu object={object} toolbar={true} />);
-    }).not.toThrow();
-
-    // THEN
-    await expect(attachToPod({ name: "test-container" })).resolves.toBeUndefined();
-    expect(createTerminalTabMock).toHaveBeenCalledTimes(1);
-    expect(sendCommandMock).toHaveBeenCalledWith("kubectl attach -i -t -n  name -c test-container", {
-      enter: true,
-      tabId: "mocked-id",
+    expect(createTerminalTabMock).toHaveBeenCalledWith({
+      title: "Pod: name (namespace: some-namespace) [Attached]",
+      podTerminal: { mode: "attach", namespace: "some-namespace", pod: "name", container: "test-container" },
     });
     expect(hideDetailsMock).toHaveBeenCalledTimes(1);
   });

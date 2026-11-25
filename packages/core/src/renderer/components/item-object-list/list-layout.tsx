@@ -10,7 +10,7 @@ import { cssNames, noop } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import autoBindReact from "auto-bind/react";
 import { groupBy } from "es-toolkit";
-import { makeObservable, observable, untracked } from "mobx";
+import { computed, observableRef, untracked } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import selectedFilterNamespacesInjectable from "../../../common/k8s-api/selected-filter-namespaces.injectable";
@@ -23,13 +23,13 @@ import { ItemListLayoutHeader } from "./header";
 import { PageFiltersList } from "./page-filters/list";
 import { FilterType } from "./page-filters/store";
 import pageFiltersStoreInjectable from "./page-filters/store.injectable";
+import { createSearchMatcher } from "./search-matcher";
 import itemListLayoutStorageInjectable from "./storage.injectable";
 
 import type { ItemObject, TableCellProps } from "@freelensapp/list-layout";
 import type { IClassName, SingleOrMany, StrictReactNode } from "@freelensapp/utilities";
 
 import type { IComputedValue } from "mobx";
-import type { Primitive } from "type-fest";
 
 import type { SubscribableStore } from "../../kube-watch-api/kube-watch-api";
 import type { StorageLayer } from "../../utils/storage-helper";
@@ -51,10 +51,6 @@ export interface HeaderPlaceholders {
   searchProps?: SearchInputUrlProps;
   filters?: StrictReactNode;
   info?: StrictReactNode;
-}
-
-function normalizeText(value: Primitive) {
-  return String(value).toLowerCase();
 }
 
 export type ItemListStore<I extends ItemObject, PreLoadStores extends boolean> = {
@@ -180,7 +176,7 @@ interface Dependencies {
 }
 
 @observer
-class NonInjectedItemListLayout<I extends ItemObject, PreLoadStores extends boolean> extends React.Component<
+export class NonInjectedItemListLayout<I extends ItemObject, PreLoadStores extends boolean> extends React.Component<
   ItemListLayoutProps<I, PreLoadStores> & Dependencies
 > {
   static defaultProps = defaultProps as object;
@@ -189,12 +185,11 @@ class NonInjectedItemListLayout<I extends ItemObject, PreLoadStores extends bool
   // header/filters/content observers invoke the getters below from within their
   // own render reactions. Keep an observable snapshot of props (updated on every
   // update) so those getters can be read reactively from any derivation.
-  @observable.ref private observableProps: Readonly<ItemListLayoutProps<I, PreLoadStores> & Dependencies>;
+  @observableRef private accessor observableProps: Readonly<ItemListLayoutProps<I, PreLoadStores> & Dependencies>;
 
   constructor(props: ItemListLayoutProps<I, PreLoadStores> & Dependencies) {
     super(props);
     this.observableProps = props;
-    makeObservable(this);
     autoBindReact(this);
   }
 
@@ -272,23 +267,19 @@ class NonInjectedItemListLayout<I extends ItemObject, PreLoadStores extends bool
       const search = this.observableProps.pageFiltersStore.getValues(FilterType.SEARCH)[0] || "";
 
       if (search && searchFilters.length) {
-        const searchTexts = [search].map(normalizeText);
+        const matchesSearch = createSearchMatcher(search);
 
-        return items.filter((item) =>
-          searchFilters.some((getTexts) =>
-            [getTexts(item)]
-              .flat()
-              .map(normalizeText)
-              .some((source) => searchTexts.some((search) => source.includes(search))),
-          ),
-        );
+        return items.filter((item) => searchFilters.some((getTexts) => [getTexts(item)].flat().some(matchesSearch)));
       }
 
       return items;
     },
   };
 
-  get items() {
+  // Computed: the content reads the items once for every row it renders, each
+  // row in an observer of its own, so the filters run once for every change of
+  // the items or of the filters instead of once for every row.
+  @computed get items() {
     const filterGroups = groupBy(this.filters, ({ type }) => type);
     const filterItems: ListLayoutItemsFilter<I>[] = [];
 

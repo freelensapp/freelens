@@ -4,6 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { beforeEach, describe, expect, test } from "vitest";
 import "@testing-library/jest-dom/vitest";
 
 import { Icon } from "@freelensapp/icon";
@@ -30,6 +31,13 @@ describe("<Avatar/>", () => {
     const { getByText } = render(<Avatar title="John Ferguson" />);
 
     expect(getByText("JF")).toBeInTheDocument();
+  });
+
+  test("shows the short name instead of the initials of the title", () => {
+    const { getByText, queryByText } = render(<Avatar title="us-west-2-non-prod" shortName="W2NP" />);
+
+    expect(getByText("W2NP")).toBeInTheDocument();
+    expect(queryByText("UW2")).not.toBeInTheDocument();
   });
 
   test("shows custom icon passed as children", () => {

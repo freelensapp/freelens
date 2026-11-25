@@ -1,0 +1,223 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
+@use "../vars" as *;
+
+// Every color comes from the active theme. Text uses only textColorPrimary and textColorAccent,
+// which reach WCAG AA on contentColor in every built-in theme; the warning text is mostly
+// textColorAccent with 30% of the warning color for the same reason. Its badge keeps the tint
+// light, 10% of the warning color, so the text also reaches AA on it in the dark themes whose
+// textColorAccent is not far from the card, such as Solarized. The cluster overview gives these
+// cards about half of the page, so a card stays readable at 200px. The card is a square panel
+// without a border, drawn in contentColor like the other panels of the overviews.
+//
+// The class names are public: an extension that renders the card may restyle it. Every part
+// has a class of its own that starts with `CapacityCard-`, so that the styles of the page the
+// card is on, such as a `.header` or a `.title` of its own, do not reach into the card.
+
+.CapacityCard {
+  --capacity-card-warning-text: color-mix(in srgb, var(--colorWarning) 30%, var(--textColorAccent));
+  --capacity-card-track: color-mix(in srgb, var(--textColorPrimary) 22%, transparent);
+  --capacity-card-requests: color-mix(in srgb, var(--primary) 38%, transparent);
+
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: $padding * 2;
+  background: var(--contentColor);
+}
+
+.CapacityCard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $margin;
+}
+
+.CapacityCard-title {
+  margin: 0;
+  font-size: 13px;
+  font-weight: $font-weight-bold;
+  color: var(--textColorPrimary);
+}
+
+.CapacityCard-percent {
+  font-size: 13px;
+  font-weight: $font-weight-bold;
+  color: var(--textColorAccent);
+}
+
+.CapacityCard-summary {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-top: $margin;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.CapacityCard-value {
+  font-size: 26px;
+  line-height: 32px;
+  font-weight: $font-weight-bold;
+  color: var(--textColorAccent);
+}
+
+.CapacityCard-of {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 13px;
+  color: var(--textColorPrimary);
+}
+
+.CapacityCard-bar {
+  position: relative;
+  height: 8px;
+  margin: 14px 0 24px;
+
+  > div {
+    position: absolute;
+    top: 0;
+    height: 8px;
+    border-radius: 999px;
+  }
+
+  > .CapacityCard-track {
+    left: 0;
+    background: var(--capacity-card-track);
+  }
+
+  > .CapacityCard-overflow {
+    border-radius: 0 999px 999px 0;
+    background: repeating-linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--colorWarning) 60%, transparent) 0 3px,
+      color-mix(in srgb, var(--colorWarning) 15%, transparent) 3px 6px
+    );
+  }
+
+  > .CapacityCard-requests {
+    left: 0;
+    background: var(--capacity-card-requests);
+  }
+
+  > .CapacityCard-usage {
+    left: 0;
+    background: var(--primary);
+  }
+
+  > .CapacityCard-marker {
+    top: -4px;
+    width: 2px;
+    height: 16px;
+    margin-left: -1px;
+    border-radius: 1px;
+    background: var(--textColorAccent);
+  }
+}
+
+.CapacityCard-markerLabel {
+  position: absolute;
+  top: 14px;
+  font-size: 10.5px;
+  color: var(--textColorPrimary);
+  white-space: nowrap;
+}
+
+.CapacityCard-overcommit {
+  align-self: flex-start;
+  margin-bottom: $margin;
+  padding: 2px $padding;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--colorWarning) 10%, transparent);
+  color: var(--capacity-card-warning-text);
+  font-size: 11.5px;
+  font-weight: $font-weight-bold;
+  white-space: nowrap;
+}
+
+.CapacityCard-legend {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+}
+
+.CapacityCard-legendRow {
+  display: grid;
+  grid-template-columns: 10px minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: $margin;
+  min-height: 22px;
+  font-size: 12px;
+
+  &[data-warning] {
+    .CapacityCard-legendLabel,
+    .CapacityCard-legendValue,
+    .CapacityCard-legendPercent {
+      color: var(--capacity-card-warning-text);
+    }
+  }
+}
+
+.CapacityCard-legendLabel {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--textColorPrimary);
+}
+
+.CapacityCard-legendValues {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.CapacityCard-legendValue {
+  color: var(--textColorAccent);
+  font-weight: $font-weight-bold;
+}
+
+.CapacityCard-legendPercent {
+  min-width: 30px;
+  text-align: right;
+  font-size: 11px;
+  color: var(--textColorPrimary);
+}
+
+.CapacityCard-swatch {
+  justify-self: center;
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+
+  &[data-swatch="usage"] {
+    background: var(--primary);
+  }
+
+  &[data-swatch="requests"] {
+    background: var(--capacity-card-requests);
+  }
+
+  &[data-swatch="limits"] {
+    background: repeating-linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--colorWarning) 75%, transparent) 0 2px,
+      color-mix(in srgb, var(--colorWarning) 15%, transparent) 2px 4px
+    );
+  }
+
+  &[data-swatch="capacity"] {
+    background: var(--capacity-card-track);
+  }
+
+  &[data-swatch="allocatable"] {
+    width: 2px;
+    height: 12px;
+    border-radius: 1px;
+    background: var(--textColorAccent);
+  }
+}

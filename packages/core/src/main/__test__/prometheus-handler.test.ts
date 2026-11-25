@@ -7,13 +7,14 @@
 import { prometheusProviderInjectionToken } from "@freelensapp/prometheus";
 import { getInjectable } from "@ogre-tools/injectable";
 import { runInAction } from "mobx";
-import directoryForTempInjectable from "../../common/app-paths/directory-for-temp/directory-for-temp.injectable";
+import { beforeEach, describe, expect, it } from "vitest";
+import directoryForUserDataInjectable from "../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import { Cluster } from "../../common/cluster/cluster";
 import writeJsonFileInjectable from "../../common/fs/write-json-file.injectable";
 import prometheusHandlerInjectable from "../cluster/prometheus-handler/prometheus-handler.injectable";
+import createFreelensK8sProxyInjectable from "../freelens-k8s-proxy/create-freelens-k8s-proxy.injectable";
+import freelensProxyPortInjectable from "../freelens-proxy/freelens-proxy-port.injectable";
 import { getDiForUnitTesting } from "../getDiForUnitTesting";
-import createKubeAuthProxyInjectable from "../kube-auth-proxy/create-kube-auth-proxy.injectable";
-import lensProxyPortInjectable from "../lens-proxy/lens-proxy-port.injectable";
 
 import type { PrometheusProvider } from "@freelensapp/prometheus";
 
@@ -52,14 +53,15 @@ describe("PrometheusHandler", () => {
 
   beforeEach(async () => {
     di = getDiForUnitTesting();
-    di.override(createKubeAuthProxyInjectable, () => () => ({
+    di.override(createFreelensK8sProxyInjectable, () => () => ({
       apiPrefix: "/some-api-prefix",
       exit: () => {},
       run: async () => {},
       port: 9191,
+      isRunning: true,
     }));
-    di.override(directoryForTempInjectable, () => "/some-temp-dir");
-    di.inject(lensProxyPortInjectable).set(12345);
+    di.override(directoryForUserDataInjectable, () => "/some-user-data-dir");
+    di.inject(freelensProxyPortInjectable).set(12345);
 
     const writeJsonFile = di.inject(writeJsonFileInjectable);
     const kubeConfigPath = "/some/path-to-a-config";
@@ -113,7 +115,7 @@ describe("PrometheusHandler", () => {
         }
       });
 
-      expect(() => di.inject(prometheusHandlerInjectable, cluster).getPrometheusDetails()).rejects.toThrowError();
+      await expect(() => di.inject(prometheusHandlerInjectable, cluster).getPrometheusDetails()).rejects.toThrowError();
     });
 
     it.each([

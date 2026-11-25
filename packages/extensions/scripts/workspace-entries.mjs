@@ -11,7 +11,7 @@
 // - `generate-dts-tsconfig.mjs` turns it into tsconfig `paths`, which makes
 //   the workspace sources part of the tsc program (module resolution through
 //   node_modules would mark them external and skip declaration emit).
-// - `rollup.dts.config.mjs` turns it into aliases from the bare specifiers
+// - `rolldown.dts.config.mjs` turns it into aliases from the bare specifiers
 //   kept in the emitted declarations to the emitted `.d.ts` files.
 
 import { globSync, readFileSync } from "node:fs";

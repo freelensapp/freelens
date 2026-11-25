@@ -5,7 +5,8 @@
  */
 
 // App's common configuration for any process (main, renderer, build pipeline, etc.)
-export const defaultColorThemePreference = "system";
+export const defaultThemePreference = "freelens";
+export const defaultThemeVariantPreference = "system";
 export const defaultFontSize = 12;
 export const defaultTerminalFontFamily = "RobotoMono";
 export const defaultEditorFontFamily = "RobotoMono";

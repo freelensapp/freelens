@@ -12,7 +12,7 @@ const clusterApiAddressInjectable = getInjectable({
   id: "cluster-api-address",
   instantiate: (di) => {
     const { host } = di.inject(windowLocationInjectable);
-    // A cluster frame is served from `<clusterId>.<lens-proxy authority>`, so
+    // A cluster frame is served from `<clusterId>.<freelens-proxy authority>`, so
     // the authority any *other* cluster is addressed through is what remains
     // once that leading label is taken off.
     const clusterIdOfThisFrame = getClusterIdFromHost(host);

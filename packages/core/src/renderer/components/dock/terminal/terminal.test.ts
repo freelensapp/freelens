@@ -6,6 +6,7 @@
 
 import EventEmitter from "node:events";
 import { computed } from "mobx";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { Terminal } from "./terminal";
 import { getMacNaturalTextEditingMapping, handleMacNaturalTextEditingKey } from "./terminal-key-mapping";
 
@@ -192,10 +193,14 @@ describe("Terminal status lines", () => {
     expect(cleared).toBe(0);
   });
 
-  it("clears the buffer only once, however the session becomes ready", () => {
+  it("erases the transient line of a reconnect too, but keeps the history", () => {
+    api.emit("status", infoLine, "info");
     api.emit("ready");
-    api.emit("connected");
+    api.emit("data", "$ ");
+    api.emit("status", infoLine, "info");
+    api.emit("ready");
 
+    expect(written).toEqual([infoLine, erase, "$ ", infoLine, erase]);
     expect(cleared).toBe(1);
   });
 });

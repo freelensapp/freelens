@@ -7,7 +7,7 @@
 import "./list-view.scss";
 
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { makeObservable, observable } from "mobx";
+import { observableRef } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import { KubeObjectAge } from "../kube-object/age";
@@ -45,12 +45,11 @@ class NonInjectedHorizontalPodAutoscalers extends React.Component<Dependencies> 
   // called from renderTableContents, invoked by the KubeObjectListLayout/Table
   // render (a foreign derivation), so it reads props from this observable
   // snapshot, refreshed on every update, instead of this.props.
-  @observable.ref private observableProps: Readonly<Dependencies>;
+  @observableRef private accessor observableProps: Readonly<Dependencies>;
 
   constructor(props: Dependencies) {
     super(props);
     this.observableProps = props;
-    makeObservable(this);
   }
 
   componentDidUpdate() {

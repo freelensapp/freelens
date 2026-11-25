@@ -1,0 +1,1497 @@
+# Freelens extension API — contracts
+
+This is the **normative** half of the extension specification of Freelens 2:
+what the host guarantees, what surface an extension may rely on, and what
+happens when a contract is violated. The developer-facing porting guide is
+[`docs/extensions/migrating-from-v1.md`](./migrating-from-v1.md); the binary side
+is [`docs/extensions/binaries.md`](./binaries.md).
+
+**No compatibility is promised for v1 extensions.** The migration guide is what
+they get instead.
+
+## How to read this document
+
+Each contract states three things:
+
+- **Guarantee** — what the host promises.
+- **Surface** — the stable names the guarantee is expressed in.
+- **Failure mode** — what an author sees when the contract is violated. This is
+  recorded because most of these fail at runtime rather than at build time, and
+  several fail _silently_.
+
+Anything not stated here is not part of the contract. Extensions run with full
+privileges and can reach much more than this document describes; reaching it is
+not supported, and it may change without notice.
+
+---
+
+## C1. Packaging and publication
+
+**Guarantee.** `@freelensapp/extensions` is the **only** published package of
+this repository. Every other `@freelensapp/*` package is private and must never
+appear in an extension's dependencies.
+
+**Surface.** One package, two files: `dist/extension-api.d.ts` (the rolled-up
+declaration) and `dist/extension-api.js` (the runtime shim, with no
+dependencies).
+
+The bundled declaration is what makes the single-package model work rather
+than merely assert it: `rolldown.dts.config.mjs` maps every workspace entry to
+its emitted declaration and its `external` predicate returns false for them, so
+every `@freelensapp/*` is inlined. Nothing else needs publishing.
+
+**Failure mode.** A direct dependency on any other `@freelensapp/*` package
+fails to install — the package does not exist on the registry.
+
+**Consequence worth stating separately.** Because workspace packages are private
+_and_ inlined, **a symbol the API namespaces do not re-export is unreachable by
+any means.** There is no package left to install and a type-only import fails at
+module resolution with no `@types/` fallback. Re-export completeness is
+therefore a correctness property, not a convenience. See [C5](#c5-namespace-enumeration).
+
+---
+
+## C2. The runtime-global API
+
+**Guarantee.** The host assigns one object at startup, in each process:
+
+```ts
+// main      (freelens/src/main/index.ts)
+globalThis.FreelensExtensionApi = { Common, Main, ...mainExtensionApiSingletons };
+// renderer  (freelens/src/renderer/index.ts)
+globalThis.FreelensExtensionApi = { Common, Renderer, ...rendererExtensionApiSingletons };
+```
+
+The singletons of [C3](#c3-host-provided-singletons) ride on the same object
+rather than on globals of their own: one object to publish, one place in the
+contract, and it is what the shim already reads.
+
+`@freelensapp/extensions` is a thin shim that re-exports that global, so the
+members resolve identically whether an extension inlines the shim or marks it
+external. The import specifier does not change from v1:
+
+```ts
+import { Common, Main, Renderer } from "@freelensapp/extensions";
+```
+
+**Surface.** `Common`, `Main`, `Renderer` — as values and as type namespaces
+(`Renderer.Component.IconProps`, `Common.PackageJson`).
+
+**Failure mode.** The wrong-process namespace is `undefined` **at runtime**
+while the types expose the full surface, so `Main.Util.fetch` in a renderer
+entry type-checks and throws `Cannot read properties of undefined`. Touch only
+the namespace for the process your code runs in.
+
+---
+
+## C3. Host-provided singletons
+
+**Guarantee.** The host publishes its singleton libraries on the **same** global
+object. An extension declares them in `devDependencies` for compilation only,
+marks them external, and lets its bundler rewrite the bare id to the global.
+
+**Surface.** A closed list of module ids:
+
+| Module id           | Global            | Published in |
+| ------------------- | ----------------- | ------------ |
+| `react`             | `React`           | renderer     |
+| `react-dom`         | `ReactDom`        | renderer     |
+| `react/jsx-runtime` | `ReactJsxRuntime` | renderer     |
+| `mobx`              | `Mobx`            | both         |
+| `mobx-react`        | `MobxReact`       | renderer     |
+| `monaco-editor`     | `MonacoEditor`    | renderer     |
+
+An extension declares a listed package also when it does not import it but
+uses a host API whose types name it: `Renderer.Component.MonacoEditor` takes its
+`options` and the arguments of its callbacks from `monaco-editor`, so an
+extension that renders it declares `monaco-editor`, at the host's version
+([C11](#c11-third-party-bundled-libraries)).
+
+**The host's Monaco leaves out what Freelens does not use:** the language
+services of TypeScript and JavaScript, CSS and HTML, and the LSP client.
+`MonacoEditor.typescript`, `MonacoEditor.css`, `MonacoEditor.html` and
+`MonacoEditor.lsp` are empty, although the types of `monaco-editor` declare
+them, so an extension that uses them fails at runtime, not when it compiles.
+Those languages keep their syntax highlighting, and JSON keeps its language
+service.
+
+**Each process publishes the set it has**, which is why the third column exists.
+Main has no window, so it publishes no DOM renderer and no code editor. What it
+has is what an extension's main entry point can really share: `mobx`, where an
+extension's stores and catalog entities live.
+
+**A package belongs on this list if two instances of it misbehave.** React (hook
+and reconciler identity), mobx (observable identity), monaco (global theme and
+worker registration). Nothing else in the API's dependency set meets it.
+
+**The names follow a mechanical rule:** strip the scope, split on `-`, `/` and
+`.`, upper-case each segment, so `react-dom` is `ReactDom` and
+`react/jsx-runtime` is `ReactJsxRuntime`. The host asserts at startup that every
+key it publishes follows the rule, so a bundler plugin can derive each name from
+the specifier instead of carrying a map.
+
+These ids are **not** on the list, and an extension that still maps one of them
+to the global gets `undefined` at runtime, not a build error:
+
+- **`@freelensapp/extensions`** — the package is a thin shim that already reads
+  the global, so bundling it is correct.
+- **`react-router` and `react-router-dom`** — not dependencies of the host. An
+  extension that wants them bundles its own ([C9](#c9-routing)).
+- **`node-pty`** — v2 publishes no `Pty` global. An extension that needs to run a
+  program uses `node:child_process` in its main entry point (see
+  [`docs/extensions/binaries.md`](./binaries.md)).
+- **`@ogre-tools/injectable` and `@ogre-tools/injectable-react`** — the host's
+  dependency-injection library, which it keeps as an implementation detail (see
+  [C7](#c7-the-dependency-injection-surface)). An extension that uses them
+  bundles its own copy, at any version.
+
+**The process entries export nothing to extensions.** Neither build of the host
+assigns its entry's exports onto `globalThis`: the renderer is an app, and main
+is an `es`-format library build whose `export` statements nothing imports,
+because Electron runs it as the process entry point. A v1 extension that read
+`global.React`, `global.Pty` or another export of a host entry finds nothing;
+the singletons are reachable only through `FreelensExtensionApi`.
+
+The maps live in `packages/core/src/extensions/api-globals/`, one per process,
+each paired with the module id of every name it publishes. Membership cannot
+drift between the two objects — the id map is typed `Record<keyof …, string>` —
+and a name cannot drift from the rule: `assertExtensionApiSingletonNames` checks
+every key against `globalNameForModuleId` at startup, and a unit test runs the
+same assertion over both maps so a typo fails in CI without launching the app.
+
+**Failure mode.** Bundling your own copy of a listed package. React throws
+`invalid hook call`; **mobx fails silently** — two instances interoperate
+through shared global state well enough that observables appear to work and
+reactions simply do not fire where they should. A typo in a global name yields
+`undefined`, not a build error. Code built against another major of a listed
+package runs against the host's copy anyway: a mobx class compiled with legacy
+(`experimentalDecorators`) decorators throws when its module is evaluated, so
+the extension fails to load, and the annotations that do not throw are dropped
+silently (see
+[MobX 7 and mobx-react 10](./migrating-from-v1.md#mobx-7-and-mobx-react-10-standard-decorators-only)
+for the messages).
+
+---
+
+## C4. Module format and loading
+
+**Guarantee.**
+
+- **Main** accepts ESM or CommonJS. The host imports the manifest's `main`
+  entry from a real file path. **Only ESM reloads**: a development install
+  whose `main` was loaded as CommonJS, or whose format changed since it was
+  loaded, needs the application restarted to run its new build. Loading it the
+  first time is unaffected, which is what this guarantee is about.
+- **Renderer** entry points are **ESM**, loaded by URL from the privileged
+  `freelens-extension` scheme.
+- **Top-level await is allowed** in either entry point: the renderer imports the
+  served URL and main imports a `file:` URL, both asynchronously.
+- **Renderer code gets no guarantee of Node or Electron**, `require()`
+  included. They are reachable only because the renderer is not
+  context-isolated, and they may disappear in any release, a minor one included:
+  being reachable does not make them part of the surface that
+  [C14](#c14-versioning-and-compatibility) freezes. **Main** keeps both.
+
+**Surface.** `main` and `renderer` in the manifest, each a path relative to the
+package root. Under URL-based loading the renderer has **no `__dirname`**, which
+makes `LensExtension.manifestPath` the only route to an extension's own files —
+see [C6](#c6-registration-and-the-extension-instance).
+
+What a renderer entry point may rely on is what a browser page has — `fetch`,
+Web Crypto, `TextEncoder` / `TextDecoder`, `Uint8Array` — plus the API object of
+[C2](#c2-the-runtime-global-api) and the singletons of
+[C3](#c3-host-provided-singletons). Work that needs Node or Electron belongs in
+the main entry point, reached over `Renderer.Ipc` / `Main.Ipc`. The migration
+guide lists the replacement for each Node and Electron module v1 extensions
+used in the renderer, under
+[Node and Electron in the renderer](./migrating-from-v1.md#node-and-electron-in-the-renderer).
+
+The declaration cannot enforce this: `extension-api.d.ts` is one file for every
+process. The environment has to come from the extension's own compiler
+configuration, and the migration guide specifies the layout that provides it,
+under
+[Source layout: one tsconfig per runtime environment](./migrating-from-v1.md#source-layout-one-tsconfig-per-runtime-environment):
+`src/main/`, `src/renderer/` and `src/common/`, each with a `tsconfig.json` for
+its environment, so a Node API in renderer code or a DOM API in main code fails
+the type check rather than the running extension.
+
+**Reloading.** A development install is reloaded when its entry points are
+rebuilt: the host tears the extension down through `onDeactivate` and imports it
+again under a fresh URL. That is why only an ESM `main` reloads. Node keys its
+module map by URL, so the fresh URL is what makes a new module of the rebuilt
+file — but a CommonJS module is cached below that by filename, which no URL
+reaches, and the format Node resolved for a path is cached with it. So a path
+once loaded as CommonJS is frozen as the module it was, for the life of the
+process, however the file is rewritten; and a CommonJS build reached through
+the ESM loader throws `ReferenceError: module is not defined in ES module
+scope`. Neither cache can be evicted, so the host refuses those reloads instead
+of attempting them.
+
+**Failure mode.** A load failure is recorded in the extension's metadata and
+logged; the extension is skipped and nothing else aborts. A renderer bundle
+served with a wrong MIME type does not execute at all — the host maps types by
+file extension and serves anything unknown as `application/octet-stream`, which
+correctly refuses. A rebuild which cannot be reloaded is **refused and logged**,
+naming the extension and the reason; the extension goes on running the build it
+already has, in both processes, rather than one process moving on without the
+other.
+
+Extension code calling `globalThis.require` in the renderer is **warned, not
+blocked**: the host logs a deprecation warning once per extension and module
+id, and returns the module. Nothing stronger would hold while the renderer is
+not context-isolated, since the globals are shared. The warning goes by the
+**immediate caller** — the call is the extension's when the frame that made it
+is at a `freelens-extension://extensions/<name>/` URL, which also names the
+extension. So the host's own calls, and host code an extension calls into, do
+not warn; code an extension bundles is part of its file and does. The wrapper
+is installed in every frame that loads extensions, cluster frames included,
+before the first extension loads.
+
+---
+
+## C5. Namespace enumeration
+
+**Guarantee.** These are the members of each namespace. A symbol not listed here
+is not reachable (see [C1](#c1-packaging-and-publication)).
+
+| Namespace  | Members                                                                                                                                                                                                                     |
+| ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Common`   | `App`, `Catalog`, `Clusters`, `Credentials`, `EventBus`, `Proxy`, `Store`, `Types`, `Util`, `logger`; types `ExtensionCredentials`, `InstalledExtension`, `LensExtension`, `LensExtensionManifest`, `Logger`, `PackageJson` |
+| `Main`     | `Catalog`, `Ipc`, `K8s`, `K8sApi`, `LensExtension`, `Navigation`, `Power`, `Shell`, `Util`                                                                                                                                  |
+| `Renderer` | `Catalog`, `Component`, `Ipc`, `K8s`, `K8sApi`, `LensExtension`, `Navigation`, `Theme`, `Util`                                                                                                                              |
+
+There is no `Renderer.React`, no `Renderer.ReactDOM` and no
+`Renderer.Registrations`. React reaches extensions through
+[C3](#c3-host-provided-singletons), registrations through
+[C6](#c6-registration-and-the-extension-instance).
+
+The table is asserted, not generated, by three checks:
+
+- `packages/core/src/extensions/__tests__/extension-api.test.ts` asserts the
+  three member lists **exactly** — the table is that list — and then asserts
+  only that each sub-namespace exists, is non-empty and still carries a handful
+  of anchor symbols.
+- `packages/core/src/extensions/__tests__/extension-api.types.ts` names those
+  anchors and the types of this section's failure mode **as types**, so a
+  symbol that stops being nameable stops `pnpm type:check` compiling.
+- `packages/fixture-extension/src/common/contract-types.ts` does the same
+  against the **built** declaration, which is the artifact an author resolves.
+
+**Failure mode.** A missing re-export is a compile error with no workaround.
+That is why `K8sApi` exports all of `@freelensapp/kube-object`, and why the
+kube-api option and descriptor types that appear in exported signatures —
+`KubeApiOptions`, `DerivedKubeApiOptions`, `KubeObjectStoreOptions`,
+`KubeApiListOptions`, `KubeApiQueryParams`, `DeleteOptions`,
+`PropagationPolicy`, `ResourceDescriptor`, `IKubeWatchEvent` — are exported
+alongside `parseKubeApi` and `createKubeApiURL`, so they are nameable and not
+merely callable.
+
+### `K8sApi` exports all of `@freelensapp/kube-object`
+
+The namespace exports **all** of `@freelensapp/kube-object`, including the shared
+spec vocabulary — `Affinity`, `Capabilities`, `ContainerPort`, `Probe`,
+`ResourceRequirements`, `SecurityContext`, `Toleration` — that an extension
+adding resource views needs. Most of the package is interfaces, type aliases and
+enums transcribing upstream Kubernetes API shapes, whose stability is inherited
+from Kubernetes; its classes, functions and constants are what can change the
+behaviour of the API.
+
+**Two types share the name `KubeObjectStatus` in the source**: a Kubernetes
+resource status shape (`{ conditions?: BaseKubeObjectCondition[] }`) and the
+status registration type that extensions register status providers against.
+The registration type keeps the name `KubeObjectStatus`. The resource status
+shape is exported as **`BaseKubeObjectStatus`** — the base that
+`DeploymentStatus`, `JobStatus` and the other resource statuses extend.
+
+**The namespace reaches only what the package's own index exports.** `export *`
+resolves through a package's index, so a module the index skips is invisible to
+the namespace no matter what the namespace does. `SecurityContext`,
+`PreemptionPolicy`, `JSONSchemaProps` and `ExternalDocumentation` appear in the
+signatures of types the package exports (`Container.securityContext`,
+`PriorityClass.preemptionPolicy`, the CRD schema), so its `src/types/index.ts`
+exports the modules that declare them, and a type added to the package later
+needs the same. `json-schema-props` carries documented `string` aliases
+(`UUIDRegexString`, `UUID3RegexString`, `UUID4RegexString`,
+`UUID5RegexString`, `CreditCardRegexString`) alongside `JSONSchemaProps`; they
+are the `format` vocabulary for the CRD schema and are frozen with it under
+[C14](#c14-versioning-and-compatibility).
+
+### `Util` is `@freelensapp/utilities` minus the Node-bound members
+
+`Common.Util` is delimited by a rule rather than by a list of what it offers:
+
+- **Every export of `@freelensapp/utilities` is extension API**, and frozen with
+  the rest under [C14](#c14-versioning-and-compatibility) — including an export
+  added to the package later.
+- **Except a member that needs Node or Electron in the renderer**, because
+  renderer code gets no guarantee of either
+  ([C4](#c4-module-format-and-loading)). Such a member goes on the omit list in
+  `packages/core/src/extensions/common-api/utils.ts`, which destructures it out
+  of the spread so that its name and types do not reach the bundled
+  declarations either. Keeping them out also takes `rolldown-plugin-dts`
+  0.28.8 or newer: an older one keeps every member of
+  `@freelensapp/utilities` in the bundle, because `utils.ts` reaches them
+  through `import * as utilities`, and `build:dist` fails on their Node
+  imports ([C11](#c11-third-party-bundled-libraries)).
+
+`Main.Util` and `Renderer.Util` spread `Common.Util`, so an omitted member is
+gone from all three; `Main.Util` adds `fetch` ([C12](#c12-http)).
+`Common.Util.getAppVersion` is the one member the host defines itself.
+
+**Whoever adds an export to the package** is therefore adding API, and checks
+one thing: does it need Node or Electron to run in the renderer — a
+`node:`/Electron import, a Node global such as `Buffer` or `process`, or a Node
+type such as `NodeJS.ErrnoException` in its signature? If the dependency is
+incidental to the implementation, remove it; if it is what the function does,
+add the member to the omit list and a line to the migration guide.
+
+**Failure mode.** A member that needs a Node global and is not on the list fails
+at runtime in a renderer without Node — a `ReferenceError` for a global such as
+`Buffer` — and not at compile time.
+
+### `Common.Types` names the helper types of the signatures
+
+Besides the registration shapes, `Common.Types` exports the helper types the
+signatures of the API are written in, so that an extension can type what it
+passes to them:
+
+| Type                | Where the API uses it                                                                  |
+| ------------------- | -------------------------------------------------------------------------------------- |
+| `PartialDeep`       | the data of `KubeApi.create`, `update` and `patch`, of `KubeObjectStore` and `JsonApi` |
+| `ReadonlyDeep`      | `Renderer.Theme.activeTheme`, `Common.Util.readonly`                                   |
+| `RequireAtLeastOne` | `KubeObjectHandlerRegistration`                                                        |
+| `RequireExactlyOne` | the pod volumes and the ingress backends of `K8sApi`                                   |
+| `SetRequired`       | the input validators of `Renderer.Component`                                           |
+| `JsonValue`         | `JSONSchemaProps.example`                                                              |
+| `ValueOf`           | the query parameters of `JsonApi`                                                      |
+
+```ts
+import type { Common, Renderer } from "@freelensapp/extensions";
+
+const patch: Common.Types.PartialDeep<Renderer.K8sApi.Pod> = {
+  metadata: { labels: { team: "storage" } },
+};
+```
+
+**Guarantee.** Each is the type of the same name of type-fest 5.10.0, from a
+copy of its sources that the host carries in a private package, so it
+accepts and rejects the same values, with `exactOptionalPropertyTypes` on or
+off. The declaration imports nothing from `type-fest`
+([C11](#c11-third-party-bundled-libraries)), and an extension needs no
+type-fest to compile against it. Moving the copy to a type-fest that requires
+more of an extension's compiler options waits for a major
+([C14](#c14-versioning-and-compatibility)). `Common.PackageJson` is the
+`PackageJson` of the same copy, as a type alias.
+
+**Failure mode.** A type-fest type that `Common.Types` does not export is not
+reachable through the API. An extension that needs one declares `type-fest` in
+its own `devDependencies`, at any version; the types of that copy are separate
+declarations, which match the ones of the API only as far as the two versions
+agree.
+
+### `Catalog.getAllClusters()` and `getClusterById()` are observable
+
+`Main.Catalog` and `Renderer.Catalog` both have `getAllClusters()` and
+`getClusterById(id)`, which answer with `Common.Clusters.ClusterInfo` objects.
+**Both are observable through the host's mobx**
+([C3](#c3-host-provided-singletons)), in both processes. Called inside a
+`reaction`, an `autorun`, a `computed` or an `observer` component, they make it
+run again when a cluster is added or removed and when a field of a cluster
+changes, its `status` among them. This is how an extension follows a cluster
+connecting or disconnecting: there is no event for it.
+
+```ts
+import { Common, Main } from "@freelensapp/extensions";
+import { reaction } from "mobx";
+
+const { ClusterConnectionStatus } = Common.Clusters;
+
+const dispose = reaction(
+  () => Main.Catalog.getClusterById(clusterId)?.status,
+  (status) => {
+    if (status === ClusterConnectionStatus.CONNECTED) {
+      // ask Main.Shell.getEnvironment(clusterId) again, start what needs it
+    } else {
+      // stop what runs with the cluster's environment
+    }
+  },
+);
+
+// in onDeactivate()
+dispose();
+```
+
+The functions are what is observable, not the objects they return: a
+`ClusterInfo` is a snapshot, and a later change gives new objects. Call the
+function inside the reaction, rather than keeping an object and reading its
+`status` later. A reaction is the extension's to dispose of, in `onDeactivate`
+at the latest.
+
+`packages/core/src/extensions/__tests__/catalog-clusters-observable-main.test.ts`
+and `catalog-clusters-observable-renderer.test.ts` run a `reaction` on each
+function through the API and change a cluster's status the way the host does.
+
+**Failure mode.** A reaction made with the extension's own copy of mobx rather
+than the host's fails silently, as [C3](#c3-host-provided-singletons)
+describes: it does not fire where it should, and nothing reports it.
+
+### `Credentials` keeps an extension's values encrypted at rest
+
+`Common.Credentials.forExtension(extension)` returns the credentials of an
+extension, typed as `Common.ExtensionCredentials`: string values under string
+keys, for the token, password or API key of a service outside the cluster. It
+works in both processes. `Common.Store.ExtensionStore` writes a plain JSON
+file, which is the wrong place for such a value.
+
+```ts
+import { Common, Main } from "@freelensapp/extensions";
+
+export default class MyExtension extends Main.LensExtension {
+  private readonly credentials = Common.Credentials.forExtension(this);
+
+  async onActivate() {
+    if (await this.credentials.isAvailable()) {
+      const token = await this.credentials.get("api-token");
+      // ...
+    }
+  }
+}
+```
+
+**Guarantee.** A value is never written to disk in clear text. It is
+encrypted with Electron's `safeStorage`, with a key that the operating
+system's secret store holds: the Keychain on macOS, DPAPI on Windows,
+libsecret or KWallet on Linux. That protects it at rest: in backups, on a
+copied disk, from other accounts of the system.
+
+**Surface.**
+
+| Member            | Does                                                                 |
+| ----------------- | -------------------------------------------------------------------- |
+| `isAvailable()`   | resolves to whether the system has a secret store to encrypt with    |
+| `get(key)`        | resolves to the value under `key`, or `undefined` when there is none |
+| `set(key, value)` | stores `value` under `key`, replacing a previous value               |
+| `delete(key)`     | removes the value under `key`; a key without a value is no error     |
+| `keys()`          | resolves to the keys that have a value, sorted                       |
+
+- **Bound to the instance.** `forExtension` takes the extension instance,
+  `this` in the `Main.LensExtension` or `Renderer.LensExtension` subclass, and
+  the host derives the scope from the instance it loaded, never from a string
+  or a property of the instance. Both processes of one extension reach the
+  same values. A field initializer, as above, is a supported place to call
+  it.
+- **Small values.** A key is 1 to 128 characters of `A-Z`, `a-z`, `0-9`,
+  `.`, `_` and `-`. A value is a string of at most 64 KiB in UTF-8.
+- **Keys are in clear text.** Only the values are encrypted; the keys are
+  written to the file as they are. A key names a value and must not hold one,
+  such as a user name or a host that should not be visible: put that in a
+  value, under a key such as `username`.
+- **One file per extension**, in the user data directory, named after the
+  extension's sanitized ID. Uninstalling the extension removes it, for a
+  managed and a development install alike; disabling the extension keeps it.
+- **Errors never contain a value**, nor a key.
+
+**Failure mode.**
+
+- When the system has no secret store, `isAvailable()` resolves to `false` and
+  every other method rejects. On Linux the check fails closed: the store is
+  available only when Electron reports the libsecret or KWallet backend
+  (`gnome_libsecret`, `kwallet`, `kwallet5`, `kwallet6`), and not for
+  `basic_text` (`--password-store=basic`, or a desktop the host does not
+  recognise), `unknown`, any other backend, or an Electron that cannot report
+  one. A session with no secret service at all therefore has no credentials,
+  even where Electron's asynchronous API offers a fallback provider. There is
+  no fallback to clear text and no in-memory substitute: an extension that
+  needs the value asks the user for it again, or tells the user why it cannot
+  keep it.
+- On a Linux desktop the host does not recognise, a user with a running
+  secret store makes it available by starting Freelens with
+  `--password-store=gnome-libsecret` for a Secret Service provider such as
+  GNOME Keyring or KeePassXC, or `--password-store=kwallet6` (or `kwallet5`)
+  for KWallet. An extension that tells the user why it cannot keep a value can
+  point to this.
+- A value that is not an extension instance the host loaded rejects every
+  method with a `TypeError`. So do a key and a value outside the limits.
+- A credentials file that cannot be read as one rejects every method of that
+  extension, and of no other, with an error that names the extension. The
+  host does not replace the file.
+
+**Not guaranteed.** The credentials are not a boundary between extensions, and
+not a protection against programs running as the same user. Extensions run in
+the host's processes and can call `safeStorage` themselves; on Windows any
+process of the user can decrypt DPAPI data, and on Linux any process of the
+session can read an unlocked keyring. Binding the credentials to the extension
+instance keeps one extension from reaching another's values by mistake, not by
+intent.
+
+`packages/core/src/features/extension-credentials/main/__tests__/extension-credentials-store.test.ts`
+covers the store, and
+`packages/core/src/extensions/__tests__/extension-api-credentials.test.ts` the
+binding to the instance through the API.
+
+### The overview cards follow the user's choice of Cards or Charts
+
+The cluster overview and the workloads overview show their numbers either as
+the ring and pie charts or as cards, by the user's choice in Preferences →
+Personalization → Overview style. An extension shows its own numbers the same
+way with the components the overviews render:
+
+- **`Renderer.Component.CapacityCard`** shows the usage of one resource on the
+  scale of what is allocatable. Its props, `CapacityCardProps`, are a
+  `title`, the `usage` and `allocatable` values, the optional `requests`,
+  `limits` and `capacity`, a `unit` or a `format` for the values and a
+  `formatHeadline` for the headline number, and `labels`
+  (`CapacityCardLabels`) for the names of the values, each of which keeps its
+  English default when it is not given. The card warns when the limits are
+  more than what is allocatable, and lists the capacity only when it differs
+  from it.
+- **`Renderer.Component.StatusCard`** shows the number of items of one kind and
+  their statuses. Its props, `StatusCardProps`, are a `title`, the `statuses`
+  in the order of the bar, an optional `total` that defaults to the sum of
+  their counts, an `emptyText` for no items and a `noStatusText` for items
+  without a status, and an `onClick` that makes the whole card a button. Each
+  `StatusCardStatus` has a `label`, a `count`, a CSS `color` and a `tone`
+  (`StatusCardTone`): `healthy` statuses make the healthy share, `failing` ones
+  the number that fail.
+- **`Common.App.Preferences.getOverviewStyle()`** returns `"charts"`, the
+  default, or `"cards"`. It is observable: an `observer` component that calls
+  it renders again when the user switches.
+
+The props are the contract, not the shape of the host's metrics or stores, and
+both are plain data with no host type in them. The cards take every color from
+the theme ([C10](#c10-styling-and-css)) apart from the `color` of a status,
+which is what the extension gives: a theme variable such as `var(--colorOk)`
+keeps the card in step with the theme. Each card is a `<section>` named by its
+title, or a `<button>` when it has an `onClick`. A `data-testid` given to a
+card is the prefix of the test ids of its parts. The cards set no width:
+the host lays them out in a grid of columns at least 200px wide, 16px apart.
+They are square panels without a border, drawn in `--contentColor` like the
+other panels of the overviews, so an extension that shows them among panels of
+its own spaces them the same way. A status card that is a button shows the
+hover with its background, tinted with `--primary`, and the focus with an
+outline.
+
+Every part of a card has a class that starts with the name of the card, such
+as `.CapacityCard-title`, `.CapacityCard-legendRow` or `.StatusCard-header`,
+and none has a generic class such as `.header` or `.title`. The styles of the
+page a card is on therefore do not reach into it, and an extension may restyle
+a part by its class ([C10](#c10-styling-and-css)). The state of a part is a
+data attribute rather than a class: `data-warning` on a legend row of a
+capacity card whose limits are more than what is allocatable, `data-swatch`
+on its legend swatches, `data-healthy` on the bar segments of a healthy
+status of a status card, and `data-failing` on its legend rows of a failing
+one.
+
+`packages/core/src/extensions/__tests__/extension-api-overview-cards.test.tsx`
+covers the components and the preference as an extension reaches them.
+
+### The copy controls copy what a view shows
+
+The details views of the host copy a value to the clipboard in one click. An
+extension does the same with the components they render:
+
+- **`Renderer.Component.CopyToClipboardIcon`** copies the text its `getText`
+  returns, and calls it on each click, so the text is the one of that moment.
+  It shows the `content_copy` icon with the tooltip and the `aria-label`
+  "Copy", and `done` with "Copied!" for a few seconds after the write
+  succeeds. A write the clipboard refuses leaves "Copy" in place and shows no
+  notification. Its props, `CopyToClipboardIconProps`, are `getText`, a
+  `className` and a `data-testid`.
+- **`Renderer.Component.CopyableMonacoEditor`** is a `MonacoEditor` with the
+  icon next to its top-right corner, outside the editor, so that it covers
+  neither the text, the minimap nor the scrollbar. Its props,
+  `CopyableMonacoEditorProps`, are those of `MonacoEditor` and a
+  `data-testid`.
+- **`Renderer.Component.CopyableInput`** is an `Input` with the icon after
+  it. Its props, `CopyableInputProps`, are those of `Input`, a
+  `getTextToCopy` that turns what the input shows into the text to copy, as
+  the details of a secret decode its value, `children` that are shown between
+  the input and the icon, such as more icons of the input, and a
+  `data-testid`.
+
+The editor and the input copy what they show: the last value they were given,
+or the last edit made in them, whichever came later. An unsaved edit is
+therefore copied, and `onChange` still gets every edit. A `data-testid` given
+to either is the test id of the whole, and the same with `-copy` the one of
+its icon.
+
+The parts have global classes an extension may restyle
+([C10](#c10-styling-and-css)): `.CopyToClipboardIcon` next to `.Icon` on the
+icon, `.CopyableMonacoEditor` on the wrapper of the editor and
+`.CopyableMonacoEditor-editor` on the editor, `.CopyableInput` on the wrapper
+of the input and `.CopyableInput-input` on the input. They take no color of
+their own.
+
+`packages/core/src/extensions/__tests__/extension-api-copy-to-clipboard.test.tsx`
+covers the components as an extension reaches them.
+
+### An image shows the image the node pulled for it
+
+The details of a pod show the image of a container, and the reference of an
+image volume, as a badge whose tooltip is the image the node pulled for it. An
+extension shows an image the same way with
+**`Renderer.Component.ImageReference`**. Its props, `ImageReferenceProps`, are
+the `reference`, the image as the object names it, which is the label of the
+badge, the `digest`, the image the node pulled, which is its tooltip, a
+`className` and a `data-testid`. Without a `digest`, or with an empty one, the badge has no
+tooltip. The host takes the `digest` of a container from the `imageID` of its
+status, and the one of an image volume from the `volumeStatus.image.imageRef`
+of the mount of the volume in the status of a container, which `K8sApi` types
+as `PodContainerStatus.volumeMounts`. A cluster that does not report the
+digest of an image volume leaves its badge without a tooltip.
+
+The badge has the global class `.ImageReference`, which an extension may
+restyle ([C10](#c10-styling-and-css)). It takes no color of its own.
+
+`packages/core/src/extensions/__tests__/extension-api-image-reference.test.tsx`
+covers the component as an extension reaches it.
+
+### The generic components are the ones the host's views are built from
+
+The host builds its views from a set of generic components. An extension
+renders the same ones, rather than its own copies with their own look and
+their own bugs. Each is a component of `Renderer.Component` and its props
+type, and no type of a library it is built on is part of either: the
+libraries stay an implementation detail that the host may replace.
+
+An extension renders them inside the host's React tree, as it renders any
+component of `Renderer.Component`. `ErrorBoundary` and `Animate` read the
+host's values from there, the history and the default durations, which an
+extension reaches in no other way
+([C7](#c7-the-dependency-injection-surface)). Rendered into a React root of
+the extension's own, they throw.
+
+- **`Renderer.Component.ErrorBoundary`** renders its `children` until one of
+  them throws while it renders. It then shows the error and the component
+  stack in place of the children, with a link to the issue tracker of
+  Freelens and a "Back" button that goes back in the history of the window.
+  Its props, `ErrorBoundaryProps`, are the `children` and a `resetKey`: when
+  it changes, the boundary renders the children again. Give it with the
+  children, from the same render, such as the path of the page they show.
+- **`Renderer.Component.Animate`** renders its only child with the classes of
+  an animation: `.Animate` and the `name`, and `.enter` from the frame after
+  it is shown, or `.leave` from when `enter` turns false, for the
+  `leaveDuration`, after which it renders nothing. It sets the durations as
+  the custom properties `--enter-duration` and `--leave-duration` on the
+  child. Its props, `AnimateProps`, are the `children`, the `name`
+  (`AnimateName`): `opacity`, the default, `slide-right`, `opacity-scale`, or
+  the name of an animation of the extension's own stylesheet, `enter`, which
+  is `true` by default, `enterDuration` and `leaveDuration` in milliseconds,
+  which are the host's defaults when they are not given, and `onEnter` and
+  `onLeave`.
+- **`Renderer.Component.ResizingAnchor`** is the edge the user drags to
+  resize a panel. It is positioned absolutely on the side of its parent that
+  `placement` (`ResizeSide`) and `direction` (`ResizeDirection`) say:
+  `leading` is the left or the top, `trailing` the right or the bottom. Its
+  props, `ResizingAnchorProps`, are those two, `getCurrentExtent` that returns
+  the width or the height of the panel, `onDrag` that gets the new one,
+  between `minExtent` and `maxExtent`, `growthDirection`
+  (`ResizeGrowthDirection`) for a panel that grows towards the top or the
+  left, `onStart`, `onEnd`, `onDoubleClick`, `onlyButtons` to resize with
+  some mouse buttons only, `disabled`, and the callbacks for the extent
+  crossing its limits. A `maxExtent` below the `minExtent` throws.
+- **`Renderer.Component.ColorSwatch`** is a button that shows a `color`, or
+  its `children` as text when it has no color, for a choice that is not one.
+  Its props, `ColorSwatchProps`, are those of a `<button>` but its `color`
+  and `children`, `selected`, and a `tooltip` shown above or below it.
+  **`Renderer.Component.ColorSwatchGroup`** lays out swatches in a row that
+  wraps, as a group named by its `label` (`ColorSwatchGroupProps`).
+  **`Renderer.Component.CustomColorSwatch`** is a swatch that opens a panel
+  with a picker for any color and a field for its hex code. Its props,
+  `CustomColorSwatchProps`, are the custom `value` in use, or `undefined`,
+  an `initialColor` the picker starts from, `onChange`, which gets the color
+  as `#rrggbb` when the picker is released, when the field is left or
+  confirmed, and when the panel closes, and a `data-testid` that is the
+  prefix of the test ids of the panel (`-panel`) and the field (`-hex`).
+- **`Renderer.Component.OrderableList`** is a vertical list whose items the
+  user reorders by dragging them. Its props, `OrderableListProps`, are the
+  `children`, each with a key unique in the list, a `className`, and
+  `onReorder`, which gets the index of the dragged item and the index it was
+  dropped at. The list shows the new order at once, and the order of its
+  children again when they change, so the extension keeps the order it is
+  told. It wraps each child in a **`Renderer.Component.OrderableItem`**,
+  whose props, `OrderableItemProps`, are the `item` and its `id`. Outside a
+  list an item shows its element and cannot be dragged.
+- **`Renderer.Component.VirtualList`** renders only the rows of a long list
+  that are shown. Its props, `VirtualListProps`, are the `items`, either
+  strings or objects with a `getId()`, their `rowHeights` in pixels, `getRow`,
+  which gets the index of a string item or the id of an object and returns
+  the element of its row, the `selectedItemId` it scrolls to, a `width`, a
+  `fixedHeight` instead of the height of its parent, `onScroll` with the
+  scroll event of the list, an `outerRef` to the element that scrolls, and
+  `initialOffset` and `readyOffset`, the number of rows it renders beyond
+  those shown, first and once it has rendered. The style of a row element
+  gets the position of the row. Its ref, `VirtualListRef`, has
+  `scrollToItem`, which takes the index and a `VirtualListAlign`: `start`,
+  `center`, `end`, `auto` or `smart`, and `resetAfterIndex`, which measures
+  the rows again.
+
+They have global classes an extension may restyle
+([C10](#c10-styling-and-css)): `.ErrorBoundary`; `.Animate` with the name of
+the animation, `.enter` and `.leave`; `.ResizingAnchor` with the direction,
+the placement, `.disabled` and `.resizing`, and `.resizing` on the `<body>`
+while it is dragged; `.ColorSwatch`, whose state is `aria-pressed` for the
+selected swatch and `data-text` for one without a color,
+`.ColorSwatchGroup`, `.CustomColorSwatch`, `.CustomColorSwatch-panel` and
+`.CustomColorSwatch-hex`; `.OrderableList` and `.OrderableItem`; and
+`.VirtualList`. They take every color from the theme, but the color a
+swatch shows.
+
+`packages/core/src/extensions/__tests__/extension-api-generic-components.test.tsx`
+covers the components as an extension reaches them.
+
+---
+
+## C6. Registration and the extension instance
+
+**Guarantee.** An extension contributes through **declarative fields on its
+`LensExtension` subclass**. Host-side registrators translate those fields into
+injectables, scoped to the extension and torn down with it.
+
+**Surface.**
+
+`LensRendererExtension` fields: `globalPages`, `clusterPages`,
+`clusterPageMenus`, `clusterFrameComponents`, `appPreferences`,
+`appPreferenceTabs`, `entitySettings`, `statusBarItems`, `kubeObjectDetailItems`,
+`kubeObjectMenuItems`, `kubeWorkloadsOverviewItems`, `commands`, `welcomeMenus`,
+`catalogEntityDetailItems`, `topBarItems`, `additionalCategoryColumns`,
+`customCategoryViews`, `kubeObjectHandlers`, `customResources`.
+
+Every component in a renderer registration is typed with the props the host
+renders it with and nothing more, so a component that requires another prop
+does not compile. One that needs the extension instance gets it from the
+registration, which runs inside the extension class:
+`Input: () => <MyInput extension={this} />`. Pages are described in
+[C9](#c9-routing).
+
+The `Details` of a `kubeObjectDetailItems` registration and the `MenuItem` of a
+`kubeObjectMenuItems` one are typed with the object as `any`, so a component
+typed for the registered resource fits, a built-in class or an extension's own
+`LensExtensionKubeObject` subclass alike. A plain registration does not tie the
+component to its `kind` and `apiVersions`: the host renders it only for the
+registered kind, but nothing checks that the component was written for that
+kind.
+
+`Renderer.K8sApi.detailsFor(Class, { Details, apiVersions?, priority?, visible? })`
+and `Renderer.K8sApi.menuItemFor(Class, { MenuItem, apiVersions?, visible? })`
+make that check. Each takes the model class and returns a plain registration
+whose `kind` is the class's static `kind`, and types the component's `object` as
+an instance of the class, so a component written for another kind does not
+compile, a function component and a class component alike. `apiVersions` is, in
+this order:
+
+1. the `apiVersions` given to the helper;
+2. the `crd.apiVersions` of a `LensExtensionKubeObject` subclass;
+3. the group and version of the class's static `apiBase`, as `parseKubeApi`
+   reads it: `/api/v1/pods` gives `v1`, `/apis/apps/v1/deployments` gives
+   `apps/v1`.
+
+The class's `apiBase` names one version, and the host reads some resources under
+more: `HorizontalPodAutoscaler` under each version its API allows, `Ingress` and
+`IngressClass` under `extensions/v1beta1` as well. An object read under a
+version the registration does not list carries that `apiVersion` and does not
+match it, so a registration for such a resource gives `apiVersions`. An
+extension with one class per version of its resource calls the helper once per
+class.
+
+The check is structural, and declaring the `spec` and `status` types is not
+enough for it. Two models of the same shape, such as two with `spec: unknown`,
+are not told apart, and neither are two whose `spec` types differ only in
+optional fields: each is assignable to the other, so a component written for
+one compiles against the class of the other. The classes of two versions of one
+kind usually have that shape. A model class therefore declares its instance
+`kind` and `apiVersion` as literal types, matching its static `kind` and
+`crd.apiVersions`, with a union of literals for a class that serves several
+versions:
+
+```ts
+export class Example extends Renderer.K8sApi.LensExtensionKubeObject<
+  Renderer.K8sApi.NamespaceScopedMetadata,
+  ExampleStatus,
+  ExampleSpec
+> {
+  declare kind: "Example";
+  declare apiVersion: "example.freelens.app/v1alpha1";
+
+  static readonly kind = "Example";
+  static readonly namespaced = true;
+  static readonly apiBase = "/apis/example.freelens.app/v1alpha1/examples";
+  static readonly crd = {
+    apiVersions: ["example.freelens.app/v1alpha1"],
+    plural: "examples",
+    singular: "example",
+  };
+}
+```
+
+With the literals, a component written for the `v1alpha2` class does not
+compile against the `v1alpha1` one, whatever their specs. `declare` emits
+nothing, so the class behaves at runtime as it did without the two lines, and
+the narrowing holds: the host renders the component only for objects of the
+registered `kind` and `apiVersions`. The two lines need `declare`: written as
+fields (`kind!: "Example"`) under standard class-field semantics
+(`useDefineForClassFields`, the default from target ES2022), they are defined
+after the base constructor has assigned the object's data, and reset `kind` and
+`apiVersion` to `undefined`.
+
+`customResources` takes the model classes of the custom resources the extension
+presents with pages of its own, typed `Common.Types.CustomResourceRegistration`:
+
+```ts
+customResources = [Example];
+```
+
+The host reads each class's group and plural from the first of these it has:
+
+1. the groups of its `crd.apiVersions` and its `crd.plural`, one resource per
+   group, for a class with a `crd` such as a `LensExtensionKubeObject` subclass;
+2. the group and resource of its static `apiBase`, as `parseKubeApi` reads it.
+
+While the extension is enabled for the cluster, the **Custom Resources** tree of
+the cluster sidebar leaves those resources out, and a group of the tree left
+with no kinds leaves with them. Disabled or uninstalled, the extension's
+resources are back in the tree. That is the whole effect: the definition of a
+registered resource stays in the **Definitions** list, and the resource's list,
+details and route are the host's as before, so it stays reachable by URL, from
+its definition and from the command palette. A favorite the user made of it in
+the tree stays in the Favorites section and opens the host's list, and a
+favorite of its group lists every kind of the group, those left out of the tree
+included. The registration is opt-in, so a model the extension declares without
+presenting it, one it only decorates through `kubeObjectDetailItems` or
+`kubeObjectMenuItems`, stays out of the field and in the tree.
+
+`LensMainExtension` fields: `terminalShellEnvModifier`, a function the host
+calls with the environment of every local shell it opens in a cluster's
+terminal. The
+environment `Main.Shell.getEnvironment` hands to an extension does not go
+through it ([C15](#c15-the-hosts-kubectl-helm-and-terminal-environment)). There
+is no field for the application menu or the tray: both are the host's own.
+
+`LensExtension` (both processes): `protocolHandlers`; the read-only `id`,
+`manifest`, `manifestPath`, `name`, `version`, `description`, `storeName`,
+`sanitizedExtensionId`, `isEnabled`; `getExtensionFileFolder()`; and the author
+hooks `onActivate()` / `onDeactivate()`. `LensRendererExtension` adds the two
+methods that navigate: `navigate()` to the extension's own pages and
+`navigateToPreferences()` to its preferences tab, both described in
+[C9](#c9-routing).
+
+Two of these matter more than they look:
+
+- **`manifestPath`** is how an extension locates its own shipped files. In the
+  renderer it is the _only_ route, since there is no `__dirname` under URL
+  loading.
+- **`getExtensionFileFolder()`** returns a writable directory for this extension
+  alone, resolved from `storeName` through a hash — so it is **unaffected by
+  reinstalls and version changes**, which the install path deliberately is not.
+  The folder name is obfuscation, not a security boundary.
+
+**Failure mode.** A field left at its default contributes nothing, silently — a
+registration that never appears is the common symptom of a typo in a field name
+or of registering after the host has already read the field. A field the host
+cannot read, such as one set to something other than an array, costs that field
+alone: the host logs an error with the extension's name and the registrator that
+failed on it, skips the field, and goes on with the extension's other fields and
+with the other extensions. `detailsFor` and `menuItemFor` throw when the class
+has no `kind`, or when no `apiVersions` is given and the class has neither
+`crd.apiVersions` nor an `apiBase` it can be read from, or when the list
+resolved is empty; called from a field initializer, that fails the extension's
+load rather than leaving a registration that never appears. A `customResources`
+entry is rejected when it is not a class, has no static `kind`, has neither a
+`crd` nor an `apiBase` it can be read from, has a `crd` with no `apiVersions` or
+no `plural`, or names a resource of the core group. The host logs the error with
+the extension's name, the entry's index and the class's name, skips the entry
+and keeps the others, and the rejected resource stays in the Custom Resources
+tree. A `customResources` that is not an array is rejected whole: the host logs
+one error with the extension's name and what the field holds, and registers
+none of it. The field is read once, when the extension is registered, so a
+class assigned to it later is not seen.
+
+---
+
+## C7. The dependency-injection surface
+
+**Guarantee.** **The container and the DI library stay in the host.** The host
+is built on `@ogre-tools/injectable`, but neither its container nor the library
+is part of the extension API: no namespace exposes a container, an injection
+token or a hook that registers an injectable, and the global publishes neither
+`@ogre-tools/injectable` nor `@ogre-tools/injectable-react`
+([C3](#c3-host-provided-singletons)). The host may change its DI library, or the
+library's major, in any release.
+
+**Surface.** None for authors. An extension contributes through the declarative
+fields of [C6](#c6-registration-and-the-extension-instance), and the host's
+registrators turn those fields into injectables in a view of the host's
+container kept for that extension. An extension that wants dependency injection
+for its own code bundles a DI library as an ordinary dependency — ogre-tools at
+any version, or anything else — with its own container and, for
+`withInjectables`, its own `DiContextProvider`. That container is the
+extension's alone: it holds none of the host's injectables, and the host never
+reads from it.
+
+**The per-extension view is host-internal and no security boundary.** It is a
+namespaced view, not an isolated container: the registrations made for an
+extension get an id prefix and are torn down with the extension, and nothing
+else about them is private. With `contextIsolation: false` an
+extension reaches everything through `globalThis` anyway, so keeping the
+container out of the API is a contract boundary, not a security one. What is
+supported is what the namespaces expose; anything else may change without
+notice.
+
+**The lifecycle invariant:** _the view exists before the author's first hook and
+is released after their last._ The loader injects it right after it constructs
+the extension instance; the registrators populate it after activation, because
+activation can register catalog categories they must see; and `disable()` runs
+`onDeactivate` before `deregister()`.
+
+**Failure mode.** An extension that still maps `@ogre-tools/*` to
+`FreelensExtensionApi` gets `undefined` at runtime, not a build error. An
+injectable created by an extension's own copy of ogre-tools means nothing to the
+host's container, so there is nothing of the host's to pass it to.
+
+---
+
+## C8. React
+
+**Guarantee.** Host-provided React **19**, reached through
+[C3](#c3-host-provided-singletons). Extensions must not bundle their own.
+
+**Surface.** `react`, `react-dom`, `react/jsx-runtime` as externals; `@types/react`,
+and `@types/react-dom` for an extension that imports `react-dom`, as
+devDependencies at the host's version. `@freelensapp/extensions` declares both
+as optional peers ([C11](#c11-third-party-bundled-libraries)), so the package
+manager resolves the declaration's React types to the author's copy and reports
+a version outside the host's range. React is not reached through a
+`Renderer.React` namespace, which does not exist, and an extension does not
+declare React as a peer dependency: the host provides it through the global, in
+development and in an installed extension alike.
+
+**Failure mode.** The invalid-hook-call trap: two copies of React in one renderer
+break the Rules of Hooks, and any hook — including those inside host components
+an extension renders — throws at runtime. It fails only at runtime, never at
+build time.
+
+---
+
+## C9. Routing
+
+**Guarantee.** Navigation runs on the in-house `@freelensapp/routing`. The API
+re-exports no `react-router`, `react-router-dom` or `history`.
+
+**Surface.** Pages are registered through `globalPages` / `clusterPages`
+([C6](#c6-registration-and-the-extension-instance)). The **react-router 5 path
+dialect is supported** — `/:param?` optionals and inline `/:param(regex)`
+patterns — by the in-house `matchPath`, so existing path strings need no
+rewriting.
+
+Three calls navigate:
+
+- **`LensRendererExtension#navigate(pageId?, params?)`** goes to one of the
+  extension's own pages, found by the `id` of its registration; no `pageId`
+  means the page registered without an `id`. `params` become the page's
+  parameters, keyed by the names the registration's `params` declares; another
+  key rejects the returned promise. A `pageId` that matches no registration
+  does nothing.
+- **`LensRendererExtension#navigateToPreferences()`** opens the application
+  preferences on this extension's own tab, the one that holds the items of its
+  `appPreferences`, from any frame, the cluster frame included. It takes no
+  argument, so it reaches neither the host's tabs nor another extension's.
+- **`Renderer.Navigation.navigate(location)`** goes to any location, a path
+  string or a `{ pathname, search, hash }` object, whose **pathname is
+  absolute**. The location is pushed onto the browser history of the frame the
+  call runs in, as given, and the browser resolves a relative pathname against
+  the current URL. The preferences live in the root frame, so from a cluster
+  frame this call does not reach them; `navigateToPreferences()` does.
+
+The `dependencies` of `LensRendererExtension`, which the declaration shows
+because they are `protected`, are the host's injection bag
+([C7](#c7-the-dependency-injection-surface)) and not part of this surface;
+`navigateToRoute` among them may change in any release.
+
+A page component receives **only `params`**: `PageComponentProps`, one
+`PageParam` for each entry of the registration's `params`. `components.Page` is
+typed with exactly that, so a component that requires another prop does not
+compile. A page that needs the extension instance gets it from the
+registration, which runs inside the extension class:
+
+```tsx
+clusterPages = [{ id: "my-page", components: { Page: () => <MyPage extension={this} /> } }];
+```
+
+A page reads a named parameter from `params`: it takes `PageComponentProps` and
+reads `params.<name>`, a `PageParam` whose `get()` returns the current value.
+The names are the keys of the registration's `params`, and a name the
+registration does not declare is `undefined`, which the type does not show:
+
+```tsx
+const MyPage = ({ params }: PageComponentProps) => <p>{params.query.get()}</p>;
+
+clusterPages = [{ id: "my-page", params: { query: "" }, components: { Page: MyPage } }];
+```
+
+A props type with named parameters, such as
+`PageComponentProps<{ query: string }>`, does not fit `Page`: the host knows the
+names only at runtime, from the registration, so `Page` is typed with the
+general form and a component that requires particular names is not assignable
+to it.
+
+**Failure mode.** `import { Link } from "react-router-dom"` through the Freelens
+bundle does not resolve. A link in the markup is `Renderer.Component.MaybeLink`.
+An extension that wants react-router JSX bundles its own and mounts its own
+router around it: the host renders no react-router `<Router>`, so a bundled
+`Link` in a page the host renders has no router context. A relative pathname passed to `Renderer.Navigation.navigate` does not
+fail: it lands on a page that depends on the current URL, so it works from one
+page and goes wrong from another, without an error. The host logs a warning
+naming the location, in every build, which is the only sign of it.
+
+---
+
+## C10. Styling and CSS
+
+**Guarantee.** The host injects an extension's sibling stylesheet — either
+`<entry>.css` or a `style.css` next to the renderer entry — as a `<link>` at the
+URL main serves it from, the same route the renderer entry point takes. A
+normal stylesheet import therefore works without the v1 `?inline` + `<style>`
+workaround. At most one stylesheet is linked per renderer entry: `<entry>.css`
+when it exists, `style.css` otherwise. Looking for a stylesheet the extension
+does not ship leaves no error in the renderer console.
+
+**Surface.** One CSS asset next to the renderer entry. The host's shared
+component classes (`.Tooltip`, `.Button`, `.CapacityCard`, `.StatusCard`,
+`.ColorSwatch`, `.OrderableList`, `.VirtualList`, …) are global and part of
+the public API and may be targeted; they must not be redefined. So are the classes of the parts of the overview cards, which start
+with the name of the card (`.CapacityCard-title`, `.StatusCard-legendRow`, …). An extension's own styles
+belong in CSS Modules.
+
+**Failure mode.** A build that splits CSS per module emits assets the host does
+not look for, and the extension renders unstyled. **The host's Tailwind does not
+reach extensions** — its JIT scans only core's own sources, so an unprefixed
+utility class produces no CSS and silently does nothing. An extension may run
+its own Tailwind build; see the migration guide. The host carries no
+`flexbox.scss`, so its utility classes do nothing either.
+
+---
+
+## C11. Third-party bundled libraries
+
+**Guarantee.** `catalogs.extensions` in `pnpm-workspace.yaml` is the list of
+libraries the published API's type surface is pinned against.
+
+It splits in two:
+
+- **Host-provided** ([C3](#c3-host-provided-singletons)): `react`, `react-dom`,
+  `mobx`, `mobx-react`, `monaco-editor`, and the `@types/react` and
+  `@types/react-dom` that type the first two.
+- **Free to bundle**: `chart.js`, `react-select`, `conf`, `es-toolkit`, `immer`,
+  `rfc6902`. A bundled `react-select` still gets the host's React,
+  because that copy's own `import "react"` is rewritten too. `es-toolkit` is
+  there only for the `DebouncedFunc` type the declaration imports from
+  `es-toolkit/compat`.
+
+**Surface.** The built declaration imports these external specifiers:
+`mobx`, `mobx-react`, `react`, `react/jsx-runtime`, `react-dom`, `conf`,
+`rfc6902`, `immer`, `es-toolkit/compat`, `monaco-editor`, `chart.js`,
+`react-select`.
+
+This is the complement of the namespace enumeration in
+[C5](#c5-namespace-enumeration): that records what the API _exports_, this what
+it _imports_ and therefore imposes on an author. It is read off the built
+bundle, not the source tree:
+
+```sh
+pnpm --filter @freelensapp/extensions build:dist
+rg -o '^import .* from "([^"]+)";$|import\("([^"]+)"\)' -r '$1$2' \
+  packages/extensions/dist/extension-api.d.ts | sort -u
+```
+
+The pattern has two halves because the bundle names an external in two ways:
+in an import statement, and in an `import("…")` type, which the bundler leaves
+inline where it found it. The first half is anchored at the start of a line,
+because the examples inside doc comments use the same double quotes. The bundle
+inlines every `@freelensapp/*` package ([C1](#c1-packaging-and-publication)), so
+everything the command prints is external by construction.
+
+Nothing is imported from `electron`. What the declaration names of Electron it
+names through the ambient `Electron` namespace, in the `Main.Ipc` signatures and
+the `Common.Types` aliases of the main-process IPC events.
+
+**Every package the declaration imports is declared**, in `dependencies` or
+`peerDependencies`, either itself or through its `@types/` package: `react-dom`
+resolves through `@types/react-dom`, and a subpath such as `es-toolkit/compat` or
+`react/jsx-runtime` through its package. The requirement exists because an
+undeclared import fails quietly: an extension compiles with `skipLibCheck`, so a
+specifier that does not resolve in the author's tree becomes `any` instead of an
+error, and nothing in the monorepo notices, since every such package happens to
+be installed there. `packages/extensions/rolldown.dts.config.mjs` therefore
+enforces it: `build:dist` fails and lists every external specifier of the
+bundle whose package is not declared.
+
+**Nothing of Node is imported or referenced**: no builtin, whether written
+`node:fs` or `fs`, and no `/// <reference types="node" />`, which is how a
+declaration names Node's global types. Renderer code gets no guarantee of Node
+([C4](#c4-module-format-and-loading)), and an author's renderer config has no
+Node types to resolve them against. The same config enforces it: `build:dist`
+fails and lists every Node reference of the bundle. The likely cause of one is
+`rolldown-plugin-dts` no longer tree-shaking a namespace import that a
+declaration names only by qualified name, which brings back the Node-bound
+members `Common.Util` leaves out
+([C5](#util-is-freelensapputilities-minus-the-node-bound-members)) with their
+`node:` imports. `@types/node` is therefore not a dependency of the package: an
+extension whose main code needs it declares it itself.
+
+**Nothing of `type-fest` is imported.** The helper types the declaration names
+come from a copy in a private package of the host, inlined like the other
+private packages ([C5](#commontypes-names-the-helper-types-of-the-signatures)), because a
+dependency would impose the floors of each type-fest major, such as the
+TypeScript version and `exactOptionalPropertyTypes`, on every extension. The
+same config enforces it: `build:dist` fails on an import of `type-fest`, which
+a workspace source importing the package would bring back. The doc comments of
+the inlined types still name `type-fest` in their examples; they are not
+imports.
+
+**How the package declares them.** The host-provided entries are in
+`peerDependencies`, each **optional** in `peerDependenciesMeta` alongside
+`electron`. Optional because npm 7+ and pnpm install missing peers by default,
+so a required peer would install every one of them into every author's tree
+whether imported or not — `monaco-editor` alone is large, and an extension with
+only a `main` entry point would pay for it on every install and in every CI
+cache. What keeps a second copy out of the bundle is the author marking the
+specifier external, not the dependency field; the field only decides what gets
+installed, and which copy the declaration resolves.
+
+`@types/react` and `@types/react-dom` are optional peers for that second
+reason. An extension with renderer code declares them itself anyway: under
+pnpm's isolated layout a package's `dependencies` are visible to that package
+only, so without its own copy the author's `.tsx` fails with `TS7016` for
+`react/jsx-runtime`. As peers, the declaration resolves to the author's copy and
+its version is checked against the host's range. A main-only extension
+compiles without declaring either. `react-dom` is an optional peer like
+`react`, so an author's copy is checked the same way.
+
+`monaco-editor` is the optional peer an author most easily leaves out, because
+an extension uses it through the host's `Renderer.Component.MonacoEditor` and
+never imports it. `MonacoEditorProps` names its types for `options` and for the
+arguments of `onChange` and the other callbacks. Without the author's copy that
+import does not resolve, and `skipLibCheck` turns those props into `any`
+without a diagnostic. An extension that renders `MonacoEditor` therefore
+declares `monaco-editor` in `devDependencies` at the host's version, the
+`catalogs.extensions` entry, as it does `react` and `mobx`.
+
+The free-to-bundle entries are in `dependencies`, `react-select` included, so
+that the types of `Renderer.Component.Select` are always there: as an optional
+peer that an author did not install, they would turn into `any` without a
+diagnostic. `react-select` has `react` and `react-dom` as **required** peers,
+so every extension's tree has a React and a `react-dom` installed whether it
+imports them or not, hoisted by npm to where a bundler finds them. That copy
+does no harm only because the author marks the specifiers external, as
+[C3](#c3-host-provided-singletons) requires. Nothing in-repo type-checks the
+published declaration without `skipLibCheck`, the fixture extension included.
+
+**Failure mode.** A bundler that is not told to map `react` finds the React
+that `react-select` installed and **bundles a second React**, which throws
+`invalid hook call` at runtime. The dependency fields cannot prevent that; only
+the externals of C3 do. What the fields decide is the types: a `@types/*` entry
+in `dependencies` would install a second copy, without a warning, for an author
+who pins another version, and the declaration and the author's code would be
+checked against different React types.
+
+---
+
+## C12. HTTP
+
+**Guarantee.** Extensions get HTTP **from the host**, not from a bundled client:
+`Main.Util.fetch` for HTTP outside the cluster from main, the global `fetch` for
+HTTP outside the cluster from the renderer, and `K8sApi.forCluster` and
+`K8sApi.KubeJsonApi.forCluster` for a catalog cluster, in main as in the
+renderer.
+
+**Surface.** One `fetch` symbol, `Main.Util.fetch`, typed as the standard
+`fetch`. It is the host's client of the main process, which applies the user's
+`httpsProxy` preference, their `caCertificates` and `allowUntrustedCAs` settings
+and the Freelens proxy; Node's global `fetch` applies none of them. In the
+renderer the global `fetch` is Chromium's, with the window session's settings,
+which is the client the host uses there too, so the API has no function for it
+and `Renderer.Util` has no `fetch`.
+
+`Main.Util.fetch` cannot talk to a cluster's API server on its own: it carries no
+client certificate or cluster CA from a kubeconfig, runs no `exec` credential
+plugin and refreshes no OIDC token, and the proxy it applies is the app-wide
+`httpsProxy` rather than the cluster's own proxy setting. A catalog cluster is
+reached through `forCluster` instead: `K8sApi.forCluster(cluster, Kind)` for a
+`KubeApi` of one kind, and `K8sApi.KubeJsonApi.forCluster(clusterId)` for
+requests by path. Both send the request through the Freelens proxy to the
+cluster's own proxy, which authenticates with the cluster's kubeconfig and
+applies the cluster's proxy setting. A spawned `kubectl` or `helm` reaches the
+cluster through the environment of
+[C15](#c15-the-hosts-kubectl-helm-and-terminal-environment).
+
+`Main.Util.fetch` is declared as `typeof fetch`: the standard `fetch` of the
+environment the extension compiles in, which for main code is the one
+`@types/node` declares. A bundled library that takes a `fetch` option, such as
+an SDK or the HTTP transport of an MCP client, takes it without an assertion,
+and its requests then go through the host's client:
+
+```ts
+const transport = new StreamableHTTPClientTransport(new URL(serverUrl), {
+  fetch: Main.Util.fetch,
+});
+```
+
+What it takes and what it answers with:
+
+- **The input is a URL or a `Request`.** A `Request`, such as one a library
+  builds with the global `Request` of Node, is passed on as its URL and an init
+  made of its `method`, `headers`, `body`, `signal` and `redirect`, with
+  `duplex: "half"` when it has a body. An init given alongside it applies on
+  top, member by member, as with the standard `fetch`.
+- **The init is passed on as it is**, a `URLSearchParams` or `Blob` body
+  included, with two exceptions. A `FormData` body is encoded as multipart
+  before it is passed on, with its boundary in the content type, because the
+  host's client does not recognise Node's global `FormData`. `dispatcher` is
+  dropped: the host's client sends every request through the dispatcher that
+  applies the user's proxy and CA settings, and an extension's init does not
+  replace it.
+- **The response is undici's `Response`**, with every member of the standard
+  one. It is not an instance of Node's global `Response`.
+
+The host's own HTTP, `K8sApi.KubeJsonApi` and `KubeApi`'s `reqInit` among it,
+keeps request and response types of its own, which are **structural**, so
+neither `undici` nor a DOM type is imposed on an extension through them.
+
+**Failure mode.** `globalThis.fetch` in main exists but knows nothing about the
+user's proxy or custom CAs, so an extension using it simply fails on corporate
+networks. A bundled library left to its own default `fetch` in main, or given a
+client of the extension's own, fails the same way. `res instanceof Response` is
+not a reliable check on a response of `Main.Util.fetch`.
+
+`Main.Util.fetch` in a renderer entry type-checks and throws, because `Main` is
+`undefined` there ([C2](#c2-the-runtime-global-api)); renderer code uses the
+global `fetch`.
+
+A client of a catalog cluster built from its `kubeConfigPath` (a bundled
+Kubernetes client, or `fetch` to the API server with the kubeconfig's TLS
+settings) works on a plain network, and ignores the cluster's proxy setting and
+everything else the Freelens proxy does for the cluster, so it fails only on
+the networks that need them. So does a `kubectl` or `helm` given the raw
+kubeconfig.
+
+---
+
+## C13. Consumer toolchain floors
+
+**Guarantee.** The published declaration compiles in a consumer project that
+meets these floors. **The floor is stated per surface area, not as one number
+for the package**, because the two differ.
+
+**Surface.**
+
+| Requirement                                                   | Why                                                                                                                                          |
+| ------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| TypeScript 4.9 or newer                                       | the declaration has `accessor` fields, which older compilers fail to parse whatever `skipLibCheck` says                                      |
+| `"skipLibCheck": true`                                        | the type dependency graph is not clean under `false`, and checking it is not an author's job                                                 |
+| `"lib"` including `DOM` and `DOM.Iterable`, `ES2024` or newer | the React component types name DOM types nothing else declares; the mobx types name `ReadonlySetLike`, which first appears in the ES2024 lib |
+| `"moduleResolution": "bundler"`, `node16` or `nodenext`       | to resolve the package's `exports`                                                                                                           |
+| `electron` as a devDependency, at the host's version          | an **optional** peer — a required `>=43.0.0` peer would be installed automatically at the newest Electron major, not the one the host runs   |
+
+The **HTTP surface alone** needs `lib.dom` _or_ `@types/node`: `Main.Util.fetch`
+is typed as the global `fetch`, and the structural types name only `AbortSignal`,
+`ReadableStream`, `URL` and `Uint8Array`, all of which both declare. The package
+as a whole still requires `lib.dom`.
+
+**Failure mode.** A compiler older than TypeScript 4.9 reports
+`TS1434: Unexpected keyword or identifier` at every `accessor` field of the
+declaration. Missing `skipLibCheck` produces errors in transitive type
+dependencies an author cannot fix; a missing DOM lib produces unresolved-name
+errors in the React component types.
+
+---
+
+## C14. Versioning and compatibility
+
+**Guarantee.** `engines.freelens` is the **enforced gate**, checked at discovery
+before any extension code runs — and it is the _only_ enforced one. The version
+range an extension declares for `@freelensapp/extensions` is a compile-time
+convenience that the host never reads.
+
+**The published package version is the application version.** They are not two
+axes: `pnpm bump-version` moves the whole workspace at once, and
+`extensionApiVersion` is read from the `packages/core` version with its
+prerelease stripped. The consequence is the policy:
+
+> **A breaking change to this API may ship only in a major release of the
+> application.**
+
+**Surface — the gate's exact semantics**, because two of them are traps:
+
+- Only **MAJOR.MINOR** are read from the declaration, and the range is rebuilt
+  as `^major.minor`. So `^2.0` means "any 2.x from 2.0 up" and `^2.3` means
+  "needs at least 2.3" — an extension can require a minimum minor.
+- **The patch is ignored.** `^2.0.5` is treated as `^2.0`; an extension cannot
+  require a patch release and must not try to.
+- The declaration must start with `^` or a digit. Anything else throws at
+  discovery with an explanatory error rather than being silently refused.
+
+**Failure mode.** `isCompatible: false` at discovery. **Every v1 extension is
+refused on v2** until it declares `engines.freelens: ^2.0`, without a line of
+its code running, which is why bumping `engines.freelens` is step one of the
+migration guide and not a footnote.
+
+"Not loaded" has several distinct causes and the UI distinguishes them, because
+the remedy differs: incompatible (`isCompatible`), deliberately disabled
+(`isEnabled`), or failed to load.
+
+### Stability: everything exported is public
+
+There is **no unstable tier**: every symbol the namespaces re-export is public
+and stable **for the lifetime of the major**. Whatever a major release ships is
+frozen until the next one, and a symbol exported by accident cannot be retracted
+in a minor.
+
+The namespace member lists are asserted exactly ([C5](#c5-namespace-enumeration)),
+so widening one is an edit made on purpose and read in review.
+
+Deprecation within a major: mark with `@deprecated`, keep it working for the
+rest of the major, remove it in the next one.
+
+---
+
+## C15. The host's kubectl, helm and terminal environment
+
+**Guarantee.** A main entry point gets the kubectl and the helm Freelens runs,
+and the environment its terminal starts from, with the user's preferences
+applied the way Freelens applies them for itself, in every build of the
+application. They are computed by the same functions the terminals use. Run a
+tool by the path its function returns; the environment provides `KUBECONFIG`,
+`KUBECACHEDIR` and a `PATH` with Freelens' own directories for everything else.
+
+**Surface.** `Main.Shell`, three functions. Each answers for a terminal opened
+outside any cluster when called without a cluster id, and for the terminal of
+the cluster when called with one:
+
+| Function                               | Without a cluster                                                                                                                                                                                                                               | For a cluster                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| -------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `getKubectlPath(clusterId?, options?)` | the "Path to kubectl binary" preference (`kubectlBinariesPath`) when downloading kubectl binaries is turned off (`downloadKubectlBinaries`), else the bundled kubectl                                                                           | the same preference when downloading is turned off; otherwise the kubectl matched to the cluster's Kubernetes version in the download directory (`downloadBinariesPath`), downloaded when it is missing, else the bundled kubectl                                                                                                                                                                                               |
+| `getHelmPath(clusterId?)`              | the "Path to helm binary" preference (`helmBinariesPath`), else the bundled helm                                                                                                                                                                | the same: helm does not depend on the cluster's version                                                                                                                                                                                                                                                                                                                                                                         |
+| `getEnvironment(clusterId?, options?)` | the user's shell environment, with the bundled binaries directory appended to `PATH`, so that a kubectl or helm the user installed keeps winning; `KUBECONFIG` is the user's own, and the application's proxy setting is `HTTPS_PROXY` when set | the user's shell environment, with the directory of the version-matched kubectl first on `PATH` when downloading is turned on and that kubectl is in place, the bundled binaries directory last, `KUBECONFIG` and `KUBECACHEDIR` that reach the cluster through Freelens in place of every kubeconfig variable of the user's, the cluster's proxy setting as `HTTPS_PROXY`, and `localhost` and `127.0.0.1` added to `NO_PROXY` |
+
+Every path is absolute, and a path a preference names is returned as it is.
+The environment is a `Record<string, string>` to pass as `env` to
+`node:child_process`, the explicit environment
+[`binaries.md`](./binaries.md#running-a-shipped-program) asks for. Its `PATH`
+gets only Freelens' own directories, never one derived from a preference, so
+a tool run by name through it is not necessarily the binary its function
+returns: run kubectl and helm by their paths. `PATH` has no empty entry, which
+POSIX would read as the current directory. The variable is under the key
+`PATH` and under no other spelling of it, on Windows too, where the
+environment the host starts from spells it `Path`: an extension reads and
+extends `env.PATH` on every platform, with `node:path`'s `delimiter` between
+entries. The user's shell environment is
+what a login shell of the user's shell setting has, and Freelens' own
+environment when it cannot be read or on Windows.
+
+The environment is not a terminal's. It has none of the variables only a
+terminal needs, such as `PTYSHELL`, `ZDOTDIR` or `TERM_PROGRAM`, and it does not
+go through any extension's `terminalShellEnvModifier`
+([C6](#c6-registration-and-the-extension-instance)), so that no extension sees
+the variables of another.
+
+`options` reports what a function that may download kubectl is doing, through
+the callbacks the cluster terminal shows its status from, all optional:
+`onPhase(message)` for a phase that is about to begin and may take a while,
+`onDownloadProgress({ transferred, total? })` as the bytes arrive, and
+`onProblem(message)` for a problem preparing the version-matched kubectl that
+the call goes on from, stated with what it goes on with. A problem the call
+does not go on from rejects it instead, and is not reported through
+`onProblem`. Their type is `Main.Shell.KubectlDownloadOptions`.
+The host adds no interface of its own for an extension's call: where the
+progress goes, an extension's renderer, a tool's output or the log, is the
+extension's choice. Calls that prepare the same kubectl at once, from the
+terminal and an extension, from two extensions or from two Freelens processes,
+wait for one preparation: the kubectl is downloaded once, and every call
+resolves with its outcome, the version-matched kubectl or, when the
+preparation fails, the bundled one with the problem reported to each caller.
+
+`onPhase` reports these phases, each with a message that names the kubectl
+version, which the progress does not carry:
+
+- waiting for another Freelens process that prepares the same kubectl;
+- downloading it, before the first `onDownloadProgress`;
+- verifying the download, before the downloaded binary first runs.
+
+**For a cluster, the cluster is connected.** The files `KUBECONFIG` and
+`KUBECACHEDIR` name exist only while it is: a disconnect removes them, and the
+environment stops working until it is asked for again after the cluster
+reconnects. An extension that keeps something running with the environment
+learns of the disconnect and of the reconnect from a mobx `reaction` on
+`Main.Catalog.getClusterById(clusterId)?.status`, which
+[C5](#cataloggetallclusters-and-getclusterbyid-are-observable) makes part of
+the contract. Only reaching the cluster through Freelens is promised, not the
+server address the kubeconfig names or the content of the file.
+
+**Two kubectl functions, two meanings.** `Common.App.Preferences.getKubectlPath()`
+is the user's preference, `undefined` when it is not set.
+`Main.Shell.getKubectlPath()` is the kubectl Freelens runs.
+
+**Failure mode.** A function called for a cluster rejects when there is no
+cluster with the id and when the cluster is not connected: the host does not
+connect it on the extension's behalf, which could start an authentication flow
+the user did not ask for. `getKubectlPath` for a cluster also rejects when the
+bundled kubectl is not usable, so that Freelens has no kubectl of its own to
+run; `getEnvironment` then leaves the lookup to the user's `PATH`, and says so
+through `onProblem`. A failed
+download does not reject: it is reported through `onProblem`, and the call
+resolves with the bundled kubectl, as the terminal does.
+
+Finding the host's binaries through its directory layout, `process.resourcesPath`
+or the `binaries` directory of the user data, is not supported: the layout
+differs between builds, a development build included, and the download
+directory moves with the `downloadBinariesPath` preference.
+
+---
+
+## Delivery
+
+An extension **vendors or bundles whatever it needs apart from what the host
+provides**, so installing one is downloading a tarball and extracting it — there
+is nothing to resolve and no package manager involved. Installs land under
+`<userData>/extensions/<sanitized-name>/<version>-<digest8>/`; a _directory_
+install registers an extension in place and is the development mode, which is
+why there is no packing step and no symlink. The renderer loads from
+`freelens-extension://extensions/<sanitized-name>/<version>-<digest8>/<file>`
+— one origin for all extensions, because an origin per extension would advertise
+an isolation the host cannot guarantee under `contextIsolation: false`.
+
+**Verified and unverified installs.** A tarball is installed **verified** when
+its source vouches for its bytes: the `dist.integrity` of the registry's
+package metadata, or a `.tgz.sha256` sidecar beside a tarball installed from a
+URL or from a file. A download which does not match its checksum is refused. A
+tarball with no checksum is installed **unverified**, and an unverified install
+stays **disabled** until the user enables it on the Extensions page; a verified
+install is enabled at once. Installing over an enabled extension disables it
+first, so an unverified build installed over it leaves it disabled too. A
+directory install is unverified by construction, is shown as development rather
+than unverified, and is enabled at once, because it is the development loop. A
+checksum proves transfer integrity, not authenticity: a host which can rewrite
+the tarball can rewrite its sidecar.
+
+## The three dependency categories
+
+The contract has three, not two:
+
+- **host-provided** — must not be bundled ([C3](#c3-host-provided-singletons));
+- **free** — bundle or vendor as you like ([C11](#c11-third-party-bundled-libraries));
+- **forbidden** — native `.node` addons ([the ABI document](./binaries.md)).
+
+## References
+
+- [`docs/extensions/migrating-from-v1.md`](./migrating-from-v1.md) — the porting guide
+- [`docs/extensions/binaries.md`](./binaries.md) — shipped binaries and process invocation
+- [freelens-example-extension](https://github.com/freelensapp/freelens-example-extension) —
+  the reference template for building, type-checking, testing and releasing an
+  extension, which this document leaves to the author
+- [`plugins/freelens`](../../plugins/freelens) — the skills for coding agents,
+  a plugin of Claude Code:
+  [`create-extension`](../../plugins/freelens/skills/create-extension/SKILL.md)
+  starts a new extension from a copy of the template, and
+  [`port-extension-to-v2`](../../plugins/freelens/skills/port-extension-to-v2/SKILL.md)
+  ports a v1 extension to this API
+- [`docs/styling.md`](../styling.md) — the styling model in full

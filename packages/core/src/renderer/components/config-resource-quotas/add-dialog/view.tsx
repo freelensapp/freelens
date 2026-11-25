@@ -11,7 +11,7 @@ import { Icon } from "@freelensapp/icon";
 import { resourceQuotaApiInjectable } from "@freelensapp/kube-api-specifics";
 import { showCheckedErrorNotificationInjectable } from "@freelensapp/notifications";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { computed, makeObservable, observable } from "mobx";
+import { computed, observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import { Dialog } from "../../dialog";
@@ -66,15 +66,14 @@ const getDefaultQuotas = (): ResourceQuotaValues => ({
 class NonInjectedAddQuotaDialog extends React.Component<AddQuotaDialogProps & Dependencies> {
   public defaultNamespace = "default";
 
-  @observable quotaName = "";
-  @observable quotaSelectValue: string | null = null;
-  @observable quotaInputValue = "";
-  @observable namespace: string | null = this.defaultNamespace;
+  @observable accessor quotaName = "";
+  @observable accessor quotaSelectValue: string | null = null;
+  @observable accessor quotaInputValue = "";
+  @observable accessor namespace: string | null = this.defaultNamespace;
   readonly quotas = observable.box(getDefaultQuotas());
 
   constructor(props: AddQuotaDialogProps & Dependencies) {
     super(props);
-    makeObservable(this);
   }
 
   @computed get quotaEntries() {

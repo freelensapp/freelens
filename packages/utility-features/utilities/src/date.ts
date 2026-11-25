@@ -60,6 +60,34 @@ export function getAvailableTimezones(): string[] {
   return [guessUserTimezone()];
 }
 
+const timeZoneFormatters = new Map<string, Intl.DateTimeFormat>();
+
+/**
+ * Creating an `Intl.DateTimeFormat` costs about ten times as much as using
+ * it, and the log viewer formats one timestamp per line: the formatter of a
+ * time zone is created once.
+ */
+function getTimeZoneFormatter(timeZone: string): Intl.DateTimeFormat {
+  let formatter = timeZoneFormatters.get(timeZone);
+
+  if (!formatter) {
+    formatter = new Intl.DateTimeFormat("en-CA", {
+      timeZone,
+      hourCycle: "h23",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      timeZoneName: "longOffset",
+    });
+    timeZoneFormatters.set(timeZone, formatter);
+  }
+
+  return formatter;
+}
+
 /**
  * Formats a date as an ISO 8601 string with the offset of the given IANA time
  * zone, e.g. `2024-03-09T14:30:00+01:00`.
@@ -70,17 +98,7 @@ export function formatInTimeZone(date: Date | string | number, timeZone: string)
   const value = date instanceof Date ? date : new Date(date);
 
   const parts = Object.fromEntries(
-    new Intl.DateTimeFormat("en-CA", {
-      timeZone,
-      hourCycle: "h23",
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-      timeZoneName: "longOffset",
-    })
+    getTimeZoneFormatter(timeZone)
       .formatToParts(value)
       .map((part) => [part.type, part.value]),
   );

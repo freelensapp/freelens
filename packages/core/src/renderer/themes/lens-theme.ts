@@ -4,24 +4,74 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { ITheme } from "@xterm/xterm";
-
-import type { MonacoTheme } from "../components/monaco-editor";
-
 export type ThemeId = string;
 export type LensThemeType = "dark" | "light";
+/**
+ * A theme in one of its variants, as the application applies it.
+ */
 export interface LensTheme {
+  /**
+   * The `metadata.name` of the theme file, `freelens` for the built-in theme. The same for both
+   * variants: {@link LensTheme.type} tells dark from light.
+   */
   name: string;
+  /**
+   * The variant in use.
+   */
   type: LensThemeType;
+  /**
+   * Every color token: those of the theme file, the missing ones from the built-in theme, and the
+   * accent color applied.
+   */
   colors: Record<LensColorName, string>;
   terminalColors: Partial<Record<TerminalColorName, string>>;
+  /**
+   * `spec.description` of the theme file, empty when it has none.
+   */
   description: string;
+  /**
+   * `spec.author` of the theme file, empty when it has none.
+   */
   author: string;
-  monacoTheme: MonacoTheme;
+  /**
+   * The name the editor theme of this variant is registered under in Monaco, to pass to
+   * `editor.create()` or `editor.setTheme()`.
+   */
+  monacoTheme: string;
+  /**
+   * `true` on both variants of the built-in theme.
+   */
   isDefault?: boolean;
 }
 
-export type TerminalColorName = keyof ITheme;
+export type TerminalColorName =
+  | "foreground"
+  | "background"
+  | "cursor"
+  | "cursorAccent"
+  | "selectionBackground"
+  | "selectionForeground"
+  | "selectionInactiveBackground"
+  | "scrollbarSliderBackground"
+  | "scrollbarSliderHoverBackground"
+  | "scrollbarSliderActiveBackground"
+  | "overviewRulerBorder"
+  | "black"
+  | "red"
+  | "green"
+  | "yellow"
+  | "blue"
+  | "magenta"
+  | "cyan"
+  | "white"
+  | "brightBlack"
+  | "brightRed"
+  | "brightGreen"
+  | "brightYellow"
+  | "brightBlue"
+  | "brightMagenta"
+  | "brightCyan"
+  | "brightWhite";
 
 export type LensColorName =
   | "blue"
@@ -34,6 +84,7 @@ export type LensColorName =
   | "textColorTertiary"
   | "textColorAccent"
   | "textColorDimmed"
+  | "textColorOnPrimary"
   | "borderColor"
   | "borderFaintColor"
   | "mainBackground"

@@ -106,7 +106,8 @@ export interface BaseIconProps {
   svg?: NamedSvg | string;
 
   /**
-   * render icon as an in-app navigation link (see `@freelensapp/routing`)
+   * render icon as an in-app navigation link to a path or a location, the same
+   * value that `Renderer.Navigation.navigate` takes
    */
   link?: To;
 

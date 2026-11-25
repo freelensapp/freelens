@@ -14,7 +14,7 @@ const apiBaseServerAddressInjectable = getInjectable({
     const { host } = di.inject(windowLocationInjectable);
 
     // The frame's own origin, not 127.0.0.1: `<clusterId>.renderer.freelens.app`
-    // is what lens-proxy routes on, Chromium's host-resolver rules map it to
+    // is what freelens-proxy routes on, Chromium's host-resolver rules map it to
     // 127.0.0.1, and the session already trusts the certificate for it. Going
     // through the origin means the browser sets the routing `Host` header
     // itself — it cannot be set by hand, being a forbidden header name.

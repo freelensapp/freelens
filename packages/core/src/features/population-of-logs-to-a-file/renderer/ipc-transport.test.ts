@@ -6,6 +6,7 @@
 
 import { sendMessageToChannelInjectionToken } from "@freelensapp/messaging";
 import { MESSAGE } from "triple-beam";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { getDiForUnitTesting } from "../../../renderer/getDiForUnitTesting";
 import ipcLogTransportInjectable from "./ipc-transport.injectable";
 import rendererLogFileIdInjectable from "./renderer-log-file-id.injectable";

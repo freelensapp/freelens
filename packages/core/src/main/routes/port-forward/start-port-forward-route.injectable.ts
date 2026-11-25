@@ -45,9 +45,9 @@ const startPortForwardRouteInjectable = getRouteInjectable({
           logger.info(`Creating a new port-forward ${namespace}/${resourceType}/${resourceName}:${port}`);
 
           const thePort = 0 < forwardPort && forwardPort < 65536 ? forwardPort : 0;
-          const proxyKubeconfigPath = await proxyKubeconfigManager.ensurePath();
+          const proxyKubeconfig = await proxyKubeconfigManager.ensurePaths();
 
-          portForward = createPortForward(proxyKubeconfigPath, {
+          portForward = createPortForward(proxyKubeconfig, {
             clusterId: cluster.id,
             kind: resourceType,
             namespace,

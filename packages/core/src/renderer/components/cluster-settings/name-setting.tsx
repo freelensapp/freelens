@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { autorun, makeObservable, observable } from "mobx";
+import { autorun, observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import { Input } from "../input";
@@ -23,11 +23,10 @@ export interface ClusterNameSettingProps {
 export class ClusterNameSetting extends React.Component<ClusterNameSettingProps> {
   private readonly disposers: (() => void)[] = [];
 
-  @observable name = "";
+  @observable accessor name = "";
 
   constructor(props: ClusterNameSettingProps) {
     super(props);
-    makeObservable(this);
   }
 
   componentDidMount() {

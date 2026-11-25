@@ -6,6 +6,7 @@
 
 import { NetworkPolicy } from "@freelensapp/kube-object";
 import { findByTestId, findByText } from "@testing-library/react";
+import { beforeEach, describe, expect, it } from "vitest";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import { renderFor } from "../../test-utils/renderFor";
 import { NetworkPolicyDetails } from "../network-policy-details";

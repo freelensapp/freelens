@@ -15,9 +15,10 @@ import { kebabCase } from "es-toolkit";
 import { observer } from "mobx-react";
 import { Badge } from "../../badge";
 import { Checkbox } from "../../checkbox";
+import { CopyableMonacoEditor } from "../../copyable-monaco-editor/copyable-monaco-editor";
 import { DrawerItem, DrawerTitle } from "../../drawer";
 import { SubTitle } from "../../layout/sub-title";
-import { MonacoEditor } from "../../monaco-editor";
+import { LocaleDate } from "../../locale-date";
 import { Table, TableCell, TableHead, TableRow } from "../../table";
 import releaseDetailsModelInjectable from "./release-details-model/release-details-model.injectable";
 
@@ -60,7 +61,9 @@ const NonInjectedReleaseDetailsContent = observer(({ model }: Dependencies & Rel
         </div>
       </DrawerItem>
 
-      <DrawerItem name="Updated">{`${model.release.getUpdated()} ago (${model.release.updated})`}</DrawerItem>
+      <DrawerItem name="Updated">
+        {model.release.getUpdated()} ago (<LocaleDate date={model.release.updated} />)
+      </DrawerItem>
 
       <DrawerItem name="Namespace">{model.release.getNs()}</DrawerItem>
 
@@ -153,9 +156,9 @@ const ReleaseValues = observer(({ releaseId, configuration, onlyUserSuppliedValu
           data-testid="user-supplied-values-only-checkbox"
         />
 
-        <MonacoEditor
+        <CopyableMonacoEditor
           id={`helm-release-configuration-${releaseId}`}
-          style={{ minHeight: 300 }}
+          style={{ minHeight: 228 }}
           value={configuration.nonSavedValue.get()}
           onChange={configuration.onChange}
         />

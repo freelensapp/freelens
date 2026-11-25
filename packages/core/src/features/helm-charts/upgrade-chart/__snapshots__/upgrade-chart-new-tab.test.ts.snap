@@ -31,12 +31,13 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
             />
           </div>
           <div
-            class="container sidebarNav sidebar-active-status"
+            class="OrderableList sidebarNav sidebar-active-status"
           >
             <div
               aria-describedby="DndDescribedBy-0"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -82,6 +83,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-0"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -90,6 +92,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-0"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -98,6 +101,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-0"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -197,6 +201,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-0"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -205,6 +210,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-0"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -250,6 +256,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-0"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -258,6 +265,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-0"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -266,6 +274,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-0"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -274,6 +283,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-0"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -380,6 +390,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-0"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -388,6 +399,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-0"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -407,7 +419,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-live="assertive"
               id="DndLiveRegion-0"
               role="status"
-              style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+              style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px 0px 0px 0px); clip-path: inset(100%); white-space: nowrap;"
             />
           </div>
         </div>
@@ -903,12 +915,13 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
             />
           </div>
           <div
-            class="container sidebarNav sidebar-active-status"
+            class="OrderableList sidebarNav sidebar-active-status"
           >
             <div
               aria-describedby="DndDescribedBy-2"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -954,6 +967,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-2"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -962,6 +976,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-2"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -970,6 +985,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-2"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -1069,6 +1085,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-2"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -1077,6 +1094,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-2"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -1122,6 +1140,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-2"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -1130,6 +1149,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-2"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -1138,6 +1158,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-2"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -1146,6 +1167,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-2"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -1252,6 +1274,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-2"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -1260,6 +1283,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-2"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -1279,7 +1303,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-live="assertive"
               id="DndLiveRegion-2"
               role="status"
-              style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+              style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px 0px 0px 0px); clip-path: inset(100%); white-space: nowrap;"
             />
           </div>
         </div>
@@ -1685,7 +1709,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                     <div
                       class="list"
                       role="list"
-                      style="position: relative; max-height: 100%; flex-grow: 1; overflow-y: auto; width: 100%; height: 100%;"
+                      style="position: relative; flex-grow: 1; max-height: 100%; overflow-y: auto; width: 100%; height: 100%;"
                     >
                       <div
                         data-react-window-index="0"
@@ -1821,6 +1845,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                       </div>
                       <div
                         aria-hidden="true"
+                        data-react-window-sizer=""
                         style="height: 33px; width: 100%; z-index: -1;"
                       />
                     </div>
@@ -1917,12 +1942,13 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
             />
           </div>
           <div
-            class="container sidebarNav sidebar-active-status"
+            class="OrderableList sidebarNav sidebar-active-status"
           >
             <div
               aria-describedby="DndDescribedBy-3"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -1968,6 +1994,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-3"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -1976,6 +2003,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-3"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -1984,6 +2012,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-3"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -2083,6 +2112,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-3"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -2091,6 +2121,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-3"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -2136,6 +2167,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-3"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -2144,6 +2176,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-3"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -2152,6 +2185,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-3"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -2160,6 +2194,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-3"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -2266,6 +2301,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-3"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -2274,6 +2310,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-3"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -2293,7 +2330,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-live="assertive"
               id="DndLiveRegion-3"
               role="status"
-              style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+              style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px 0px 0px 0px); clip-path: inset(100%); white-space: nowrap;"
             />
           </div>
         </div>
@@ -2699,7 +2736,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                     <div
                       class="list"
                       role="list"
-                      style="position: relative; max-height: 100%; flex-grow: 1; overflow-y: auto; width: 100%; height: 100%;"
+                      style="position: relative; flex-grow: 1; max-height: 100%; overflow-y: auto; width: 100%; height: 100%;"
                     >
                       <div
                         data-react-window-index="0"
@@ -2835,6 +2872,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                       </div>
                       <div
                         aria-hidden="true"
+                        data-react-window-sizer=""
                         style="height: 33px; width: 100%; z-index: -1;"
                       />
                     </div>
@@ -2985,12 +3023,13 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
             />
           </div>
           <div
-            class="container sidebarNav sidebar-active-status"
+            class="OrderableList sidebarNav sidebar-active-status"
           >
             <div
               aria-describedby="DndDescribedBy-4"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -3036,6 +3075,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-4"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -3044,6 +3084,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-4"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -3052,6 +3093,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-4"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -3151,6 +3193,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-4"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -3159,6 +3202,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-4"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -3204,6 +3248,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-4"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -3212,6 +3257,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-4"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -3220,6 +3266,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-4"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -3228,6 +3275,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-4"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -3334,6 +3382,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-4"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -3342,6 +3391,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-4"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -3361,7 +3411,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-live="assertive"
               id="DndLiveRegion-4"
               role="status"
-              style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+              style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px 0px 0px 0px); clip-path: inset(100%); white-space: nowrap;"
             />
           </div>
         </div>
@@ -3767,7 +3817,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                     <div
                       class="list"
                       role="list"
-                      style="position: relative; max-height: 100%; flex-grow: 1; overflow-y: auto; width: 100%; height: 100%;"
+                      style="position: relative; flex-grow: 1; max-height: 100%; overflow-y: auto; width: 100%; height: 100%;"
                     >
                       <div
                         data-react-window-index="0"
@@ -3903,6 +3953,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                       </div>
                       <div
                         aria-hidden="true"
+                        data-react-window-sizer=""
                         style="height: 33px; width: 100%; z-index: -1;"
                       />
                     </div>
@@ -4089,12 +4140,13 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
             />
           </div>
           <div
-            class="container sidebarNav sidebar-active-status"
+            class="OrderableList sidebarNav sidebar-active-status"
           >
             <div
               aria-describedby="DndDescribedBy-9"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -4140,6 +4192,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-9"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -4148,6 +4201,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-9"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -4156,6 +4210,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-9"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -4255,6 +4310,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-9"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -4263,6 +4319,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-9"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -4308,6 +4365,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-9"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -4316,6 +4374,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-9"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -4324,6 +4383,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-9"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -4332,6 +4392,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-9"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -4438,6 +4499,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-9"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -4446,6 +4508,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-9"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -4465,7 +4528,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-live="assertive"
               id="DndLiveRegion-9"
               role="status"
-              style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+              style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px 0px 0px 0px); clip-path: inset(100%); white-space: nowrap;"
             />
           </div>
         </div>
@@ -4871,7 +4934,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                     <div
                       class="list"
                       role="list"
-                      style="position: relative; max-height: 100%; flex-grow: 1; overflow-y: auto; width: 100%; height: 100%;"
+                      style="position: relative; flex-grow: 1; max-height: 100%; overflow-y: auto; width: 100%; height: 100%;"
                     >
                       <div
                         data-react-window-index="0"
@@ -5007,6 +5070,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                       </div>
                       <div
                         aria-hidden="true"
+                        data-react-window-sizer=""
                         style="height: 33px; width: 100%; z-index: -1;"
                       />
                     </div>
@@ -5350,12 +5414,13 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
             />
           </div>
           <div
-            class="container sidebarNav sidebar-active-status"
+            class="OrderableList sidebarNav sidebar-active-status"
           >
             <div
               aria-describedby="DndDescribedBy-12"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -5401,6 +5466,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-12"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -5409,6 +5475,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-12"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -5417,6 +5484,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-12"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -5516,6 +5584,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-12"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -5524,6 +5593,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-12"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -5569,6 +5639,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-12"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -5577,6 +5648,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-12"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -5585,6 +5657,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-12"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -5593,6 +5666,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-12"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -5699,6 +5773,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-12"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -5707,6 +5782,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-12"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -5726,7 +5802,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-live="assertive"
               id="DndLiveRegion-12"
               role="status"
-              style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+              style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px 0px 0px 0px); clip-path: inset(100%); white-space: nowrap;"
             />
           </div>
         </div>
@@ -6132,7 +6208,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                     <div
                       class="list"
                       role="list"
-                      style="position: relative; max-height: 100%; flex-grow: 1; overflow-y: auto; width: 100%; height: 100%;"
+                      style="position: relative; flex-grow: 1; max-height: 100%; overflow-y: auto; width: 100%; height: 100%;"
                     >
                       <div
                         data-react-window-index="0"
@@ -6268,6 +6344,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                       </div>
                       <div
                         aria-hidden="true"
+                        data-react-window-sizer=""
                         style="height: 33px; width: 100%; z-index: -1;"
                       />
                     </div>
@@ -6613,12 +6690,13 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
             />
           </div>
           <div
-            class="container sidebarNav sidebar-active-status"
+            class="OrderableList sidebarNav sidebar-active-status"
           >
             <div
               aria-describedby="DndDescribedBy-13"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -6664,6 +6742,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-13"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -6672,6 +6751,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-13"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -6680,6 +6760,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-13"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -6779,6 +6860,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-13"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -6787,6 +6869,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-13"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -6832,6 +6915,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-13"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -6840,6 +6924,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-13"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -6848,6 +6933,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-13"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -6856,6 +6942,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-13"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -6962,6 +7049,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-13"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -6970,6 +7058,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-describedby="DndDescribedBy-13"
               aria-disabled="false"
               aria-roledescription="sortable"
+              class="OrderableItem"
               role="button"
               style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
               tabindex="0"
@@ -6989,7 +7078,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               aria-live="assertive"
               id="DndLiveRegion-13"
               role="status"
-              style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+              style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px 0px 0px 0px); clip-path: inset(100%); white-space: nowrap;"
             />
           </div>
         </div>
@@ -7395,7 +7484,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                     <div
                       class="list"
                       role="list"
-                      style="position: relative; max-height: 100%; flex-grow: 1; overflow-y: auto; width: 100%; height: 100%;"
+                      style="position: relative; flex-grow: 1; max-height: 100%; overflow-y: auto; width: 100%; height: 100%;"
                     >
                       <div
                         data-react-window-index="0"
@@ -7531,6 +7620,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                       </div>
                       <div
                         aria-hidden="true"
+                        data-react-window-sizer=""
                         style="height: 33px; width: 100%; z-index: -1;"
                       />
                     </div>

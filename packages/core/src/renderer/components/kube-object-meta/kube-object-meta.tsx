@@ -12,13 +12,13 @@ import * as yaml from "js-yaml";
 import { observer } from "mobx-react";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
 import { defaultYamlDumpOptions } from "../../../common/kube-helpers";
+import { CopyableMonacoEditor } from "../copyable-monaco-editor/copyable-monaco-editor";
 import { DrawerItem, DrawerItemLabels, DrawerParamToggler } from "../drawer";
 import { DurationAbsoluteTimestamp } from "../events";
 import getDetailsUrlInjectable from "../kube-detail-params/get-details-url.injectable";
 import { KubeObjectAge } from "../kube-object/age";
 import { LinkToNamespace } from "../kube-object-link";
 import { LocaleDate } from "../locale-date";
-import { MonacoEditor } from "../monaco-editor";
 import { WithTooltip } from "../with-tooltip";
 
 import type { KubeMetaField } from "@freelensapp/kube-object";
@@ -46,6 +46,20 @@ interface Dependencies {
   getDetailsUrl: GetDetailsUrl;
   apiManager: ApiManager;
   logger: Logger;
+}
+
+const lastAppliedConfigurationAnnotation = "kubectl.kubernetes.io/last-applied-configuration";
+
+/**
+ * `kubectl apply` stores the manifest as JSON; show it as YAML, like the rest of the resource.
+ * A value that is not valid JSON is shown as it is.
+ */
+function formatLastAppliedConfiguration(value: string): string {
+  try {
+    return yaml.dump(JSON.parse(value), defaultYamlDumpOptions);
+  } catch {
+    return value;
+  }
 }
 
 function ManagedFieldEntryLabel({ entry }: { entry: ManagedFieldsEntry }) {
@@ -89,8 +103,9 @@ const NonInjectedKubeObjectMeta = observer((props: Dependencies & KubeObjectMeta
 
   const {
     selfLink,
-    metadata: { creationTimestamp, deletionTimestamp, managedFields },
+    metadata: { creationTimestamp, deletionTimestamp, managedFields, annotations },
   } = object;
+  const lastAppliedConfiguration = annotations?.[lastAppliedConfigurationAnnotation];
   const ownerRefs = object.getOwnerRefs();
   const namespace = object.getNs();
 
@@ -126,7 +141,18 @@ const NonInjectedKubeObjectMeta = observer((props: Dependencies & KubeObjectMeta
         {object.getResourceVersion()}
       </DrawerItem>
       <DrawerItemLabels name="Labels" labels={object.getLabels()} hidden={isHidden("labels")} />
-      <DrawerItemLabels name="Annotations" labels={object.getAnnotations()} hidden={isHidden("annotations")} />
+      <DrawerItemLabels name="Annotations" labels={object.getAnnotations(true)} hidden={isHidden("annotations")} />
+      {lastAppliedConfiguration !== undefined && (
+        <DrawerItem name="Last Applied Configuration" hidden={isHidden("annotations")}>
+          <DrawerParamToggler label={lastAppliedConfigurationAnnotation}>
+            <CopyableMonacoEditor
+              readOnly
+              style={{ height: 200 }}
+              value={formatLastAppliedConfiguration(lastAppliedConfiguration)}
+            />
+          </DrawerParamToggler>
+        </DrawerItem>
+      )}
       <DrawerItemLabels name="Finalizers" labels={object.getFinalizers()} hidden={isHidden("finalizers")} />
       {ownerRefs?.length > 0 && (
         <DrawerItem name="Controlled By" hidden={isHidden("ownerReferences")}>
@@ -149,7 +175,7 @@ const NonInjectedKubeObjectMeta = observer((props: Dependencies & KubeObjectMeta
               label={<ManagedFieldEntryLabel entry={entry} />}
               key={`${entry.manager}-${entry.operation}-${entry.apiVersion ?? ""}-${entry.subresource ?? ""}`}
             >
-              <MonacoEditor
+              <CopyableMonacoEditor
                 readOnly
                 style={{ height: 200 }}
                 value={yaml.dump(entry.fieldsV1, defaultYamlDumpOptions)}

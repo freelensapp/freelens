@@ -29,6 +29,10 @@ const tsconfig = {
     // directory without a baseUrl (removed: baseUrl is deprecated in TS6 and
     // dropped in TS7).
     paths,
+    // The native tsc of TypeScript 7 on Windows ARM64 never finishes the
+    // declaration emit of this program with more than one checker, so it gets
+    // one there. Other platforms keep the parallel default.
+    ...(process.platform === "win32" && process.arch === "arm64" ? { checkers: 1 } : {}),
   },
 };
 

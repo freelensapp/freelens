@@ -11,8 +11,10 @@ import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import { useRef } from "react";
 import { getMetricLastPoints } from "../../../common/k8s-api/endpoints/metrics.api";
+import overviewStyleInjectable from "../../../features/user-preferences/common/overview-style.injectable";
 import activeThemeInjectable from "../../themes/active.injectable";
 import { PieChart } from "../chart";
+import { ClusterCapacityCards } from "./cluster-capacity-cards";
 import clusterOverviewMetricsInjectable from "./cluster-metrics.injectable";
 import { ClusterNoMetrics } from "./cluster-no-metrics";
 import styles from "./cluster-pie-charts.module.scss";
@@ -26,6 +28,7 @@ import type { IComputedValue } from "mobx";
 
 import type { ClusterMetricData } from "../../../common/k8s-api/endpoints/metrics.api/request-cluster-metrics-by-node-names.injectable";
 import type { IAsyncComputed } from "../../../common/utils/async-computed";
+import type { OverviewStylePreference } from "../../../features/user-preferences/common/preferences-helpers";
 import type { LensTheme } from "../../themes/lens-theme";
 import type { PieChartData } from "../chart";
 import type { SelectedMetricsTimeRange } from "./overview/selected-metrics-time-range.injectable";
@@ -42,6 +45,7 @@ interface Dependencies {
   clusterOverviewMetrics: IAsyncComputed<Partial<ClusterMetricData> | undefined>;
   activeTheme: IComputedValue<LensTheme>;
   selectedMetricsTimeRange: SelectedMetricsTimeRange;
+  overviewStyle: IComputedValue<OverviewStylePreference>;
 }
 
 const renderLimitWarning = () => (
@@ -177,7 +181,28 @@ const renderCharts = (defaultColor: string, lastPoints: Partial<Record<keyof Clu
   );
 };
 
-const renderContent = (defaultColor: string, nodes: Node[], metrics: Partial<ClusterMetricData> | undefined) => {
+const sumPods = (nodes: Node[], field: "capacity" | "allocatable") =>
+  nodes.reduce((total, node) => total + (Number(node.status?.[field]?.pods) || 0), 0);
+
+/**
+ * Fills the pod capacity that the provider has no metric for, as the one for GKE system metrics, from the status of
+ * the nodes the metrics are for: without it, the charts of CPU and memory would not show either.
+ */
+const withPodCapacityOfNodes = (
+  lastPoints: Partial<Record<keyof ClusterMetricData, number>>,
+  nodes: Node[],
+): Partial<Record<keyof ClusterMetricData, number>> => ({
+  ...lastPoints,
+  podCapacity: lastPoints.podCapacity ?? sumPods(nodes, "capacity"),
+  podAllocatableCapacity: lastPoints.podAllocatableCapacity ?? sumPods(nodes, "allocatable"),
+});
+
+const renderContent = (
+  defaultColor: string,
+  overviewStyle: OverviewStylePreference,
+  nodes: Node[],
+  metrics: Partial<ClusterMetricData> | undefined,
+) => {
   if (!nodes.length) {
     return (
       <div className={cssNames(styles.empty, "flex flex-col grow shrink-0 basis-0 items-center justify-center")}>
@@ -195,7 +220,7 @@ const renderContent = (defaultColor: string, nodes: Node[], metrics: Partial<Clu
     );
   }
 
-  const lastPoints = getMetricLastPoints(metrics);
+  const lastPoints = withPodCapacityOfNodes(getMetricLastPoints(metrics), nodes);
   const { memoryCapacity, cpuCapacity, podCapacity } = lastPoints;
 
   if (!memoryCapacity || !cpuCapacity || !podCapacity) {
@@ -206,11 +231,21 @@ const renderContent = (defaultColor: string, nodes: Node[], metrics: Partial<Clu
     );
   }
 
+  if (overviewStyle === "cards") {
+    return <ClusterCapacityCards lastPoints={lastPoints} />;
+  }
+
   return renderCharts(defaultColor, lastPoints);
 };
 
 const NonInjectedClusterPieCharts = observer(
-  ({ selectedNodeRoleForMetrics, clusterOverviewMetrics, activeTheme, selectedMetricsTimeRange }: Dependencies) => {
+  ({
+    selectedNodeRoleForMetrics,
+    clusterOverviewMetrics,
+    activeTheme,
+    selectedMetricsTimeRange,
+    overviewStyle,
+  }: Dependencies) => {
     const currentRangeKey = createMetricsTimeRangeKey(selectedMetricsTimeRange.value.get());
     const lastResolvedRangeKeyRef = useRef<string | undefined>(undefined);
     const isPending = clusterOverviewMetrics.pending.get();
@@ -226,6 +261,7 @@ const NonInjectedClusterPieCharts = observer(
       <div className="flex">
         {renderContent(
           activeTheme.get().colors.pieChartDefaultColor,
+          overviewStyle.get(),
           selectedNodeRoleForMetrics.nodes.get(),
           visibleMetrics,
         )}
@@ -240,5 +276,6 @@ export const ClusterPieCharts = withInjectables<Dependencies>(NonInjectedCluster
     clusterOverviewMetrics: di.inject(clusterOverviewMetricsInjectable),
     selectedNodeRoleForMetrics: di.inject(selectedNodeRoleForMetricsInjectable),
     selectedMetricsTimeRange: di.inject(selectedMetricsTimeRangeInjectable),
+    overviewStyle: di.inject(overviewStyleInjectable),
   }),
 });

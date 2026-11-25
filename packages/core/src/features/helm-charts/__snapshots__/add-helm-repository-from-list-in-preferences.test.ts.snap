@@ -77,7 +77,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
           id="lens-views"
         />
         <div
-          class="SettingLayout showNavigation Preferences"
+          class="SettingLayout showNavigation withCloseButton Preferences"
         >
           <nav
             class="sidebarRegion"
@@ -106,6 +106,18 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                       class="label"
                     >
                       App
+                    </div>
+                  </div>
+                  <div
+                    class="Tab flex gap-2 items-center"
+                    data-preference-tab-link-test="personalization"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      Personalization
                     </div>
                   </div>
                   <div
@@ -628,6 +640,53 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                     </div>
                   </section>
                 </div>
+                <div
+                  class="HorizontalLine size-xl"
+                />
+                <div
+                  data-preference-item-test="combined-logs-pods"
+                >
+                  <section
+                    id="logs"
+                  >
+                    <h2>
+                      Logs
+                    </h2>
+                    <div
+                      class="SubTitle"
+                    >
+                      Pods in a combined logs tab
+                       
+                    </div>
+                    <div
+                      class="Input theme round black"
+                    >
+                      <label
+                        class="input-area flex items-center gap-2"
+                        id=""
+                      >
+                        <input
+                          class="input grow"
+                          data-testid="max-combined-logs-pods-input"
+                          max="100"
+                          min="1"
+                          spellcheck="false"
+                          step="1"
+                          type="number"
+                          value="20"
+                        />
+                      </label>
+                      <div
+                        class="input-info flex gap-2"
+                      />
+                    </div>
+                    <div
+                      class="hint"
+                    >
+                      The Logs of a Deployment, DaemonSet, StatefulSet, ReplicaSet or Job read at most this many of its pods, the first ones by name, from 1 to 100. Every refresh of the tab, every 10 seconds, asks each of these pods for its lines, at most 5 at a time.
+                    </div>
+                  </section>
+                </div>
               </section>
             </div>
             <div
@@ -778,7 +837,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
             aria-live="assertive"
             id="DndLiveRegion-0"
             role="status"
-            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px 0px 0px 0px); clip-path: inset(100%); white-space: nowrap;"
           />
         </div>
         <div
@@ -914,7 +973,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
           id="lens-views"
         />
         <div
-          class="SettingLayout showNavigation Preferences"
+          class="SettingLayout showNavigation withCloseButton Preferences"
         >
           <nav
             class="sidebarRegion"
@@ -943,6 +1002,18 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                       class="label"
                     >
                       App
+                    </div>
+                  </div>
+                  <div
+                    class="Tab flex gap-2 items-center"
+                    data-preference-tab-link-test="personalization"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      Personalization
                     </div>
                   </div>
                   <div
@@ -1503,6 +1574,53 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                     </div>
                   </section>
                 </div>
+                <div
+                  class="HorizontalLine size-xl"
+                />
+                <div
+                  data-preference-item-test="combined-logs-pods"
+                >
+                  <section
+                    id="logs"
+                  >
+                    <h2>
+                      Logs
+                    </h2>
+                    <div
+                      class="SubTitle"
+                    >
+                      Pods in a combined logs tab
+                       
+                    </div>
+                    <div
+                      class="Input theme round black"
+                    >
+                      <label
+                        class="input-area flex items-center gap-2"
+                        id=""
+                      >
+                        <input
+                          class="input grow"
+                          data-testid="max-combined-logs-pods-input"
+                          max="100"
+                          min="1"
+                          spellcheck="false"
+                          step="1"
+                          type="number"
+                          value="20"
+                        />
+                      </label>
+                      <div
+                        class="input-info flex gap-2"
+                      />
+                    </div>
+                    <div
+                      class="hint"
+                    >
+                      The Logs of a Deployment, DaemonSet, StatefulSet, ReplicaSet or Job read at most this many of its pods, the first ones by name, from 1 to 100. Every refresh of the tab, every 10 seconds, asks each of these pods for its lines, at most 5 at a time.
+                    </div>
+                  </section>
+                </div>
               </section>
             </div>
             <div
@@ -1653,7 +1771,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
             aria-live="assertive"
             id="DndLiveRegion-3"
             role="status"
-            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px 0px 0px 0px); clip-path: inset(100%); white-space: nowrap;"
           />
         </div>
         <div
@@ -1789,7 +1907,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
           id="lens-views"
         />
         <div
-          class="SettingLayout showNavigation Preferences"
+          class="SettingLayout showNavigation withCloseButton Preferences"
         >
           <nav
             class="sidebarRegion"
@@ -1818,6 +1936,18 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                       class="label"
                     >
                       App
+                    </div>
+                  </div>
+                  <div
+                    class="Tab flex gap-2 items-center"
+                    data-preference-tab-link-test="personalization"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      Personalization
                     </div>
                   </div>
                   <div
@@ -2379,6 +2509,53 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                     </div>
                   </section>
                 </div>
+                <div
+                  class="HorizontalLine size-xl"
+                />
+                <div
+                  data-preference-item-test="combined-logs-pods"
+                >
+                  <section
+                    id="logs"
+                  >
+                    <h2>
+                      Logs
+                    </h2>
+                    <div
+                      class="SubTitle"
+                    >
+                      Pods in a combined logs tab
+                       
+                    </div>
+                    <div
+                      class="Input theme round black"
+                    >
+                      <label
+                        class="input-area flex items-center gap-2"
+                        id=""
+                      >
+                        <input
+                          class="input grow"
+                          data-testid="max-combined-logs-pods-input"
+                          max="100"
+                          min="1"
+                          spellcheck="false"
+                          step="1"
+                          type="number"
+                          value="20"
+                        />
+                      </label>
+                      <div
+                        class="input-info flex gap-2"
+                      />
+                    </div>
+                    <div
+                      class="hint"
+                    >
+                      The Logs of a Deployment, DaemonSet, StatefulSet, ReplicaSet or Job read at most this many of its pods, the first ones by name, from 1 to 100. Every refresh of the tab, every 10 seconds, asks each of these pods for its lines, at most 5 at a time.
+                    </div>
+                  </section>
+                </div>
               </section>
             </div>
             <div
@@ -2529,7 +2706,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
             aria-live="assertive"
             id="DndLiveRegion-4"
             role="status"
-            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px 0px 0px 0px); clip-path: inset(100%); white-space: nowrap;"
           />
         </div>
         <div
@@ -2722,7 +2899,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
           id="lens-views"
         />
         <div
-          class="SettingLayout showNavigation Preferences"
+          class="SettingLayout showNavigation withCloseButton Preferences"
         >
           <nav
             class="sidebarRegion"
@@ -2751,6 +2928,18 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                       class="label"
                     >
                       App
+                    </div>
+                  </div>
+                  <div
+                    class="Tab flex gap-2 items-center"
+                    data-preference-tab-link-test="personalization"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      Personalization
                     </div>
                   </div>
                   <div
@@ -3308,6 +3497,53 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                           Remove
                         </div>
                       </div>
+                    </div>
+                  </section>
+                </div>
+                <div
+                  class="HorizontalLine size-xl"
+                />
+                <div
+                  data-preference-item-test="combined-logs-pods"
+                >
+                  <section
+                    id="logs"
+                  >
+                    <h2>
+                      Logs
+                    </h2>
+                    <div
+                      class="SubTitle"
+                    >
+                      Pods in a combined logs tab
+                       
+                    </div>
+                    <div
+                      class="Input theme round black"
+                    >
+                      <label
+                        class="input-area flex items-center gap-2"
+                        id=""
+                      >
+                        <input
+                          class="input grow"
+                          data-testid="max-combined-logs-pods-input"
+                          max="100"
+                          min="1"
+                          spellcheck="false"
+                          step="1"
+                          type="number"
+                          value="20"
+                        />
+                      </label>
+                      <div
+                        class="input-info flex gap-2"
+                      />
+                    </div>
+                    <div
+                      class="hint"
+                    >
+                      The Logs of a Deployment, DaemonSet, StatefulSet, ReplicaSet or Job read at most this many of its pods, the first ones by name, from 1 to 100. Every refresh of the tab, every 10 seconds, asks each of these pods for its lines, at most 5 at a time.
                     </div>
                   </section>
                 </div>
@@ -3461,7 +3697,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
             aria-live="assertive"
             id="DndLiveRegion-5"
             role="status"
-            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px 0px 0px 0px); clip-path: inset(100%); white-space: nowrap;"
           />
         </div>
         <div
@@ -3597,7 +3833,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
           id="lens-views"
         />
         <div
-          class="SettingLayout showNavigation Preferences"
+          class="SettingLayout showNavigation withCloseButton Preferences"
         >
           <nav
             class="sidebarRegion"
@@ -3626,6 +3862,18 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                       class="label"
                     >
                       App
+                    </div>
+                  </div>
+                  <div
+                    class="Tab flex gap-2 items-center"
+                    data-preference-tab-link-test="personalization"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      Personalization
                     </div>
                   </div>
                   <div
@@ -4186,6 +4434,53 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                     </div>
                   </section>
                 </div>
+                <div
+                  class="HorizontalLine size-xl"
+                />
+                <div
+                  data-preference-item-test="combined-logs-pods"
+                >
+                  <section
+                    id="logs"
+                  >
+                    <h2>
+                      Logs
+                    </h2>
+                    <div
+                      class="SubTitle"
+                    >
+                      Pods in a combined logs tab
+                       
+                    </div>
+                    <div
+                      class="Input theme round black"
+                    >
+                      <label
+                        class="input-area flex items-center gap-2"
+                        id=""
+                      >
+                        <input
+                          class="input grow"
+                          data-testid="max-combined-logs-pods-input"
+                          max="100"
+                          min="1"
+                          spellcheck="false"
+                          step="1"
+                          type="number"
+                          value="20"
+                        />
+                      </label>
+                      <div
+                        class="input-info flex gap-2"
+                      />
+                    </div>
+                    <div
+                      class="hint"
+                    >
+                      The Logs of a Deployment, DaemonSet, StatefulSet, ReplicaSet or Job read at most this many of its pods, the first ones by name, from 1 to 100. Every refresh of the tab, every 10 seconds, asks each of these pods for its lines, at most 5 at a time.
+                    </div>
+                  </section>
+                </div>
               </section>
             </div>
             <div
@@ -4336,7 +4631,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
             aria-live="assertive"
             id="DndLiveRegion-8"
             role="status"
-            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px 0px 0px 0px); clip-path: inset(100%); white-space: nowrap;"
           />
         </div>
         <div
@@ -4472,7 +4767,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
           id="lens-views"
         />
         <div
-          class="SettingLayout showNavigation Preferences"
+          class="SettingLayout showNavigation withCloseButton Preferences"
         >
           <nav
             class="sidebarRegion"
@@ -4501,6 +4796,18 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                       class="label"
                     >
                       App
+                    </div>
+                  </div>
+                  <div
+                    class="Tab flex gap-2 items-center"
+                    data-preference-tab-link-test="personalization"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      Personalization
                     </div>
                   </div>
                   <div
@@ -5051,6 +5358,53 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                     </div>
                   </section>
                 </div>
+                <div
+                  class="HorizontalLine size-xl"
+                />
+                <div
+                  data-preference-item-test="combined-logs-pods"
+                >
+                  <section
+                    id="logs"
+                  >
+                    <h2>
+                      Logs
+                    </h2>
+                    <div
+                      class="SubTitle"
+                    >
+                      Pods in a combined logs tab
+                       
+                    </div>
+                    <div
+                      class="Input theme round black"
+                    >
+                      <label
+                        class="input-area flex items-center gap-2"
+                        id=""
+                      >
+                        <input
+                          class="input grow"
+                          data-testid="max-combined-logs-pods-input"
+                          max="100"
+                          min="1"
+                          spellcheck="false"
+                          step="1"
+                          type="number"
+                          value="20"
+                        />
+                      </label>
+                      <div
+                        class="input-info flex gap-2"
+                      />
+                    </div>
+                    <div
+                      class="hint"
+                    >
+                      The Logs of a Deployment, DaemonSet, StatefulSet, ReplicaSet or Job read at most this many of its pods, the first ones by name, from 1 to 100. Every refresh of the tab, every 10 seconds, asks each of these pods for its lines, at most 5 at a time.
+                    </div>
+                  </section>
+                </div>
               </section>
             </div>
             <div
@@ -5201,7 +5555,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
             aria-live="assertive"
             id="DndLiveRegion-13"
             role="status"
-            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px 0px 0px 0px); clip-path: inset(100%); white-space: nowrap;"
           />
         </div>
         <div
@@ -5337,7 +5691,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
           id="lens-views"
         />
         <div
-          class="SettingLayout showNavigation Preferences"
+          class="SettingLayout showNavigation withCloseButton Preferences"
         >
           <nav
             class="sidebarRegion"
@@ -5366,6 +5720,18 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                       class="label"
                     >
                       App
+                    </div>
+                  </div>
+                  <div
+                    class="Tab flex gap-2 items-center"
+                    data-preference-tab-link-test="personalization"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      Personalization
                     </div>
                   </div>
                   <div
@@ -5960,6 +6326,53 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                     </div>
                   </section>
                 </div>
+                <div
+                  class="HorizontalLine size-xl"
+                />
+                <div
+                  data-preference-item-test="combined-logs-pods"
+                >
+                  <section
+                    id="logs"
+                  >
+                    <h2>
+                      Logs
+                    </h2>
+                    <div
+                      class="SubTitle"
+                    >
+                      Pods in a combined logs tab
+                       
+                    </div>
+                    <div
+                      class="Input theme round black"
+                    >
+                      <label
+                        class="input-area flex items-center gap-2"
+                        id=""
+                      >
+                        <input
+                          class="input grow"
+                          data-testid="max-combined-logs-pods-input"
+                          max="100"
+                          min="1"
+                          spellcheck="false"
+                          step="1"
+                          type="number"
+                          value="20"
+                        />
+                      </label>
+                      <div
+                        class="input-info flex gap-2"
+                      />
+                    </div>
+                    <div
+                      class="hint"
+                    >
+                      The Logs of a Deployment, DaemonSet, StatefulSet, ReplicaSet or Job read at most this many of its pods, the first ones by name, from 1 to 100. Every refresh of the tab, every 10 seconds, asks each of these pods for its lines, at most 5 at a time.
+                    </div>
+                  </section>
+                </div>
               </section>
             </div>
             <div
@@ -6110,7 +6523,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
             aria-live="assertive"
             id="DndLiveRegion-16"
             role="status"
-            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px 0px 0px 0px); clip-path: inset(100%); white-space: nowrap;"
           />
         </div>
         <div
@@ -6246,7 +6659,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
           id="lens-views"
         />
         <div
-          class="SettingLayout showNavigation Preferences"
+          class="SettingLayout showNavigation withCloseButton Preferences"
         >
           <nav
             class="sidebarRegion"
@@ -6275,6 +6688,18 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                       class="label"
                     >
                       App
+                    </div>
+                  </div>
+                  <div
+                    class="Tab flex gap-2 items-center"
+                    data-preference-tab-link-test="personalization"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      Personalization
                     </div>
                   </div>
                   <div
@@ -6870,6 +7295,53 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                     </div>
                   </section>
                 </div>
+                <div
+                  class="HorizontalLine size-xl"
+                />
+                <div
+                  data-preference-item-test="combined-logs-pods"
+                >
+                  <section
+                    id="logs"
+                  >
+                    <h2>
+                      Logs
+                    </h2>
+                    <div
+                      class="SubTitle"
+                    >
+                      Pods in a combined logs tab
+                       
+                    </div>
+                    <div
+                      class="Input theme round black"
+                    >
+                      <label
+                        class="input-area flex items-center gap-2"
+                        id=""
+                      >
+                        <input
+                          class="input grow"
+                          data-testid="max-combined-logs-pods-input"
+                          max="100"
+                          min="1"
+                          spellcheck="false"
+                          step="1"
+                          type="number"
+                          value="20"
+                        />
+                      </label>
+                      <div
+                        class="input-info flex gap-2"
+                      />
+                    </div>
+                    <div
+                      class="hint"
+                    >
+                      The Logs of a Deployment, DaemonSet, StatefulSet, ReplicaSet or Job read at most this many of its pods, the first ones by name, from 1 to 100. Every refresh of the tab, every 10 seconds, asks each of these pods for its lines, at most 5 at a time.
+                    </div>
+                  </section>
+                </div>
               </section>
             </div>
             <div
@@ -7020,7 +7492,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
             aria-live="assertive"
             id="DndLiveRegion-17"
             role="status"
-            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px 0px 0px 0px); clip-path: inset(100%); white-space: nowrap;"
           />
         </div>
         <div
@@ -7223,7 +7695,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
           id="lens-views"
         />
         <div
-          class="SettingLayout showNavigation Preferences"
+          class="SettingLayout showNavigation withCloseButton Preferences"
         >
           <nav
             class="sidebarRegion"
@@ -7252,6 +7724,18 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                       class="label"
                     >
                       App
+                    </div>
+                  </div>
+                  <div
+                    class="Tab flex gap-2 items-center"
+                    data-preference-tab-link-test="personalization"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      Personalization
                     </div>
                   </div>
                   <div
@@ -7846,6 +8330,53 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                     </div>
                   </section>
                 </div>
+                <div
+                  class="HorizontalLine size-xl"
+                />
+                <div
+                  data-preference-item-test="combined-logs-pods"
+                >
+                  <section
+                    id="logs"
+                  >
+                    <h2>
+                      Logs
+                    </h2>
+                    <div
+                      class="SubTitle"
+                    >
+                      Pods in a combined logs tab
+                       
+                    </div>
+                    <div
+                      class="Input theme round black"
+                    >
+                      <label
+                        class="input-area flex items-center gap-2"
+                        id=""
+                      >
+                        <input
+                          class="input grow"
+                          data-testid="max-combined-logs-pods-input"
+                          max="100"
+                          min="1"
+                          spellcheck="false"
+                          step="1"
+                          type="number"
+                          value="20"
+                        />
+                      </label>
+                      <div
+                        class="input-info flex gap-2"
+                      />
+                    </div>
+                    <div
+                      class="hint"
+                    >
+                      The Logs of a Deployment, DaemonSet, StatefulSet, ReplicaSet or Job read at most this many of its pods, the first ones by name, from 1 to 100. Every refresh of the tab, every 10 seconds, asks each of these pods for its lines, at most 5 at a time.
+                    </div>
+                  </section>
+                </div>
               </section>
             </div>
             <div
@@ -7996,7 +8527,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
             aria-live="assertive"
             id="DndLiveRegion-18"
             role="status"
-            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px 0px 0px 0px); clip-path: inset(100%); white-space: nowrap;"
           />
         </div>
         <div
@@ -8132,7 +8663,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
           id="lens-views"
         />
         <div
-          class="SettingLayout showNavigation Preferences"
+          class="SettingLayout showNavigation withCloseButton Preferences"
         >
           <nav
             class="sidebarRegion"
@@ -8161,6 +8692,18 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                       class="label"
                     >
                       App
+                    </div>
+                  </div>
+                  <div
+                    class="Tab flex gap-2 items-center"
+                    data-preference-tab-link-test="personalization"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      Personalization
                     </div>
                   </div>
                   <div
@@ -8711,6 +9254,53 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                     </div>
                   </section>
                 </div>
+                <div
+                  class="HorizontalLine size-xl"
+                />
+                <div
+                  data-preference-item-test="combined-logs-pods"
+                >
+                  <section
+                    id="logs"
+                  >
+                    <h2>
+                      Logs
+                    </h2>
+                    <div
+                      class="SubTitle"
+                    >
+                      Pods in a combined logs tab
+                       
+                    </div>
+                    <div
+                      class="Input theme round black"
+                    >
+                      <label
+                        class="input-area flex items-center gap-2"
+                        id=""
+                      >
+                        <input
+                          class="input grow"
+                          data-testid="max-combined-logs-pods-input"
+                          max="100"
+                          min="1"
+                          spellcheck="false"
+                          step="1"
+                          type="number"
+                          value="20"
+                        />
+                      </label>
+                      <div
+                        class="input-info flex gap-2"
+                      />
+                    </div>
+                    <div
+                      class="hint"
+                    >
+                      The Logs of a Deployment, DaemonSet, StatefulSet, ReplicaSet or Job read at most this many of its pods, the first ones by name, from 1 to 100. Every refresh of the tab, every 10 seconds, asks each of these pods for its lines, at most 5 at a time.
+                    </div>
+                  </section>
+                </div>
               </section>
             </div>
             <div
@@ -8861,7 +9451,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
             aria-live="assertive"
             id="DndLiveRegion-21"
             role="status"
-            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px 0px 0px 0px); clip-path: inset(100%); white-space: nowrap;"
           />
         </div>
         <div

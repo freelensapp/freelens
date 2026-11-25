@@ -12,10 +12,10 @@ import { clusterApiAddressInjectionToken } from "../../common/k8s-api/cluster-ap
 
 const clusterApiAddressInjectable = getInjectable({
   id: "cluster-api-address",
-  // Both of these read the lens-proxy port, which is unset until the proxy
-  // listens — and `lensProxyInjectable` reaches this injectable itself, through
+  // Both of these read the freelens-proxy port, which is unset until the proxy
+  // listens — and `freelensProxyInjectable` reaches this injectable itself, through
   // the node-shell-session route it registers. Resolving them at instantiation
-  // would therefore throw while lens-proxy is still being built, so they are
+  // would therefore throw while freelens-proxy is still being built, so they are
   // resolved per call instead, by which time the proxy has a port.
   instantiate: (di) => (clusterId: string) => ({
     serverAddress: di.inject(apiBaseServerAddressInjectionToken),

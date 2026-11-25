@@ -6,6 +6,8 @@
 
 import Joi from "joi";
 
+import type { KubeApiResource } from "./rbac";
+
 /**
  * JSON serializable metadata type
  */
@@ -99,11 +101,13 @@ export interface ClusterPreferences extends ClusterPrometheusPreferences {
    * cleared by preferences.
    */
   icon?: string | null;
+  iconShortName?: string | null;
   httpsProxy?: string;
   hiddenMetrics?: string[];
   nodeShellImage?: string;
   nodeShellWindowsImage?: string;
   imagePullSecret?: string;
+  debugContainerImage?: string;
   defaultNamespace?: string;
   skipNamespaceAuthorizationCheck?: boolean;
 }
@@ -195,6 +199,11 @@ export const initialNodeShellImage = "docker.io/library/alpine";
 export const initialNodeShellWindowsImage = "mcr.microsoft.com/powershell";
 
 /**
+ * The default image of a debug container
+ */
+export const initialDebugContainerImage = "docker.io/library/alpine";
+
+/**
  * The data representing a cluster's state, for passing between main and renderer
  */
 export interface ClusterState {
@@ -205,5 +214,6 @@ export interface ClusterState {
   isAdmin: boolean;
   allowedNamespaces: string[];
   resourcesToShow: string[];
+  knownResources: KubeApiResource[];
   isGlobalWatchEnabled: boolean;
 }

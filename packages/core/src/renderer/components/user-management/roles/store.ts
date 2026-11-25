@@ -9,8 +9,10 @@ import { KubeObjectStore } from "../../../../common/k8s-api/kube-object.store";
 import type { RoleApi } from "@freelensapp/kube-api";
 import type { Role, RoleData } from "@freelensapp/kube-object";
 
+import type { ItemSorting } from "../../../../common/item.store";
+
 export class RoleStore extends KubeObjectStore<Role, RoleApi, RoleData> {
-  protected sortItems(items: Role[]) {
-    return super.sortItems(items, [(role) => role.kind, (role) => role.getName()]);
-  }
+  protected readonly sorting: ItemSorting<Role> = {
+    by: [(role) => role.kind, (role) => role.getName()],
+  };
 }

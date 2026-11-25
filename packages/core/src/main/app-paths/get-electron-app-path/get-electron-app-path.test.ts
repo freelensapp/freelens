@@ -4,6 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { beforeEach, describe, expect, it } from "vitest";
 import electronAppInjectable from "../../electron-app/electron-app.injectable";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import getElectronAppPathInjectable from "./get-electron-app-path.injectable";

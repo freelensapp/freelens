@@ -77,7 +77,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
           id="lens-views"
         />
         <div
-          class="SettingLayout showNavigation Preferences"
+          class="SettingLayout showNavigation withCloseButton Preferences"
         >
           <nav
             class="sidebarRegion"
@@ -106,6 +106,18 @@ exports[`preferences - navigation to extension specific preferences > given in p
                       class="label"
                     >
                       App
+                    </div>
+                  </div>
+                  <div
+                    class="Tab flex gap-2 items-center"
+                    data-preference-tab-link-test="personalization"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      Personalization
                     </div>
                   </div>
                   <div
@@ -188,97 +200,6 @@ exports[`preferences - navigation to extension specific preferences > given in p
                 >
                   Application
                 </h2>
-                <div
-                  data-preference-item-test="theme"
-                >
-                  <section
-                    id="appearance"
-                  >
-                    <div
-                      class="SubTitle"
-                    >
-                      Theme
-                       
-                    </div>
-                    <div
-                      class="Select theme-lens css-b62m3t-container"
-                    >
-                      <span
-                        class="css-1f43avz-a11yText-A11yText"
-                        id="react-select-theme-input-live-region"
-                      />
-                      <span
-                        aria-atomic="false"
-                        aria-live="polite"
-                        aria-relevant="additions text"
-                        class="css-1f43avz-a11yText-A11yText"
-                        role="log"
-                      />
-                      <div
-                        class="Select__control css-13cymwt-control"
-                      >
-                        <div
-                          class="Select__value-container Select__value-container--has-value css-hlgwow"
-                        >
-                          <div
-                            class="Select__single-value css-1dimb5e-singleValue"
-                          >
-                            Sync with computer
-                          </div>
-                          <div
-                            class="Select__input-container css-19bb58m"
-                            data-value=""
-                          >
-                            <input
-                              aria-activedescendant=""
-                              aria-autocomplete="list"
-                              aria-expanded="false"
-                              aria-haspopup="true"
-                              autocapitalize="none"
-                              autocomplete="off"
-                              autocorrect="off"
-                              class="Select__input"
-                              id="theme-input"
-                              role="combobox"
-                              spellcheck="false"
-                              style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
-                              tabindex="0"
-                              type="text"
-                              value=""
-                            />
-                          </div>
-                        </div>
-                        <div
-                          class="Select__indicators css-1wy0on6"
-                        >
-                          <span
-                            class="Select__indicator-separator css-1u9des2-indicatorSeparator"
-                          />
-                          <div
-                            aria-hidden="true"
-                            class="Select__indicator Select__dropdown-indicator css-1xc3v61-indicatorContainer"
-                          >
-                            <svg
-                              aria-hidden="true"
-                              class="css-tj5bde-Svg"
-                              focusable="false"
-                              height="20"
-                              viewBox="0 0 20 20"
-                              width="20"
-                            >
-                              <path
-                                d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
-                              />
-                            </svg>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </section>
-                </div>
-                <div
-                  class="HorizontalLine size-xl"
-                />
                 <div
                   data-preference-item-test="extension-install-registry"
                 >
@@ -369,11 +290,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
                       class="mt-4 mb-5 leading-relaxed"
                     >
                       This setting is to change the registry URL for installing extensions by name. 
-                      If you are unable to access the default registry (https://registry.npmjs.org) you can change it in your 
-                      <b>
-                        .npmrc
-                      </b>
-                       file or in the input below.
+                      If you are unable to access the default registry (https://registry.npmjs.org) you can enter another one below.
                     </p>
                     <div
                       class="Input theme round black disabled invalid"
@@ -749,7 +666,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
             aria-live="assertive"
             id="DndLiveRegion-18"
             role="status"
-            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px 0px 0px 0px); clip-path: inset(100%); white-space: nowrap;"
           />
         </div>
         <div
@@ -884,7 +801,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
         id="lens-views"
       />
       <div
-        class="SettingLayout showNavigation Preferences"
+        class="SettingLayout showNavigation withCloseButton Preferences"
       >
         <nav
           class="sidebarRegion"
@@ -913,6 +830,18 @@ exports[`preferences - navigation to extension specific preferences > given in p
                     class="label"
                   >
                     App
+                  </div>
+                </div>
+                <div
+                  class="Tab flex gap-2 items-center"
+                  data-preference-tab-link-test="personalization"
+                  role="tab"
+                  tabindex="0"
+                >
+                  <div
+                    class="label"
+                  >
+                    Personalization
                   </div>
                 </div>
                 <div
@@ -1173,7 +1102,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
           aria-live="assertive"
           id="DndLiveRegion-21"
           role="status"
-          style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+          style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px 0px 0px 0px); clip-path: inset(100%); white-space: nowrap;"
         />
       </div>
       <div
@@ -1307,7 +1236,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
         id="lens-views"
       />
       <div
-        class="SettingLayout showNavigation Preferences"
+        class="SettingLayout showNavigation withCloseButton Preferences"
       >
         <nav
           class="sidebarRegion"
@@ -1336,6 +1265,18 @@ exports[`preferences - navigation to extension specific preferences > given in p
                     class="label"
                   >
                     App
+                  </div>
+                </div>
+                <div
+                  class="Tab flex gap-2 items-center"
+                  data-preference-tab-link-test="personalization"
+                  role="tab"
+                  tabindex="0"
+                >
+                  <div
+                    class="label"
+                  >
+                    Personalization
                   </div>
                 </div>
                 <div
@@ -1608,7 +1549,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
           aria-live="assertive"
           id="DndLiveRegion-27"
           role="status"
-          style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+          style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px 0px 0px 0px); clip-path: inset(100%); white-space: nowrap;"
         />
       </div>
       <div
@@ -1742,7 +1683,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
         id="lens-views"
       />
       <div
-        class="SettingLayout showNavigation Preferences"
+        class="SettingLayout showNavigation withCloseButton Preferences"
       >
         <nav
           class="sidebarRegion"
@@ -1771,6 +1712,18 @@ exports[`preferences - navigation to extension specific preferences > given in p
                     class="label"
                   >
                     App
+                  </div>
+                </div>
+                <div
+                  class="Tab flex gap-2 items-center"
+                  data-preference-tab-link-test="personalization"
+                  role="tab"
+                  tabindex="0"
+                >
+                  <div
+                    class="label"
+                  >
+                    Personalization
                   </div>
                 </div>
                 <div
@@ -2043,7 +1996,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
           aria-live="assertive"
           id="DndLiveRegion-29"
           role="status"
-          style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+          style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px 0px 0px 0px); clip-path: inset(100%); white-space: nowrap;"
         />
       </div>
       <div
@@ -2177,7 +2130,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
         id="lens-views"
       />
       <div
-        class="SettingLayout showNavigation Preferences"
+        class="SettingLayout showNavigation withCloseButton Preferences"
       >
         <nav
           class="sidebarRegion"
@@ -2206,6 +2159,18 @@ exports[`preferences - navigation to extension specific preferences > given in p
                     class="label"
                   >
                     App
+                  </div>
+                </div>
+                <div
+                  class="Tab flex gap-2 items-center"
+                  data-preference-tab-link-test="personalization"
+                  role="tab"
+                  tabindex="0"
+                >
+                  <div
+                    class="label"
+                  >
+                    Personalization
                   </div>
                 </div>
                 <div
@@ -2504,7 +2469,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
           aria-live="assertive"
           id="DndLiveRegion-3"
           role="status"
-          style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+          style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px 0px 0px 0px); clip-path: inset(100%); white-space: nowrap;"
         />
       </div>
       <div
@@ -2638,7 +2603,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
         id="lens-views"
       />
       <div
-        class="SettingLayout showNavigation Preferences"
+        class="SettingLayout showNavigation withCloseButton Preferences"
       >
         <nav
           class="sidebarRegion"
@@ -2667,6 +2632,18 @@ exports[`preferences - navigation to extension specific preferences > given in p
                     class="label"
                   >
                     App
+                  </div>
+                </div>
+                <div
+                  class="Tab flex gap-2 items-center"
+                  data-preference-tab-link-test="personalization"
+                  role="tab"
+                  tabindex="0"
+                >
+                  <div
+                    class="label"
+                  >
+                    Personalization
                   </div>
                 </div>
                 <div
@@ -2737,97 +2714,6 @@ exports[`preferences - navigation to extension specific preferences > given in p
               >
                 Application
               </h2>
-              <div
-                data-preference-item-test="theme"
-              >
-                <section
-                  id="appearance"
-                >
-                  <div
-                    class="SubTitle"
-                  >
-                    Theme
-                     
-                  </div>
-                  <div
-                    class="Select theme-lens css-b62m3t-container"
-                  >
-                    <span
-                      class="css-1f43avz-a11yText-A11yText"
-                      id="react-select-theme-input-live-region"
-                    />
-                    <span
-                      aria-atomic="false"
-                      aria-live="polite"
-                      aria-relevant="additions text"
-                      class="css-1f43avz-a11yText-A11yText"
-                      role="log"
-                    />
-                    <div
-                      class="Select__control css-13cymwt-control"
-                    >
-                      <div
-                        class="Select__value-container Select__value-container--has-value css-hlgwow"
-                      >
-                        <div
-                          class="Select__single-value css-1dimb5e-singleValue"
-                        >
-                          Sync with computer
-                        </div>
-                        <div
-                          class="Select__input-container css-19bb58m"
-                          data-value=""
-                        >
-                          <input
-                            aria-activedescendant=""
-                            aria-autocomplete="list"
-                            aria-expanded="false"
-                            aria-haspopup="true"
-                            autocapitalize="none"
-                            autocomplete="off"
-                            autocorrect="off"
-                            class="Select__input"
-                            id="theme-input"
-                            role="combobox"
-                            spellcheck="false"
-                            style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
-                            tabindex="0"
-                            type="text"
-                            value=""
-                          />
-                        </div>
-                      </div>
-                      <div
-                        class="Select__indicators css-1wy0on6"
-                      >
-                        <span
-                          class="Select__indicator-separator css-1u9des2-indicatorSeparator"
-                        />
-                        <div
-                          aria-hidden="true"
-                          class="Select__indicator Select__dropdown-indicator css-1xc3v61-indicatorContainer"
-                        >
-                          <svg
-                            aria-hidden="true"
-                            class="css-tj5bde-Svg"
-                            focusable="false"
-                            height="20"
-                            viewBox="0 0 20 20"
-                            width="20"
-                          >
-                            <path
-                              d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
-                            />
-                          </svg>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </section>
-              </div>
-              <div
-                class="HorizontalLine size-xl"
-              />
               <div
                 data-preference-item-test="extension-install-registry"
               >
@@ -2918,11 +2804,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
                     class="mt-4 mb-5 leading-relaxed"
                   >
                     This setting is to change the registry URL for installing extensions by name. 
-                    If you are unable to access the default registry (https://registry.npmjs.org) you can change it in your 
-                    <b>
-                      .npmrc
-                    </b>
-                     file or in the input below.
+                    If you are unable to access the default registry (https://registry.npmjs.org) you can enter another one below.
                   </p>
                   <div
                     class="Input theme round black disabled invalid"
@@ -3298,7 +3180,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
           aria-live="assertive"
           id="DndLiveRegion-0"
           role="status"
-          style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+          style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px 0px 0px 0px); clip-path: inset(100%); white-space: nowrap;"
         />
       </div>
       <div
@@ -3432,7 +3314,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
         id="lens-views"
       />
       <div
-        class="SettingLayout showNavigation Preferences"
+        class="SettingLayout showNavigation withCloseButton Preferences"
       >
         <nav
           class="sidebarRegion"
@@ -3461,6 +3343,18 @@ exports[`preferences - navigation to extension specific preferences > given in p
                     class="label"
                   >
                     App
+                  </div>
+                </div>
+                <div
+                  class="Tab flex gap-2 items-center"
+                  data-preference-tab-link-test="personalization"
+                  role="tab"
+                  tabindex="0"
+                >
+                  <div
+                    class="label"
+                  >
+                    Personalization
                   </div>
                 </div>
                 <div
@@ -3570,97 +3464,6 @@ exports[`preferences - navigation to extension specific preferences > given in p
                 Application
               </h2>
               <div
-                data-preference-item-test="theme"
-              >
-                <section
-                  id="appearance"
-                >
-                  <div
-                    class="SubTitle"
-                  >
-                    Theme
-                     
-                  </div>
-                  <div
-                    class="Select theme-lens css-b62m3t-container"
-                  >
-                    <span
-                      class="css-1f43avz-a11yText-A11yText"
-                      id="react-select-theme-input-live-region"
-                    />
-                    <span
-                      aria-atomic="false"
-                      aria-live="polite"
-                      aria-relevant="additions text"
-                      class="css-1f43avz-a11yText-A11yText"
-                      role="log"
-                    />
-                    <div
-                      class="Select__control css-13cymwt-control"
-                    >
-                      <div
-                        class="Select__value-container Select__value-container--has-value css-hlgwow"
-                      >
-                        <div
-                          class="Select__single-value css-1dimb5e-singleValue"
-                        >
-                          Sync with computer
-                        </div>
-                        <div
-                          class="Select__input-container css-19bb58m"
-                          data-value=""
-                        >
-                          <input
-                            aria-activedescendant=""
-                            aria-autocomplete="list"
-                            aria-expanded="false"
-                            aria-haspopup="true"
-                            autocapitalize="none"
-                            autocomplete="off"
-                            autocorrect="off"
-                            class="Select__input"
-                            id="theme-input"
-                            role="combobox"
-                            spellcheck="false"
-                            style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
-                            tabindex="0"
-                            type="text"
-                            value=""
-                          />
-                        </div>
-                      </div>
-                      <div
-                        class="Select__indicators css-1wy0on6"
-                      >
-                        <span
-                          class="Select__indicator-separator css-1u9des2-indicatorSeparator"
-                        />
-                        <div
-                          aria-hidden="true"
-                          class="Select__indicator Select__dropdown-indicator css-1xc3v61-indicatorContainer"
-                        >
-                          <svg
-                            aria-hidden="true"
-                            class="css-tj5bde-Svg"
-                            focusable="false"
-                            height="20"
-                            viewBox="0 0 20 20"
-                            width="20"
-                          >
-                            <path
-                              d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
-                            />
-                          </svg>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </section>
-              </div>
-              <div
-                class="HorizontalLine size-xl"
-              />
-              <div
                 data-preference-item-test="extension-install-registry"
               >
                 <section
@@ -3750,11 +3553,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
                     class="mt-4 mb-5 leading-relaxed"
                   >
                     This setting is to change the registry URL for installing extensions by name. 
-                    If you are unable to access the default registry (https://registry.npmjs.org) you can change it in your 
-                    <b>
-                      .npmrc
-                    </b>
-                     file or in the input below.
+                    If you are unable to access the default registry (https://registry.npmjs.org) you can enter another one below.
                   </p>
                   <div
                     class="Input theme round black disabled invalid"
@@ -4130,7 +3929,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
           aria-live="assertive"
           id="DndLiveRegion-8"
           role="status"
-          style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+          style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px 0px 0px 0px); clip-path: inset(100%); white-space: nowrap;"
         />
       </div>
       <div
@@ -4264,7 +4063,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
         id="lens-views"
       />
       <div
-        class="SettingLayout showNavigation Preferences"
+        class="SettingLayout showNavigation withCloseButton Preferences"
       >
         <nav
           class="sidebarRegion"
@@ -4293,6 +4092,18 @@ exports[`preferences - navigation to extension specific preferences > given in p
                     class="label"
                   >
                     App
+                  </div>
+                </div>
+                <div
+                  class="Tab flex gap-2 items-center"
+                  data-preference-tab-link-test="personalization"
+                  role="tab"
+                  tabindex="0"
+                >
+                  <div
+                    class="label"
+                  >
+                    Personalization
                   </div>
                 </div>
                 <div
@@ -4579,7 +4390,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
           aria-live="assertive"
           id="DndLiveRegion-10"
           role="status"
-          style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+          style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px 0px 0px 0px); clip-path: inset(100%); white-space: nowrap;"
         />
       </div>
       <div
@@ -4714,7 +4525,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
           id="lens-views"
         />
         <div
-          class="SettingLayout showNavigation Preferences"
+          class="SettingLayout showNavigation withCloseButton Preferences"
         >
           <nav
             class="sidebarRegion"
@@ -4743,6 +4554,18 @@ exports[`preferences - navigation to extension specific preferences > given in p
                       class="label"
                     >
                       App
+                    </div>
+                  </div>
+                  <div
+                    class="Tab flex gap-2 items-center"
+                    data-preference-tab-link-test="personalization"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      Personalization
                     </div>
                   </div>
                   <div
@@ -4959,7 +4782,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
             aria-live="assertive"
             id="DndLiveRegion-14"
             role="status"
-            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px 0px 0px 0px); clip-path: inset(100%); white-space: nowrap;"
           />
         </div>
         <div

@@ -17,8 +17,8 @@ import type { Location, To } from "./vendor/history";
 /**
  * In-house replacement for `react-router-dom` v5's `<Link>` / `<NavLink>`.
  *
- * `react-router` 5 is unmaintained and blocks the React 19 upgrade (see
- * `docs/v2-routing-modernization.md`). These components reproduce the small
+ * `react-router` 5 is unmaintained and does not support React 19.
+ * These components reproduce the small
  * `<Link>` / `<NavLink>` surface Freelens actually uses, driving navigation
  * through the in-house observable history (behind `observableHistoryInjectionToken`)
  * and computing the active state with the in-house `matchPath`, so the

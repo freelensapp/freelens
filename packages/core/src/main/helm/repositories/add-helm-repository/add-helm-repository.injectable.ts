@@ -7,6 +7,7 @@
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
 import execHelmInjectable from "../../exec-helm/exec-helm.injectable";
+import emitHelmRepositoriesChangedInjectable from "../emit-helm-repositories-changed.injectable";
 
 import type { HelmRepo } from "../../../../common/helm/helm-repo";
 
@@ -16,6 +17,7 @@ const addHelmRepositoryInjectable = getInjectable({
   instantiate: (di) => {
     const execHelm = di.inject(execHelmInjectable);
     const logger = di.inject(loggerInjectionToken);
+    const emitHelmRepositoriesChanged = di.inject(emitHelmRepositoriesChangedInjectable);
 
     return async (repo: HelmRepo) => {
       const { name, url, insecureSkipTlsVerify, username, password, caFile, keyFile, certFile } = repo;
@@ -51,6 +53,8 @@ const addHelmRepositoryInjectable = getInjectable({
       const result = await execHelm(args);
 
       if (result.callWasSuccessful) {
+        emitHelmRepositoriesChanged();
+
         return {
           callWasSuccessful: true as const,
         };

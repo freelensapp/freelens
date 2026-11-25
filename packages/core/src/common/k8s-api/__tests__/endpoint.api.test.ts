@@ -5,6 +5,7 @@
  */
 
 import { formatEndpointSubset } from "@freelensapp/kube-object";
+import { describe, expect, it } from "vitest";
 
 describe("endpoint tests", () => {
   describe("EndpointSubset", () => {

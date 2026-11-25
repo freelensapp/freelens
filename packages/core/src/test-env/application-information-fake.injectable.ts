@@ -18,7 +18,8 @@ export const applicationInformationFakeInjectable = getInjectable({
     k8sProxyVersion: "1.1.0",
     bundledKubectlVersion: "1.31.1",
     bundledHelmVersion: "3.16.2",
-    contentSecurityPolicy: "script-src 'unsafe-eval' 'self'; frame-src http://*.localhost:*/; img-src * data:",
+    contentSecurityPolicy:
+      "script-src 'unsafe-eval' 'self' freelens-extension:; frame-src http://*.localhost:*/; img-src * data:",
     welcomeRoute: "/welcome",
     copyright: "some-copyright-information",
     description: "some-descriptive-text",

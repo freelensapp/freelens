@@ -4,6 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import focusWindowInjectable from "../../renderer/navigation/focus-window.injectable";
 

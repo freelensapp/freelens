@@ -5,8 +5,9 @@
  */
 
 import { loggerInjectionToken } from "@freelensapp/logger";
-import { backoffCaller, byOrderNumber, withConcurrencyLimit } from "@freelensapp/utilities";
+import { backoffCaller, byOrderNumber } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
+import { limitAsync } from "es-toolkit";
 import { apiVersionsRequesterInjectionToken } from "./api-versions-requester";
 import broadcastConnectionUpdateInjectable from "./broadcast-connection-update.injectable";
 import requestKubeApiResourcesForInjectable from "./request-kube-api-resources-for.injectable";
@@ -15,13 +16,21 @@ import type { AsyncResult } from "@freelensapp/utilities";
 
 import type { Cluster } from "../../common/cluster/cluster";
 import type { KubeApiResource } from "../../common/rbac";
+import type { KubeResourceListGroup } from "./api-versions-requester";
 
-export type RequestApiResources = (cluster: Cluster) => AsyncResult<KubeApiResource[], Error>;
-
-export interface KubeResourceListGroup {
-  group: string;
-  path: string;
+export interface RequestApiResourcesOptions {
+  /**
+   * Whether the resources are no longer wanted, as when the cluster was
+   * disconnected while they were requested. The request then stops retrying and
+   * fails without warnings.
+   */
+  isCanceled?: () => boolean;
 }
+
+export type RequestApiResources = (
+  cluster: Cluster,
+  options?: RequestApiResourcesOptions,
+) => AsyncResult<KubeApiResource[], Error>;
 
 const requestApiResourcesInjectable = getInjectable({
   id: "request-api-resources",
@@ -30,26 +39,50 @@ const requestApiResourcesInjectable = getInjectable({
     const apiVersionRequesters = di.injectMany(apiVersionsRequesterInjectionToken).sort(byOrderNumber);
     const requestKubeApiResourcesFor = di.inject(requestKubeApiResourcesForInjectable);
 
-    return async (...args) => {
-      const [cluster] = args;
+    return async (cluster, { isCanceled = () => false } = {}) => {
+      const canceled = () => ({
+        callWasSuccessful: false as const,
+        error: new Error("The request of the kube API resources was canceled"),
+      });
       const broadcastConnectionUpdate = di.inject(broadcastConnectionUpdateInjectable, cluster);
-      const requestKubeApiResources = withConcurrencyLimit(5)(requestKubeApiResourcesFor(cluster));
+      const requestKubeApiResourcesOfCluster = requestKubeApiResourcesFor(cluster);
+      // Checked once a request is out of the queue, so that the queued ones of a
+      // canceled request are not sent.
+      const requestKubeApiResources = limitAsync(
+        async (listGroup: KubeResourceListGroup) =>
+          isCanceled() ? canceled() : requestKubeApiResourcesOfCluster(listGroup),
+        5,
+      );
 
       const groupLists: KubeResourceListGroup[] = [];
 
       for (const apiVersionRequester of apiVersionRequesters) {
-        const result = await backoffCaller(() => apiVersionRequester.request(cluster), {
-          onIntermediateError: (error, attempt) => {
-            broadcastConnectionUpdate({
-              message: `Failed to list kube API resource kinds, attempt ${attempt}: ${error}`,
-              level: "warning",
-            });
-            logger.warn(`[LIST-API-RESOURCES]: failed to list kube api resources: ${error}`, {
-              attempt,
-              clusterId: cluster.id,
-            });
+        // `backoffCaller` cannot be stopped: a canceled attempt succeeds with
+        // nothing, so that it does not retry.
+        const result = await backoffCaller(
+          async () =>
+            isCanceled() ? { callWasSuccessful: true as const, response: [] } : apiVersionRequester.request(cluster),
+          {
+            onIntermediateError: (error, attempt) => {
+              if (isCanceled()) {
+                return;
+              }
+
+              broadcastConnectionUpdate({
+                message: `Failed to list kube API resource kinds, attempt ${attempt}: ${error}`,
+                level: "warning",
+              });
+              logger.warn(`[LIST-API-RESOURCES]: failed to list kube api resources: ${error}`, {
+                attempt,
+                clusterId: cluster.id,
+              });
+            },
           },
-        });
+        );
+
+        if (isCanceled()) {
+          return canceled();
+        }
 
         if (!result.callWasSuccessful) {
           return result;
@@ -64,6 +97,11 @@ const requestApiResourcesInjectable = getInjectable({
         Object.assign(await requestKubeApiResources(listGroup), { listGroup }),
       );
       const results = await Promise.all(apiResourceRequests);
+
+      if (isCanceled()) {
+        return canceled();
+      }
+
       const resources: KubeApiResource[] = [];
 
       for (const result of results) {

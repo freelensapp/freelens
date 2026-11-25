@@ -17,7 +17,7 @@
  * whole class of Vite version-collision bugs where a single bare `path-to-regexp`
  * specifier collapsed to a v8 that then crashed on v1-dialect paths — the source
  * is vendored here so the v1 dialect stays the routing contract and we own the
- * code. See `docs/v2-routing-modernization.md`.
+ * code.
  *
  * Deliberately faithful to upstream so it can be diffed against v1.9.0. Only the
  * following changes were made:

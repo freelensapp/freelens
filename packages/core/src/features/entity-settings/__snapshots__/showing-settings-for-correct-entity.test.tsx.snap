@@ -375,7 +375,7 @@ exports[`Showing correct entity settings > renders 1`] = `
             aria-live="assertive"
             id="DndLiveRegion-0"
             role="status"
-            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px 0px 0px 0px); clip-path: inset(100%); white-space: nowrap;"
           />
         </div>
         <div
@@ -511,7 +511,7 @@ exports[`Showing correct entity settings > when navigating to local cluster enti
           id="lens-views"
         />
         <div
-          class="SettingLayout showNavigation"
+          class="SettingLayout showNavigation withCloseButton"
           data-testid="entity-settings"
         >
           <nav
@@ -613,7 +613,7 @@ exports[`Showing correct entity settings > when navigating to local cluster enti
                   <div
                     class="label"
                   >
-                    Node Shell
+                    Node Shell and Debug
                   </div>
                 </div>
               </div>
@@ -781,7 +781,7 @@ exports[`Showing correct entity settings > when navigating to local cluster enti
             aria-live="assertive"
             id="DndLiveRegion-11"
             role="status"
-            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px 0px 0px 0px); clip-path: inset(100%); white-space: nowrap;"
           />
         </div>
         <div
@@ -917,7 +917,7 @@ exports[`Showing correct entity settings > when navigating to non-local cluster 
           id="lens-views"
         />
         <div
-          class="SettingLayout showNavigation"
+          class="SettingLayout showNavigation withCloseButton"
           data-testid="entity-settings"
         >
           <nav
@@ -1007,7 +1007,7 @@ exports[`Showing correct entity settings > when navigating to non-local cluster 
                   <div
                     class="label"
                   >
-                    Node Shell
+                    Node Shell and Debug
                   </div>
                 </div>
               </div>
@@ -1056,7 +1056,7 @@ exports[`Showing correct entity settings > when navigating to non-local cluster 
                     <small
                       class="hint"
                     >
-                      HTTP Proxy server. Used for communicating with Kubernetes API.
+                      Proxy for the connections of the views of this cluster to its Kubernetes API. Takes an http://, https:// or socks5:// URL. A proxy-url in the kubeconfig takes precedence. It is also HTTPS_PROXY in the terminal of this cluster. Reconnect the cluster and reopen its terminal after changing it.
                     </small>
                   </section>
                 </section>
@@ -1208,7 +1208,7 @@ exports[`Showing correct entity settings > when navigating to non-local cluster 
             aria-live="assertive"
             id="DndLiveRegion-2"
             role="status"
-            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px 0px 0px 0px); clip-path: inset(100%); white-space: nowrap;"
           />
         </div>
         <div
@@ -1344,7 +1344,7 @@ exports[`Showing correct entity settings > when navigating to weblink entity set
           id="lens-views"
         />
         <div
-          class="SettingLayout showNavigation"
+          class="SettingLayout showNavigation withCloseButton"
           data-testid="entity-settings"
         >
           <nav
@@ -1536,7 +1536,7 @@ exports[`Showing correct entity settings > when navigating to weblink entity set
             aria-live="assertive"
             id="DndLiveRegion-20"
             role="status"
-            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px 0px 0px 0px); clip-path: inset(100%); white-space: nowrap;"
           />
         </div>
         <div
