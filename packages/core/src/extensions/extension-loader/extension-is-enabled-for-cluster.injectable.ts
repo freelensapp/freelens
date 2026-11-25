@@ -35,7 +35,8 @@ const extensionIsEnabledForClusterInjectable = getInjectable({
 
     void check().then(
       action((allowed) => {
-        result.set(allowed === true);
+        // Preserve the legacy behavior for non-boolean values from JavaScript extensions.
+        result.set(Boolean(allowed));
       }),
     );
 
