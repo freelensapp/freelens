@@ -118,7 +118,7 @@ catalog:
   proper-lockfile: 4.1.2
   react-colorful: 5.8.1
   react-select: 5.10.2
-  react-window: 2.5.3
+  react-window: 2.5.4
   rfc6902: 5.5.0
   selfsigned: 5.5.0
   sharp: 0.35.5
