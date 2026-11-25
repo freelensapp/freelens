@@ -53,7 +53,7 @@ catalog:
   turbo: 2.11.13
   vite: 8.3.8
   # Electron
-  electron: 44.11.5
+  electron: 44.11.6
   '@electron/notarize': 3.1.2
   electron-devtools-installer: 4.0.0
   # Types and utilities
