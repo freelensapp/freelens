@@ -9,6 +9,7 @@ import { withTooltip } from "@freelensapp/tooltip";
 import { getInjectable } from "@ogre-tools/injectable";
 import { observer } from "mobx-react";
 import React from "react";
+import { getEventLastSeen } from "../../events/event-occurrence";
 import eventStoreInjectable from "../../events/store.injectable";
 import { COLUMN_PRIORITY } from "./column-priority";
 
@@ -38,7 +39,8 @@ const getLatestWarningEvent = (events: KubeEvent[]): KubeEvent | undefined => {
       continue;
     }
 
-    const timestampMs = event.lastTimestamp ? Date.parse(event.lastTimestamp) : event.getCreationTimestamp();
+    const lastSeen = getEventLastSeen(event);
+    const timestampMs = lastSeen ? Date.parse(lastSeen) : event.getCreationTimestamp();
 
     if (timestampMs > latestWarningTimestamp) {
       latestWarningTimestamp = timestampMs;

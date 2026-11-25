@@ -23,6 +23,7 @@ import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { TabLayout } from "../layout/tab-layout-2";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
 import { WithTooltip } from "../with-tooltip";
+import { getEventCount, getEventLastSeen } from "./event-occurrence";
 import eventStoreInjectable from "./store.injectable";
 
 import type { KubeEventApi } from "@freelensapp/kube-api";
@@ -85,9 +86,13 @@ class NonInjectedEvents extends React.Component<Dependencies & EventsProps> {
     [columnId.namespace]: (event) => event.getNs(),
     [columnId.type]: (event) => event.type,
     [columnId.object]: (event) => event.involvedObject.name,
-    [columnId.count]: (event) => event.getCount(),
+    [columnId.count]: (event) => getEventCount(event),
     [columnId.age]: (event) => -event.getCreationTimestamp(),
-    [columnId.lastSeen]: (event) => (event.lastTimestamp ? -new Date(event.lastTimestamp).getTime() : 0),
+    [columnId.lastSeen]: (event) => {
+      const lastSeen = getEventLastSeen(event);
+
+      return lastSeen ? -new Date(lastSeen).getTime() : 0;
+    },
   };
 
   constructor(props: Dependencies & EventsProps) {
@@ -198,6 +203,7 @@ class NonInjectedEvents extends React.Component<Dependencies & EventsProps> {
         renderTableContents={(event) => {
           const { involvedObject, type, message } = event;
           const isWarning = event.isWarning();
+          const lastSeen = getEventLastSeen(event);
 
           return [
             <WithTooltip>{type}</WithTooltip>, // type of event: "Normal" or "Warning"
@@ -214,10 +220,10 @@ class NonInjectedEvents extends React.Component<Dependencies & EventsProps> {
               <WithTooltip>{`${involvedObject.kind}: ${involvedObject.name}`}</WithTooltip>
             </Link>,
             <WithTooltip>{event.getSource()}</WithTooltip>,
-            event.getCount(),
+            getEventCount(event),
             <KubeObjectAge key="age" object={event} />,
-            <WithTooltip tooltip={event.lastTimestamp ? new Date(event.lastTimestamp) : undefined}>
-              <ReactiveDuration key="last-seen" timestamp={event.lastTimestamp} />
+            <WithTooltip tooltip={lastSeen ? new Date(lastSeen) : undefined}>
+              <ReactiveDuration key="last-seen" timestamp={lastSeen} />
             </WithTooltip>,
           ];
         }}
