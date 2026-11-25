@@ -8,7 +8,7 @@
   x="0px"
   y="0px"
   viewBox="0 0 1303.8 737.4"
-  style="enable-background:new 0 0 1303.8 737.4;"
+  style="enable-background: new 0 0 1303.8 737.4;"
   xml:space="preserve"
 >
   <style type="text/css">
@@ -133,7 +133,7 @@
       <rect id="SVGID_1_" width="1303.8" height="737.4" />
     </defs>
     <clipPath id="SVGID_2_">
-      <use xlink:href="#SVGID_1_" style="overflow:visible;" />
+      <use xlink:href="#SVGID_1_" style="overflow: visible;" />
     </clipPath>
     <g class="st0">
       <path
@@ -161,7 +161,7 @@
       <rect id="SVGID_3_" width="1303.8" height="737.4" />
     </defs>
     <clipPath id="SVGID_4_">
-      <use xlink:href="#SVGID_3_" style="overflow:visible;" />
+      <use xlink:href="#SVGID_3_" style="overflow: visible;" />
     </clipPath>
     <g class="st14">
       <path
@@ -317,7 +317,7 @@
       <rect id="SVGID_5_" width="1303.8" height="737.4" />
     </defs>
     <clipPath id="SVGID_6_">
-      <use xlink:href="#SVGID_5_" style="overflow:visible;" />
+      <use xlink:href="#SVGID_5_" style="overflow: visible;" />
     </clipPath>
     <g class="st16">
       <path
@@ -333,7 +333,7 @@
       <rect id="SVGID_7_" width="1303.8" height="737.4" />
     </defs>
     <clipPath id="SVGID_8_">
-      <use xlink:href="#SVGID_7_" style="overflow:visible;" />
+      <use xlink:href="#SVGID_7_" style="overflow: visible;" />
     </clipPath>
     <g class="st17">
       <path
