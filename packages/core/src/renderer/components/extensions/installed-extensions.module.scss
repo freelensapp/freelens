@@ -41,3 +41,16 @@
   @apply opacity-10;
   --size: 180px;
 }
+
+.frozenRow {
+  @apply opacity-30 pointer-events-none;
+}
+
+.notFound {
+  @apply flex items-center justify-center h-24;
+  color: var(--textColorDimmed);
+}
+
+.searchInput > label {
+  box-shadow: none !important;
+}

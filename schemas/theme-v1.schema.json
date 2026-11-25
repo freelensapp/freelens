@@ -172,6 +172,26 @@
               "type": "string",
               "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
             },
+            "cardBackground": {
+              "description": "Background of cards",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "cardBorder": {
+              "description": "Border of cards",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "cardTextPrimary": {
+              "description": "Main text of cards",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
+            "cardTextSecondary": {
+              "description": "Secondary text of cards",
+              "type": "string",
+              "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+            },
             "layoutBackground": {
               "description": "Background of the layout",
               "type": "string",

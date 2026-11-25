@@ -8,7 +8,7 @@ import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
 import extensionLoaderInjectable from "../../../../extensions/extension-loader/extension-loader.injectable";
 
-import type { InstalledExtension } from "@freelensapp/legacy-extensions";
+import type { InstalledExtension } from "../../../../extensions/installed-extension";
 
 const installedExtensionsByNameInjectable = getInjectable({
   id: "installed-extensions-by-name",

@@ -7,9 +7,10 @@
 import { Icon } from "@freelensapp/icon";
 import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import { Spinner } from "@freelensapp/spinner";
+import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import React, { useMemo, useState } from "react";
+import { useState } from "react";
 import extensionDiscoveryInjectable from "../../../extensions/extension-discovery/extension-discovery.injectable";
 import extensionInstallationStateStoreInjectable from "../../../extensions/extension-installation-state-store/extension-installation-state-store.injectable";
 import extensionLoaderInjectable from "../../../extensions/extension-loader/extension-loader.injectable";
@@ -22,7 +23,6 @@ import disableExtensionInjectable from "./disable-extension.injectable";
 import enableExtensionInjectable from "./enable-extension.injectable";
 import { getMessageFromError } from "./get-message-from-error/get-message-from-error";
 import styles from "./installed-extensions.module.scss";
-import { SearchBar } from "./search-bar/search-bar";
 import userExtensionsInjectable from "./user-extensions/user-extensions.injectable";
 
 import type { ShowNotification } from "@freelensapp/notifications";
@@ -37,6 +37,8 @@ import type { SortableTableColumn } from "../table/sortable-table";
 import type { ConfirmUninstallExtension } from "./confirm-uninstall-extension.injectable";
 import type { DisableExtension } from "./disable-extension.injectable";
 import type { EnableExtension } from "./enable-extension.injectable";
+
+export interface InstalledExtensionsProps {}
 
 interface Dependencies {
   extensionDiscovery: ExtensionDiscovery;
@@ -90,7 +92,9 @@ const NonInjectedInstalledExtensions = observer(
       );
     }
 
-    if (extensions.length === 0) {
+    const extensions = userExtensions.get();
+
+    if (extensions.length == 0) {
       return (
         <div className="flex flex-col h-full items-center justify-center">
           <Icon material="extension" className={styles.noItemsIcon} />
@@ -224,26 +228,16 @@ const NonInjectedInstalledExtensions = observer(
 
     return (
       <section data-testid="extensions-table">
-        <SearchBar value={searchQuery} onChange={setSearchQuery} placeholder="Search..." />
-        <div className={layoutStyles.grid}>
-          {filteredExtensions.map((extension) => {
-            const { id, isEnabled } = extension;
-            const isUninstalling = extensionInstallationStateStore.isExtensionUninstalling(id);
-
-            return (
-              <ExtensionCard
-                key={extension.id}
-                variant="installed"
-                extension={extension}
-                isUninstalling={isUninstalling}
-                isDisabled={isEnabled === false}
-                onUninstall={() => confirmUninstallExtension(extension)}
-                onDisable={() => disableExtension(id)}
-                onEnable={() => enableExtension(id)}
-              />
-            );
-          })}
+        <div className="flex items-center justify-between mb-6">
+          <div className="mr-6">
+            <h2 className={styles.title}>Installed extensions</h2>
+          </div>
+          <div>
+            <SearchInput value={search} theme="round-black" onChange={setSearch} className={styles.searchInput} />
+          </div>
         </div>
+        <SortableTable columns={columns} items={matchedExtensions} getItemKey={(extension) => extension.id} />
+        {matchedExtensions.length === 0 && <div className={styles.notFound}>No data found</div>}
       </section>
     );
   },

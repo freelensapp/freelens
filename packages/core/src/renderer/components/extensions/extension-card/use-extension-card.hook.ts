@@ -3,16 +3,15 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { gt } from "semver";
+import * as verkit from "verkit";
 
-import type { InstalledExtension } from "@freelensapp/legacy-extensions";
-
+import type { InstalledExtension } from "../../../../extensions/installed-extension";
 import type { MarketplaceExtension } from "../marketplace-extensions/marketplace-extensions.injectable";
 import type { ExtensionActionState } from "./extension-action-button/extension-action-button";
 import type { ExtensionCardProps } from "./extension-card";
 
 const hasNewerVersion = (marketplaceVersion: string, installedVersion: string): boolean =>
-  gt(marketplaceVersion, installedVersion);
+  verkit.isGreaterThan(marketplaceVersion, installedVersion);
 
 const deriveCtaState = (props: ExtensionCardProps): ExtensionActionState => {
   if (props.variant === "marketplace" && props.isUpdating) return "updating";

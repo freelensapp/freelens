@@ -12,11 +12,10 @@ import {
   markMarketplaceUpdating,
 } from "./marketplace-installing-store";
 
-import type { InstalledExtension } from "@freelensapp/legacy-extensions";
-
 import type { IComputedValue } from "mobx";
 
 import type { IAsyncComputed } from "../../../../common/utils/async-computed";
+import type { InstalledExtension } from "../../../../extensions/installed-extension";
 import type { ExtensionInstallationStateStore } from "../../../../extensions/extension-installation-state-store/extension-installation-state-store";
 import type { ConfirmUninstallExtension } from "../confirm-uninstall-extension.injectable";
 import type { InstallExtensionFromInput } from "../install-extension-from-input.injectable";

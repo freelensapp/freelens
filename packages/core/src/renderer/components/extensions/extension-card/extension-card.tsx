@@ -15,8 +15,7 @@ import { ExtensionStatusBadge } from "./extension-status-badge/extension-status-
 import { ExtensionVersionPill } from "./extension-version-pill/extension-version-pill";
 import { useExtensionCard } from "./use-extension-card.hook";
 
-import type { InstalledExtension } from "@freelensapp/legacy-extensions";
-
+import type { InstalledExtension } from "../../../../extensions/installed-extension";
 import type { MarketplaceExtension } from "../marketplace-extensions/marketplace-extensions.injectable";
 
 interface MarketplaceCardProps {

@@ -9,6 +9,7 @@ import styles from "./extension-collaborators-popover.module.scss";
 import { useAuthorName } from "./use-author-name.hook";
 import { useExtensionCollaboratorsPopover } from "./use-extension-collaborators-popover.hook";
 
+import type { StrictReactNode } from "@freelensapp/utilities";
 import type { OpenLinkInBrowser } from "../../../../../../common/utils/open-link-in-browser.injectable";
 import type { MarketplaceExtensionAuthor } from "../../../marketplace-extensions/marketplace-extensions.injectable";
 
@@ -22,7 +23,11 @@ interface Dependencies {
   openLinkInBrowser: OpenLinkInBrowser;
 }
 
-const TooltipableName = withTooltip(({ className, children, ...elemProps }: React.HTMLAttributes<HTMLSpanElement>) => (
+interface TooltipableNameProps extends React.HTMLAttributes<HTMLSpanElement> {
+  children?: StrictReactNode;
+}
+
+const TooltipableName = withTooltip(({ className, children, ...elemProps }: TooltipableNameProps) => (
   <span className={className} {...elemProps}>
     {children}
   </span>

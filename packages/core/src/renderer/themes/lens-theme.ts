@@ -90,6 +90,10 @@ export type LensColorName =
   | "mainBackground"
   | "secondaryBackground"
   | "contentColor"
+  | "cardBackground"
+  | "cardBorder"
+  | "cardTextPrimary"
+  | "cardTextSecondary"
   | "layoutBackground"
   | "layoutTabsBackground"
   | "layoutTabsActiveColor"
@@ -184,8 +188,4 @@ export type LensColorName =
   | "navSelectedBackground"
   | "navHoverColor"
   | "hrColor"
-  | "tooltipBackground"
-  | "cardBackground"
-  | "cardBorder"
-  | "cardTextPrimary"
-  | "cardTextSecondary";
+  | "tooltipBackground";
