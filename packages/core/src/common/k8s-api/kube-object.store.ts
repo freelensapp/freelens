@@ -592,6 +592,8 @@ export class KubeObjectStore<
     let cancelReconnect: Disposer | undefined;
     // Failures in a row since the watch last connected.
     let failures = 0;
+    // The resourceVersion of the last watch that failed with a 500 Status.
+    let statusFailedFrom: string | undefined;
     const signal = abortController.signal;
     const { watchReconnect } = this.dependencies;
 
@@ -620,6 +622,7 @@ export class KubeObjectStore<
 
     const onConnect = () => {
       failures = 0;
+      statusFailedFrom = undefined;
       watchReconnect?.connected();
     };
 
@@ -658,13 +661,21 @@ export class KubeObjectStore<
           // the same resourceVersion then fails on every retry. Such a 500 has
           // a Status body. A 500 freelens-proxy sends itself while the cluster
           // is unreachable is plain text: keep the retry for it, as a list
-          // failing then would empty the store.
+          // failing then would empty the store. A 500 Status can be transient
+          // too, a timeout of the storage for example, when a list would fail
+          // as well: list again only when it repeats for the same
+          // resourceVersion.
           void error
             .json()
             .catch(() => undefined)
             .then((body) => {
               if (signal.aborted) return;
-              retryLater(isKubeStatusData(body) ? reloadAndWatch : startNewWatch);
+
+              const resourceVersion = this.api.getResourceVersion(namespace);
+              const repeated = isKubeStatusData(body) && resourceVersion === statusFailedFrom;
+
+              if (isKubeStatusData(body)) statusFailedFrom = resourceVersion;
+              retryLater(repeated ? reloadAndWatch : startNewWatch);
             });
         } else {
           // not sure what to do, best to retry
@@ -682,6 +693,7 @@ export class KubeObjectStore<
       if (data) {
         // Also for an API whose `watch` does not call `onConnect`.
         failures = 0;
+        statusFailedFrom = undefined;
         this.eventsBuffer.push(data);
       }
     };

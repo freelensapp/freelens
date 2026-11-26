@@ -926,28 +926,113 @@ describe("KubeObjectStore", () => {
       const statusBody = (code: number, message: string) =>
         JSON.stringify({ kind: "Status", apiVersion: "v1", status: "Failure", code, message });
 
-      it("lists again before restarting a watch the API server failed with a 500 Status", async () => {
+      it("lists again before restarting a watch the API server failed twice with a 500 Status from the same resourceVersion", async () => {
         const { watchReconnect, scheduled } = createWatchReconnect();
         const { store, watch, loadItems, watchCallbacks } = createWatchedStore(watchReconnect);
+        // what kine or k8s-dqlite make of a watch from a compacted revision
+        const compacted = () =>
+          new Response(statusBody(500, "failed to list /registry/events/ for revision 1"), {
+            status: 500,
+            headers: { "content-type": "application/json" },
+          });
 
         await store.loadAll({});
         store.subscribe();
         expect(loadItems).toHaveBeenCalledTimes(1);
 
-        // what kine or k8s-dqlite make of a watch from a compacted revision
+        // the first one may be transient: the watch restarts as it is
+        watchCallbacks[0](null, compacted());
+        await vi.waitFor(() => expect(scheduled).toHaveLength(1));
+        scheduled[0].reconnect();
+        expect(watch).toHaveBeenCalledTimes(2);
+        expect(loadItems).toHaveBeenCalledTimes(1);
+
+        // the same resourceVersion fails again
+        watchCallbacks[1](null, compacted());
+        await vi.waitFor(() => expect(scheduled).toHaveLength(2));
+        scheduled[1].reconnect();
+
+        await vi.waitFor(() => expect(watch).toHaveBeenCalledTimes(3));
+        expect(loadItems).toHaveBeenCalledTimes(2);
+      });
+
+      it("keeps the store loaded when a single 500 Status comes while a list would fail too", async () => {
+        const { watchReconnect, scheduled } = createWatchReconnect();
+        const { store, watch, loadItems, watchCallbacks } = createWatchedStore(watchReconnect);
+
+        await store.loadAll({});
+        store.subscribe();
+        // the storage times out: a list now would fail as the watch did, and reset the store
+        loadItems.mockImplementation(() => {
+          throw new Error("etcdserver: request timed out");
+        });
+
         watchCallbacks[0](
           null,
-          new Response(statusBody(500, "failed to list /registry/events/ for revision 1"), {
+          new Response(statusBody(500, "etcdserver: request timed out"), {
             status: 500,
             headers: { "content-type": "application/json" },
           }),
         );
         await vi.waitFor(() => expect(scheduled).toHaveLength(1));
-
         scheduled[0].reconnect();
 
-        await vi.waitFor(() => expect(watch).toHaveBeenCalledTimes(2));
-        expect(loadItems).toHaveBeenCalledTimes(2);
+        expect(watch).toHaveBeenCalledTimes(2);
+        expect(loadItems).toHaveBeenCalledTimes(1);
+        expect(store.isLoaded).toBe(true);
+      });
+
+      it("restarts a watch without listing again after a 500 Status that follows a connect", async () => {
+        const { watchReconnect, scheduled } = createWatchReconnect();
+        const { store, watch, loadItems, watchCallbacks, watchOnConnects } = createWatchedStore(watchReconnect);
+        const timedOut = () =>
+          new Response(statusBody(500, "etcdserver: request timed out"), {
+            status: 500,
+            headers: { "content-type": "application/json" },
+          });
+
+        await store.loadAll({});
+        store.subscribe();
+
+        watchCallbacks[0](null, timedOut());
+        await vi.waitFor(() => expect(scheduled).toHaveLength(1));
+        scheduled[0].reconnect();
+        watchOnConnects[1]();
+
+        // the same resourceVersion, but the watch connected in between
+        watchCallbacks[1](null, timedOut());
+        await vi.waitFor(() => expect(scheduled).toHaveLength(2));
+        scheduled[1].reconnect();
+
+        expect(watch).toHaveBeenCalledTimes(3);
+        expect(loadItems).toHaveBeenCalledTimes(1);
+      });
+
+      it("restarts a watch without listing again after a 500 Status that follows an event, for a watch without onConnect", async () => {
+        const { watchReconnect, scheduled } = createWatchReconnect();
+        const { store, watch, loadItems, watchCallbacks } = createWatchedStore(watchReconnect);
+        const timedOut = () =>
+          new Response(statusBody(500, "etcdserver: request timed out"), {
+            status: 500,
+            headers: { "content-type": "application/json" },
+          });
+
+        await store.loadAll({});
+        store.subscribe();
+
+        watchCallbacks[0](null, timedOut());
+        await vi.waitFor(() => expect(scheduled).toHaveLength(1));
+        scheduled[0].reconnect();
+
+        // an event proves the watch connected, also when the API does not report it
+        (watchCallbacks[1] as (data: unknown, error: unknown) => void)({ type: "ERROR", object: {} }, null);
+
+        watchCallbacks[1](null, timedOut());
+        await vi.waitFor(() => expect(scheduled).toHaveLength(2));
+        scheduled[1].reconnect();
+
+        expect(watch).toHaveBeenCalledTimes(3);
+        expect(loadItems).toHaveBeenCalledTimes(1);
       });
 
       it("restarts a watch without listing again after a 500 that is not from the API server", async () => {
