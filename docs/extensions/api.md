@@ -582,6 +582,14 @@ on its legend swatches, `data-healthy` on the bar segments of a healthy
 status of a status card, and `data-failing` on its legend rows of a failing
 one.
 
+A status card animates a change of its statuses, so that its height changes
+smoothly rather than at once, and not at all with reduced motion. The row of
+a status without items, whether given with a count of 0 or left out of the
+list, closes rather than leaving the card at once, and opens again when the
+status gets items back. A row follows its status by its `label`, so the
+labels of one card are distinct. A closed row is not part of the card: it is
+hidden from screen readers, and has no test id and no `data-failing`.
+
 `packages/core/src/extensions/__tests__/extension-api-overview-cards.test.tsx`
 covers the components and the preference as an extension reaches them.
 
