@@ -38,17 +38,21 @@ nvm install 24.22.3
 nvm use 24.22.3
 ```
 
-Install Pnpm (if is not yet installed with mise-en-place):
+Install pnpm. `mise install` above already did, otherwise use any other
+installer:
 
 ```sh
-corepack enable pnpm
-# or
-mise exec -- corepack enable pnpm
-# or
 curl -fsSL https://get.pnpm.io/install.sh | sh -
 # or
+brew install pnpm
+# or
 winget install pnpm.pnpm
+# or
+npm install -g pnpm
 ```
+
+Any recent pnpm works: in this repository it switches itself to the version
+of `packageManager` in `package.json`.
 
 ### Build app
 

@@ -2,7 +2,7 @@
 name: port-extension-to-v2
 description: Port an existing Freelens extension written for the v1 extension API (the API inherited from Lens and OpenLens) to the Freelens v2 extension API, so that it loads on Freelens 2.x. Use when an extension declares engines.freelens ^1.x or depends on @freelensapp/extensions 1.x and the user wants it on v2. Plans the port as a migration issue, from the template that comes with this skill, and feature issues, aligns the toolchain and build with that reference template, lets the type check drive the API changes, and verifies the result in Freelens.
 license: MIT
-compatibility: Needs network access to github.com and raw.githubusercontent.com for the linked documents and issues, the gh CLI to read and open issues, and Node.js with pnpm (through corepack) to build and check the extension.
+compatibility: Needs network access to github.com and raw.githubusercontent.com for the linked documents and issues, the gh CLI to read and open issues, and Node.js with pnpm to build and check the extension.
 ---
 
 # Port a Freelens extension to v2
