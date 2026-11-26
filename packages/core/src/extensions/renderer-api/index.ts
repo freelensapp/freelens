@@ -18,3 +18,11 @@ import * as Theme from "./theming";
 import { Util } from "./utils";
 
 export { Catalog, Component, Ipc, K8s, K8sApi, LensExtension, Navigation, Theme, Util };
+
+export type {
+  DockTabParam,
+  DockTabParams,
+  DockTabRegistration,
+  ExtensionDockTabProps,
+  OpenDockTabOptions,
+} from "../../renderer/components/dock/extension/dock-tab-registration";

@@ -31,6 +31,7 @@ import { Common, Renderer } from "@freelensapp/extensions";
 import { computed, observable, runInAction } from "mobx";
 import { Component, useCallback, useMemo, useState } from "react";
 import { getProbeHost } from "../common/host-info";
+import { FixtureDockTab } from "./dock-tab";
 import { FixtureExample } from "./fixture-example";
 
 /**
@@ -111,6 +112,21 @@ export class FixtureExampleMenuItem extends Component<Common.Types.KubeObjectMen
 }
 
 export default class FixtureRendererExtension extends Renderer.LensExtension {
+  dockTabs: Renderer.DockTabRegistration[] = [
+    { id: "fixture-resource", title: "Fixture resource", components: { Tab: FixtureDockTab } },
+  ];
+
+  commands = [
+    {
+      id: "open-fixture-resource",
+      title: "Open fixture resource",
+      isActive: () => window.parent !== window && !!Renderer.Catalog.activeCluster.get(),
+      action: () => {
+        this.openDockTab("fixture-resource", { title: "Fixture pod", params: { resource: "fixture-pod" } });
+      },
+    },
+  ];
+
   /**
    * The declarative registration. It reaches the host only through the
    * registrator for this field plus `extension.register()`, so its presence in

@@ -8,6 +8,7 @@ import { loggerInjectionToken } from "@freelensapp/logger";
 import catalogCategoryRegistryInjectable from "../common/catalog/category-registry.injectable";
 import navigateToPreferencesInjectable from "../features/preferences/common/navigate-to-preferences.injectable";
 import catalogEntityRegistryInjectable from "../renderer/api/catalog/entity/registry.injectable";
+import openExtensionDockTabInjectable from "../renderer/components/dock/extension/open-dock-tab.injectable";
 import { getExtensionRoutePath } from "../renderer/routes/for-extension";
 import getExtensionPageParametersInjectable from "../renderer/routes/get-extension-page-parameters.injectable";
 import navigateToRouteInjectable from "../renderer/routes/navigate-to-route.injectable";
@@ -33,6 +34,10 @@ import type { CustomCategoryViewRegistration } from "../renderer/components/cata
 import type { CatalogEntityDetailRegistration } from "../renderer/components/catalog/entity-details/token";
 import type { CommandRegistration } from "../renderer/components/command-palette/registered-commands/commands";
 import type { CustomResourceRegistration } from "../renderer/components/custom-resource-definitions/custom-resource-registration";
+import type {
+  DockTabRegistration,
+  OpenDockTabOptions,
+} from "../renderer/components/dock/extension/dock-tab-registration";
 import type { EntitySettingRegistration } from "../renderer/components/entity-settings/extension-registrator.injectable";
 import type { KubeObjectDetailRegistration } from "../renderer/components/kube-object-details/kube-object-detail-registration";
 import type { KubeObjectMenuRegistration } from "../renderer/components/kube-object-menu/kube-object-menu-registration";
@@ -61,6 +66,7 @@ export class LensRendererExtension extends LensExtension {
   clusterPages: PageRegistration[] = [];
   clusterPageMenus: ClusterPageMenuRegistration[] = [];
   clusterFrameComponents: ClusterFrameChildComponent[] = [];
+  dockTabs: DockTabRegistration[] = [];
   appPreferences: AppPreferenceRegistration[] = [];
   appPreferenceTabs: AppPreferenceTabRegistration[] = [];
   entitySettings: EntitySettingRegistration[] = [];
@@ -136,6 +142,13 @@ export class LensRendererExtension extends LensExtension {
     this.dependencies.navigateToRoute(targetRoute, {
       query,
     });
+  }
+
+  /** Open and select a new, closable instance of this extension's dock tab type. Cluster frames only. */
+  openDockTab(typeId: string, options?: OpenDockTabOptions): string {
+    const di = getEnvironmentSpecificDiForExtensionApi("renderer");
+
+    return di.inject(openExtensionDockTabInjectable)(this, typeId, options);
   }
 
   /**

@@ -21,6 +21,7 @@ import { TabKind } from "./dock/store";
 import dockStoreInjectable from "./dock/store.injectable";
 import { DockTabs } from "./dock-tabs";
 import { EditResource } from "./edit-resource/view";
+import { ExtensionDockTabs } from "./extension/extension-dock-tab";
 import { InstallChart } from "./install-chart/view";
 import { LogsDockTab } from "./logs/view";
 import createTerminalTabInjectable from "./terminal/create-terminal-tab.injectable";
@@ -126,13 +127,16 @@ class NonInjectedDock extends React.Component<DockProps & Dependencies> {
         return <LogsDockTab key={tab.id} tab={tab} />;
       case TabKind.TERMINAL:
         return <TerminalWindow tab={tab} />;
+      case TabKind.EXTENSION:
+        // Extension content uses the persistent instance boundaries below.
+        return null;
     }
   }
 
   renderTabContent() {
     const { isOpen, height, selectedTab } = this.props.dockStore;
 
-    if (!isOpen || !selectedTab) return null;
+    if (!isOpen || !selectedTab || selectedTab.kind === TabKind.EXTENSION) return null;
 
     return (
       <div
@@ -201,6 +205,7 @@ class NonInjectedDock extends React.Component<DockProps & Dependencies> {
           </div>
         </div>
         <ErrorBoundary>{this.renderTabContent()}</ErrorBoundary>
+        <ExtensionDockTabs />
       </div>
     );
   }

@@ -903,7 +903,7 @@ On `LensRendererExtension`: `globalPages`, `clusterPages`, `clusterPageMenus`,
 `entitySettings`, `statusBarItems`, `kubeObjectDetailItems`,
 `kubeObjectMenuItems`, `kubeWorkloadsOverviewItems`, `commands`, `welcomeMenus`,
 `catalogEntityDetailItems`, `topBarItems`, `additionalCategoryColumns`,
-`customCategoryViews`, `kubeObjectHandlers`, `customResources`.
+`customCategoryViews`, `kubeObjectHandlers`, `customResources`, `dockTabs`.
 
 On `LensMainExtension`: `terminalShellEnvModifier`, which the host calls with
 the environment of every terminal it opens. `appMenus` and `trayMenus` are gone
@@ -913,6 +913,21 @@ On both: `protocolHandlers`, plus the `onActivate()` / `onDeactivate()` hooks.
 
 A field you leave at its default contributes nothing, silently, so a
 registration that never appears is usually a typo in a field name.
+
+`dockTabs` contributes React content to the native bottom dock. Register a
+type with `id`, `title` and `components.Tab`, then call
+`this.openDockTab(id, { title?, params? })` from a cluster-frame action to open
+an independent closable instance. Its component takes
+`Renderer.ExtensionDockTabProps`, and its small JSON parameters persist per
+cluster using the extension's package name and local type ID. Closing or
+deselecting the tab, collapsing the dock, switching away from the hosting
+cluster, or disabling the contribution unmounts the content. Release per-mount
+resources in React effect cleanup. Hiding or minimizing the window keeps the
+content mounted and preserves its React state.
+
+This API requires a host and SDK that include the dock contribution. See
+[`dock-tabs.md`](./dock-tabs.md) for the example and
+[C6](./api.md#c6-registration-and-the-extension-instance) for its guarantees.
 
 A registered component is typed with the props the host renders it with. A
 page component receives only `params` (`Common.Types.PageComponentProps`), a

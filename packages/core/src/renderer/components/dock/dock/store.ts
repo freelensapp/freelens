@@ -8,6 +8,7 @@ import autoBind from "auto-bind";
 import { throttle } from "es-toolkit/compat";
 import { action, compareStructural, computed, observable, reaction, runInAction } from "mobx";
 import * as uuid from "uuid";
+import { migrateLegacyExtensionDockTabData } from "../extension/params";
 
 import type { StorageLayer } from "../../../utils/storage-helper";
 
@@ -20,6 +21,7 @@ export enum TabKind {
   INSTALL_CHART = "install-chart",
   UPGRADE_CHART = "upgrade-chart",
   POD_LOGS = "pod-logs",
+  EXTENSION = "extension",
 }
 
 /**
@@ -112,6 +114,20 @@ export class DockStore implements DockStorageState {
 
     // adjust terminal height if window size changes
     window.addEventListener("resize", throttle(this.adjustHeight, 250));
+
+    runInAction(() => {
+      for (const tab of this.tabs) {
+        if (tab.kind !== TabKind.EXTENSION) continue;
+
+        // Repair saved headers before the native dock renders them.
+        tab.pinned = false;
+        if (typeof tab.title !== "string") tab.title = "Extension tab";
+
+        if (typeof tab.extensionTab === "object" && tab.extensionTab !== null) {
+          tab.extensionTab = migrateLegacyExtensionDockTabData(tab.extensionTab);
+        }
+      }
+    });
 
     for (const tab of this.tabs) {
       const tabDataIsValid = this.dependencies.tabDataValidator[tab.kind] ?? (() => true);

@@ -5,15 +5,19 @@
  */
 
 import { DiContextProvider } from "@ogre-tools/injectable-react";
-import { render as testingLibraryRender } from "@testing-library/react";
+import { act, render as testingLibraryRender } from "@testing-library/react";
 import { computed } from "mobx";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
+import { KubernetesCluster } from "../../../common/catalog-entities";
 import { Cluster } from "../../../common/cluster/cluster";
+import extensionInjectable from "../../../extensions/extension-loader/extension/extension.injectable";
 import { getClusterPageMenuOrderInjectable } from "../../../features/user-preferences/common/cluster-page-menu-order.injectable";
 import { testUsingFakeTime } from "../../../test-utils/use-fake-time";
+import activeKubernetesClusterInjectable from "../../cluster-frame-context/active-kubernetes-cluster.injectable";
 import hostedClusterInjectable from "../../cluster-frame-context/hosted-cluster.injectable";
 import hostedClusterIdInjectable from "../../cluster-frame-context/hosted-cluster-id.injectable";
+import { getExtensionFakeForRenderer } from "../../components/test-utils/get-extension-fake";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import legacyOnChannelListenInjectable from "../../ipc/legacy-channel-listen.injectable";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
@@ -116,5 +120,57 @@ describe("<ClusterFrame />", () => {
 
       expect(workloadsOverviewSidebarItem.getAttribute("data-is-active-test")).toBe("true");
     });
+  });
+
+  it("preserves truthy and falsy legacy extension results in the cluster sidebar", async () => {
+    const clusterEntity = new KubernetesCluster({
+      metadata: { uid: cluster.id, name: "my-cluster", source: "local", labels: {} },
+      spec: { kubeconfigPath: "", kubeconfigContext: "" },
+      status: { phase: "connected" },
+    });
+    di.override(activeKubernetesClusterInjectable, () => computed(() => clusterEntity));
+    cluster.resourcesToShow.replace(["nodes", "namespaces"]);
+
+    const fixtures = [
+      { id: "enabled", value: true, visible: true },
+      { id: "truthy", value: "yes", visible: true },
+      { id: "disabled", value: false, visible: false },
+      { id: "falsy", value: "", visible: false },
+    ].map(({ id, value, visible }) => {
+      const title = `Extension sidebar ${id}`;
+      const extension = getExtensionFakeForRenderer({
+        id: `/${id}/package.json`,
+        name: `sidebar-${id}`,
+        rendererOptions: { clusterPageMenus: [{ title, components: {} }] },
+      });
+      // JavaScript extensions can return values outside the SDK's boolean type.
+      const eligibility = vi.spyOn(extension, "isEnabledForCluster").mockResolvedValue(value as boolean);
+      const registration = di.inject(extensionInjectable, extension);
+
+      return { extension, registration, eligibility, title, visible };
+    });
+
+    try {
+      for (const { extension, registration } of fixtures) {
+        registration.register();
+        await extension.enable();
+      }
+
+      const result = render();
+
+      await act(async () => vi.advanceTimersByTimeAsync(0));
+
+      for (const { eligibility, title, visible } of fixtures) {
+        expect(eligibility).toHaveBeenCalledWith(clusterEntity);
+
+        if (visible) {
+          expect(result.getByText(title)).toBeVisible();
+        } else {
+          expect(result.queryByText(title)).not.toBeInTheDocument();
+        }
+      }
+    } finally {
+      act(() => fixtures.forEach(({ registration }) => registration.deregister()));
+    }
   });
 });

@@ -5,12 +5,10 @@
  */
 
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
-import { untracked } from "mobx";
-import { asyncComputed } from "../../common/utils/async-computed";
+import { computed, untracked } from "mobx";
 import extensionIsEnabledForClusterInjectable from "../../extensions/extension-loader/extension-is-enabled-for-cluster.injectable";
 import activeKubernetesClusterInjectable from "../cluster-frame-context/active-kubernetes-cluster.injectable";
 
-import type { KubernetesCluster } from "../../common/catalog-entities";
 import type { LensRendererExtension } from "../../extensions/lens-renderer-extension";
 
 const extensionShouldBeEnabledForClusterFrameInjectable = getInjectable({
@@ -19,26 +17,26 @@ const extensionShouldBeEnabledForClusterFrameInjectable = getInjectable({
   instantiate: (di, extension: LensRendererExtension) => {
     const activeKubernetesCluster = di.inject(activeKubernetesClusterInjectable);
 
-    const getExtensionIsEnabledForCluster = (extension: LensRendererExtension, cluster: KubernetesCluster) =>
-      untracked(() => di.inject(extensionIsEnabledForClusterInjectable, { extension, cluster }));
+    const result = computed(() => {
+      const cluster = activeKubernetesCluster.get();
 
-    return asyncComputed({
-      getValueFromObservedPromise: async () => {
-        const cluster = activeKubernetesCluster.get();
-
-        if (!cluster) {
-          return false;
-        }
-
-        return getExtensionIsEnabledForCluster(extension, cluster);
-      },
-
-      valueWhenPending: false,
+      return cluster && untracked(() => di.inject(extensionIsEnabledForClusterInjectable, { extension, cluster }));
     });
+
+    // The per-cluster result also serves unobserved reads. MobX can release
+    // these computeds and their active-cluster dependency after the last consumer.
+    return {
+      value: computed(() => result.get()?.get() ?? false),
+      pending: computed(() => {
+        const check = result.get();
+
+        return check !== null && check.get() === undefined;
+      }),
+    };
   },
 
   lifecycle: lifecycleEnum.keyedSingleton({
-    getInstanceKey: (di, extension: LensRendererExtension) => extension.sanitizedExtensionId,
+    getInstanceKey: (di, extension: LensRendererExtension) => extension,
   }),
 });
 
