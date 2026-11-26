@@ -18,6 +18,12 @@ catalog:
   # TypeScript
   typescript: 7.0.2
   # Dependency injection (Ogre Tools)
+  # The patch of patchedDependencies makes `deregister` forget the injectable:
+  # without it the container keeps every injectable it has injected, in its
+  # set of injected ones and in the children of its parents, and with it
+  # whatever the injectable's `instantiate` holds, such as the extension
+  # instance a reload has replaced. The patch is keyed by the exact version, so
+  # a bump reports it as unused; drop it once a release has the same fix.
   '@ogre-tools/injectable': 27.0.0
   '@ogre-tools/injectable-extension-for-mobx': 27.0.0
   '@ogre-tools/injectable-react': 27.0.0
@@ -233,6 +239,7 @@ peerDependencyRules:
 
 patchedDependencies:
   '@async-fn/vitest': patches/@async-fn__vitest.patch
+  '@ogre-tools/injectable@27.0.0': patches/@ogre-tools__injectable@27.0.0.patch
   '@xterm/xterm@6.0.0': patches/@xterm__xterm@6.0.0.patch
   monaco-editor@0.57.0: patches/monaco-editor@0.57.0.patch
 
