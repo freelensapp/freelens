@@ -100,6 +100,126 @@ describe("StatusCard", () => {
     expect(Array.from(container.querySelectorAll(".StatusCard-segment"))).toContain(segments[2]);
   });
 
+  describe("when a status loses its items", () => {
+    const withoutProgressing = statuses.map((status) =>
+      status.label === "Progressing" ? { ...status, count: 0 } : status,
+    );
+    const legendRows = (container: HTMLElement) => Array.from(container.querySelectorAll(".StatusCard-legendRow"));
+    const segments = (container: HTMLElement) => Array.from(container.querySelectorAll(".StatusCard-segment"));
+
+    it.each([
+      { name: "with a count of 0", next: withoutProgressing },
+      { name: "out of the list", next: statuses.filter((status) => status.label !== "Progressing") },
+    ])("keeps its row and its segment, collapsed, when it is given $name", ({ next }) => {
+      const { container, rerender } = render(<StatusCard title="Releases" statuses={statuses} data-testid="card" />);
+      const progressing = screen.getByTestId("card-status-progressing");
+      const segment = segments(container)[1];
+
+      rerender(<StatusCard title="Releases" statuses={next} data-testid="card" />);
+
+      expect(legendRows(container)).toEqual([
+        screen.getByTestId("card-status-ready"),
+        progressing,
+        screen.getByTestId("card-status-stalled"),
+      ]);
+      expect(progressing.parentElement).toHaveAttribute("data-collapsed", "true");
+      expect(segments(container)[1]).toBe(segment);
+      expect(segment).toHaveAttribute("data-collapsed", "true");
+      expect(segment).toHaveStyle({ flexGrow: "0" });
+    });
+
+    it("leaves a collapsed row out of the card: hidden, without a test id, and not counted", () => {
+      const { container, rerender } = render(
+        <StatusCard title="Releases" statuses={statuses} onClick={() => {}} data-testid="card" />,
+      );
+
+      rerender(
+        <StatusCard
+          title="Releases"
+          statuses={statuses.map((status) => (status.label === "Stalled" ? { ...status, count: 0 } : status))}
+          onClick={() => {}}
+          data-testid="card"
+        />,
+      );
+
+      const stalled = legendRows(container)[2];
+
+      expect(stalled.parentElement).toHaveAttribute("aria-hidden", "true");
+      expect(stalled.parentElement).toHaveAttribute("inert");
+      expect(stalled).not.toHaveAttribute("data-testid");
+      expect(stalled).not.toHaveAttribute("data-failing");
+      expect(container.querySelector("[data-failing]")).toBeNull();
+      expect(screen.queryByTestId("card-failing")).not.toBeInTheDocument();
+      expect(
+        within(screen.getByTestId("card"))
+          .getAllByTestId(/^card-status-/)
+          .map((row) => row.textContent),
+      ).toEqual(["Ready675%", "Progressing225%"]);
+      expect(screen.getByRole("button", { name: /^Releases/ })).not.toHaveAccessibleName(/Stalled/);
+    });
+
+    it("shows the last count of the status in the row while it closes", () => {
+      const { container, rerender } = render(<StatusCard title="Releases" statuses={statuses} data-testid="card" />);
+
+      rerender(<StatusCard title="Releases" statuses={withoutProgressing} data-testid="card" />);
+
+      expect(legendRows(container)[1]).toHaveTextContent("Progressing220%");
+    });
+
+    it("opens the same row again when the status gets items back", () => {
+      const { container, rerender } = render(<StatusCard title="Releases" statuses={statuses} data-testid="card" />);
+      const progressing = screen.getByTestId("card-status-progressing");
+
+      rerender(<StatusCard title="Releases" statuses={withoutProgressing} data-testid="card" />);
+      rerender(<StatusCard title="Releases" statuses={statuses} data-testid="card" />);
+
+      expect(screen.getByTestId("card-status-progressing")).toBe(progressing);
+      expect(progressing.parentElement).not.toHaveAttribute("data-collapsed");
+      expect(progressing.parentElement).not.toHaveAttribute("aria-hidden");
+      expect(legendRows(container)).toHaveLength(3);
+    });
+
+    it("keeps a row that drops out of the list right after the row it followed", () => {
+      const { container, rerender } = render(<StatusCard title="Releases" statuses={statuses} data-testid="card" />);
+      const suspended = { label: "Suspended", count: 1, color: "var(--colorSoftError)" };
+
+      rerender(<StatusCard title="Releases" statuses={[statuses[0], suspended, statuses[2]]} data-testid="card" />);
+
+      expect(legendRows(container).map((row) => row.querySelector(".StatusCard-label")?.textContent)).toEqual([
+        "Ready",
+        "Progressing",
+        "Suspended",
+        "Stalled",
+      ]);
+    });
+  });
+
+  it("collapses the legend and opens the empty text when no status has items, and back", () => {
+    const { container, rerender } = render(<StatusCard title="Releases" statuses={statuses} data-testid="card" />);
+    const legend = container.querySelector(".StatusCard-legend");
+    const empty = container.querySelector(".StatusCard-empty");
+
+    expect(legend?.parentElement).not.toHaveAttribute("data-collapsed");
+    expect(empty?.parentElement).toHaveAttribute("data-collapsed", "true");
+    expect(screen.queryByTestId("card-empty")).not.toBeInTheDocument();
+
+    rerender(<StatusCard title="Releases" statuses={[]} data-testid="card" />);
+
+    expect(container.querySelector(".StatusCard-legend")).toBe(legend);
+    expect(legend?.parentElement).toHaveAttribute("data-collapsed", "true");
+    expect(legend?.parentElement).toHaveAttribute("aria-hidden", "true");
+    expect(screen.getByTestId("card-empty")).toBe(empty);
+    expect(empty?.parentElement).not.toHaveAttribute("data-collapsed");
+    expect(screen.queryAllByTestId(/^card-status-/)).toEqual([]);
+
+    rerender(<StatusCard title="Releases" statuses={statuses} data-testid="card" />);
+
+    expect(legend?.parentElement).not.toHaveAttribute("data-collapsed");
+    expect(empty?.parentElement).toHaveAttribute("data-collapsed", "true");
+    expect(empty).toHaveTextContent("None");
+    expect(screen.queryByTestId("card-empty")).not.toBeInTheDocument();
+  });
+
   it("colors each status with the color it is given", () => {
     render(<StatusCard title="Releases" statuses={statuses} data-testid="card" />);
 
