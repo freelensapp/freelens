@@ -19,7 +19,7 @@
     "packages/**"
   ],
   "scripts": {
-    "asar": "pnpm dlx @electron/asar@4.3.2",
+    "asar": "pnpm dlx @electron/asar@4.3.4",
     "biome": "pnpm dlx @biomejs/biome@2.6.8",
     "biome:check": "pnpm biome check",
     "biome:fix": "pnpm biome check --fix",
