@@ -56,6 +56,7 @@ const dockTabRegistratorInjectable = getInjectable({
               // Retain the component declaration across renders and retry if the accessor throws.
               return (components ??= registration.components);
             },
+            pending: computed(() => extension.isEnabled && clusterEnabled.pending.get()),
             enabled: computed(
               () => extension.isEnabled && clusterEnabled.value.get() && (registration.enabled?.get() ?? true),
             ),

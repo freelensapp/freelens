@@ -98,7 +98,15 @@ describe("dock tabs contributed by the built public-SDK fixture", () => {
     });
 
     // Nothing has rendered and no registry getter has been used before the first command.
-    extension.commands[0].action({} as never);
+    const command = extension.commands[0];
+    expect(command.isActive?.({ entity: cluster })).toBe(false);
+    const parent = vi.spyOn(window, "parent", "get").mockReturnValue({} as Window);
+    try {
+      expect(command.isActive?.({ entity: cluster })).toBe(true);
+      command.action({ entity: cluster, navigate: vi.fn() });
+    } finally {
+      parent.mockRestore();
+    }
     const first = store.selectedTabId!;
     expect(store.getTabById(first)).toMatchObject({
       kind: TabKind.EXTENSION,

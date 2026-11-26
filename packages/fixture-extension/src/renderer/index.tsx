@@ -120,6 +120,7 @@ export default class FixtureRendererExtension extends Renderer.LensExtension {
     {
       id: "open-fixture-resource",
       title: "Open fixture resource",
+      isActive: () => window.parent !== window && !!Renderer.Catalog.activeCluster.get(),
       action: () => {
         this.openDockTab("fixture-resource", { title: "Fixture pod", params: { resource: "fixture-pod" } });
       },

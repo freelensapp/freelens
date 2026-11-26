@@ -122,7 +122,9 @@ const ExtensionDockTab = observer(({ tab, active, clusterIsActive, height, regis
         if (!registration?.enabled.get()) {
           message = (
             <div className="p-4">
-              This tab's extension is unavailable or disabled. You can close the tab or enable its extension.
+              {registration?.pending.get()
+                ? "Checking whether this extension is available for this cluster…"
+                : "This tab's extension is unavailable or disabled. You can close the tab or enable its extension."}
             </div>
           );
         } else if (clusterIsActive) {

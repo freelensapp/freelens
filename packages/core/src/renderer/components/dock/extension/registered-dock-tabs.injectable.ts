@@ -15,6 +15,7 @@ export interface RegisteredDockTab extends DockTabRegistration {
   owner: LensRendererExtension;
   extensionName: string;
   enabled: IComputedValue<boolean>;
+  pending: IComputedValue<boolean>;
 }
 
 export const registeredDockTabInjectionToken = getInjectionToken<RegisteredDockTab>({

@@ -79,6 +79,40 @@ describe("extension dock lifetime and ownership boundaries", () => {
     vi.useRealTimers();
   });
 
+  it.each([true, false])(
+    "shows a loading message on a restored tab until cluster eligibility resolves to %s",
+    async (allowed) => {
+      const extension = makeExtension("/pending/package.json", [
+        { id: "resource", title: "Resource", components: { Tab: () => <span>Restored resource</span> } },
+      ]);
+      const eligibility = Promise.withResolvers<boolean>();
+      vi.spyOn(extension, "isEnabledForCluster").mockReturnValue(eligibility.promise);
+      di.inject(lensLocalStorageStateInjectable).dock = {
+        height: 300,
+        isOpen: true,
+        selectedTabId: "saved",
+        tabs: [
+          {
+            id: "saved",
+            title: "Resource",
+            kind: TabKind.EXTENSION,
+            extensionTab: { version: 1, extensionName: extension.name, typeId: "resource", params: {} },
+          },
+        ],
+      };
+      await register(extension);
+      const view = renderDock();
+      const content = view.getByTestId("dock-tab-content-for-saved");
+      expect(content).toHaveTextContent("Checking whether this extension is available for this cluster");
+      expect(content).not.toHaveTextContent("unavailable or disabled");
+
+      await act(async () => eligibility.resolve(allowed));
+
+      expect(content).not.toHaveTextContent("Checking");
+      expect(content).toHaveTextContent(allowed ? "Restored resource" : "unavailable or disabled");
+    },
+  );
+
   it("recovers saved content with a new installation while rejecting the still-enabled stale owner", async () => {
     const OldContent = () => <span>Old installation</span>;
     const old = makeExtension("/old-install/package.json", [

@@ -920,10 +920,13 @@ type with `id`, `title` and `components.Tab`, then call
 `this.openDockTab(id, { title?, params? })` from a cluster-frame action to open
 an independent closable instance. Its component takes
 `Renderer.ExtensionDockTabProps`, and its small JSON parameters persist per
-cluster using the extension's package name and local type ID. Content unmounts
-when it is no longer visible, so clean up per-mount work in React effect
-cleanup. This API requires a host and SDK that include the dock contribution;
-a v1 host or an earlier SDK cannot provide it. See
+cluster using the extension's package name and local type ID. Closing or
+deselecting the tab, collapsing the dock, switching away from the hosting
+cluster, or disabling the contribution unmounts the content. Release per-mount
+resources in React effect cleanup. Hiding or minimizing the window keeps the
+content mounted and preserves its React state.
+
+This API requires a host and SDK that include the dock contribution. See
 [`dock-tabs.md`](./dock-tabs.md) for the example and
 [C6](./api.md#c6-registration-and-the-extension-instance) for its guarantees.
 
