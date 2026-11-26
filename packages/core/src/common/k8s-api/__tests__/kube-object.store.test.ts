@@ -763,8 +763,9 @@ describe("KubeObjectStore", () => {
 
         return () => controller.abort();
       });
+      const loadItems = vi.fn((): KubeObject[] => []);
       const store = new FakeKubeObjectStore(
-        () => [],
+        loadItems,
         {
           isNamespaced: false,
           getResourceVersion: () => "1",
@@ -774,7 +775,7 @@ describe("KubeObjectStore", () => {
         watchReconnect,
       );
 
-      return { store, watch, watchSignals, watchCallbacks, watchOnConnects };
+      return { store, watch, loadItems, watchSignals, watchCallbacks, watchOnConnects };
     };
 
     afterEach(() => {
@@ -889,7 +890,7 @@ describe("KubeObjectStore", () => {
         expect(watch).toHaveBeenCalledTimes(2);
 
         watchCallbacks[1](null, new Response(null, { status: 500 }));
-        expect(scheduled.map(({ failures }) => failures)).toEqual([1, 2]);
+        await vi.waitFor(() => expect(scheduled.map(({ failures }) => failures)).toEqual([1, 2]));
       });
 
       it("tells the coordinator of a connected watch and counts its failures from one again", async () => {
@@ -920,6 +921,81 @@ describe("KubeObjectStore", () => {
         unsubscribe();
 
         expect(scheduled[0].cancel).toHaveBeenCalled();
+      });
+
+      const statusBody = (code: number, message: string) =>
+        JSON.stringify({ kind: "Status", apiVersion: "v1", status: "Failure", code, message });
+
+      it("lists again before restarting a watch the API server failed with a 500 Status", async () => {
+        const { watchReconnect, scheduled } = createWatchReconnect();
+        const { store, watch, loadItems, watchCallbacks } = createWatchedStore(watchReconnect);
+
+        await store.loadAll({});
+        store.subscribe();
+        expect(loadItems).toHaveBeenCalledTimes(1);
+
+        // what kine or k8s-dqlite make of a watch from a compacted revision
+        watchCallbacks[0](
+          null,
+          new Response(statusBody(500, "failed to list /registry/events/ for revision 1"), {
+            status: 500,
+            headers: { "content-type": "application/json" },
+          }),
+        );
+        await vi.waitFor(() => expect(scheduled).toHaveLength(1));
+
+        scheduled[0].reconnect();
+
+        await vi.waitFor(() => expect(watch).toHaveBeenCalledTimes(2));
+        expect(loadItems).toHaveBeenCalledTimes(2);
+      });
+
+      it("restarts a watch without listing again after a 500 that is not from the API server", async () => {
+        const { watchReconnect, scheduled } = createWatchReconnect();
+        const { store, watch, loadItems, watchCallbacks } = createWatchedStore(watchReconnect);
+
+        await store.loadAll({});
+        store.subscribe();
+
+        // freelens-proxy, when it cannot reach the cluster
+        watchCallbacks[0](null, new Response("dial tcp 10.0.0.1:443: i/o timeout\n", { status: 500 }));
+        await vi.waitFor(() => expect(scheduled).toHaveLength(1));
+
+        scheduled[0].reconnect();
+
+        expect(watch).toHaveBeenCalledTimes(2);
+        expect(loadItems).toHaveBeenCalledTimes(1);
+      });
+
+      it("lists again before restarting a watch that failed with an HTTP 410", async () => {
+        const { watchReconnect, scheduled } = createWatchReconnect();
+        const { store, watch, loadItems, watchCallbacks } = createWatchedStore(watchReconnect);
+
+        await store.loadAll({});
+        store.subscribe();
+
+        watchCallbacks[0](null, new Response(statusBody(410, "too old resource version: 1 (2)"), { status: 410 }));
+        expect(scheduled).toHaveLength(1);
+
+        scheduled[0].reconnect();
+
+        await vi.waitFor(() => expect(watch).toHaveBeenCalledTimes(2));
+        expect(loadItems).toHaveBeenCalledTimes(2);
+      });
+
+      it("does not restart a watch disposed while the body of its 500 is read", async () => {
+        const { watchReconnect } = createWatchReconnect();
+        const { store, watchCallbacks } = createWatchedStore(watchReconnect);
+
+        await store.loadAll({});
+
+        const unsubscribe = store.subscribe();
+
+        watchCallbacks[0](null, new Response(statusBody(500, "internal error"), { status: 500 }));
+        unsubscribe();
+        await new Promise((resolve) => setTimeout(resolve, 0));
+
+        expect(watchReconnect.schedule).not.toHaveBeenCalled();
       });
 
       it("still stops for a 404", async () => {

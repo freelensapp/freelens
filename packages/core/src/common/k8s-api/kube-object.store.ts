@@ -6,7 +6,7 @@
 
 import assert from "node:assert";
 import { parseKubeApi } from "@freelensapp/kube-api";
-import { KubeStatus } from "@freelensapp/kube-object";
+import { isKubeStatusData, KubeStatus } from "@freelensapp/kube-object";
 import { isAbortError, noop, object, rejectPromiseBy, waitUntilDefined } from "@freelensapp/utilities";
 import autoBind from "auto-bind";
 import { action, computed, observable, reaction } from "mobx";
@@ -595,16 +595,27 @@ export class KubeObjectStore<
     const signal = abortController.signal;
     const { watchReconnect } = this.dependencies;
 
-    const retryLater = () => {
+    const retryLater = (restart: () => void = startNewWatch) => {
       clearTimeout(timedRetry);
       cancelReconnect?.();
       failures += 1;
 
       if (watchReconnect) {
-        cancelReconnect = watchReconnect.schedule(startNewWatch, failures);
+        cancelReconnect = watchReconnect.schedule(restart, failures);
       } else {
-        timedRetry = setTimeout(startNewWatch, 5000);
+        timedRetry = setTimeout(restart, 5000);
       }
+    };
+
+    // A new list gives a resourceVersion the API server still has.
+    const reloadAndWatch = () => {
+      if (signal.aborted) return;
+
+      void (
+        namespace
+          ? this.loadAll({ namespaces: [namespace], reqInit: { signal }, ...opts })
+          : this.loadAll({ merge: false, reqInit: { signal }, ...opts })
+      ).then(startNewWatch);
     };
 
     const onConnect = () => {
@@ -637,18 +648,32 @@ export class KubeObjectStore<
           return;
         }
 
-        // not sure what to do, best to retry
-        retryLater();
+        if (error.status === 410) {
+          // resourceVersion has gone, a retry with it can never succeed
+          retryLater(reloadAndWatch);
+        } else if (error.status === 500) {
+          // Storage that cannot tell a compacted revision apart, such as kine
+          // (k3s) or k8s-dqlite (MicroK8s), makes the API server answer a watch
+          // from a revision it no longer has with a 500 instead of a 410, and
+          // the same resourceVersion then fails on every retry. Such a 500 has
+          // a Status body. A 500 freelens-proxy sends itself while the cluster
+          // is unreachable is plain text: keep the retry for it, as a list
+          // failing then would empty the store.
+          void error
+            .json()
+            .catch(() => undefined)
+            .then((body) => {
+              if (signal.aborted) return;
+              retryLater(isKubeStatusData(body) ? reloadAndWatch : startNewWatch);
+            });
+        } else {
+          // not sure what to do, best to retry
+          retryLater();
+        }
       } else if (error instanceof KubeStatus && error.code === 410) {
         clearTimeout(timedRetry);
         // resourceVersion has gone, let's try to reload
-        timedRetry = setTimeout(() => {
-          void (
-            namespace
-              ? this.loadAll({ namespaces: [namespace], reqInit: { signal }, ...opts })
-              : this.loadAll({ merge: false, reqInit: { signal }, ...opts })
-          ).then(startNewWatch);
-        }, 1000);
+        timedRetry = setTimeout(reloadAndWatch, 1000);
       } else if (error) {
         // not sure what to do, best to retry
         retryLater();
