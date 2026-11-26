@@ -8,7 +8,6 @@ import { Icon } from "@freelensapp/icon";
 import { Spinner } from "@freelensapp/spinner";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import React from "react";
 import extensionInstallationStateStoreInjectable from "../../../../extensions/extension-installation-state-store/extension-installation-state-store.injectable";
 import confirmUninstallExtensionInjectable from "../confirm-uninstall-extension.injectable";
 import disableExtensionInjectable from "../disable-extension.injectable";
@@ -26,8 +25,8 @@ import { useMarketplaceExtensions } from "./use-marketplace-extensions.hook";
 import type { IComputedValue } from "mobx";
 
 import type { IAsyncComputed } from "../../../../common/utils/async-computed";
-import type { InstalledExtension } from "../../../../extensions/installed-extension";
 import type { ExtensionInstallationStateStore } from "../../../../extensions/extension-installation-state-store/extension-installation-state-store";
+import type { InstalledExtension } from "../../../../extensions/installed-extension";
 import type { ConfirmUninstallExtension } from "../confirm-uninstall-extension.injectable";
 import type { DisableExtension } from "../disable-extension.injectable";
 import type { EnableExtension } from "../enable-extension.injectable";

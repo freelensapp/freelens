@@ -1,5 +1,4 @@
 import { withInjectables } from "@ogre-tools/injectable-react";
-import React from "react";
 import openLinkInBrowserInjectable from "../../../../../common/utils/open-link-in-browser.injectable";
 import styles from "./extension-package-title.module.scss";
 import { useExtensionPackageTitle } from "./use-extension-package-title.hook";

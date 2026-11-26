@@ -1,10 +1,12 @@
-import "@testing-library/jest-dom";
+import "@testing-library/jest-dom/vitest";
 import { fireEvent, screen, within } from "@testing-library/react";
-import React from "react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import openLinkInBrowserInjectable from "../../../../../../common/utils/open-link-in-browser.injectable";
 import { getDiForUnitTesting } from "../../../../../getDiForUnitTesting";
 import { renderFor } from "../../../../test-utils/renderFor";
 import { ExtensionCollaboratorsPopover } from "./extension-collaborators-popover";
+
+import type { Mock } from "vitest";
 
 import type { MarketplaceExtensionAuthor } from "../../../marketplace-extensions/marketplace-extensions.injectable";
 
@@ -18,17 +20,17 @@ const authors: MarketplaceExtensionAuthor[] = [
 describe("ExtensionCollaboratorsPopover", () => {
   let di: ReturnType<typeof getDiForUnitTesting>;
   let render: ReturnType<typeof renderFor>;
-  let openLinkInBrowser: jest.Mock;
+  let openLinkInBrowser: Mock;
 
   beforeEach(() => {
     di = getDiForUnitTesting();
     render = renderFor(di);
-    openLinkInBrowser = jest.fn();
+    openLinkInBrowser = vi.fn();
     di.override(openLinkInBrowserInjectable, () => openLinkInBrowser);
   });
 
   it("renders all authors", () => {
-    const onDismiss = jest.fn();
+    const onDismiss = vi.fn();
     render(<ExtensionCollaboratorsPopover authors={authors} onDismiss={onDismiss} />);
     expect(screen.getByText("Alice Adams")).toBeInTheDocument();
     expect(screen.getByText("Bob Brown")).toBeInTheDocument();
@@ -37,14 +39,14 @@ describe("ExtensionCollaboratorsPopover", () => {
   });
 
   it("calls onDismiss when Escape is pressed", () => {
-    const onDismiss = jest.fn();
+    const onDismiss = vi.fn();
     render(<ExtensionCollaboratorsPopover authors={authors} onDismiss={onDismiss} />);
     fireEvent.keyDown(document, { key: "Escape" });
     expect(onDismiss).toHaveBeenCalledTimes(1);
   });
 
   it("calls onDismiss when clicking outside the popover", () => {
-    const onDismiss = jest.fn();
+    const onDismiss = vi.fn();
     render(
       <div>
         <div data-testid="outside">outside</div>
@@ -56,7 +58,7 @@ describe("ExtensionCollaboratorsPopover", () => {
   });
 
   it("does not call onDismiss when clicking inside the popover", () => {
-    const onDismiss = jest.fn();
+    const onDismiss = vi.fn();
     render(<ExtensionCollaboratorsPopover authors={authors} onDismiss={onDismiss} />);
     fireEvent.mouseDown(screen.getByText("Alice Adams"));
     expect(onDismiss).not.toHaveBeenCalled();
@@ -68,7 +70,7 @@ describe("ExtensionCollaboratorsPopover", () => {
       { name: "Bob", website: "www.bob.dev" },
       { name: "Carol" },
     ];
-    render(<ExtensionCollaboratorsPopover authors={authorsWithLinks} onDismiss={jest.fn()} />);
+    render(<ExtensionCollaboratorsPopover authors={authorsWithLinks} onDismiss={vi.fn()} />);
 
     const popover = screen.getByTestId("collaborators-popover");
     expect(within(popover).getAllByRole("button", { name: /github/i })).toHaveLength(1);
@@ -77,7 +79,7 @@ describe("ExtensionCollaboratorsPopover", () => {
 
   it("opens the github link when the github icon is clicked", () => {
     const authorsWithLinks: MarketplaceExtensionAuthor[] = [{ name: "Alice", github: "github.com/alice" }];
-    render(<ExtensionCollaboratorsPopover authors={authorsWithLinks} onDismiss={jest.fn()} />);
+    render(<ExtensionCollaboratorsPopover authors={authorsWithLinks} onDismiss={vi.fn()} />);
 
     fireEvent.click(screen.getByRole("button", { name: /github/i }));
 
@@ -86,7 +88,7 @@ describe("ExtensionCollaboratorsPopover", () => {
 
   it("opens the website link when the website icon is clicked", () => {
     const authorsWithLinks: MarketplaceExtensionAuthor[] = [{ name: "Alice", website: "www.alice.dev" }];
-    render(<ExtensionCollaboratorsPopover authors={authorsWithLinks} onDismiss={jest.fn()} />);
+    render(<ExtensionCollaboratorsPopover authors={authorsWithLinks} onDismiss={vi.fn()} />);
 
     fireEvent.click(screen.getByRole("button", { name: /website/i }));
 

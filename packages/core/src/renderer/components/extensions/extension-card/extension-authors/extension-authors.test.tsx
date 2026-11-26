@@ -1,22 +1,24 @@
-import "@testing-library/jest-dom";
+import "@testing-library/jest-dom/vitest";
 import { act, fireEvent, screen, within } from "@testing-library/react";
-import React from "react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import openLinkInBrowserInjectable from "../../../../../common/utils/open-link-in-browser.injectable";
 import { getDiForUnitTesting } from "../../../../getDiForUnitTesting";
 import { renderFor } from "../../../test-utils/renderFor";
 import { ExtensionAuthors } from "./extension-authors";
+
+import type { Mock } from "vitest";
 
 import type { MarketplaceExtensionAuthor } from "../../marketplace-extensions/marketplace-extensions.injectable";
 
 describe("ExtensionAuthors", () => {
   let di: ReturnType<typeof getDiForUnitTesting>;
   let render: ReturnType<typeof renderFor>;
-  let openLinkInBrowser: jest.Mock;
+  let openLinkInBrowser: Mock;
 
   beforeEach(() => {
     di = getDiForUnitTesting();
     render = renderFor(di);
-    openLinkInBrowser = jest.fn();
+    openLinkInBrowser = vi.fn();
     di.override(openLinkInBrowserInjectable, () => openLinkInBrowser);
   });
 
@@ -100,7 +102,7 @@ describe("ExtensionAuthors", () => {
   });
 
   it("keeps the tooltip open briefly after leaving so the mouse can reach it", () => {
-    jest.useFakeTimers();
+    vi.useFakeTimers();
 
     const authors: MarketplaceExtensionAuthor[] = [{ name: "Alex", github: "https://github.com/alex" }];
     render(<ExtensionAuthors authors={authors} />);
@@ -112,15 +114,15 @@ describe("ExtensionAuthors", () => {
     expect(screen.getByTestId("author-links-tooltip")).toBeInTheDocument();
 
     act(() => {
-      jest.advanceTimersByTime(100);
+      vi.advanceTimersByTime(100);
     });
     expect(screen.queryByTestId("author-links-tooltip")).not.toBeInTheDocument();
 
-    jest.useRealTimers();
+    vi.useRealTimers();
   });
 
   it("keeps the tooltip open when re-entering before the close delay elapses", () => {
-    jest.useFakeTimers();
+    vi.useFakeTimers();
 
     const authors: MarketplaceExtensionAuthor[] = [{ name: "Alex", github: "https://github.com/alex" }];
     render(<ExtensionAuthors authors={authors} />);
@@ -130,11 +132,11 @@ describe("ExtensionAuthors", () => {
     fireEvent.mouseEnter(screen.getByTestId("author-item"));
 
     act(() => {
-      jest.advanceTimersByTime(300);
+      vi.advanceTimersByTime(300);
     });
     expect(screen.getByTestId("author-links-tooltip")).toBeInTheDocument();
 
-    jest.useRealTimers();
+    vi.useRealTimers();
   });
 
   it("does not show the tooltip when the author has no links", () => {

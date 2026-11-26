@@ -1,6 +1,6 @@
-import "@testing-library/jest-dom";
+import "@testing-library/jest-dom/vitest";
 import { render, screen } from "@testing-library/react";
-import React from "react";
+import { describe, expect, it, vi } from "vitest";
 import { ExtensionActionButton } from "./extension-action-button";
 
 describe("ExtensionActionButton", () => {
@@ -34,7 +34,7 @@ describe("ExtensionActionButton", () => {
   });
 
   it("invokes onClick when not disabled", () => {
-    const onClick = jest.fn();
+    const onClick = vi.fn();
     render(<ExtensionActionButton state="install" onClick={onClick} />);
     screen.getByRole("button").click();
     expect(onClick).toHaveBeenCalledTimes(1);

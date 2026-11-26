@@ -1,3 +1,4 @@
+import { describe, expect, it } from "vitest";
 import downloadJsonViaChannelInjectable from "../../../fetch/download-json-via-channel-copy.injectable";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import requestMarketplaceExtensionsInjectable from "./request-marketplace-extensions.injectable";

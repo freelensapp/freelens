@@ -52,8 +52,8 @@ describe("Extensions", () => {
   let installExtensionFromInput: MockedFunction<InstallExtensionFromInput>;
   let extensionInstallationStateStore: ExtensionInstallationStateStore;
   let render: DiRender;
-  let deleteFileMock: jest.MockedFunction<RemovePath>;
-  let downloadBinary: jest.MockedFunction<DownloadBinary>;
+  let deleteFileMock: MockedFunction<RemovePath>;
+  let downloadBinary: MockedFunction<DownloadBinary>;
   let di: DiContainer;
 
   beforeEach(() => {
@@ -73,7 +73,7 @@ describe("Extensions", () => {
 
       di.override(requestMarketplaceExtensionsInjectable, () => async () => [marketplaceMockExtension()]);
 
-      deleteFileMock = jest.fn();
+      deleteFileMock = vi.fn();
       di.override(removePathInjectable, () => deleteFileMock);
 
       downloadBinary = vi.fn().mockImplementation((url) => {
@@ -106,7 +106,7 @@ describe("Extensions", () => {
     }
   });
 
-  it("disables uninstall button while uninstalling", async () => {
+  it("disables the uninstall menu item while uninstalling", async () => {
     extensionDiscovery.isLoaded = true;
 
     render(
@@ -116,23 +116,30 @@ describe("Extensions", () => {
       </>,
     );
 
-    const card = await screen.findByTestId("installed-extension-card");
-    const uninstallButton = within(card).getByRole("button", { name: /uninstall/i });
-    fireEvent.click(uninstallButton);
+    const findMenuTrigger = async () => {
+      const table = await screen.findByTestId("extensions-table");
+      const trigger = table.querySelector("tbody tr td:last-child .Icon");
 
+      assert(trigger);
+
+      return trigger;
+    };
+
+    fireEvent.click(await findMenuTrigger());
+    fireEvent.click(await screen.findByText("Uninstall"));
     fireEvent.click(await screen.findByText("Yes"));
 
-    await waitFor(
-      () => {
-        expect(extensionDiscovery.uninstallExtension).toHaveBeenCalled();
-        const button = within(card).getByRole("button");
-        expect(button).toBeDisabled();
-        expect(button.querySelector(".Spinner")).toBeInTheDocument();
-      },
-      {
-        timeout: 30000,
-      },
-    );
+    await waitFor(() => {
+      expect(extensionDiscovery.uninstallExtension).toHaveBeenCalled();
+    });
+
+    await waitFor(() => {
+      expect(screen.queryByText("Uninstall")).not.toBeInTheDocument();
+    });
+
+    fireEvent.click(await findMenuTrigger());
+
+    expect(await screen.findByText("Uninstall")).toHaveAttribute("aria-disabled", "true");
   });
 
   it("disables install button while installing", async () => {

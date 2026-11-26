@@ -1,20 +1,22 @@
-import "@testing-library/jest-dom";
+import "@testing-library/jest-dom/vitest";
 import { fireEvent, screen } from "@testing-library/react";
-import React from "react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import openLinkInBrowserInjectable from "../../../../../common/utils/open-link-in-browser.injectable";
 import { getDiForUnitTesting } from "../../../../getDiForUnitTesting";
 import { renderFor } from "../../../test-utils/renderFor";
 import { ExtensionPackageTitle } from "./extension-package-title";
 
+import type { Mock } from "vitest";
+
 describe("ExtensionPackageTitle", () => {
   let di: ReturnType<typeof getDiForUnitTesting>;
   let render: ReturnType<typeof renderFor>;
-  let openLinkInBrowser: jest.Mock;
+  let openLinkInBrowser: Mock;
 
   beforeEach(() => {
     di = getDiForUnitTesting();
     render = renderFor(di);
-    openLinkInBrowser = jest.fn();
+    openLinkInBrowser = vi.fn();
     di.override(openLinkInBrowserInjectable, () => openLinkInBrowser);
   });
 

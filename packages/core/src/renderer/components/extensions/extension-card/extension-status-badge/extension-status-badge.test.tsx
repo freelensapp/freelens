@@ -1,6 +1,6 @@
-import "@testing-library/jest-dom";
+import "@testing-library/jest-dom/vitest";
 import { screen } from "@testing-library/react";
-import React from "react";
+import { describe, expect, it } from "vitest";
 import { getDiForUnitTesting } from "../../../../getDiForUnitTesting";
 import { renderFor } from "../../../test-utils/renderFor";
 import { ExtensionStatusBadge } from "./extension-status-badge";

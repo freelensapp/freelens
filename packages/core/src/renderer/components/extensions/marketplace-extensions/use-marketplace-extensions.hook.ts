@@ -15,8 +15,8 @@ import {
 import type { IComputedValue } from "mobx";
 
 import type { IAsyncComputed } from "../../../../common/utils/async-computed";
-import type { InstalledExtension } from "../../../../extensions/installed-extension";
 import type { ExtensionInstallationStateStore } from "../../../../extensions/extension-installation-state-store/extension-installation-state-store";
+import type { InstalledExtension } from "../../../../extensions/installed-extension";
 import type { ConfirmUninstallExtension } from "../confirm-uninstall-extension.injectable";
 import type { InstallExtensionFromInput } from "../install-extension-from-input.injectable";
 import type { MarketplaceExtension } from "./marketplace-extensions.injectable";

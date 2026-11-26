@@ -10,7 +10,7 @@
  */
 
 import { withInjectables } from "@ogre-tools/injectable-react";
-import React, { useState } from "react";
+import { useState } from "react";
 import { Gutter } from "../gutter";
 import { DropFileInput } from "../input";
 import { SettingLayout } from "../layout/setting-layout";
