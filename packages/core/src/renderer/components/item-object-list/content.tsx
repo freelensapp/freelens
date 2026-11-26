@@ -539,6 +539,7 @@ export class NonInjectedItemListLayoutContent<
     const {
       store,
       hasDetailsView,
+      isSelectable,
       addRemoveButtons = {},
       virtual,
       sortingCallbacks,
@@ -584,7 +585,9 @@ export class NonInjectedItemListLayoutContent<
           {() => (
             <AddRemoveButtons
               onRemove={
-                (store.removeItems || store.removeSelectedItems) && selectedItems.length > 0
+                // The selection is kept in the store, which other lists of the same kind share, so only a
+                // list that offers a selection offers to remove the selected items.
+                isSelectable && (store.removeItems || store.removeSelectedItems) && selectedItems.length > 0
                   ? () => this.removeItemsDialog(selectedItems)
                   : undefined
               }
