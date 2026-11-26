@@ -54,6 +54,23 @@ const toTestId = (label: string) => label.toLowerCase().replace(/\s+/g, "-");
 const partTestId = (testId: string | undefined, part: string) => (testId ? `${testId}-${part}` : undefined);
 
 /**
+ * The React key of each status: its label, so that the row and the segment of a status keep their elements while
+ * the statuses before them come and go. The labels of a card are meant to be distinct; a repeated one gets the
+ * number of its occurrence, so that its keys stay unique.
+ */
+const keysOf = (statuses: readonly StatusCardStatus[]) => {
+  const seen = new Map<string, number>();
+
+  return statuses.map(({ label }) => {
+    const occurrence = seen.get(label) ?? 0;
+
+    seen.set(label, occurrence + 1);
+
+    return occurrence === 0 ? label : `${label}\n${occurrence}`;
+  });
+};
+
+/**
  * The number of items of one kind and their statuses: the total, the share that is healthy, the number that
  * fail, a bar of the statuses and a legend with each status, its count and its share. The colors of the card
  * are the colors of the active theme, and of the statuses the colors they are given.
@@ -73,6 +90,7 @@ export const StatusCard = ({
   const total = givenTotal ?? counted;
   const healthy = sumOf(statuses.filter((status) => status.tone === "healthy"));
   const failing = sumOf(statuses.filter((status) => status.tone === "failing"));
+  const keys = keysOf(statuses);
 
   const content = (
     <>
@@ -94,7 +112,7 @@ export const StatusCard = ({
       <span className="StatusCard-bar" aria-hidden="true">
         {statuses.map((status, index) => (
           <span
-            key={`${index}-${status.label}`}
+            key={keys[index]}
             className="StatusCard-segment"
             data-healthy={status.tone === "healthy" || undefined}
             style={{ flexGrow: status.count, backgroundColor: status.color }}
@@ -106,7 +124,7 @@ export const StatusCard = ({
         <span className="StatusCard-legend">
           {statuses.map((status, index) => (
             <span
-              key={`${index}-${status.label}`}
+              key={keys[index]}
               className="StatusCard-legendRow"
               data-failing={status.tone === "failing" || undefined}
               data-testid={partTestId(testId, `status-${toTestId(status.label)}`)}

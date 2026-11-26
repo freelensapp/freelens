@@ -83,6 +83,23 @@ describe("StatusCard", () => {
     expect(screen.getByTestId("card-status-progressing")).not.toHaveAttribute("data-failing");
   });
 
+  it("keeps the elements of a status when a status before it drops out", () => {
+    const { container, rerender } = render(<StatusCard title="Releases" statuses={statuses} data-testid="card" />);
+    const stalled = screen.getByTestId("card-status-stalled");
+    const segments = Array.from(container.querySelectorAll(".StatusCard-segment"));
+
+    rerender(
+      <StatusCard
+        title="Releases"
+        statuses={statuses.map((status) => (status.label === "Progressing" ? { ...status, count: 0 } : status))}
+        data-testid="card"
+      />,
+    );
+
+    expect(screen.getByTestId("card-status-stalled")).toBe(stalled);
+    expect(Array.from(container.querySelectorAll(".StatusCard-segment"))).toContain(segments[2]);
+  });
+
   it("colors each status with the color it is given", () => {
     render(<StatusCard title="Releases" statuses={statuses} data-testid="card" />);
 
