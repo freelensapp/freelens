@@ -1,5 +1,5 @@
 [tools]
-cosign = "3.1.4"
+cosign = "3.1.6"
 node = "24.22.3"
 yq = "4.54.3"
 
