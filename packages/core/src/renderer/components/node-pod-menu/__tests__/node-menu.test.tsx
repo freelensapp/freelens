@@ -7,6 +7,7 @@ import createTerminalTabInjectable from "../../dock/terminal/create-terminal-tab
 import sendCommandInjectable from "../../dock/terminal/send-command.injectable";
 import hideDetailsInjectable from "../../kube-detail-params/hide-details.injectable";
 import { type DiRender, renderFor } from "../../test-utils/renderFor";
+import navigateToPodsOnNodeInjectable from "../../workloads-pods/navigate-to-pods-on-node.injectable";
 import { NodeMenu } from "../node-menu";
 
 import type { DiContainer } from "@ogre-tools/injectable";
@@ -28,6 +29,7 @@ describe("pod-node-menu", () => {
   let openConfirmDialogMock: Mock;
   let sendCommandMock: Mock;
   let hideDetailsMock: Mock;
+  let navigateToPodsOnNodeMock: Mock;
 
   beforeEach(() => {
     di = getDiForUnitTesting();
@@ -36,11 +38,13 @@ describe("pod-node-menu", () => {
     openConfirmDialogMock = vi.fn((params) => params.ok());
     sendCommandMock = vi.fn(() => Promise.resolve());
     hideDetailsMock = vi.fn();
+    navigateToPodsOnNodeMock = vi.fn();
 
     di.override(createTerminalTabInjectable, () => createTerminalTabMock);
     di.override(openConfirmDialogInjectable, () => openConfirmDialogMock);
     di.override(sendCommandInjectable, () => sendCommandMock);
     di.override(hideDetailsInjectable, () => hideDetailsMock);
+    di.override(navigateToPodsOnNodeInjectable, () => navigateToPodsOnNodeMock);
 
     render = renderFor(di);
   });
@@ -257,5 +261,30 @@ describe("pod-node-menu", () => {
 
     expect(openConfirmDialogMock).toHaveBeenCalledTimes(1);
     expect(hideDetailsMock).toHaveBeenCalledTimes(1);
+  });
+
+  it("click on Pods menu should open the pods of the node", () => {
+    // GIVEN
+    const nodeName = "nodeName";
+    const object = {
+      metadata: {
+        name: nodeName,
+        selfLink: "selfLink",
+      },
+      spec: {
+        unschedulable: false,
+      },
+    };
+
+    // WHEN
+    render(<NodeMenu object={object} toolbar={false} />);
+
+    // THEN
+    const menuItem = screen.getAllByTestId("menu-item-testid");
+
+    expect(menuItem[3].querySelectorAll("span")[1]).toHaveTextContent("Pods");
+    fireEvent.click(menuItem[3]);
+
+    expect(navigateToPodsOnNodeMock).toHaveBeenCalledWith(nodeName);
   });
 });
