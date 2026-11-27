@@ -6,11 +6,17 @@
  * This replaces the webpack-based auto-registration system.
  */
 
+import nodeUrlPageParamInjectable from "./node-url-param.injectable";
 import pageFiltersStoreInjectable from "./store.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
+  try {
+    di.register(nodeUrlPageParamInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
   try {
     di.register(pageFiltersStoreInjectable);
   } catch (e) {

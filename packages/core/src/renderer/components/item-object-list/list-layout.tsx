@@ -231,15 +231,14 @@ export class NonInjectedItemListLayout<I extends ItemObject, PreLoadStores exten
   // this.props: mobx-react 9 forbids reading this.props inside a derivation, and
   // the child header/filters/content observers call them from their own render
   // reactions. observableProps keeps the reads reactive across those boundaries.
+  // A list shows only the filters it can apply: the search when it has search
+  // filters, any other type when it has a callback for it.
   get filters() {
-    let { activeFilters } = this.observableProps.pageFiltersStore;
-    const { searchFilters = [] } = this.observableProps;
+    const { pageFiltersStore, searchFilters = [], filterCallbacks = {} } = this.observableProps;
 
-    if (searchFilters.length === 0) {
-      activeFilters = activeFilters.filter(({ type }) => type !== FilterType.SEARCH);
-    }
-
-    return activeFilters;
+    return pageFiltersStore.activeFilters.filter(({ type }) =>
+      type === FilterType.SEARCH ? searchFilters.length > 0 : filterCallbacks[type] !== undefined,
+    );
   }
 
   toggleFilters() {

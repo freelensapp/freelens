@@ -11,6 +11,8 @@ import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import { useEffect } from "react";
 import eventStoreInjectable from "../events/store.injectable";
+import { FilterType } from "../item-object-list/page-filters/store";
+import pageFiltersStoreInjectable from "../item-object-list/page-filters/store.injectable";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import { getPodContainerPorts } from "./pod-ports-cell";
@@ -20,16 +22,24 @@ import type { Pod } from "@freelensapp/kube-object";
 import type { SpecificKubeListLayoutColumn } from "@freelensapp/list-layout";
 
 import type { EventStore } from "../events/store";
+import type { PageFiltersStore } from "../item-object-list/page-filters/store";
 import type { PodStore } from "./store";
 
 interface Dependencies {
   eventStore: EventStore;
   podStore: PodStore;
+  pageFiltersStore: PageFiltersStore;
   columns: SpecificKubeListLayoutColumn<Pod>[];
 }
 
+const filterPodsByNode = (pageFiltersStore: PageFiltersStore) => (pods: Pod[]) => {
+  const nodeNames = pageFiltersStore.getValues(FilterType.NODE);
+
+  return pods.filter((pod) => nodeNames.includes(pod.getNodeName() ?? ""));
+};
+
 const NonInjectedPods = observer((props: Dependencies) => {
-  const { columns, eventStore, podStore } = props;
+  const { columns, eventStore, podStore, pageFiltersStore } = props;
 
   // The next load is scheduled when the previous one has ended, after the time
   // the store asks for, which grows with the number of requests a load sends.
@@ -69,6 +79,7 @@ const NonInjectedPods = observer((props: Dependencies) => {
           (pod) => pod.getNodeName(),
           (pod) => getPodContainerPorts(pod).flatMap((port) => [port.name, port.containerPort, port.protocol]),
         ]}
+        filterCallbacks={{ [FilterType.NODE]: filterPodsByNode(pageFiltersStore) }}
         renderHeaderTitle="Pods"
         renderTableHeader={[]}
         renderTableContents={() => []}
@@ -83,6 +94,7 @@ export const Pods = withInjectables<Dependencies>(NonInjectedPods, {
     ...props,
     eventStore: di.inject(eventStoreInjectable),
     podStore: di.inject(podStoreInjectable),
+    pageFiltersStore: di.inject(pageFiltersStoreInjectable),
     columns: di.injectMany(podListLayoutColumnInjectionToken),
   }),
 });

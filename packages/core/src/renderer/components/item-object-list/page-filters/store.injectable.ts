@@ -6,6 +6,7 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import searchUrlPageParamInjectable from "../../input/search-url-page-param.injectable";
+import nodeUrlPageParamInjectable from "./node-url-param.injectable";
 import { PageFiltersStore } from "./store";
 
 const pageFiltersStoreInjectable = getInjectable({
@@ -13,6 +14,7 @@ const pageFiltersStoreInjectable = getInjectable({
   instantiate: (di) =>
     new PageFiltersStore({
       searchUrlParam: di.inject(searchUrlPageParamInjectable),
+      nodeUrlParam: di.inject(nodeUrlPageParamInjectable),
     }),
 });
 
