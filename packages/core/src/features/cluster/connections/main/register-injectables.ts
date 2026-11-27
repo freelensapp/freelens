@@ -7,10 +7,16 @@
  */
 
 import clusterApiUrlInjectable from "./api-url.injectable";
+import clusterApiUrlChannelListenerInjectable from "./api-url-channel-listener.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
+  try {
+    di.register(clusterApiUrlChannelListenerInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
   try {
     di.register(clusterApiUrlInjectable);
   } catch (e) {

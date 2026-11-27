@@ -18,6 +18,7 @@ import eventStoreInjectable from "../events/store.injectable";
 import { TabLayout } from "../layout/tab-layout";
 import nodeStoreInjectable from "../nodes/store.injectable";
 import podStoreInjectable from "../workloads-pods/store.injectable";
+import { ClusterInfoStrip } from "./cluster-info-strip";
 import { ClusterIssues } from "./cluster-issues";
 import styles from "./cluster-overview.module.scss";
 
@@ -66,16 +67,21 @@ class NonInjectedClusterOverview extends React.Component<Dependencies> {
     const { eventStore, nodeStore, clusterMetricsAreVisible } = this.props;
     const isMetricsHidden = !clusterMetricsAreVisible.get();
 
+    const isLoaded = nodeStore.isLoaded && eventStore.isLoaded;
+
     return (
       <TabLayout scrollable>
-        <div className={styles.ClusterOverview} data-testid="cluster-overview-page">
-          {!nodeStore.isLoaded || !eventStore.isLoaded ? (
-            <Spinner center />
-          ) : isMetricsHidden ? (
-            <ClusterIssues className="OnlyClusterIssues" />
-          ) : (
-            this.renderWithMetrics()
-          )}
+        <div className={styles.page}>
+          {isLoaded && <ClusterInfoStrip />}
+          <div className={styles.ClusterOverview} data-testid="cluster-overview-page">
+            {!isLoaded ? (
+              <Spinner center />
+            ) : isMetricsHidden ? (
+              <ClusterIssues className="OnlyClusterIssues" />
+            ) : (
+              this.renderWithMetrics()
+            )}
+          </div>
         </div>
       </TabLayout>
     );
