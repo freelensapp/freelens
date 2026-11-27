@@ -9,6 +9,7 @@ import { act, waitFor } from "@testing-library/react";
 import { noop } from "es-toolkit";
 import { autorun } from "mobx";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import navigateToCustomResourcesInjectable from "../../common/front-end-routing/routes/cluster/custom-resources/navigate-to-custom-resources.injectable";
 import apiManagerInjectable from "../../common/k8s-api/api-manager/manager.injectable";
 import { LensExtensionKubeObject } from "../../extensions/common-api/k8s-api";
 import { columnsFor } from "../../extensions/renderer-api/kube-object-registrations";
@@ -75,6 +76,22 @@ const someFluxInstance = new KubeObject({
   status: {
     conditions: [{ type: "Ready", status: "True", message: "Reconciliation finished" }],
     lastAppliedRevision: "v2.4.0@sha256:0123456789abcdef",
+  },
+} as never);
+
+const otherFluxInstance = new KubeObject({
+  apiVersion: `${group}/v1`,
+  kind: "FluxInstance",
+  metadata: {
+    name: "another-flux",
+    namespace: "flux-system",
+    selfLink: `/apis/${group}/v1/namespaces/flux-system/fluxinstances/another-flux`,
+    uid: "another-flux-uid",
+    resourceVersion: "1",
+  },
+  status: {
+    conditions: [{ type: "Ready", status: "False", message: "Reconciliation failed" }],
+    lastAppliedRevision: "v2.3.0@sha256:0123456789abcdef",
   },
 } as never);
 
@@ -227,12 +244,129 @@ describe("printer columns of custom resources registered by extensions", () => {
       });
     });
 
+    describe("when the list of the kind is opened", () => {
+      const getHeaderTitles = () =>
+        Array.from(result.container.querySelectorAll(".CustomResources .TableHead .TableCell"), (cell) =>
+          cell.textContent?.replace("arrow_drop_down", "").trim(),
+        ).filter(Boolean);
+      const getRowNames = () =>
+        Array.from(result.container.querySelectorAll(".CustomResources .TableRow"), (row) =>
+          row.textContent?.includes("another-flux") ? "another-flux" : "flux",
+        );
+
+      beforeEach(async () => {
+        windowDi
+          .inject(apiManagerInjectable)
+          .getStore(fluxInstanceDefinition.getResourceApiBase())
+          ?.items.replace([someFluxInstance, otherFluxInstance]);
+
+        act(() => windowDi.inject(navigateToCustomResourcesInjectable)({ group, name: "fluxinstances" }));
+
+        await waitFor(() => expect(getRowNames()).toHaveLength(2), { timeout: 300 });
+      });
+
+      it("leaves the hidden column out of the header", () => {
+        expect(getHeaderTitles()).toEqual(["Name", "Namespace", "Ready", "Revision", "Age", "more_vert"]);
+        expect(result.queryByTestId("custom-resource-column-title-status")).not.toBeInTheDocument();
+      });
+
+      it("leaves the hidden column out of the columns the user can toggle", async () => {
+        act(() =>
+          (result.container.querySelector("#menu-actions-for-item-object-list-content") as HTMLElement).click(),
+        );
+
+        await waitFor(
+          () =>
+            expect(
+              Array.from(document.querySelectorAll(".ItemListLayoutVisibilityMenu .Checkbox"), (checkbox) =>
+                checkbox.textContent?.trim(),
+              ),
+            ).toEqual(["Name", "Namespace", "Ready", "Revision", "Age"]),
+          { timeout: 300 },
+        );
+      });
+
+      it("leaves the hidden column out of the cells", () => {
+        expect(result.queryByTestId("custom-resource-column-cell-status-for-flux-system/flux")).not.toBeInTheDocument();
+        expect(result.container.querySelector(".CustomResources")).not.toHaveTextContent("Reconciliation finished");
+      });
+
+      it("renders the cells of the registered column with the extension's component", () => {
+        expect(result.getByTestId("custom-resource-column-cell-ready-for-flux-system/flux")).toHaveTextContent(
+          "ready: True",
+        );
+        expect(result.getByTestId("custom-resource-column-cell-ready-for-flux-system/another-flux")).toHaveTextContent(
+          "ready: False",
+        );
+      });
+
+      it("shows the cells of a column the registration does not name as before", () => {
+        expect(result.getByTestId("custom-resource-column-cell-revision-for-flux-system/flux")).toHaveTextContent(
+          "v2.4.0@sha256:0123456789abcdef",
+        );
+      });
+
+      it("sorts the registered column by its raw value", async () => {
+        act(() => result.getByTestId("custom-resource-column-title-ready").click());
+
+        await waitFor(() => expect(getRowNames()).toEqual(["another-flux", "flux"]), { timeout: 300 });
+
+        act(() => result.getByTestId("custom-resource-column-title-ready").click());
+
+        await waitFor(() => expect(getRowNames()).toEqual(["flux", "another-flux"]), { timeout: 300 });
+      });
+    });
+
     it("drops them when the extension is disabled", async () => {
       await act(async () => {
         builder.extensions.disable(fluxExtension);
       });
 
       expect(getColumns("FluxInstance", `${group}/v1`).size).toBe(0);
+    });
+  });
+
+  describe("given an enabled extension renders a column of the list with a component that throws", () => {
+    const Throwing = () => {
+      throw new Error("some error");
+    };
+
+    beforeEach(async () => {
+      vi.spyOn(console, "error").mockImplementation(noop);
+
+      await enableExtension({
+        id: "throwing-extension-id",
+        name: "throwing-extension",
+        rendererOptions: {
+          customResourceColumns: [columnsFor(FluxInstance, { columns: { Ready: { Render: Throwing } } })],
+        },
+      });
+
+      windowDi
+        .inject(apiManagerInjectable)
+        .getStore(fluxInstanceDefinition.getResourceApiBase())
+        ?.items.replace([someFluxInstance]);
+
+      act(() => windowDi.inject(navigateToCustomResourcesInjectable)({ group, name: "fluxinstances" }));
+
+      await waitFor(
+        () => expect(result.getByTestId("custom-resource-column-cell-ready-for-flux-system/flux")).toBeInTheDocument(),
+        { timeout: 300 },
+      );
+    });
+
+    it("shows the host's rendering of the value in the cell, and the rest of the list", () => {
+      expect(result.getByTestId("custom-resource-column-cell-ready-for-flux-system/flux")).toHaveTextContent("True");
+      expect(result.getByTestId("custom-resource-column-cell-status-for-flux-system/flux")).toHaveTextContent(
+        "Reconciliation finished",
+      );
+    });
+
+    it("logs the error with the extension's name, the kind and the column", () => {
+      expect(loggerStub.error).toHaveBeenCalledWith(
+        '[EXTENSIONS]: throwing-extension: the column "Ready" of FluxInstance failed to render, its value is shown instead',
+        expect.objectContaining({ message: "some error" }),
+      );
     });
   });
 
