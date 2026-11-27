@@ -17,11 +17,18 @@
     overflow: auto;
   }
 
-  // Reserves the scrollbar gutter of the virtual list below, so the head's
-  // columns line up with the rows'.
-  &.virtual > .TableHead {
-    overflow: hidden;
-    scrollbar-gutter: stable;
+  // The list's scrollbar takes its width from the rows, so the list always
+  // reserves the gutter and the head reserves the same one: the head's columns
+  // then line up with the rows' whether or not the list scrolls.
+  &.virtual {
+    > .TableHead {
+      overflow: hidden;
+      scrollbar-gutter: stable;
+    }
+
+    > .VirtualList .list {
+      scrollbar-gutter: stable;
+    }
   }
 
   &.scrollable.virtual {

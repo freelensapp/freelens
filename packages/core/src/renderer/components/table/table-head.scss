@@ -39,7 +39,7 @@
 
     // Next to a sort icon, a title that does not fit ends with an ellipsis
     // rather than running under the icon.
-    &:hover > .content,
+    &.sorting:hover > .content,
     &:has(> .sortIcon.enabled) > .content {
       overflow: hidden;
       text-overflow: ellipsis;
