@@ -114,7 +114,7 @@ catalog:
   mobx-utils: 6.1.1
   monaco-editor: 0.57.0
   node-pty: 1.2.0-beta.18
-  openpgp: 6.3.2
+  openpgp: 6.3.3
   proper-lockfile: 4.1.2
   react-colorful: 5.8.1
   react-select: 5.10.2
