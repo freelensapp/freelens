@@ -14,6 +14,7 @@ import { useEffect, useMemo } from "react";
 import eventStoreInjectable from "../events/store.injectable";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
+import { NodeSelectFilter } from "./node-select-filter";
 import nodeUrlPageParamInjectable from "./node-url-param.injectable";
 import { getPodContainerPorts } from "./pod-ports-cell";
 import podStoreInjectable from "./store.injectable";
@@ -109,6 +110,15 @@ const NonInjectedPods = observer((props: Dependencies) => {
           (pod) => getPodContainerPorts(pod).flatMap((port) => [port.name, port.containerPort, port.protocol]),
         ]}
         renderHeaderTitle="Pods"
+        customizeHeader={({ filters, ...headerPlaceholders }) => ({
+          filters: (
+            <>
+              {filters}
+              <NodeSelectFilter />
+            </>
+          ),
+          ...headerPlaceholders,
+        })}
         renderTableHeader={[]}
         renderTableContents={() => []}
         columns={columns}

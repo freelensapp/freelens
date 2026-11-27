@@ -5,13 +5,15 @@
  */
 
 import { podMetricsApiInjectable } from "@freelensapp/kube-api-specifics";
-import { Pod } from "@freelensapp/kube-object";
+import { Node, Pod } from "@freelensapp/kube-object";
 import { observableHistoryInjectionToken } from "@freelensapp/routing";
-import { act } from "@testing-library/react";
+import { act, fireEvent } from "@testing-library/react";
+import * as selectEvent from "react-select-event";
 import { beforeEach, describe, expect, it } from "vitest";
 import navigateToPodsInjectable from "../../../common/front-end-routing/routes/cluster/workloads/pods/navigate-to-pods.injectable";
 import requestMetricsInjectable from "../../../common/k8s-api/endpoints/metrics.api/request-metrics.injectable";
 import namespaceStoreInjectable from "../../../renderer/components/namespaces/store.injectable";
+import nodeStoreInjectable from "../../../renderer/components/nodes/store.injectable";
 import {
   type ApplicationBuilder,
   getApplicationBuilder,
@@ -171,6 +173,8 @@ describe("workloads / pods", () => {
 
       const rowOf = (name: string) =>
         rendered.queryByTestId(`icon-for-menu-actions-for-kube-object-menu-for-uid-${name}`);
+      const nodeSelect = () => rendered.getByTestId("pods-node-select-filter");
+      const nodeSelectInput = () => nodeSelect().querySelector<HTMLElement>("input")!;
 
       beforeEach(async () => {
         applicationBuilder.namespaces.add("kube-system");
@@ -231,6 +235,135 @@ describe("workloads / pods", () => {
             expect(rowOf("on-b")).toBeInTheDocument();
             expect(rowOf("pending")).toBeInTheDocument();
             expect(rendered.getByText("4 items")).toBeInTheDocument();
+          });
+        });
+      });
+
+      describe("given the nodes of the cluster are listed", () => {
+        const makeNode = (name: string) =>
+          new Node({
+            apiVersion: "v1",
+            kind: "Node",
+            metadata: { name, resourceVersion: "irrelevant", selfLink: `/api/v1/nodes/${name}`, uid: `uid-${name}` },
+          });
+
+        beforeEach(async () => {
+          act(() => {
+            applicationBuilder.allowKubeResource({ apiName: "nodes", group: "" });
+
+            const nodeStore = windowDi.inject(nodeStoreInjectable);
+
+            nodeStore.items.push(makeNode("node-b"), makeNode("node-c"), makeNode("node-a"));
+            nodeStore.isLoaded = true;
+          });
+          applicationBuilder.navigateWith(navigateToPodsInjectable);
+          await rendered.findByTestId("icon-for-menu-actions-for-kube-object-menu-for-uid-on-a");
+        });
+
+        it("shows all nodes in the node select", () => {
+          expect(nodeSelect()).toHaveTextContent("All nodes");
+        });
+
+        it("offers every node by name, with the number of its pods in the selected namespaces", async () => {
+          selectEvent.openMenu(nodeSelectInput());
+
+          const options = await rendered.findAllByRole("option");
+
+          expect(options.map((option) => option.textContent)).toEqual(["All nodes", "node-a1", "node-b1", "node-c0"]);
+        });
+
+        describe("when a node is selected", () => {
+          beforeEach(async () => {
+            selectEvent.openMenu(nodeSelectInput());
+            fireEvent.click(await rendered.findByRole("option", { name: /^node-a/ }));
+          });
+
+          it("puts the node into the URL", () => {
+            expect(windowDi.inject(observableHistoryInjectionToken).searchParams.get("node")).toBe("node-a");
+          });
+
+          it("shows only the pods on the node", () => {
+            expect(rowOf("on-a")).toBeInTheDocument();
+            expect(rowOf("on-b")).not.toBeInTheDocument();
+            expect(rowOf("pending")).not.toBeInTheDocument();
+            expect(rendered.getByText("1 item")).toBeInTheDocument();
+          });
+
+          it("shows the node in the node select", () => {
+            expect(nodeSelect()).toHaveTextContent("Node: node-a");
+          });
+
+          it("lists no node filter among the applied filters", () => {
+            expect(rendered.queryByText("Filtered")).not.toBeInTheDocument();
+            expect(rendered.container.querySelector(".PageFiltersList")).not.toBeInTheDocument();
+          });
+
+          describe("when all nodes are selected", () => {
+            beforeEach(async () => {
+              selectEvent.openMenu(nodeSelectInput());
+              fireEvent.click(await rendered.findByRole("option", { name: "All nodes" }));
+            });
+
+            it("removes the node from the URL", () => {
+              expect(windowDi.inject(observableHistoryInjectionToken).searchParams.has("node")).toBe(false);
+            });
+
+            it("shows the pods on every node", () => {
+              expect(rowOf("on-a")).toBeInTheDocument();
+              expect(rowOf("on-b")).toBeInTheDocument();
+              expect(rowOf("pending")).toBeInTheDocument();
+              expect(nodeSelect()).toHaveTextContent("All nodes");
+            });
+          });
+        });
+
+        describe("when the URL selects a node", () => {
+          beforeEach(() => {
+            act(() => windowDi.inject(nodeUrlPageParamInjectable).set("node-b"));
+          });
+
+          it("shows the node in the node select", () => {
+            expect(nodeSelect()).toHaveTextContent("Node: node-b");
+          });
+        });
+      });
+
+      describe("given the nodes of the cluster are allowed but not loaded yet", () => {
+        beforeEach(async () => {
+          act(() => applicationBuilder.allowKubeResource({ apiName: "nodes", group: "" }));
+          applicationBuilder.navigateWith(navigateToPodsInjectable);
+          await rendered.findByTestId("icon-for-menu-actions-for-kube-object-menu-for-uid-on-a");
+        });
+
+        it("shows a disabled node select", () => {
+          expect(nodeSelect().querySelector(".Select--is-disabled")).toBeInTheDocument();
+        });
+      });
+
+      describe("given the nodes of the cluster cannot be listed", () => {
+        beforeEach(async () => {
+          applicationBuilder.navigateWith(navigateToPodsInjectable);
+          await rendered.findByTestId("icon-for-menu-actions-for-kube-object-menu-for-uid-on-a");
+        });
+
+        it("shows no node select", () => {
+          expect(rendered.queryByTestId("pods-node-select-filter")).not.toBeInTheDocument();
+        });
+
+        describe("when the URL selects a node", () => {
+          beforeEach(async () => {
+            act(() => windowDi.inject(nodeUrlPageParamInjectable).set("node-a"));
+            await rendered.findByTestId("pods-node-select-filter");
+          });
+
+          it("shows the node in the node select, to clear it from there", async () => {
+            expect(nodeSelect()).toHaveTextContent("Node: node-a");
+
+            selectEvent.openMenu(nodeSelectInput());
+            fireEvent.click(await rendered.findByRole("option", { name: "All nodes" }));
+
+            expect(windowDi.inject(observableHistoryInjectionToken).searchParams.has("node")).toBe(false);
+            expect(rowOf("on-b")).toBeInTheDocument();
           });
         });
       });
