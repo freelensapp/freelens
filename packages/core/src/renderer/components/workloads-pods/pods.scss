@@ -59,7 +59,7 @@
 
     &.status {
       @include workloads-mixins.pod-status-colors;
-      flex-grow: 0.7;
+      flex-grow: 1.5;
     }
 
     &.logs {

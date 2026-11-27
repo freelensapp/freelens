@@ -676,6 +676,14 @@ export interface PodStatus {
 
 export type ContainersType = "containers" | "initContainers" | "ephemeralContainers";
 
+function terminatedReason({ reason, signal, exitCode }: ContainerStateTerminated): string {
+  if (reason) {
+    return reason;
+  }
+
+  return signal ? `Signal:${signal}` : `ExitCode:${exitCode}`;
+}
+
 export class Pod extends KubeObject<NamespaceScopedMetadata, PodStatus, PodSpec> {
   static kind = "Pod";
 
@@ -822,7 +830,11 @@ export class Pod extends KubeObject<NamespaceScopedMetadata, PodStatus, PodSpec>
     return PodStatusPhase.PENDING;
   }
 
-  // Returns pod phase or container error if occurred
+  /**
+   * The pod's status as `kubectl get pods` shows it: the reason an init
+   * container has not completed, else the reason a container waits or has
+   * terminated, else the pod's phase.
+   */
   getStatusMessage(): string {
     if (this.getReason() === PodStatusPhase.EVICTED) {
       return "Evicted";
@@ -837,7 +849,41 @@ export class Pod extends KubeObject<NamespaceScopedMetadata, PodStatus, PodSpec>
       }
     }
 
-    return this.getStatusPhase() || "Waiting";
+    return this.getContainersStatusReason() ?? (this.getStatusPhase() || "Waiting");
+  }
+
+  private getContainersStatusReason(): string | undefined {
+    const { initContainerStatuses = [], containerStatuses = [] } = this.status ?? {};
+    const initContainers = this.getInitContainers();
+
+    for (const [index, { name, state }] of initContainerStatuses.entries()) {
+      const isSidecar = initContainers.find((container) => container.name === name)?.restartPolicy === "Always";
+
+      if (state?.terminated?.exitCode === 0 || (isSidecar && state?.running)) {
+        continue;
+      }
+
+      if (state?.terminated) {
+        return `Init:${terminatedReason(state.terminated)}`;
+      }
+
+      if (state?.waiting?.reason && state.waiting.reason !== "PodInitializing") {
+        return `Init:${state.waiting.reason}`;
+      }
+
+      return `Init:${index}/${initContainers.length}`;
+    }
+
+    const reason = containerStatuses
+      .map(({ state }) => state?.waiting?.reason || (state?.terminated && terminatedReason(state.terminated)))
+      .find(Boolean);
+
+    // A container that completed while others still run leaves the pod running.
+    if (reason === "Completed" && containerStatuses.some(({ state }) => state?.running)) {
+      return undefined;
+    }
+
+    return reason || undefined;
   }
 
   getStatusPhase() {
