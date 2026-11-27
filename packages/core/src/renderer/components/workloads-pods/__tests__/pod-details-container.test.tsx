@@ -12,7 +12,7 @@ import portForwardStoreInjectable from "../../../port-forward/port-forward-store
 import { renderFor } from "../../test-utils/renderFor";
 import { PodDetailsContainer } from "../pod-details-container";
 
-import type { PodStatus } from "@freelensapp/kube-object";
+import type { PodContainerStatus, PodStatus } from "@freelensapp/kube-object";
 
 vi.mock("../pod-container-env", () => ({
   ContainerEnvironment: () => null,
@@ -106,6 +106,69 @@ describe("pod-details-container", () => {
       const { container } = renderContainer("main");
 
       expect(container.querySelector(".pod-container-title")).toHaveTextContent(/^main$/);
+    });
+  });
+
+  describe("container status", () => {
+    const renderWithStatus = (containerStatus: Partial<PodContainerStatus>) => {
+      const di = getDiForUnitTesting();
+
+      di.override(portForwardStoreInjectable, () => ({
+        watch: () => disposer(),
+      }));
+
+      const render = renderFor(di);
+      const pod = new Pod({
+        apiVersion: "v1",
+        kind: "Pod",
+        metadata: {
+          name: "test-pod",
+          namespace: "default",
+          resourceVersion: "1",
+          selfLink: "/api/v1/namespaces/default/pods/test-pod",
+          uid: "pod-uid",
+        },
+        spec: { containers: [{ name: "main", image: "app:1" }] },
+        status: {
+          containerStatuses: [
+            { name: "main", image: "app:1", imageID: "", ready: false, restartCount: 0, ...containerStatus },
+          ],
+        } as PodStatus,
+      });
+
+      render(<PodDetailsContainer pod={pod} container={pod.getContainersWithType()[0]} />);
+    };
+
+    it("shows why a container waits, with its message and restart count", () => {
+      renderWithStatus({
+        restartCount: 7,
+        state: { waiting: { reason: "CrashLoopBackOff", message: "back-off 5m0s restarting failed container" } },
+      });
+
+      expect(screen.getByText("waiting, restarted - CrashLoopBackOff")).toBeInTheDocument();
+      expect(screen.getByText("back-off 5m0s restarting failed container")).toBeInTheDocument();
+      expect(screen.getByText("Restarts")).toBeInTheDocument();
+      expect(screen.getByText("7")).toBeInTheDocument();
+    });
+
+    it("shows the exit code, signal and message of the last termination", () => {
+      renderWithStatus({
+        restartCount: 1,
+        state: { running: { startedAt: "2026-11-27T10:00:00Z" } },
+        lastState: {
+          terminated: {
+            reason: "Error",
+            exitCode: 143,
+            signal: 15,
+            message: "shutting down",
+            startedAt: "2026-11-27T09:00:00Z",
+            finishedAt: "2026-11-27T09:59:00Z",
+          },
+        },
+      });
+
+      expect(screen.getByText(/Reason: Error \(exit code: 143, signal: 15\)/)).toBeInTheDocument();
+      expect(screen.getByText("shutting down")).toBeInTheDocument();
     });
   });
 });

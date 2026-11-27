@@ -83,7 +83,7 @@ class NonInjectedPodDetailsContainer extends React.Component<PodDetailsContainer
           {status?.ready ? ", ready" : ""}
           {reason ? ` - ${reason}` : ""}
         </span>
-        {message && <div className="status-message">{message}</div>}
+        {message && <span className="status-message">{message}</span>}
       </>
     );
   }
@@ -105,7 +105,7 @@ class NonInjectedPodDetailsContainer extends React.Component<PodDetailsContainer
           {"Finished: "}
           {<DurationAbsoluteTimestamp timestamp={terminated.finishedAt} />}
           <br />
-          {terminated.message && <div className="status-message">{terminated.message}</div>}
+          {terminated.message && <span className="status-message">{terminated.message}</span>}
         </span>
       );
     }
