@@ -6,18 +6,23 @@
 
 import { podMetricsApiInjectable } from "@freelensapp/kube-api-specifics";
 import { Pod } from "@freelensapp/kube-object";
+import { observableHistoryInjectionToken } from "@freelensapp/routing";
+import { act, fireEvent } from "@testing-library/react";
 import { beforeEach, describe, expect, it } from "vitest";
 import navigateToPodsInjectable from "../../../common/front-end-routing/routes/cluster/workloads/pods/navigate-to-pods.injectable";
 import requestMetricsInjectable from "../../../common/k8s-api/endpoints/metrics.api/request-metrics.injectable";
+import namespaceStoreInjectable from "../../../renderer/components/namespaces/store.injectable";
 import {
   type ApplicationBuilder,
   getApplicationBuilder,
 } from "../../../renderer/components/test-utils/get-application-builder";
+import navigateToPodsOnNodeInjectable from "../../../renderer/components/workloads-pods/navigate-to-pods-on-node.injectable";
 import podStoreInjectable from "../../../renderer/components/workloads-pods/store.injectable";
 
 import type { PodMetricsApi } from "@freelensapp/kube-api";
 import type { PodMetrics, PodStatus } from "@freelensapp/kube-object";
 
+import type { DiContainer } from "@ogre-tools/injectable";
 import type { RenderResult } from "@testing-library/react";
 
 import type { RequestMetrics } from "../../../common/k8s-api/endpoints/metrics.api/request-metrics.injectable";
@@ -139,6 +144,113 @@ describe("workloads / pods", () => {
         expect(
           await rendered.findByTestId(`icon-for-menu-actions-for-kube-object-menu-for-uuid-1`),
         ).toBeInTheDocument();
+      });
+    });
+
+    describe("given pods on different nodes in different namespaces", () => {
+      let windowDi: DiContainer;
+
+      const makePod = (name: string, namespace: string, nodeName?: string) =>
+        new Pod({
+          apiVersion: "v1",
+          kind: "Pod",
+          metadata: {
+            name,
+            namespace,
+            resourceVersion: "irrelevant",
+            selfLink: `/api/v1/namespaces/${namespace}/pods/${name}`,
+            uid: `uid-${name}`,
+          },
+          spec: {
+            containers: [{ name: "container" }],
+            nodeName,
+          },
+          status: {} as PodStatus,
+        });
+
+      const rowOf = (name: string) =>
+        rendered.queryByTestId(`icon-for-menu-actions-for-kube-object-menu-for-uid-${name}`);
+
+      beforeEach(async () => {
+        applicationBuilder.namespaces.add("kube-system");
+        applicationBuilder.afterWindowStart((windowStart) => {
+          windowDi = windowStart.windowDi;
+          windowDi.override(requestMetricsInjectable, () => (() => Promise.resolve({})) as unknown as RequestMetrics);
+
+          const podStore = windowDi.inject(podStoreInjectable);
+
+          podStore.items.push(
+            makePod("on-a", "default", "node-a"),
+            makePod("on-b", "default", "node-b"),
+            makePod("system-on-a", "kube-system", "node-a"),
+            makePod("pending", "default"),
+          );
+          podStore.isLoaded = true;
+        });
+
+        rendered = await applicationBuilder.render();
+        applicationBuilder.namespaces.select("default");
+      });
+
+      describe("when navigating to the pods of a node", () => {
+        beforeEach(async () => {
+          expect(windowDi.inject(namespaceStoreInjectable).areAllSelectedImplicitly).toBe(false);
+          act(() => windowDi.inject(navigateToPodsOnNodeInjectable)("node-a"));
+          await rendered.findByTestId("icon-for-menu-actions-for-kube-object-menu-for-uid-on-a");
+        });
+
+        it("puts the node into the URL", () => {
+          expect(windowDi.inject(observableHistoryInjectionToken).searchParams.get("node")).toBe("node-a");
+        });
+
+        it("selects all namespaces", () => {
+          expect(windowDi.inject(namespaceStoreInjectable).areAllSelectedImplicitly).toBe(true);
+        });
+
+        it("shows only the pods on the node, of every namespace", () => {
+          expect(rowOf("on-a")).toBeInTheDocument();
+          expect(rowOf("system-on-a")).toBeInTheDocument();
+          expect(rowOf("on-b")).not.toBeInTheDocument();
+          expect(rowOf("pending")).not.toBeInTheDocument();
+        });
+
+        it("tells that the list is filtered", () => {
+          expect(rendered.getByText("Filtered")).toBeInTheDocument();
+        });
+
+        describe("when the node filter is removed", () => {
+          beforeEach(async () => {
+            fireEvent.click(rendered.getByText("Filtered"));
+
+            const badge = rendered.container.querySelector(".PageFiltersList .Badge.node");
+
+            expect(badge).toHaveTextContent("node-a");
+            fireEvent.click(badge!.querySelector(".Icon.material")!);
+            await rendered.findByTestId("icon-for-menu-actions-for-kube-object-menu-for-uid-on-b");
+          });
+
+          it("shows the pods on every node again", () => {
+            expect(rowOf("on-a")).toBeInTheDocument();
+            expect(rowOf("on-b")).toBeInTheDocument();
+            expect(rowOf("pending")).toBeInTheDocument();
+          });
+
+          it("removes the node from the URL", () => {
+            expect(windowDi.inject(observableHistoryInjectionToken).searchParams.has("node")).toBe(false);
+          });
+        });
+      });
+
+      describe("when navigating to the pods list without a node", () => {
+        beforeEach(async () => {
+          applicationBuilder.navigateWith(navigateToPodsInjectable);
+          await rendered.findByTestId("icon-for-menu-actions-for-kube-object-menu-for-uid-on-a");
+        });
+
+        it("shows the pods on every node", () => {
+          expect(rowOf("on-b")).toBeInTheDocument();
+          expect(rowOf("pending")).toBeInTheDocument();
+        });
       });
     });
   });

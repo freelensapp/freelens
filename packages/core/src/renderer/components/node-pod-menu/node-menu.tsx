@@ -13,6 +13,9 @@ import createTerminalTabInjectable from "../dock/terminal/create-terminal-tab.in
 import sendCommandInjectable, { type SendCommand } from "../dock/terminal/send-command.injectable";
 import hideDetailsInjectable, { type HideDetails } from "../kube-detail-params/hide-details.injectable";
 import { MenuItem } from "../menu";
+import navigateToPodsOnNodeInjectable, {
+  type NavigateToPodsOnNode,
+} from "../workloads-pods/navigate-to-pods-on-node.injectable";
 
 import type { DockTabCreateSpecific } from "../dock/dock/store";
 
@@ -26,10 +29,12 @@ interface Dependencies {
   sendCommand: SendCommand;
   openConfirmDialog: OpenConfirmDialog;
   hideDetails: HideDetails;
+  navigateToPodsOnNode: NavigateToPodsOnNode;
 }
 
 const NonInjectedNodeMenu: React.FC<NodeMenuProps & Dependencies> = (props) => {
-  const { object, toolbar, createTerminalTab, sendCommand, openConfirmDialog, hideDetails } = props;
+  const { object, toolbar, createTerminalTab, sendCommand, openConfirmDialog, hideDetails, navigateToPodsOnNode } =
+    props;
 
   if (!object) return null;
   let node: Node;
@@ -102,6 +107,10 @@ const NonInjectedNodeMenu: React.FC<NodeMenuProps & Dependencies> = (props) => {
         <Icon material="delete_sweep" tooltip={toolbar && "Drain"} interactive={toolbar} />
         <span className="title">Drain</span>
       </MenuItem>
+      <MenuItem onClick={() => navigateToPodsOnNode(nodeName)}>
+        <Icon material="format_list_bulleted" tooltip={toolbar && "Pods"} interactive={toolbar} />
+        <span className="title">Pods</span>
+      </MenuItem>
     </>
   );
 };
@@ -113,5 +122,6 @@ export const NodeMenu = withInjectables<Dependencies, NodeMenuProps>(NonInjected
     sendCommand: di.inject(sendCommandInjectable),
     openConfirmDialog: di.inject(openConfirmDialogInjectable),
     hideDetails: di.inject(hideDetailsInjectable),
+    navigateToPodsOnNode: di.inject(navigateToPodsOnNodeInjectable),
   }),
 });
