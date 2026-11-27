@@ -3,10 +3,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import "./pod-images-cell.scss";
-
+import { cssNames } from "@freelensapp/utilities";
 import { Fragment } from "react";
 import { WithTooltip } from "../with-tooltip";
+import styles from "./pod-images-cell.module.scss";
 
 import type { Pod } from "@freelensapp/kube-object";
 
@@ -22,16 +22,15 @@ export const PodImagesCell = ({ pod }: PodImagesCellProps) => {
   const containers = pod.getContainers().filter((container) => container.image);
 
   if (containers.length === 0) {
-    return <span className="PodImagesCell none">-</span>;
+    return <span className={cssNames(styles.cell, styles.none)}>-</span>;
   }
 
-  // An image that does not fit loses its start rather than its end, so its tag or digest stays visible.
   const label = (
-    <span className="images">
+    <span className={styles.images}>
       {containers.map(({ name, image }, index) => (
         <Fragment key={name}>
-          {index > 0 && <span className="separator">,</span>}
-          <span className="image">
+          {index > 0 && <span className={styles.separator}>,</span>}
+          <span className={styles.image}>
             <bdi dir="ltr">{image}</bdi>
           </span>
         </Fragment>
@@ -47,7 +46,7 @@ export const PodImagesCell = ({ pod }: PodImagesCellProps) => {
   );
 
   return (
-    <div className="PodImagesCell">
+    <div className={styles.cell}>
       <WithTooltip tooltip={tooltip}>{label}</WithTooltip>
     </div>
   );

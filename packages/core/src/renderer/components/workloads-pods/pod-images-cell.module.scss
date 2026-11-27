@@ -1,0 +1,37 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
+.cell {
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.none {
+  opacity: 0.6;
+}
+
+.images {
+  display: flex;
+}
+
+.separator {
+  flex: none;
+  margin-right: 0.25em;
+}
+
+// An image that does not fit loses its start rather than its end, so its tag
+// or digest stays visible.
+.image {
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  direction: rtl;
+  text-align: left;
+}

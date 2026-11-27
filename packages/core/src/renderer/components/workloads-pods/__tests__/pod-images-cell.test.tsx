@@ -38,16 +38,14 @@ describe("<PodImagesCell />", () => {
 
     const { container } = render(<PodImagesCell pod={pod} />);
 
-    const images = [...container.querySelectorAll(".image")].map((image) => image.textContent);
-
-    expect(images).toEqual(["ghcr.io/example/app:1.2.3", "envoyproxy/envoy@sha256:0123abcd"]);
+    expect(container).toHaveTextContent("ghcr.io/example/app:1.2.3,envoyproxy/envoy@sha256:0123abcd");
     expect(container).not.toHaveTextContent("busybox");
   });
 
   it("shows a dash when no container names an image", () => {
     const { container } = render(<PodImagesCell pod={podWith([{ name: "app" }])} />);
 
-    expect(container.querySelector(".PodImagesCell.none")).toHaveTextContent("-");
+    expect(container).toHaveTextContent(/^-$/);
   });
 });
 
