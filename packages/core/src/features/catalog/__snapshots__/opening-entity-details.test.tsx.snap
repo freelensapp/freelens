@@ -3726,7 +3726,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
               <span
                 class="name"
               >
-                Kubelet Version
+                Kubernetes Version
               </span>
               <span
                 class="value"
@@ -4977,7 +4977,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
               <span
                 class="name"
               >
-                Kubelet Version
+                Kubernetes Version
               </span>
               <span
                 class="value"
