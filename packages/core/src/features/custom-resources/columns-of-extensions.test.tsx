@@ -3,19 +3,24 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { CustomResourceDefinition, KubeObject } from "@freelensapp/kube-object";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { act, waitFor } from "@testing-library/react";
 import { noop } from "es-toolkit";
 import { autorun } from "mobx";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import apiManagerInjectable from "../../common/k8s-api/api-manager/manager.injectable";
 import { LensExtensionKubeObject } from "../../extensions/common-api/k8s-api";
 import { columnsFor } from "../../extensions/renderer-api/kube-object-registrations";
+import customResourceDefinitionStoreInjectable from "../../renderer/components/custom-resource-definitions/store.injectable";
 import customResourceColumnsOfExtensionsInjectable from "../../renderer/components/custom-resources/custom-resource-columns-of-extensions.injectable";
+import kubeDetailsUrlParamInjectable from "../../renderer/components/kube-detail-params/kube-details-url.injectable";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 
 import type { Logger } from "@freelensapp/logger";
 
 import type { DiContainer } from "@ogre-tools/injectable";
+import type { RenderResult } from "@testing-library/react";
 
 import type { CustomResourceColumnProps } from "../../renderer/components/custom-resources/custom-resource-columns-registration";
 import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
@@ -28,6 +33,50 @@ class FluxInstance extends LensExtensionKubeObject {
   static readonly namespaced = true;
   static readonly crd = { apiVersions: [`${group}/v1`], plural: "fluxinstances", singular: "fluxinstance" };
 }
+
+const fluxInstanceDefinition = new CustomResourceDefinition({
+  apiVersion: "apiextensions.k8s.io/v1",
+  kind: "CustomResourceDefinition",
+  metadata: {
+    name: `fluxinstances.${group}`,
+    selfLink: `/apis/apiextensions.k8s.io/v1/customresourcedefinitions/fluxinstances.${group}`,
+    uid: "fluxinstances-crd-uid",
+    resourceVersion: "1",
+  },
+  spec: {
+    group,
+    scope: "Namespaced",
+    names: { kind: "FluxInstance", plural: "fluxinstances", singular: "fluxinstance" },
+    versions: [
+      {
+        name: "v1",
+        served: true,
+        storage: true,
+        additionalPrinterColumns: [
+          { name: "Ready", jsonPath: '.status.conditions[?(@.type=="Ready")].status', type: "string" },
+          { name: "Status", jsonPath: '.status.conditions[?(@.type=="Ready")].message', type: "string" },
+          { name: "Revision", jsonPath: ".status.lastAppliedRevision", type: "string" },
+        ],
+      },
+    ],
+  },
+});
+
+const someFluxInstance = new KubeObject({
+  apiVersion: `${group}/v1`,
+  kind: "FluxInstance",
+  metadata: {
+    name: "flux",
+    namespace: "flux-system",
+    selfLink: `/apis/${group}/v1/namespaces/flux-system/fluxinstances/flux`,
+    uid: "flux-uid",
+    resourceVersion: "1",
+  },
+  status: {
+    conditions: [{ type: "Ready", status: "True", message: "Reconciliation finished" }],
+    lastAppliedRevision: "v2.4.0@sha256:0123456789abcdef",
+  },
+} as never);
 
 const ReadyBadge = ({ value }: CustomResourceColumnProps<FluxInstance>) => (
   <span data-testid="ready-badge">{`ready: ${String(value)}`}</span>
@@ -50,6 +99,7 @@ const fluxExtension: FakeExtensionOptions = {
 
 describe("printer columns of custom resources registered by extensions", () => {
   let builder: ApplicationBuilder;
+  let result: RenderResult;
   let windowDi: DiContainer;
   let loggerStub: Logger;
 
@@ -85,8 +135,18 @@ describe("printer columns of custom resources registered by extensions", () => {
       windowDi.override(loggerInjectionToken, () => loggerStub);
     });
 
-    await builder.render();
+    builder.afterWindowStart(({ windowDi }) => {
+      windowDi.inject(customResourceDefinitionStoreInjectable).items.replace([fluxInstanceDefinition]);
+    });
+
+    result = await builder.render();
     windowDi = builder.applicationWindow.only.di;
+
+    builder.allowKubeResource({ group: "apiextensions.k8s.io", apiName: "customresourcedefinitions" });
+    builder.allowKubeResource({ group, apiName: "fluxinstances" });
+    builder.namespaces.add("flux-system");
+    builder.namespaces.select("flux-system");
+
     stopObserving = autorun(() => getColumns("FluxInstance", `${group}/v1`));
   });
 
@@ -117,6 +177,54 @@ describe("printer columns of custom resources registered by extensions", () => {
 
     it("does not apply them to another kind of the version", () => {
       expect(getColumns("ResourceSet", `${group}/v1`).size).toBe(0);
+    });
+
+    describe("when an object of the kind is opened in the details", () => {
+      // The printer columns by name, without the conditions drawer that follows them.
+      const getColumnValues = () =>
+        Object.fromEntries(
+          Array.from(
+            result.container.querySelectorAll(".CustomResourceDetails > .DrawerItem:not(.conditions)"),
+            (item) => [item.querySelector(".name")?.textContent, item.querySelector(".value")?.textContent],
+          ),
+        );
+
+      beforeEach(async () => {
+        windowDi
+          .inject(apiManagerInjectable)
+          .getStore(fluxInstanceDefinition.getResourceApiBase())
+          ?.items.replace([someFluxInstance]);
+
+        act(() => windowDi.inject(kubeDetailsUrlParamInjectable).set(someFluxInstance.selfLink));
+
+        await waitFor(
+          () => expect(result.container.querySelector(".CustomResourceDetails.FluxInstance")).toBeInTheDocument(),
+          { timeout: 300 },
+        );
+      });
+
+      it("renders the registered column with the extension's component and leaves out the hidden one", () => {
+        expect(getColumnValues()).toEqual({
+          Ready: "ready: True",
+          Revision: "v2.4.0@sha256:0123456789abcdef",
+        });
+      });
+
+      it("shows the columns as before once the extension is disabled", async () => {
+        await act(async () => {
+          builder.extensions.disable(fluxExtension);
+        });
+
+        await waitFor(
+          () =>
+            expect(getColumnValues()).toEqual({
+              Ready: "True",
+              Status: "Reconciliation finished",
+              Revision: "v2.4.0@sha256:0123456789abcdef",
+            }),
+          { timeout: 300 },
+        );
+      });
     });
 
     it("drops them when the extension is disabled", async () => {
