@@ -18,6 +18,7 @@ import React from "react";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
 import { DrawerItem, DrawerTitle } from "../drawer";
 import { DurationAbsoluteTimestamp } from "./duration-absolute";
+import { getEventCount, getEventLastSeen } from "./event-occurrence";
 import styles from "./kube-event-details.module.scss";
 import eventStoreInjectable from "./store.injectable";
 
@@ -43,7 +44,7 @@ function timeToUnix(dateStr?: string): number {
 }
 
 export function sortEvents(events: KubeEvent[]): KubeEvent[] | undefined {
-  return events?.sort((a, b) => timeToUnix(b.lastTimestamp) - timeToUnix(a.lastTimestamp));
+  return events?.sort((a, b) => timeToUnix(getEventLastSeen(b)) - timeToUnix(getEventLastSeen(a)));
 }
 
 @observer
@@ -80,19 +81,23 @@ class NonInjectedKubeEventDetails extends React.Component<KubeEventDetailsProps 
         </DrawerTitle>
         {events.length > 0 && (
           <div className={styles.KubeEventDetails}>
-            {sortEvents(events)?.map((event) => (
-              <div className={styles.event} key={event.getId()}>
-                <div className={cssNames(styles.title, { [styles.warning]: event.isWarning() })}>{event.message}</div>
-                <DrawerItem name="Source">{event.getSource()}</DrawerItem>
-                <DrawerItem name="Count">{event.getCount()}</DrawerItem>
-                <DrawerItem name="Sub-object">{event.involvedObject.fieldPath}</DrawerItem>
-                {event.lastTimestamp && (
-                  <DrawerItem name="Last seen">
-                    <DurationAbsoluteTimestamp timestamp={event.lastTimestamp} />
-                  </DrawerItem>
-                )}
-              </div>
-            ))}
+            {sortEvents(events)?.map((event) => {
+              const lastSeen = getEventLastSeen(event);
+
+              return (
+                <div className={styles.event} key={event.getId()}>
+                  <div className={cssNames(styles.title, { [styles.warning]: event.isWarning() })}>{event.message}</div>
+                  <DrawerItem name="Source">{event.getSource()}</DrawerItem>
+                  <DrawerItem name="Count">{getEventCount(event)}</DrawerItem>
+                  <DrawerItem name="Sub-object">{event.involvedObject.fieldPath}</DrawerItem>
+                  {lastSeen && (
+                    <DrawerItem name="Last seen">
+                      <DurationAbsoluteTimestamp timestamp={lastSeen} />
+                    </DrawerItem>
+                  )}
+                </div>
+              );
+            })}
           </div>
         )}
         {events.length === 0 && <div className={styles.empty}>No events found</div>}

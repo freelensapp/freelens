@@ -18,6 +18,7 @@ import { DrawerItem, DrawerTitle } from "../drawer";
 import getDetailsUrlInjectable from "../kube-detail-params/get-details-url.injectable";
 import { Table, TableCell, TableHead, TableRow } from "../table";
 import { DurationAbsoluteTimestamp } from "./duration-absolute";
+import { getEventCount, getEventFirstSeen, getEventLastSeen } from "./event-occurrence";
 
 import type { Logger } from "@freelensapp/logger";
 
@@ -45,7 +46,7 @@ const NonInjectedEventDetails = observer(
       return null;
     }
 
-    const { message, reason, count, type, involvedObject } = event;
+    const { message, reason, type, involvedObject } = event;
     const { kind, name, namespace, fieldPath } = involvedObject;
 
     return (
@@ -54,12 +55,12 @@ const NonInjectedEventDetails = observer(
         <DrawerItem name="Reason">{reason}</DrawerItem>
         <DrawerItem name="Source">{event.getSource()}</DrawerItem>
         <DrawerItem name="First seen">
-          <DurationAbsoluteTimestamp timestamp={event.firstTimestamp} />
+          <DurationAbsoluteTimestamp timestamp={getEventFirstSeen(event)} />
         </DrawerItem>
         <DrawerItem name="Last seen">
-          <DurationAbsoluteTimestamp timestamp={event.lastTimestamp} />
+          <DurationAbsoluteTimestamp timestamp={getEventLastSeen(event)} />
         </DrawerItem>
-        <DrawerItem name="Count">{count}</DrawerItem>
+        <DrawerItem name="Count">{getEventCount(event)}</DrawerItem>
         <DrawerItem name="Type" className="type">
           <span className={kebabCase(type)}>{type}</span>
         </DrawerItem>
