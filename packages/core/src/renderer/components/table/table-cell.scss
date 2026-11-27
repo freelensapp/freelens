@@ -77,20 +77,14 @@
     }
   }
 
+  // The icon takes its own space after the title instead of covering it (see
+  // table-head.scss for the title).
   .sortIcon {
-    transition: 150ms opacity;
-    opacity: 0;
-    position: absolute;
-    right: 10px;
-    background: var(--tableHeaderBackground);
-
-    &.enabled {
-      opacity: 1;
-    }
+    flex: none;
   }
 
-  &:hover .sortIcon {
-    opacity: 1;
+  &:not(:hover) .sortIcon:not(.enabled) {
+    display: none;
   }
 
   &.sorting {

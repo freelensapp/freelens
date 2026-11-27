@@ -33,6 +33,18 @@
     align-items: center;
     word-break: normal;
 
+    > .content {
+      min-width: 0;
+    }
+
+    // Next to a sort icon, a title that does not fit ends with an ellipsis
+    // rather than running under the icon.
+    &.sorting:hover > .content,
+    &:has(> .sortIcon.enabled) > .content {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
     &.checkbox {
       > .Checkbox {
         margin: auto;
