@@ -172,7 +172,7 @@ describe("ClusterInfoStrip", () => {
       it("warns about the skew", () => {
         expect(screen.getByTestId("cluster-info-kubelet-warning")).toHaveAttribute(
           "aria-label",
-          "The nodes run different kubelet versions. Kubelet v1.32.0 is newer than the API server (v1.31.2), which is not supported.",
+          "The nodes run kubelets of different minor versions. Kubelet v1.32.0 is newer than the API server (v1.31.2), which is not supported.",
         );
       });
     });

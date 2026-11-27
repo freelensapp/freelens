@@ -17,8 +17,11 @@ export interface ValueCount {
 }
 
 export interface KubeletSkew {
-  /** The nodes do not all run the same kubelet version. */
-  versionsDiffer: boolean;
+  /**
+   * The nodes run kubelets of different minor versions. Patch versions are left out: they differ
+   * routinely while nodes are upgraded one by one.
+   */
+  minorVersionsDiffer: boolean;
   /** Kubelet versions of a later minor than the API server. */
   newerThanApiServer: string[];
   /** Kubelet versions more than {@link supportedKubeletMinorLag} minors behind the API server. */
@@ -61,6 +64,12 @@ const minorsBehind = (version: MinorVersion, reference: MinorVersion) =>
     ? reference.minor - version.minor
     : (reference.major - version.major) * Number.POSITIVE_INFINITY;
 
+const minorVersionKey = (version: string) => {
+  const parsed = parseMinorVersion(version);
+
+  return parsed ? `${parsed.major}.${parsed.minor}` : version;
+};
+
 export function getKubeletSkew(kubeletVersions: string[], apiServerVersion: string): KubeletSkew {
   const apiServer = parseMinorVersion(apiServerVersion);
   const newerThanApiServer: string[] = [];
@@ -85,14 +94,14 @@ export function getKubeletSkew(kubeletVersions: string[], apiServerVersion: stri
   }
 
   return {
-    versionsDiffer: new Set(kubeletVersions).size > 1,
+    minorVersionsDiffer: new Set(kubeletVersions.map(minorVersionKey)).size > 1,
     newerThanApiServer,
     olderThanSupported,
   };
 }
 
-export const hasKubeletSkew = ({ versionsDiffer, newerThanApiServer, olderThanSupported }: KubeletSkew) =>
-  versionsDiffer || newerThanApiServer.length > 0 || olderThanSupported.length > 0;
+export const hasKubeletSkew = ({ minorVersionsDiffer, newerThanApiServer, olderThanSupported }: KubeletSkew) =>
+  minorVersionsDiffer || newerThanApiServer.length > 0 || olderThanSupported.length > 0;
 
 /**
  * The distinct values, the most common first and equally common ones in natural order. Missing
@@ -150,7 +159,7 @@ export function summarizeNodes(nodes: Node[], apiServerVersion: string): NodeSum
  */
 export function describeKubeletSkew(skew: KubeletSkew, apiServerVersion: string): string[] {
   return [
-    ...(skew.versionsDiffer ? ["The nodes run different kubelet versions."] : []),
+    ...(skew.minorVersionsDiffer ? ["The nodes run kubelets of different minor versions."] : []),
     ...skew.newerThanApiServer.map(
       (version) => `Kubelet ${version} is newer than the API server (${apiServerVersion}), which is not supported.`,
     ),

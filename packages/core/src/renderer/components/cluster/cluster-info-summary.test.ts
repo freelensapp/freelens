@@ -75,10 +75,17 @@ describe("getKubeletSkew", () => {
     expect(getKubeletSkew(["v1.28.9"], "v1.31.2").olderThanSupported).toEqual([]);
   });
 
-  it("reports kubelets that differ from each other", () => {
+  it("does not report kubelets that differ in their patch version only", () => {
+    const skew = getKubeletSkew(["v1.31.2", "v1.31.4"], "v1.31.4");
+
+    expect(skew).toEqual({ minorVersionsDiffer: false, newerThanApiServer: [], olderThanSupported: [] });
+    expect(hasKubeletSkew(skew)).toBe(false);
+  });
+
+  it("reports kubelets of different minor versions", () => {
     const skew = getKubeletSkew(["v1.31.2", "v1.30.6"], "v1.31.2");
 
-    expect(skew).toEqual({ versionsDiffer: true, newerThanApiServer: [], olderThanSupported: [] });
+    expect(skew).toEqual({ minorVersionsDiffer: true, newerThanApiServer: [], olderThanSupported: [] });
   });
 
   it("reports a kubelet of a later minor than the API server", () => {
@@ -96,12 +103,12 @@ describe("getKubeletSkew", () => {
   it("judges no kubelet against an unknown API server version", () => {
     const skew = getKubeletSkew(["v1.40.0"], "unknown");
 
-    expect(skew).toEqual({ versionsDiffer: false, newerThanApiServer: [], olderThanSupported: [] });
+    expect(skew).toEqual({ minorVersionsDiffer: false, newerThanApiServer: [], olderThanSupported: [] });
   });
 
   it("skips a kubelet version it cannot read", () => {
     expect(getKubeletSkew(["something"], "v1.31.2")).toEqual({
-      versionsDiffer: false,
+      minorVersionsDiffer: false,
       newerThanApiServer: [],
       olderThanSupported: [],
     });
@@ -111,7 +118,7 @@ describe("getKubeletSkew", () => {
     const skew = getKubeletSkew(["v1.32.0", "v1.31.2", "v1.26.1"], "v1.31.2");
 
     expect(describeKubeletSkew(skew, "v1.31.2")).toEqual([
-      "The nodes run different kubelet versions.",
+      "The nodes run kubelets of different minor versions.",
       "Kubelet v1.32.0 is newer than the API server (v1.31.2), which is not supported.",
       "Kubelet v1.26.1 is more than 3 minor versions older than the API server (v1.31.2), which is not supported.",
     ]);
@@ -139,7 +146,7 @@ describe("summarizeNodes", () => {
       osImages: [],
       platforms: [],
       containerRuntimes: [],
-      skew: { versionsDiffer: false, newerThanApiServer: [], olderThanSupported: [] },
+      skew: { minorVersionsDiffer: false, newerThanApiServer: [], olderThanSupported: [] },
     });
   });
 
@@ -199,7 +206,7 @@ describe("summarizeNodes", () => {
       { value: "linux/arm64", count: 1 },
     ]);
     expect(summary.containerRuntimes).toEqual([{ value: "containerd://1.7.22", count: 3 }]);
-    expect(summary.skew.versionsDiffer).toBe(true);
+    expect(summary.skew.minorVersionsDiffer).toBe(true);
   });
 
   it("leaves out what a node does not report", () => {
