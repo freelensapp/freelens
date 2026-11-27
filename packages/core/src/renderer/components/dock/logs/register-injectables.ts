@@ -9,6 +9,7 @@
 import areLogsPresentInjectable from "./are-logs-present.injectable";
 import callForLogsInjectable from "./call-for-logs.injectable";
 import clearLogTabDataInjectable from "./clear-log-tab-data.injectable";
+import clearVisibleLogsInjectable from "./clear-visible-logs.injectable";
 import createLogsTabInjectable from "./create-logs-tab.injectable";
 import createPodLogsTabInjectable from "./create-pod-logs-tab.injectable";
 import createWorkloadLogsTabInjectable from "./create-workload-logs-tab.injectable";
@@ -26,6 +27,7 @@ import loadLogsInjectable from "./load-logs.injectable";
 import logsViewModelInjectable from "./logs-view-model.injectable";
 import reloadLogsInjectable from "./reload-logs.injectable";
 import setLogTabDataInjectable from "./set-log-tab-data.injectable";
+import showLogsInjectable from "./show-logs.injectable";
 import stopLoadingLogsInjectable from "./stop-loading-logs.injectable";
 import logStoreInjectable from "./store.injectable";
 import logTabStoreInjectable from "./tab-store.injectable";
@@ -145,6 +147,16 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(stopLoadingLogsInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(clearVisibleLogsInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(showLogsInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

@@ -40,7 +40,7 @@ const NonInjectedLogsDockTab = observer(
     const data = model.logTabData.get();
 
     useEffect(() => {
-      model.reloadLogs();
+      model.showLogs();
 
       return model.stopLoadingLogs;
     }, [tab.id]);

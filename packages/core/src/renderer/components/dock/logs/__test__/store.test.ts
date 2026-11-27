@@ -234,6 +234,80 @@ describe("LogStore request lifecycle", () => {
     expect(callForLogs.mock.calls[2][1]?.tailLines).toBe(501);
   });
 
+  it("shows only the lines that come after a clear, and does not load the cleared ones again", async () => {
+    await store.load(tabId, computedPods, computedTabData);
+    store.clearVisibleLogs(tabId);
+    expect(store.getLogs(tabId)).toEqual([]);
+
+    // The refresh asks again for the second of the last line, so the API sends it back.
+    callForLogs.mockResolvedValue(`${initialLog}\n${nextLog}`);
+    await vi.advanceTimersByTimeAsync(10_000);
+    expect(store.getLogs(tabId)).toEqual([nextLog]);
+    expect(callForLogs.mock.calls[1][1]?.sinceTime).toBeDefined();
+
+    const callsBeforeScroll = callForLogs.mock.calls.length;
+    await store.load(tabId, computedPods, computedTabData);
+    expect(callForLogs.mock.calls.length).toBe(callsBeforeScroll);
+    expect(store.getLogs(tabId)).toEqual([nextLog]);
+  });
+
+  it("loads all the lines again when a cleared tab is reloaded", async () => {
+    await store.load(tabId, computedPods, computedTabData);
+    store.clearVisibleLogs(tabId);
+
+    await store.reload(tabId, computedPods, computedTabData);
+
+    expect(store.getLogs(tabId)).toEqual([initialLog]);
+  });
+
+  it("keeps a clear made while older lines are loading", async () => {
+    await store.load(tabId, computedPods, computedTabData);
+
+    // Scrolling to the top loads the older lines.
+    const response = deferred<string>();
+    callForLogs.mockReturnValueOnce(response.promise);
+    const loading = store.load(tabId, computedPods, computedTabData);
+    await vi.advanceTimersByTimeAsync(0);
+
+    store.clearVisibleLogs(tabId);
+    response.resolve(initialLog);
+    await loading;
+    expect(store.getLogs(tabId)).toEqual([]);
+
+    callForLogs.mockResolvedValue(`${initialLog}\n${nextLog}`);
+    await vi.advanceTimersByTimeAsync(10_000);
+    expect(store.getLogs(tabId)).toEqual([nextLog]);
+  });
+
+  it("keeps a clear when the tab is shown again, with the lines that came in the meantime", async () => {
+    const laterLog = "2026-01-01T00:00:20Z later line";
+
+    await store.load(tabId, computedPods, computedTabData);
+    store.clearVisibleLogs(tabId);
+    // Selecting another dock tab stops the tab.
+    store.stopLoadingLogs(tabId);
+
+    callForLogs.mockResolvedValue(`${initialLog}\n${nextLog}`);
+    await store.show(tabId, computedPods, computedTabData);
+    expect(store.getLogs(tabId)).toEqual([nextLog]);
+    expect(callForLogs.mock.calls[1][1]?.sinceTime).toBeDefined();
+
+    callForLogs.mockResolvedValue(`${nextLog}\n${laterLog}`);
+    await vi.advanceTimersByTimeAsync(10_000);
+    expect(store.getLogs(tabId)).toEqual([nextLog, laterLog]);
+  });
+
+  it("reloads a tab that was not cleared when it is shown again", async () => {
+    await store.load(tabId, computedPods, computedTabData);
+    store.stopLoadingLogs(tabId);
+
+    callForLogs.mockResolvedValue(`${initialLog}\n${nextLog}`);
+    await store.show(tabId, computedPods, computedTabData);
+
+    expect(callForLogs.mock.calls[1][1]?.tailLines).toBeDefined();
+    expect(store.getLogs(tabId)).toEqual([initialLog, nextLog]);
+  });
+
   it("keeps polling a tab that loaded without any line, and shows the first ones when they come", async () => {
     callForLogs.mockResolvedValue("");
     await store.load(tabId, computedPods, computedTabData);

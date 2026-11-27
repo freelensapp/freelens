@@ -21,6 +21,7 @@ import getTimestampSplitLogsInjectable from "../../renderer/components/dock/logs
 import loadLogsInjectable from "../../renderer/components/dock/logs/load-logs.injectable";
 import reloadLogsInjectable from "../../renderer/components/dock/logs/reload-logs.injectable";
 import setLogTabDataInjectable from "../../renderer/components/dock/logs/set-log-tab-data.injectable";
+import showLogsInjectable from "../../renderer/components/dock/logs/show-logs.injectable";
 import stopLoadingLogsInjectable from "../../renderer/components/dock/logs/stop-loading-logs.injectable";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import getPodByIdInjectable from "../../renderer/components/workloads-pods/get-pod-by-id.injectable";
@@ -72,6 +73,7 @@ describe("download logs options in logs dock tab", () => {
       windowDi.override(getLogsWithoutTimestampsInjectable, () => getLogsMock);
       windowDi.override(getTimestampSplitLogsInjectable, () => getSplitLogsMock);
       windowDi.override(reloadLogsInjectable, () => vi.fn());
+      windowDi.override(showLogsInjectable, () => vi.fn());
       windowDi.override(getLogTabDataInjectable, () => () => ({
         selectedPodId: selectedPod.getId(),
         selectedContainer: selectedPod.getContainers()[0].name,

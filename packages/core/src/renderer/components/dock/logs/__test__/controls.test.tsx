@@ -119,3 +119,42 @@ describe("LogControls", () => {
     expect(reloadLogsSpy).toHaveBeenCalledTimes(1);
   });
 });
+
+describe("LogControls Clear button", () => {
+  let render: DiRender;
+  let userPreferencesState: UserPreferencesState;
+
+  beforeEach(() => {
+    const di = getDiForUnitTesting();
+
+    render = renderFor(di);
+    userPreferencesState = di.inject(userPreferencesStateInjectable);
+    initializeDefaultLogViewerPreferences(userPreferencesState);
+  });
+
+  it("clears the lines of the tab", async () => {
+    const clearVisibleLogs = vi.fn();
+    const model = getOnePodViewModel(
+      "foobar",
+      userPreferencesState,
+      {},
+      {
+        getTimestampSplitLogs: () => [["2026-01-01T00:00:00Z", "a line"]],
+        clearVisibleLogs,
+      },
+    );
+
+    render(<LogControls model={model} />);
+    await userEvent.setup().click(await screen.findByTestId("clear-logs"));
+
+    expect(clearVisibleLogs).toHaveBeenCalledWith("foobar");
+  });
+
+  it("is disabled when the tab has no line", async () => {
+    const model = getOnePodViewModel("foobar", userPreferencesState, {});
+
+    render(<LogControls model={model} />);
+
+    expect(await screen.findByTestId("clear-logs")).toBeDisabled();
+  });
+});

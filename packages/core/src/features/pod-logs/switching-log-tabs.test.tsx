@@ -18,6 +18,7 @@ import getTimestampSplitLogsInjectable from "../../renderer/components/dock/logs
 import loadLogsInjectable from "../../renderer/components/dock/logs/load-logs.injectable";
 import reloadLogsInjectable from "../../renderer/components/dock/logs/reload-logs.injectable";
 import setLogTabDataInjectable from "../../renderer/components/dock/logs/set-log-tab-data.injectable";
+import showLogsInjectable from "../../renderer/components/dock/logs/show-logs.injectable";
 import stopLoadingLogsInjectable from "../../renderer/components/dock/logs/stop-loading-logs.injectable";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import getPodByIdInjectable from "../../renderer/components/workloads-pods/get-pod-by-id.injectable";
@@ -51,6 +52,7 @@ describe("switching between pod logs dock tabs", () => {
       windowDi.override(getLogsWithoutTimestampsInjectable, () => () => ["some-logs"]);
       windowDi.override(getTimestampSplitLogsInjectable, () => () => [["", "some-logs"]]);
       windowDi.override(reloadLogsInjectable, () => vi.fn());
+      windowDi.override(showLogsInjectable, () => vi.fn());
       windowDi.override(getLogTabDataInjectable, () => () => ({
         selectedPodId: dockerPod.getId(),
         selectedContainer: container.name,

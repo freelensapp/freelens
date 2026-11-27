@@ -1028,6 +1028,13 @@ exports[`download logs options in logs dock tab > opening pod logs > when logs a
                       Show previous terminated container
                     </span>
                   </label>
+                  <button
+                    class="dropdown"
+                    data-testid="clear-logs"
+                    type="button"
+                  >
+                    Clear
+                  </button>
                   <div>
                     <div
                       id="download-logs-dropdown"
@@ -2057,6 +2064,14 @@ exports[`download logs options in logs dock tab > opening pod logs > when logs n
                       Show previous terminated container
                     </span>
                   </label>
+                  <button
+                    class="dropdown"
+                    data-testid="clear-logs"
+                    disabled=""
+                    type="button"
+                  >
+                    Clear
+                  </button>
                   <div>
                     <div
                       id="download-logs-dropdown"

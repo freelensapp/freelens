@@ -8,6 +8,7 @@ import { observer } from "mobx-react";
 import { Checkbox } from "../../checkbox";
 import styles from "./controls.module.scss";
 import { DownloadLogsDropdown } from "./download-logs-dropdown";
+import downloadStyles from "./download-logs-dropdown.module.scss";
 
 import type { LogTabViewModel } from "./logs-view-model";
 
@@ -64,6 +65,15 @@ export const LogControls = observer(({ model }: LogControlsProps) => {
           className="show-previous"
         />
 
+        <button
+          type="button"
+          className={downloadStyles.dropdown}
+          onClick={model.clearVisibleLogs}
+          disabled={logs.length === 0}
+          data-testid="clear-logs"
+        >
+          Clear
+        </button>
         <DownloadLogsDropdown
           disabled={logs.length === 0}
           downloadVisibleLogs={model.downloadLogs}
