@@ -17,6 +17,12 @@
       flex-grow: 0.5;
     }
 
+    &.images {
+      flex-grow: 2;
+      min-width: 0;
+      overflow: hidden;
+    }
+
     &.ports {
       flex-grow: 1.2;
       min-width: 0;
