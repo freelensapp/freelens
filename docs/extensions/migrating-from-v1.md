@@ -903,7 +903,8 @@ On `LensRendererExtension`: `globalPages`, `clusterPages`, `clusterPageMenus`,
 `entitySettings`, `statusBarItems`, `kubeObjectDetailItems`,
 `kubeObjectMenuItems`, `kubeWorkloadsOverviewItems`, `commands`, `welcomeMenus`,
 `catalogEntityDetailItems`, `topBarItems`, `additionalCategoryColumns`,
-`customCategoryViews`, `kubeObjectHandlers`, `customResources`.
+`customCategoryViews`, `kubeObjectHandlers`, `customResources`,
+`customResourceColumns`.
 
 On `LensMainExtension`: `terminalShellEnvModifier`, which the host calls with
 the environment of every terminal it opens. `appMenus` and `trayMenus` are gone
@@ -1012,6 +1013,26 @@ same group and plural, so listing both is harmless. A class without a `kind`,
 without a `crd` or `apiBase` the group and plural can be read from, or naming a
 resource of the core group, is rejected with an error in the log naming it, and
 its resource stays in the tree.
+
+`customResourceColumns` is new in v2 too. An extension whose details panel shows
+what the printer columns of its custom resource already show, in another
+format, renders those columns with its own component or hides them, with
+`Renderer.K8sApi.columnsFor`:
+
+```tsx
+customResourceColumns = [
+  Renderer.K8sApi.columnsFor(Kustomization, {
+    columns: {
+      Ready: { Render: ({ object }) => <ReadyBadge object={object} /> },
+      Status: { hidden: true },
+    },
+  }),
+];
+```
+
+The key is the `name` of the printer column as the definition writes it. See
+[C6](./api.md#c6-registration-and-the-extension-instance) for how the host
+matches, renders and rejects the entries.
 
 A page that typed its parameters by name, such as
 `PageComponentProps<{ query: string }>` or `{ params?: { query: PageParam } }`,
