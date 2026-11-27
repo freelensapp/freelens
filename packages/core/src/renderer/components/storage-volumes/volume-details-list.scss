@@ -12,10 +12,6 @@
 
   .Table {
     margin: 0 (-$margin * 3);
-
-    &.virtual {
-      height: 500px; // applicable for 100+ items
-    }
   }
 
   .TableCell {
