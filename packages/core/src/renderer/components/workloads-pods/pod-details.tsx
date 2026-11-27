@@ -71,6 +71,12 @@ class NonInjectedPodDetails extends React.Component<PodDetailsProps & Dependenci
         <DrawerItem name="Status">
           <span className={cssNames("status", kebabCase(pod.getStatusMessage()))}>{pod.getStatusMessage()}</span>
         </DrawerItem>
+        <DrawerItem name="Reason" hidden={!pod.getReason() || pod.getReason() === pod.getStatusMessage()}>
+          {pod.getReason()}
+        </DrawerItem>
+        <DrawerItem name="Message" hidden={!pod.status?.message}>
+          {pod.status?.message}
+        </DrawerItem>
         <DrawerItem name="Scheduler" hidden={!schedulerName || schedulerName === "default-scheduler"}>
           {schedulerName}
         </DrawerItem>

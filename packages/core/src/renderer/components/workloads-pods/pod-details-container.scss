@@ -25,6 +25,15 @@
     margin-top: $margin;
   }
 
+  // A container's termination message may span several lines.
+  .status-message {
+    display: block;
+    margin-top: $margin * 0.5;
+    white-space: pre-wrap;
+    word-break: break-word;
+    color: var(--textColorSecondary);
+  }
+
   .pod-container-title {
     font-weight: bold;
     margin-bottom: $margin;

@@ -24,7 +24,13 @@ import { containerStatusClassName } from "./container-status-class-name";
 import { ContainerEnvironment } from "./pod-container-env";
 import { PodContainerPort } from "./pod-container-port";
 
-import type { ContainerWithType, EphemeralContainerWithType, Pod, PodContainerStatus } from "@freelensapp/kube-object";
+import type {
+  ContainerStateTerminated,
+  ContainerWithType,
+  EphemeralContainerWithType,
+  Pod,
+  PodContainerStatus,
+} from "@freelensapp/kube-object";
 import type { PodDetailsContainerMetricsComponent } from "@freelensapp/metrics";
 
 import type { IComputedValue } from "mobx";
@@ -43,6 +49,12 @@ interface Dependencies {
   containerMetrics: PodDetailsContainerMetricsComponent[];
 }
 
+function describeTermination({ reason, exitCode, signal }: ContainerStateTerminated): string {
+  const code = signal ? `exit code: ${exitCode}, signal: ${signal}` : `exit code: ${exitCode}`;
+
+  return `${reason || "Terminated"} (${code})`;
+}
+
 @observer
 class NonInjectedPodDetailsContainer extends React.Component<PodDetailsContainerProps & Dependencies> {
   private readonly disposers: (() => void)[] = [];
@@ -57,17 +69,22 @@ class NonInjectedPodDetailsContainer extends React.Component<PodDetailsContainer
 
   renderStatus(container: ContainerWithType | EphemeralContainerWithType, status?: PodContainerStatus) {
     const state = status ? Object.keys(status?.state ?? {})[0] : "unknown";
-    const terminated = status?.state ? (status?.state.terminated ?? "") : "";
+    const { waiting, terminated } = status?.state ?? {};
+    const reason = waiting?.reason || (terminated && describeTermination(terminated));
+    const message = waiting?.message || terminated?.message;
 
     return (
-      <span className={cssNames("status", containerStatusClassName(container, status))}>
-        {state}
-        {container.type === "initContainers" ? ", init" : ""}
-        {container.type === "ephemeralContainers" ? ", ephemeral" : ""}
-        {status?.restartCount ? ", restarted" : ""}
-        {status?.ready ? ", ready" : ""}
-        {terminated ? ` - ${terminated.reason} (exit code: ${terminated.exitCode})` : ""}
-      </span>
+      <>
+        <span className={cssNames("status", containerStatusClassName(container, status))}>
+          {state}
+          {container.type === "initContainers" ? ", init" : ""}
+          {container.type === "ephemeralContainers" ? ", ephemeral" : ""}
+          {status?.restartCount ? ", restarted" : ""}
+          {status?.ready ? ", ready" : ""}
+          {reason ? ` - ${reason}` : ""}
+        </span>
+        {message && <span className="status-message">{message}</span>}
+      </>
     );
   }
 
@@ -80,7 +97,7 @@ class NonInjectedPodDetailsContainer extends React.Component<PodDetailsContainer
         <span>
           {lastState}
           <br />
-          {`Reason: ${terminated.reason} - exit code: ${terminated.exitCode}`}
+          {`Reason: ${describeTermination(terminated)}`}
           <br />
           {"Started: "}
           {<DurationAbsoluteTimestamp timestamp={terminated.startedAt} />}
@@ -88,6 +105,7 @@ class NonInjectedPodDetailsContainer extends React.Component<PodDetailsContainer
           {"Finished: "}
           {<DurationAbsoluteTimestamp timestamp={terminated.finishedAt} />}
           <br />
+          {terminated.message && <span className="status-message">{terminated.message}</span>}
         </span>
       );
     }
@@ -135,6 +153,7 @@ class NonInjectedPodDetailsContainer extends React.Component<PodDetailsContainer
           </DrawerItem>
         )}
         {status && <DrawerItem name="Status">{this.renderStatus(container, status)}</DrawerItem>}
+        {status?.restartCount ? <DrawerItem name="Restarts">{status.restartCount}</DrawerItem> : null}
         {lastState && <DrawerItem name="Last Status">{this.renderLastState(lastState, status)}</DrawerItem>}
         <DrawerItem name="Image">{image && <ImageReference reference={image} digest={imageId} />}</DrawerItem>
         {imagePullPolicy && imagePullPolicy !== "IfNotPresent" && (

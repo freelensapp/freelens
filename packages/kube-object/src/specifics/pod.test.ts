@@ -6,7 +6,7 @@
 
 import assert from "node:assert";
 import { describe, expect, it } from "vitest";
-import { Pod, type PodContainerStatus } from "./pod";
+import { Pod, type PodContainerStatus, type PodPhase } from "./pod";
 
 import type { Container } from "../types/container";
 
@@ -643,6 +643,131 @@ describe("Pods", () => {
       });
 
       expect(pod.hasIssues()).toStrictEqual(false);
+    });
+  });
+
+  describe("getStatusMessage", () => {
+    const status = (name: string, state: PodContainerStatus["state"]): PodContainerStatus => ({
+      name,
+      state,
+      ready: false,
+      restartCount: 0,
+      image: "dummy",
+      imageID: "dummy",
+    });
+
+    const podWith = ({
+      phase = "Running",
+      initContainers = [],
+      initContainerStatuses = [],
+      containerStatuses = [],
+    }: {
+      phase?: PodPhase;
+      initContainers?: Container[];
+      initContainerStatuses?: PodContainerStatus[];
+      containerStatuses?: PodContainerStatus[];
+    }) => {
+      const pod = getDummyPod();
+
+      assert(pod.status);
+      pod.status.phase = phase;
+      pod.spec.initContainers = initContainers;
+      pod.status.initContainerStatuses = initContainerStatuses;
+      pod.status.containerStatuses = containerStatuses;
+
+      return pod;
+    };
+
+    it("shows the phase when no container waits or has terminated", () => {
+      const pod = podWith({ containerStatuses: [status("app", { running: { startedAt: "now" } })] });
+
+      expect(pod.getStatusMessage()).toBe("Running");
+    });
+
+    it("shows why a container waits", () => {
+      const pod = podWith({
+        containerStatuses: [
+          status("app", { running: { startedAt: "now" } }),
+          status("sidecar", { waiting: { reason: "CrashLoopBackOff", message: "back-off 5m0s" } }),
+        ],
+      });
+
+      expect(pod.getStatusMessage()).toBe("CrashLoopBackOff");
+    });
+
+    it("shows why a container terminated", () => {
+      const pod = podWith({
+        phase: "Failed",
+        containerStatuses: [
+          status("app", { terminated: { reason: "OOMKilled", exitCode: 137, startedAt: "then", finishedAt: "now" } }),
+        ],
+      });
+
+      expect(pod.getStatusMessage()).toBe("OOMKilled");
+    });
+
+    it("shows the signal or exit code of a container that terminated without a reason", () => {
+      const signalled = podWith({
+        phase: "Failed",
+        containerStatuses: [
+          status("app", { terminated: { reason: "", signal: 9, exitCode: 137, startedAt: "", finishedAt: "" } }),
+        ],
+      });
+      const exited = podWith({
+        phase: "Failed",
+        containerStatuses: [status("app", { terminated: { reason: "", exitCode: 2, startedAt: "", finishedAt: "" } })],
+      });
+
+      expect(signalled.getStatusMessage()).toBe("Signal:9");
+      expect(exited.getStatusMessage()).toBe("ExitCode:2");
+    });
+
+    it("keeps a pod running when one of its containers completed", () => {
+      const pod = podWith({
+        containerStatuses: [
+          status("job", { terminated: { reason: "Completed", exitCode: 0, startedAt: "", finishedAt: "" } }),
+          status("app", { running: { startedAt: "now" } }),
+        ],
+      });
+
+      expect(pod.getStatusMessage()).toBe("Running");
+    });
+
+    it("shows how many init containers completed while they run", () => {
+      const pod = podWith({
+        phase: "Pending",
+        initContainers: [
+          { name: "migrate", image: "dummy" },
+          { name: "seed", image: "dummy" },
+        ],
+        initContainerStatuses: [
+          status("migrate", { terminated: { reason: "Completed", exitCode: 0, startedAt: "", finishedAt: "" } }),
+          status("seed", { running: { startedAt: "now" } }),
+        ],
+        containerStatuses: [status("app", { waiting: { reason: "PodInitializing", message: "" } })],
+      });
+
+      expect(pod.getStatusMessage()).toBe("Init:1/2");
+    });
+
+    it("shows why an init container fails", () => {
+      const pod = podWith({
+        phase: "Pending",
+        initContainers: [{ name: "migrate", image: "dummy" }],
+        initContainerStatuses: [status("migrate", { waiting: { reason: "CrashLoopBackOff", message: "" } })],
+      });
+
+      expect(pod.getStatusMessage()).toBe("Init:CrashLoopBackOff");
+    });
+
+    it("skips a started sidecar init container", () => {
+      const pod = podWith({
+        initContainers: [{ name: "proxy", image: "dummy", restartPolicy: "Always" }],
+        initContainerStatuses: [status("proxy", { running: { startedAt: "now" } })],
+        containerStatuses: [status("app", { running: { startedAt: "now" } })],
+      });
+
+      expect(pod.getStatusMessage()).toBe("Running");
     });
   });
 });

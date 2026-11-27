@@ -56,6 +56,19 @@ $pod-status-color-list: (
   error: $pod-error,
   container-creating: $pod-container-creating,
   container-ephemeral: $pod-container-ephemeral,
+  // Reasons a container waits or terminated, as getStatusMessage() reports them
+  pod-initializing: $pod-container-creating,
+  oom-killed: $pod-error,
+  image-pull-back-off: $pod-error,
+  err-image-pull: $pod-error,
+  invalid-image-name: $pod-error,
+  create-container-config-error: $pod-error,
+  create-container-error: $pod-error,
+  run-container-error: $pod-error,
+  container-cannot-run: $pod-error,
+  init-crash-loop-back-off: $pod-error,
+  init-error: $pod-error,
+  init-oom-killed: $pod-error,
 );
 
 // Job Conditions
