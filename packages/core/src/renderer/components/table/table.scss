@@ -17,6 +17,13 @@
     overflow: auto;
   }
 
+  // Reserves the scrollbar gutter of the virtual list below, so the head's
+  // columns line up with the rows'.
+  &.virtual > .TableHead {
+    overflow: hidden;
+    scrollbar-gutter: stable;
+  }
+
   &.scrollable.virtual {
     overflow: unset;
   }

@@ -6,7 +6,8 @@
 
 .VirtualList {
   .list {
-    /* Render scrollbar in content area, preventing it from occupying extra space */
-    overflow-y: overlay !important;
+    // The gutter is reserved even when the list does not scroll, so a table
+    // head above the list can reserve the same width (see table.scss).
+    scrollbar-gutter: stable;
   }
 }
