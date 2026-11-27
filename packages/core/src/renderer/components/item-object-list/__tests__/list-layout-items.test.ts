@@ -6,7 +6,7 @@
 import { autorun, observable, runInAction } from "mobx";
 import { describe, expect, it, vi } from "vitest";
 import { NonInjectedItemListLayout } from "../list-layout";
-import { FilterType, PageFiltersStore } from "../page-filters/store";
+import { PageFiltersStore } from "../page-filters/store";
 
 import type { ItemObject } from "@freelensapp/list-layout";
 
@@ -27,16 +27,12 @@ const makeItems = (count: number) => Array.from({ length: count }, (_, index) =>
 // reading the items as the rows it shows.
 const ROWS = 27;
 
-const makeUrlParam = (box: { get: () => string; set: (value: string) => void }) =>
-  ({
-    get: () => box.get(),
-    set: (value: string) => box.set(value),
-    clear: () => box.set(""),
-  }) as unknown as PageParam<string>;
-
-const makeLayout = (getItems: () => ItemObject[], extraProps: Partial<LayoutProps> = {}) => {
+const makeLayout = (getItems: () => ItemObject[]) => {
   const search = observable.box("");
-  const node = observable.box("");
+  const searchUrlParam = {
+    get: () => search.get(),
+    set: (value: string) => search.set(value),
+  } as unknown as PageParam<string>;
   const filterItems = vi.fn((items: ItemObject[]) => items);
   const getSearchTexts = vi.fn((item: ItemObject) => item.getName());
   const props = {
@@ -46,12 +42,11 @@ const makeLayout = (getItems: () => ItemObject[], extraProps: Partial<LayoutProp
     searchFilters: [getSearchTexts],
     filterItems: [filterItems],
     renderTableContents: () => [],
-    pageFiltersStore: new PageFiltersStore({ searchUrlParam: makeUrlParam(search), nodeUrlParam: makeUrlParam(node) }),
-    ...extraProps,
+    pageFiltersStore: new PageFiltersStore({ searchUrlParam }),
   } as unknown as LayoutProps;
   const layout = new NonInjectedItemListLayout(props);
 
-  return { layout, props, search, node, filterItems, getSearchTexts };
+  return { layout, props, search, filterItems, getSearchTexts };
 };
 
 const readInRows = (layout: Layout) => {
@@ -122,29 +117,5 @@ describe("<ItemListLayout> items", () => {
     expect(rows.seen).toEqual(everyRow(["uid-0", "uid-1", "uid-2"]));
 
     rows.dispose();
-  });
-
-  it("applies a node filter only with a callback for it", () => {
-    const items = makeItems(3);
-    const { layout, node } = makeLayout(() => items);
-
-    runInAction(() => node.set("uid-1"));
-
-    expect(layout.filters).toEqual([]);
-    expect(layout.items).toHaveLength(3);
-  });
-
-  it("applies a node filter with the callback of the props", () => {
-    const items = makeItems(3);
-    const { layout, node } = makeLayout(() => items, {
-      filterCallbacks: {
-        [FilterType.NODE]: (filtered: ItemObject[]) => filtered.filter((item) => item.getId() === node.get()),
-      },
-    });
-
-    runInAction(() => node.set("uid-1"));
-
-    expect(layout.filters).toEqual([{ type: FilterType.NODE, value: "uid-1" }]);
-    expect(layout.items.map((item) => item.getId())).toEqual(["uid-1"]);
   });
 });

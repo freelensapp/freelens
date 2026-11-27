@@ -13,6 +13,7 @@ import getPodsByOwnerIdInjectable from "./get-pods-by-owner-id.injectable";
 import loadPodsFromAllNamespacesInjectable from "./load-pods-from-all-namespaces.injectable";
 import podMetricsInjectable from "./metrics.injectable";
 import navigateToPodsOnNodeInjectable from "./navigate-to-pods-on-node.injectable";
+import nodeUrlPageParamInjectable from "./node-url-param.injectable";
 import podsRouteComponentInjectable from "./pods-route-component.injectable";
 import podsSidebarItemInjectable from "./pods-sidebar-items.injectable";
 import podStoreInjectable from "./store.injectable";
@@ -37,6 +38,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(navigateToPodsOnNodeInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(nodeUrlPageParamInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

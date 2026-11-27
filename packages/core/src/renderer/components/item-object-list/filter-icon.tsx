@@ -20,9 +20,6 @@ export function FilterIcon(props: FilterIconProps) {
     case FilterType.SEARCH:
       return <Icon small material="search" {...iconProps} />;
 
-    case FilterType.NODE:
-      return <Icon small svg="nodes" {...iconProps} />;
-
     default:
       return <Icon small material="filter_list" {...iconProps} />;
   }

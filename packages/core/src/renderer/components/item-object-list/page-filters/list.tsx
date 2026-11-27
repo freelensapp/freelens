@@ -11,9 +11,11 @@ import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import { Badge } from "../../badge";
+import searchUrlPageParamInjectable from "../../input/search-url-page-param.injectable";
 import { FilterIcon } from "../filter-icon";
 import pageFiltersStoreInjectable from "./store.injectable";
 
+import type { PageParam } from "../../../navigation/page-param";
 import type { Filter, PageFiltersStore } from "./store";
 
 export interface PageFiltersListProps {
@@ -22,14 +24,18 @@ export interface PageFiltersListProps {
 
 interface Dependencies {
   pageFiltersStore: PageFiltersStore;
+  searchUrlParam: PageParam<string>;
 }
 
 const NonInjectedPageFiltersList = observer(
-  ({ pageFiltersStore, filters: rawFilters }: Dependencies & PageFiltersListProps) => {
+  ({ pageFiltersStore, searchUrlParam, filters: rawFilters }: Dependencies & PageFiltersListProps) => {
     const filters = rawFilters ?? pageFiltersStore.activeFilters;
 
     const reset = () => pageFiltersStore.reset();
-    const remove = (filter: Filter) => pageFiltersStore.removeFilter(filter);
+    const remove = (filter: Filter) => {
+      pageFiltersStore.removeFilter(filter);
+      searchUrlParam.clear();
+    };
 
     const renderContent = () => {
       if (filters.length === 0) {
@@ -76,5 +82,6 @@ export const PageFiltersList = withInjectables<Dependencies, PageFiltersListProp
   getProps: (di, props) => ({
     ...props,
     pageFiltersStore: di.inject(pageFiltersStoreInjectable),
+    searchUrlParam: di.inject(searchUrlPageParamInjectable),
   }),
 });

@@ -7,7 +7,7 @@
 import { podMetricsApiInjectable } from "@freelensapp/kube-api-specifics";
 import { Pod } from "@freelensapp/kube-object";
 import { observableHistoryInjectionToken } from "@freelensapp/routing";
-import { act, fireEvent } from "@testing-library/react";
+import { act } from "@testing-library/react";
 import { beforeEach, describe, expect, it } from "vitest";
 import navigateToPodsInjectable from "../../../common/front-end-routing/routes/cluster/workloads/pods/navigate-to-pods.injectable";
 import requestMetricsInjectable from "../../../common/k8s-api/endpoints/metrics.api/request-metrics.injectable";
@@ -17,6 +17,7 @@ import {
   getApplicationBuilder,
 } from "../../../renderer/components/test-utils/get-application-builder";
 import navigateToPodsOnNodeInjectable from "../../../renderer/components/workloads-pods/navigate-to-pods-on-node.injectable";
+import nodeUrlPageParamInjectable from "../../../renderer/components/workloads-pods/node-url-param.injectable";
 import podStoreInjectable from "../../../renderer/components/workloads-pods/store.injectable";
 
 import type { PodMetricsApi } from "@freelensapp/kube-api";
@@ -214,18 +215,14 @@ describe("workloads / pods", () => {
           expect(rowOf("pending")).not.toBeInTheDocument();
         });
 
-        it("tells that the list is filtered", () => {
-          expect(rendered.getByText("Filtered")).toBeInTheDocument();
+        it("counts only the pods on the node, without a page filter", () => {
+          expect(rendered.getByText("2 items")).toBeInTheDocument();
+          expect(rendered.queryByText("Filtered")).not.toBeInTheDocument();
         });
 
-        describe("when the node filter is removed", () => {
+        describe("when the node is removed from the URL", () => {
           beforeEach(async () => {
-            fireEvent.click(rendered.getByText("Filtered"));
-
-            const badge = rendered.container.querySelector(".PageFiltersList .Badge.node");
-
-            expect(badge).toHaveTextContent("node-a");
-            fireEvent.click(badge!.querySelector(".Icon.material")!);
+            act(() => windowDi.inject(nodeUrlPageParamInjectable).clear());
             await rendered.findByTestId("icon-for-menu-actions-for-kube-object-menu-for-uid-on-b");
           });
 
@@ -233,10 +230,7 @@ describe("workloads / pods", () => {
             expect(rowOf("on-a")).toBeInTheDocument();
             expect(rowOf("on-b")).toBeInTheDocument();
             expect(rowOf("pending")).toBeInTheDocument();
-          });
-
-          it("removes the node from the URL", () => {
-            expect(windowDi.inject(observableHistoryInjectionToken).searchParams.has("node")).toBe(false);
+            expect(rendered.getByText("4 items")).toBeInTheDocument();
           });
         });
       });

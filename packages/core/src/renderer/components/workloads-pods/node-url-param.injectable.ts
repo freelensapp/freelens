@@ -4,7 +4,7 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import createPageParamInjectable from "../../../navigation/create-page-param.injectable";
+import createPageParamInjectable from "../../navigation/create-page-param.injectable";
 
 const nodeUrlPageParamInjectable = getInjectable({
   id: "node-url-page-param",

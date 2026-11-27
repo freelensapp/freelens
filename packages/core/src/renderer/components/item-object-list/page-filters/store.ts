@@ -11,7 +11,6 @@ import type { PageParam } from "../../../navigation/page-param";
 
 export enum FilterType {
   SEARCH = "search",
-  NODE = "node",
 }
 
 export interface Filter {
@@ -21,7 +20,6 @@ export interface Filter {
 
 interface Dependencies {
   readonly searchUrlParam: PageParam<string>;
-  readonly nodeUrlParam: PageParam<string>;
 }
 
 export class PageFiltersStore {
@@ -35,42 +33,33 @@ export class PageFiltersStore {
   constructor(protected readonly dependencies: Dependencies) {
     autoBind(this);
 
-    this.syncWithUrl();
+    this.syncWithGlobalSearch();
   }
 
-  // Each of these filters appears at most once and mirrors a parameter of the
-  // URL: removing the filter clears the parameter, and the other way round.
-  protected get urlParams(): [FilterType, PageParam<string>][] {
-    return [
-      [FilterType.SEARCH, this.dependencies.searchUrlParam],
-      [FilterType.NODE, this.dependencies.nodeUrlParam],
-    ];
-  }
-
-  protected syncWithUrl() {
-    const disposers = this.urlParams.flatMap(([type, urlParam]) => [
+  protected syncWithGlobalSearch() {
+    const disposers = [
       reaction(
-        () => this.getValues(type)[0],
-        (value) => (value ? urlParam.set(value) : urlParam.clear()),
+        () => this.getValues(FilterType.SEARCH)[0],
+        (search) => this.dependencies.searchUrlParam.set(search),
       ),
       reaction(
-        () => urlParam.get(),
-        (value) => {
-          const filter = this.getByType(type);
+        () => this.dependencies.searchUrlParam.get(),
+        (search) => {
+          const filter = this.getByType(FilterType.SEARCH);
 
           if (filter) {
-            this.removeFilter(filter);
+            this.removeFilter(filter); // search filter might occur once
           }
 
-          if (value) {
-            this.addFilter({ type, value }, true);
+          if (search) {
+            this.addFilter({ type: FilterType.SEARCH, value: search }, true);
           }
         },
         {
           fireImmediately: true,
         },
       ),
-    ]);
+    ];
 
     return () => disposers.forEach((dispose) => dispose());
   }
@@ -122,6 +111,10 @@ export class PageFiltersStore {
 
   @action
   reset() {
+    if (this.isEnabled(FilterType.SEARCH)) {
+      this.dependencies.searchUrlParam.clear();
+    }
+
     this.filters.length = 0;
     this.isDisabled.clear();
   }

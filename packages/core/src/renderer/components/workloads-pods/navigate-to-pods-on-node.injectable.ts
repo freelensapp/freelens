@@ -6,8 +6,8 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import { navigateToRouteInjectionToken } from "../../../common/front-end-routing/navigate-to-route-injection-token";
 import podsRouteInjectable from "../../../common/front-end-routing/routes/cluster/workloads/pods/pods-route.injectable";
-import nodeUrlPageParamInjectable from "../item-object-list/page-filters/node-url-param.injectable";
 import namespaceStoreInjectable from "../namespaces/store.injectable";
+import nodeUrlPageParamInjectable from "./node-url-param.injectable";
 
 export type NavigateToPodsOnNode = (nodeName: string) => void;
 
