@@ -37,6 +37,11 @@ export type {
 } from "../../renderer/components/catalog/custom-views";
 export type { CustomResourceRegistration } from "../../renderer/components/custom-resource-definitions/custom-resource-registration";
 export type {
+  CustomResourceColumn,
+  CustomResourceColumnProps,
+  CustomResourceColumnsRegistration,
+} from "../../renderer/components/custom-resources/custom-resource-columns-registration";
+export type {
   KubeObjectDetailComponents,
   KubeObjectDetailRegistration,
 } from "../../renderer/components/kube-object-details/kube-object-detail-registration";

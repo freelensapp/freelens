@@ -8,8 +8,9 @@ import { computed } from "mobx";
 import { describe, expect, it } from "vitest";
 import { LensExtensionKubeObject } from "../common-api/k8s-api";
 import * as extensions from "../extension-api";
-import { detailsFor, menuItemFor } from "../renderer-api/kube-object-registrations";
+import { columnsFor, detailsFor, menuItemFor } from "../renderer-api/kube-object-registrations";
 
+import type { CustomResourceColumnProps } from "../../renderer/components/custom-resources/custom-resource-columns-registration";
 import type { KubeObjectDetailsProps } from "../../renderer/components/kube-object-details/kube-object-details";
 import type { KubeObjectMenuItemProps } from "../../renderer/components/kube-object-menu/kube-object-menu-registration";
 
@@ -50,11 +51,14 @@ const PodMenuItem = (_props: KubeObjectMenuItemProps<Pod>) => null;
 const DeploymentMenuItem = (_props: KubeObjectMenuItemProps<Deployment>) => null;
 const ExampleMenuItem = (_props: KubeObjectMenuItemProps<Example>) => null;
 const AnyMenuItem = (_props: KubeObjectMenuItemProps<KubeObject>) => null;
+const ExampleColumn = (_props: CustomResourceColumnProps<Example>) => null;
+const AnyColumn = (_props: CustomResourceColumnProps<KubeObject>) => null;
 
 describe("Renderer.K8sApi registration helpers", () => {
   it("are reachable through the Renderer namespace", () => {
     expect(extensions.Renderer.K8sApi.detailsFor).toBe(detailsFor);
     expect(extensions.Renderer.K8sApi.menuItemFor).toBe(menuItemFor);
+    expect(extensions.Renderer.K8sApi.columnsFor).toBe(columnsFor);
   });
 
   describe("detailsFor", () => {
@@ -187,6 +191,69 @@ describe("Renderer.K8sApi registration helpers", () => {
     it("throws for a class without any source of apiVersions", () => {
       expect(() => menuItemFor(WithoutApiVersions, { MenuItem: AnyMenuItem })).toThrow(
         'menuItemFor(WithoutApiVersions): no "apiVersions" given',
+      );
+    });
+  });
+
+  describe("columnsFor", () => {
+    it("derives kind and apiVersions from the class, and keeps the columns", () => {
+      expect(columnsFor(Example, { columns: { Ready: { Render: ExampleColumn }, Status: { hidden: true } } })).toEqual({
+        kind: "Example",
+        apiVersions: ["example.com/v1", "example.com/v1beta1"],
+        columns: { Ready: { Render: ExampleColumn }, Status: { hidden: true } },
+      });
+    });
+
+    it("prefers explicit apiVersions over the crd", () => {
+      expect(
+        columnsFor(Example, { columns: { Ready: { Render: ExampleColumn } }, apiVersions: ["example.com/v2"] })
+          .apiVersions,
+      ).toEqual(["example.com/v2"]);
+    });
+
+    it("derives apiVersions from the apiBase of a class without crd", () => {
+      expect(columnsFor(Deployment, { columns: { Ready: { hidden: true } } }).apiVersions).toEqual(["apps/v1"]);
+    });
+
+    it("throws for a class without kind", () => {
+      expect(() => columnsFor(WithoutKind, { columns: { Ready: { Render: AnyColumn } } })).toThrow(
+        'columnsFor(WithoutKind): the class has no static "kind"',
+      );
+    });
+
+    it("throws for a class without any source of apiVersions", () => {
+      expect(() => columnsFor(WithoutApiVersions, { columns: { Ready: { Render: AnyColumn } } })).toThrow(
+        'columnsFor(WithoutApiVersions): no "apiVersions" given',
+      );
+    });
+
+    it("throws for empty apiVersions", () => {
+      expect(() => columnsFor(Example, { columns: { Ready: { hidden: true } }, apiVersions: [] })).toThrow(
+        'columnsFor(Example): "apiVersions" is empty',
+      );
+      expect(() => columnsFor(WithEmptyCrd, { columns: { Ready: { hidden: true } } })).toThrow(
+        'columnsFor(WithEmptyCrd): "crd.apiVersions" is empty',
+      );
+    });
+
+    it("throws for a column with neither Render nor hidden: true", () => {
+      expect(() => columnsFor(Example, { columns: { Ready: {} as never } })).toThrow(
+        'columnsFor(Example): columns["Ready"] has neither "Render" nor "hidden: true"',
+      );
+      expect(() => columnsFor(Example, { columns: { Ready: { hidden: false } as never } })).toThrow(
+        'columnsFor(Example): columns["Ready"] has "hidden" that is not true',
+      );
+    });
+
+    it("throws for a column with both Render and hidden: true", () => {
+      expect(() =>
+        columnsFor(Example, { columns: { Ready: { Render: ExampleColumn, hidden: true } as never } }),
+      ).toThrow('columnsFor(Example): columns["Ready"] has both "Render" and "hidden: true"');
+    });
+
+    it("throws for columns that is not an object", () => {
+      expect(() => columnsFor(Example, { columns: [] as never })).toThrow(
+        'columnsFor(Example): "columns" is not an object',
       );
     });
   });
