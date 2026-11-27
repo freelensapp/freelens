@@ -19,11 +19,14 @@ catalog:
   typescript: 7.0.2
   # Dependency injection (Ogre Tools)
   # The patch of patchedDependencies makes `deregister` forget the injectable:
-  # without it the container keeps every injectable it has injected, in its
-  # set of injected ones and in the children of its parents, and with it
-  # whatever the injectable's `instantiate` holds, such as the extension
-  # instance a reload has replaced. The patch is keyed by the exact version, so
-  # a bump reports it as unused; drop it once a release has the same fix.
+  # without it the container keeps every injectable it has deregistered, in
+  # the children of the parent it was registered under and, once injected, in
+  # its set of injected ones, and with it whatever the injectable's
+  # `instantiate` holds, such as the extension instance a reload has
+  # replaced. It applies the fix proposed upstream in
+  # ogre-works/ogre-tools#52 to the published build. The patch is keyed by
+  # the exact version, so a bump reports it as unused; drop it once a release
+  # includes that fix.
   '@ogre-tools/injectable': 27.0.0
   '@ogre-tools/injectable-extension-for-mobx': 27.0.0
   '@ogre-tools/injectable-react': 27.0.0
