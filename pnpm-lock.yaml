@@ -205,8 +205,8 @@ catalogs:
       specifier: 9.0.1
       version: 9.0.1
     '@hapi/subtext':
-      specifier: 8.1.5
-      version: 8.1.5
+      specifier: 8.1.6
+      version: 8.1.6
     '@kubernetes/client-node':
       specifier: 2.0.2
       version: 2.0.2
@@ -663,7 +663,7 @@ importers:
         version: 9.0.1
       '@hapi/subtext':
         specifier: 'catalog:'
-        version: 8.1.5
+        version: 8.1.6
       '@kubernetes/client-node':
         specifier: 'catalog:'
         version: 2.0.2(supports-color@8.1.1)
@@ -1066,7 +1066,7 @@ importers:
         version: 9.0.1
       '@hapi/subtext':
         specifier: 'catalog:'
-        version: 8.1.5
+        version: 8.1.6
       '@kubernetes/client-node':
         specifier: 'catalog:'
         version: 2.0.2(supports-color@8.1.1)
@@ -3152,8 +3152,8 @@ packages:
   '@hapi/pinpoint@2.0.1':
     resolution: {integrity: sha512-EKQmr16tM8s16vTT3cA5L0kZZcTMU5DUOZTuvpnY738m+jyP3JIUj+Mm1xc1rsLkGBQ/gVnfKYPwOmPg1tUR4Q==}
 
-  '@hapi/subtext@8.1.5':
-    resolution: {integrity: sha512-VSoL75dYqMfs2URprWPu9RXdL/+c5pZ5L0siSa3ZKg0VQKGQn2Yncd05Jl/154VvVYO/ymrOW3TR/a9psp1+kA==}
+  '@hapi/subtext@8.1.6':
+    resolution: {integrity: sha512-ABkBx4/6BLv17VMtTijk2WqpioyM2gfJwxia4rucjPIMnk1x+GzREOL6HdlFPCNO62p7x03bDgrkLJytCAd6wQ==}
 
   '@hapi/tlds@1.1.2':
     resolution: {integrity: sha512-1jkwm1WY9VIb6WhdANRmWDkXQUcIRpxqZpSdS+HD9vhoVL3zwoFvP8doQNEgT6k3VST0Ewu50wZnXIceRYp5tw==}
@@ -7864,7 +7864,7 @@ snapshots:
 
   '@hapi/pinpoint@2.0.1': {}
 
-  '@hapi/subtext@8.1.5':
+  '@hapi/subtext@8.1.6':
     dependencies:
       '@hapi/boom': 10.0.1
       '@hapi/bourne': 3.0.0
