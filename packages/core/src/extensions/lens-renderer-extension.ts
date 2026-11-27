@@ -33,6 +33,7 @@ import type { CustomCategoryViewRegistration } from "../renderer/components/cata
 import type { CatalogEntityDetailRegistration } from "../renderer/components/catalog/entity-details/token";
 import type { CommandRegistration } from "../renderer/components/command-palette/registered-commands/commands";
 import type { CustomResourceRegistration } from "../renderer/components/custom-resource-definitions/custom-resource-registration";
+import type { CustomResourceColumnsRegistration } from "../renderer/components/custom-resources/custom-resource-columns-registration";
 import type { EntitySettingRegistration } from "../renderer/components/entity-settings/extension-registrator.injectable";
 import type { KubeObjectDetailRegistration } from "../renderer/components/kube-object-details/kube-object-detail-registration";
 import type { KubeObjectMenuRegistration } from "../renderer/components/kube-object-menu/kube-object-menu-registration";
@@ -83,6 +84,14 @@ export class LensRendererExtension extends LensExtension {
    * Definitions list.
    */
   customResources: CustomResourceRegistration[] = [];
+
+  /**
+   * How the host shows the printer columns of custom resources, in their
+   * details and in their list: a column rendered with a component of the
+   * extension's, or hidden. `Renderer.K8sApi.columnsFor` builds an entry from
+   * a model class. A column no entry names shows as the host shows it.
+   */
+  customResourceColumns: CustomResourceColumnsRegistration[] = [];
 
   /**
    * @ignore

@@ -763,7 +763,8 @@ injectables, scoped to the extension and torn down with it.
 `appPreferenceTabs`, `entitySettings`, `statusBarItems`, `kubeObjectDetailItems`,
 `kubeObjectMenuItems`, `kubeWorkloadsOverviewItems`, `commands`, `welcomeMenus`,
 `catalogEntityDetailItems`, `topBarItems`, `additionalCategoryColumns`,
-`customCategoryViews`, `kubeObjectHandlers`, `customResources`.
+`customCategoryViews`, `kubeObjectHandlers`, `customResources`,
+`customResourceColumns`.
 
 Every component in a renderer registration is typed with the props the host
 renders it with and nothing more, so a component that requires another prop
@@ -868,6 +869,66 @@ included. The registration is opt-in, so a model the extension declares without
 presenting it, one it only decorates through `kubeObjectDetailItems` or
 `kubeObjectMenuItems`, stays out of the field and in the tree.
 
+`customResourceColumns` decides how the host shows the printer columns
+(`additionalPrinterColumns`) of a custom resource, in its details and in its
+list: a column rendered with a component of the extension's, or hidden.
+`Renderer.K8sApi.columnsFor(Class, { columns, apiVersions? })` builds an entry,
+with `kind` and `apiVersions` resolved as for `detailsFor`:
+
+```tsx
+customResourceColumns = [
+  Renderer.K8sApi.columnsFor(FluxInstance, {
+    columns: {
+      Ready: { Render: ({ object }) => <ReadyBadge object={object} /> },
+      Status: { hidden: true },
+      Revision: { Render: ({ object, value }) => <Revision object={object} revision={value} /> },
+    },
+  }),
+];
+```
+
+`columns` maps the `name` of a printer column, exactly as the definition writes
+it, to one of:
+
+- `{ Render }`: a component the host renders in place of the value, with the
+  props `{ object, value, column }`: the object, typed as an instance of the
+  class, so a component written for another kind does not compile; `value`,
+  what the column's `jsonPath` gives for the object; and `column`, the printer
+  column as the definition writes it;
+- `{ hidden: true }`: the host does not show the column.
+
+The types are `Common.Types.CustomResourceColumnsRegistration`,
+`CustomResourceColumn` and `CustomResourceColumnProps`.
+
+A registration applies to the objects of its `kind` whose `apiVersion` it
+lists, while the extension is enabled for the cluster. A column it names that
+the definition's version does not have is ignored, so one registration fits
+releases of the definition that add or drop a column; a column it does not name
+shows as before. In the details, a hidden column is left out and a rendered one
+is a `DrawerItem` titled with the column's name; the conditions below the
+columns are the host's as before. The details show the printer columns of the
+object's own version, and those of the preferred version only when the
+definition does not list it. In the list, a hidden column is left out of the
+header, the cells and the columns the user can toggle, and a rendered one's
+cells render the component; the list shows the objects of the preferred
+version, so it applies the registrations of that version. Sorting keeps the raw
+value of the column, whatever the component renders. Reordering is not offered:
+an extension that wants another order hides the columns and renders its own
+items through `kubeObjectDetailItems`.
+
+Each `Render` renders inside an error boundary of the host's. A component that
+throws gets the host's rendering of the value in its place, and the host logs
+the error with the extension's name, the kind and the column; the rest of the
+details and the list render as before. When two enabled extensions name the
+same column of the same kind and version, the host uses the registration of the
+extension registered first and logs a warning naming both.
+
+Freelens 2.2 adds the field and `columnsFor`. An earlier release does not read
+the field, so the columns show as the host shows them, and has no
+`Renderer.K8sApi.columnsFor`: an extension that declares an older
+`engines.freelens` reads the helper as possibly `undefined` and skips the
+registration without it.
+
 `LensMainExtension` fields: `terminalShellEnvModifier`, a function the host
 calls with the environment of every local shell it opens in a cluster's
 terminal. The
@@ -912,7 +973,14 @@ and keeps the others, and the rejected resource stays in the Custom Resources
 tree. A `customResources` that is not an array is rejected whole: the host logs
 one error with the extension's name and what the field holds, and registers
 none of it. The field is read once, when the extension is registered, so a
-class assigned to it later is not seen.
+class assigned to it later is not seen. `columnsFor` throws as `detailsFor`
+does, and also when an entry of `columns` has neither `Render` nor
+`hidden: true`, or both. A `customResourceColumns` entry is rejected when it is
+not a registration: not an object, with no `kind`, with an `apiVersions` that is
+empty or not an array of strings, or with a `columns` entry `columnsFor` would
+reject. The host logs the error with the extension's name, the entry's index and
+its `kind`, skips the entry and keeps the others; a `customResourceColumns` that
+is not an array is rejected whole, as `customResources` is.
 
 ---
 

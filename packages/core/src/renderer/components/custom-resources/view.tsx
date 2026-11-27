@@ -18,6 +18,8 @@ import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { TabLayout } from "../layout/tab-layout-2";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
 import { WithTooltip } from "../with-tooltip";
+import { CustomResourceColumnOfExtension } from "./custom-resource-column-of-extension";
+import customResourceColumnsOfExtensionsInjectable from "./custom-resource-columns-of-extensions.injectable";
 import discoveredCustomResourcesInjectable, {
   getDiscoveredApiBase,
   inPreferredVersions,
@@ -32,6 +34,10 @@ import type { IComputedValue } from "mobx";
 import type { ApiManager } from "../../../common/k8s-api/api-manager";
 import type { KubeApiResource } from "../../../common/rbac";
 import type { CustomResourceDefinitionStore } from "../custom-resource-definitions/store";
+import type {
+  ColumnOfExtension,
+  GetCustomResourceColumnsOfExtensions,
+} from "./custom-resource-columns-of-extensions.injectable";
 
 enum columnId {
   name = "name",
@@ -45,6 +51,7 @@ interface Dependencies {
   apiManager: ApiManager;
   customResourceDefinitionStore: CustomResourceDefinitionStore;
   discoveredCustomResources: IComputedValue<KubeApiResource[]>;
+  getCustomResourceColumnsOfExtensions: GetCustomResourceColumnsOfExtensions;
 }
 
 // What the list needs of a custom resource, from its definition or, for a user
@@ -56,6 +63,8 @@ interface ListedCustomResource {
   isNamespaced: boolean;
   apiBase: string;
   extraColumns: AdditionalPrinterColumnsV1[];
+  /** The columns of `extraColumns` an enabled extension renders, by name. */
+  columnsOfExtensions: ReadonlyMap<string, ColumnOfExtension>;
   unservedVersion?: string;
 }
 
@@ -75,14 +84,23 @@ class NonInjectedCustomResources extends React.Component<Dependencies> {
 
     if (crd) {
       const version = crd.getPreferredVersion();
+      const kind = crd.getResourceKind();
+      // The list shows the objects of the preferred version, so the columns of
+      // the extensions are those registered for it.
+      const columnsOfExtensions = this.props.getCustomResourceColumnsOfExtensions(
+        kind,
+        `${crd.getGroup()}/${version.name}`,
+      );
 
       return {
         group: crd.getGroup(),
-        kind: crd.getResourceKind(),
+        kind,
         pluralName: crd.getPluralName(),
         isNamespaced: crd.isNamespaced(),
         apiBase: crd.getResourceApiBase(),
-        extraColumns: crd.getPrinterColumns(false), // Cols with priority bigger than 0 are shown in details
+        // Cols with priority bigger than 0 are shown in details
+        extraColumns: crd.getPrinterColumns(false).filter(({ name }) => !columnsOfExtensions.get(name)?.column.hidden),
+        columnsOfExtensions,
         unservedVersion: version.served ? undefined : version.name,
       };
     }
@@ -101,6 +119,7 @@ class NonInjectedCustomResources extends React.Component<Dependencies> {
         isNamespaced: discovered.namespaced,
         apiBase: getDiscoveredApiBase(discovered),
         extraColumns: [],
+        columnsOfExtensions: new Map(),
       };
     }
 
@@ -115,7 +134,7 @@ class NonInjectedCustomResources extends React.Component<Dependencies> {
       return null;
     }
 
-    const { isNamespaced, extraColumns } = resource;
+    const { isNamespaced, extraColumns, columnsOfExtensions } = resource;
 
     // One view serves every custom resource, so the resource keys the crash of its list: another one renders again.
     return (
@@ -163,12 +182,27 @@ class NonInjectedCustomResources extends React.Component<Dependencies> {
           renderTableContents={(customResource) => [
             <WithTooltip>{customResource.getName()}</WithTooltip>,
             isNamespaced && <NamespaceSelectBadge namespace={customResource.getNs() as string} />,
-            ...extraColumns.map(
-              (column): TableCellProps => ({
+            ...extraColumns.map((column): TableCellProps => {
+              const value = (
+                <WithTooltip>{formatJSONValue(safeJSONPathValue(customResource, column.jsonPath))}</WithTooltip>
+              );
+              const ofExtension = columnsOfExtensions.get(column.name);
+
+              return {
                 "data-testid": `custom-resource-column-cell-${column.name.toLowerCase().replace(/\s+/g, "-")}-for-${customResource.getScopedName()}`,
-                title: <WithTooltip>{formatJSONValue(safeJSONPathValue(customResource, column.jsonPath))}</WithTooltip>,
-              }),
-            ),
+                title: ofExtension?.column.Render ? (
+                  <CustomResourceColumnOfExtension
+                    object={customResource}
+                    column={column}
+                    extensionName={ofExtension.extensionName}
+                    Render={ofExtension.column.Render}
+                    fallback={value}
+                  />
+                ) : (
+                  value
+                ),
+              };
+            }),
             <KubeObjectAge key="age" object={customResource} />,
           ]}
           failedToLoadMessage={
@@ -191,5 +225,6 @@ export const CustomResources = withInjectables<Dependencies>(NonInjectedCustomRe
     apiManager: di.inject(apiManagerInjectable),
     customResourceDefinitionStore: di.inject(customResourceDefinitionStoreInjectable),
     discoveredCustomResources: di.inject(discoveredCustomResourcesInjectable),
+    getCustomResourceColumnsOfExtensions: di.inject(customResourceColumnsOfExtensionsInjectable),
   }),
 });

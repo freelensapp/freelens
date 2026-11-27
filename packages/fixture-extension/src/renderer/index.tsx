@@ -7,7 +7,7 @@
 // way a third-party extension is written — the only import that reaches into
 // Freelens is `@freelensapp/extensions`, and it is compiled against the built
 // `dist/extension-api.d.ts` rather than the workspace source — and it is kept
-// to the six things that break silently:
+// to the seven things that break silently:
 //
 //  1. a component with a hook, which throws "invalid hook call" under two Reacts
 //  2. an observable the host has to react to, which fails *without* an error
@@ -23,6 +23,9 @@
 //     `./registration-pairings.ts`
 //  6. one `customResources` registration of the same model, which only reaches
 //     the host if its registrator can read the class's `crd` off the bundle
+//  7. one `customResourceColumns` registration of the same model made with
+//     `Renderer.K8sApi.columnsFor`, which renders one printer column and
+//     hides another in the host's details of the resource
 //
 // Everything here is asserted from
 // `packages/core/src/extensions/__tests__/fixture-extension.test.tsx`.
@@ -110,6 +113,19 @@ export class FixtureExampleMenuItem extends Component<Common.Types.KubeObjectMen
   }
 }
 
+/**
+ * A printer column of `FixtureExample`, typed for the class: registered with
+ * `columnsFor` for another kind, or another version of the kind, it does not
+ * compile.
+ */
+export const FixtureExampleTitleColumn = ({
+  object,
+  value,
+  column,
+}: Common.Types.CustomResourceColumnProps<FixtureExample>) => (
+  <span data-testid="fixture-example-column">{`${column.name} of ${object.getName()}: ${String(value)}`}</span>
+);
+
 export default class FixtureRendererExtension extends Renderer.LensExtension {
   /**
    * The declarative registration. It reaches the host only through the
@@ -133,6 +149,13 @@ export default class FixtureRendererExtension extends Renderer.LensExtension {
 
   /** The host reads the group and plural from the class's `crd`. */
   customResources = [FixtureExample];
+
+  /** The `Title` printer column rendered by the extension, the `Active` one hidden. */
+  customResourceColumns = [
+    Renderer.K8sApi.columnsFor(FixtureExample, {
+      columns: { Title: { Render: FixtureExampleTitleColumn }, Active: { hidden: true } },
+    }),
+  ];
 
   /** `getProbeHost` lives in `src/common/`, so the renderer bundle carries code shared with main. */
   protected onActivate(): void {

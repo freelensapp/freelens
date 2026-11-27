@@ -60,6 +60,9 @@ export type CommonStatusBarRegistration = Common.Types.StatusBarRegistration;
 export type CommonPageRegistration = Common.Types.PageRegistration;
 export type CommonAppPreferenceRegistration = Common.Types.AppPreferenceRegistration;
 export type CommonCustomResourceRegistration = Common.Types.CustomResourceRegistration;
+export type CommonCustomResourceColumnsRegistration = Common.Types.CustomResourceColumnsRegistration;
+export type CommonCustomResourceColumn = Common.Types.CustomResourceColumn;
+export type CommonCustomResourceColumnProps = Common.Types.CustomResourceColumnProps;
 // The helper types the signatures of the API are written in.
 export type CommonJsonValue = Common.Types.JsonValue;
 export type CommonPartialDeep = Common.Types.PartialDeep<Renderer.K8sApi.Pod, { recurseIntoArrays: true }>;
@@ -345,4 +348,38 @@ export function checkCustomResources(extension: RendererExtension) {
   extension.customResources = [ExampleV1alpha1, ExampleV1alpha2];
   // @ts-expect-error a registration is the class, not its `crd`
   extension.customResources = [ExampleV1alpha1.crd];
+}
+
+// `columnsFor` ties each `Render` to the model class as `detailsFor` ties
+// `Details`, and an entry is either `Render` or `hidden: true`, never both.
+declare const columnsFor: typeof Renderer.K8sApi.columnsFor;
+declare const PodColumn: FunctionComponent<Common.Types.CustomResourceColumnProps<Renderer.K8sApi.Pod>>;
+declare const ExampleV1alpha1Column: FunctionComponent<Common.Types.CustomResourceColumnProps<ExampleV1alpha1>>;
+declare const ExampleV1alpha2ColumnClass: ComponentClass<Common.Types.CustomResourceColumnProps<ExampleV1alpha2>>;
+
+export function checkCustomResourceColumns(extension: RendererExtension) {
+  extension.customResourceColumns = [
+    columnsFor(ExampleV1alpha1, {
+      columns: {
+        Ready: { Render: ExampleV1alpha1Column },
+        Status: { hidden: true },
+        Revision: {
+          Render: ({ object, value, column }) => `${object.spec.title ?? ""} ${String(value)} ${column.name}`,
+        },
+      },
+    }),
+    columnsFor(ExampleV1alpha2, { columns: { Ready: { Render: ExampleV1alpha2ColumnClass } }, apiVersions: ["v2"] }),
+    // @ts-expect-error a function component written for `Pod`, registered for `Deployment`
+    columnsFor(Deployment, { columns: { Ready: { Render: PodColumn } } }),
+    // @ts-expect-error a function component written for `v1alpha1`, registered for `v1alpha2`
+    columnsFor(ExampleV1alpha2, { columns: { Ready: { Render: ExampleV1alpha1Column } } }),
+    // @ts-expect-error a class component written for `v1alpha2`, registered for `v1alpha1`
+    columnsFor(ExampleV1alpha1, { columns: { Ready: { Render: ExampleV1alpha2ColumnClass } } }),
+    // @ts-expect-error an entry with both `Render` and `hidden: true`
+    columnsFor(ExampleV1alpha1, { columns: { Ready: { Render: ExampleV1alpha1Column, hidden: true } } }),
+    // @ts-expect-error an entry with neither `Render` nor `hidden: true`
+    columnsFor(ExampleV1alpha1, { columns: { Ready: {} } }),
+    // @ts-expect-error `hidden` is only ever `true`
+    columnsFor(ExampleV1alpha1, { columns: { Ready: { hidden: false } } }),
+  ];
 }

@@ -4,12 +4,17 @@
  */
 
 import { parseKubeApi } from "@freelensapp/kube-api";
+import { checkCustomResourceColumn } from "../../renderer/components/custom-resources/custom-resource-columns-registration";
 
 import type { KubeObject } from "@freelensapp/kube-object";
 
 import type { IComputedValue } from "mobx";
 import type { ComponentType } from "react";
 
+import type {
+  CustomResourceColumn,
+  CustomResourceColumnsRegistration,
+} from "../../renderer/components/custom-resources/custom-resource-columns-registration";
 import type { KubeObjectDetailRegistration } from "../../renderer/components/kube-object-details/kube-object-detail-registration";
 import type { KubeObjectDetailsProps } from "../../renderer/components/kube-object-details/kube-object-details";
 import type {
@@ -42,6 +47,17 @@ interface KubeObjectMenuItemOptions<K extends KubeObject> {
   /** Overrides the versions derived from the class. */
   apiVersions?: readonly string[];
   visible?: IComputedValue<boolean>;
+}
+
+interface CustomResourceColumnsOptions<K extends KubeObject> {
+  /**
+   * By the `name` of a printer column, exactly as the definition writes it:
+   * `{ Render }` to render the column with a component, `{ hidden: true }` to
+   * leave it out.
+   */
+  columns: Record<string, CustomResourceColumn<K>>;
+  /** Overrides the versions derived from the class. */
+  apiVersions?: readonly string[];
 }
 
 const describeClass = (helper: string, kubeObjectClass: KubeObjectClass<KubeObject>) =>
@@ -159,5 +175,56 @@ export function menuItemFor<K extends KubeObject>(
     apiVersions: apiVersionsOf("menuItemFor", kubeObjectClass, apiVersions),
     components: { MenuItem },
     ...(visible === undefined ? {} : { visible }),
+  };
+}
+
+/**
+ * A `customResourceColumns` registration for `kubeObjectClass`, with `kind`
+ * and `apiVersions` taken from the class, and each `Render` checked against
+ * it: a component written for another kind does not compile.
+ *
+ * `apiVersions` is resolved, and the helper throws, as for {@link detailsFor}.
+ * It also throws when an entry of `columns` has neither `Render` nor
+ * `hidden: true`, or both.
+ *
+ * @example
+ *
+ * ```tsx
+ * customResourceColumns = [
+ *   Renderer.K8sApi.columnsFor(FluxInstance, {
+ *     columns: {
+ *       Ready: { Render: ({ object }) => <ReadyBadge object={object} /> },
+ *       Status: { hidden: true },
+ *     },
+ *   }),
+ * ];
+ * ```
+ */
+export function columnsFor<K extends KubeObject>(
+  kubeObjectClass: KubeObjectClass<K>,
+  registration: CustomResourceColumnsOptions<K>,
+): CustomResourceColumnsRegistration {
+  const { columns, apiVersions } = registration;
+  const kind = kindOf("columnsFor", kubeObjectClass);
+  const resolvedApiVersions = apiVersionsOf("columnsFor", kubeObjectClass, apiVersions);
+
+  if (typeof columns !== "object" || columns === null || Array.isArray(columns)) {
+    throw new Error(`${describeClass("columnsFor", kubeObjectClass)}: "columns" is not an object`);
+  }
+
+  for (const [name, column] of Object.entries(columns)) {
+    try {
+      checkCustomResourceColumn(name, column);
+    } catch (error) {
+      throw new Error(
+        `${describeClass("columnsFor", kubeObjectClass)}: ${error instanceof Error ? error.message : String(error)}`,
+      );
+    }
+  }
+
+  return {
+    kind,
+    apiVersions: resolvedApiVersions,
+    columns: { ...columns },
   };
 }

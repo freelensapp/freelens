@@ -6,7 +6,9 @@
  * This replaces the webpack-based auto-registration system.
  */
 
+import customResourceColumnsOfExtensionsInjectable from "./custom-resource-columns-of-extensions.injectable";
 import discoveredCustomResourcesInjectable from "./discovered-custom-resources.injectable";
+import extensionCustomResourceColumnsRegistratorInjectable from "./extension-custom-resource-columns-registrator.injectable";
 import customResourcesRouteComponentInjectable from "./route-component.injectable";
 import customResourcesRouteParametersInjectable from "./route-parameters.injectable";
 import customResourcesSidebarItemInjectable from "./sidebar-item.injectable";
@@ -14,6 +16,11 @@ import customResourcesSidebarItemInjectable from "./sidebar-item.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
+  try {
+    di.register(customResourceColumnsOfExtensionsInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
   try {
     di.register(customResourcesRouteComponentInjectable);
   } catch (e) {
@@ -31,6 +38,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(discoveredCustomResourcesInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(extensionCustomResourceColumnsRegistratorInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }
