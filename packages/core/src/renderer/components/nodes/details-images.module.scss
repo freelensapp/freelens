@@ -1,0 +1,28 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
+.NodeDetailsImages {
+  :global(.TableHead) {
+    background-color: var(--drawerSubtitleBackground);
+  }
+
+  :global(.TableCell) {
+    white-space: normal;
+    word-break: break-all;
+  }
+
+  .name {
+    flex-grow: 4;
+  }
+
+  .size {
+    flex-grow: 1;
+    text-align: right;
+  }
+}
+
+.limitNote {
+  color: var(--textColorDimmed);
+}
