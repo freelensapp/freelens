@@ -1,0 +1,64 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
+@use "../vars" as *;
+
+// A band of facts above the overview: a square panel without a border in contentColor, like the
+// other panels of the overview in both of its styles. Each fact is a label over a value on one
+// line; a long value is cut off and shown whole in its title. The text colors are the ones the
+// overview cards use, which reach WCAG AA on contentColor in every built-in theme.
+
+.ClusterInfoStrip {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: $margin * 5;
+  row-gap: $margin;
+  padding: $padding * 1.5 $padding * 2;
+  background: var(--contentColor);
+}
+
+.facts {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: $margin * 3;
+  row-gap: $margin;
+  min-width: 0;
+  margin: 0;
+}
+
+.fact {
+  min-width: 0;
+  max-width: 28em;
+}
+
+.label {
+  font-size: 11px;
+  color: var(--textColorPrimary);
+}
+
+.value {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0;
+  font-size: 13px;
+  font-weight: $font-weight-bold;
+  color: var(--textColorAccent);
+}
+
+.text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.warning {
+  color: color-mix(in srgb, var(--colorWarning) 30%, var(--textColorAccent));
+}
+
+.warningIcon {
+  flex-shrink: 0;
+  color: var(--colorWarning);
+}

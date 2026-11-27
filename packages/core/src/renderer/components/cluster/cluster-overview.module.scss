@@ -4,9 +4,18 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+// The information strip sits above the grid rather than in it: the grid places the blocks of
+// the overview automatically, in as many columns as there are blocks.
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--margin) * 2);
+  height: 100%;
+}
+
 .ClusterOverview {
   position: relative;
-  height: 100%;
+  flex-grow: 1;
   min-height: 650px;
   display: grid;
   grid-gap: calc(var(--margin) * 2);
