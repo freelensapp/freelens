@@ -517,8 +517,8 @@ catalogs:
       specifier: 0.5.0
       version: 0.5.0
     vite:
-      specifier: 8.3.8
-      version: 8.3.8
+      specifier: 8.4.0
+      version: 8.4.0
     vitest:
       specifier: 5.1.1
       version: 5.1.1
@@ -621,10 +621,10 @@ importers:
         version: 7.0.2
       vite:
         specifier: 'catalog:'
-        version: 8.3.8(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0)
+        version: 8.4.0(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0)
       vitest:
         specifier: 'catalog:'
-        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.3.8(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
+        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.4.0(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
 
   freelens:
     dependencies:
@@ -823,7 +823,7 @@ importers:
         version: 24.19.2
       '@vitejs/plugin-react':
         specifier: 'catalog:'
-        version: 6.3.0(vite@8.3.8(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
+        version: 6.3.0(vite@8.4.0(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
       electron:
         specifier: 'catalog:'
         version: 44.11.5(supports-color@8.1.1)
@@ -835,7 +835,7 @@ importers:
         version: 26.18.0(dmg-builder@26.18.0)(supports-color@8.1.1)
       electron-vite:
         specifier: 'catalog:'
-        version: 6.0.0(supports-color@8.1.1)(vite@8.3.8(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
+        version: 6.0.0(supports-color@8.1.1)(vite@8.4.0(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
       playwright:
         specifier: 'catalog:'
         version: 1.65.1
@@ -850,10 +850,10 @@ importers:
         version: 7.0.2
       vite:
         specifier: 'catalog:'
-        version: 8.3.8(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0)
+        version: 8.4.0(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0)
       vitest:
         specifier: 'catalog:'
-        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.3.8(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
+        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.4.0(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
 
   packages/business-features/keyboard-shortcuts:
     dependencies:
@@ -908,7 +908,7 @@ importers:
         version: 7.1.7
       vitest:
         specifier: 'catalog:'
-        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.3.8(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
+        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.4.0(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
 
   packages/cluster-settings:
     dependencies:
@@ -952,7 +952,7 @@ importers:
         version: 31.0.1(@noble/hashes@2.4.0)
       vitest:
         specifier: 'catalog:'
-        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.3.8(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
+        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.4.0(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
 
   packages/core:
     dependencies:
@@ -1313,7 +1313,7 @@ importers:
         version: 7.0.2
       vitest:
         specifier: 'catalog:'
-        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.3.8(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
+        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.4.0(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
       vitest-canvas-mock:
         specifier: 'catalog:'
         version: 1.2.0(vitest@5.1.1)
@@ -1447,7 +1447,7 @@ importers:
         version: 7.0.2
       vite:
         specifier: 'catalog:'
-        version: 8.3.8(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0)
+        version: 8.4.0(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0)
 
   packages/generate-license:
     dependencies:
@@ -1519,7 +1519,7 @@ importers:
         version: 31.0.1(@noble/hashes@2.4.0)
       vitest:
         specifier: 'catalog:'
-        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.3.8(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
+        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.4.0(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
 
   packages/kubectl-versions:
     devDependencies:
@@ -1581,7 +1581,7 @@ importers:
         version: 31.0.1(@noble/hashes@2.4.0)
       vitest:
         specifier: 'catalog:'
-        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.3.8(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
+        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.4.0(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
       winston-transport:
         specifier: 'catalog:'
         version: 4.9.0
@@ -1673,7 +1673,7 @@ importers:
         version: 19.3.1(react@19.3.1)
       vitest:
         specifier: 'catalog:'
-        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.3.8(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
+        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.4.0(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
 
   packages/semver:
     dependencies:
@@ -1723,7 +1723,7 @@ importers:
         version: 7.0.2
       vitest:
         specifier: 'catalog:'
-        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.3.8(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
+        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.4.0(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
 
   packages/technical-features/application/application-for-electron-main:
     dependencies:
@@ -1757,7 +1757,7 @@ importers:
         version: 7.0.2
       vitest:
         specifier: 'catalog:'
-        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.3.8(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
+        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.4.0(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
 
   packages/technical-features/feature-core:
     dependencies:
@@ -1773,7 +1773,7 @@ importers:
         version: 31.0.1(@noble/hashes@2.4.0)
       vitest:
         specifier: 'catalog:'
-        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.3.8(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
+        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.4.0(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
 
   packages/technical-features/messaging/computed-channel:
     dependencies:
@@ -1831,7 +1831,7 @@ importers:
         version: 7.0.2
       vitest:
         specifier: 'catalog:'
-        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.3.8(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
+        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.4.0(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
 
   packages/technical-features/messaging/messaging:
     dependencies:
@@ -1871,7 +1871,7 @@ importers:
         version: 7.0.2
       vitest:
         specifier: 'catalog:'
-        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.3.8(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
+        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.4.0(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
 
   packages/technical-features/messaging/messaging-fake-bridge:
     dependencies:
@@ -1917,7 +1917,7 @@ importers:
         version: 7.0.2
       vitest:
         specifier: 'catalog:'
-        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.3.8(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
+        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.4.0(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
 
   packages/technical-features/messaging/messaging-for-main:
     dependencies:
@@ -1948,7 +1948,7 @@ importers:
         version: 7.0.2
       vitest:
         specifier: 'catalog:'
-        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.3.8(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
+        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.4.0(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
 
   packages/technical-features/messaging/messaging-for-renderer:
     dependencies:
@@ -1985,7 +1985,7 @@ importers:
         version: 7.0.2
       vitest:
         specifier: 'catalog:'
-        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.3.8(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
+        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.4.0(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
 
   packages/technical-features/prometheus:
     dependencies:
@@ -2074,7 +2074,7 @@ importers:
         version: 7.0.2
       vitest:
         specifier: 'catalog:'
-        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.3.8(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
+        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.4.0(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
 
   packages/ui-components/animate:
     dependencies:
@@ -2111,7 +2111,7 @@ importers:
         version: 7.0.2
       vitest:
         specifier: 'catalog:'
-        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.3.8(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
+        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.4.0(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
 
   packages/ui-components/button:
     dependencies:
@@ -2136,7 +2136,7 @@ importers:
         version: 7.0.2
       vitest:
         specifier: 'catalog:'
-        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.3.8(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
+        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.4.0(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
 
   packages/ui-components/error-boundary:
     dependencies:
@@ -2194,7 +2194,7 @@ importers:
         version: 7.0.2
       vitest:
         specifier: 'catalog:'
-        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.3.8(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
+        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.4.0(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
 
   packages/ui-components/icon:
     dependencies:
@@ -2249,7 +2249,7 @@ importers:
         version: 7.0.2
       vitest:
         specifier: 'catalog:'
-        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.3.8(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
+        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.4.0(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
 
   packages/ui-components/notifications:
     dependencies:
@@ -2313,7 +2313,7 @@ importers:
         version: 7.0.2
       vitest:
         specifier: 'catalog:'
-        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.3.8(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
+        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.4.0(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
 
   packages/ui-components/resizing-anchor:
     dependencies:
@@ -2344,7 +2344,7 @@ importers:
         version: 7.0.2
       vitest:
         specifier: 'catalog:'
-        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.3.8(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
+        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.4.0(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
 
   packages/ui-components/spinner:
     dependencies:
@@ -2366,7 +2366,7 @@ importers:
         version: 7.0.2
       vitest:
         specifier: 'catalog:'
-        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.3.8(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
+        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.4.0(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
 
   packages/ui-components/tooltip:
     dependencies:
@@ -2418,7 +2418,7 @@ importers:
         version: 7.0.2
       vitest:
         specifier: 'catalog:'
-        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.3.8(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
+        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.4.0(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
 
   packages/utility-features/event-emitter:
     devDependencies:
@@ -2430,7 +2430,7 @@ importers:
         version: 31.0.1(@noble/hashes@2.4.0)
       vitest:
         specifier: 'catalog:'
-        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.3.8(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
+        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.4.0(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
 
   packages/utility-features/json-api:
     dependencies:
@@ -2507,7 +2507,7 @@ importers:
         version: 7.0.2
       vitest:
         specifier: 'catalog:'
-        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.3.8(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
+        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.4.0(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
 
   packages/utility-features/kube-api-specifics:
     dependencies:
@@ -2579,7 +2579,7 @@ importers:
         version: 7.1.7
       vitest:
         specifier: 'catalog:'
-        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.3.8(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
+        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.4.0(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
 
   packages/utility-features/startable-stoppable:
     devDependencies:
@@ -2591,7 +2591,7 @@ importers:
         version: 31.0.1(@noble/hashes@2.4.0)
       vitest:
         specifier: 'catalog:'
-        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.3.8(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
+        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.4.0(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
 
   packages/utility-features/test-utils:
     dependencies:
@@ -2631,7 +2631,7 @@ importers:
         version: 19.3.1(react@19.3.1)
       vitest:
         specifier: 'catalog:'
-        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.3.8(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
+        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.4.0(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
 
   packages/utility-features/type-fest:
     devDependencies:
@@ -2680,7 +2680,7 @@ importers:
         version: 31.0.1(@noble/hashes@2.4.0)
       vitest:
         specifier: 'catalog:'
-        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.3.8(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
+        version: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.4.0(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
 
 packages:
 
@@ -3737,6 +3737,9 @@ packages:
   '@oxc-project/types@0.156.0':
     resolution: {integrity: sha512-1Duyg48TdJNdyhEB8Xn1L36bT9Pv6GUtlKjHxOys8xkaF/rQq3XJE+bAurSK/AgIz5mGFsb77cn9Pb20+WCScw==}
 
+  '@oxc-project/types@0.159.0':
+    resolution: {integrity: sha512-QWjWhxheluOJ82kDHNyps00UvRpQCtI34B5A/SzpgQycUD/79FuvT4I0aQIfE/bdPwKmX4QPftnywFBH6FxJhQ==}
+
   '@parcel/watcher-android-arm64@2.5.1':
     resolution: {integrity: sha512-KF8+j9nNbUN8vzOFDpRMsaKBHZ/mcjEjMToVMJOhTozkDonQFFrRcfdLWn6yWKCmJKmdVxSgHiYvTCef4/qcBA==}
     engines: {node: '>= 10.0.0'}
@@ -3971,8 +3974,20 @@ packages:
     cpu: [arm]
     os: [android]
 
+  '@rolldown/binding-android-arm-eabi@1.3.3':
+    resolution: {integrity: sha512-K1itOg1Xl50XyjLDa4qQZqaYsfiQbFbFRWXOEOupOsGr3whhm5ed4lgySd6Inohv2TB0+sdU4AxORKuS/TGang==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+    cpu: [arm]
+    os: [android]
+
   '@rolldown/binding-android-arm64@1.2.19':
     resolution: {integrity: sha512-hOombrTJ+szt2ciEzS7oCA78lMPBgF5UMQWCJIyNfnrI7GLl8HYoFqCnpL2gcPOaXMqryGCU5ExdQKyDDcC+yA==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+    cpu: [arm64]
+    os: [android]
+
+  '@rolldown/binding-android-arm64@1.3.3':
+    resolution: {integrity: sha512-re+E0E3YSJXjEFzdOvBgkVUev1Gg49ileia04qy+Djn0lIMBr7pnwVOYQ+4vc9XbLClCmMziasqXHM7KTmKNKQ==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [arm64]
     os: [android]
@@ -3983,8 +3998,20 @@ packages:
     cpu: [arm64]
     os: [darwin]
 
+  '@rolldown/binding-darwin-arm64@1.3.3':
+    resolution: {integrity: sha512-6pMLYsUiQJXPkUj/CG447hOBKtbe+hjWw/wbxe/mucoPKgnLSVRTzey7s0kXfqrjxhDd3gQ2hj6lgUKRumsIzw==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+    cpu: [arm64]
+    os: [darwin]
+
   '@rolldown/binding-darwin-x64@1.2.19':
     resolution: {integrity: sha512-zo8EsSSwMZCY/e+fRnGaX02YGgvJD0yvhNi/9hpGPA2MJ9ZF8dPCw75UGfpI6OpQ/myR/dIYmogRvqiZD0TrXg==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+    cpu: [x64]
+    os: [darwin]
+
+  '@rolldown/binding-darwin-x64@1.3.3':
+    resolution: {integrity: sha512-Lz+TskwvhceQgwnP+0ox5ZeL7HDDXHKWVRpOqC1Eo05y6rYyfvvep0msGqC95kQTykXrmGgP6qwJB1NdgNZVhg==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [x64]
     os: [darwin]
@@ -3995,14 +4022,33 @@ packages:
     cpu: [x64]
     os: [freebsd]
 
+  '@rolldown/binding-freebsd-x64@1.3.3':
+    resolution: {integrity: sha512-sIzqNDbA7GFDXU8k9/vcJyV1p45mCe+xHOLo9qD7gdbTbMlwB+SpnFoP7WSpC2iYdGfOX9pjBxCfViRn/Nu3Jw==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+    cpu: [x64]
+    os: [freebsd]
+
   '@rolldown/binding-linux-arm-gnueabihf@1.2.19':
     resolution: {integrity: sha512-/lYCba5NO0yq4S0jGMH8QTBtkvQxoXjoQWzF5BcWp9MjB9jxVRD1GQDNofkVjcOj30DWyhLIN/4Oe60JKzaONw==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [arm]
     os: [linux]
 
+  '@rolldown/binding-linux-arm-gnueabihf@1.3.3':
+    resolution: {integrity: sha512-HYysnZZ7HD3FM5RIBN6wDMoxtOjw4LS9HhRuQ57MsZt5XGpGRPxVpplvr7vUXRN+9MD8zb6vn1JRP06PXIuMYQ==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+    cpu: [arm]
+    os: [linux]
+
   '@rolldown/binding-linux-arm64-gnu@1.2.19':
     resolution: {integrity: sha512-pm/apFMBnSbFb3O6nG5pHO1iqHhZrjGDFEjSm+ot9J17XXPvH9L90y5h+jgfHCE+Qdlsvy8qKEcU4VKxgjD+vA==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+    cpu: [arm64]
+    os: [linux]
+    libc: [glibc]
+
+  '@rolldown/binding-linux-arm64-gnu@1.3.3':
+    resolution: {integrity: sha512-XAyLqWSoEKVc8wsDbCIz5o2sBY6ye+0YByK9ib5QxFReoM1KHyThSHsdUODa1DKNzlEfae+p9QwK62LsVwo6Nw==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [arm64]
     os: [linux]
@@ -4015,8 +4061,22 @@ packages:
     os: [linux]
     libc: [musl]
 
+  '@rolldown/binding-linux-arm64-musl@1.3.3':
+    resolution: {integrity: sha512-oVyicDPj6vUVFRnuoQS7M2Ab8EkGWoq3a5ntyQqjtZoXfgVykIJqN2IAJSi9q9UyNoQUW0vbBLQSgGtlPJ40Kg==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+    cpu: [arm64]
+    os: [linux]
+    libc: [musl]
+
   '@rolldown/binding-linux-ppc64-gnu@1.2.19':
     resolution: {integrity: sha512-I0xwD57jP/3A7+5UPZin2w8Y7XHEmEM5zqpYZOcQ45MlNW6tUJUziymV3yRr7rL4vwyfEcRsRksC4a7Kc08p5Q==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+    cpu: [ppc64]
+    os: [linux]
+    libc: [glibc]
+
+  '@rolldown/binding-linux-ppc64-gnu@1.3.3':
+    resolution: {integrity: sha512-k7aFSWgUoi/X7jCst7UEof7pS5jc5ymD8mT/pdFE+pO1IBBI2+JU5Os4HEDqS/tYhetRggwM7MOiLP3cg1bSBQ==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [ppc64]
     os: [linux]
@@ -4029,8 +4089,22 @@ packages:
     os: [linux]
     libc: [glibc]
 
+  '@rolldown/binding-linux-s390x-gnu@1.3.3':
+    resolution: {integrity: sha512-D5mxHpr1qIb1Pt5UT+Bm2p6vJ7+VxcxWcxZCYVDFzZwWRq9iLiEg4/ROsaXFQl1O8sDQZZJ55UoRWWMK64uH5w==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+    cpu: [s390x]
+    os: [linux]
+    libc: [glibc]
+
   '@rolldown/binding-linux-x64-gnu@1.2.19':
     resolution: {integrity: sha512-rm75/9DkHKeU2WnA8w4X94WGYgLlDCFCfkQC+4bguVJmC/jvDRv2B+2wLOYhyE0fVuv7//Ckk39OoOufyCu76Q==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+    cpu: [x64]
+    os: [linux]
+    libc: [glibc]
+
+  '@rolldown/binding-linux-x64-gnu@1.3.3':
+    resolution: {integrity: sha512-nmW1O4BbNEmQI9+KTHbJgbDv0EuyZy64oBnRlMCtLJ8lQMIJ/H/iziQ0g2IUlHEhNrSebGvs9cRrlRj8oEfP+g==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [x64]
     os: [linux]
@@ -4043,8 +4117,21 @@ packages:
     os: [linux]
     libc: [musl]
 
+  '@rolldown/binding-linux-x64-musl@1.3.3':
+    resolution: {integrity: sha512-ivU4JFHK5nFzrRbzp3+vwYdLj8mFckH4oz3hEl5LH/YeThr9/m2N2vF3NvLevtHq6e0COimgrEVyYTwQhh4ODg==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+    cpu: [x64]
+    os: [linux]
+    libc: [musl]
+
   '@rolldown/binding-openharmony-arm64@1.2.19':
     resolution: {integrity: sha512-+KWTWNoPt+CfSq94CiceWu3yPE+QzkaG+phPyz9G60tmZLwfQkcA4AeksafzvJAw4pvg1mcd5a1TkUqVv0s4JA==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+    cpu: [arm64]
+    os: [openharmony]
+
+  '@rolldown/binding-openharmony-arm64@1.3.3':
+    resolution: {integrity: sha512-XxZoRIkNZ/7pFgvOA8QJmx3uFjMyVz7zS2/urzlaFffoOGclDvpUAMu3AHKT551E8JBKXLxIjpYxYMdF6Mz9vQ==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [arm64]
     os: [openharmony]
@@ -4054,14 +4141,31 @@ packages:
     engines: {node: ^20.19.0 || ^22.13.0 || >=23.5.0}
     cpu: [wasm32]
 
+  '@rolldown/binding-wasm32-wasi@1.3.3':
+    resolution: {integrity: sha512-bBl1MB2gF26PSPy3CiDLiv+A6JGI546WbsDR34LfKAywSGeBeQXaDanoDG6QdZDJs53M1QyJir5MTKTu1n4ptA==}
+    engines: {node: ^20.19.0 || ^22.13.0 || >=23.5.0}
+    cpu: [wasm32]
+
   '@rolldown/binding-win32-arm64-msvc@1.2.19':
     resolution: {integrity: sha512-3Q1Yg1Q7tEvBWoZf5rFvG/GKZQPgwfru+p4wBajDfJFBs0SHCpL++dfTjW9gyAKd1T7ZpIYvdaUax7Pa/IhFVQ==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [arm64]
     os: [win32]
 
+  '@rolldown/binding-win32-arm64-msvc@1.3.3':
+    resolution: {integrity: sha512-6rZur0hyen4LPhOxWIg7az1YX+Eo8Vvauc0D6lFYGK/QCvN+1XpnB8aFe3jQc/PBUGIReJJnLX3sS8h33/5v7A==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+    cpu: [arm64]
+    os: [win32]
+
   '@rolldown/binding-win32-x64-msvc@1.2.19':
     resolution: {integrity: sha512-y/sqRRc6d7hECzOFc5n3LSeqctmIp9mMjY1Kq4s14uLPd/LZ4z7i1zrW6fMtp2mPeuQIC4e6ULMcwQzMomqQag==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+    cpu: [x64]
+    os: [win32]
+
+  '@rolldown/binding-win32-x64-msvc@1.3.3':
+    resolution: {integrity: sha512-Ggzyuq1mN7claruAZH10aiiM1N3LRCoMP5xDXPdU514ulL0D2bksCWgFqEmEM2/pDzEP7Dq+dcv7IH452jtr1w==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [x64]
     os: [win32]
@@ -6098,6 +6202,12 @@ packages:
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
 
+  napi-windows-process-start-time@0.1.0:
+    resolution: {integrity: sha512-zHxhzKsIFu3elch3eFw69WEUGc79DFhbc3nD/WEOzWL/pFFLZRW13EHnuO0c+0YjncE5uCaS9ICHxOBXkb6vPw==}
+    engines: {node: '>=20'}
+    cpu: [x64, arm64]
+    os: [win32]
+
   needle@3.2.0:
     resolution: {integrity: sha512-oUvzXnyLiVyVGoianLijF9O/RecZUf7TkBfimjGrLM4eQhXyeJwM6GeAWccwfQ9aa4gMCZKqhAOuLaMIcQxajQ==}
     engines: {node: '>= 4.4.x'}
@@ -6284,8 +6394,8 @@ packages:
     engines: {node: '>=18'}
     hasBin: true
 
-  postcss@8.5.32:
-    resolution: {integrity: sha512-LJlKCCAUFKOuZxipUdYw1NzIITEsPcgyOG9LkvRJvuKj/bRzbuRY0ARXvL0pWGpsZvn8jku+LMep2eU0seHp8g==}
+  postcss@8.5.33:
+    resolution: {integrity: sha512-RVHEU9/Pp1Fnjr/MpAJsZoADukCKhfIi15OunEYiGktIkYLkPVvC1sioWolGDS7XByMTx9m/IGbro0Js13zhnQ==}
     engines: {node: ^10 || ^12 || >=14}
 
   postject@1.0.0-alpha.6:
@@ -6509,6 +6619,11 @@ packages:
 
   rolldown@1.2.19:
     resolution: {integrity: sha512-QIiV1J9d0pzN4jeeTH4sjPy0AZ6cAy2cG0ExeoE1+U8Rvj+hR3gYkokx0YbeUNGlZqiQJJ2utcETe0oKXwzsuA==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+    hasBin: true
+
+  rolldown@1.3.3:
+    resolution: {integrity: sha512-ksB1g74e7haRy02OYm4lOQAlr6sK6hBpAY5R+YC30Gkv4L1COwF6M9umBAYAPxWpGow6Vr+IXtyDjH9fq7A+Zg==}
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
 
@@ -7099,8 +7214,8 @@ packages:
     resolution: {integrity: sha512-u4J1hr6Y+C/hit34GwL3eIcUf3wngT8TlYUjK7tk0jxydKLAq3sYvifjdTDA6U3KCKRcQCQDGf/srjxfZF3l7g==}
     engines: {node: '>=18.12.0'}
 
-  vite@8.3.8:
-    resolution: {integrity: sha512-LzOn3h9rG/0vhLdXrV4yJ4QFA9eEoqCl+Yx+kGJd7aB9w6nfNgVHKSYwLPZUHrz4ZGa+t+kXjV9itvcHDLQouA==}
+  vite@8.4.0:
+    resolution: {integrity: sha512-X2nUJg+9cutlz3hzqyO6p+WTwk9H257DjwAEf9EQYUFrQbDItmetadi9gYmb+l7VDy4r3VXLUnmLTwuPmzejDw==}
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
     peerDependencies:
@@ -7364,7 +7479,7 @@ snapshots:
 
   '@async-fn/vitest@1.8.0(patch_hash=86478f697e61e0e2ca0274a6b255c31c05d0dd83078743e9e755910710d597ef)(vitest@5.1.1)':
     dependencies:
-      vitest: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.3.8(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
+      vitest: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.4.0(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
 
   '@babel/code-frame@7.29.7':
     dependencies:
@@ -8409,6 +8524,8 @@ snapshots:
 
   '@oxc-project/types@0.156.0': {}
 
+  '@oxc-project/types@0.159.0': {}
+
   '@parcel/watcher-android-arm64@2.5.1':
     optional: true
 
@@ -8637,40 +8754,79 @@ snapshots:
   '@rolldown/binding-android-arm-eabi@1.2.19':
     optional: true
 
+  '@rolldown/binding-android-arm-eabi@1.3.3':
+    optional: true
+
   '@rolldown/binding-android-arm64@1.2.19':
+    optional: true
+
+  '@rolldown/binding-android-arm64@1.3.3':
     optional: true
 
   '@rolldown/binding-darwin-arm64@1.2.19':
     optional: true
 
+  '@rolldown/binding-darwin-arm64@1.3.3':
+    optional: true
+
   '@rolldown/binding-darwin-x64@1.2.19':
+    optional: true
+
+  '@rolldown/binding-darwin-x64@1.3.3':
     optional: true
 
   '@rolldown/binding-freebsd-x64@1.2.19':
     optional: true
 
+  '@rolldown/binding-freebsd-x64@1.3.3':
+    optional: true
+
   '@rolldown/binding-linux-arm-gnueabihf@1.2.19':
+    optional: true
+
+  '@rolldown/binding-linux-arm-gnueabihf@1.3.3':
     optional: true
 
   '@rolldown/binding-linux-arm64-gnu@1.2.19':
     optional: true
 
+  '@rolldown/binding-linux-arm64-gnu@1.3.3':
+    optional: true
+
   '@rolldown/binding-linux-arm64-musl@1.2.19':
+    optional: true
+
+  '@rolldown/binding-linux-arm64-musl@1.3.3':
     optional: true
 
   '@rolldown/binding-linux-ppc64-gnu@1.2.19':
     optional: true
 
+  '@rolldown/binding-linux-ppc64-gnu@1.3.3':
+    optional: true
+
   '@rolldown/binding-linux-s390x-gnu@1.2.19':
+    optional: true
+
+  '@rolldown/binding-linux-s390x-gnu@1.3.3':
     optional: true
 
   '@rolldown/binding-linux-x64-gnu@1.2.19':
     optional: true
 
+  '@rolldown/binding-linux-x64-gnu@1.3.3':
+    optional: true
+
   '@rolldown/binding-linux-x64-musl@1.2.19':
     optional: true
 
+  '@rolldown/binding-linux-x64-musl@1.3.3':
+    optional: true
+
   '@rolldown/binding-openharmony-arm64@1.2.19':
+    optional: true
+
+  '@rolldown/binding-openharmony-arm64@1.3.3':
     optional: true
 
   '@rolldown/binding-wasm32-wasi@1.2.19':
@@ -8680,10 +8836,23 @@ snapshots:
       '@napi-rs/wasm-runtime': 1.2.6(@emnapi/core@2.0.0-beta.2)(@emnapi/runtime@2.0.0-beta.2)
     optional: true
 
+  '@rolldown/binding-wasm32-wasi@1.3.3':
+    dependencies:
+      '@emnapi/core': 2.0.0-beta.2
+      '@emnapi/runtime': 2.0.0-beta.2
+      '@napi-rs/wasm-runtime': 1.2.6(@emnapi/core@2.0.0-beta.2)(@emnapi/runtime@2.0.0-beta.2)
+    optional: true
+
   '@rolldown/binding-win32-arm64-msvc@1.2.19':
     optional: true
 
+  '@rolldown/binding-win32-arm64-msvc@1.3.3':
+    optional: true
+
   '@rolldown/binding-win32-x64-msvc@1.2.19':
+    optional: true
+
+  '@rolldown/binding-win32-x64-msvc@1.3.3':
     optional: true
 
   '@rolldown/pluginutils@1.0.1': {}
@@ -8800,7 +8969,7 @@ snapshots:
       '@alloc/quick-lru': 5.2.0
       '@tailwindcss/node': 4.3.5
       '@tailwindcss/oxide': 4.3.5
-      postcss: 8.5.32
+      postcss: 8.5.33
       tailwindcss: 4.3.5
 
   '@testing-library/dom@10.4.2':
@@ -8824,7 +8993,7 @@ snapshots:
       picocolors: 1.1.1
       redent: 3.0.0
     optionalDependencies:
-      vitest: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.3.8(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
+      vitest: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.4.0(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
 
   '@testing-library/react@16.3.3(@testing-library/dom@10.4.2)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)':
     dependencies:
@@ -9055,10 +9224,10 @@ snapshots:
   '@typescript/typescript-win32-x64@7.0.2':
     optional: true
 
-  '@vitejs/plugin-react@6.3.0(vite@8.3.8(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))':
+  '@vitejs/plugin-react@6.3.0(vite@8.4.0(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))':
     dependencies:
       '@rolldown/pluginutils': 1.0.1
-      vite: 8.3.8(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0)
+      vite: 8.4.0(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0)
 
   '@vitest/coverage-v8@5.1.1(vitest@5.1.1)':
     dependencies:
@@ -9070,7 +9239,7 @@ snapshots:
       obug: 3.0.0
       std-env: 4.3.0
       tinyrainbow: 3.2.0
-      vitest: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.3.8(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
+      vitest: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.4.0(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
 
   '@vitest/istanbul-lib-coverage@2.1.0': {}
 
@@ -9078,14 +9247,14 @@ snapshots:
     dependencies:
       '@vitest/istanbul-lib-coverage': 2.1.0
 
-  '@vitest/mocker@5.1.1(vite@8.3.8(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))':
+  '@vitest/mocker@5.1.1(vite@8.4.0(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))':
     dependencies:
       '@jridgewell/trace-mapping': 0.3.31
       '@vitest/spy': 5.1.1
       estree-walker: 3.0.3
       magic-string: 1.4.5
     optionalDependencies:
-      vite: 8.3.8(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0)
+      vite: 8.4.0(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0)
 
   '@vitest/spy@5.1.1': {}
 
@@ -9733,7 +9902,7 @@ snapshots:
 
   electron-to-chromium@1.5.267: {}
 
-  electron-vite@6.0.0(supports-color@8.1.1)(vite@8.3.8(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0)):
+  electron-vite@6.0.0(supports-color@8.1.1)(vite@8.4.0(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0)):
     dependencies:
       '@babel/core': 7.29.7(supports-color@8.1.1)
       '@babel/plugin-transform-arrow-functions': 7.29.7(@babel/core@7.29.7(supports-color@8.1.1))
@@ -9741,7 +9910,7 @@ snapshots:
       magic-string: 1.4.5
       picocolors: 1.1.1
       rolldown: 1.2.19
-      vite: 8.3.8(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0)
+      vite: 8.4.0(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -10683,6 +10852,9 @@ snapshots:
 
   nanoid@3.3.20: {}
 
+  napi-windows-process-start-time@0.1.0:
+    optional: true
+
   needle@3.2.0(supports-color@8.1.1):
     dependencies:
       debug: 3.2.7(supports-color@8.1.1)
@@ -10872,7 +11044,7 @@ snapshots:
       '@pnpm/exe.win32-arm64': 12.23.0
       '@pnpm/exe.win32-x64': 12.23.0
 
-  postcss@8.5.32:
+  postcss@8.5.33:
     dependencies:
       nanoid: 3.3.20
       picocolors: 1.1.1
@@ -11114,6 +11286,28 @@ snapshots:
       '@rolldown/binding-wasm32-wasi': 1.2.19
       '@rolldown/binding-win32-arm64-msvc': 1.2.19
       '@rolldown/binding-win32-x64-msvc': 1.2.19
+
+  rolldown@1.3.3:
+    dependencies:
+      '@oxc-project/types': 0.159.0
+      '@rolldown/pluginutils': 1.0.1
+    optionalDependencies:
+      '@rolldown/binding-android-arm-eabi': 1.3.3
+      '@rolldown/binding-android-arm64': 1.3.3
+      '@rolldown/binding-darwin-arm64': 1.3.3
+      '@rolldown/binding-darwin-x64': 1.3.3
+      '@rolldown/binding-freebsd-x64': 1.3.3
+      '@rolldown/binding-linux-arm-gnueabihf': 1.3.3
+      '@rolldown/binding-linux-arm64-gnu': 1.3.3
+      '@rolldown/binding-linux-arm64-musl': 1.3.3
+      '@rolldown/binding-linux-ppc64-gnu': 1.3.3
+      '@rolldown/binding-linux-s390x-gnu': 1.3.3
+      '@rolldown/binding-linux-x64-gnu': 1.3.3
+      '@rolldown/binding-linux-x64-musl': 1.3.3
+      '@rolldown/binding-openharmony-arm64': 1.3.3
+      '@rolldown/binding-wasm32-wasi': 1.3.3
+      '@rolldown/binding-win32-arm64-msvc': 1.3.3
+      '@rolldown/binding-win32-x64-msvc': 1.3.3
 
   rxjs@7.8.2:
     dependencies:
@@ -11712,12 +11906,12 @@ snapshots:
 
   verkit@0.5.0: {}
 
-  vite@8.3.8(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0):
+  vite@8.4.0(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0):
     dependencies:
       lightningcss: 1.33.0
       picomatch: 4.0.7
-      postcss: 8.5.32
-      rolldown: 1.2.19
+      postcss: 8.5.33
+      rolldown: 1.3.3
       tinyglobby: 0.2.17
     optionalDependencies:
       '@types/node': 24.19.2
@@ -11725,6 +11919,7 @@ snapshots:
       fsevents: 2.3.3
       jiti: 2.7.0
       less: 4.2.2(supports-color@8.1.1)
+      napi-windows-process-start-time: 0.1.0
       sass: 1.108.2
       sass-embedded: 1.108.2
       stylus: 0.62.0(supports-color@8.1.1)
@@ -11734,18 +11929,18 @@ snapshots:
     dependencies:
       cssfontparser: 1.2.1
       moo-color: 1.0.3
-      vitest: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.3.8(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
+      vitest: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.4.0(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
 
   vitest-mock-extended@6.0.1(typescript@7.0.2)(vitest@5.1.1):
     dependencies:
       ts-essentials: 10.2.1(typescript@7.0.2)
       typescript: 7.0.2
-      vitest: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.3.8(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
+      vitest: 5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.4.0(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
 
-  vitest@5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.3.8(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0)):
+  vitest@5.1.1(@types/node@24.19.2)(@vitest/coverage-v8@5.1.1)(jsdom@31.0.1(@noble/hashes@2.4.0))(vite@8.4.0(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0)):
     dependencies:
       '@types/chai': 5.2.3
-      '@vitest/mocker': 5.1.1(vite@8.3.8(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
+      '@vitest/mocker': 5.1.1(vite@8.4.0(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
       chai: 6.3.0
       es-module-lexer: 2.3.2
       expect-type: 1.4.0
@@ -11756,7 +11951,7 @@ snapshots:
       tinybench: 6.2.3
       tinyexec: 1.3.1
       tinyglobby: 0.2.17
-      vite: 8.3.8(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0)
+      vite: 8.4.0(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.108.2)(sass@1.108.2)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0)
       why-is-node-running: 3.2.1
     optionalDependencies:
       '@types/node': 24.19.2
