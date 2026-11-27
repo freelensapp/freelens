@@ -116,7 +116,7 @@ catalog:
   node-pty: 1.2.0-beta.18
   openpgp: 6.3.2
   proper-lockfile: 4.1.2
-  react-colorful: 5.8.1
+  react-colorful: 5.8.2
   react-select: 5.10.2
   react-window: 2.5.3
   rfc6902: 5.5.0
