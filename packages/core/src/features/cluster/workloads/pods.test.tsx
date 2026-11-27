@@ -208,19 +208,19 @@ describe("workloads / pods", () => {
           expect(windowDi.inject(observableHistoryInjectionToken).searchParams.get("node")).toBe("node-a");
         });
 
-        it("selects all namespaces", () => {
-          expect(windowDi.inject(namespaceStoreInjectable).areAllSelectedImplicitly).toBe(true);
+        it("keeps the selected namespaces", () => {
+          expect(windowDi.inject(namespaceStoreInjectable).areAllSelectedImplicitly).toBe(false);
         });
 
-        it("shows only the pods on the node, of every namespace", () => {
+        it("shows only the pods on the node, of the selected namespaces", () => {
           expect(rowOf("on-a")).toBeInTheDocument();
-          expect(rowOf("system-on-a")).toBeInTheDocument();
+          expect(rowOf("system-on-a")).not.toBeInTheDocument();
           expect(rowOf("on-b")).not.toBeInTheDocument();
           expect(rowOf("pending")).not.toBeInTheDocument();
         });
 
         it("counts only the pods on the node, without a page filter", () => {
-          expect(rendered.getByText("2 items")).toBeInTheDocument();
+          expect(rendered.getByText("1 item")).toBeInTheDocument();
           expect(rendered.queryByText("Filtered")).not.toBeInTheDocument();
         });
 
@@ -234,7 +234,7 @@ describe("workloads / pods", () => {
             expect(rowOf("on-a")).toBeInTheDocument();
             expect(rowOf("on-b")).toBeInTheDocument();
             expect(rowOf("pending")).toBeInTheDocument();
-            expect(rendered.getByText("4 items")).toBeInTheDocument();
+            expect(rendered.getByText("3 items")).toBeInTheDocument();
           });
         });
       });

@@ -6,12 +6,12 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import { navigateToRouteInjectionToken } from "../../../common/front-end-routing/navigate-to-route-injection-token";
 import podsRouteInjectable from "../../../common/front-end-routing/routes/cluster/workloads/pods/pods-route.injectable";
-import namespaceStoreInjectable from "../namespaces/store.injectable";
 import nodeUrlPageParamInjectable from "./node-url-param.injectable";
 
 export type NavigateToPodsOnNode = (nodeName: string) => void;
 
-// Opens the Pods list of all namespaces, filtered to the pods scheduled on the node.
+// Opens the Pods list filtered to the pods scheduled on the node. The node filter is independent of
+// the namespace selection, which stays as it is.
 const navigateToPodsOnNodeInjectable = getInjectable({
   id: "navigate-to-pods-on-node",
 
@@ -19,10 +19,8 @@ const navigateToPodsOnNodeInjectable = getInjectable({
     const navigateToRoute = di.inject(navigateToRouteInjectionToken);
     const podsRoute = di.inject(podsRouteInjectable);
     const nodeUrlParam = di.inject(nodeUrlPageParamInjectable);
-    const namespaceStore = di.inject(namespaceStoreInjectable);
 
     return (nodeName) => {
-      namespaceStore.selectAll();
       navigateToRoute(podsRoute, { query: { [nodeUrlParam.name]: nodeName } });
     };
   },

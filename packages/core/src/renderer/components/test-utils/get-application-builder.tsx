@@ -582,11 +582,6 @@ export const getApplicationBuilder = () => {
               items: namespaceItems,
               selectNamespaces: () => {},
               selectSingle: () => {},
-              selectAll: () =>
-                runInAction(() => {
-                  selectedNamespaces.clear();
-                  windowDi.inject(selectedNamespacesStorageInjectable).set([]);
-                }),
               getByPath: () => undefined,
               pickOnlySelected: () => [],
               isSelectedAll: () => false,
