@@ -3,7 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-// The pairings `Renderer.K8sApi.detailsFor` and `menuItemFor` must reject,
+// The pairings `Renderer.K8sApi.detailsFor`, `menuItemFor` and `columnsFor`
+// must reject,
 // checked against the built `dist/extension-api.d.ts`. Each carries a
 // `@ts-expect-error`, so a declaration that loses the tie between the class and
 // the component fails the fixture's `type:check` with an unused directive:
@@ -29,11 +30,13 @@ import type { FixtureExample } from "./fixture-example";
 
 declare const detailsFor: typeof Renderer.K8sApi.detailsFor;
 declare const menuItemFor: typeof Renderer.K8sApi.menuItemFor;
+declare const columnsFor: typeof Renderer.K8sApi.columnsFor;
 declare const Deployment: typeof Renderer.K8sApi.Deployment;
 declare const PodDetails: FunctionComponent<Renderer.Component.KubeObjectDetailsProps<Renderer.K8sApi.Pod>>;
 declare const PodDetailsClass: ComponentClass<Renderer.Component.KubeObjectDetailsProps<Renderer.K8sApi.Pod>>;
 declare const PodMenuItem: FunctionComponent<Common.Types.KubeObjectMenuItemProps<Renderer.K8sApi.Pod>>;
 declare const PodMenuItemClass: ComponentClass<Common.Types.KubeObjectMenuItemProps<Renderer.K8sApi.Pod>>;
+declare const PodColumn: FunctionComponent<Common.Types.CustomResourceColumnProps<Renderer.K8sApi.Pod>>;
 
 // The namespaces are imported as types only, so the base class and the model
 // are declared values here.
@@ -67,6 +70,8 @@ declare const V1alpha1Details: FunctionComponent<Renderer.Component.KubeObjectDe
 declare const V1alpha2DetailsClass: ComponentClass<Renderer.Component.KubeObjectDetailsProps<FixtureExampleV1alpha2>>;
 declare const V1alpha1MenuItem: FunctionComponent<Common.Types.KubeObjectMenuItemProps<FixtureExample>>;
 declare const V1alpha2MenuItemClass: ComponentClass<Common.Types.KubeObjectMenuItemProps<FixtureExampleV1alpha2>>;
+declare const V1alpha1Column: FunctionComponent<Common.Types.CustomResourceColumnProps<FixtureExample>>;
+declare const V1alpha2ColumnClass: ComponentClass<Common.Types.CustomResourceColumnProps<FixtureExampleV1alpha2>>;
 
 export function mismatchedPairings() {
   return [
@@ -86,6 +91,14 @@ export function mismatchedPairings() {
     menuItemFor(FixtureExampleV1alpha2, { MenuItem: V1alpha1MenuItem }),
     // @ts-expect-error a class component written for `v1alpha2`, registered for `v1alpha1`
     menuItemFor(FixtureExampleV1alpha1, { MenuItem: V1alpha2MenuItemClass }),
+    // @ts-expect-error a function component written for `Pod`, registered for `Deployment`
+    columnsFor(Deployment, { columns: { Ready: { Render: PodColumn } } }),
+    // @ts-expect-error a function component written for `v1alpha1`, registered for `v1alpha2`
+    columnsFor(FixtureExampleV1alpha2, { columns: { Title: { Render: V1alpha1Column } } }),
+    // @ts-expect-error a class component written for `v1alpha2`, registered for `v1alpha1`
+    columnsFor(FixtureExampleV1alpha1, { columns: { Title: { Render: V1alpha2ColumnClass } } }),
+    // @ts-expect-error an entry with both `Render` and `hidden: true`
+    columnsFor(FixtureExampleV1alpha1, { columns: { Title: { Render: V1alpha1Column, hidden: true } } }),
   ];
 }
 
@@ -95,6 +108,7 @@ export function matchedVersionPairings() {
   return [
     detailsFor(FixtureExampleV1alpha2, { Details: V1alpha2DetailsClass }),
     menuItemFor(FixtureExampleV1alpha2, { MenuItem: V1alpha2MenuItemClass }),
+    columnsFor(FixtureExampleV1alpha2, { columns: { Title: { Render: V1alpha2ColumnClass } } }),
   ];
 }
 

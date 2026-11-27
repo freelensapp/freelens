@@ -44,6 +44,9 @@ export type FixturePageRegistration = Common.Types.PageRegistration;
 export type FixtureAppPreferenceRegistration = Common.Types.AppPreferenceRegistration;
 export type FixtureProtocolHandlerRegistration = Common.Types.ProtocolHandlerRegistration;
 export type FixtureCustomResourceRegistration = Common.Types.CustomResourceRegistration;
+export type FixtureCustomResourceColumnsRegistration = Common.Types.CustomResourceColumnsRegistration;
+export type FixtureCustomResourceColumn = Common.Types.CustomResourceColumn;
+export type FixtureCustomResourceColumnProps = Common.Types.CustomResourceColumnProps;
 
 // The helper types the signatures of the API are written in, so that an
 // extension can type what it passes to them, and the declaration names them

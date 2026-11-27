@@ -32,6 +32,10 @@ import { afterEach, beforeEach, describe, expect, it } from "vitest";
 //     values its base class assigns
 //  6. `customResources`: the host reads the group and plural of the model
 //     class the bundle registers
+//  7. `customResourceColumns`: the registration `Renderer.K8sApi.columnsFor`
+//     builds in the bundle renders one printer column of the model's custom
+//     resource with the extension's component and hides another, in the
+//     host's details of the resource
 //
 // The bundle is loaded through a file URL rather than a static import for two
 // reasons: it throws while evaluating if the globals are not installed first
@@ -42,9 +46,10 @@ import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { existsSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { CustomResourceDefinition, KubeObject } from "@freelensapp/kube-object";
 import { fireEvent, render } from "@testing-library/react";
 import * as Mobx from "mobx";
-import { autorun, observable, runInAction } from "mobx";
+import { autorun, computed, observable, runInAction } from "mobx";
 import * as MobxReact from "mobx-react";
 import * as MonacoEditor from "monaco-editor";
 import React from "react";
@@ -54,7 +59,10 @@ import directoryForUserDataInjectable from "../../common/app-paths/directory-for
 import isFlatpakPackageInjectable from "../../common/vars/is-flatpak-package.injectable";
 import { buildVersionInitializable } from "../../features/vars/build-version/common/token";
 import { extensionCustomResourceInjectionToken } from "../../renderer/components/custom-resource-definitions/extension-custom-resource-injection-token";
+import { CustomResourceDetails } from "../../renderer/components/custom-resources/details";
 import statusBarItemsInjectable from "../../renderer/components/status-bar/status-bar-items.injectable";
+import { renderFor } from "../../renderer/components/test-utils/renderFor";
+import extensionShouldBeEnabledForClusterFrameInjectable from "../../renderer/extension-loader/extension-should-be-enabled-for-cluster-frame.injectable";
 import { getDiForUnitTesting } from "../../renderer/getDiForUnitTesting";
 import currentlyInClusterFrameInjectable from "../../renderer/routes/currently-in-cluster-frame.injectable";
 import { installExtensionApiGlobals } from "../../test-utils/install-extension-api-globals";
@@ -72,6 +80,7 @@ interface FixtureBundle {
   FixtureStatusBarItem: React.ComponentType;
   FixtureExampleDetails: React.ComponentType;
   FixtureExampleMenuItem: React.ComponentType;
+  FixtureExampleTitleColumn: React.ComponentType;
   FixtureExample: new (data: object) => { kind: string; apiVersion: string };
   activationRecord: IObservableValue<{ appVersion: string; probeHost: string } | undefined>;
   setStatusBarItemVisible: (value: boolean) => void;
@@ -124,6 +133,15 @@ describe("extension contract, against the built fixture extension", () => {
     // extension instance injects it through `navigate-to-route`.
     di.override(currentlyInClusterFrameInjectable, () => false);
     di.override(directoryForUserDataInjectable, () => "/some-directory-for-user-data");
+    // Whether an extension is enabled for the cluster of the frame resolves
+    // from the active cluster, which this container has none of. The
+    // registrations that apply in a cluster frame only, as the columns of a
+    // custom resource do, are asserted as if the extension were enabled there.
+    di.override(extensionShouldBeEnabledForClusterFrameInjectable, () => ({
+      value: computed(() => true),
+      pending: computed(() => false),
+      invalidate: () => {},
+    }));
 
     installExtensionApiGlobals();
 
@@ -238,6 +256,64 @@ describe("extension contract, against the built fixture extension", () => {
           components: { MenuItem: fixture.FixtureExampleMenuItem },
         },
       ]);
+    });
+
+    it("builds its column registration with the helper of Renderer.K8sApi", () => {
+      expect(extension.customResourceColumns).toEqual([
+        {
+          kind: "FixtureExample",
+          apiVersions: ["fixture.freelens.app/v1alpha1"],
+          columns: { Title: { Render: fixture.FixtureExampleTitleColumn }, Active: { hidden: true } },
+        },
+      ]);
+    });
+
+    it("renders and hides the printer columns of its custom resource in the host's details", () => {
+      const crd = new CustomResourceDefinition({
+        apiVersion: "apiextensions.k8s.io/v1",
+        kind: "CustomResourceDefinition",
+        metadata: {
+          name: "fixtureexamples.fixture.freelens.app",
+          selfLink: "/apis/apiextensions.k8s.io/v1/customresourcedefinitions/fixtureexamples.fixture.freelens.app",
+          uid: "fixtureexamples-uid",
+          resourceVersion: "1",
+        },
+        spec: {
+          group: "fixture.freelens.app",
+          scope: "Namespaced",
+          names: { kind: "FixtureExample", plural: "fixtureexamples", singular: "fixtureexample" },
+          versions: [
+            {
+              name: "v1alpha1",
+              served: true,
+              storage: true,
+              additionalPrinterColumns: [
+                { name: "Title", jsonPath: ".spec.title", type: "string" },
+                { name: "Active", jsonPath: ".spec.active", type: "boolean" },
+              ],
+            },
+          ],
+        },
+      });
+      const object = new KubeObject({
+        apiVersion: "fixture.freelens.app/v1alpha1",
+        kind: "FixtureExample",
+        metadata: {
+          name: "fixture",
+          namespace: "default",
+          selfLink: "/apis/fixture.freelens.app/v1alpha1/namespaces/default/fixtureexamples/fixture",
+          uid: "fixture-uid",
+          resourceVersion: "1",
+        },
+        spec: { title: "Some title", active: true },
+      } as never);
+
+      const result = renderFor(di)(<CustomResourceDetails crd={crd} object={object} />);
+
+      // The extension's component, rendered on the host's React with the
+      // object, the value and the column.
+      expect(result.getByTestId("fixture-example-column")).toHaveTextContent("Title of fixture: Some title");
+      expect(result.queryByText("Active")).not.toBeInTheDocument();
     });
 
     it("keeps the kind and apiVersion of a model that narrows them with declare", () => {
