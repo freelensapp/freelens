@@ -23,7 +23,7 @@ const kubernetesClusterDetailsItemInjectable = getInjectable({
             <DrawerItem name="Distribution" data-testid={`kubernetes-distro-for-${entity.getId()}`}>
               {String(entity.metadata.distro || "unknown")}
             </DrawerItem>
-            <DrawerItem name="Kubelet Version">{String(entity.metadata.kubeVersion || "unknown")}</DrawerItem>
+            <DrawerItem name="Kubernetes Version">{String(entity.metadata.kubeVersion || "unknown")}</DrawerItem>
           </div>
         </>
       ),
