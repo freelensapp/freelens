@@ -15,6 +15,7 @@ import type { DownloadJsonViaChannel } from "../../../fetch/download-json-via-ch
 const setUp = (downloadJson: () => Promise<unknown>) => {
   const di = getDiForUnitTesting();
 
+  di.unoverride(requestMarketplaceExtensionsInjectable);
   di.permitSideEffects(requestMarketplaceExtensionsInjectable);
   di.override(downloadJsonViaChannelInjectable, () => downloadJson as DownloadJsonViaChannel);
   di.override(extensionApiVersionInjectable, () => "2.1.0");
