@@ -1,6 +1,6 @@
 ---
 name: create-extension
-description: Create a new Freelens extension for the Freelens v2 extension API (Freelens 2.x), starting from a copy of freelensapp/freelens-example-extension, the reference template for building, type-checking, testing and releasing one. Use when the user wants a new Freelens extension, or wants to set up an empty repository as one. Covers copying the template, which of its files to keep, adapt, remove or rewrite, the patterns the new code must follow and how to verify the result in Freelens. Not for an existing Freelens or Lens extension written for the v1 API; port-extension-to-v2 covers that.
+description: Create a new Freelens extension for the Freelens v2 extension API (Freelens 2.x), starting from a copy of freelensapp/freelens-example-extension, the reference template for building, type-checking, testing and releasing one. Use when the user wants a new Freelens extension, or wants to set up an empty repository as one. Covers copying the template, which of its files to keep, adapt, remove or rewrite, the patterns the new code must follow, how to verify the result in Freelens, and, optionally, offering it in the Freelens marketplace from npm or from a release URL. Not for an existing Freelens or Lens extension written for the v1 API; port-extension-to-v2 covers that.
 license: MIT
 compatibility: Needs network access to github.com and raw.githubusercontent.com, for the template and the linked documents, and Node.js with pnpm (through corepack) to build and check the extension.
 ---
@@ -18,14 +18,15 @@ found elsewhere is written for the v1 API, which v2 does not load.
 
 Fetch the raw URLs; they return Markdown.
 
-| Document                                                                                                                     | Read it for                                                                                                                                            |
-| ---------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| [`api.md`](https://raw.githubusercontent.com/freelensapp/freelens/v2.0.0/docs/extensions/api.md)                             | The normative contracts C1 to C15: what the host guarantees and how a violation fails.                                                                 |
-| [`migrating-from-v1.md`](https://raw.githubusercontent.com/freelensapp/freelens/v2.0.0/docs/extensions/migrating-from-v1.md) | The v2 API from an author's side; "Registering things: declarative fields", "Styling and CSS" and "The development loop" apply to a new extension too. |
-| [`binaries.md`](https://raw.githubusercontent.com/freelensapp/freelens/v2.0.0/docs/extensions/binaries.md)                   | Only for an extension that ships executables.                                                                                                          |
-| [`AGENTS.md`](https://raw.githubusercontent.com/freelensapp/freelens-example-extension/main/AGENTS.md) of the template       | The build, type-check, test, lint and CI patterns, each with its reason, and "Rules That Fail Silently".                                               |
-| [`README.md`](https://raw.githubusercontent.com/freelensapp/freelens-example-extension/main/README.md) of the template       | Installing an extension in Freelens and the development loop.                                                                                          |
-| [The source tree](https://github.com/freelensapp/freelens-example-extension/tree/main) of the template                       | The worked example: a CRD in two API versions, with a page, a details panel, a menu item and a preference.                                             |
+| Document                                                                                                                         | Read it for                                                                                                                                            |
+| -------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [`api.md`](https://raw.githubusercontent.com/freelensapp/freelens/v2.0.0/docs/extensions/api.md)                                 | The normative contracts C1 to C15: what the host guarantees and how a violation fails.                                                                 |
+| [`migrating-from-v1.md`](https://raw.githubusercontent.com/freelensapp/freelens/v2.0.0/docs/extensions/migrating-from-v1.md)     | The v2 API from an author's side; "Registering things: declarative fields", "Styling and CSS" and "The development loop" apply to a new extension too. |
+| [`binaries.md`](https://raw.githubusercontent.com/freelensapp/freelens/v2.0.0/docs/extensions/binaries.md)                       | Only for an extension that ships executables.                                                                                                          |
+| [`AGENTS.md`](https://raw.githubusercontent.com/freelensapp/freelens-example-extension/main/AGENTS.md) of the template           | The build, type-check, test, lint and CI patterns, each with its reason, and "Rules That Fail Silently".                                               |
+| [`README.md`](https://raw.githubusercontent.com/freelensapp/freelens-example-extension/main/README.md) of the template           | Installing an extension in Freelens and the development loop.                                                                                          |
+| [The source tree](https://github.com/freelensapp/freelens-example-extension/tree/main) of the template                           | The worked example: a CRD in two API versions, with a page, a details panel, a menu item and a preference.                                             |
+| [`extensions.md`](https://raw.githubusercontent.com/freelensapp/freelens-marketplace/main/docs/extensions.md) of the marketplace | Only for an extension offered in the marketplace: the entry, its versions and icon, and the checks of its pull request.                                |
 
 ## 1. Copy the template
 
@@ -304,3 +305,35 @@ this skill is reported to
 in the template to
 [freelensapp/freelens-example-extension](https://github.com/freelensapp/freelens-example-extension/issues),
 rather than worked around in the extension without a word.
+
+## 5. Offer it in the marketplace (optional)
+
+The Extensions page of Freelens has a Marketplace tab, which lists the entries
+of [freelensapp/freelens-marketplace](https://github.com/freelensapp/freelens-marketplace).
+An entry is optional: without one, the extension still installs from the
+Extensions page by its name, a URL or a file, and the user decides whether to
+add one. An entry is a manifest, `extensions/<name>/extension.yaml`, added to that
+repository in a pull request; its `extensions.md` is the source of truth for
+it, in "A manifest", "Versions", "Icon" and "Adding an extension".
+
+Each item of `versions` names one release and how Freelens gets it, and the
+channels can be mixed in one entry:
+
+- **npm.** The item has `version` and `freelens`, and Freelens installs
+  `<package>@<version>` from the registry, checked against the `dist.integrity`
+  npm records. The template's `release.yaml` publishes the package on a tag.
+  Renovate of the marketplace bumps the first npm item after each release, as
+  "Updating an extension" describes.
+- **A GitHub release, or any other `https:` URL of the tarball.** The item adds
+  `url` and `integrity`: the Subresource Integrity of the tarball, such as
+  `sha256-` and the hash in base64, which Freelens checks before it unpacks
+  anything. The template's `release.yaml` attaches the tarball and its
+  `.tgz.sha256` to the GitHub release; "Versions" shows how to turn that hex
+  digest into `integrity`. Such an item is updated by hand.
+
+`package` is the `name` of `package.json` and `version` its `version`.
+`freelens` is its `engines.freelens`, or narrower, and admits Freelens 2.0.0 or
+newer, as only Freelens 2.x has the marketplace. `tier` is `community` for an
+extension outside the freelensapp organization. Run `pnpm build` and
+`pnpm verify` of the marketplace on the new entry before the pull request; its
+checks download the tarball of every item and compare it with the manifest.
