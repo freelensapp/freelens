@@ -3,6 +3,9 @@
  */
 
 .container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
   margin-bottom: 1.5rem;
 }
 
@@ -12,7 +15,8 @@
   border: 1px solid var(--borderColor);
   background-color: var(--layoutBackground);
   color: var(--textColorPrimary);
-  width: 100%;
+  flex: 1 1 auto;
+  min-width: 0;
   font-size: 0.875rem;
   outline: none;
 }

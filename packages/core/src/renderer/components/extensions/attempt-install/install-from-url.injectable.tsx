@@ -14,7 +14,16 @@ import attemptInstallInjectable from "./attempt-install.injectable";
 
 import type { InstallChecksum } from "../../../../features/extensions/installer/common/checksums";
 
-export type InstallFromUrl = (url: string) => Promise<void>;
+export interface InstallFromUrlOptions {
+  /**
+   * The Subresource Integrity of the tarball, given by whoever gave the URL,
+   * such as the marketplace. It takes the place of the sidecar, which is then
+   * not asked for.
+   */
+  integrity?: string;
+}
+
+export type InstallFromUrl = (url: string, options?: InstallFromUrlOptions) => Promise<void>;
 
 const sidecarSuffix = ".sha256";
 
@@ -63,7 +72,7 @@ const installFromUrlInjectable = getInjectable({
       return value ? { kind: "sha256", value } : undefined;
     };
 
-    return async (url) => {
+    return async (url, { integrity } = {}) => {
       const dispose = installStateStore.startPreInstall();
       const result = await downloadBinary(url, { timeout: 300_000 });
 
@@ -82,7 +91,7 @@ const installFromUrlInjectable = getInjectable({
           fileName,
           data: result.response,
           source: { kind: "url", url },
-          checksum: await downloadChecksum(url, fileName),
+          checksum: integrity ? { kind: "integrity", value: integrity } : await downloadChecksum(url, fileName),
         },
         dispose,
       );

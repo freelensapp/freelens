@@ -1,33 +1,36 @@
+@use "../../../vars" as *;
+
+// The default icon is a rounded square like the icons of the marketplace, which are drawn with
+// corners of about 18% of their side.
 .icon {
+  border-radius: 18%;
   width: 3.5rem;
   height: 3.5rem;
-  border-radius: 0.75rem;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
   font-size: 1.5rem;
-  border-width: 1px;
-  border-style: solid;
-  background-color: rgba(6, 78, 59, 0.4);
-  border-color: rgba(16, 185, 129, 0.3);
-  color: #34d399;
+  background: color-mix(in srgb, var(--primary) 15%, var(--contentColor));
+  color: var(--primary);
+}
+
+.withImage {
+  overflow: hidden;
+  background: transparent;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .disabled {
-  background-color: rgba(51, 65, 85, 0.4);
-  border-color: #3f3f46;
-  color: #71717a;
-}
+  background: color-mix(in srgb, var(--textColorPrimary) 15%, var(--contentColor));
+  color: var(--textColorPrimary);
 
-:global(body.theme-light) .icon {
-  background-color: transparent;
-  border-color: #000000;
-  color: #333333;
-}
-
-:global(body.theme-light) .disabled {
-  background-color: transparent;
-  border-color: #000000;
-  color: #333333;
+  .image {
+    filter: grayscale(1);
+  }
 }

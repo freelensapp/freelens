@@ -1,0 +1,14 @@
+.verified {
+  flex-shrink: 0;
+  color: var(--colorOk);
+}
+
+.unverified {
+  flex-shrink: 0;
+  color: var(--colorWarning);
+}
+
+.development {
+  flex-shrink: 0;
+  color: var(--textColorPrimary);
+}

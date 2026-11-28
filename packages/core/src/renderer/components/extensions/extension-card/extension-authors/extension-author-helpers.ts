@@ -1,43 +1,24 @@
 import type { MarketplaceExtensionAuthor } from "../../marketplace-extensions/marketplace-extensions.injectable";
 
+/**
+ * The first letters of the first and the last word of the full name.
+ */
 export const initialsOf = (author: MarketplaceExtensionAuthor): string => {
-  const first = author.name[0] ?? "";
-  const second = author.surname?.[0] ?? "";
-  return (first + second).toUpperCase();
+  const words = author.name.trim().split(/\s+/);
+  const first = words[0]?.[0] ?? "";
+  const last = words.length > 1 ? (words[words.length - 1][0] ?? "") : "";
+
+  return (first + last).toUpperCase();
 };
 
-export const fullNameOf = (author: MarketplaceExtensionAuthor): string =>
-  author.surname ? `${author.name} ${author.surname}` : author.name;
+export const fullNameOf = (author: MarketplaceExtensionAuthor): string => author.name;
 
-// Marketplace data may provide URLs without a scheme (e.g. "www.example.com")
-export const toHttpUrl = (url: string): string => {
-  const trimmed = url.trim();
-
-  return /^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`;
+export const isGithubUrl = (url: string): boolean => {
+  try {
+    return new URL(url).hostname === "github.com";
+  } catch {
+    return false;
+  }
 };
 
-export type AvatarPaletteClass =
-  | "avatarEmerald"
-  | "avatarCyan"
-  | "avatarPurple"
-  | "avatarRose"
-  | "avatarAmber"
-  | "avatarBlue"
-  | "avatarPink"
-  | "avatarSlate";
-
-export const AVATAR_PALETTE: AvatarPaletteClass[] = [
-  "avatarEmerald",
-  "avatarCyan",
-  "avatarPurple",
-  "avatarRose",
-  "avatarAmber",
-  "avatarBlue",
-  "avatarPink",
-  "avatarSlate",
-];
-
-export const avatarClassFor = (name: string): AvatarPaletteClass =>
-  AVATAR_PALETTE[name.charCodeAt(0) % AVATAR_PALETTE.length];
-
-export const authorKey = (author: MarketplaceExtensionAuthor): string => `${author.name}-${author.surname ?? ""}`;
+export const authorKey = (author: MarketplaceExtensionAuthor): string => `${author.name}-${author.url ?? ""}`;

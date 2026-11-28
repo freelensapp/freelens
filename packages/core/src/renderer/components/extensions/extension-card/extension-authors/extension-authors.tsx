@@ -2,7 +2,7 @@ import { Icon } from "@freelensapp/icon";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import React, { Fragment } from "react";
 import openLinkInBrowserInjectable from "../../../../../common/utils/open-link-in-browser.injectable";
-import { authorKey, avatarClassFor, fullNameOf, initialsOf, toHttpUrl } from "./extension-author-helpers";
+import { authorKey, fullNameOf, initialsOf, isGithubUrl } from "./extension-author-helpers";
 import styles from "./extension-authors.module.scss";
 import { ExtensionCollaboratorsPopover } from "./extension-collaborators-popover/extension-collaborators-popover";
 import { GithubIcon } from "./github-icon/github-icon";
@@ -21,36 +21,31 @@ interface Dependencies {
   openLinkInBrowser: OpenLinkInBrowser;
 }
 
-const hasLinks = (author: MarketplaceExtensionAuthor): boolean => Boolean(author.github || author.website);
+const hasLinks = (author: MarketplaceExtensionAuthor): boolean => Boolean(author.url);
 
 const AuthorLinksTooltip: React.FC<{ author: MarketplaceExtensionAuthor; openLinkInBrowser: OpenLinkInBrowser }> = ({
   author,
   openLinkInBrowser,
 }) => {
-  if (!hasLinks(author)) return null;
+  const { url } = author;
+
+  if (!url) return null;
 
   return (
     <div className={styles.authorTooltip} data-testid="author-links-tooltip">
-      {author.github && (
-        <button
-          type="button"
-          className={styles.tooltipRow}
-          onClick={() => void openLinkInBrowser(toHttpUrl(author.github!))}
-        >
-          <GithubIcon className={styles.tooltipIcon} />
-          <span>github</span>
-        </button>
-      )}
-      {author.website && (
-        <button
-          type="button"
-          className={styles.tooltipRow}
-          onClick={() => void openLinkInBrowser(toHttpUrl(author.website!))}
-        >
-          <Icon material="language" className={styles.tooltipIcon} />
-          <span>website</span>
-        </button>
-      )}
+      <button type="button" className={styles.tooltipRow} onClick={() => void openLinkInBrowser(url)}>
+        {isGithubUrl(url) ? (
+          <>
+            <GithubIcon className={styles.tooltipIcon} />
+            <span>github</span>
+          </>
+        ) : (
+          <>
+            <Icon material="language" className={styles.tooltipIcon} />
+            <span>website</span>
+          </>
+        )}
+      </button>
     </div>
   );
 };
@@ -73,12 +68,8 @@ const AuthorItem: React.FC<{
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <span
-        className={`${styles.avatar} ${styles[avatarClassFor(author.name)]} ${disabled ? styles.avatarDisabled : ""}`}
-      >
-        {initialsOf(author)}
-      </span>
-      <span className={`${styles.authorName} ${disabled ? styles.nameDisabled : ""}`}>{fullNameOf(author)}</span>
+      <span className={styles.avatar}>{initialsOf(author)}</span>
+      <span className={styles.authorName}>{fullNameOf(author)}</span>
       {isHovered && <AuthorLinksTooltip author={author} openLinkInBrowser={openLinkInBrowser} />}
     </span>
   );
@@ -99,7 +90,7 @@ const NonInjectedExtensionAuthors = ({
       {visible.map((a, index) => (
         <Fragment key={authorKey(a)}>
           <AuthorItem author={a} disabled={disabled} openLinkInBrowser={openLinkInBrowser} />
-          {(index < visible.length - 1 || remaining > 0) && <span className={styles.separator}>,</span>}
+          {(index < visible.length - 1 || remaining > 0) && <span>,</span>}
         </Fragment>
       ))}
       {remaining > 0 && (

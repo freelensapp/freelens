@@ -4,6 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+@use "../vars" as *;
+
 .notice {
   margin-top: var(--margin);
   margin-bottom: calc(var(--margin) * 3);
@@ -36,9 +38,14 @@
   border-bottom: 2px solid transparent;
 }
 
+// The settings are drawn in settingsBackground, which is contentColor or close to it in the
+// built-in themes, so the cards would not stand out from the page. They lie on mainBackground, as
+// the cards of the overviews do, spaced the same way.
 .grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1rem;
-  margin-top: 1rem;
+  gap: $margin * 2;
+  margin-top: $margin * 2;
+  padding: $padding * 2;
+  background: var(--mainBackground);
 }

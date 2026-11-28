@@ -5,18 +5,16 @@
 
 @use "../vars" as *;
 
-// Every color comes from the active theme. Text uses only textColorPrimary and textColorAccent,
-// which reach WCAG AA on contentColor in every built-in theme; the error text is mostly
-// textColorAccent with 30% of the error color for the same reason. Its badge keeps the tint
-// light, 10% of the error color, so the text also reaches AA on it in the dark themes whose
-// textColorAccent is not far from the card, such as Solarized.
+// The panel, its hover and its focus are the ones of `.Card`. Every color comes from the active
+// theme. Text uses only textColorPrimary and textColorAccent, which reach WCAG AA on contentColor
+// in every built-in theme; the error text is mostly textColorAccent with 30% of the error color for
+// the same reason. Its badge keeps the tint light, 10% of the error color, so the text also reaches
+// AA on it in the dark themes whose textColorAccent is not far from the card, such as Solarized.
 //
-// The card is a square panel without a border, drawn in contentColor like the other panels of
-// the overviews. A card that is a button shows the hover with its background, 6% of the primary
-// color mixed into contentColor. In freelens dark and Solarized dark, textColorPrimary is only
-// just at AA on the card, and any tint that shows takes it below, so the hover also moves the
-// secondary text 30% towards textColorAccent. The badge is mixed into contentColor rather than
-// laid over the card, so it reads the same on the hover background as on the card.
+// In freelens dark and Solarized dark, textColorPrimary is only just at AA on the card, and the
+// tint of the hover of `.Card` takes it below, so the hover also moves the secondary text 30%
+// towards textColorAccent. The badge is mixed into contentColor rather than laid over the card,
+// so it reads the same on the hover background as on the card.
 //
 // The class names are public: an extension that renders the card may restyle it. Every part
 // has a class of its own that starts with `StatusCard-`, so that the styles of the page the
@@ -26,35 +24,14 @@
   --status-card-error-text: color-mix(in srgb, var(--colorError) 30%, var(--textColorAccent));
   --status-card-text: var(--textColorPrimary);
 
-  display: flex;
-  flex-direction: column;
   gap: $margin * 1.5;
-  min-width: 0;
-  padding: $padding * 2;
-  border: 0;
-  background: var(--contentColor);
-  color: inherit;
-  font: inherit;
-  text-align: left;
 
-  &:is(button) {
-    cursor: pointer;
-    transition: background-color 150ms;
+  &:is(button):hover {
+    --status-card-text: color-mix(in srgb, var(--textColorAccent) 30%, var(--textColorPrimary));
 
-    &:hover {
-      --status-card-text: color-mix(in srgb, var(--textColorAccent) 30%, var(--textColorPrimary));
-
-      background: color-mix(in srgb, var(--primary) 6%, var(--contentColor));
-
-      .StatusCard-chevron {
-        color: var(--textColorAccent);
-        transform: translateX(2px);
-      }
-    }
-
-    &:focus-visible {
-      outline: 2px solid var(--primary);
-      outline-offset: 2px;
+    .StatusCard-chevron {
+      color: var(--textColorAccent);
+      transform: translateX(2px);
     }
   }
 }

@@ -15,7 +15,12 @@ import installFromUrlInjectable from "./attempt-install/install-from-url.injecta
 import attemptInstallByInfoInjectable from "./attempt-install-by-info.injectable";
 import { getMessageFromError } from "./get-message-from-error/get-message-from-error";
 
-export type InstallExtensionFromInput = (input: string) => Promise<void>;
+import type { InstallFromUrlOptions } from "./attempt-install/install-from-url.injectable";
+
+/**
+ * `options` apply to an `http(s)` URL only.
+ */
+export type InstallExtensionFromInput = (input: string, options?: InstallFromUrlOptions) => Promise<void>;
 
 /**
  * Only `http:` and `https:` are downloads. `InputValidators.isUrl` accepts
@@ -52,10 +57,10 @@ const installExtensionFromInputInjectable = getInjectable({
     const showErrorNotification = di.inject(showErrorNotificationInjectable);
     const logger = di.inject(loggerInjectionToken);
 
-    return async (input) => {
+    return async (input, options) => {
       try {
         if (isDownloadUrl(input)) {
-          return await installFromUrl(input);
+          return await installFromUrl(input, options);
         }
 
         const stats = await stat(input).catch(() => undefined);

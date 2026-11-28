@@ -9,6 +9,7 @@ import { act, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { observer } from "mobx-react";
 import userPreferencesStateInjectable from "../../features/user-preferences/common/state.injectable";
+import { Card as HostCard } from "../../renderer/components/card";
 import {
   CapacityCard as HostCapacityCard,
   StatusCard as HostStatusCard,
@@ -36,9 +37,48 @@ describe("overview cards in the extension API", () => {
   });
 
   describe("Renderer.Component", () => {
-    it("exports the cards the overviews render", () => {
+    it("exports the cards the overviews render, and the card they are drawn on", () => {
+      expect(Renderer.Component.Card).toBe(HostCard);
       expect(Renderer.Component.CapacityCard).toBe(HostCapacityCard);
       expect(Renderer.Component.StatusCard).toBe(HostStatusCard);
+    });
+
+    it("renders a card with the content of an extension", async () => {
+      const { Card } = Renderer.Component;
+      const onClick = vi.fn();
+
+      render(
+        <>
+          <Card aria-label="Backups" className="backups" data-testid="backups">
+            3 backups
+          </Card>
+          <Card onClick={onClick} data-testid="restore">
+            Restore
+          </Card>
+        </>,
+      );
+
+      expect(screen.getByRole("region", { name: "Backups" })).toHaveClass("Card", "backups");
+      expect(screen.getByTestId("backups")).toHaveTextContent("3 backups");
+
+      await userEvent.click(screen.getByRole("button", { name: "Restore" }));
+
+      expect(screen.getByTestId("restore")).toHaveClass("Card");
+      expect(onClick).toHaveBeenCalledTimes(1);
+    });
+
+    it("draws the overview cards on the card", () => {
+      const { CapacityCard, StatusCard } = Renderer.Component;
+
+      render(
+        <>
+          <CapacityCard title="GPU" usage={1} allocatable={2} data-testid="gpu" />
+          <StatusCard title="Releases" statuses={[]} data-testid="releases" />
+        </>,
+      );
+
+      expect(screen.getByTestId("gpu")).toHaveClass("Card", "CapacityCard");
+      expect(screen.getByTestId("releases")).toHaveClass("Card", "StatusCard");
     });
 
     it("renders a capacity card from the values of an extension", () => {

@@ -2,57 +2,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  border-radius: 0.5rem;
-  padding: 0.5rem 1.25rem;
   min-width: 7rem;
-  font-size: 0.875rem;
-  font-weight: 600;
-  cursor: pointer;
-  border-width: 1px;
-  border-style: solid;
-  transition: filter 0.15s ease;
-}
-
-.button:disabled {
-  cursor: not-allowed;
-  filter: none;
-}
-
-.install {
-  background-color: var(--buttonPrimaryBackground);
-  border-color: transparent;
-  color: white;
-}
-
-.install:hover:not(:disabled) {
-  filter: brightness(1.1);
-}
-
-.uninstall {
-  background-color: #ef4444;
-  border-color: transparent;
-  color: white;
-}
-
-.uninstall:hover:not(:disabled) {
-  filter: brightness(1.1);
-}
-
-.update {
-  background-color: #eab308;
-  border-color: transparent;
-  color: white;
-}
-
-.update:hover:not(:disabled) {
-  filter: brightness(1.1);
-}
-
-.spinnerOnly {
-  padding: 0.375rem;
-  background: transparent;
-  border-color: transparent;
 }
 
 .spinner {

@@ -3,8 +3,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import styles from "./extension-action-button.module.scss";
-
 import type { ExtensionActionState } from "./extension-action-button";
 
 export interface UseExtensionActionButtonArgs {
@@ -13,7 +11,8 @@ export interface UseExtensionActionButtonArgs {
 
 export interface UseExtensionActionButtonResult {
   label: string;
-  variantClass: string;
+  /** Install and update are drawn as the primary button, uninstall as the accent one. */
+  variant: "primary" | "accent";
   isSpinnerState: boolean;
 }
 
@@ -31,24 +30,10 @@ const labelFor = (state: ExtensionActionState): string => {
   }
 };
 
-const variantClassFor = (state: ExtensionActionState): string => {
-  switch (state) {
-    case "install":
-    case "installing":
-      return styles.install;
-    case "update":
-    case "updating":
-      return styles.update;
-    case "uninstall":
-    case "uninstalling":
-      return styles.uninstall;
-  }
-};
-
 export const useExtensionActionButton = ({ state }: UseExtensionActionButtonArgs): UseExtensionActionButtonResult => {
   const label = labelFor(state);
-  const variantClass = variantClassFor(state);
+  const variant = state === "uninstall" || state === "uninstalling" ? "accent" : "primary";
   const isSpinnerState = state === "installing" || state === "uninstalling" || state === "updating";
 
-  return { label, variantClass, isSpinnerState };
+  return { label, variant, isSpinnerState };
 };

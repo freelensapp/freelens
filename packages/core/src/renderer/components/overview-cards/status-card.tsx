@@ -7,6 +7,7 @@ import "./status-card.scss";
 
 import { Icon } from "@freelensapp/icon";
 import { cssNames } from "@freelensapp/utilities";
+import { Card } from "../card";
 
 /**
  * How a status counts: `healthy` counts towards the share that is healthy, `failing` towards the number that
@@ -126,17 +127,14 @@ export const StatusCard = ({
     </>
   );
 
-  if (onClick) {
-    return (
-      <button type="button" className={cssNames("StatusCard", className)} onClick={onClick} data-testid={testId}>
-        {content}
-      </button>
-    );
-  }
-
   return (
-    <section className={cssNames("StatusCard", className)} aria-label={title} data-testid={testId}>
+    <Card
+      className={cssNames("StatusCard", className)}
+      onClick={onClick}
+      aria-label={onClick ? undefined : title}
+      data-testid={testId}
+    >
       {content}
-    </section>
+    </Card>
   );
 };

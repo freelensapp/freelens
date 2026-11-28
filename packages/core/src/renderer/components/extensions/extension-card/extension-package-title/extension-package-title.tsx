@@ -6,8 +6,15 @@ import { useExtensionPackageTitle } from "./use-extension-package-title.hook";
 import type { OpenLinkInBrowser } from "../../../../../common/utils/open-link-in-browser.injectable";
 
 export interface ExtensionPackageTitleProps {
+  /**
+   * The name of the package.
+   */
   name: string;
-  repository?: string;
+  /**
+   * Shown instead of the name of the package, which is then its tooltip.
+   */
+  displayName?: string;
+  link?: string;
 }
 
 interface Dependencies {
@@ -16,25 +23,27 @@ interface Dependencies {
 
 const NonInjectedExtensionPackageTitle = ({
   name,
-  repository,
+  displayName,
+  link,
   openLinkInBrowser,
 }: ExtensionPackageTitleProps & Dependencies) => {
   const { scope, pkgName } = useExtensionPackageTitle({ name });
+  const label = displayName ?? pkgName;
 
   return (
-    <h3 className={styles.title}>
-      {scope && <span className={styles.scope}>{scope}</span>}
-      {repository ? (
+    <h3 className={styles.title} title={displayName ? name : undefined}>
+      {!displayName && scope && <span className={styles.scope}>{scope}</span>}
+      {link ? (
         <button
           type="button"
           className={styles.link}
-          onClick={() => void openLinkInBrowser(repository)}
+          onClick={() => void openLinkInBrowser(link)}
           data-testid="extension-package-title-link"
         >
-          {pkgName}
+          {label}
         </button>
       ) : (
-        <span className={styles.pkgName}>{pkgName}</span>
+        <span className={styles.pkgName}>{label}</span>
       )}
     </h3>
   );

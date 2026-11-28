@@ -195,9 +195,13 @@ export type RendererVirtualListRefTakesItsAlign = Holds<
   Parameters<RendererVirtualListRef["scrollToItem"]>[1] extends RendererVirtualListAlign ? true : false
 >;
 
-// The overview cards and their props, the contract of their own that both
-// overviews of the host render with, and the preference that chooses between
-// them and the charts.
+// The card the host draws its cards on, the overview cards and their props, the
+// contract of their own that both overviews of the host render with, and the
+// preference that chooses between them and the charts.
+export type RendererCardProps = Renderer.Component.CardProps;
+export type RendererCardTakesItsProps = Holds<
+  Parameters<typeof Renderer.Component.Card>[0] extends RendererCardProps ? true : false
+>;
 export type RendererCapacityCardProps = Renderer.Component.CapacityCardProps;
 export type RendererCapacityCardLabels = Renderer.Component.CapacityCardLabels;
 export type RendererStatusCardProps = Renderer.Component.StatusCardProps;

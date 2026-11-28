@@ -27,14 +27,14 @@ describe("ExtensionAuthors", () => {
     expect(container).toBeEmptyDOMElement();
   });
 
-  it("renders initials and full name when author has surname", () => {
-    const authors: MarketplaceExtensionAuthor[] = [{ name: "Alex", surname: "Ionescu" }];
+  it("renders the initials of the first and the last word of the full name", () => {
+    const authors: MarketplaceExtensionAuthor[] = [{ name: "Alex Maria Ionescu" }];
     render(<ExtensionAuthors authors={authors} />);
     expect(screen.getByText("AI")).toBeInTheDocument();
-    expect(screen.getByText(/Alex Ionescu/)).toBeInTheDocument();
+    expect(screen.getByText(/Alex Maria Ionescu/)).toBeInTheDocument();
   });
 
-  it("falls back to single initial when surname is missing", () => {
+  it("falls back to a single initial for a name of one word", () => {
     const authors: MarketplaceExtensionAuthor[] = [{ name: "Maria" }];
     render(<ExtensionAuthors authors={authors} />);
     expect(screen.getByText("M")).toBeInTheDocument();
@@ -43,10 +43,10 @@ describe("ExtensionAuthors", () => {
 
   it("shows at most two authors and a '+N others' trigger when more than two are present", () => {
     const authors: MarketplaceExtensionAuthor[] = [
-      { name: "Alex", surname: "Ionescu" },
-      { name: "Maria", surname: "Rossi" },
-      { name: "John", surname: "Smith" },
-      { name: "Jane", surname: "Doe" },
+      { name: "Alex Ionescu" },
+      { name: "Maria Rossi" },
+      { name: "John Smith" },
+      { name: "Jane Doe" },
     ];
     render(<ExtensionAuthors authors={authors} />);
     expect(screen.getByText(/Alex Ionescu/)).toBeInTheDocument();
@@ -82,29 +82,25 @@ describe("ExtensionAuthors", () => {
     expect(trigger).toHaveAttribute("aria-expanded", "true");
   });
 
-  it("shows a tooltip with github and website rows when hovering a visible author with links", () => {
-    const authors: MarketplaceExtensionAuthor[] = [
-      { name: "Alex", github: "https://github.com/alex", website: "www.alex.dev" },
-    ];
+  it.each([
+    ["github", "https://github.com/alex"],
+    ["website", "https://alex.dev"],
+  ])("shows a %s row when hovering an author with the url %s", (label, url) => {
+    const authors: MarketplaceExtensionAuthor[] = [{ name: "Alex", url }];
     render(<ExtensionAuthors authors={authors} />);
 
     fireEvent.mouseEnter(screen.getByTestId("author-item"));
 
     const tooltip = screen.getByTestId("author-links-tooltip");
-    expect(within(tooltip).getByText("github")).toBeInTheDocument();
-    expect(within(tooltip).getByText("website")).toBeInTheDocument();
 
-    fireEvent.click(within(tooltip).getByText("github"));
-    expect(openLinkInBrowser).toHaveBeenCalledWith("https://github.com/alex");
-
-    fireEvent.click(within(tooltip).getByText("website"));
-    expect(openLinkInBrowser).toHaveBeenCalledWith("https://www.alex.dev");
+    fireEvent.click(within(tooltip).getByText(label));
+    expect(openLinkInBrowser).toHaveBeenCalledWith(url);
   });
 
   it("keeps the tooltip open briefly after leaving so the mouse can reach it", () => {
     vi.useFakeTimers();
 
-    const authors: MarketplaceExtensionAuthor[] = [{ name: "Alex", github: "https://github.com/alex" }];
+    const authors: MarketplaceExtensionAuthor[] = [{ name: "Alex", url: "https://github.com/alex" }];
     render(<ExtensionAuthors authors={authors} />);
 
     fireEvent.mouseEnter(screen.getByTestId("author-item"));
@@ -124,7 +120,7 @@ describe("ExtensionAuthors", () => {
   it("keeps the tooltip open when re-entering before the close delay elapses", () => {
     vi.useFakeTimers();
 
-    const authors: MarketplaceExtensionAuthor[] = [{ name: "Alex", github: "https://github.com/alex" }];
+    const authors: MarketplaceExtensionAuthor[] = [{ name: "Alex", url: "https://github.com/alex" }];
     render(<ExtensionAuthors authors={authors} />);
 
     fireEvent.mouseEnter(screen.getByTestId("author-item"));

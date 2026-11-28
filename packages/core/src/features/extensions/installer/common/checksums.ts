@@ -12,7 +12,7 @@ import { createHash } from "node:crypto";
  */
 export const shortDigestLength = 8;
 
-const supportedAlgorithms = ["sha1", "sha256", "sha512"] as const;
+const supportedAlgorithms = ["sha1", "sha256", "sha384", "sha512"] as const;
 
 export type SupportedAlgorithm = (typeof supportedAlgorithms)[number];
 

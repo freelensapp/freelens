@@ -20,18 +20,26 @@ describe("ExtensionPackageTitle", () => {
     di.override(openLinkInBrowserInjectable, () => openLinkInBrowser);
   });
 
-  it("opens the repository link when the package name is clicked", () => {
-    render(<ExtensionPackageTitle name="@scope/pkg" repository="https://github.com/foo/bar" />);
+  it("opens the link when the package name is clicked", () => {
+    render(<ExtensionPackageTitle name="@scope/pkg" link="https://github.com/foo/bar" />);
 
     fireEvent.click(screen.getByRole("button", { name: /pkg/i }));
 
     expect(openLinkInBrowser).toHaveBeenCalledWith("https://github.com/foo/bar");
   });
 
-  it("does not render a clickable name when no repository is present", () => {
+  it("does not render a clickable name without a link", () => {
     render(<ExtensionPackageTitle name="@scope/pkg" />);
 
     expect(screen.queryByRole("button")).not.toBeInTheDocument();
     expect(screen.getByText("pkg")).toBeInTheDocument();
+  });
+
+  it("shows the display name instead of the package name, which becomes its tooltip", () => {
+    render(<ExtensionPackageTitle name="@scope/pkg" displayName="My Extension" />);
+
+    expect(screen.getByText("My Extension")).toBeInTheDocument();
+    expect(screen.queryByText("@scope/")).not.toBeInTheDocument();
+    expect(screen.getByRole("heading")).toHaveAttribute("title", "@scope/pkg");
   });
 });

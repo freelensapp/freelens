@@ -9,8 +9,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { MockedFunction } from "vitest";
 
 import "@testing-library/jest-dom/vitest";
-import assert from "node:assert";
-import { fireEvent, screen, waitFor } from "@testing-library/react";
+import { act, fireEvent, screen, waitFor, within } from "@testing-library/react";
 import { observable, when } from "mobx";
 import directoryForDownloadsInjectable from "../../../../common/app-paths/directory-for-downloads/directory-for-downloads.injectable";
 import directoryForUserDataInjectable from "../../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
@@ -38,11 +37,13 @@ import type { InstallExtensionFromInput } from "../install-extension-from-input.
 import type { MarketplaceExtension } from "../marketplace-extensions/marketplace-extensions.injectable";
 
 const marketplaceMockExtension = (overrides?: Partial<MarketplaceExtension>): MarketplaceExtension => ({
-  id: "test_extension",
-  name: "test",
-  description: "Test marketplace extension",
-  version: "2.0.0",
-  status: "official",
+  id: "test",
+  packageName: "test",
+  displayName: "Test",
+  summary: "Test marketplace extension",
+  tier: "official",
+  version: { version: "2.0.0", freelens: "^2.0.0" },
+  authors: [],
   ...overrides,
 });
 
@@ -55,6 +56,7 @@ describe("Extensions", () => {
   let deleteFileMock: MockedFunction<RemovePath>;
   let downloadBinary: MockedFunction<DownloadBinary>;
   let di: DiContainer;
+  let marketplaceExtensions: MarketplaceExtension[];
 
   beforeEach(() => {
     try {
@@ -71,7 +73,8 @@ describe("Extensions", () => {
       installExtensionFromInput = vi.fn();
       di.override(installExtensionFromInputInjectable, () => installExtensionFromInput);
 
-      di.override(requestMarketplaceExtensionsInjectable, () => async () => [marketplaceMockExtension()]);
+      marketplaceExtensions = [marketplaceMockExtension()];
+      di.override(requestMarketplaceExtensionsInjectable, () => async () => marketplaceExtensions);
 
       deleteFileMock = vi.fn();
       di.override(removePathInjectable, () => deleteFileMock);
@@ -106,6 +109,10 @@ describe("Extensions", () => {
     }
   });
 
+  const findInstalledCard = () => screen.findByTestId("installed-extension-card");
+  const openMenuOfInstalledCard = async () =>
+    fireEvent.click(within(await findInstalledCard()).getByTestId("icon-for-extension-card-menu"));
+
   it("disables the uninstall menu item while uninstalling", async () => {
     extensionDiscovery.isLoaded = true;
 
@@ -116,16 +123,7 @@ describe("Extensions", () => {
       </>,
     );
 
-    const findMenuTrigger = async () => {
-      const table = await screen.findByTestId("extensions-table");
-      const trigger = table.querySelector("tbody tr td:last-child .Icon");
-
-      assert(trigger);
-
-      return trigger;
-    };
-
-    fireEvent.click(await findMenuTrigger());
+    await openMenuOfInstalledCard();
     fireEvent.click(await screen.findByText("Uninstall"));
     fireEvent.click(await screen.findByText("Yes"));
 
@@ -137,7 +135,7 @@ describe("Extensions", () => {
       expect(screen.queryByText("Uninstall")).not.toBeInTheDocument();
     });
 
-    fireEvent.click(await findMenuTrigger());
+    await openMenuOfInstalledCard();
 
     expect(await screen.findByText("Uninstall")).toHaveAttribute("aria-disabled", "true");
   });
@@ -187,6 +185,124 @@ describe("Extensions", () => {
     doResolve.set(true);
   });
 
+  it.each([
+    ["from npm as <package>@<version>", { version: "2.0.0", freelens: "^2.0.0" }, ["@jane-doe/my-extension@2.0.0"]],
+    [
+      "from its url, with its integrity",
+      {
+        version: "2.0.0",
+        freelens: "^2.0.0",
+        url: "https://example.com/my-extension-2.0.0.tgz",
+        integrity: "sha256-abc=",
+      },
+      ["https://example.com/my-extension-2.0.0.tgz", { integrity: "sha256-abc=" }],
+    ],
+  ])("installs a marketplace entry %s", async (_, version, expected) => {
+    extensionDiscovery.isLoaded = true;
+    marketplaceExtensions = [marketplaceMockExtension({ packageName: "@jane-doe/my-extension", version })];
+    installExtensionFromInput.mockResolvedValue();
+
+    render(
+      <>
+        <Extensions />
+        <ConfirmDialog />
+      </>,
+    );
+
+    fireEvent.click(await screen.findByRole("button", { name: "Marketplace" }));
+
+    const card = await screen.findByTestId("marketplace-extension-card");
+
+    fireEvent.click(within(card).getByRole("button", { name: "Install" }));
+
+    const dialog = await screen.findByTestId("confirmation-dialog");
+
+    expect(dialog).toHaveTextContent("Are you sure you want to install @jane-doe/my-extension@2.0.0?");
+    expect(installExtensionFromInput).not.toHaveBeenCalled();
+
+    fireEvent.click(within(dialog).getByTestId("confirm"));
+
+    await waitFor(() => expect(installExtensionFromInput).toHaveBeenCalledWith(...expected));
+  });
+
+  it("installs nothing from the marketplace when the install is cancelled", async () => {
+    extensionDiscovery.isLoaded = true;
+    marketplaceExtensions = [marketplaceMockExtension({ packageName: "@jane-doe/my-extension" })];
+
+    render(
+      <>
+        <Extensions />
+        <ConfirmDialog />
+      </>,
+    );
+
+    fireEvent.click(await screen.findByRole("button", { name: "Marketplace" }));
+
+    const card = await screen.findByTestId("marketplace-extension-card");
+
+    fireEvent.click(within(card).getByRole("button", { name: "Install" }));
+    fireEvent.click(within(await screen.findByTestId("confirmation-dialog")).getByText("Cancel"));
+
+    await waitFor(() => expect(screen.queryByTestId("confirmation-dialog")).not.toBeInTheDocument());
+    expect(installExtensionFromInput).not.toHaveBeenCalled();
+    expect(within(card).getByRole("button", { name: "Install" })).toBeEnabled();
+  });
+
+  it("keeps one card of the marketplace expanded at a time", async () => {
+    extensionDiscovery.isLoaded = true;
+    marketplaceExtensions = [
+      marketplaceMockExtension({ id: "first", packageName: "first", displayName: "First" }),
+      marketplaceMockExtension({ id: "second", packageName: "second", displayName: "Second" }),
+    ];
+
+    render(<Extensions />);
+
+    fireEvent.click(await screen.findByRole("button", { name: "Marketplace" }));
+
+    const toggleOf = async (name: string) =>
+      within(await screen.findByRole("region", { name })).getByTestId("extension-card-toggle");
+
+    fireEvent.click(await toggleOf("First"));
+    expect(await toggleOf("First")).toHaveAttribute("aria-expanded", "true");
+
+    fireEvent.click(await toggleOf("Second"));
+    expect(await toggleOf("Second")).toHaveAttribute("aria-expanded", "true");
+    expect(await toggleOf("First")).toHaveAttribute("aria-expanded", "false");
+
+    fireEvent.click(await toggleOf("Second"));
+    expect(await toggleOf("Second")).toHaveAttribute("aria-expanded", "false");
+  });
+
+  it("downloads the marketplace again on a refresh, and keeps its cards until the new list is in", async () => {
+    extensionDiscovery.isLoaded = true;
+
+    const requests: Array<(extensions: MarketplaceExtension[]) => void> = [];
+
+    di.override(
+      requestMarketplaceExtensionsInjectable,
+      () => () => new Promise<MarketplaceExtension[]>((resolve) => requests.push(resolve)),
+    );
+    render(<Extensions />);
+
+    fireEvent.click(await screen.findByRole("button", { name: "Marketplace" }));
+    act(() => requests[0]([marketplaceMockExtension({ packageName: "first", displayName: "First" })]));
+    expect(await screen.findByText("First")).toBeInTheDocument();
+
+    const refresh = screen.getByTestId("marketplace-refresh");
+
+    fireEvent.click(refresh);
+
+    await waitFor(() => expect(requests).toHaveLength(2));
+    expect(screen.getByText("First")).toBeInTheDocument();
+    expect(refresh).toHaveClass("disabled");
+
+    act(() => requests[1]([marketplaceMockExtension({ packageName: "second", displayName: "Second" })]));
+
+    expect(await screen.findByText("Second")).toBeInTheDocument();
+    expect(screen.queryByText("First")).not.toBeInTheDocument();
+    expect(screen.getByTestId("marketplace-refresh")).not.toHaveClass("disabled");
+  });
+
   it("displays spinner while extensions are loading", () => {
     extensionDiscovery.isLoaded = false;
     const { container } = render(<Extensions />);
@@ -201,7 +317,7 @@ describe("Extensions", () => {
     expect(container.querySelector(".Spinner")).not.toBeInTheDocument();
   });
 
-  describe("the status column", () => {
+  describe("the installed extension cards", () => {
     const testExtension = {
       id: "extensionId",
       manifest: { name: "test", version: "1.2.3", engines: { freelens: "^0.1.0" } },
@@ -213,14 +329,7 @@ describe("Extensions", () => {
       isVerified: true,
     };
 
-    const statusCell = async () => {
-      const table = await screen.findByTestId("extensions-table");
-      const cell = table.querySelector("tbody tr td:nth-child(3) > div");
-
-      assert(cell);
-
-      return cell;
-    };
+    const statusOf = async () => within(await findInstalledCard()).queryByTestId("extension-status");
 
     beforeEach(() => {
       extensionDiscovery.isLoaded = true;
@@ -229,24 +338,23 @@ describe("Extensions", () => {
     it("shows Enabled for an enabled extension which loaded", async () => {
       render(<Extensions />);
 
-      const cell = await statusCell();
-
-      expect(cell).toHaveTextContent("Enabled");
-      expect(cell).not.toHaveAttribute("title");
+      expect(await findInstalledCard()).toContainElement(document.querySelector('[data-status="enabled"]'));
+      expect(await statusOf()).toHaveTextContent("Enabled");
+      expect(await statusOf()).not.toHaveAttribute("title");
     });
 
     it("shows Disabled for a disabled extension", async () => {
       extensionLoader.addExtension({ ...testExtension, isEnabled: false });
       render(<Extensions />);
 
-      expect(await statusCell()).toHaveTextContent("Disabled");
+      expect(await statusOf()).toHaveTextContent("Disabled");
     });
 
     it("shows Incompatible for an extension built for another version", async () => {
       extensionLoader.addExtension({ ...testExtension, isCompatible: false });
       render(<Extensions />);
 
-      expect(await statusCell()).toHaveTextContent("Incompatible");
+      expect(await statusOf()).toHaveTextContent("Incompatible");
     });
 
     it("shows Failed to load for an enabled extension which failed, with where and why in the tooltip", async () => {
@@ -256,10 +364,10 @@ describe("Extensions", () => {
       ]);
       render(<Extensions />);
 
-      const cell = await statusCell();
+      const status = await statusOf();
 
-      expect(cell).toHaveTextContent("Failed to load");
-      expect(cell).toHaveAttribute(
+      expect(status).toHaveTextContent("Failed to load");
+      expect(status).toHaveAttribute(
         "title",
         "Failed in the main process while running onActivate: no activating today\n" +
           "Failed in the renderer process while importing its entry point: Failed to fetch dynamically imported module",
@@ -272,11 +380,7 @@ describe("Extensions", () => {
       ]);
       render(<Extensions />);
 
-      const table = await screen.findByTestId("extensions-table");
-      const menuTrigger = table.querySelector("tbody tr td:last-child .Icon");
-
-      assert(menuTrigger);
-      fireEvent.click(menuTrigger);
+      await openMenuOfInstalledCard();
 
       expect(await screen.findByText("Disable")).toHaveAttribute("aria-disabled", "false");
       expect(await screen.findByText("Uninstall")).toHaveAttribute("aria-disabled", "false");
@@ -286,13 +390,19 @@ describe("Extensions", () => {
       extensionLoader.addExtension({ ...testExtension, isEnabled: false });
       render(<Extensions />);
 
-      const table = await screen.findByTestId("extensions-table");
-      const menuTrigger = table.querySelector("tbody tr td:last-child .Icon");
-
-      assert(menuTrigger);
-      fireEvent.click(menuTrigger);
+      await openMenuOfInstalledCard();
 
       expect(await screen.findByText("Enable")).toHaveAttribute("aria-disabled", "false");
+    });
+
+    it("does not offer Enable for an incompatible extension", async () => {
+      extensionLoader.addExtension({ ...testExtension, isEnabled: false, isCompatible: false });
+      render(<Extensions />);
+
+      await openMenuOfInstalledCard();
+
+      expect(await screen.findByText("Uninstall")).toBeInTheDocument();
+      expect(screen.queryByText("Enable")).not.toBeInTheDocument();
     });
 
     it("shows Disabled, not Failed to load, once a failed extension is disabled", async () => {
@@ -302,7 +412,91 @@ describe("Extensions", () => {
       extensionLoader.addExtension({ ...testExtension, isEnabled: false });
       render(<Extensions />);
 
-      expect(await statusCell()).toHaveTextContent("Disabled");
+      expect(await statusOf()).toHaveTextContent("Disabled");
+    });
+
+    it("shows whether the checksum of the installed build was verified", async () => {
+      extensionLoader.addExtension({ ...testExtension, isVerified: false });
+      render(<Extensions />);
+
+      const provenance = within(await findInstalledCard()).getByTestId("extension-provenance");
+
+      expect(provenance).toHaveAttribute("data-provenance", "unverified");
+
+      fireEvent.mouseEnter(provenance);
+
+      expect(
+        await screen.findByText("Unverified: no checksum was available when it was installed"),
+      ).toBeInTheDocument();
+    });
+
+    it("marks a build whose checksum was verified with the verified icon", async () => {
+      render(<Extensions />);
+
+      const provenance = within(await findInstalledCard()).getByTestId("extension-provenance");
+
+      expect(provenance).toHaveAttribute("data-provenance", "verified");
+      expect(provenance).toHaveTextContent("verified");
+    });
+
+    it("shows an extension of the marketplace with its entry and offers its newer version", async () => {
+      render(<Extensions />);
+
+      const card = await findInstalledCard();
+
+      expect(within(card).getByText("Test")).toBeInTheDocument();
+      expect(within(card).getByText("Test marketplace extension")).toBeInTheDocument();
+      expect(within(card).getByText("v1.2.3")).toBeInTheDocument();
+      expect(within(card).getByRole("button", { name: "Update" })).toBeInTheDocument();
+    });
+
+    it("reinstalls an extension of the marketplace from the marketplace", async () => {
+      installExtensionFromInput.mockResolvedValue();
+      render(<Extensions />);
+
+      await openMenuOfInstalledCard();
+      fireEvent.click(await screen.findByText("Reinstall"));
+
+      expect(installExtensionFromInput).toHaveBeenCalledWith("test@2.0.0");
+    });
+
+    it("shows an extension installed from outside the marketplace from its manifest", async () => {
+      marketplaceExtensions = [];
+      extensionLoader.addExtension({
+        ...testExtension,
+        manifest: { ...testExtension.manifest, description: "From a tarball" },
+      });
+      render(<Extensions />);
+
+      const card = await findInstalledCard();
+
+      expect(within(card).getByText("test")).toBeInTheDocument();
+      expect(within(card).getByText("From a tarball")).toBeInTheDocument();
+      expect(within(card).getByRole("button", { name: "Uninstall" })).toBeInTheDocument();
+    });
+
+    it("cuts the description of an extension from outside the marketplace to one line of a summary", async () => {
+      marketplaceExtensions = [];
+      extensionLoader.addExtension({
+        ...testExtension,
+        manifest: { ...testExtension.manifest, description: `First line\n${"x".repeat(200)}` },
+      });
+      render(<Extensions />);
+
+      const summary = within(await findInstalledCard()).getByText(/^First line x+…$/);
+
+      expect(summary.textContent).toHaveLength(160);
+    });
+
+    it("finds an installed extension by its status", async () => {
+      extensionLoader.addExtension({ ...testExtension, isEnabled: false });
+      render(<Extensions />);
+
+      fireEvent.change(await screen.findByPlaceholderText("Search Extensions..."), { target: { value: "disab" } });
+      expect(await findInstalledCard()).toBeInTheDocument();
+
+      fireEvent.change(screen.getByPlaceholderText("Search Extensions..."), { target: { value: "enabled" } });
+      expect(await screen.findByText("No data found")).toBeInTheDocument();
     });
   });
 });

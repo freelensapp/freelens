@@ -14,6 +14,15 @@ describe("ExtensionActionButton", () => {
     expect(screen.getByRole("button", { name: "Uninstall" })).toBeInTheDocument();
   });
 
+  it("draws Install as the primary button and Uninstall as the accent one", () => {
+    const { rerender } = render(<ExtensionActionButton state="install" onClick={() => {}} />);
+    expect(screen.getByRole("button")).toHaveClass("primary");
+
+    rerender(<ExtensionActionButton state="uninstall" onClick={() => {}} />);
+    expect(screen.getByRole("button")).toHaveClass("accent");
+    expect(screen.getByRole("button")).not.toHaveClass("primary");
+  });
+
   it("renders disabled with spinner for installing state", () => {
     render(<ExtensionActionButton state="installing" onClick={() => {}} />);
     const button = screen.getByRole("button");

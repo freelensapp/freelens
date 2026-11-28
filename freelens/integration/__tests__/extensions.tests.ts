@@ -78,11 +78,11 @@ describe("extensions page tests", () => {
       // A directory is registered in place, which the installer confirms first.
       await window.click('[data-testid="confirmation-dialog"] [data-testid="confirm"]');
 
-      const row = window.getByTestId("extensions-table").locator("tbody tr", { hasText: fixtureExtensionName });
+      const card = window.getByTestId("installed-extension-card").filter({ hasText: fixtureExtensionName });
 
-      // The status column, which reads "Incompatible" if the gate refuses the
+      // The status of the card, which is "incompatible" if the gate refuses the
       // fixture's `engines.freelens`.
-      await row.locator("td").nth(2).getByText("Enabled", { exact: true }).waitFor();
+      await card.locator('[data-status="enabled"]').waitFor();
 
       // Registered only through the fixture's `statusBarItems`, and rendered
       // with its hooks, so it appears only if the renderer entry ran against the

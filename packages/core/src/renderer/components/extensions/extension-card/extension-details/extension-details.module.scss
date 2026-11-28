@@ -1,0 +1,94 @@
+@use "../../../vars" as *;
+
+// Text on the card uses textColorPrimary and textColorAccent, as the overview cards do.
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: $margin * 1.5;
+  margin-top: $margin * 2;
+  padding-top: $padding * 2;
+  border-top: 1px solid var(--borderFaintColor);
+  font-size: 13px;
+  color: var(--textColorPrimary);
+}
+
+.description {
+  margin: 0;
+  color: var(--textColorPrimary);
+  overflow-wrap: anywhere;
+}
+
+.separator {
+  border-top: 1px solid var(--borderFaintColor);
+}
+
+.fields {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: $margin * 0.5 $margin * 2;
+  margin: 0;
+
+  dt {
+    font-weight: $font-weight-bold;
+    color: var(--textColorAccent);
+  }
+
+  dd {
+    margin: 0;
+    min-width: 0;
+  }
+}
+
+// What the extension is installed from, to be read or copied rather than opened: a tarball URL
+// would download the tarball.
+.sourceRow {
+  display: flex;
+  align-items: center;
+  gap: $margin;
+}
+
+.copy {
+  flex-shrink: 0;
+}
+
+.source {
+  min-width: 0;
+  font-family: var(--font-monospace);
+  color: var(--textColorAccent);
+  overflow-wrap: anywhere;
+  user-select: text;
+}
+
+.link {
+  max-width: 100%;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--textColorPrimary);
+  font: inherit;
+  text-align: left;
+  overflow-wrap: anywhere;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--textColorAccent);
+    text-decoration: underline;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
+}
+
+.versions {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.range {
+  font-family: var(--font-monospace);
+  color: var(--textColorAccent);
+}

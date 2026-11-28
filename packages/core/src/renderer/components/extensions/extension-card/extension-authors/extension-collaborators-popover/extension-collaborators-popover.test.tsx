@@ -11,10 +11,10 @@ import type { Mock } from "vitest";
 import type { MarketplaceExtensionAuthor } from "../../../marketplace-extensions/marketplace-extensions.injectable";
 
 const authors: MarketplaceExtensionAuthor[] = [
-  { name: "Alice", surname: "Adams" },
-  { name: "Bob", surname: "Brown" },
+  { name: "Alice Adams" },
+  { name: "Bob Brown" },
   { name: "Carol" },
-  { name: "Dave", surname: "Davis" },
+  { name: "Dave Davis" },
 ];
 
 describe("ExtensionCollaboratorsPopover", () => {
@@ -64,21 +64,21 @@ describe("ExtensionCollaboratorsPopover", () => {
     expect(onDismiss).not.toHaveBeenCalled();
   });
 
-  it("renders github and website icons per author only when present", () => {
+  it("renders a github or a website icon for an author with a url only", () => {
     const authorsWithLinks: MarketplaceExtensionAuthor[] = [
-      { name: "Alice", github: "https://github.com/alice", website: "www.alice.dev" },
-      { name: "Bob", website: "www.bob.dev" },
+      { name: "Alice", url: "https://github.com/alice" },
+      { name: "Bob", url: "https://bob.dev" },
       { name: "Carol" },
     ];
     render(<ExtensionCollaboratorsPopover authors={authorsWithLinks} onDismiss={vi.fn()} />);
 
     const popover = screen.getByTestId("collaborators-popover");
     expect(within(popover).getAllByRole("button", { name: /github/i })).toHaveLength(1);
-    expect(within(popover).getAllByRole("button", { name: /website/i })).toHaveLength(2);
+    expect(within(popover).getAllByRole("button", { name: /website/i })).toHaveLength(1);
   });
 
   it("opens the github link when the github icon is clicked", () => {
-    const authorsWithLinks: MarketplaceExtensionAuthor[] = [{ name: "Alice", github: "github.com/alice" }];
+    const authorsWithLinks: MarketplaceExtensionAuthor[] = [{ name: "Alice", url: "https://github.com/alice" }];
     render(<ExtensionCollaboratorsPopover authors={authorsWithLinks} onDismiss={vi.fn()} />);
 
     fireEvent.click(screen.getByRole("button", { name: /github/i }));
@@ -87,11 +87,11 @@ describe("ExtensionCollaboratorsPopover", () => {
   });
 
   it("opens the website link when the website icon is clicked", () => {
-    const authorsWithLinks: MarketplaceExtensionAuthor[] = [{ name: "Alice", website: "www.alice.dev" }];
+    const authorsWithLinks: MarketplaceExtensionAuthor[] = [{ name: "Alice", url: "https://alice.dev" }];
     render(<ExtensionCollaboratorsPopover authors={authorsWithLinks} onDismiss={vi.fn()} />);
 
     fireEvent.click(screen.getByRole("button", { name: /website/i }));
 
-    expect(openLinkInBrowser).toHaveBeenCalledWith("https://www.alice.dev");
+    expect(openLinkInBrowser).toHaveBeenCalledWith("https://alice.dev");
   });
 });

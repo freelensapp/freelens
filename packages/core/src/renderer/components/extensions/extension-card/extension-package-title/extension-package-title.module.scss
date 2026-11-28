@@ -1,42 +1,42 @@
+@use "../../../vars" as *;
+
 .title {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  font-size: 0.875rem;
+  margin: 0;
+  font-size: 13px;
+  font-weight: $font-weight-bold;
   display: flex;
   align-items: baseline;
-  gap: 0.125rem;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .scope {
-  color: var(--cardTextSecondary);
+  color: var(--textColorPrimary);
   flex-shrink: 0;
 }
 
 .pkgName,
 .link {
-  font-weight: 700;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-.pkgName {
-  color: var(--cardTextPrimary);
+  color: var(--textColorAccent);
 }
 
 .link {
   background: none;
   border: none;
   padding: 0;
-  font-family: inherit;
-  font-size: inherit;
-  color: var(--cardTextPrimary);
+  font: inherit;
   cursor: pointer;
   text-align: left;
-}
 
-.link:hover {
-  color: var(--buttonPrimaryBackground);
-  text-decoration: underline;
+  &:hover {
+    text-decoration: underline;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
 }

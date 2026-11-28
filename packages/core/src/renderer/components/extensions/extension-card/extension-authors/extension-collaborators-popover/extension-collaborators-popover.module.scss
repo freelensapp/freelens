@@ -1,29 +1,23 @@
+@use "../../../../vars" as *;
+
+// Drawn like a menu of the host.
+
 .popover {
   position: absolute;
   left: 0;
   top: 100%;
-  margin-top: 0.5rem;
-  z-index: 50;
+  margin-top: $margin;
+  z-index: 101;
   width: 18rem;
-  border-radius: 0.75rem;
-  background-color: rgba(12, 19, 29, 0.95);
-  border: 1px solid #1e293b;
-  padding: 0.5rem;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(8px);
+  padding: $padding;
+  background: var(--layoutBackground);
+  border: 1px solid var(--borderColor);
+  border-radius: 4px;
+  box-shadow: rgb(0 0 0 / 17%) 0 6px 9px 0;
 }
 
 .disabled {
-  border-color: #3f3f46;
-}
-
-.disabledVeil {
-  position: absolute;
-  inset: 0;
-  border-radius: 0.75rem;
-  background-color: rgba(15, 23, 42, 0.35);
-  pointer-events: none;
-  z-index: 5;
+  opacity: 0.6;
 }
 
 .list {
@@ -31,34 +25,15 @@
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  scrollbar-width: thin;
-  scrollbar-color: #334155 transparent;
-}
-
-.list::-webkit-scrollbar {
-  width: 6px;
-}
-
-.list::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.list::-webkit-scrollbar-thumb {
-  background-color: #334155;
-  border-radius: 9999px;
-}
-
-.list::-webkit-scrollbar-thumb:hover {
-  background-color: #64748b;
+  gap: $margin;
 }
 
 .row {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 0.75rem;
-  color: #e2e8f0;
+  gap: $margin;
+  font-size: 12px;
+  color: var(--textColorAccent);
   min-width: 0;
 }
 
@@ -66,17 +41,16 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.25rem;
+  padding: $padding * 0.5;
   border: none;
-  border-radius: 0.375rem;
   background: none;
-  color: #94a3b8;
+  color: var(--textColorPrimary);
   cursor: pointer;
   flex-shrink: 0;
-}
 
-.linkButton:hover {
-  color: #e2e8f0;
+  &:hover {
+    color: var(--textColorAccent);
+  }
 }
 
 .icon {
@@ -85,7 +59,7 @@
 }
 
 .authorName {
-  color: #e2e8f0;
+  color: var(--textColorAccent);
   max-width: 12rem;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -98,71 +72,13 @@
 .avatar {
   width: 1.5rem;
   height: 1.5rem;
-  border-radius: 9999px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
-  font-size: 0.6875rem;
-  font-weight: 700;
   flex-shrink: 0;
-}
-
-.avatarEmerald {
-  background-color: #047857;
-}
-.avatarCyan {
-  background-color: #0e7490;
-}
-.avatarPurple {
-  background-color: #7e22ce;
-}
-.avatarRose {
-  background-color: #be123c;
-}
-.avatarAmber {
-  background-color: #b45309;
-}
-.avatarBlue {
-  background-color: #1d4ed8;
-}
-.avatarPink {
-  background-color: #be185d;
-}
-.avatarSlate {
-  background-color: #334155;
-}
-
-:global(body.theme-light) .popover {
-  background-color: #ffffff;
-  border-color: #e2e8f0;
-  box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.15);
-}
-
-:global(body.theme-light) .list {
-  scrollbar-color: #cbd5e1 transparent;
-}
-
-:global(body.theme-light) .list::-webkit-scrollbar-thumb {
-  background-color: #cbd5e1;
-}
-
-:global(body.theme-light) .list::-webkit-scrollbar-thumb:hover {
-  background-color: #94a3b8;
-}
-
-:global(body.theme-light) .row {
-  color: #0f172a;
-}
-
-:global(body.theme-light) .linkButton {
-  color: #475569;
-}
-
-:global(body.theme-light) .linkButton:hover {
-  color: #0f172a;
-}
-
-:global(body.theme-light) .authorName {
-  color: #0f172a;
+  background: color-mix(in srgb, var(--primary) 15%, var(--layoutBackground));
+  color: var(--textColorAccent);
+  font-size: 11px;
+  font-weight: $font-weight-bold;
 }

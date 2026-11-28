@@ -3,7 +3,7 @@ import { withTooltip } from "@freelensapp/tooltip";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import React from "react";
 import openLinkInBrowserInjectable from "../../../../../../common/utils/open-link-in-browser.injectable";
-import { authorKey, avatarClassFor, fullNameOf, initialsOf, toHttpUrl } from "../extension-author-helpers";
+import { authorKey, fullNameOf, initialsOf, isGithubUrl } from "../extension-author-helpers";
 import { GithubIcon } from "../github-icon/github-icon";
 import styles from "./extension-collaborators-popover.module.scss";
 import { useAuthorName } from "./use-author-name.hook";
@@ -52,6 +52,21 @@ const AuthorName: React.FC<{ name: string }> = ({ name }) => {
   );
 };
 
+const AuthorLink: React.FC<{ url: string; openLinkInBrowser: OpenLinkInBrowser }> = ({ url, openLinkInBrowser }) => {
+  const isGithub = isGithubUrl(url);
+
+  return (
+    <button
+      type="button"
+      className={styles.linkButton}
+      aria-label={isGithub ? "github" : "website"}
+      onClick={() => void openLinkInBrowser(url)}
+    >
+      {isGithub ? <GithubIcon className={styles.icon} /> : <Icon material="language" className={styles.icon} />}
+    </button>
+  );
+};
+
 const NonInjectedExtensionCollaboratorsPopover = ({
   authors,
   onDismiss,
@@ -69,32 +84,12 @@ const NonInjectedExtensionCollaboratorsPopover = ({
       aria-label="Collaborators"
       data-testid="collaborators-popover"
     >
-      {disabled && <div className={styles.disabledVeil} />}
       <div className={styles.list}>
         {authors.map((a) => (
           <div key={authorKey(a)} className={styles.row}>
-            <span className={`${styles.avatar} ${styles[avatarClassFor(a.name)]}`}>{initialsOf(a)}</span>
+            <span className={styles.avatar}>{initialsOf(a)}</span>
             <AuthorName name={fullNameOf(a)} />
-            {!disabled && a.github && (
-              <button
-                type="button"
-                className={styles.linkButton}
-                aria-label="github"
-                onClick={() => void openLinkInBrowser(toHttpUrl(a.github!))}
-              >
-                <GithubIcon className={styles.icon} />
-              </button>
-            )}
-            {!disabled && a.website && (
-              <button
-                type="button"
-                className={styles.linkButton}
-                aria-label="website"
-                onClick={() => void openLinkInBrowser(toHttpUrl(a.website!))}
-              >
-                <Icon material="language" className={styles.icon} />
-              </button>
-            )}
+            {!disabled && a.url && <AuthorLink url={a.url} openLinkInBrowser={openLinkInBrowser} />}
           </div>
         ))}
       </div>

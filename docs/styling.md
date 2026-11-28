@@ -48,6 +48,26 @@ ship them, so use Tailwind for layout. Extension authors still using those
 classes: see
 [migrating off `flexbox.scss`](./extensions/migrating-from-v1.md#migrating-off-flexboxscss).
 
+## Cards and panels
+
+Every card is drawn on `Card` (`packages/core/src/renderer/components/card`):
+a square panel without a border, in `--contentColor`, with the hover and the
+focus of a card that is a button. A card built on it sets only its own layout
+and the colors of its parts, and its text uses `--textColorPrimary` and
+`--textColorAccent`, which reach WCAG AA on `--contentColor` in every built-in
+theme. A badge or a tile inside a card is a tint mixed into `--contentColor`
+with `color-mix()`, not a color of its own.
+
+Cards lie on `--mainBackground`, as in the overviews. A page drawn in another
+background, such as the settings in `--settingsBackground`, which is
+`--contentColor` or close to it, puts its cards in a box of `--mainBackground`
+first, or they do not stand out from the page.
+
+A new theme token earns its place only when no existing one means the same:
+a "card background" or a "card text" token duplicates `--contentColor` and the
+text colors, and a theme that sets one but not the other draws the cards out
+of step with the panels around them.
+
 ## Roles: which mechanism to use
 
 | Context                                                                                | Mechanism                                                                                                                                      | Why                                                                                                                                                                                    |

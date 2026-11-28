@@ -38,3 +38,25 @@
 .emptyText {
   color: var(--textColorSecondary);
 }
+
+.refresh {
+  flex-shrink: 0;
+}
+
+// Turns while the list is downloaded again, as long as the download takes.
+.refreshing :global(.icon) {
+  display: inline-block;
+  animation: marketplace-refresh 1s linear infinite;
+}
+
+@keyframes marketplace-refresh {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .refreshing :global(.icon) {
+    animation: none;
+  }
+}
