@@ -23,6 +23,7 @@ import { ConfirmDialog } from "../../confirm-dialog";
 import { renderFor } from "../../test-utils/renderFor";
 import { Extensions } from "../extensions";
 import installExtensionFromInputInjectable from "../install-extension-from-input.injectable";
+import marketplaceDownloadErrorInjectable from "../marketplace-extensions/marketplace-download-error.injectable";
 import requestMarketplaceExtensionsInjectable from "../marketplace-extensions/request-marketplace-extensions.injectable";
 
 import type { DiContainer } from "@ogre-tools/injectable";
@@ -246,6 +247,49 @@ describe("Extensions", () => {
     await waitFor(() => expect(screen.queryByTestId("confirmation-dialog")).not.toBeInTheDocument());
     expect(installExtensionFromInput).not.toHaveBeenCalled();
     expect(within(card).getByRole("button", { name: "Install" })).toBeEnabled();
+  });
+
+  it("says why the marketplace could not be downloaded", async () => {
+    extensionDiscovery.isLoaded = true;
+    marketplaceExtensions = [];
+    di.inject(marketplaceDownloadErrorInjectable).set("getaddrinfo ENOTFOUND raw.githubusercontent.com");
+
+    render(<Extensions />);
+
+    fireEvent.click(await screen.findByRole("button", { name: "Marketplace" }));
+
+    const shown = await screen.findByTestId("marketplace-download-error");
+
+    expect(shown).toHaveTextContent("The marketplace could not be downloaded");
+    expect(shown).toHaveTextContent("getaddrinfo ENOTFOUND raw.githubusercontent.com");
+    expect(screen.queryByText("No extensions found")).not.toBeInTheDocument();
+    expect(screen.getByTestId("marketplace-refresh")).toBeInTheDocument();
+  });
+
+  it("keeps the cards when a refresh of the marketplace fails, and says so", async () => {
+    extensionDiscovery.isLoaded = true;
+    di.inject(marketplaceDownloadErrorInjectable).set("offline");
+
+    render(<Extensions />);
+
+    fireEvent.click(await screen.findByRole("button", { name: "Marketplace" }));
+
+    expect(await screen.findByRole("region", { name: "Test" })).toBeInTheDocument();
+    expect(screen.getByTestId("marketplace-refresh-error")).toHaveTextContent("could not be refreshed (offline)");
+  });
+
+  it("does not stay updating when the update is cancelled", async () => {
+    extensionDiscovery.isLoaded = true;
+    installExtensionFromInput.mockResolvedValue();
+
+    render(<Extensions />);
+
+    const card = await findInstalledCard();
+
+    fireEvent.click(within(card).getByRole("button", { name: "Update" }));
+
+    await waitFor(() => expect(installExtensionFromInput).toHaveBeenCalledWith("test@2.0.0"));
+    await waitFor(() => expect(within(card).getByRole("button", { name: "Update" })).toBeEnabled());
   });
 
   it("keeps one card of the marketplace expanded at a time", async () => {

@@ -13,24 +13,29 @@ import { ConnectedExtensionCard } from "../extension-card/connected-extension-ca
 import { useExpandedCard } from "../extension-card/use-expanded-card.hook";
 import layoutStyles from "../extensions.module.scss";
 import { SearchBar } from "../search-bar/search-bar";
+import marketplaceDownloadErrorInjectable from "./marketplace-download-error.injectable";
 import marketplaceExtensionsInjectable from "./marketplace-extensions.injectable";
 import styles from "./marketplace-extensions.module.scss";
 import { useMarketplaceExtensions } from "./use-marketplace-extensions.hook";
+
+import type { IObservableValue } from "mobx";
 
 import type { IAsyncComputed } from "../../../../common/utils/async-computed";
 import type { MarketplaceExtension } from "./marketplace-extensions.injectable";
 
 interface Dependencies {
   marketplaceExtensions: IAsyncComputed<MarketplaceExtension[]>;
+  downloadError: IObservableValue<string | undefined>;
 }
 
-const NonInjectedMarketplaceExtensions = observer(({ marketplaceExtensions }: Dependencies) => {
+const NonInjectedMarketplaceExtensions = observer(({ marketplaceExtensions, downloadError }: Dependencies) => {
   const { searchQuery, setSearchQuery, filteredExtensions } = useMarketplaceExtensions(
     marketplaceExtensions.value.get(),
   );
   const expansionOf = useExpandedCard();
 
   const isPending = marketplaceExtensions.pending.get();
+  const error = downloadError.get();
 
   // The first download, or a refresh of a list that has nothing to show yet. A refresh of a list
   // that has cards keeps them, and turns the refresh button instead.
@@ -68,9 +73,24 @@ const NonInjectedMarketplaceExtensions = observer(({ marketplaceExtensions }: De
           />
         }
       />
-      {filteredExtensions.length === 0 ? (
-        <div className={`flex column h-full items-center justify-center ${styles.emptyState}`}>
-          <Icon material="extension" className={styles.iconLarge} />
+      {error && marketplaceExtensions.value.get().length > 0 && (
+        <p className={styles.refreshError} data-testid="marketplace-refresh-error">
+          {`The marketplace could not be refreshed (${error}), so it shows the list downloaded before.`}
+        </p>
+      )}
+      {error && marketplaceExtensions.value.get().length === 0 ? (
+        <div
+          className={`flex flex-col items-center justify-center ${styles.emptyState}`}
+          data-testid="marketplace-download-error"
+        >
+          <Icon material="cloud_off" size={64} className={styles.iconLarge} />
+          <h3 className="font-medium text-2xl mb-2">The marketplace could not be downloaded</h3>
+          <p className={styles.emptyText}>{error}</p>
+          <p className={styles.emptyText}>Check the connection, and refresh the marketplace with the button above.</p>
+        </div>
+      ) : filteredExtensions.length === 0 ? (
+        <div className={`flex flex-col items-center justify-center ${styles.emptyState}`}>
+          <Icon material="extension" size={64} className={styles.iconLarge} />
           <h3 className="font-medium text-2xl mb-2">No extensions found</h3>
           <p className={styles.emptyText}>Try a different search term</p>
         </div>
@@ -88,5 +108,6 @@ const NonInjectedMarketplaceExtensions = observer(({ marketplaceExtensions }: De
 export const MarketplaceExtensions = withInjectables<Dependencies>(NonInjectedMarketplaceExtensions, {
   getProps: (di) => ({
     marketplaceExtensions: di.inject(marketplaceExtensionsInjectable),
+    downloadError: di.inject(marketplaceDownloadErrorInjectable),
   }),
 });

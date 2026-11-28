@@ -5,7 +5,7 @@
 
 import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { when } from "mobx";
+import { reaction, when } from "mobx";
 import { observer } from "mobx-react";
 import extensionInstallationStateStoreInjectable from "../../../../extensions/extension-installation-state-store/extension-installation-state-store.injectable";
 import extensionLoaderInjectable from "../../../../extensions/extension-loader/extension-loader.injectable";
@@ -123,17 +123,35 @@ const NonInjectedConnectedExtensionCard = observer((props: ConnectedExtensionCar
   const onUpdate = () => {
     if (!entry || !key) return;
 
+    const { packageName } = entry;
+    // Whether the installer got as far as unpacking. A cancelled confirmation or a failure before
+    // it leaves the installed version as it was, and there is nothing to wait for.
+    let isUnpacked = false;
+    const stopWatching = reaction(
+      () => extensionInstallationStateStore.isExtensionInstalling(packageName),
+      (isInstalling) => {
+        isUnpacked ||= isInstalling;
+      },
+    );
+
     markMarketplaceUpdating(key);
 
-    // The update uninstalls the old version before it installs the new one, so the extension
-    // briefly leaves the installed list. The card stays updating until the new version is in.
+    // The new version replaces the old one after the installer is done, so the card stays updating
+    // until the new version is in.
     void install(entry)
-      .then(() =>
-        when(() => installedExtensionsByName.get().get(entry.packageName)?.manifest.version === entry.version.version, {
-          timeout: 30_000,
-        }).catch(() => undefined),
-      )
-      .finally(() => clearMarketplaceUpdating(key));
+      .then(() => {
+        stopWatching();
+
+        return isUnpacked
+          ? when(() => installedExtensionsByName.get().get(packageName)?.manifest.version === entry.version.version, {
+              timeout: 30_000,
+            }).catch(() => undefined)
+          : undefined;
+      })
+      .finally(() => {
+        stopWatching();
+        clearMarketplaceUpdating(key);
+      });
   };
 
   const toggle = (enable: boolean) => () => {

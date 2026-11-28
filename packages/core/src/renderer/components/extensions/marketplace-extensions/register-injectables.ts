@@ -6,12 +6,18 @@
  * This replaces the webpack-based auto-registration system.
  */
 
+import marketplaceDownloadErrorInjectable from "./marketplace-download-error.injectable";
 import marketplaceExtensionsInjectable from "./marketplace-extensions.injectable";
 import requestMarketplaceExtensionsInjectable from "./request-marketplace-extensions.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
+  try {
+    di.register(marketplaceDownloadErrorInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
   try {
     di.register(marketplaceExtensionsInjectable);
   } catch (e) {
