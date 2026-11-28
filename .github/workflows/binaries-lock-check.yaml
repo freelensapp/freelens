@@ -93,7 +93,7 @@ jobs:
           node-version-file: .nvmrc
           package-manager-cache: false
 
-      # yq and cosign come from mise so that their versions have a single
+      # yq, cosign and pnpm come from mise so that their versions have a single
       # source (mise.toml) and the downloads are verified against mise.lock.
       # cosign is what checks kubectl's keyless signature; the other two tools
       # are verified in pure JavaScript.
@@ -102,11 +102,7 @@ jobs:
         uses: jdx/mise-action@v5
         with:
           version: 2026.11.11 # datasource=github-releases depName=jdx/mise
-          install_args: yq cosign
-
-      - name: Setup pnpm
-        if: steps.decide.outputs.needed == 'true'
-        run: corepack enable
+          install_args: yq cosign pnpm
 
       - name: Install pnpm dependencies
         if: steps.decide.outputs.needed == 'true'

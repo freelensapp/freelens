@@ -52,10 +52,14 @@ jobs:
           node-version-file: .nvmrc
           package-manager-cache: false
 
-      # The biome script runs Biome with `pnpm dlx`, so no dependency has to be
-      # installed.
-      - name: Setup pnpm
-        run: corepack enable
+      # pnpm comes from mise, as Node no longer bundles Corepack from version 26.
+      # mise verifies the download against mise.lock. The biome script runs
+      # Biome with `pnpm dlx`, so no dependency has to be installed.
+      - name: Set up mise
+        uses: jdx/mise-action@v5
+        with:
+          version: 2026.11.11 # datasource=github-releases depName=jdx/mise
+          install_args: pnpm
 
       - name: Run biome migrate
         run: pnpm biome:migrate

@@ -1349,10 +1349,28 @@ exports[`workload overview > when navigating to workload overview > when the ove
                     class="StatusCard-bar"
                   />
                   <span
-                    class="StatusCard-empty"
-                    data-testid="workload-status-card-pods-empty"
+                    class="StatusCard-details"
                   >
-                    None in any namespace
+                    <span
+                      aria-hidden="true"
+                      class="StatusCard-collapsible"
+                      data-collapsed="true"
+                      inert=""
+                    >
+                      <span
+                        class="StatusCard-legend"
+                      />
+                    </span>
+                    <span
+                      class="StatusCard-collapsible"
+                    >
+                      <span
+                        class="StatusCard-empty"
+                        data-testid="workload-status-card-pods-empty"
+                      >
+                        None in any namespace
+                      </span>
+                    </span>
                   </span>
                 </button>
               </div>

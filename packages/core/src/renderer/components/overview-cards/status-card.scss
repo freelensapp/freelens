@@ -19,6 +19,14 @@
 // The class names are public: an extension that renders the card may restyle it. Every part
 // has a class of its own that starts with `StatusCard-`, so that the styles of the page the
 // card is on, such as the `.header` of the workloads overview, do not reach into the card.
+//
+// A change of the statuses is animated, so that the card, and with it the row of the grid it is
+// in, changes its height smoothly rather than at once. A status without items keeps its row of the
+// legend and its segment of the bar, collapsed: the row closes from its full height to none, and the
+// segment shrinks to no width. The legend and the empty text take turns the same way. The changes
+// are short, close to the hover, in the same easing, and none of them moves with reduced motion.
+
+$change-duration: 200ms;
 
 .StatusCard {
   --status-card-error-text: color-mix(in srgb, var(--colorError) 30%, var(--textColorAccent));
@@ -85,16 +93,29 @@
 
 .StatusCard-bar {
   display: flex;
-  gap: 2px;
   height: 8px;
   border-radius: 999px;
   overflow: hidden;
   background: color-mix(in srgb, var(--textColorPrimary) 22%, transparent);
 }
 
+// The segments are spaced with a margin rather than with the gap of the bar, which would also
+// space the collapsed ones.
 .StatusCard-segment {
   min-width: 3px;
   height: 100%;
+  transition:
+    flex-grow $change-duration,
+    min-width $change-duration,
+    margin-inline-start $change-duration;
+
+  &[data-collapsed] {
+    min-width: 0;
+  }
+
+  &:not([data-collapsed]) ~ &:not([data-collapsed]) {
+    margin-inline-start: 2px;
+  }
 
   // Healthy is the normal case: keep it quiet so the waiting and failing slices stand out.
   &[data-healthy] {
@@ -102,17 +123,49 @@
   }
 }
 
+.StatusCard-details,
 .StatusCard-legend {
   display: flex;
   flex-direction: column;
 }
 
+// A row of one track that is as tall as its content when open and has no height when collapsed.
+// `visibility` hides the content once it has closed, and shows it as soon as it starts to open.
+.StatusCard-collapsible {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition:
+    grid-template-rows $change-duration,
+    opacity $change-duration,
+    visibility $change-duration;
+
+  > * {
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  &[data-collapsed] {
+    grid-template-rows: 0fr;
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .StatusCard-segment,
+  .StatusCard-collapsible {
+    transition: none;
+  }
+}
+
 .StatusCard-legendRow {
   display: grid;
   grid-template-columns: 8px minmax(0, 1fr) auto 36px;
+  // The height of the row is in its track rather than in a min-height, which would keep a collapsed
+  // row open.
+  grid-template-rows: minmax(22px, auto);
   align-items: center;
   column-gap: $margin;
-  min-height: 22px;
   font-size: 12.5px;
 
   &[data-failing] {

@@ -556,9 +556,9 @@ verifies added pins and asserts that no existing digest changed.
 
 ### Development Tools (mise)
 
-The development tools (`cosign`, `node`, `yq`) are declared in `mise.toml` and
-pinned with their checksums in `mise.lock`. The lock uses lockfile format
-version 3 (`lockfile_version = 3`), which **needs mise 2026.9.16 or newer**: an
+The development tools (`cosign`, `node`, `pnpm`, `yq`) are declared in
+`mise.toml` and pinned with their checksums in `mise.lock`. The lock uses
+lockfile format version 3 (`lockfile_version = 3`), which **needs mise 2026.9.16 or newer**: an
 older mise rejects the lock, so `mise install` fails until mise is upgraded.
 
 After changing a version in `mise.toml`, regenerate the lock with `mise lock`,
@@ -567,6 +567,16 @@ re-locks only the platform it runs on and leaves the others stale.
 
 The workflows set up Node from `.nvmrc` rather than through mise, so a Node
 version change goes into both `mise.toml` and `.nvmrc`.
+
+pnpm comes from mise in the workflows, not from Corepack, which Node no longer
+bundles. mise is only one way to install it, and developers may use any other:
+whichever pnpm runs reads `packageManager` from the root `package.json` and
+switches itself to that version, whose integrity `pnpm-lock.yaml` pins under
+`packageManagerDependencies`. So `packageManager` decides the version, and
+carries no Corepack hash. The pnpm of `mise.toml` must still equal it: when
+they differ, every CI job downloads pnpm a second time before installing
+anything. Renovate keeps them together, with the catalog entry of
+`pnpm-workspace.yaml`, in one group.
 
 ## Common Development Tasks
 

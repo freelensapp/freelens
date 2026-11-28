@@ -2,7 +2,7 @@
 name: create-extension
 description: Create a new Freelens extension for the Freelens v2 extension API (Freelens 2.x), starting from a copy of freelensapp/freelens-example-extension, the reference template for building, type-checking, testing and releasing one. Use when the user wants a new Freelens extension, or wants to set up an empty repository as one. Covers copying the template, which of its files to keep, adapt, remove or rewrite, the patterns the new code must follow, how to verify the result in Freelens, and, optionally, offering it in the Freelens marketplace from npm or from a release URL. Not for an existing Freelens or Lens extension written for the v1 API; port-extension-to-v2 covers that.
 license: MIT
-compatibility: Needs network access to github.com and raw.githubusercontent.com, for the template and the linked documents, and Node.js with pnpm (through corepack) to build and check the extension.
+compatibility: Needs network access to github.com and raw.githubusercontent.com, for the template and the linked documents, and Node.js with pnpm to build and check the extension.
 ---
 
 # Create a Freelens extension
