@@ -6,11 +6,17 @@
  * This replaces the webpack-based auto-registration system.
  */
 
+import installedExtensionsByNameInjectable from "./installed-extensions-by-name.injectable";
 import userExtensionsInjectable from "./user-extensions.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
+  try {
+    di.register(installedExtensionsByNameInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
   try {
     di.register(userExtensionsInjectable);
   } catch (e) {

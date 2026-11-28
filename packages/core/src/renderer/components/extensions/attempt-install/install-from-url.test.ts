@@ -122,6 +122,21 @@ describe("installFromUrl", () => {
     );
   });
 
+  it("checks the integrity it was given instead of asking for a sidecar", async () => {
+    respond(digest);
+
+    await installFromUrl(url, { integrity: "sha256-abc=" });
+
+    expect(downloadBinaryMock).not.toHaveBeenCalledWith(`${url}.sha256`, expect.anything());
+    expect(attemptInstallMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        source: { kind: "url", url },
+        checksum: { kind: "integrity", value: "sha256-abc=" },
+      }),
+      expect.any(Function),
+    );
+  });
+
   it("reports a failed download of the tarball and installs nothing", async () => {
     downloadBinaryMock.mockResolvedValue({ callWasSuccessful: false, error: "Not Found" });
 

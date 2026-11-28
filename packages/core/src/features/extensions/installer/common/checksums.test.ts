@@ -36,6 +36,12 @@ describe("verifySubresourceIntegrity", () => {
     expect(verifySubresourceIntegrity(plainData, `sha512-${sha512Base64}`)).toBeUndefined();
   });
 
+  it.each(["sha256", "sha384"])("checks %s, which the marketplace accepts besides sha512", (algorithm) => {
+    const integrity = `${algorithm}-${createHash(algorithm).update(data).digest("base64")}`;
+
+    expect(verifySubresourceIntegrity(data, integrity)).toBeUndefined();
+  });
+
   it("returns the mismatch when the data does not match", () => {
     expect(verifySubresourceIntegrity(Buffer.from("something else"), `sha512-${sha512Base64}`)).toMatchObject({
       algorithm: "sha512",

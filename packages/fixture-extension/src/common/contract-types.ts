@@ -194,9 +194,13 @@ export type VirtualListRefTakesItsAlign = Holds<
   Parameters<FixtureVirtualListRef["scrollToItem"]>[1] extends FixtureVirtualListAlign ? true : false
 >;
 
-// The overview cards are function components, a value only, and their props
+// The card and the overview cards are function components, a value only, and their props
 // are types only, so no name is a pair. The props type an extension's own data
 // and have to be what the component takes.
+export type FixtureCardProps = Renderer.Component.CardProps;
+export type CardTakesItsProps = Holds<
+  Parameters<typeof Renderer.Component.Card>[0] extends FixtureCardProps ? true : false
+>;
 export type FixtureCapacityCardProps = Renderer.Component.CapacityCardProps;
 export type FixtureCapacityCardLabels = Renderer.Component.CapacityCardLabels;
 export type FixtureStatusCardProps = Renderer.Component.StatusCardProps;

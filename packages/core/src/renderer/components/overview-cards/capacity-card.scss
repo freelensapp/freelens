@@ -10,8 +10,8 @@
 // textColorAccent with 30% of the warning color for the same reason. Its badge keeps the tint
 // light, 10% of the warning color, so the text also reaches AA on it in the dark themes whose
 // textColorAccent is not far from the card, such as Solarized. The cluster overview gives these
-// cards about half of the page, so a card stays readable at 200px. The card is a square panel
-// without a border, drawn in contentColor like the other panels of the overviews.
+// cards about half of the page, so a card stays readable at 200px. The panel is the one of
+// `.Card`.
 //
 // The class names are public: an extension that renders the card may restyle it. Every part
 // has a class of its own that starts with `CapacityCard-`, so that the styles of the page the
@@ -21,12 +21,6 @@
   --capacity-card-warning-text: color-mix(in srgb, var(--colorWarning) 30%, var(--textColorAccent));
   --capacity-card-track: color-mix(in srgb, var(--textColorPrimary) 22%, transparent);
   --capacity-card-requests: color-mix(in srgb, var(--primary) 38%, transparent);
-
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  padding: $padding * 2;
-  background: var(--contentColor);
 }
 
 .CapacityCard-header {

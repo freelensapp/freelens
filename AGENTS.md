@@ -816,7 +816,8 @@ to the other skill, are relative, because an installed plugin has only its own
 directory. Every other link is a full URL: the extension documents of this
 repository at the release tag the template of the migration issue pins, and
 freelensapp/freelens-example-extension at `main`, because the template is read
-as it is now. A `references/` file is only for content that exists nowhere
+as it is now, and so is `docs/extensions.md` of freelensapp/freelens-marketplace,
+the format of a marketplace entry. A `references/` file is only for content that exists nowhere
 else, which is the template of the migration issue.
 
 The skills depend on freelensapp/freelens-example-extension by name: they cite
@@ -824,7 +825,10 @@ sections of its `AGENTS.md` and `README.md` by their headings and its files by
 their paths, and `create-extension` puts every tracked file of the template
 into one of its groups (keep, adapt, remove, rewrite). A change there that
 renames such a section, moves or removes such a file, or adds a tracked file
-needs a matching change of the skill here.
+needs a matching change of the skill here. The same holds for the sections of
+`docs/extensions.md` of freelensapp/freelens-marketplace that `create-extension`
+cites by their headings: "A manifest", "Versions", "Icon", "Adding an
+extension" and "Updating an extension".
 
 The template of the migration issue, `references/migration-issue.md` of
 `port-extension-to-v2`, is an issue body:

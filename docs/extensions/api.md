@@ -536,6 +536,11 @@ the ring and pie charts or as cards, by the user's choice in Preferences →
 Personalization → Overview style. An extension shows its own numbers the same
 way with the components the overviews render:
 
+- **`Renderer.Component.Card`** is the panel the host draws its cards on, the
+  two below and the cards of the extensions page among them. Its props,
+  `CardProps`, are the `children`, a `className`, an `aria-label` and an
+  `onClick` that makes the whole card a button. An extension draws a card of
+  its own on it, so that it looks like the cards of the host in every theme.
 - **`Renderer.Component.CapacityCard`** shows the usage of one resource on the
   scale of what is allocatable. Its props, `CapacityCardProps`, are a
   `title`, the `usage` and `allocatable` values, the optional `requests`,
@@ -562,17 +567,18 @@ both are plain data with no host type in them. The cards take every color from
 the theme ([C10](#c10-styling-and-css)) apart from the `color` of a status,
 which is what the extension gives: a theme variable such as `var(--colorOk)`
 keeps the card in step with the theme. Each card is a `<section>` named by its
-title, or a `<button>` when it has an `onClick`. A `data-testid` given to a
+title (a `Card` by its `aria-label`), or a `<button>` when it has an `onClick`. A `data-testid` given to a
 card is the prefix of the test ids of its parts. The cards set no width:
 the host lays them out in a grid of columns at least 200px wide, 16px apart.
-They are square panels without a border, drawn in `--contentColor` like the
-other panels of the overviews, so an extension that shows them among panels of
-its own spaces them the same way. A status card that is a button shows the
-hover with its background, tinted with `--primary`, and the focus with an
-outline.
+Every card is a `Card`: a square panel without a border, drawn in
+`--contentColor` like the other panels of the overviews, so an extension that
+shows them among panels of its own spaces them the same way. A card that is a
+button shows the hover with its background, tinted with `--primary`, and the
+focus with an outline.
 
-Every part of a card has a class that starts with the name of the card, such
-as `.CapacityCard-title`, `.CapacityCard-legendRow` or `.StatusCard-header`,
+The panel has the class `.Card`, and each card adds its own, `.CapacityCard`
+or `.StatusCard`. Every part of a card has a class that starts with the name of
+the card, such as `.CapacityCard-title`, `.CapacityCard-legendRow` or `.StatusCard-header`,
 and none has a generic class such as `.header` or `.title`. The styles of the
 page a card is on therefore do not reach into it, and an extension may restyle
 a part by its class ([C10](#c10-styling-and-css)). The state of a part is a
@@ -1064,7 +1070,7 @@ when it exists, `style.css` otherwise. Looking for a stylesheet the extension
 does not ship leaves no error in the renderer console.
 
 **Surface.** One CSS asset next to the renderer entry. The host's shared
-component classes (`.Tooltip`, `.Button`, `.CapacityCard`, `.StatusCard`,
+component classes (`.Tooltip`, `.Button`, `.Card`, `.CapacityCard`, `.StatusCard`,
 `.ColorSwatch`, `.OrderableList`, `.VirtualList`, …) are global and part of
 the public API and may be targeted; they must not be redefined. So are the classes of the parts of the overview cards, which start
 with the name of the card (`.CapacityCard-title`, `.StatusCard-legendRow`, …). An extension's own styles

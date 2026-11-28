@@ -54,10 +54,18 @@ describe("installExtensionFromInput", () => {
     async (input) => {
       await installExtensionFromInput(input);
 
-      expect(installFromUrlMock).toHaveBeenCalledWith(input);
+      expect(installFromUrlMock).toHaveBeenCalledWith(input, undefined);
       expect(statMock).not.toHaveBeenCalled();
     },
   );
+
+  it("passes the integrity of a URL on to the download", async () => {
+    const input = "https://example.com/my-extension-0.1.0.tgz";
+
+    await installExtensionFromInput(input, { integrity: "sha512-abc" });
+
+    expect(installFromUrlMock).toHaveBeenCalledWith(input, { integrity: "sha512-abc" });
+  });
 
   // `new URL` parses a drive path as a URL with protocol `d:`, which is why the
   // generic `isUrl` validator cannot decide this.

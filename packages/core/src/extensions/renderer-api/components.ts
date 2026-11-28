@@ -72,6 +72,7 @@ export {
 export * from "../../renderer/components/add-remove-buttons";
 export * from "../../renderer/components/avatar";
 export * from "../../renderer/components/badge";
+export { Card, type CardProps } from "../../renderer/components/card";
 export * from "../../renderer/components/chart";
 export * from "../../renderer/components/checkbox";
 // Explicit rather than a star export: the contract is the components and their

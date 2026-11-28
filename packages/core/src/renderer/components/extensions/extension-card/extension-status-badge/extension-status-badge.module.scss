@@ -1,0 +1,9 @@
+// The official tier is marked with the logo of Freelens, in its own colors as on the welcome page.
+// The "verified" icon is left to an installed build whose checksum was verified.
+//
+// `Icon` fills every part of an inline SVG with the current color, which would turn the logo into
+// a disc. `revert-layer` gives the parts back the colors of their own `fill` attributes; the
+// selector has to be more specific than the one of `Icon`.
+.officialIcon:global(.Icon.svg) svg * {
+  fill: revert-layer;
+}

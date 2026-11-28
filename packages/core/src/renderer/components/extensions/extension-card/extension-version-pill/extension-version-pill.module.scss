@@ -1,0 +1,13 @@
+@use "../../../vars" as *;
+
+// Drawn like the badges of the overview cards, in the neutral colors of the theme.
+.pill {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  padding: 1px $padding * 0.75;
+  background: color-mix(in srgb, var(--textColorPrimary) 15%, var(--contentColor));
+  font-family: var(--font-monospace);
+  font-size: 11.5px;
+  color: var(--textColorAccent);
+}

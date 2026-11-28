@@ -6,6 +6,7 @@
 import "./capacity-card.scss";
 
 import { cssNames } from "@freelensapp/utilities";
+import { Card } from "../card";
 
 /** The names of the values of a capacity card, in its legend and its bar. */
 export interface CapacityCardLabels {
@@ -116,7 +117,7 @@ export const CapacityCard = ({
   const extraCapacity = isNumber(capacity) && Math.abs(capacity - allocatable) > allocatable * 0.005 ? capacity : null;
 
   return (
-    <section className={cssNames("CapacityCard", className)} aria-label={title} data-testid={testId}>
+    <Card className={cssNames("CapacityCard", className)} aria-label={title} data-testid={testId}>
       <header className="CapacityCard-header">
         <h3 className="CapacityCard-title">{title}</h3>
         <span
@@ -193,6 +194,6 @@ export const CapacityCard = ({
           <LegendRow swatch="capacity" label={labels.capacity} value={formatValue(extraCapacity)} />
         )}
       </dl>
-    </section>
+    </Card>
   );
 };

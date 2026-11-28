@@ -1,0 +1,41 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
+@use "../vars" as *;
+
+// The panel of every card: square, without a border, in contentColor like the other panels of
+// the overviews. Text on it uses textColorPrimary and textColorAccent, which reach WCAG AA on
+// contentColor in every built-in theme. A card that is a button shows the hover with its
+// background, 6% of the primary color mixed into contentColor, and the focus with an outline.
+//
+// The class name is public: an extension that renders a card may restyle it. A card built on it
+// sets its own layout on a class of its own, and leaves the panel to this one.
+
+.Card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: $padding * 2;
+  border: 0;
+  border-radius: 0;
+  background: var(--contentColor);
+  color: inherit;
+  font: inherit;
+  text-align: left;
+
+  &:is(button) {
+    cursor: pointer;
+    transition: background-color 150ms;
+
+    &:hover {
+      background: color-mix(in srgb, var(--primary) 6%, var(--contentColor));
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--primary);
+      outline-offset: 2px;
+    }
+  }
+}

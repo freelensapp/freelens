@@ -1,0 +1,13 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 7rem;
+}
+
+.spinner {
+  --size: 14px;
+  width: var(--size);
+  height: var(--size);
+  border-width: 2px;
+}

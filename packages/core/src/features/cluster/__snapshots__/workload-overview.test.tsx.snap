@@ -1311,7 +1311,7 @@ exports[`workload overview > when navigating to workload overview > when the ove
                 data-testid="workload-status-cards"
               >
                 <button
-                  class="StatusCard"
+                  class="Card StatusCard"
                   data-testid="workload-status-card-pods"
                   type="button"
                 >

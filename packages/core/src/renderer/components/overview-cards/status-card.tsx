@@ -8,6 +8,7 @@ import "./status-card.scss";
 import { Icon } from "@freelensapp/icon";
 import { cssNames } from "@freelensapp/utilities";
 import { useRef } from "react";
+import { Card } from "../card";
 
 import type { ReactNode } from "react";
 
@@ -262,17 +263,14 @@ export const StatusCard = ({
     </>
   );
 
-  if (onClick) {
-    return (
-      <button type="button" className={cssNames("StatusCard", className)} onClick={onClick} data-testid={testId}>
-        {content}
-      </button>
-    );
-  }
-
   return (
-    <section className={cssNames("StatusCard", className)} aria-label={title} data-testid={testId}>
+    <Card
+      className={cssNames("StatusCard", className)}
+      onClick={onClick}
+      aria-label={onClick ? undefined : title}
+      data-testid={testId}
+    >
       {content}
-    </section>
+    </Card>
   );
 };

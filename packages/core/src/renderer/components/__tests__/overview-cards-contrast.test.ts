@@ -23,7 +23,8 @@ import type { LensTheme } from "../../themes/lens-theme";
 
 const componentsDirectory = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 // Each stylesheet with the class of its badge, the warning or error label drawn on a tint of its
-// color, and whether the card can be a button with a hover.
+// color, and whether the card can be a button with a hover. The panel and the background of the
+// hover are the ones of `.Card`; a card may add custom properties of its own to the hover.
 const stylesheets = [
   { file: "overview-cards/capacity-card.scss", badge: "CapacityCard-overcommit", hasHover: false },
   { file: "overview-cards/status-card.scss", badge: "StatusCard-failing", hasHover: true },
@@ -31,6 +32,7 @@ const stylesheets = [
 
 // The cards are drawn in contentColor.
 const cardBackground = "var(--contentColor)";
+const cardStylesheet = "card/card.scss";
 const minimumContrast = 4.5;
 
 const readStylesheet = (file: string) => readFileSync(path.join(componentsDirectory, file), "utf8");
@@ -38,8 +40,8 @@ const readStylesheet = (file: string) => readFileSync(path.join(componentsDirect
 const getCustomProperties = (source: string) =>
   new Map(Array.from(source.matchAll(/(--[\w-]+):\s*([^;]+);/g), ([, name, value]) => [name, value.trim()]));
 
-// The declarations of the `&:hover` block, up to the first rule nested in it.
-const getHoverDeclarations = (source: string) => /&:hover\s*\{([^{}]*)/.exec(source)?.[1];
+// The declarations of the first `:hover` block, up to the first rule nested in it.
+const getHoverDeclarations = (source: string) => /:hover\s*\{([^{}]*)/.exec(source)?.[1];
 
 const getDeclaration = (body: string, property: string) =>
   new RegExp(`(?<![\\w-])${property}:\\s*([^;]+);`).exec(body)?.[1].trim();
@@ -136,7 +138,13 @@ const themeVariants = builtInThemes.flatMap(({ theme }) =>
   })),
 );
 
+const cardHoverBackground = getDeclaration(getHoverDeclarations(readStylesheet(cardStylesheet)) ?? "", "background");
+
 describe("contrast of the text of the overview cards", () => {
+  it("shows the hover of a card that is a button with a background", () => {
+    expect(cardHoverBackground).toEqual(expect.stringContaining("var(--contentColor)"));
+  });
+
   describe.each(stylesheets)("$file", ({ file, badge, hasHover }) => {
     const source = readStylesheet(file);
     const hoverDeclarations = getHoverDeclarations(source);
@@ -154,7 +162,7 @@ describe("contrast of the text of the overview cards", () => {
         : [
             {
               name: "hover background",
-              background: getDeclaration(hoverDeclarations, "background") ?? "",
+              background: cardHoverBackground ?? "",
               properties: new Map([...customProperties, ...getCustomProperties(hoverDeclarations)]),
             },
           ]),
@@ -166,10 +174,8 @@ describe("contrast of the text of the overview cards", () => {
       expect(badgeRule.background).toBeDefined();
     });
 
-    it(hasHover ? "shows the hover with a background" : "has no hover", () => {
-      expect(hoverDeclarations === undefined ? undefined : getDeclaration(hoverDeclarations, "background")).toEqual(
-        hasHover ? expect.stringContaining("var(--contentColor)") : undefined,
-      );
+    it(hasHover ? "sets the colors of its text on the hover" : "has no hover", () => {
+      expect(hoverDeclarations !== undefined).toBe(hasHover);
     });
 
     describe.each(backgrounds)("on the $name", ({ background, properties }) => {

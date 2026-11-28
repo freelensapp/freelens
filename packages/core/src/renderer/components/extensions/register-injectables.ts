@@ -17,6 +17,7 @@ import { registerInjectables as registerGetBaseRegistryUrlInjectables } from "./
 import installExtensionFromInputInjectable from "./install-extension-from-input.injectable";
 import installFromSelectFileDialogInjectable from "./install-from-select-file-dialog.injectable";
 import installOnDropInjectable from "./install-on-drop.injectable";
+import { registerInjectables as registerMarketplaceExtensionsInjectables } from "./marketplace-extensions/register-injectables";
 import { registerInjectables as registerReadFileNotifyInjectables } from "./read-file-notify/register-injectables";
 import uninstallExtensionInjectable from "./uninstall-extension.injectable";
 import { registerInjectables as registerUserExtensionsInjectables } from "./user-extensions/register-injectables";
@@ -81,6 +82,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     registerGetBaseRegistryUrlInjectables(di);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    registerMarketplaceExtensionsInjectables(di);
   } catch (e) {
     /* Ignore duplicate registration */
   }

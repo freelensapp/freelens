@@ -1,0 +1,84 @@
+@use "../../../../vars" as *;
+
+// Drawn like a menu of the host.
+
+.popover {
+  position: absolute;
+  left: 0;
+  top: 100%;
+  margin-top: $margin;
+  z-index: 101;
+  width: 18rem;
+  padding: $padding;
+  background: var(--layoutBackground);
+  border: 1px solid var(--borderColor);
+  border-radius: 4px;
+  box-shadow: rgb(0 0 0 / 17%) 0 6px 9px 0;
+}
+
+.disabled {
+  opacity: 0.6;
+}
+
+.list {
+  max-height: 9rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: $margin;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: $margin;
+  font-size: 12px;
+  color: var(--textColorAccent);
+  min-width: 0;
+}
+
+.linkButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: $padding * 0.5;
+  border: none;
+  background: none;
+  color: var(--textColorPrimary);
+  cursor: pointer;
+  flex-shrink: 0;
+
+  &:hover {
+    color: var(--textColorAccent);
+  }
+}
+
+.icon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.authorName {
+  color: var(--textColorAccent);
+  max-width: 12rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: inline-block;
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.avatar {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: color-mix(in srgb, var(--primary) 15%, var(--layoutBackground));
+  color: var(--textColorAccent);
+  font-size: 11px;
+  font-weight: $font-weight-bold;
+}

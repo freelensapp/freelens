@@ -330,3 +330,13 @@ cluster is connected. Opened after the list pages, it finds their stores
 loaded and passes even when it loads nothing itself, which is how an effect
 that breaks under `React.StrictMode` goes unnoticed ("Rules That Fail
 Silently" in the template's `AGENTS.md`).
+
+## 6. Offer it in the marketplace (optional)
+
+Once the port is released, the extension can be offered in the Marketplace
+tab of Freelens, as step 5 of [create-extension](../create-extension/SKILL.md)
+describes; the user decides whether it is. The marketplace lists only releases
+for Freelens 2.0.0 or newer, so the v2 release is a new item of `versions`,
+with its `engines.freelens` as `freelens`, or a new entry when the extension
+had none. Renovate of the marketplace does not add it: it bumps only the
+version of the first npm item, never its range.

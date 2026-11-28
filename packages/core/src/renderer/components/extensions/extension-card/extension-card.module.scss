@@ -1,0 +1,182 @@
+@use "../../vars" as *;
+
+// The panel is the one of `.Card`, as for the overview cards, and so are the colors: text uses
+// only textColorPrimary and textColorAccent, which reach WCAG AA on contentColor in every built-in
+// theme. A disabled extension dims its icon and its texts, but not its buttons.
+
+// A card expands and collapses its details as StatusCard opens and closes a row of its legend:
+// a row of one track that is as tall as its content when open and has no height when collapsed,
+// in the same duration and with no movement under reduced motion.
+$change-duration: 200ms;
+
+// The summary is as tall as its content, so that the padding of the card is the same above and
+// below it. A summary is a line or two, so the cards of the list stay close in height.
+.layout {
+  display: flex;
+  flex-direction: column;
+  gap: $margin * 2;
+  cursor: pointer;
+}
+
+@media (min-width: 768px) {
+  .layout {
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: space-between;
+    gap: $margin * 3;
+  }
+}
+
+.dimmed {
+  opacity: 0.6;
+}
+
+.iconColumn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $margin;
+  flex-shrink: 0;
+}
+
+.metadata {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: $margin;
+}
+
+.headerRow {
+  display: flex;
+  align-items: center;
+  gap: $margin;
+  flex-wrap: wrap;
+  min-width: 0;
+  flex-shrink: 0;
+}
+
+.metaRow {
+  display: flex;
+  align-items: center;
+  gap: $margin;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+  min-width: 0;
+}
+
+.license {
+  margin-left: auto;
+  flex-shrink: 0;
+  font-size: 12px;
+  color: var(--textColorPrimary);
+}
+
+.description {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--textColorPrimary);
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: $margin;
+  flex-shrink: 0;
+}
+
+@media (min-width: 768px) {
+  .footer {
+    justify-content: space-between;
+  }
+}
+
+.footerTop {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: $margin;
+  align-self: stretch;
+}
+
+.ctaArea {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// Drawn like the failing badge of a status card: an extension that runs is tinted with the ok
+// color, one that should run and does not with the error color, and a disabled one stays neutral.
+.status {
+  padding: 1px $padding;
+  background: color-mix(in srgb, var(--textColorPrimary) 15%, var(--contentColor));
+  color: var(--textColorAccent);
+  font-size: 11.5px;
+  font-weight: $font-weight-bold;
+}
+
+.statusEnabled {
+  background: color-mix(in srgb, var(--colorOk) 10%, var(--contentColor));
+  color: color-mix(in srgb, var(--colorOk) 30%, var(--textColorAccent));
+}
+
+.statusFailing {
+  background: color-mix(in srgb, var(--colorError) 10%, var(--contentColor));
+  color: color-mix(in srgb, var(--colorError) 30%, var(--textColorAccent));
+}
+
+.toggle {
+  display: inline-flex;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--textColorPrimary);
+  cursor: pointer;
+
+  &:hover {
+    color: var(--textColorAccent);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
+
+  &[aria-expanded="true"] .chevron {
+    transform: rotate(180deg);
+  }
+}
+
+.chevron {
+  transition: transform $change-duration;
+}
+
+.collapsible {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition:
+    grid-template-rows $change-duration,
+    opacity $change-duration,
+    visibility $change-duration;
+
+  > * {
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  &[data-collapsed] {
+    grid-template-rows: 0fr;
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chevron,
+  .collapsible {
+    transition: none;
+  }
+}
