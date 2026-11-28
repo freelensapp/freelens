@@ -4,7 +4,13 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+@use "../vars" as *;
 @use "../workloads/workloads-mixins";
+
+// The legend of the ring looks as the legend of a `PieChart`, which the ring does not show: an entry
+// of the legend opens and closes with its status, as a row of the legend of a `StatusCard` does, in
+// the same duration and the same way.
+$change-duration: 200ms;
 
 .OverviewWorkloadStatus {
   --workload-status-running: #{workloads-mixins.$pod-status-running-color};
@@ -16,4 +22,48 @@
   --workload-status-failed: #{workloads-mixins.$pod-status-failed-color};
   --workload-status-terminated: #{workloads-mixins.$pod-status-terminated-color};
   --workload-status-unknown: #{workloads-mixins.$pod-status-unknown-color};
+
+  // Four classes, so that it wins over the `:not()` rules of the badge's own styles whatever the
+  // order of the stylesheets.
+  .OverviewWorkloadStatus-legend .OverviewWorkloadStatus-legendContent .LegendBadge {
+    margin-bottom: $margin;
+    background: transparent;
+    white-space: normal;
+    cursor: default;
+  }
+}
+
+.OverviewWorkloadStatus-legend {
+  display: flex;
+  flex-direction: column;
+  margin-top: $margin;
+}
+
+// A row of one track that is as tall as its content when open and has no height when collapsed.
+// `visibility` hides the content once it has closed, and shows it as soon as it starts to open.
+// The space below the badge is its margin, inside the content, so that it closes with it.
+.OverviewWorkloadStatus-legendEntry {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition:
+    grid-template-rows $change-duration,
+    opacity $change-duration,
+    visibility $change-duration;
+
+  &[data-collapsed] {
+    grid-template-rows: 0fr;
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+.OverviewWorkloadStatus-legendContent {
+  min-height: 0;
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .OverviewWorkloadStatus-legendEntry {
+    transition: none;
+  }
 }
